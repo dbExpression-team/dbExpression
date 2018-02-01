@@ -1,0 +1,117 @@
+﻿<#+
+public void WriteDBEntityProvider(SqlModel model, string namespaceRoot)
+{
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using HTL.DbEx.Sql;
+using HTL.DbEx.Sql.Expression;
+<#+
+if (TemplateSvc.TargetDb == "mssql")
+{
+#>
+using HTL.DbEx.MsSql;
+using HTL.DbEx.MsSql.Expression;
+
+<#+
+}
+else if (TemplateSvc.TargetDb == "mysql")
+{
+#>
+using HTL.DbEx.MySql;
+using HTL.DbEx.MySql.Expression;
+
+<#+
+}
+#>
+<#+  
+foreach (string schema in TemplateSvc.GetDistinctSchemas(model.Entities))
+{
+#>
+namespace <#= namespaceRoot #>.<#= model.Name #>.<#= (TemplateSvc.TargetDb == "mssql") ? schema : "db" #>.DataService
+{
+	#region <#= schema #>
+    public static partial class <#= (TemplateSvc.TargetDb == "mssql") ? schema : "db" #>
+    {
+        #region internals
+<#+  
+foreach (SqlEntity entity in model.Entities.FindAll(e => e.Schema == schema))
+{
+	if (entity.IsIgnored) { continue; }
+#>
+        private static <#= entity.Name #>Entity _<#= TemplateSvc.ToCamelCase(entity.Name) #>Entity;
+<#+
+}
+#>
+
+		private static readonly string _connectionStringName = "<#= model.ConnectionStringName #>";
+        #endregion
+
+        #region interface
+<#+  
+foreach (SqlEntity entity in model.Entities.FindAll(e => e.Schema == schema))
+{
+	if (entity.IsIgnored) { continue; }
+#>
+        public static <#= entity.Name #>Entity <#= entity.Name #>
+        {
+            get
+            {
+				return (_<#= TemplateSvc.ToCamelCase(entity.Name) #>Entity == null) 
+					? _<#= TemplateSvc.ToCamelCase(entity.Name) #>Entity = new <#= entity.Name #>Entity("<#= schema #>", "<#= entity.Name #>") 
+					: _<#= TemplateSvc.ToCamelCase(entity.Name) #>Entity;
+            }
+        }
+<#+
+}
+#>
+        #endregion
+        
+        #region methods
+        public static SqlConnection GetConnection()
+        {
+<#+
+if (TemplateSvc.TargetDb == "mssql")
+{
+#>
+			return new MsSqlConnection(_connectionStringName);
+<#+
+}
+else if (TemplateSvc.TargetDb == "mysql")
+{
+#>
+			return new MySqlConnection(_connectionStringName);
+<#+
+}
+#>
+        }
+
+        public static SqlExpressionBuilder<T> GetExpressionBuilder<T>(DBExpressionEntity baseEntity) where T : new ()
+        {
+<#+
+if (TemplateSvc.TargetDb == "mssql")
+{
+#>
+			return new MsSqlExpressionBuilder<T>(_connectionStringName, baseEntity);
+<#+
+}
+else if (TemplateSvc.TargetDb == "mysql")
+{
+#>
+			return new MySqlExpressionBuilder<T>(_connectionStringName, baseEntity);
+<#+
+}
+#>
+        }
+        #endregion
+    }
+	#endregion
+}
+<#+
+}
+#>
+<#+
+}
+#>

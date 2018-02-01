@@ -1,0 +1,159 @@
+﻿<#+
+public void WriteViewDBEntities(SqlModel model, string namespaceRoot)
+{
+#>
+using System;
+using System.Collections.Generic;
+using System.Data;
+using HTL.DbEx.Utility;
+using HTL.DbEx.Sql.Expression;
+
+<#+  
+foreach (string schema in TemplateSvc.GetDistinctSchemas(model.Entities))
+{
+	if (!model.Entities.Any(e => e.Schema == schema && (e as SqlEntity).SqlEntityType == EntityType.View))
+	{ continue; }
+#>
+namespace <#= namespaceRoot #>.<#= model.Name #>.<#= (TemplateSvc.TargetDb == "mssql") ? schema : "db" #>.DataService
+{
+	using Data;
+
+	public static partial class <#= (TemplateSvc.TargetDb == "mssql") ? schema : "db" #>
+	{
+<#+  
+	foreach(SqlEntity view in model.Entities.FindAll(e => e.Schema == schema))
+	{
+		if (view.IsIgnored || view.SqlEntityType != EntityType.View) { continue; }
+#>
+		#region <#= TemplateSvc.InsertSpaceOnCapitalization(view.Name).ToLower() #>
+		public partial class <#= view.Name #>Entity : DBExpressionEntity
+		{
+			#region internals
+<#+ foreach(SqlField field in view.Fields)
+	{
+		if (field.IsIgnored) { continue; }
+#>
+			private DBExpressionField<<#= field.AssemblyTypeShorthandText #>> _<#= TemplateSvc.ToCamelCase(field.Name) #>;
+<#+
+	}
+#>
+			#endregion
+
+			#region interface properties
+<#+ foreach(SqlField field in view.Fields)
+	{
+		if (field.IsIgnored) { continue; }
+#>
+			public DBExpressionField<<#= field.AssemblyTypeShorthandText #>> <#= field.Name #> { get { return _<#= TemplateSvc.ToCamelCase(field.Name) #>; } }
+<#+
+	}
+#>
+			#endregion
+
+			#region constructors
+			public <#= view.Name #>Entity(string schema, string entityName) : base(schema, entityName)
+			{
+<#+ foreach(SqlField field in view.Fields)
+{
+	if (field.IsIgnored) { continue; }
+#>
+				_<#= TemplateSvc.ToCamelCase(field.Name) #> = new DBExpressionField<<#= field.AssemblyTypeShorthandText #>>(this, "<#= field.Name #>", <#= field.MaxLength #>);
+<#+
+}
+#>
+			}
+			#endregion
+
+			#region methods
+			public new <#= view.Name #>Entity Correlate(string alias)
+            {
+                return new <#= view.Name #>Entity(base.Schema, base.Name) { IsCorrelated = true, AliasName = alias };
+            }
+
+			public new <#= view.Name #>Entity As(string alias)
+            {
+                return new <#= view.Name #>Entity(base.Schema, base.Name) { IsAliased = true, AliasName = alias };
+            }
+
+			public <#= view.Name #> Clone(<#= view.Name #> <#= TemplateSvc.ToCamelCase(view.Name) #>)
+			{
+				return CloneUtility.DeepCopy<<#= view.Name #>>(<#= TemplateSvc.ToCamelCase(view.Name) #>);
+			}
+
+			public SqlExpressionBuilder<<#= view.Name #>> Query()
+			{
+				return <#= view.Schema #>.GetExpressionBuilder<<#= view.Name #>>(this)
+					.WithSelectExpressionProvider(this.GetInclusiveSelectExpression)
+					.WithFillCallback(this.FillObject);
+			}
+
+			public DBSelectExpressionSet GetInclusiveSelectExpression()
+			{
+				DBSelectExpressionSet select = null;
+<#+ foreach(SqlField column in view.Fields)
+	{
+		if (column.IsIgnored) { continue; }
+#>
+           		select &= _<#= TemplateSvc.ToCamelCase(column.Name) #>;
+<#+
+	}
+#>
+				return select;
+			}
+
+			public void FillObject(<#= view.Name #> <#= TemplateSvc.ToCamelCase(view.Name) #>, object[] values)
+			{
+				//if the column allows null, do the dbnull check, else just cast in..???
+<#+ for (int i = 0; i < view.Fields.Count; i++)
+	{
+		if (view.Fields[i].IsIgnored) { continue; }
+#>
+<#+ if (!view.Fields[i].IsRequired)
+	{
+			if (!view.Fields[i].AssemblyTypeShorthandText.StartsWith("DateTime"))
+			{
+#>
+				<#= TemplateSvc.ToCamelCase(view.Name) #>.<#= view.Fields[i].Name #> = (values[<#= i.ToString() #>] != DBNull.Value) ? (<#= view.Fields[i].AssemblyTypeShorthandText.TrimEnd(new char[] { '?' }) #>)values[<#= i.ToString() #>] : default(<#= view.Fields[i].AssemblyTypeShorthandText #>);
+<#+
+			}
+			else
+			{
+#>
+				<#= TemplateSvc.ToCamelCase(view.Name) #>.<#= view.Fields[i].Name #> = (values[<#= i.ToString() #>] != DBNull.Value) ? DateTime.SpecifyKind((<#= view.Fields[i].AssemblyTypeShorthandText.TrimEnd(new char[] { '?' }) #>)values[<#= i.ToString() #>], DateTimeKind.Utc) : default(<#= view.Fields[i].AssemblyTypeShorthandText #>);
+<#+
+			}
+	} 
+	else
+	{
+			if (!view.Fields[i].AssemblyTypeShorthandText.StartsWith("DateTime"))
+			{
+#>
+				<#= TemplateSvc.ToCamelCase(view.Name) #>.<#= view.Fields[i].Name #> = (<#= view.Fields[i].AssemblyTypeShorthandText #>)values[<#= i.ToString() #>];
+<#+
+			}
+			else
+			{
+#>
+				<#= TemplateSvc.ToCamelCase(view.Name) #>.<#= view.Fields[i].Name #> = DateTime.SpecifyKind((<#= view.Fields[i].AssemblyTypeShorthandText #>)values[<#= i.ToString() #>], DateTimeKind.Utc);
+<#+
+			}
+	}
+#>
+<#+
+	}
+#>
+			}
+			#endregion
+		}
+		#endregion
+<#+
+	}
+#>
+	}
+}
+<#+
+	}
+#>
+<#+
+}
+#>

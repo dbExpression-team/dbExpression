@@ -1,0 +1,79 @@
+﻿<#+
+	public static class TemplateSvc
+    {
+		#region internals
+		#endregion
+
+		#region interface
+		public static string GenerationConnectionString { get; set; }
+		public static string GeneratedCodeNamespaceRoot { get; set; }
+		public static string DBProviderConnectionStringName { get; set; }
+		public static string TargetDb { get; set; }
+		#endregion
+
+        #region methods
+		public static string GetTableDataImplementationSignature(SqlEntity e)
+		{
+			SqlField field = e.Fields.FirstOrDefault(f => f.IsPrimaryKey);
+			if (field != null && field.IsIdentity && field.Name == "Id")
+			{
+				if (field.AssemblyType == typeof(long))
+				{
+					return " : I64BitIdentityDBEntity";
+				}
+				else if (field.AssemblyType == typeof(ulong))
+				{
+					return " : IU64BitIdentityDBEntity";
+				}
+				else if (field.AssemblyType == typeof(int) )
+				{
+					return " : I32BitIdentityDBEntity";
+				}
+				else if (field.AssemblyType == typeof(uint))
+				{
+					return " : IU32BitIdentityDBEntity";
+				}
+			}
+			return string.Empty;
+		}
+
+        public static string ToCamelCase(string val)
+        {
+            return (val.Trim().Substring(0, 1).ToLower() + val.Substring(1));
+        }
+
+        public static string InsertSpaceOnCapitalization(string value)
+        {
+            value = value.Trim();
+            MatchCollection matches = Regex.Matches(value, "[A-Z]");
+            int adj = 0;
+            foreach (Match m in matches)
+            {
+                if (!(m.Index == 0))
+                {
+                    value = value.Insert((m.Index + adj), " ");
+                    adj++;
+                }
+            }
+            return value;
+        }
+
+		public static List<string> GetDistinctSchemas(List<HTL.DbEx.Sql.ObjectMap.SqlEntity> entities)
+		{
+			List<string> schemas = new List<string>();
+			foreach(HTL.DbEx.ObjectMap.Entity e in entities)
+			{
+				if (!schemas.Contains(e.Schema))
+				{
+					schemas.Add(e.Schema);
+				}	
+			}
+			return schemas;
+		}
+
+		public static string CreatedSeeder(SqlEntity e) { return (e.Fields.Find(f => f.Name == "CreatedAt") != null) ? "this.CreatedAt = " : string.Empty; }
+		public static string UpdatedSeeder(SqlEntity e) { return (e.Fields.Find(f => f.Name == "ModifiedAt") != null) ? "this.ModifiedAt = " : string.Empty; }
+		public static string DateSeeder(SqlEntity e) { return (e.Fields.Find(f => f.Name == "CreatedAt") != null || e.Fields.Find(f => f.Name == "ModifiedAt") != null) ? "DateTime.Now;" : string.Empty; }
+        #endregion
+    }
+#>

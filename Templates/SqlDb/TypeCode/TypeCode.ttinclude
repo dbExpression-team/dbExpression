@@ -1,0 +1,38 @@
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+public void WriteTypeCodes(SqlModel model, string namespaceRoot)
+{
+#>
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace <#= namespaceRoot #>.<#= model.Name #>
+{
+<#+
+	foreach (SqlEnumeration e in model.Enums)
+	{
+#>
+	#region <#= e.Name #>
+	public enum <#= e.Name #> : int
+	{
+<#+
+	foreach (SqlEnumerationItem itm in e.Items)
+	{
+#>
+		[Display(Name = "<#= itm.FriendlyName #>", Description = "<#= itm.Description #>")]
+		<#= itm.Key #> = <#= itm.Value #>,
+<#+
+	}
+#>
+	}
+	#endregion
+<#+
+	}
+#>
+}
+<#+
+}
+#>
