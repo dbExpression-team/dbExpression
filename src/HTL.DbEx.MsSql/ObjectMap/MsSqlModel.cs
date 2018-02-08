@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data;
 using System.Configuration;
 using System.Data.Common;
 using HTL.DbEx.Sql;
-using HTL.DbEx.ObjectMap;
 using HTL.DbEx.Sql.ObjectMap;
 
 namespace HTL.DbEx.MsSql.ObjectMap
@@ -145,13 +143,6 @@ namespace HTL.DbEx.MsSql.ObjectMap
             {
                 base.Enums.Add(new SqlEnumeration(ti));
             }
-        }
-
-        private bool IsModelExtendedProp(string key)
-        {
-            return ((from s in 
-                         new string[] { "modelName", "modelIgnore", "modelAssemblyType", "modelMinLength" }
-                         where s == key select s) != null);
         }
 
         private void ParseModelName()

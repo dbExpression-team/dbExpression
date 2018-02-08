@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace HTL.DbEx.ObjectMap
+﻿namespace HTL.DbEx.ObjectMap
 {
     public abstract class IndexedField
     {
@@ -15,10 +10,7 @@ namespace HTL.DbEx.ObjectMap
         #endregion
 
         #region methods
-        public override string ToString()
-        {
-            return this.FieldName;
-        }
+        public override string ToString() => FieldName;
         #endregion
     }
 }

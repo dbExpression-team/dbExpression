@@ -32,9 +32,9 @@ namespace HTL.DbEx.MySql
         #region concrete connection provider
         protected override void EnsureConnection()
         {
-            if (base._dbConnection == null)
+            if (DbConnection == null)
             {
-                base._dbConnection = new my.MySqlConnection(_connectionSettings.ConnectionString);
+                DbConnection = new my.MySqlConnection(ConnectionSettings.ConnectionString);
             }
         }
         #endregion
@@ -98,7 +98,7 @@ namespace HTL.DbEx.MySql
         #region get expression builder
         public SqlExpressionBuilder<T> GetExpressionBuilder<T>(DBExpressionEntity entity) where T : new()
         {
-            return new MySqlExpressionBuilder<T>(_connectionSettings.Name, entity).Enlist(this);
+            return new MySqlExpressionBuilder<T>(ConnectionSettings.Name, entity).Enlist(this);
         }
         #endregion
     }

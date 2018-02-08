@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace HTL.DbEx.Utility
@@ -9,9 +8,9 @@ namespace HTL.DbEx.Utility
         public static T DeepCopy<T>(T target) where T : class
         {
             T obj = null;
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
-                BinaryFormatter bf = new BinaryFormatter();
+                var bf = new BinaryFormatter();
                 bf.Serialize(ms, target);
                 ms.Position = 0;
                 obj = (T)bf.Deserialize(ms);

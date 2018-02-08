@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
 
@@ -8,30 +6,22 @@ namespace HTL.DbEx.Sql.Expression
 {
     public class DBExpressionTableFunction : DBExpressionEntity
     {
-        #region internals
-        private string _function = string.Empty;
-        private object[] _arguments = { };
-        #endregion
-
         #region interface
-        public string Function
-        { get { return _function; }
-        }
+        public string Function { get; } = string.Empty;
 
-        public object[] Arguments
-        { get { return _arguments; } }
+        public object[] Arguments { get; } = { };
         #endregion
 
         #region methods
         public DBExpressionTableFunction(string schema, string tableName, string function, params object[] arguments) : base(schema, tableName)
         {
-            _function = function;
-            _arguments = arguments ?? new object[0];
+            Function = function;
+            Arguments = arguments ?? new object[0];
         }
 
         public string ToParameterizedString(List<DbParameter> parameterList, SqlConnection dbService)
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.Append(Function + "(");
 
             for (int i = 0; i < Arguments.Length; i++)

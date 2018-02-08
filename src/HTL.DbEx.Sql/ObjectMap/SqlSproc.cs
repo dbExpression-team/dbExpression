@@ -10,7 +10,7 @@ namespace HTL.DbEx.Sql.ObjectMap
     public class SqlSproc
     {
         #region internals
-        protected SprocInfo _sprocInfo;
+        protected readonly SprocInfo _sprocInfo;
         #endregion
 
         #region interface

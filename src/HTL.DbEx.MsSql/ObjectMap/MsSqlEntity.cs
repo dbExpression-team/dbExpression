@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HTL.DbEx.Sql.ObjectMap;
 
 namespace HTL.DbEx.MsSql.ObjectMap
@@ -41,7 +38,7 @@ namespace HTL.DbEx.MsSql.ObjectMap
                 if (pk != null)
                 {
                     ColumnInfo column = _columns.FirstOrDefault(c => c.ColumnName == pk.ColumnName);
-                    MsSqlField pkField = base.Fields.ConvertAll<MsSqlField>(f => f as MsSqlField).FirstOrDefault(f => f.ColumnId == pk.ColumnId);
+                    MsSqlField pkField = base.Fields.ToList().ConvertAll(f => f as MsSqlField).FirstOrDefault(f => f.ColumnId == pk.ColumnId);
                     if (pkField != null)
                     {
                         pkField.IsPrimaryKey = true;

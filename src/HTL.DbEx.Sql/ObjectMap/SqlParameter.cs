@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HTL.DbEx.Utility;
 
 namespace HTL.DbEx.Sql.ObjectMap
@@ -9,21 +8,17 @@ namespace HTL.DbEx.Sql.ObjectMap
     public class SqlParameter
     {
         #region internals
-        protected ParameterInfo _parameterInfo;
+        protected readonly ParameterInfo _parameterInfo;
         #endregion
 
         #region interface
-        public string Name
-        { get; private set; }
+        public string Name { get; private set; }
 
-        public Type AssemblyType
-        { get; protected set; }
+        public Type AssemblyType { get; protected set; }
 
-        public Type AssemblyTypeOverride
-        { get; protected set; }
+        public Type AssemblyTypeOverride { get; protected set; }
 
-        public string UnknownAssemblyTypeOverride
-        { get; protected set; }
+        public string UnknownAssemblyTypeOverride { get; protected set; }
 
         public string AssemblyTypeShorthandText
         {
@@ -37,23 +32,17 @@ namespace HTL.DbEx.Sql.ObjectMap
             }
         }
 
-        public byte Precision
-        { get; protected set; }
+        public byte Precision { get; protected set; }
 
-        public byte Scale
-        { get; protected set; }
+        public byte Scale { get; protected set; }
 
-        public int MaxLength
-        { get; protected set; }
+        public int MaxLength { get; protected set; }
 
-        public string SqlTypeDefinition
-        { get; protected set; }
+        public string SqlTypeDefinition { get; protected set; }
 
-        public bool IsOutputParameter
-        { get; protected set; }
+        public bool IsOutputParameter { get; protected set; }
 
-        public bool IsIgnored
-        { get; protected set; }
+        public bool IsIgnored { get; protected set; }
         #endregion
 
         #region constructors

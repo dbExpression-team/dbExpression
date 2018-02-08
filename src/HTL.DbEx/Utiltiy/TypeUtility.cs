@@ -1,31 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HTL.DbEx.Utility
 {
     public static class TypeUtility
     {
         #region get assembly type text
-        public static string GetAssemblyTypeText(Type t)
-        {
-            if (TypeUtility.IsNullableType(t))
-            {
-                return TypeUtility.EnsureUnderlyingType(t).FullName + "?";
-            }
-            else
-            {
-                return t.FullName;
-            }
-        }
+        public static string GetAssemblyTypeText(Type t) => TypeUtility.IsNullableType(t) ? $"{TypeUtility.EnsureUnderlyingType(t).FullName}?" : t.FullName;
         #endregion
 
         #region get assembly type shorthand text
-        public static string GetAssemblyTypeShorthandText(Type t)
-        {
-            return ResolveAssemblyTypeShorthand(GetAssemblyTypeText(t));
-        }
+        public static string GetAssemblyTypeShorthandText(Type t) => ResolveAssemblyTypeShorthand(GetAssemblyTypeText(t));
         #endregion
 
         #region get assembly type from type text
@@ -131,24 +115,11 @@ namespace HTL.DbEx.Utility
         #endregion
 
         #region is nullable type
-        public static bool IsNullableType(Type t)
-        {
-            return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
-        }
+        public static bool IsNullableType(Type t) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
         #endregion
 
         #region ensure underlying type
-        public static Type EnsureUnderlyingType(Type t)
-        {
-            if (TypeUtility.IsNullableType(t))
-            {
-                return Nullable.GetUnderlyingType(t);
-            }
-            else
-            {
-                return t;
-            }
-        }
+        public static Type EnsureUnderlyingType(Type t) => TypeUtility.IsNullableType(t) ? Nullable.GetUnderlyingType(t) : t;
         #endregion
 
         #region get underlying enum type
@@ -157,15 +128,10 @@ namespace HTL.DbEx.Utility
             //ensure underlying to ensure we dont have a nullable..
             Type underlying = TypeUtility.EnsureUnderlyingType(t);
 
-            if (!underlying.IsEnum)
-            {
-                return null;
-            }
-            else
-            {
-                //return the integral base of this enum...
-                return Enum.GetUnderlyingType(underlying);
-            }
+            if (!underlying.IsEnum) { return null; }
+
+            //return the integral base of this enum...
+            return Enum.GetUnderlyingType(underlying);
         }
         #endregion
 
@@ -213,7 +179,7 @@ namespace HTL.DbEx.Utility
         public static bool IsDecimalType(Type t)
         {
             Type underlying = TypeUtility.EnsureUnderlyingType(t);
-            return (t == typeof(decimal));
+            return (underlying == typeof(decimal));
         }
         #endregion
 

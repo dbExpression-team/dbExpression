@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
-using System.Data;
 using HTL.DbEx.ObjectMap;
 
 namespace HTL.DbEx.Sql.ObjectMap
@@ -11,19 +8,18 @@ namespace HTL.DbEx.Sql.ObjectMap
     public class SqlEntity : Entity
     {
         #region internals
-        protected EntityInfo _tableInfo;
-        protected List<ColumnInfo> _columns;
-        protected List<IndexInfo> _indexes;
-        protected List<SqlRelationship> _relationships;
+        protected readonly EntityInfo _tableInfo;
+        protected readonly List<ColumnInfo> _columns;
+        protected readonly List<IndexInfo> _indexes;
+        protected readonly List<SqlRelationship> _relationships;
         #endregion
 
         #region interface
-        public EntityType SqlEntityType
-        { get; private set; }
+        public EntityType SqlEntityType { get; private set; }
 
-        public new List<SqlField> Fields
+        public new IList<SqlField> Fields
         {
-            get { return base.Fields.ConvertAll<SqlField>(f => f as SqlField); }
+            get { return base.Fields.ToList().ConvertAll(f => f as SqlField); }
         }
         #endregion
 

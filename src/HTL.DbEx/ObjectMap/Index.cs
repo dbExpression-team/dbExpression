@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace HTL.DbEx.ObjectMap
 {
@@ -19,7 +16,7 @@ namespace HTL.DbEx.ObjectMap
                 return this.AffectedFields.Count > 1;
             }
         }
-        public virtual List<IndexedField> AffectedFields { get; private set; }
+        public virtual IList<IndexedField> AffectedFields { get; private set; } = new List<IndexedField>();
         public virtual bool IsClustered { get; protected set; }
         public virtual bool IsUnique { get; protected set; }
         public virtual bool IsPrimaryKey { get; protected set; }
@@ -27,10 +24,6 @@ namespace HTL.DbEx.ObjectMap
         #endregion
 
         #region constructors
-        public Index()
-        {
-            this.AffectedFields = new List<IndexedField>();
-        }
         #endregion
 
         #region methods

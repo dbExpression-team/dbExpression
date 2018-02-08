@@ -41,17 +41,52 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\I32BitIdentityDBEntity.cs" />
+    <Compile Include="Common\I64BitIdentityDBEntity.cs" />
+    <Compile Include="Common\IU32BitIdentityDBEntity.cs" />
+    <Compile Include="Common\IU64BitIdentityDBEntity.cs" />
     <Compile Include="Connection\SqlConnection.cs" />
     <Compile Include="Common\Delegates.cs" />
-    <Compile Include="Common\Enums.cs" />
-    <Compile Include="Common\IDBEntity.cs" />
+    <Compile Include="Common\IIdentityDBEntity.cs" />
+    <Compile Include="DbCommandType.cs" />
     <Compile Include="Expression\Builder\ExpressionBuilder.cs" />
+    <Compile Include="Expression\DBAggregateFunctionExpression.cs" />
+    <Compile Include="Expression\DBArithmeticExpression.cs" />
+    <Compile Include="Expression\DBArithmeticExpressionOperator.cs" />
+    <Compile Include="Expression\DBAssignmentExpression.cs" />
+    <Compile Include="Expression\DBAssignmentExpressionSet.cs" />
+    <Compile Include="Expression\DBConditionalExpressionOperator.cs" />
     <Compile Include="Expression\DBExpression.cs" />
-    <Compile Include="Expression\DBExpressionEnums.cs" />
+    <Compile Include="Expression\DBExpressionEntity.cs" />
+    <Compile Include="Expression\DBExpressionField.cs" />
+    <Compile Include="Expression\DBExpressionField{T}.cs" />
+    <Compile Include="Expression\DBExpressionJoinType.cs" />
+    <Compile Include="Expression\DBExpressionSet.cs" />
     <Compile Include="Expression\DBExpressionTable.cs" />
     <Compile Include="Expression\DBExpressionTableFunction.cs" />
+    <Compile Include="Expression\DBFilterExpression.cs" />
+    <Compile Include="Expression\DBFilterExpressionOperator.cs" />
+    <Compile Include="Expression\DBFilterExpressionSet.cs" />
+    <Compile Include="Expression\DBGroupByExpression.cs" />
+    <Compile Include="Expression\DBGroupByExpressionSet.cs" />
+    <Compile Include="Expression\DBHavingExpression.cs" />
+    <Compile Include="Expression\DBInsertExpression.cs" />
+    <Compile Include="Expression\DBInsertExpressionSet.cs" />
     <Compile Include="Expression\DBJoinDirective.cs" />
+    <Compile Include="Expression\DBJoinExpression.cs" />
+    <Compile Include="Expression\DBJoinExpressionSet.cs" />
+    <Compile Include="Expression\DBOrderByExpression.cs" />
+    <Compile Include="Expression\DBOrderByExpressionSet.cs" />
+    <Compile Include="Expression\DBOrderExpressionDirection.cs" />
+    <Compile Include="Expression\DBSelectExpression.cs" />
+    <Compile Include="Expression\DBSelectExpressionAggregateFunction.cs" />
+    <Compile Include="Expression\DBSelectExpressionSet.cs" />
     <Compile Include="Expression\DBSkipDirective.cs" />
+    <Compile Include="Expression\IDBExpression.cs" />
+    <Compile Include="IU64BitIdentityDBEntity.cs" />
+    <Compile Include="IU32BitIdentityDBEntity.cs" />
+    <Compile Include="I64BitIdentityDBEntity.cs" />
+    <Compile Include="I32BitIdentityDBEntity.cs" />
     <Compile Include="ObjectMap\SqlModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectMap\SchemaInfo\ColumnInfo.cs" />
@@ -71,6 +106,7 @@
     <Compile Include="ObjectMap\SqlParameter.cs" />
     <Compile Include="ObjectMap\SqlRelationship.cs" />
     <Compile Include="ObjectMap\SqlSproc.cs" />
+    <Compile Include="SqlDbClientType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HTL.DbEx\HTL.DbEx.csproj">

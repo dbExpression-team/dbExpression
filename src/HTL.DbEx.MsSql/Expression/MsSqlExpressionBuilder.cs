@@ -30,7 +30,7 @@ namespace HTL.DbEx.MsSql.Expression
         #region get sql connection
         protected override SqlConnection GetSqlConnection()
         {
-            return new MsSqlConnection(base._connectionStringSettings);
+            return new MsSqlConnection(base.ConnectionStringSettings);
         }
         #endregion
 
@@ -38,7 +38,7 @@ namespace HTL.DbEx.MsSql.Expression
         protected override string AssembleSql()
         {
             string sql;
-            switch (base._execContext.Value)
+            switch (base.CommandExecutionContext.Value)
             {
                 case ExecutionContext.Get:
                 case ExecutionContext.GetDynamic:
@@ -47,11 +47,11 @@ namespace HTL.DbEx.MsSql.Expression
                 case ExecutionContext.GetValueList:
                 case ExecutionContext.GetValue:
                 case ExecutionContext.GetValueTable:
-                    if (base._bottom.HasValue)
+                    if (base.BottomValue.HasValue)
                     {
                         sql = this.AssembleBottomRestrictedQuery();
                     }
-                    else if (base._skip.HasValue)
+                    else if (base.SkipValue.HasValue)
                     {
                         sql = this.AssembleSkipTakeRestrictedQuery();
                     }
@@ -61,7 +61,7 @@ namespace HTL.DbEx.MsSql.Expression
                     }
                     break;
                 case ExecutionContext.Insert:
-                    if (base._isIdentityEntity)
+                    if (base.IsIdentityEntity)
                     {
                         sql = this.AssembleIdentityDBEntityInsertSql();
                     }
@@ -77,7 +77,7 @@ namespace HTL.DbEx.MsSql.Expression
                     sql = this.AssembleDeleteSql();
                     break;
                 default:
-                    throw new InvalidOperationException("encountered unknown execution context: " + base._execContext);
+                    throw new InvalidOperationException("encountered unknown execution context: " + base.CommandExecutionContext);
             }
 
             return sql;
@@ -87,29 +87,19 @@ namespace HTL.DbEx.MsSql.Expression
         {
             DbParameter p = this.SqlClient.GetDbParameter(TotalRecordCountParamName, DBNull.Value, typeof(int), null);
             p.Direction = ParameterDirection.Output;
-            base._dbParams.Add(p);
+            base.DbParams.Add(p);
 
             string sql;
 
-            if (_isDistinct || base._set.GroupBy != null || base._set.Having != null)
+            if (IsDistinct || base.Expression.GroupBy != null || base.Expression.Having != null)
             {
-                sql = string.Format(@"SET {0} = (SELECT COUNT(*) FROM (SELECT {1}{2} FROM {3} {4} {5} {6} {7}) AS T);",
-                TotalRecordCountParamName,
-                (_isDistinct) ? "DISTINCT " : string.Empty,
-                base._set.Select,
-                base._baseEntity.ToString(),
-                join,
-                where,
-                groupBy,
-                having);
+                sql = $"SET {TotalRecordCountParamName} = (SELECT COUNT(*) " +
+                    $"FROM (SELECT {(IsDistinct ? "DISTINCT " : string.Empty)}{base.Expression.Select} " +
+                    $"FROM {base.BaseEntity} {join} {where} {groupBy} {having}) AS T);";
             }
             else
             {
-                sql = string.Format(@"SET {0} = (SELECT COUNT(*) FROM {1} {2} {3});",
-                TotalRecordCountParamName,
-                base._baseEntity.ToString(),
-                join,
-                where);
+                sql = $"SET {TotalRecordCountParamName} = (SELECT COUNT(*) FROM {base.BaseEntity} {join} {where});";
             }
 
             return sql;
@@ -119,9 +109,9 @@ namespace HTL.DbEx.MsSql.Expression
         {
             DbParameter p = this.SqlClient.GetDbParameter(TotalRecordCountParamName, DBNull.Value, typeof(int), null);
             p.Direction = ParameterDirection.Output;
-            base._dbParams.Add(p);
+            base.DbParams.Add(p);
 
-            string sql = string.Format("SET {0} = (SELECT @@ROWCOUNT);", TotalRecordCountParamName);
+            string sql = $"SET {TotalRecordCountParamName} = (SELECT @@ROWCOUNT);";
             return sql;
         }
 
@@ -136,60 +126,50 @@ namespace HTL.DbEx.MsSql.Expression
             string top = string.Empty;
             string totalCountQuery = string.Empty;
 
-            if (_set.Select != null)
+            if (Expression.Select != null)
             {
-                select = _set.Select.ToParameterizedString(base._dbParams, this.SqlClient);
+                select = Expression.Select.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.GroupBy != null)
+            if (Expression.GroupBy != null)
             {
-                groupBy = " GROUP BY " + _set.GroupBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                groupBy = " GROUP BY " + Expression.GroupBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Having != null)
+            if (Expression.Having != null)
             {
-                having = " HAVING " + _set.Having.ToParameterizedString(base._dbParams, this.SqlClient);
+                having = " HAVING " + Expression.Having.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.OrderBy != null)
+            if (Expression.OrderBy != null)
             {
-                orderBy = " ORDER BY " + _set.OrderBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                orderBy = " ORDER BY " + Expression.OrderBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_top.HasValue)
+            if (TopValue.HasValue)
             {
-                top = string.Concat("TOP (", base._top.Value.ToString(), ")", Environment.NewLine);
+                top = string.Concat("TOP (", base.TopValue.Value.ToString(), ")", Environment.NewLine);
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 totalCountQuery = this.AssembleTotalCountQuery(join, where, groupBy, having);
             }
 
-            string sql;
-            sql = string.Format(@"
-            {0}
-            SELECT
-            {1}{2}{3}
-            FROM {4}
-                {5}
-                {6}
-                {7}
-                {8}
-                {9}",
-            totalCountQuery,
-            (_isDistinct) ? "DISTINCT " : string.Empty,
-            top,
-            select,
-            base._baseEntity.ToString(),
-            join,
-            where,
-            groupBy,
-            having,
-            orderBy);
+            var nl = Environment.NewLine;
+            string sql = $"{totalCountQuery}{nl}" +
+                $"SELECT{nl}" +
+                $"{(IsDistinct ? "DISTINCT " : string.Empty)}{top}{nl}" +
+                $"{select}{nl}" +
+                $"FROM {base.BaseEntity}{nl}" +
+                $"{join}{nl}" +
+                $"{where}{nl}" +
+                $"{groupBy}{nl}" +
+                $"{having}{nl}" +
+                $"{orderBy}";
 
             return sql;
         }
@@ -204,31 +184,31 @@ namespace HTL.DbEx.MsSql.Expression
             string orderBy = string.Empty;
             string totalCountQuery = string.Empty;
 
-            if (_set.Select != null)
+            if (Expression.Select != null)
             {
-                select = _set.Select.ToParameterizedString(base._dbParams, this.SqlClient);
+                select = Expression.Select.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.GroupBy != null)
+            if (Expression.GroupBy != null)
             {
-                groupBy = " GROUP BY " + _set.GroupBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                groupBy = " GROUP BY " + Expression.GroupBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Having != null)
+            if (Expression.Having != null)
             {
-                having = " HAVING " + _set.Having.ToParameterizedString(base._dbParams, this.SqlClient);
+                having = " HAVING " + Expression.Having.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.OrderBy != null)
+            if (Expression.OrderBy != null)
             {
-                orderBy = " ORDER BY " + _set.OrderBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                orderBy = " ORDER BY " + Expression.OrderBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 totalCountQuery = this.AssembleTotalCountQuery(join, where, groupBy, having);
             }
@@ -247,7 +227,7 @@ namespace HTL.DbEx.MsSql.Expression
                     {7}
             ) AS {9} WHERE [RowIndex] BETWEEN {10} AND {11} ORDER BY [RowIndex];",
             totalCountQuery,
-            (_isDistinct) ? "DISTINCT " : string.Empty,
+            (IsDistinct) ? "DISTINCT " : string.Empty,
             select,
             orderBy,
             join,
@@ -256,8 +236,8 @@ namespace HTL.DbEx.MsSql.Expression
             having,
             this.BaseEntity,
             this.BaseEntity.ToString("[s.e]"),
-            (_skip.Value + 1),
-            (_skip.Value + base._limit.Value));
+            (SkipValue.Value + 1),
+            (SkipValue.Value + base.LimitValue.Value));
 
             return sql;
         }
@@ -272,29 +252,29 @@ namespace HTL.DbEx.MsSql.Expression
             string order = string.Empty;
             string totalCountQuery = string.Empty;
 
-            if (_set.Select != null)
+            if (Expression.Select != null)
             {
-                select = _set.Select.ToParameterizedString(base._dbParams, this.SqlClient);
+                select = Expression.Select.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.GroupBy != null)
+            if (Expression.GroupBy != null)
             {
-                groupBy = " GROUP BY " + _set.GroupBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                groupBy = " GROUP BY " + Expression.GroupBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Having != null)
+            if (Expression.Having != null)
             {
-                having = " HAVING " + _set.Having.ToParameterizedString(base._dbParams, this.SqlClient);
+                having = " HAVING " + Expression.Having.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.OrderBy != null)
+            if (Expression.OrderBy != null)
             {
-                order = " ORDER BY " + _set.OrderBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                order = " ORDER BY " + Expression.OrderBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
             //this function always requires the totalCount be queried...
             totalCountQuery = this.AssembleTotalCountQuery(join, where, groupBy, having);
@@ -313,7 +293,7 @@ namespace HTL.DbEx.MsSql.Expression
                     {7}
             ) AS {9} WHERE [RowIndex] BETWEEN ({11} - {10}) AND {11} ORDER BY [RowIndex];",
             totalCountQuery,
-            (_isDistinct) ? "DISTINCT " : string.Empty,
+            (IsDistinct) ? "DISTINCT " : string.Empty,
             select,
             order,
             join,
@@ -322,7 +302,7 @@ namespace HTL.DbEx.MsSql.Expression
             having,
             this.BaseEntity,
             this.BaseEntity.ToString("[s.e]"),
-            (_bottom.Value - 1),
+            (BottomValue.Value - 1),
             TotalRecordCountParamName);
 
             return sql;
@@ -330,17 +310,17 @@ namespace HTL.DbEx.MsSql.Expression
 
         private string AssembleInsertSql()
         {
-            string insertClause = base._set.Insert.ToParameterizedString(base._dbParams, this.SqlClient);
+            string insertClause = base.Expression.Insert.ToParameterizedString(base.DbParams, this.SqlClient);
 
-            string sql = string.Format("INSERT INTO {0} {1};", base._baseEntity.ToString(), insertClause);
+            string sql = string.Format("INSERT INTO {0} {1};", base.BaseEntity.ToString(), insertClause);
             return sql;
         }
 
         private string AssembleIdentityDBEntityInsertSql()
         {
-            string insertClause = base._set.Insert.ToParameterizedString(base._dbParams, this.SqlClient);
+            string insertClause = base.Expression.Insert.ToParameterizedString(base.DbParams, this.SqlClient);
 
-            string sql = string.Format("INSERT INTO {0} {1}; SELECT SCOPE_IDENTITY();", base._baseEntity.ToString(), insertClause);
+            string sql = string.Format("INSERT INTO {0} {1}; SELECT SCOPE_IDENTITY();", base.BaseEntity.ToString(), insertClause);
             return sql;
         }
 
@@ -351,27 +331,27 @@ namespace HTL.DbEx.MsSql.Expression
             string affectedRecordQuery = string.Empty;
             string topExpression = string.Empty;
             
-            string assignmentClause = base._set.Assign.ToParameterizedString(base._dbParams, this.SqlClient);
+            string assignmentClause = base.Expression.Assign.ToParameterizedString(base.DbParams, this.SqlClient);
 
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_top.HasValue)
+            if (TopValue.HasValue)
             {
-                topExpression = string.Concat("TOP (", base._top.Value.ToString(), ")", Environment.NewLine);
+                topExpression = string.Concat("TOP (", base.TopValue.Value.ToString(), ")", Environment.NewLine);
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 affectedRecordQuery = this.AssembleAffectedRecordCountQuery();
             }
 
             string sql;
-            sql = string.Format("UPDATE {0} {1} SET {2} FROM {1}{3}{4};{5}", topExpression, base._baseEntity.ToString(), assignmentClause, join, where, affectedRecordQuery);
+            sql = string.Format("UPDATE {0} {1} SET {2} FROM {1}{3}{4};{5}", topExpression, base.BaseEntity.ToString(), assignmentClause, join, where, affectedRecordQuery);
             return sql;
         }
 
@@ -382,25 +362,25 @@ namespace HTL.DbEx.MsSql.Expression
             string affectedRecordQuery = string.Empty;
             string topExpression = string.Empty;
 
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_top.HasValue)
+            if (TopValue.HasValue)
             {
-                topExpression = string.Concat("TOP (", base._top.Value.ToString(), ")", Environment.NewLine);
+                topExpression = string.Concat("TOP (", base.TopValue.Value.ToString(), ")", Environment.NewLine);
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 affectedRecordQuery = this.AssembleAffectedRecordCountQuery();
             }
 
             string sql;
-            sql = string.Format("DELETE {0} {1} FROM {1}{2}{3};{4}", topExpression, base._baseEntity.ToString(), join, where, affectedRecordQuery);
+            sql = string.Format("DELETE {0} {1} FROM {1}{2}{3};{4}", topExpression, base.BaseEntity.ToString(), join, where, affectedRecordQuery);
             return sql;
         }
         #endregion
@@ -409,7 +389,7 @@ namespace HTL.DbEx.MsSql.Expression
         protected override int ResolveResultSetCount()
         {
             int val = -1;
-            DbParameter parameter = _dbParams.Find(p => p.ParameterName == TotalRecordCountParamName);
+            DbParameter parameter = DbParams.Find(p => p.ParameterName == TotalRecordCountParamName);
             if (parameter != null && parameter.Value != DBNull.Value)
             {
                 val = (int)parameter.Value;
@@ -428,11 +408,11 @@ namespace HTL.DbEx.MsSql.Expression
         #region utility methods
         public override string ToGetSql()
         {
-            base._execContext = ExecutionContext.Get;
+            base.CommandExecutionContext = ExecutionContext.Get;
             base.ValidateExpression();
 
-            base._set.ClearSelect();
-            base._set &= base._selectExprProvider.Invoke();
+            base.Expression.ClearSelect();
+            base.Expression &= base.SelectExpressionProvider.Invoke();
 
             string sql = this.AssembleSql();
 
@@ -442,8 +422,8 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToGetListSql()
         {
-            base._set.ClearSelect();
-            base._set &= base._selectExprProvider.Invoke();
+            base.Expression.ClearSelect();
+            base.Expression &= base.SelectExpressionProvider.Invoke();
 
             string sql = this.AssembleSql();
 
@@ -454,11 +434,11 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToGetValueListSql<Y>(DBSelectExpression field)
         {
-            base._execContext = ExecutionContext.GetValueList;
+            base.CommandExecutionContext = ExecutionContext.GetValueList;
             base.ValidateExpression();
 
-            base._set.ClearSelect();
-            base._set &= field;
+            base.Expression.ClearSelect();
+            base.Expression &= field;
 
             string sql = this.AssembleSql();
 
@@ -469,11 +449,11 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToGetValueSql<Y>(DBSelectExpression field)
         {
-            base._execContext = ExecutionContext.GetValue;
+            base.CommandExecutionContext = ExecutionContext.GetValue;
             base.ValidateExpression();
 
-            base._set.ClearSelect();
-            base._set &= field;
+            base.Expression.ClearSelect();
+            base.Expression &= field;
 
             string sql = this.AssembleSql();
 
@@ -484,7 +464,7 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToGetValueTableSql()
         {
-            base._execContext = ExecutionContext.GetValueTable;
+            base.CommandExecutionContext = ExecutionContext.GetValueTable;
             base.ValidateExpression();
 
             string sql = this.AssembleSql();
@@ -496,12 +476,12 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToInsertSql(T obj)
         {
-            base._execContext = ExecutionContext.Insert;
+            base.CommandExecutionContext = ExecutionContext.Insert;
             base.ValidateExpression();
 
-            if (_insertExpressionProvider != null)
+            if (InsertExpressionProvider != null)
             {
-                base._set &= _insertExpressionProvider(obj);
+                base.Expression &= InsertExpressionProvider(obj);
             }
             string sql = this.AssembleSql();
 
@@ -511,7 +491,7 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToUpdateSql()
         {
-            base._execContext = ExecutionContext.Update;
+            base.CommandExecutionContext = ExecutionContext.Update;
             base.ValidateExpression();
 
             string sql = this.AssembleSql();
@@ -522,7 +502,7 @@ namespace HTL.DbEx.MsSql.Expression
 
         public override string ToDeleteSql()
         {
-            base._execContext = ExecutionContext.Delete;
+            base.CommandExecutionContext = ExecutionContext.Delete;
             base.ValidateExpression();
 
             string sql = this.AssembleSql();
@@ -534,24 +514,24 @@ namespace HTL.DbEx.MsSql.Expression
         private string InjectParameters(string sql)
         {
             Type t = null;
-            for (int i = 0; i < base._dbParams.Count; i++)
+            for (int i = 0; i < base.DbParams.Count; i++)
             {
-                t = base._dbParams[i].Value.GetType();
+                t = base.DbParams[i].Value.GetType();
                 if (t.IsEnum)
                 {
-                    sql = sql.Replace(base._dbParams[i].ParameterName, TypeUtility.GetUnderlyingEnumIntegral(t, base._dbParams[i].Value).ToString());
+                    sql = sql.Replace(base.DbParams[i].ParameterName, TypeUtility.GetUnderlyingEnumIntegral(t, base.DbParams[i].Value).ToString());
                 }
                 else if (TypeUtility.IsIntegralType(t) || TypeUtility.IsDecimalType(t) || TypeUtility.IsFloatingPointType(t))
                 {
-                    sql = sql.Replace(base._dbParams[i].ParameterName, base._dbParams[i].Value.ToString());
+                    sql = sql.Replace(base.DbParams[i].ParameterName, base.DbParams[i].Value.ToString());
                 }
                 else if (t == typeof(byte[]) || t == typeof(string) || t == typeof(DateTime) || t == typeof(Guid))
                 {
-                    sql = sql.Replace(base._dbParams[i].ParameterName, "'" + base._dbParams[i].Value.ToString() + "'");
+                    sql = sql.Replace(base.DbParams[i].ParameterName, "'" + base.DbParams[i].Value.ToString() + "'");
                 }
                 else if (t == typeof(DBSelectExpression))
                 {
-                    sql = sql.Replace(base._dbParams[i].ParameterName, base._dbParams[i].Value.ToString());
+                    sql = sql.Replace(base.DbParams[i].ParameterName, base.DbParams[i].Value.ToString());
                 }
             }
             return sql;

@@ -1,91 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
+﻿using System.Collections.Generic;
 
 namespace HTL.DbEx.ObjectMap
 {
     public abstract class Entity
     {
-        #region internals
-        private string _schema;
-        private string _name;
-        private bool _isIgnored;
-        private List<Field> _fields;
-        private List<Index> _indexes;
-        #endregion
-
         #region interface properties
-        public string Schema
-        {
-            get
-            {
-                return _schema;
-            }
-            protected set
-            {
-                _schema = value;
-            }
-        }
+        public string Schema { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            protected set
-            {
-                _name = value;
-            }
-        }
+        public string Name { get; set; }
 
-        public bool IsIgnored
-        {
-            get { return _isIgnored; }
-            protected set { _isIgnored = value; }
-        }
+        public bool IsIgnored { get; set; }
 
-        public List<Field> Fields
-        {
-            get
-            {
-                return _fields;
-            }
-        }
+        public IList<Field> Fields { get; set; } = new List<Field>();
 
-        public List<Index> Indexes
-        {
-            get
-            {
-                return _indexes;
-            }
-        }
-        #endregion
-
-        #region constructors
-        public Entity()
-        {
-            _fields = new List<Field>();
-            _indexes = new List<Index>();
-        }
+        public IList<Index> Indexes { get; set; } = new List<Index>();
         #endregion
 
         #region methods
-        public void AddField(Field f)
-        {
-            _fields.Add(f);
-        }
+        public void AddField(Field field) => Fields.Add(field);
 
-        public void AddIndex(Index idx)
-        {
-            _indexes.Add(idx);
-        }
+        public void AddIndex(Index idx) => Indexes.Add(idx);
 
-        public override string ToString()
-        {
-            return _name;
-        }
+        public override string ToString() => Name;
         #endregion
     }
 }
