@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace HTL.DbEx.Sql.Expression
+﻿namespace HTL.DbEx.Sql.Expression
 {
     public class DBSkipDirective<T> where T : new()
     {
@@ -21,7 +16,7 @@ namespace HTL.DbEx.Sql.Expression
         #region methods
         public SqlExpressionBuilder<T> Limit(int count)
         {
-            _dbQuery.Limit = count;
+            _dbQuery.LimitValue = count;
             return _dbQuery;
         }
         #endregion

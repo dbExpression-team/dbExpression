@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Reflection;
 
 namespace HTL.DbEx.Utility.Reflection
@@ -18,15 +18,15 @@ namespace HTL.DbEx.Utility.Reflection
                 //re-usable internal object o
                 object o = sourceObject;
 
-                bool itemExists = false;
-                System.Collections.IDictionary idict;
+                var itemExists = false;
+                IDictionary idict;
                 PropertyInfo p;
 
                 int memberAccessorIdx = itemExpression.IndexOf('.');
                 string thisExpression = (memberAccessorIdx > -1) ? itemExpression.Substring(0, memberAccessorIdx) : itemExpression;
 
                 //if the caller is reflecting data from a dictionary, attempt dictionary lookup
-                if ((idict = sourceObject as System.Collections.IDictionary) != null)
+                if ((idict = sourceObject as IDictionary) != null)
                 {
                     if (idict.Contains(thisExpression))
                     {
@@ -57,22 +57,11 @@ namespace HTL.DbEx.Utility.Reflection
                 //TODO: Jerrod, reconsider this, may just want to return a null value... or, override with option of break vs. return null.
                 if (!itemExists)
                 {
-                    string msg = string.Format("Property does not exist on source object.  Property_Name:  {0}, Bound_Object_Type:  {1}", itemExpression, sourceObject.GetType().ToString());
-                    throw new NoPropertyExistsException(msg);
+                    throw new NoPropertyExistsException($"Property does not exist on source object.  Property_Name: {itemExpression}, Bound_Object_Type:  {sourceObject.GetType()}");
                 }
                 return o;
             }
             #endregion
         }
     }
-
-    #region no property exists exception
-    public class NoPropertyExistsException : Exception
-    {
-        public NoPropertyExistsException(string message)
-            : base(message)
-        {
-        }
-    }
-    #endregion
 }

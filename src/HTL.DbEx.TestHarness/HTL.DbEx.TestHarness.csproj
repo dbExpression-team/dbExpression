@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{84AD9BF6-4598-45EB-8F83-03B1D6EFB9A1}</ProjectGuid>
+    <ProjectGuid>{345A0CBC-AB27-4242-BF4E-45F692FE8003}</ProjectGuid>
     <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HTL.DbEx.TestHarness</RootNamespace>
     <AssemblyName>HTL.DbEx.TestHarness</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -32,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Handlebars, Version=1.0.0.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
+      <HintPath>..\packages\Handlebars.Net.1.8.0\lib\portable-net45+sl5+wp8+win8\Handlebars.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -43,16 +48,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HTL.DbEx.Mongo++\HTL.DbEx.Mongo++.csproj">
+      <Project>{089a9c7d-ecd7-4a06-a896-e804f03a7a54}</Project>
+      <Name>HTL.DbEx.Mongo++</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HTL.DbEx.MsSql\HTL.DbEx.MsSql.csproj">
       <Project>{578c7237-d1a1-40f2-8e1d-7a9b656bc6dc}</Project>
       <Name>HTL.DbEx.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HTL.DbEx.MySql\HTL.DbEx.MySql.csproj">
+      <Project>{dc5ce101-bc63-416b-9419-9dcd11b834ff}</Project>
+      <Name>HTL.DbEx.MySql</Name>
     </ProjectReference>
     <ProjectReference Include="..\HTL.DbEx.Sql\HTL.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
@@ -64,4 +79,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

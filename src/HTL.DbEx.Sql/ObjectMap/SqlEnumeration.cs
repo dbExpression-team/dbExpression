@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HTL.DbEx.ObjectMap;
+﻿using HTL.DbEx.ObjectMap;
 
 namespace HTL.DbEx.Sql.ObjectMap
 {
     public class SqlEnumeration : Enumeration
     {
         #region internals
-        protected TypeCodeInfo _typeCodeInfo;
+        protected readonly TypeCodeInfo _typeCodeInfo;
         #endregion
 
         #region interface

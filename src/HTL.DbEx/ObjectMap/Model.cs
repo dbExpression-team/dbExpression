@@ -1,35 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
+﻿using System.Collections.Generic;
 
 namespace HTL.DbEx.ObjectMap
 {
     public abstract class Model
     {
         #region internals
-        private List<Entity> _entities;
         #endregion
 
         #region interface
         public string Name { get; protected set; }
 
-        public List<Entity> Entities
-        { get { return _entities; } }
+        public IList<Entity> Entities { get; } = new List<Entity>();
         #endregion
 
         #region constructors
-        public Model()
-        {
-            _entities = new List<Entity>();
-        }
         #endregion
 
         #region methods
-        public void AddEntity(Entity e)
-        {
-            _entities.Add(e);
-        }
+        public void AddEntity(Entity e) => Entities.Add(e);
         #endregion
     }
 }

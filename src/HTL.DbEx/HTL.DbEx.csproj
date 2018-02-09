@@ -66,6 +66,7 @@
     <Compile Include="Utiltiy\Reflection\Expression.cs" />
     <Compile Include="Utiltiy\StringInterpolation.cs" />
     <Compile Include="Utiltiy\TypeUtility.cs" />
+    <Compile Include="Utiltiy\Reflection\NoPropertyExistsException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

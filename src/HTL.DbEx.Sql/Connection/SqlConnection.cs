@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Reflection;
 using System.Configuration;
 using System.Dynamic;
@@ -15,9 +12,9 @@ namespace HTL.DbEx.Sql
     public abstract class SqlConnection
     {
         #region internals
-        protected ConnectionStringSettings _connectionSettings;
         protected DbConnection _dbConnection;
-        protected DbTransaction _dbTransaction;
+        protected ConnectionStringSettings ConnectionSettings { get; private set; }
+        protected DbTransaction DbTransaction { get; private set; }
         #endregion
 
         #region interface properties
@@ -25,7 +22,7 @@ namespace HTL.DbEx.Sql
         {
             get
             {
-                return _connectionSettings.ConnectionString;
+                return ConnectionSettings.ConnectionString;
             }
         }
 
@@ -33,7 +30,7 @@ namespace HTL.DbEx.Sql
         {
             get
             {
-                return _connectionSettings.Name;
+                return ConnectionSettings.Name;
             }
         }
 
@@ -41,7 +38,7 @@ namespace HTL.DbEx.Sql
         {
             get
             {
-                return _connectionSettings.ProviderName;
+                return ConnectionSettings.ProviderName;
             }
         }
 
@@ -52,13 +49,17 @@ namespace HTL.DbEx.Sql
                 this.EnsureConnection();
                 return _dbConnection;
             }
+            protected set
+            {
+                _dbConnection = value;
+            }
         }
 
         public bool IsTransactional
         {
             get
             {
-                return (_dbTransaction != null);
+                return (DbTransaction != null);
             }
         }
         #endregion
@@ -75,20 +76,13 @@ namespace HTL.DbEx.Sql
                 throw new ArgumentNullException(nameof(connectionStringName));
             }
 
-            ConnectionStringSettings settings;
-
-            settings = ConfigurationManager.ConnectionStrings[connectionStringName];
-            if (settings == null)
-            {
-                throw new ArgumentException("no connection string found for provided name: " + connectionStringName, nameof(connectionStringName));
-            }
-            _connectionSettings = settings;
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[connectionStringName];
+            ConnectionSettings = settings ?? throw new ArgumentException("no connection string found for provided name: " + connectionStringName, nameof(connectionStringName));
         }
 
         public SqlConnection(ConnectionStringSettings settings)
         {
-            if (settings == null) { throw new ArgumentNullException("settings"); }
-            _connectionSettings = settings;
+            ConnectionSettings = settings ?? throw new ArgumentNullException("settings");
         }
         #endregion
 
@@ -96,30 +90,28 @@ namespace HTL.DbEx.Sql
         protected void EnsureOpenConnection()
         {
             this.EnsureConnection();
-            if (_dbConnection.State != ConnectionState.Open)
+            if (DbConnection.State != ConnectionState.Open)
             {
-                _dbConnection.Open();
+                DbConnection.Open();
             }
         }
 
-        protected abstract void EnsureConnection();
-
         public void Disconnect()
         {
-            if (_dbConnection != null)
+            if (DbConnection != null)
             {
-                if (_dbConnection.State != ConnectionState.Closed)
+                if (DbConnection.State != ConnectionState.Closed)
                 {
-                    _dbConnection.Close();
+                    DbConnection.Close();
                 }
-                _dbConnection.Dispose();
-                _dbConnection = null;
+                DbConnection.Dispose();
+                DbConnection = null;
             }
 
-            if (_dbTransaction != null)
+            if (DbTransaction != null)
             {
-                _dbTransaction.Dispose();
-                _dbTransaction = null;
+                DbTransaction.Dispose();
+                DbTransaction = null;
             }
         }
         #endregion
@@ -128,24 +120,24 @@ namespace HTL.DbEx.Sql
         public SqlConnection BeginTransaction()
         {
             this.EnsureOpenConnection();
-            _dbTransaction = _dbConnection.BeginTransaction();
+            DbTransaction = DbConnection.BeginTransaction();
             return this;
         }
 
         public SqlConnection BeginTransaction(IsolationLevel iso)
         {
             this.EnsureOpenConnection();
-            _dbTransaction = _dbConnection.BeginTransaction(iso);
+            DbTransaction = DbConnection.BeginTransaction(iso);
             return this;
         }
 
         public void CommitTransaction()
         {
-            if (_dbTransaction == null)
+            if (DbTransaction == null)
             {
                 throw new InvalidOperationException("'CommitTransaction' failed.  A transaction was not started.");
             }
-            _dbTransaction.Commit();
+            DbTransaction.Commit();
             this.Disconnect();
         }
 
@@ -153,13 +145,14 @@ namespace HTL.DbEx.Sql
         {
             if (this.IsTransactional)
             {
-                _dbTransaction.Rollback();
+                DbTransaction.Rollback();
             }
             this.Disconnect();
         }
         #endregion
 
         #region abstract methods
+        protected abstract void EnsureConnection();
         public abstract DbCommand GetDbCommand();
         public abstract DbParameter GetDbParameter(string name, object value);
         public abstract DbParameter GetDbParameter(string name, object value, Type valueType);
@@ -174,7 +167,7 @@ namespace HTL.DbEx.Sql
         {
             DbCommand cmd = this.GetDbCommand();
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (commandTimeout.HasValue)
@@ -212,7 +205,7 @@ namespace HTL.DbEx.Sql
             DbCommand cmd = this.GetDbCommand();
 
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -248,7 +241,7 @@ namespace HTL.DbEx.Sql
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -283,7 +276,7 @@ namespace HTL.DbEx.Sql
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -330,14 +323,14 @@ namespace HTL.DbEx.Sql
             return obj;
         }
 
-        public List<T> ExecuteObjectList<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, FillObjectCallback<T> fillCallback) where T : new()
+        public IList<T> ExecuteObjectList<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, FillObjectCallback<T> fillCallback) where T : new()
         {
-            List<T> list = new List<T>();
-
+            var list = new List<T>();
+            
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -385,14 +378,14 @@ namespace HTL.DbEx.Sql
             return list;
         }
 
-        public List<T> ExecuteValueList<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param)
+        public IList<T> ExecuteValueList<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param)
         {
-            List<T> list = new List<T>();
+            var list = new List<T>();
 
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -433,7 +426,7 @@ namespace HTL.DbEx.Sql
         {
             DbCommand cmd = this.GetDbCommand();
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -469,7 +462,7 @@ namespace HTL.DbEx.Sql
         {
             DbCommand cmd = this.GetDbCommand();
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -509,7 +502,7 @@ namespace HTL.DbEx.Sql
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }
@@ -546,14 +539,14 @@ namespace HTL.DbEx.Sql
             return obj;
         }
 
-        public List<dynamic> ExecuteDynamicList(string executionCommand, DbCommandType commandType, List<DbParameter> param)
+        public IList<dynamic> ExecuteDynamicList(string executionCommand, DbCommandType commandType, List<DbParameter> param)
         {
-            List<dynamic> list = new List<dynamic>();
+            var list = new List<dynamic>();
 
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
-            cmd.Transaction = this.IsTransactional ? _dbTransaction : null;
+            cmd.Transaction = this.IsTransactional ? DbTransaction : null;
             cmd.CommandText = executionCommand;
             cmd.CommandType = (commandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (param != null) { cmd.Parameters.AddRange(param.ToArray()); }

@@ -1,130 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using HTL.DbEx.Utility;
 
 namespace HTL.DbEx.ObjectMap
 {
     public abstract class Field
     {
-        #region internals
-        private string _name;
-        private Type _assemblyType;
-        private Type _assemblyTypeOverride;
-        private string _unknownAssemblyTypeOverride;
-        private bool _isIdentity;
-        private string _sqlType;
-        private bool _isIgnored;
-        private bool _isRequired;
-        private int? _maxLength;
-        private int? _precision;
-        private int? _scale;
-        private List<Relationship> _relationships;
-        private bool _isComputed;
-        #endregion
-
         #region interface properties
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            protected set
-            {
-                _name = value;
-            }
-        }
+        public string Name { get; set; }
 
-        public Type AssemblyType
-        {
-            get { return _assemblyType; }
-            protected set { _assemblyType = value; }
-        }
+        public Type AssemblyType { get; set; }
 
-        public Type AssemblyTypeOverride
-        {
-            get { return _assemblyTypeOverride; }
-            protected set { _assemblyTypeOverride = value; }
-        }
+        public Type AssemblyTypeOverride { get; set; }
 
-        public string UnknownAssemblyTypeOverride
-        {
-            get { return _unknownAssemblyTypeOverride; }
-            protected set { _unknownAssemblyTypeOverride = value; }
-        }
+        public string UnknownAssemblyTypeOverride { get; set; }
 
         public string AssemblyTypeShorthandText
         {
             get
             {
-                return (_assemblyTypeOverride != null)
+                return (AssemblyTypeOverride != null)
                     ? TypeUtility.GetAssemblyTypeShorthandText(this.AssemblyTypeOverride)
-                    : (_unknownAssemblyTypeOverride != null)
-                        ? _unknownAssemblyTypeOverride
+                    : (UnknownAssemblyTypeOverride != null)
+                        ? UnknownAssemblyTypeOverride
                         : TypeUtility.GetAssemblyTypeShorthandText(this.AssemblyType);
             }
         }
 
-        public bool IsIdentity
-        {
-            get
-            {
-                return _isIdentity;
-            }
-            protected set
-            {
-                _isIdentity = value;
-            }
-        }
+        public bool IsIdentity { get; set; }
 
-        public string SqlTypeDefinition
-        {
-            get { return _sqlType; }
-            protected set { _sqlType = value; }
-        }
+        public string SqlTypeDefinition { get; set; }
 
-        public bool IsIgnored
-        {
-            get { return _isIgnored; }
-            protected set { _isIgnored = value; }
-        }
+        public bool IsIgnored { get; set; }
 
-        public bool IsRequired
-        {
-            get { return _isRequired; }
-            protected set { _isRequired = value; }
-        }
+        public bool IsRequired { get; set; }
 
-        public int? MaxLength
-        {
-            get { return _maxLength; }
-            protected set { _maxLength = value; }
-        }
+        public int? MaxLength { get; set; }
 
-        public int? Precision
-        {
-            get { return _precision; }
-            protected set { _precision = value; }
-        }
+        public int? Precision { get; set; }
 
-        public int? Scale
-        {
-            get { return _scale; }
-            protected set { _scale = value; }
-        }
+        public int? Scale { get; set; }
 
         public bool IsForeignKey
         {
-            get { return _relationships.Count > 0; }
+            get { return Relationships.Count > 0; }
         }
 
         public bool IsRangeable
         {
             get
             {
-                return TypeUtility.IsRangeableType(_assemblyType);
+                return TypeUtility.IsRangeableType(AssemblyType);
             }
         }
 
@@ -132,7 +58,7 @@ namespace HTL.DbEx.ObjectMap
         {
             get
             {
-                return TypeUtility.IsSizeConstrictableType(_assemblyType);
+                return TypeUtility.IsSizeConstrictableType(AssemblyType);
             }
         }
 
@@ -140,45 +66,24 @@ namespace HTL.DbEx.ObjectMap
         {
             get
             {
-                return TypeUtility.IsFloatingPointType(_assemblyType);
+                return TypeUtility.IsFloatingPointType(AssemblyType);
             }
         }
 
-        public List<Relationship> Relationships
-        {
-            get
-            {
-                return _relationships;
-            }
-        }
+        public IList<Relationship> Relationships { get; set; } = new List<Relationship>();
+    
+        public bool IsComputed { get; protected set; }
 
-        public bool IsComputed
-        {
-            get { return _isComputed; }
-            protected set { _isComputed = value; }
-        }
-
-        public string AttributeDefinitions
-        { get; protected set; }
+        public string AttributeDefinitions { get; protected set; }
         #endregion
 
         #region constructors
-        public Field()
-        {
-            _relationships = new List<Relationship>();
-        }
         #endregion
 
         #region methods
-        public void AddRelationship(Relationship relationship)
-        {
-            _relationships.Add(relationship);
-        }
+        public void AddRelationship(Relationship relationship) => Relationships.Add(relationship);
 
-        public override string ToString()
-        {
-            return _name;
-        }
+        public override string ToString() => Name;
         #endregion
     }
 }

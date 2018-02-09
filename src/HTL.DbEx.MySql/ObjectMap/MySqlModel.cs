@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data;
 using System.Configuration;
 using System.Data.Common;
 using HTL.DbEx.Sql;
-using HTL.DbEx.ObjectMap;
 using HTL.DbEx.Sql.ObjectMap;
 
 namespace HTL.DbEx.MySql.ObjectMap
@@ -55,12 +53,7 @@ namespace HTL.DbEx.MySql.ObjectMap
 
         public MySqlModel(ConnectionStringSettings connSettings, string[] tableExclusions = null)
         {
-            if (connSettings == null)
-            {
-                throw new ArgumentException("connSettings");
-            }
-
-            _connSettings = connSettings;
+            _connSettings = connSettings ?? throw new ArgumentException("connSettings");
 
             _sqlDbConnection = new MySqlConnection(connSettings);
 
@@ -83,9 +76,7 @@ namespace HTL.DbEx.MySql.ObjectMap
             _relationships = new List<SqlRelationship>();
             _typeCodeInfos = new List<TypeCodeInfo>();
 
-            string dbName;
-            bool found = this.TryGetDatabaseName(out dbName);
-            if (!found)
+            if (!this.TryGetDatabaseName(out string dbName))
             {
                 throw new InvalidOperationException("Could not find database name [database] or [initial catalog] in provided connection string.");
             }
@@ -126,7 +117,7 @@ namespace HTL.DbEx.MySql.ObjectMap
         #region build table info
         private void BuildTableInfo(string dbName)
         {
-            string inClause = "('" + string.Join("','", _tableExclusions.ToArray()) + "')";
+            string inClause = $"('{string.Join("','", _tableExclusions.ToArray())}')";
             DataTable dt;
             string sql = $"select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = '{dbName}' and TABLE_TYPE = 'BASE TABLE' and TABLE_NAME not in {inClause};";
 
@@ -171,7 +162,7 @@ namespace HTL.DbEx.MySql.ObjectMap
         {
             //get data table for table info...
             DataTable dt;
-            string[] names = _tableInfos.ConvertAll<string>(t => $"'{t.Name}',").ToArray();
+            string[] names = _tableInfos.ConvertAll(t => $"'{t.Name}',").ToArray();
             names[names.Length - 1] = names[names.Length - 1].TrimEnd(',');
 
             string sql = $"select * from information_schema.COLUMNS where TABLE_SCHEMA = '{dbName}' and TABLE_NAME in ({string.Join(" ", names)});";
@@ -270,7 +261,7 @@ namespace HTL.DbEx.MySql.ObjectMap
         {
             dbName = null;
 
-            DbConnectionStringBuilder connBuilder = new DbConnectionStringBuilder();
+            var connBuilder = new DbConnectionStringBuilder();
             connBuilder.ConnectionString = _connSettings.ConnectionString;
             string keyward = "database";
             RETRY:

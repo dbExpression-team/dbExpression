@@ -15,12 +15,12 @@ namespace HTL.DbEx.Reflection
             {
                 if (obj == null) { return null; }
 
-                Dictionary<string, object> propCache = new Dictionary<string, object>();
+                var propCache = new Dictionary<string, object>();
 
                 PropertyInfo[] pi = obj.GetType().GetProperties();
                 string propName;
                 object value;
-                foreach (PropertyInfo p in pi)
+                foreach (var p in pi)
                 {
                     propName = p.Name;
                     value = p.GetValue(obj, null);
@@ -44,12 +44,12 @@ namespace HTL.DbEx.Reflection
             {
                 if (obj == null) { return null; }
 
-                Dictionary<string, object> fieldCache = new Dictionary<string, object>();
+                var fieldCache = new Dictionary<string, object>();
 
-                FieldInfo[] fi = obj.GetType().GetFields();
+                var fi = obj.GetType().GetFields();
                 string fieldName;
                 object value;
-                foreach (FieldInfo f in fi)
+                foreach (var f in fi)
                 {
                     fieldName = f.Name;
                     value = f.GetValue(obj);

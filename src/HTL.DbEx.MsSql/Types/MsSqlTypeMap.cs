@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
-using System.Text.RegularExpressions;
 using HTL.DbEx.Utility;
 
 namespace HTL.DbEx.MsSql.Types
@@ -26,23 +23,23 @@ namespace HTL.DbEx.MsSql.Types
                 {
                     if (maxLength.Value == -1)
                     {
-                        return sqlBase + "(max)";
+                        return $"{sqlBase}(max)";
                     }
                     else
                     {
-                        return sqlBase + "(" + maxLength.Value.ToString() + ")";
+                        return $"{sqlBase}({maxLength.Value})";
                     }
                 }
                 else if (precision.HasValue)
                 {
-                    sqlBase = sqlBase + "(" + precision.Value.ToString();
+                    sqlBase = $"{sqlBase}({precision.Value})";
                     if (scale.HasValue)
                     {
-                        return sqlBase + "," + scale.Value.ToString() + ")";
+                        return $"{sqlBase},{scale.Value})";
                     }
                     else
                     {
-                        return sqlBase + ",0)";
+                        return $"{sqlBase},0)";
                     }
                 }
                 else
@@ -184,7 +181,7 @@ namespace HTL.DbEx.MsSql.Types
             }
             else
             {
-                throw new ArgumentException("Input type could not be resolved to a valid SqlDbType.  param value: " + t.ToString(), "t");
+                throw new ArgumentException($"Input type could not be resolved to a valid SqlDbType.  param value: {t}", "t");
             }
         }
         #endregion
@@ -236,13 +233,11 @@ namespace HTL.DbEx.MsSql.Types
 
                 if (vals.Length == 2)
                 {
-                    int p;
-                    int s;
-                    if (int.TryParse(vals[0], out p))
+                    if (int.TryParse(vals[0], out int p))
                     {
                         precision = p;
                     }
-                    if (int.TryParse(vals[1], out s))
+                    if (int.TryParse(vals[1], out int s))
                     {
                         scale = s;
                     }
@@ -291,10 +286,7 @@ namespace HTL.DbEx.MsSql.Types
                     }
                 }
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
         #endregion
 

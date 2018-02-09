@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HTL.DbEx.ObjectMap;
+﻿using HTL.DbEx.ObjectMap;
 
 namespace HTL.DbEx.Sql.ObjectMap
 {
     public class SqlIndexedField : IndexedField
     {
         #region internals
-        protected IndexInfo _indexInfo;
+        protected readonly IndexInfo _indexInfo;
         #endregion
 
         #region constructors

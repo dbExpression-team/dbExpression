@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Common;
 using System.Data;
 using System.Configuration;
@@ -30,7 +26,7 @@ namespace HTL.DbEx.MySql.Expression
         #region get sql connection
         protected override SqlConnection GetSqlConnection()
         {
-            return new MySqlConnection(base._connectionStringSettings);
+            return new MySqlConnection(base.ConnectionStringSettings);
         }
         #endregion
 
@@ -52,7 +48,7 @@ namespace HTL.DbEx.MySql.Expression
         protected override string AssembleSql()
         {
             string sql = null;
-            switch (base._execContext.Value)
+            switch (base.CommandExecutionContext.Value)
             {
                 case ExecutionContext.Get:
                 case ExecutionContext.GetDynamic:
@@ -64,7 +60,7 @@ namespace HTL.DbEx.MySql.Expression
                     sql = this.AssembleQuery();
                     break;
                 case ExecutionContext.Insert:
-                    if (base._isIdentityEntity)
+                    if (base.IsIdentityEntity)
                     {
                         sql = this.AssembleIdentityDBEntityInsertSql();
                     }
@@ -80,7 +76,7 @@ namespace HTL.DbEx.MySql.Expression
                     sql = this.AssembleDeleteSql();
                     break;
                 default:
-                    throw new InvalidOperationException("encountered unknown execution context: " + base._execContext);
+                    throw new InvalidOperationException($"encountered unknown execution context: {base.CommandExecutionContext}");
             }
 
             return sql;
@@ -90,17 +86,17 @@ namespace HTL.DbEx.MySql.Expression
         {
             DbParameter p = this.SqlClient.GetDbParameter(_totalRecCountParamName, DBNull.Value, typeof(int), null);
             p.Direction = ParameterDirection.Output;
-            base._dbParams.Add(p);
+            base.DbParams.Add(p);
 
             string sql;
 
-            if (_isDistinct || base._set.GroupBy != null || base._set.Having != null)
+            if (IsDistinct || base.Expression.GroupBy != null || base.Expression.Having != null)
             {
-                sql = $"SET {_totalRecCountParamName} := (SELECT COUNT(*) FROM (SELECT {(_isDistinct ? "DISTINCT " : string.Empty)}{base._set.Select} FROM {base._baseEntity.ToString()} {join} {where} {groupBy} {having}) AS T);";
+                sql = $"SET {_totalRecCountParamName} := (SELECT COUNT(*) FROM (SELECT {(IsDistinct ? "DISTINCT " : string.Empty)}{base.Expression.Select} FROM {base.BaseEntity.ToString()} {join} {where} {groupBy} {having}) AS T);";
             }
             else
             {
-                sql = $"SET {_totalRecCountParamName} = (SELECT COUNT(*) FROM {base._baseEntity.ToString()} {join} {where});";
+                sql = $"SET {_totalRecCountParamName} = (SELECT COUNT(*) FROM {base.BaseEntity.ToString()} {join} {where});";
             }
 
             return sql;
@@ -110,7 +106,7 @@ namespace HTL.DbEx.MySql.Expression
         {
             DbParameter p = this.SqlClient.GetDbParameter(_totalRecCountParamName, DBNull.Value, typeof(int), null);
             p.Direction = ParameterDirection.Output;
-            base._dbParams.Add(p);
+            base.DbParams.Add(p);
 
             string sql = $"SET {_totalRecCountParamName} := (SELECT ROW_COUNT());";
             return sql;
@@ -129,70 +125,70 @@ namespace HTL.DbEx.MySql.Expression
             string offset = string.Empty;
             string totalCountQuery = string.Empty;
 
-            if (_set.Select != null)
+            if (Expression.Select != null)
             {
-                select = _set.Select.ToParameterizedString(base._dbParams, this.SqlClient);
+                select = Expression.Select.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_isDistinct)
+            if (IsDistinct)
             {
                 distinct = " DISTINCT";
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.GroupBy != null)
+            if (Expression.GroupBy != null)
             {
-                groupBy = " GROUP BY " + _set.GroupBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                groupBy = " GROUP BY " + Expression.GroupBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Having != null)
+            if (Expression.Having != null)
             {
-                having = " HAVING " + _set.Having.ToParameterizedString(base._dbParams, this.SqlClient);
+                having = " HAVING " + Expression.Having.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.OrderBy != null)
+            if (Expression.OrderBy != null)
             {
-                orderBy = " ORDER BY " + _set.OrderBy.ToParameterizedString(base._dbParams, this.SqlClient);
+                orderBy = " ORDER BY " + Expression.OrderBy.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_top.HasValue)
+            if (TopValue.HasValue)
             {
-                limit = string.Concat("LIMIT ", base._top.Value.ToString(), Environment.NewLine);
+                limit = string.Concat("LIMIT ", base.TopValue.Value.ToString(), Environment.NewLine);
             }
-            if (_limit.HasValue)
+            if (LimitValue.HasValue)
             {
-                limit = $" LIMIT {_limit}";
+                limit = $" LIMIT {LimitValue}";
             }
-            if (_skip.HasValue)
+            if (SkipValue.HasValue)
             {
-                offset = $" OFFSET {_skip}";
+                offset = $" OFFSET {SkipValue}";
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 totalCountQuery = this.AssembleTotalCountQuery(join, where, groupBy, having);
             }
 
             string sql;
-            sql = $@"{totalCountQuery}SELECT {distinct}{select} FROM {base._baseEntity.ToString()}{join}{where}{groupBy}{having}{orderBy}{limit}{offset}";
+            sql = $@"{totalCountQuery}SELECT {distinct}{select} FROM {base.BaseEntity.ToString()}{join}{where}{groupBy}{having}{orderBy}{limit}{offset}";
 
             return sql;
         }
 
         private string AssembleInsertSql()
         {
-            string insertClause = base._set.Insert.ToParameterizedString(base._dbParams, this.SqlClient);
+            string insertClause = base.Expression.Insert.ToParameterizedString(base.DbParams, this.SqlClient);
 
-            string sql = $"INSERT INTO {base._baseEntity.ToString()} {insertClause};";
+            string sql = $"INSERT INTO {base.BaseEntity.ToString()} {insertClause};";
             return sql;
         }
 
         private string AssembleIdentityDBEntityInsertSql()
         {
-            string insertClause = base._set.Insert.ToParameterizedString(base._dbParams, this.SqlClient);
+            string insertClause = base.Expression.Insert.ToParameterizedString(base.DbParams, this.SqlClient);
 
-            string sql = $"INSERT INTO {base._baseEntity.ToString()} {insertClause}; SELECT LAST_INSERT_ID();";
+            string sql = $"INSERT INTO {base.BaseEntity.ToString()} {insertClause}; SELECT LAST_INSERT_ID();";
             return sql;
         }
 
@@ -203,27 +199,27 @@ namespace HTL.DbEx.MySql.Expression
             string affectedRecordQuery = string.Empty;
             string limit = string.Empty;
 
-            string assignmentClause = base._set.Assign.ToParameterizedString(base._dbParams, this.SqlClient);
+            string assignmentClause = base.Expression.Assign.ToParameterizedString(base.DbParams, this.SqlClient);
 
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_top.HasValue)
+            if (TopValue.HasValue)
             {
-                limit = $" LIMIT {base._top.Value.ToString()}";
+                limit = $" LIMIT {base.TopValue.Value.ToString()}";
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 affectedRecordQuery = this.AssembleAffectedRecordCountQuery();
             }
 
             string sql;
-            sql = $"UPDATE {base._baseEntity.ToString()} SET {assignmentClause} FROM {base._baseEntity.ToString()}{join}{where};{affectedRecordQuery}";
+            sql = $"UPDATE {base.BaseEntity.ToString()} SET {assignmentClause} FROM {base.BaseEntity.ToString()}{join}{where};{affectedRecordQuery}";
             return sql;
         }
 
@@ -234,25 +230,25 @@ namespace HTL.DbEx.MySql.Expression
             string affectedRecordQuery = string.Empty;
             string limit = string.Empty;
 
-            if (_set.Joins != null)
+            if (Expression.Joins != null)
             {
-                join = " " + _set.Joins.ToParameterizedString(base._dbParams, this.SqlClient);
+                join = " " + Expression.Joins.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_set.Where != null)
+            if (Expression.Where != null)
             {
-                where = " WHERE " + _set.Where.ToParameterizedString(base._dbParams, this.SqlClient);
+                where = " WHERE " + Expression.Where.ToParameterizedString(base.DbParams, this.SqlClient);
             }
-            if (_top.HasValue)
+            if (TopValue.HasValue)
             {
-                limit = $" LIMIT {_top.Value.ToString()}";
+                limit = $" LIMIT {TopValue.Value.ToString()}";
             }
-            if (_getTotalCount)
+            if (GetTotalCount)
             {
                 affectedRecordQuery = this.AssembleAffectedRecordCountQuery();
             }
 
             string sql;
-            sql = $"DELETE {base._baseEntity.ToString()} FROM {base._baseEntity.ToString()}{join}{where};{affectedRecordQuery}";
+            sql = $"DELETE {base.BaseEntity.ToString()} FROM {base.BaseEntity.ToString()}{join}{where};{affectedRecordQuery}";
             return sql;
         }
         #endregion

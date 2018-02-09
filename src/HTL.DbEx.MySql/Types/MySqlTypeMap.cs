@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HTL.DbEx.Utility;
 using MySql.Data.MySqlClient;
 
@@ -56,7 +53,7 @@ namespace HTL.DbEx.MySql.Types
             }
             else
             {
-                throw new ArgumentException("Input type could not be resolved to a valid MyMySqlDbType.  param value: " + t.ToString(), "t");
+                throw new ArgumentException($"Input type could not be resolved to a valid MyMySqlDbType.  param value: {t}", "t");
             }
         }
         #endregion
@@ -66,11 +63,11 @@ namespace HTL.DbEx.MySql.Types
         {
             //try known types first...
             KnownMySqlDataType knownType;
-            bool isKnown = Enum.TryParse<KnownMySqlDataType>(sqlTypeDeclaration, true, out knownType);
+            bool isKnown = Enum.TryParse(sqlTypeDeclaration, true, out knownType);
             if (!isKnown)
             {
                 MySqlDbType mySqlType;
-                isKnown = Enum.TryParse<MySqlDbType>(sqlTypeDeclaration, true, out mySqlType);
+                isKnown = Enum.TryParse(sqlTypeDeclaration, true, out mySqlType);
             }
 
             return isKnown;
@@ -219,11 +216,11 @@ namespace HTL.DbEx.MySql.Types
         {
             MySqlDbType type;
             KnownMySqlDataType knownType;
-            if (Enum.TryParse<MySqlDbType>(sqlTypeDeclaration, true, out type))
+            if (Enum.TryParse(sqlTypeDeclaration, true, out type))
             {
                 return type;
             }
-            else if (Enum.TryParse<KnownMySqlDataType>(sqlTypeDeclaration, true, out knownType))
+            else if (Enum.TryParse(sqlTypeDeclaration, true, out knownType))
             {
                 switch (knownType)
                 {

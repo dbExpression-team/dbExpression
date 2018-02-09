@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace HTL.DbEx.Sql.Expression
+﻿namespace HTL.DbEx.Sql.Expression
 {
     public class DBJoinDirective<T> where T : new()
     {
         #region internals
-        private SqlExpressionBuilder<T> _dbQuery;
-        private DBExpressionEntity _joinEntity;
-        private DBExpressionJoinType _joinType;
+        private readonly SqlExpressionBuilder<T> _dbQuery;
+        private readonly DBExpressionEntity _joinEntity;
+        private readonly DBExpressionJoinType _joinType;
         #endregion
 
         #region constructors

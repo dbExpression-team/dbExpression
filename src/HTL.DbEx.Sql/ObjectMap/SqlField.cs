@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
-using System.Data;
 using HTL.DbEx.Utility;
 using HTL.DbEx.ObjectMap;
 
@@ -12,7 +9,7 @@ namespace HTL.DbEx.Sql.ObjectMap
     public class SqlField : Field
     {
         #region internals
-        protected ColumnInfo _column;
+        protected readonly ColumnInfo _column;
         protected bool _isKnownSqlType;
         #endregion
 
