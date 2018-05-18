@@ -15,7 +15,7 @@ namespace HTL.DbEx.TestHarness
     {
         static void Main(string[] args)
         {
-            DBExpressionEntity person = new DBExpressionEntity("dbo", "Person");
+            DBExpressionEntity person = new DBExpressionEntity<Person>("dbo", "Person", null, null, null);
             DBExpressionField<int> id = new DBExpressionField<int>(person, "Id");
             DBExpressionField<string> firstName = new DBExpressionField<string>(person, "FirstName");
             DBExpressionField<string> lastName = new DBExpressionField<string>(person, "LastName");
@@ -34,5 +34,8 @@ namespace HTL.DbEx.TestHarness
             List<DbParameter> parms2 = new List<DbParameter>();
             string sql2 = filter2.ToParameterizedString(parms2, conn);
         }
+
+        private class Person
+        { }
     }
 }

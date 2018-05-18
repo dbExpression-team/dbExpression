@@ -1,15 +1,15 @@
 ﻿namespace HTL.DbEx.Sql.Expression
 {
-    public class DBJoinDirective<T> where T : new()
+    public class DBJoinDirective<T> where T : class, new()
     {
         #region internals
         private readonly SqlExpressionBuilder<T> _dbQuery;
-        private readonly DBExpressionEntity _joinEntity;
+        private readonly DBExpressionEntity<T> _joinEntity;
         private readonly DBExpressionJoinType _joinType;
         #endregion
 
         #region constructors
-        public DBJoinDirective(SqlExpressionBuilder<T> dbQuery, DBExpressionEntity joinEntity, DBExpressionJoinType joinType)
+        public DBJoinDirective(SqlExpressionBuilder<T> dbQuery, DBExpressionEntity<T> joinEntity, DBExpressionJoinType joinType)
         {
             _dbQuery = dbQuery;
             _joinEntity = joinEntity;

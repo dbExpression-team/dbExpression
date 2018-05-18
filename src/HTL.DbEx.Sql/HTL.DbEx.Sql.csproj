@@ -41,13 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\I32BitIdentityDBEntity.cs" />
-    <Compile Include="Common\I64BitIdentityDBEntity.cs" />
-    <Compile Include="Common\IU32BitIdentityDBEntity.cs" />
-    <Compile Include="Common\IU64BitIdentityDBEntity.cs" />
     <Compile Include="Connection\SqlConnection.cs" />
-    <Compile Include="Common\Delegates.cs" />
-    <Compile Include="Common\IIdentityDBEntity.cs" />
+    <Compile Include="IIdentityDBEntity.cs" />
     <Compile Include="DbCommandType.cs" />
     <Compile Include="Expression\Builder\ExpressionBuilder.cs" />
     <Compile Include="Expression\DBAggregateFunctionExpression.cs" />
@@ -113,6 +108,9 @@
       <Project>{196feda7-33a3-4f84-b5c4-e8471041a4cc}</Project>
       <Name>HTL.DbEx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

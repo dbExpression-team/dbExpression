@@ -20,6 +20,7 @@ namespace HTL.DbEx.Sql.ObjectMap
         #region methods
         private void ExtractIndex()
         {
+            base.Name = _indexInfos[0].IndexName;
             base.EntityName = _indexInfos[0].TableName;
             foreach (IndexInfo idx in _indexInfos)
             {

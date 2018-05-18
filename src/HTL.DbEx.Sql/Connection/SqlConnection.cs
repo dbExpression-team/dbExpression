@@ -65,11 +65,11 @@ namespace HTL.DbEx.Sql
         #endregion
 
         #region constructors
-        public SqlConnection() : this(ConfigurationService.Database.DefaultDatabase)
+        protected SqlConnection() : this(ConfigurationService.Database.DefaultDatabase)
         {
         }
 
-        public SqlConnection(string connectionStringName)
+        protected SqlConnection(string connectionStringName)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
@@ -80,7 +80,7 @@ namespace HTL.DbEx.Sql
             ConnectionSettings = settings ?? throw new ArgumentException("no connection string found for provided name: " + connectionStringName, nameof(connectionStringName));
         }
 
-        public SqlConnection(ConnectionStringSettings settings)
+        protected SqlConnection(ConnectionStringSettings settings)
         {
             ConnectionSettings = settings ?? throw new ArgumentNullException("settings");
         }
@@ -270,7 +270,7 @@ namespace HTL.DbEx.Sql
             return dr;
         }
 
-        public T ExecuteObject<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, FillObjectCallback<T> fillCallback) where T : new()
+        public T ExecuteObject<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, Action<T, object[]> fillCallback) where T : new()
         {
             T obj = default(T);
             DbCommand cmd = this.GetDbCommand();
@@ -323,7 +323,7 @@ namespace HTL.DbEx.Sql
             return obj;
         }
 
-        public IList<T> ExecuteObjectList<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, FillObjectCallback<T> fillCallback) where T : new()
+        public IList<T> ExecuteObjectList<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, Action<T, object[]> fillCallback) where T : new()
         {
             var list = new List<T>();
             

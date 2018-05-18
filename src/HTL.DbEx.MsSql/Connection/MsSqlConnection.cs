@@ -71,7 +71,7 @@ namespace HTL.DbEx.MsSql
         #endregion
 
         #region get expression builder
-        public SqlExpressionBuilder<T> GetExpressionBuilder<T>(DBExpressionEntity entity) where T : new() => new MsSqlExpressionBuilder<T>(ConnectionSettings.Name, entity).Enlist(this);
+        public SqlExpressionBuilder<T> GetExpressionBuilder<T>(DBExpressionEntity<T> entity) where T : class, new() => new MsSqlExpressionBuilder<T>(ConnectionSettings, entity).Enlist(this);
         #endregion
     }
 }

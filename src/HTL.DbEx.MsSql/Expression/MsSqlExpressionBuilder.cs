@@ -11,18 +11,18 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class MsSqlExpressionBuilder<T> : SqlExpressionBuilder<T> where T : new()
+    public class MsSqlExpressionBuilder<T> : SqlExpressionBuilder<T> where T : class, new()
     {
         #region interface
         internal static readonly string TotalRecordCountParamName = "@TotalCount";
         #endregion
 
         #region constructors
-        public MsSqlExpressionBuilder(string connectionStringName, DBExpressionEntity baseEntity) : base(connectionStringName, baseEntity)
+        public MsSqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
         {
         }
 
-        public MsSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity) : base(connectionStringSettings, baseEntity)
+        public MsSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
         {
         }
         #endregion
@@ -412,7 +412,7 @@ namespace HTL.DbEx.MsSql.Expression
             base.ValidateExpression();
 
             base.Expression.ClearSelect();
-            base.Expression &= base.SelectExpressionProvider.Invoke();
+            base.Expression &= BaseEntity.SelectExpressionProvider();
 
             string sql = this.AssembleSql();
 
@@ -423,7 +423,7 @@ namespace HTL.DbEx.MsSql.Expression
         public override string ToGetListSql()
         {
             base.Expression.ClearSelect();
-            base.Expression &= base.SelectExpressionProvider.Invoke();
+            base.Expression &= BaseEntity.SelectExpressionProvider();
 
             string sql = this.AssembleSql();
 
@@ -479,9 +479,9 @@ namespace HTL.DbEx.MsSql.Expression
             base.CommandExecutionContext = ExecutionContext.Insert;
             base.ValidateExpression();
 
-            if (InsertExpressionProvider != null)
+            if (BaseEntity.InsertExpressionProvider != null)
             {
-                base.Expression &= InsertExpressionProvider(obj);
+                base.Expression &= BaseEntity.InsertExpressionProvider(obj);
             }
             string sql = this.AssembleSql();
 

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using HTL.DbEx.Utility;
+using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    //TODO: JRod, need to add schema to the entity name...
-    public class DBExpressionEntity
+    public abstract class DBExpressionEntity
     {
         #region interface
         public virtual string Schema { get; private set; }
@@ -18,23 +18,11 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public DBExpressionEntity(string schema, string name)
+        protected DBExpressionEntity(string schema, string name)
         {
             this.Schema = schema;
             this.Name = name;
         }
-        #endregion
-
-        #region as
-        public DBExpressionEntity As(string alias) => new DBExpressionEntity(this.Schema, this.Name) { AliasName = alias, IsAliased = true };
-        #endregion
-
-        #region correlate
-        public DBExpressionEntity Correlate(string name) => new DBExpressionEntity(this.Schema, this.Name) { AliasName = name, IsCorrelated = true };
-        #endregion
-
-        #region join
-        public DBJoinExpression Join(DBExpressionJoinType joinType, DBFilterExpression joinCondition) => new DBJoinExpression(this, joinType, joinCondition);
         #endregion
 
         #region to string
@@ -73,6 +61,50 @@ namespace HTL.DbEx.Sql.Expression
 
             return val;
         }
+        #endregion
+    }
+
+    //TODO: JRod, need to add schema to the entity name...
+    public class DBExpressionEntity<T> : DBExpressionEntity where T : class, new()
+    {
+        #region interface
+        public Func<DBSelectExpressionSet> SelectExpressionProvider { get; set; }
+        public Action<T,object[]> FillProvider { get; set; }
+        public Func<T,DBInsertExpressionSet> InsertExpressionProvider { get; set; }
+
+        #endregion
+
+        #region constructors
+        public DBExpressionEntity(string schema, string name, Func<DBSelectExpressionSet> inclusiveSelectExpressionProvider, Action<T, object[]> fillProvider, Func<T,DBInsertExpressionSet> inclusiveInsertProvider) : base(schema, name)
+        {
+            SelectExpressionProvider = inclusiveSelectExpressionProvider;
+            FillProvider = fillProvider;
+            InsertExpressionProvider = inclusiveInsertProvider;
+        }
+        #endregion
+
+        #region as
+        public DBExpressionEntity<T> As(string alias)
+        {
+            var clone = CloneUtility.DeepCopy(this);
+            clone.AliasName = alias;
+            clone.IsAliased = true;
+            return clone;
+        }
+        #endregion
+
+        #region correlate
+        public DBExpressionEntity<T> Correlate(string name)
+        {
+            var clone = CloneUtility.DeepCopy(this);
+            clone.AliasName = name;
+            clone.IsCorrelated = true;
+            return clone;
+        }
+        #endregion
+
+        #region join
+        public DBJoinExpression Join(DBExpressionJoinType joinType, DBFilterExpression joinCondition) => new DBJoinExpression(this, joinType, joinCondition);
         #endregion
     }
 

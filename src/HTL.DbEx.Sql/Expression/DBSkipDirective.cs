@@ -1,6 +1,6 @@
 ﻿namespace HTL.DbEx.Sql.Expression
 {
-    public class DBSkipDirective<T> where T : new()
+    public class DBSkipDirective<T> where T : class, new()
     {
         #region internals
         private SqlExpressionBuilder<T> _dbQuery;

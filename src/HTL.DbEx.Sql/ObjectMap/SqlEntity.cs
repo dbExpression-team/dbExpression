@@ -57,7 +57,12 @@ namespace HTL.DbEx.Sql.ObjectMap
                     { 
                         base.IsIgnored = true; 
                         continue; 
-                    };
+                    }
+                    else if (p.ToLower().StartsWith("alias="))
+                    {
+                        string val = p.Substring(6, (p.Length - 6));
+                        base.AliasName = val;
+                    }
                 }
             }
         }

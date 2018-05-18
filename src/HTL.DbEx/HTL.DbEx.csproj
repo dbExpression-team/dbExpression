@@ -60,13 +60,15 @@
     <Compile Include="Configuration\Sections\DatabaseConfigurationSection.cs" />
     <Compile Include="Configuration\Sections\MongoDBConfigurationSection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utiltiy\Clone.cs" />
-    <Compile Include="Utiltiy\Reflection\Assembly.cs" />
-    <Compile Include="Utiltiy\Reflection\Class.cs" />
-    <Compile Include="Utiltiy\Reflection\Expression.cs" />
-    <Compile Include="Utiltiy\StringInterpolation.cs" />
-    <Compile Include="Utiltiy\TypeUtility.cs" />
-    <Compile Include="Utiltiy\Reflection\NoPropertyExistsException.cs" />
+    <Compile Include="Utility\Clone.cs" />
+    <Compile Include="Utility\Reflection\Assembly.cs" />
+    <Compile Include="Utility\Reflection\Class.cs" />
+    <Compile Include="Utility\Reflection\Expression.cs" />
+    <Compile Include="Utility\StringInterpolation.cs" />
+    <Compile Include="Utility\TypeUtility.cs" />
+    <Compile Include="Utility\Reflection\NoPropertyExistsException.cs" />
+    <Compile Include="_Extensions\EntityExtensions.cs" />
+    <Compile Include="_Extensions\FieldExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

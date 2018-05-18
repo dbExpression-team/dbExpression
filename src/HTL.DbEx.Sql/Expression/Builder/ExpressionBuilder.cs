@@ -6,7 +6,7 @@ using System.Configuration;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public abstract class SqlExpressionBuilder<T> where T : new()
+    public abstract class SqlExpressionBuilder<T> where T : class, new()
     {
         #region internals
         private SqlConnection _sqlDbClient;
@@ -21,16 +21,13 @@ namespace HTL.DbEx.Sql.Expression
         protected int? TotalCountValue { get; private set; }
         protected bool IsValidated { get; private set; }
         //protected string _connectionStringName;
-        protected SelectExpressionProvider SelectExpressionProvider { get; private set; }
-        protected InsertExpressionProvider<T> InsertExpressionProvider { get; private set; }
-        protected FillObjectCallback<T> FillObjectCallback { get; private set; }
         protected List<DbParameter> DbParams { get; } = new List<DbParameter>();
         protected ExecutionContext? CommandExecutionContext { get; set; }
         public int? LimitValue { get; internal set; }
         #endregion
 
         #region interface properties
-        public DBExpressionEntity BaseEntity { get; protected set; }
+        public DBExpressionEntity<T> BaseEntity { get; protected set; }
 
         public DBExpressionSet Expression { get; set; } = new DBExpressionSet();
 
@@ -49,39 +46,15 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity baseEntity) 
+        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) 
              : this(ConfigurationManager.ConnectionStrings[connectionStringName], baseEntity)
         {
         }
 
-        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity)
+        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity)
         {
             ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentNullException(nameof(connectionStringSettings));
             BaseEntity = baseEntity;
-        }
-        #endregion
-
-        #region with select expression provider
-        public SqlExpressionBuilder<T> WithSelectExpressionProvider(SelectExpressionProvider selectExpressionProvider)
-        {
-            SelectExpressionProvider = selectExpressionProvider;
-            return this;
-        }
-        #endregion
-
-        #region with fill callback
-        public SqlExpressionBuilder<T> WithFillCallback(FillObjectCallback<T> fillCallback)
-        {
-            FillObjectCallback = fillCallback;
-            return this;
-        }
-        #endregion
-
-        #region with insert expression provider
-        public SqlExpressionBuilder<T> WithInsertExpressionProvider(InsertExpressionProvider<T> insertExpressionProvider)
-        {
-            InsertExpressionProvider = insertExpressionProvider;
-            return this;
         }
         #endregion
 
@@ -173,28 +146,28 @@ namespace HTL.DbEx.Sql.Expression
             return new DBSkipDirective<T>(this);
         }
 
-        public virtual DBJoinDirective<T> InnerJoin(DBExpressionEntity joinTo)
+        public virtual DBJoinDirective<T> InnerJoin(DBExpressionEntity<T> joinTo)
         {
             return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.INNER);
         }
 
-        public virtual DBJoinDirective<T> LeftJoin(DBExpressionEntity joinTo)
+        public virtual DBJoinDirective<T> LeftJoin(DBExpressionEntity<T> joinTo)
         {
             return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.LEFT);
         }
 
-        public virtual DBJoinDirective<T> RightJoin(DBExpressionEntity joinTo)
+        public virtual DBJoinDirective<T> RightJoin(DBExpressionEntity<T> joinTo)
         {
             return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.RIGHT);
         }
 
-        public virtual DBJoinDirective<T> FullJoin(DBExpressionEntity joinTo)
+        public virtual DBJoinDirective<T> FullJoin(DBExpressionEntity<T> joinTo)
         {
             return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.FULL);
         }
 
         //TODO: Cross join does not have any condition, chanage to not return join directive, JRod...
-        public virtual DBJoinDirective<T> CrossJoin(DBExpressionEntity joinTo)
+        public virtual DBJoinDirective<T> CrossJoin(DBExpressionEntity<T> joinTo)
         {
             throw new NotImplementedException();
             //return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.CROSS);
@@ -208,11 +181,11 @@ namespace HTL.DbEx.Sql.Expression
             this.ValidateExpression();
 
             Expression.ClearSelect();
-            Expression &= SelectExpressionProvider.Invoke();
+            Expression &= BaseEntity.SelectExpressionProvider();
 
             string sql = this.AssembleSql();
 
-            T obj = this.SqlClient.ExecuteObject<T>(sql, DbCommandType.SqlText, DbParams, FillObjectCallback);
+            T obj = this.SqlClient.ExecuteObject<T>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillProvider);
             return obj;
         }
 
@@ -223,7 +196,7 @@ namespace HTL.DbEx.Sql.Expression
 
             if (Expression.Select == null)
             {
-                Expression &= SelectExpressionProvider.Invoke();
+                Expression &= BaseEntity.SelectExpressionProvider();
             }
 
             string sql = this.AssembleSql();
@@ -247,11 +220,11 @@ namespace HTL.DbEx.Sql.Expression
             this.ValidateExpression();
 
             Expression.ClearSelect();
-            Expression &= SelectExpressionProvider.Invoke();
+            Expression &= BaseEntity.SelectExpressionProvider();
 
             string sql = this.AssembleSql();
 
-            IList<T> lst = this.SqlClient.ExecuteObjectList<T>(sql, DbCommandType.SqlText, DbParams, FillObjectCallback);
+            IList<T> lst = this.SqlClient.ExecuteObjectList<T>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillProvider);
 
             if (GetTotalCount)
             {
@@ -277,7 +250,7 @@ namespace HTL.DbEx.Sql.Expression
 
             if (Expression.Select == null)
             {
-                Expression &= SelectExpressionProvider.Invoke();
+                Expression &= BaseEntity.SelectExpressionProvider();
             }
 
             string sql = this.AssembleSql();
@@ -382,9 +355,9 @@ namespace HTL.DbEx.Sql.Expression
             CommandExecutionContext = ExecutionContext.Insert;
             this.ValidateExpression();
 
-            if (InsertExpressionProvider != null)
+            if (BaseEntity.InsertExpressionProvider != null)
             {
-                Expression &= InsertExpressionProvider(obj);
+                Expression &= BaseEntity.InsertExpressionProvider(obj);
             }
 
             IsIdentityEntity = (obj is IIdentityDBEntity);
@@ -521,13 +494,13 @@ namespace HTL.DbEx.Sql.Expression
                     {
                         throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'Get' execution context failed.  'Get' returns 1 fully loaded business object and does not allow a consumer to specify specific fields for selection.");
                     }
-                    if (SelectExpressionProvider == null)
+                    if (BaseEntity.SelectExpressionProvider == null)
                     {
                         throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
                     }
                     break;
                 case ExecutionContext.GetDynamic:
-                    if (Expression.Select == null && SelectExpressionProvider == null)
+                    if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
                     {
                         throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
                     }
@@ -537,13 +510,13 @@ namespace HTL.DbEx.Sql.Expression
                     {
                         throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'GetList' execution context failed.  'GetList' returns a List where T is a fully loaded business object and does not allow a consumer to specify specific fields for selection.  Try using 'GetValueTable'.");
                     }
-                    if (SelectExpressionProvider == null)
+                    if (BaseEntity.SelectExpressionProvider == null)
                     {
                         throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetList' execution context.");
                     }
                     break;
                 case ExecutionContext.GetDynamicList:
-                    if (Expression.Select == null && SelectExpressionProvider == null)
+                    if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
                     {
                         throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
                     }
@@ -571,7 +544,7 @@ namespace HTL.DbEx.Sql.Expression
                     }
                     break;
                 case ExecutionContext.Insert:
-                    if (InsertExpressionProvider == null)
+                    if (BaseEntity.InsertExpressionProvider == null)
                     {
                         throw new InvalidOperationException("No 'InsertExpressionProvider<T>' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
                     }
