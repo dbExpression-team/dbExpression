@@ -64,6 +64,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
     }
 
+    #region i db expression entity <T>
     public interface IDbExpressionEntity<T>
     {
         DBSelectExpressionSet GetInclusiveSelectExpression();
@@ -72,23 +73,17 @@ namespace HTL.DbEx.Sql.Expression
 
         void FillObject(T entity, object[] values);
     }
+    #endregion
 
-    //TODO: JRod, need to add schema to the entity name...
+    #region db expression entity <t>
     public abstract class DBExpressionEntity<T> : DBExpressionEntity, IDbExpressionEntity<T>
     {
         #region interface
-        public Func<DBSelectExpressionSet> SelectExpressionProvider { get; set; }
-        public Action<T,object[]> FillProvider { get; set; }
-        public Func<T,DBInsertExpressionSet> InsertExpressionProvider { get; set; }
-
         #endregion
 
         #region constructors
-        public DBExpressionEntity(string schema, string name/*, Func<DBSelectExpressionSet> inclusiveSelectExpressionProvider, Action<T, object[]> fillProvider, Func<T,DBInsertExpressionSet> inclusiveInsertProvider*/) : base(schema, name)
+        public DBExpressionEntity(string schema, string name) : base(schema, name)
         {
-            //SelectExpressionProvider = inclusiveSelectExpressionProvider;
-            //FillProvider = fillProvider;
-            //InsertExpressionProvider = inclusiveInsertProvider;
         }
         #endregion
 
@@ -122,5 +117,5 @@ namespace HTL.DbEx.Sql.Expression
         public abstract void FillObject(T entity, object[] values);
         #endregion
     }
-
+    #endregion
 }

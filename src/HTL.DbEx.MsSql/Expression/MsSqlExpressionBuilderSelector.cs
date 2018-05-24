@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Data.Common;
-using HTL.DbEx.Utility;
 using System.Configuration;
+using HTL.DbEx.Utility;
 using HTL.DbEx.Sql;
 using HTL.DbEx.Sql.Expression;
 
@@ -14,30 +14,87 @@ namespace HTL.DbEx.MsSql.Expression
     #region ms sql expression builder selector
     public class MsSqlExpressionBuilderSelector
     {
+        #region internals
+        private ConnectionStringSettings _connSettings;
+        #endregion
+
+        #region interface
+        public string ConnectionStringName { get; private set; }
+        #endregion
+
+        #region constructors
+        public MsSqlExpressionBuilderSelector(string connectionStringName)
+        {
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
+            }
+
+            ConnectionStringName = connectionStringName;
+
+            _connSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (_connSettings == null)
+            {
+                throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
+            }
+        }
+        #endregion
+
+        #region select <T>
         public IFromEntitySelector<T> Select<T>(params DBExpressionField[] fields)
         {
-            return new EntitySelector<T>();
+            DBExpressionSet set = new DBExpressionSet();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                set &= fields[i];
+            }
+            return  new DbExpressionEntitySelector<T>(_connSettings, set);
         }
-
+        
         public IFromEntitySelector<T> Select<T>()
         {
-            return new EntitySelector<T>();
+            return new DbExpressionEntitySelector<T>(_connSettings);
         }
 
-        public IFromEntitySelector Update()
+        public IFromEntitySelector<T> Select<T>(DBSelectExpression select)
         {
-            return new EntitySelector();
+            DBExpressionSet set = new DBExpressionSet();
+            set &= select;
+            return new DbExpressionEntitySelector<T>(_connSettings, set);
         }
 
+        public IFromEntitySelector Select()
+        {
+            return new DbExpressionEntitySelector(_connSettings);
+        }
+        #endregion
+
+        #region update
+        public IFromEntitySelector Update(params DBAssignmentExpression[] assignmentExpressions)
+        {
+            DBExpressionSet set = new DBExpressionSet();
+            for (int i = 0; i < assignmentExpressions.Length; i++)
+            {
+                set &= assignmentExpressions[i];
+            }
+            return new DbExpressionEntitySelector(_connSettings, set);
+        }
+        #endregion
+
+        #region insert <T>
         public IIntoEntitySelector<T> Insert<T>(T record)
         {
-            return new EntitySelector<T>();
+            return new DbExpressionEntitySelector<T>(_connSettings, record);
         }
+        #endregion
 
+        #region delete
         public IFromEntitySelector Delete()
         {
-            return new EntitySelector();
+            return new DbExpressionEntitySelector(_connSettings);
         }
+        #endregion
     }
     #endregion
 
@@ -62,33 +119,78 @@ namespace HTL.DbEx.MsSql.Expression
     }
     #endregion
 
-    #region entity selector<T>
-    public class EntitySelector<T> : IFromEntitySelector<T>, IIntoEntitySelector<T>
+    #region db expression entity selector
+    public class DbExpressionEntitySelector : IFromEntitySelector
     {
-        public MsSqlExpressionBuilder<T,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        #region interface
+        protected ConnectionStringSettings ConnectionSettings { get; private set; }
+        protected DBExpressionSet ExpressionSet { get; private set; }
+        #endregion
+
+        #region constructors
+        public DbExpressionEntitySelector(ConnectionStringSettings connectionSettings)
         {
-            return new MsSqlExpressionBuilder<T,Y>(new ConnectionStringSettings("", "", ""), null);
+            ConnectionSettings = connectionSettings;
         }
 
-        public MsSqlExpressionBuilder<T, Y> Into<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        public DbExpressionEntitySelector(ConnectionStringSettings connectionSettings, DBExpressionSet expressionSet)
         {
-            return new MsSqlExpressionBuilder<T, Y>(new ConnectionStringSettings("", "", ""), null);
+            ConnectionSettings = connectionSettings;
+            ExpressionSet = expressionSet;
         }
+        #endregion
+
+        #region from
+        public MsSqlExpressionBuilder<Y, Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        {
+            var builder = new MsSqlExpressionBuilder<Y, Y>(ConnectionSettings, from);
+            builder.Expression = this.ExpressionSet;
+            return builder;
+        }
+        #endregion
     }
     #endregion
 
-    #region entity selector
-    public class EntitySelector : IFromEntitySelector
+    #region db expression entity selector<T>
+    public class DbExpressionEntitySelector<T> : DbExpressionEntitySelector, IFromEntitySelector<T>, IIntoEntitySelector<T>
     {
-        public MsSqlExpressionBuilder<Y,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        #region internals
+        private T _recForInsert;
+        #endregion
+
+        #region constructors
+        public DbExpressionEntitySelector(ConnectionStringSettings connectionSettings) : base(connectionSettings)
         {
-            return new MsSqlExpressionBuilder<Y,Y>(new ConnectionStringSettings("", "", ""), null);
         }
 
-        public MsSqlExpressionBuilder<Y, Y> Into<Y>(DBExpressionEntity<Y> into) where Y : class, new()
+        public DbExpressionEntitySelector(ConnectionStringSettings connectionStringSettings, DBExpressionSet expressionSet) : base(connectionStringSettings, expressionSet)
         {
-            return new MsSqlExpressionBuilder<Y, Y>(new ConnectionStringSettings("", "", ""), null);
         }
+
+        public DbExpressionEntitySelector(ConnectionStringSettings connectionStringSettings, T recForInser) : base(connectionStringSettings)
+        {
+            _recForInsert = recForInser;
+        }
+        #endregion
+
+        #region from
+        public new MsSqlExpressionBuilder<T,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        {
+            var builder =  new MsSqlExpressionBuilder<T,Y>(base.ConnectionSettings, from);
+            builder.Expression = base.ExpressionSet;
+            return builder;
+        }
+        #endregion
+
+        #region into
+        public new MsSqlExpressionBuilder<T, Y> Into<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        {
+            var builder = new MsSqlExpressionBuilder<T, Y>(base.ConnectionSettings, from);
+            builder.Expression = base.ExpressionSet;
+            builder.InsertRecord = _recForInsert;
+            return builder;
+        }
+        #endregion
     }
     #endregion
 }

@@ -24,6 +24,9 @@ namespace HTL.DbEx.Sql.Expression
         protected List<DbParameter> DbParams { get; } = new List<DbParameter>();
         protected ExecutionContext? CommandExecutionContext { get; set; }
         public int? LimitValue { get; internal set; }
+
+        //HACK: Jrod, will move to concrete insert builder...
+        public T InsertRecord { get; set; }
         #endregion
 
         #region interface properties
@@ -181,11 +184,11 @@ namespace HTL.DbEx.Sql.Expression
             this.ValidateExpression();
 
             Expression.ClearSelect();
-            Expression &= BaseEntity.SelectExpressionProvider();
+            Expression &= BaseEntity.GetInclusiveSelectExpression();
 
             string sql = this.AssembleSql();
 
-            Y obj = this.SqlClient.ExecuteObject<Y>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillProvider);
+            Y obj = this.SqlClient.ExecuteObject<Y>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
             return obj;
         }
 
@@ -196,7 +199,7 @@ namespace HTL.DbEx.Sql.Expression
 
             if (Expression.Select == null)
             {
-                Expression &= BaseEntity.SelectExpressionProvider();
+                Expression &= BaseEntity.GetInclusiveSelectExpression();
             }
 
             string sql = this.AssembleSql();
@@ -220,11 +223,11 @@ namespace HTL.DbEx.Sql.Expression
             this.ValidateExpression();
 
             Expression.ClearSelect();
-            Expression &= BaseEntity.SelectExpressionProvider();
+            Expression &= BaseEntity.GetInclusiveSelectExpression();
 
             string sql = this.AssembleSql();
 
-            IList<Y> lst = this.SqlClient.ExecuteObjectList<Y>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillProvider);
+            IList<Y> lst = this.SqlClient.ExecuteObjectList<Y>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
 
             if (GetTotalCount)
             {
@@ -250,7 +253,7 @@ namespace HTL.DbEx.Sql.Expression
 
             if (Expression.Select == null)
             {
-                Expression &= BaseEntity.SelectExpressionProvider();
+                Expression &= BaseEntity.GetInclusiveSelectExpression();
             }
 
             string sql = this.AssembleSql();
@@ -355,10 +358,7 @@ namespace HTL.DbEx.Sql.Expression
             CommandExecutionContext = ExecutionContext.Insert;
             this.ValidateExpression();
 
-            if (BaseEntity.InsertExpressionProvider != null)
-            {
-                Expression &= BaseEntity.InsertExpressionProvider(obj);
-            }
+            Expression &= BaseEntity.GetInclusiveInsertExpression(obj);
 
             IsIdentityEntity = (obj is IIdentityDBEntity);
             string sql = this.AssembleSql();
@@ -494,32 +494,32 @@ namespace HTL.DbEx.Sql.Expression
                     {
                         throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'Get' execution context failed.  'Get' returns 1 fully loaded business object and does not allow a consumer to specify specific fields for selection.");
                     }
-                    if (BaseEntity.SelectExpressionProvider == null)
-                    {
-                        throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
-                    }
+                    //if (BaseEntity.SelectExpressionProvider == null)
+                    //{
+                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
+                    //}
                     break;
                 case ExecutionContext.GetDynamic:
-                    if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
-                    {
-                        throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
-                    }
+                    //if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
+                    //{
+                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
+                    //}
                     break;
                 case ExecutionContext.GetList:
                     if (Expression.Select != null)
                     {
                         throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'GetList' execution context failed.  'GetList' returns a List where T is a fully loaded business object and does not allow a consumer to specify specific fields for selection.  Try using 'GetValueTable'.");
                     }
-                    if (BaseEntity.SelectExpressionProvider == null)
-                    {
-                        throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetList' execution context.");
-                    }
+                    //if (BaseEntity.SelectExpressionProvider == null)
+                    //{
+                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetList' execution context.");
+                    //}
                     break;
                 case ExecutionContext.GetDynamicList:
-                    if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
-                    {
-                        throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
-                    }
+                    //if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
+                    //{
+                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
+                    //}
                     break;
                 case ExecutionContext.GetValueList:
                     if (Expression.Select != null)
@@ -544,10 +544,10 @@ namespace HTL.DbEx.Sql.Expression
                     }
                     break;
                 case ExecutionContext.Insert:
-                    if (BaseEntity.InsertExpressionProvider == null)
-                    {
-                        throw new InvalidOperationException("No 'InsertExpressionProvider<T>' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
-                    }
+                    //if (BaseEntity.InsertExpressionProvider == null)
+                    //{
+                    //    throw new InvalidOperationException("No 'InsertExpressionProvider<T>' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
+                    //}
                     break;
                 case ExecutionContext.Update:
                     if (Expression.Assign == null)

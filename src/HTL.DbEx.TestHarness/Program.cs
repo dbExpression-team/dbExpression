@@ -24,54 +24,71 @@ namespace HTL.DbEx.TestHarness
                 CreatedAt = DateTime.Now
             };
 
-            var p = dbo.Physician;
+            Action<Physician, object[]> f = dbo.Physician.FillObject;
 
-            db.Insert(physician).Into(p);
+            PhysicianEntity<Physician> p = dbo.Physician;
 
-            db.Insert(new Physician() { Id = 3 }).Into(p);
+            var e1 = db.Insert(physician).Into(p);
 
-            db.Select<Physician>().From(p);
-            db.Select().From(p);
+            var e2 = db.Insert(new Physician() { Id = 3 }).Into(p);
 
-            db.Select<string>((p.FullName + " " + p.PatientRefId).As("FullName")).From(p);
+            var e3 = db.Select<Physician>().From(p);
+            var e4 = db.Select().From(p).InnerJoin(p).On(p.Id == p.Id);
 
-            db.Update(p.FullName.Set("Jorge"), p.PatientRefId.Set("111221212")).From(p).Where(p.Id == 3);
+            var e5 = db.Select<int>(p.Id).From(p);
 
-            db.Delete().From(p).Where(p.Id == 3);
+            var e6 = db.Select<string>((p.FullName + " " + p.PatientRefId).As("FullName")).From(p);
+
+            var e7 = db.Update(p.FullName.Set("Jorge"), p.PatientRefId.Set("111221212")).From(p).Where(p.Id == 3);
+
+            var e8 = db.Delete().From(p).Where(p.Id == 3);
         }
 
         #region db
         public static class db
         {
+            public static string ConnectionStringName { get; } = "cquentia";
+
+            #region internals
+            private static MsSqlExpressionBuilderSelector _selector;
+            #endregion
+
+            #region constructors
+            static db()
+            {
+                _selector = new MsSqlExpressionBuilderSelector(ConnectionStringName);
+            }
+            #endregion
+
             #region builder selectors
             public static IFromEntitySelector<T> Select<T>(params DBExpressionField[] fields)
             {
-                return new EntitySelector<T>();
+                return _selector.Select<T>(fields);
             }
 
             public static IFromEntitySelector<T> Select<T>(DBSelectExpression select)
             {
-                return new EntitySelector<T>();
+                return _selector.Select<T>();
             }
 
             public static IFromEntitySelector Select()
             {
-                return new EntitySelector();
+                return _selector.Select();
             }
 
             public static IIntoEntitySelector<T> Insert<T>(T record)
             {
-                return new EntitySelector<T>();
+                return _selector.Insert<T>(record);
             }
 
             public static IFromEntitySelector Update(params DBAssignmentExpression[] assignmentExpressions)
             {
-                return new EntitySelector();
+                return _selector.Update(assignmentExpressions);
             }
 
             public static IFromEntitySelector Delete()
             {
-                return new EntitySelector();
+                return _selector.Delete();
             }
             #endregion
         }
@@ -82,34 +99,14 @@ namespace HTL.DbEx.TestHarness
         {            
             #region db expression entities
             private static PhysicianEntity<Physician> _physician;
+
             public static PhysicianEntity<Physician> Physician { get { return _physician == null ? _physician = new PhysicianEntity<Physician>("dbo", "Physician") : _physician; } }
             #endregion
         }
         #endregion
 
-        #region physician
-        public class Physician// : I32BitIdentityDBEntity
-        {
-            #region interface
-            public int Id { get; set; }
-            public int PatientReportId { get; set; }
-            public string FullName { get; set; }
-            public string Facility { get; set; }
-            public string PatientRefId { get; set; }
-            public DateTime CreatedAt { get; set; }
-            #endregion
-
-            #region constructor
-            public Physician()
-            {
-                this.CreatedAt = DateTime.Now;
-            }
-            #endregion
-        }
-        #endregion
-
         #region physician entity
-        public class PhysicianEntity<T> : DBExpressionEntity<T> where T : Physician
+        public class PhysicianEntity<T> : DBExpressionEntity<T>
         {
             #region internals
             private DBExpressionField<int> _id;
@@ -164,24 +161,47 @@ namespace HTL.DbEx.TestHarness
 
             public override DBInsertExpressionSet GetInclusiveInsertExpression(T physician)
             {
+                Physician p = physician as Physician;
                 DBInsertExpressionSet expr = null;
-                expr &= _patientReportId.Insert(physician.PatientReportId);
-                expr &= _fullName.Insert(physician.FullName);
-                expr &= _facility.Insert(physician.Facility);
-                expr &= _patientRefId.Insert(physician.PatientRefId);
-                expr &= _createdAt.Insert(physician.CreatedAt);
+                expr &= _patientReportId.Insert(p.PatientReportId);
+                expr &= _fullName.Insert(p.FullName);
+                expr &= _facility.Insert(p.Facility);
+                expr &= _patientRefId.Insert(p.PatientRefId);
+                expr &= _createdAt.Insert(p.CreatedAt);
                 return expr;
             }
 
             public override void FillObject(T physician, object[] values)
             {
+                Physician p = physician as Physician;
                 //if the column allows null, do the dbnull check, else just cast in..???
-                physician.Id = (int)values[0];
-                physician.PatientReportId = (int)values[1];
-                physician.FullName = (string)values[2];
-                physician.Facility = (string)values[3];
-                physician.PatientRefId = (values[4] != DBNull.Value) ? (string)values[4] : default(string);
-                physician.CreatedAt = DateTime.SpecifyKind((DateTime)values[5], DateTimeKind.Utc);
+                p.Id = (int)values[0];
+                p.PatientReportId = (int)values[1];
+                p.FullName = (string)values[2];
+                p.Facility = (string)values[3];
+                p.PatientRefId = (values[4] != DBNull.Value) ? (string)values[4] : default(string);
+                p.CreatedAt = DateTime.SpecifyKind((DateTime)values[5], DateTimeKind.Utc);
+            }
+            #endregion
+        }
+        #endregion
+
+        #region physician
+        public class Physician : I32BitIdentityDBEntity
+        {
+            #region interface
+            public int Id { get; set; }
+            public int PatientReportId { get; set; }
+            public string FullName { get; set; }
+            public string Facility { get; set; }
+            public string PatientRefId { get; set; }
+            public DateTime CreatedAt { get; set; }
+            #endregion
+
+            #region constructor
+            public Physician()
+            {
+                this.CreatedAt = DateTime.Now;
             }
             #endregion
         }
