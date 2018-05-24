@@ -41,28 +41,28 @@ namespace HTL.DbEx.MsSql.Expression
     }
     #endregion
 
-    #region i from entity selector
+    #region i from entity selector <T>
     public interface IFromEntitySelector<T>
     {
         MsSqlExpressionBuilder<T,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new();
     }
     #endregion
 
-    #region ifrom entity selector <T>
+    #region i from entity selector
     public interface IFromEntitySelector
     {
         MsSqlExpressionBuilder<Y,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new();
     }
     #endregion
 
-    #region I into entity selector <T>
+    #region i into entity selector <T>
     public interface IIntoEntitySelector<T>
     {
         MsSqlExpressionBuilder<T,Y> Into<Y>(DBExpressionEntity<Y> from) where Y : class, new();
     }
     #endregion
 
-    #region entity selector <T>
+    #region entity selector<T>
     public class EntitySelector<T> : IFromEntitySelector<T>, IIntoEntitySelector<T>
     {
         public MsSqlExpressionBuilder<T,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
@@ -83,6 +83,11 @@ namespace HTL.DbEx.MsSql.Expression
         public MsSqlExpressionBuilder<Y,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
         {
             return new MsSqlExpressionBuilder<Y,Y>(new ConnectionStringSettings("", "", ""), null);
+        }
+
+        public MsSqlExpressionBuilder<Y, Y> Into<Y>(DBExpressionEntity<Y> into) where Y : class, new()
+        {
+            return new MsSqlExpressionBuilder<Y, Y>(new ConnectionStringSettings("", "", ""), null);
         }
     }
     #endregion

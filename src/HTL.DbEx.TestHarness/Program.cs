@@ -23,9 +23,10 @@ namespace HTL.DbEx.TestHarness
 
             dbo.Insert(new xxx() { YYY = "" }).Into(p);
 
-            dbo.Select<Person>().From(p);
+            //dbo.Select<Person>().From(p);
+            dbo.Select().From(p);
 
-            dbo.Select<string>(p.FirstName).From(p);
+            dbo.Select<string>((p.FirstName + " " + p.LastName).As("FullName")).From(p);
 
             dbo.Update(p.FirstName.Set("Jorge"), p.LastName.Set("Gonzolas")).From(p).Where(p.Id == 3);
 
@@ -44,9 +45,14 @@ namespace HTL.DbEx.TestHarness
                 return new EntitySelector<T>();
             }
 
-            public static IFromEntitySelector<T> Select<T>()
+            public static IFromEntitySelector<T> Select<T>(DBSelectExpression select)
             {
                 return new EntitySelector<T>();
+            }
+
+            public static IFromEntitySelector Select()
+            {
+                return new EntitySelector();
             }
 
             public static IIntoEntitySelector<T> Insert<T>(T record)
