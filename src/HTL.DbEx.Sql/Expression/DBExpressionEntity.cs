@@ -8,7 +8,7 @@ namespace HTL.DbEx.Sql.Expression
         #region interface
         public virtual string Schema { get; private set; }
 
-        public virtual string Name { get; private set; }
+        public virtual string EntityName { get; private set; }
 
         public virtual string AliasName { get; protected set; }
 
@@ -21,7 +21,7 @@ namespace HTL.DbEx.Sql.Expression
         protected DBExpressionEntity(string schema, string name)
         {
             this.Schema = schema;
-            this.Name = name;
+            this.EntityName = name;
         }
         #endregion
 
@@ -36,19 +36,19 @@ namespace HTL.DbEx.Sql.Expression
             switch (format)
             {
                 case "e":
-                    val = this.Name;
+                    val = this.EntityName;
                     break;
                 case "s.e":
-                    val = $"{this.Schema}.{this.Name}";
+                    val = $"{this.Schema}.{this.EntityName}";
                     break;
                 case "[e]":
-                    val = $"[{this.Name}]";
+                    val = $"[{this.EntityName}]";
                     break;
                 case "[s.e]":
-                    val = $"[{this.Schema}.{this.Name}]";
+                    val = $"[{this.Schema}.{this.EntityName}]";
                     break;
                 case "[s].[e]":
-                    val = $"[{this.Schema}].[{this.Name}]";
+                    val = $"[{this.Schema}].[{this.EntityName}]";
                     break;
                 default:
                     throw new ArgumentException("encountered unknown format string");
@@ -64,8 +64,17 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
     }
 
+    public interface IDbExpressionEntity<T>
+    {
+        DBSelectExpressionSet GetInclusiveSelectExpression();
+
+        DBInsertExpressionSet GetInclusiveInsertExpression(T entity);
+
+        void FillObject(T entity, object[] values);
+    }
+
     //TODO: JRod, need to add schema to the entity name...
-    public class DBExpressionEntity<T> : DBExpressionEntity
+    public abstract class DBExpressionEntity<T> : DBExpressionEntity, IDbExpressionEntity<T>
     {
         #region interface
         public Func<DBSelectExpressionSet> SelectExpressionProvider { get; set; }
@@ -75,11 +84,11 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public DBExpressionEntity(string schema, string name, Func<DBSelectExpressionSet> inclusiveSelectExpressionProvider, Action<T, object[]> fillProvider, Func<T,DBInsertExpressionSet> inclusiveInsertProvider) : base(schema, name)
+        public DBExpressionEntity(string schema, string name/*, Func<DBSelectExpressionSet> inclusiveSelectExpressionProvider, Action<T, object[]> fillProvider, Func<T,DBInsertExpressionSet> inclusiveInsertProvider*/) : base(schema, name)
         {
-            SelectExpressionProvider = inclusiveSelectExpressionProvider;
-            FillProvider = fillProvider;
-            InsertExpressionProvider = inclusiveInsertProvider;
+            //SelectExpressionProvider = inclusiveSelectExpressionProvider;
+            //FillProvider = fillProvider;
+            //InsertExpressionProvider = inclusiveInsertProvider;
         }
         #endregion
 
@@ -105,6 +114,12 @@ namespace HTL.DbEx.Sql.Expression
 
         #region join
         public DBJoinExpression Join(DBExpressionJoinType joinType, DBFilterExpression joinCondition) => new DBJoinExpression(this, joinType, joinCondition);
+
+        public abstract DBSelectExpressionSet GetInclusiveSelectExpression();
+
+        public abstract DBInsertExpressionSet GetInclusiveInsertExpression(T entity);
+
+        public abstract void FillObject(T entity, object[] values);
         #endregion
     }
 

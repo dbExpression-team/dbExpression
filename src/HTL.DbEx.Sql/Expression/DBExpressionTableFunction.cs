@@ -40,7 +40,7 @@ namespace HTL.DbEx.Sql.Expression
                 }
             }
 
-            builder.Append(") AS [" + Name + "]");
+            builder.Append(") AS [" + EntityName + "]");
 
             return builder.ToString();
         }
@@ -56,7 +56,7 @@ namespace HTL.DbEx.Sql.Expression
                 builder.Append(Arguments[i]);
             }
 
-            builder.Append(") AS [" + Name + "]");
+            builder.Append(") AS [" + EntityName + "]");
 
             return builder.ToString();
         }
