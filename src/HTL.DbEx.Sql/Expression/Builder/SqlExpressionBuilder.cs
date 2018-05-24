@@ -6,8 +6,8 @@ using System.Configuration;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    //T is the return type on Execute() ... Y is the type of record of the base table
-    public abstract class SqlExpressionBuilder<T,Y> where Y : class, new()
+    //T1 is the return type on Execute() ... T2 is the type of record of the base table
+    public abstract class SqlExpressionBuilder<T1,T2> where T2 : class, new()
     {
         #region internals
         private SqlConnection _sqlDbClient;
@@ -26,11 +26,11 @@ namespace HTL.DbEx.Sql.Expression
         public int? LimitValue { get; internal set; }
 
         //HACK: Jrod, will move to concrete insert builder...
-        public T InsertRecord { get; set; }
+        public T1 InsertRecord { get; set; }
         #endregion
 
         #region interface properties
-        public DBExpressionEntity<Y> BaseEntity { get; protected set; }
+        public DBExpressionEntity<T2> BaseEntity { get; protected set; }
 
         public DBExpressionSet Expression { get; set; } = new DBExpressionSet();
 
@@ -49,12 +49,12 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity<Y> baseEntity) 
+        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T2> baseEntity) 
              : this(ConfigurationManager.ConnectionStrings[connectionStringName], baseEntity)
         {
         }
 
-        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<Y> baseEntity)
+        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T2> baseEntity)
         {
             ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentNullException(nameof(connectionStringSettings));
             BaseEntity = baseEntity;
@@ -62,13 +62,13 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region query build methods
-        public virtual SqlExpressionBuilder<T,Y> Enlist(SqlConnection sqlClient)
+        public virtual SqlExpressionBuilder<T1,T2> Enlist(SqlConnection sqlClient)
         {
             this.SqlClient = sqlClient;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Select(params DBSelectExpression[] selectExpressions)
+        public virtual SqlExpressionBuilder<T1,T2> Select(params DBSelectExpression[] selectExpressions)
         {
             for (int i = 0; i < selectExpressions.Length; i++)
             {
@@ -77,19 +77,19 @@ namespace HTL.DbEx.Sql.Expression
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Select(DBSelectExpressionSet selectExpressionSet)
+        public virtual SqlExpressionBuilder<T1,T2> Select(DBSelectExpressionSet selectExpressionSet)
         {
             Expression &= selectExpressionSet;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Distinct()
+        public virtual SqlExpressionBuilder<T1,T2> Distinct()
         {
             IsDistinct = true;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> SetFields(params DBAssignmentExpression[] assignmentExpressions)
+        public virtual SqlExpressionBuilder<T1,T2> SetFields(params DBAssignmentExpression[] assignmentExpressions)
         {
             for (int i = 0; i < assignmentExpressions.Length; i++)
             {
@@ -98,25 +98,25 @@ namespace HTL.DbEx.Sql.Expression
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> SetFields(DBAssignmentExpressionSet assignmentExpressionSet)
+        public virtual SqlExpressionBuilder<T1,T2> SetFields(DBAssignmentExpressionSet assignmentExpressionSet)
         {
             Expression &= assignmentExpressionSet;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Where(DBFilterExpressionSet filter)
+        public virtual SqlExpressionBuilder<T1,T2> Where(DBFilterExpressionSet filter)
         {
             Expression &= filter;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> OrderBy(DBOrderByExpressionSet orderBy)
+        public virtual SqlExpressionBuilder<T1,T2> OrderBy(DBOrderByExpressionSet orderBy)
         {
             Expression &= orderBy;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> GroupBy(params DBGroupByExpression[] groupBy)
+        public virtual SqlExpressionBuilder<T1,T2> GroupBy(params DBGroupByExpression[] groupBy)
         {
             foreach (DBGroupByExpression g in groupBy)
             {
@@ -125,52 +125,52 @@ namespace HTL.DbEx.Sql.Expression
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Having(DBHavingExpression havingCondition)
+        public virtual SqlExpressionBuilder<T1,T2> Having(DBHavingExpression havingCondition)
         {
             Expression &= havingCondition;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Top(int count)
+        public virtual SqlExpressionBuilder<T1,T2> Top(int count)
         {
             TopValue = count;
             return this;
         }
 
-        public virtual SqlExpressionBuilder<T,Y> Bottom(int count)
+        public virtual SqlExpressionBuilder<T1,T2> Bottom(int count)
         {
             BottomValue = count;
             return this;
         }
 
-        public virtual DBSkipDirective<T,Y> Skip(int count)
+        public virtual DBSkipDirective<T1,T2> Skip(int count)
         {
             SkipValue = count;
-            return new DBSkipDirective<T,Y>(this);
+            return new DBSkipDirective<T1,T2>(this);
         }
 
-        public virtual DBJoinDirective<T,Y> InnerJoin(DBExpressionEntity<T> joinTo)
+        public virtual DBJoinDirective<T1,T2> InnerJoin(DBExpressionEntity<T1> joinTo)
         {
-            return new DBJoinDirective<T,Y>(this, joinTo, DBExpressionJoinType.INNER);
+            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.INNER);
         }
 
-        public virtual DBJoinDirective<T,Y> LeftJoin(DBExpressionEntity<T> joinTo)
+        public virtual DBJoinDirective<T1,T2> LeftJoin(DBExpressionEntity<T1> joinTo)
         {
-            return new DBJoinDirective<T,Y>(this, joinTo, DBExpressionJoinType.LEFT);
+            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.LEFT);
         }
 
-        public virtual DBJoinDirective<T,Y> RightJoin(DBExpressionEntity<T> joinTo)
+        public virtual DBJoinDirective<T1,T2> RightJoin(DBExpressionEntity<T1> joinTo)
         {
-            return new DBJoinDirective<T,Y>(this, joinTo, DBExpressionJoinType.RIGHT);
+            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.RIGHT);
         }
 
-        public virtual DBJoinDirective<T,Y> FullJoin(DBExpressionEntity<T> joinTo)
+        public virtual DBJoinDirective<T1,T2> FullJoin(DBExpressionEntity<T1> joinTo)
         {
-            return new DBJoinDirective<T,Y>(this, joinTo, DBExpressionJoinType.FULL);
+            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.FULL);
         }
 
         //TODO: Cross join does not have any condition, chanage to not return join directive, JRod...
-        public virtual DBJoinDirective<T,Y> CrossJoin(DBExpressionEntity<T> joinTo)
+        public virtual DBJoinDirective<T1,T2> CrossJoin(DBExpressionEntity<T1> joinTo)
         {
             throw new NotImplementedException();
             //return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.CROSS);
@@ -178,7 +178,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region execution methods
-        public Y Get()
+        public T2 Get()
         {
             CommandExecutionContext = ExecutionContext.Get;
             this.ValidateExpression();
@@ -188,7 +188,7 @@ namespace HTL.DbEx.Sql.Expression
 
             string sql = this.AssembleSql();
 
-            Y obj = this.SqlClient.ExecuteObject<Y>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
+            T2 obj = this.SqlClient.ExecuteObject<T2>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
             return obj;
         }
 
@@ -208,16 +208,16 @@ namespace HTL.DbEx.Sql.Expression
             return obj;
         }
 
-        public IList<Y> GetList(out int resultSetCount)
+        public IList<T2> GetList(out int resultSetCount)
         {
             TotalCountValue = null;
             GetTotalCount = true;
-            IList<Y> tmp = this.GetList();
+            IList<T2> tmp = this.GetList();
             resultSetCount = TotalCountValue ?? -1;
             return tmp;
         }
 
-        public IList<Y> GetList()
+        public IList<T2> GetList()
         {
             CommandExecutionContext = ExecutionContext.GetList;
             this.ValidateExpression();
@@ -227,13 +227,14 @@ namespace HTL.DbEx.Sql.Expression
 
             string sql = this.AssembleSql();
 
-            IList<Y> lst = this.SqlClient.ExecuteObjectList<Y>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
+            IList<T2> lst = this.SqlClient.ExecuteObjectList<T2>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
 
             if (GetTotalCount)
             {
                 TotalCountValue = this.ResolveResultSetCount();
             }
 
+            //TODO: holy crap... technically T1 and T2 are exactly the same when exe context is GetList
             return lst;
         }
 
@@ -297,7 +298,7 @@ namespace HTL.DbEx.Sql.Expression
             return lst;
         }
 
-        public IList<Y> GetValueList<Y>(DBExpressionField<Y> field)
+        public IList<Y> GetValueList<Y>(DBExpressionField<T1> field)
         {
             return this.GetValueList<Y>(new DBSelectExpression(field));
         }
@@ -322,7 +323,7 @@ namespace HTL.DbEx.Sql.Expression
             return (val == null) ? default(Y) : (Y)val;
         }
 
-        public Y GetValue<Y>(DBExpressionField<Y> field)
+        public Y GetValue<Y>(DBExpressionField<T1> field)
         {
             return this.GetValue<Y>(new DBSelectExpression(field));
         }
@@ -353,7 +354,7 @@ namespace HTL.DbEx.Sql.Expression
             return dt;
         }
 
-        public void Insert(Y obj)
+        public void Insert(T2 obj)
         {
             CommandExecutionContext = ExecutionContext.Insert;
             this.ValidateExpression();
@@ -443,6 +444,13 @@ namespace HTL.DbEx.Sql.Expression
             {
                 TotalCountValue = this.ResolveAffectedRecordCount();
             }
+        }
+        #endregion
+
+        #region set execution context
+        public void SetExecutionContext(ExecutionContext context)
+        {
+            CommandExecutionContext = context;
         }
         #endregion
 
@@ -604,22 +612,22 @@ namespace HTL.DbEx.Sql.Expression
         #region get sql connection
         protected abstract SqlConnection GetSqlConnection();
         #endregion
-
-        #region contained enums
-        protected enum ExecutionContext : int
-        {
-            Get,
-            GetDynamic,
-            GetList,
-            GetDynamicList,
-            GetValueList,
-            GetValue,
-            GetValueTable,
-            //InsertParams,
-            Insert,
-            Update,
-            Delete
-        }
-        #endregion
     }
+
+    #region contained enums
+    public enum ExecutionContext : int
+    {
+        Get,
+        GetDynamic,
+        GetList,
+        GetDynamicList,
+        GetValueList,
+        GetValue,
+        GetValueTable,
+        //InsertParams,
+        Insert,
+        Update,
+        Delete
+    }
+    #endregion
 }

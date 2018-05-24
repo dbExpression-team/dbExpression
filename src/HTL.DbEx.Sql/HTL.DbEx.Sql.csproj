@@ -45,7 +45,7 @@
     <Compile Include="Connection\SqlConnection.cs" />
     <Compile Include="IIdentityDBEntity.cs" />
     <Compile Include="DbCommandType.cs" />
-    <Compile Include="Expression\Builder\ExpressionBuilder.cs" />
+    <Compile Include="Expression\Builder\SqlExpressionBuilder.cs" />
     <Compile Include="Expression\DBAggregateFunctionExpression.cs" />
     <Compile Include="Expression\DBArithmeticExpression.cs" />
     <Compile Include="Expression\DBArithmeticExpressionOperator.cs" />
