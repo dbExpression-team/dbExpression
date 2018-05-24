@@ -15,27 +15,78 @@ namespace HTL.DbEx.TestHarness
     {
         static void Main(string[] args)
         {
-            DBExpressionEntity person = new DBExpressionEntity<Person>("dbo", "Person", null, null, null);
-            DBExpressionField<int> id = new DBExpressionField<int>(person, "Id");
-            DBExpressionField<string> firstName = new DBExpressionField<string>(person, "FirstName");
-            DBExpressionField<string> lastName = new DBExpressionField<string>(person, "LastName");
-            DBExpressionField<DateTime> createdAt = new DBExpressionField<DateTime>(person, "CreatedAt");
+            Person person = new Person() { Id = 3, FirstName = "John", LastName = "Doe" };
 
-            DBFilterExpressionSet filter = createdAt > DateTime.Now.AddDays(-1) & firstName.Like("Jer%") & id < 500;
+            var p = dbo.Person;
 
-            DBFilterExpressionSet filter2 = createdAt > DateTime.Now.AddDays(-1) & (firstName.Like("Jer%") & id < 500);
+            dbo.Insert(person).Into(p);
 
-            MsSqlConnection conn = new MsSqlConnection("htl.dbexpression.mssql");
+            dbo.Insert(new xxx() { YYY = "" }).Into(p);
 
+            dbo.Select<Person>().From(p);
 
-            List<DbParameter> parms = new List<DbParameter>();
-            string sql = filter.ToParameterizedString(parms, conn);
+            dbo.Select<string>(p.FirstName).From(p);
 
-            List<DbParameter> parms2 = new List<DbParameter>();
-            string sql2 = filter2.ToParameterizedString(parms2, conn);
+            dbo.Update(p.FirstName.Set("Jorge"), p.LastName.Set("Gonzolas")).From(p).Where(p.Id == 3);
+
+            dbo.Delete().From(p).Where(p.Id == 3);
         }
 
-        private class Person
-        { }
+        public class xxx
+        {
+            public string YYY { get; set; }
+        }
+
+        public static class dbo
+        {
+            public static IFromEntitySelector<T> Select<T>(params DBExpressionField[] fields)
+            {
+                return new EntitySelector<T>();
+            }
+
+            public static IFromEntitySelector<T> Select<T>()
+            {
+                return new EntitySelector<T>();
+            }
+
+            public static IIntoEntitySelector<T> Insert<T>(T record)
+            {
+                return new EntitySelector<T>();
+            }
+
+            public static IFromEntitySelector Update(params DBAssignmentExpression[] assignmentExpressions)
+            {
+                return new EntitySelector();
+            }
+
+            public static IFromEntitySelector Delete()
+            {
+                return new EntitySelector();
+            }
+
+            private static PersonEntity _person;
+            public static PersonEntity Person { get { return _person == null ? _person = new PersonEntity() : _person; } }
+        }
+
+        public class PersonEntity : DBExpressionEntity<Person>
+        {
+            public DBExpressionField<int> Id { get; set; }
+            public DBExpressionField<string> FirstName { get; set; }
+            public DBExpressionField<string> LastName { get; set; }
+
+            public PersonEntity() : base("dbo", "Person", null, null, null)
+            {
+                this.Id = new DBExpressionField<int>(this, "Id", 4);
+                this.Id = new DBExpressionField<int>(this, "FirstName", 20);
+                this.Id = new DBExpressionField<int>(this, "LastName", 20);
+            }
+        }
+
+        public class Person
+        {
+            public int Id { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+        }
     }
 }

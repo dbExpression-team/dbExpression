@@ -65,7 +65,7 @@ namespace HTL.DbEx.Sql.Expression
     }
 
     //TODO: JRod, need to add schema to the entity name...
-    public class DBExpressionEntity<T> : DBExpressionEntity where T : class, new()
+    public class DBExpressionEntity<T> : DBExpressionEntity
     {
         #region interface
         public Func<DBSelectExpressionSet> SelectExpressionProvider { get; set; }

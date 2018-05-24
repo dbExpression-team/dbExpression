@@ -11,18 +11,18 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class MsSqlExpressionBuilder<T> : SqlExpressionBuilder<T> where T : class, new()
+    public class MsSqlExpressionBuilder<T,Y> : SqlExpressionBuilder<T,Y> where Y : class, new()
     {
         #region interface
         internal static readonly string TotalRecordCountParamName = "@TotalCount";
         #endregion
 
         #region constructors
-        public MsSqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public MsSqlExpressionBuilder(string connectionStringName, DBExpressionEntity<Y> baseEntity) : base(connectionStringName, baseEntity)
         {
         }
 
-        public MsSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public MsSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<Y> baseEntity) : base(connectionStringSettings, baseEntity)
         {
         }
         #endregion
@@ -402,139 +402,6 @@ namespace HTL.DbEx.MsSql.Expression
         protected override int ResolveAffectedRecordCount()
         {
             return this.ResolveResultSetCount();
-        }
-        #endregion
-
-        #region utility methods
-        public override string ToGetSql()
-        {
-            base.CommandExecutionContext = ExecutionContext.Get;
-            base.ValidateExpression();
-
-            base.Expression.ClearSelect();
-            base.Expression &= BaseEntity.SelectExpressionProvider();
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-            return sql;
-        }
-
-        public override string ToGetListSql()
-        {
-            base.Expression.ClearSelect();
-            base.Expression &= BaseEntity.SelectExpressionProvider();
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-
-            return sql;
-        }
-
-        public override string ToGetValueListSql<Y>(DBSelectExpression field)
-        {
-            base.CommandExecutionContext = ExecutionContext.GetValueList;
-            base.ValidateExpression();
-
-            base.Expression.ClearSelect();
-            base.Expression &= field;
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-
-            return sql;
-        }
-
-        public override string ToGetValueSql<Y>(DBSelectExpression field)
-        {
-            base.CommandExecutionContext = ExecutionContext.GetValue;
-            base.ValidateExpression();
-
-            base.Expression.ClearSelect();
-            base.Expression &= field;
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-
-            return sql;
-        }
-
-        public override string ToGetValueTableSql()
-        {
-            base.CommandExecutionContext = ExecutionContext.GetValueTable;
-            base.ValidateExpression();
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-
-            return sql;
-        }
-
-        public override string ToInsertSql(T obj)
-        {
-            base.CommandExecutionContext = ExecutionContext.Insert;
-            base.ValidateExpression();
-
-            if (BaseEntity.InsertExpressionProvider != null)
-            {
-                base.Expression &= BaseEntity.InsertExpressionProvider(obj);
-            }
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-            return sql;
-        }
-
-        public override string ToUpdateSql()
-        {
-            base.CommandExecutionContext = ExecutionContext.Update;
-            base.ValidateExpression();
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-            return sql;
-        }
-
-        public override string ToDeleteSql()
-        {
-            base.CommandExecutionContext = ExecutionContext.Delete;
-            base.ValidateExpression();
-
-            string sql = this.AssembleSql();
-
-            sql = this.InjectParameters(sql);
-            return sql;
-        }
-
-        private string InjectParameters(string sql)
-        {
-            Type t = null;
-            for (int i = 0; i < base.DbParams.Count; i++)
-            {
-                t = base.DbParams[i].Value.GetType();
-                if (t.IsEnum)
-                {
-                    sql = sql.Replace(base.DbParams[i].ParameterName, TypeUtility.GetUnderlyingEnumIntegral(t, base.DbParams[i].Value).ToString());
-                }
-                else if (TypeUtility.IsIntegralType(t) || TypeUtility.IsDecimalType(t) || TypeUtility.IsFloatingPointType(t))
-                {
-                    sql = sql.Replace(base.DbParams[i].ParameterName, base.DbParams[i].Value.ToString());
-                }
-                else if (t == typeof(byte[]) || t == typeof(string) || t == typeof(DateTime) || t == typeof(Guid))
-                {
-                    sql = sql.Replace(base.DbParams[i].ParameterName, "'" + base.DbParams[i].Value.ToString() + "'");
-                }
-                else if (t == typeof(DBSelectExpression))
-                {
-                    sql = sql.Replace(base.DbParams[i].ParameterName, base.DbParams[i].Value.ToString());
-                }
-            }
-            return sql;
         }
         #endregion
     }
