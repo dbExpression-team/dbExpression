@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\MsSqlConnection.cs" />
+    <Compile Include="Expression\DBDeleteDirective.cs" />
     <Compile Include="Expression\DBInsertDirective{T}.cs" />
     <Compile Include="Expression\DBSelectDirective{T}.cs" />
+    <Compile Include="Expression\DBUpdateDirective.cs" />
     <Compile Include="Expression\DeleteMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\InsertMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\MsSqlBuilder.cs" />

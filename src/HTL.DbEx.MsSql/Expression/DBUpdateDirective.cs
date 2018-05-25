@@ -8,42 +8,44 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class DBInsertDirective<T>
+    public class DBUpdateDirective
     {
         #region internals
         private string _connStringName;
         private ConnectionStringSettings _connSettings;
-        private T _record;
+        private DBAssignmentExpressionSet _assignments;
         #endregion
 
         #region constructors
-        public DBInsertDirective(string connectionStringName, T record)
+        public DBUpdateDirective(string connectionStringName, params DBAssignmentExpression[] assignments)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
                 throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
             }
 
-            if (record == null)
-            {
-                throw new ArgumentNullException("parameter must contain a value", nameof(record));
-            }
-
             _connStringName = connectionStringName;
-            _record = record;
+            
             _connSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
             if (_connSettings == null)
             {
                 throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
             }
+
+            for (int i = 0; i < assignments.Length; i++)
+            {
+                _assignments &= assignments[i];
+            }
         }
         #endregion
 
         #region into
-        public InsertMsSqlBuilder<T> Into(DBExpressionEntity<T> entity)
+        public UpdateMsSqlBuilder<T> From<T>(DBExpressionEntity<T> entity)
         {
-            return new InsertMsSqlBuilder<T>(_connSettings, entity, _record);
+            var builder = new UpdateMsSqlBuilder<T>(_connSettings, entity);
+            builder.Expression &= _assignments;
+            return builder;
         }
         #endregion
     }

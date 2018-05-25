@@ -8,29 +8,23 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class DBInsertDirective<T>
+    public class DBDeleteDirective
     {
         #region internals
         private string _connStringName;
         private ConnectionStringSettings _connSettings;
-        private T _record;
         #endregion
 
         #region constructors
-        public DBInsertDirective(string connectionStringName, T record)
+        public DBDeleteDirective(string connectionStringName)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
                 throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
             }
 
-            if (record == null)
-            {
-                throw new ArgumentNullException("parameter must contain a value", nameof(record));
-            }
-
             _connStringName = connectionStringName;
-            _record = record;
+
             _connSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
             if (_connSettings == null)
@@ -41,9 +35,10 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region into
-        public InsertMsSqlBuilder<T> Into(DBExpressionEntity<T> entity)
+        public DeleteMsSqlBuilder<T> From<T>(DBExpressionEntity<T> entity)
         {
-            return new InsertMsSqlBuilder<T>(_connSettings, entity, _record);
+            var builder = new DeleteMsSqlBuilder<T>(_connSettings, entity);
+            return builder;
         }
         #endregion
     }

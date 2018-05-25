@@ -11,18 +11,18 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class MsSqlExpressionBuilder<T> : SqlExpressionBuilder
+    public class MsSqlBuilder<T> : SqlExpressionBuilder
     {
         #region interface
         public new DBExpressionEntity<T> BaseEntity { get; protected set; }
         #endregion
 
         #region constructors
-        public MsSqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public MsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
         {
         }
 
-        public MsSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public MsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
         {
             BaseEntity = baseEntity;
         }
@@ -38,48 +38,48 @@ namespace HTL.DbEx.MsSql.Expression
         #region sql assembly methods
         protected override string AssembleSql()
         {
-            string sql;
-            switch (base.CommandExecutionContext.Value)
-            {
-                case ExecutionContext.Get:
-                case ExecutionContext.GetDynamic:
-                case ExecutionContext.GetList:
-                case ExecutionContext.GetDynamicList:
-                case ExecutionContext.GetValueList:
-                case ExecutionContext.GetValue:
-                case ExecutionContext.GetValueTable:
-                    if (base.BottomValue.HasValue)
-                    {
-                        sql = this.AssembleBottomRestrictedQuery();
-                    }
-                    else if (base.SkipValue.HasValue)
-                    {
-                        sql = this.AssembleSkipTakeRestrictedQuery();
-                    }
-                    else
-                    {
-                        sql = this.AssembleQuery();
-                    }
-                    break;
-                case ExecutionContext.Insert:
-                    if (base.IsIdentityEntity)
-                    {
-                        sql = this.AssembleIdentityDBEntityInsertSql();
-                    }
-                    else
-                    {
-                        sql = this.AssembleInsertSql();
-                    }
-                    break;
-                case ExecutionContext.Update:
-                    sql = this.AssembleUpdateSql();
-                    break;
-                case ExecutionContext.Delete:
-                    sql = this.AssembleDeleteSql();
-                    break;
-                default:
-                    throw new InvalidOperationException("encountered unknown execution context: " + base.CommandExecutionContext);
-            }
+            string sql = null;
+            //switch (base.CommandExecutionContext.Value)
+            //{
+            //    case ExecutionContext.Get:
+            //    case ExecutionContext.GetDynamic:
+            //    case ExecutionContext.GetList:
+            //    case ExecutionContext.GetDynamicList:
+            //    case ExecutionContext.GetValueList:
+            //    case ExecutionContext.GetValue:
+            //    case ExecutionContext.GetValueTable:
+            //        if (base.BottomValue.HasValue)
+            //        {
+            //            sql = this.AssembleBottomRestrictedQuery();
+            //        }
+            //        else if (base.SkipValue.HasValue)
+            //        {
+            //            sql = this.AssembleSkipTakeRestrictedQuery();
+            //        }
+            //        else
+            //        {
+            //            sql = this.AssembleQuery();
+            //        }
+            //        break;
+            //    case ExecutionContext.Insert:
+            //        if (base.IsIdentityEntity)
+            //        {
+            //            sql = this.AssembleIdentityDBEntityInsertSql();
+            //        }
+            //        else
+            //        {
+            //            sql = this.AssembleInsertSql();
+            //        }
+            //        break;
+            //    case ExecutionContext.Update:
+            //        sql = this.AssembleUpdateSql();
+            //        break;
+            //    case ExecutionContext.Delete:
+            //        sql = this.AssembleDeleteSql();
+            //        break;
+            //    default:
+            //        throw new InvalidOperationException("encountered unknown execution context: " + base.CommandExecutionContext);
+            //}
 
             return sql;
         }

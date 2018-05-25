@@ -11,14 +11,14 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class SelectMsSqlExpressionBuilder<T> : MsSqlExpressionBuilder<T>
+    public class SelectMsSqlBuilder<T> : MsSqlBuilder<T>
     {
         #region constructors
-        public SelectMsSqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public SelectMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
         {
         }
 
-        public SelectMsSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public SelectMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
         {
             BaseEntity = baseEntity;
         }

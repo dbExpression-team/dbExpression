@@ -11,20 +11,24 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class InsertSqlExpressionBuilder<T> : MsSqlExpressionBuilder<T>
+    public class InsertMsSqlBuilder<T> : MsSqlBuilder<T>
     {
         #region internals
         private T _record;
         #endregion
 
         #region constructors
-        public InsertSqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public InsertMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity, T record) : base(connectionStringName, baseEntity)
         {
+            _record = record;
+            base.Expression &= baseEntity.GetInclusiveInsertExpression(record);
         }
 
-        public InsertSqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public InsertMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity, T record) : base(connectionStringSettings, baseEntity)
         {
             BaseEntity = baseEntity;
+            _record = record;
+            base.Expression &= baseEntity.GetInclusiveInsertExpression(record);
         }
         #endregion
 

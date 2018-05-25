@@ -44,8 +44,6 @@ namespace HTL.DbEx.TestHarness
             var e7 = db.Update(p.FullName.Set("Jorge"), p.PatientRefId.Set("111221212")).From(p).Where(p.Id == 3);
 
             var e8 = db.Delete().From(p).Where(p.Id == 3);
-
-            dynamic d 
         }
 
         #region db
@@ -53,51 +51,47 @@ namespace HTL.DbEx.TestHarness
         {
             public static string ConnectionStringName { get; } = "cquentia";
 
-            #region internals
-            private static MsSqlBuilderSelector _selector;
-            #endregion
 
             #region constructors
             static db()
             {
-                _selector = new MsSqlBuilderSelector(ConnectionStringName);
             }
             #endregion
 
             #region builder selectors
-            public static IFromEntitySelector<Y> Select<Y>(params DBExpressionField[] fields)
+            public static DBSelectDirective<Y> Select<Y>(params DBExpressionField[] fields)
             {
-                return _selector.Select<Y>(fields);
+                return new DBSelectDirective<Y>(ConnectionStringName, fields);
             }
 
-            public static IFromEntitySelector<T> Select<T>() where T : class, new()
+            public static DBSelectDirective<T> Select<T>() where T : class, new()
             {
-                return _selector.Select<T>();
+                return new DBSelectDirective<T>(ConnectionStringName);
             }
 
-            public static IFromEntitySelector<T> Select<T>(DBSelectExpression select)
+            public static DBSelectDirective<Y> Select<Y>(DBSelectExpression select)
             {
-                return _selector.Select<T>();
+                return new DBSelectDirective<Y>(ConnectionStringName, select);
             }
 
-            public static IFromEntitySelector Select()
+            public static DBSelectDirective Select()
             {
-                return _selector.Select();
+                return new DBSelectDirective(ConnectionStringName);
             }
 
-            public static IIntoEntitySelector<T> Insert<T>(T record)
+            public static DBInsertDirective<T> Insert<T>(T record)
             {
-                return _selector.Insert<T>(record);
+                return new DBInsertDirective<T>(ConnectionStringName, record);
             }
 
-            public static IFromEntitySelector Update(params DBAssignmentExpression[] assignmentExpressions)
+            public static DBUpdateDirective Update(params DBAssignmentExpression[] assignments)
             {
-                return _selector.Update(assignmentExpressions);
+                return new DBUpdateDirective(ConnectionStringName, assignments);
             }
 
-            public static IFromEntitySelector Delete()
+            public static DBDeleteDirective Delete()
             {
-                return _selector.Delete();
+                return new DBDeleteDirective(ConnectionStringName);
             }
             #endregion
         }
