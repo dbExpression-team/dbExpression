@@ -6,31 +6,24 @@ using System.Configuration;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    //T1 is the return type on Execute() ... T2 is the type of record of the base table
-    public abstract class SqlExpressionBuilder<T1,T2> where T2 : class, new()
+    public abstract class SqlExpressionBuilder
     {
         #region internals
         private SqlConnection _sqlDbClient;
         protected readonly ConnectionStringSettings ConnectionStringSettings;
 
-        protected bool IsIdentityEntity { get; private set; }
-        protected bool IsDistinct { get; private set; }
-        protected int? TopValue { get; private set; }
-        protected int? BottomValue { get; private set; }
-        protected int? SkipValue { get; private set; }
-        protected bool GetTotalCount { get; private set; }
-        protected int? TotalCountValue { get; private set; }
-        protected bool IsValidated { get; private set; }
+        protected bool IsDistinct { get; set; }
+        protected int? TopValue { get; set; }
+        protected int? SkipValue { get; set; }
+        public int? LimitValue { get; set; }
+        protected int? BottomValue { get; set; }
+        protected bool IsValidated { get; set; }
         protected List<DbParameter> DbParams { get; } = new List<DbParameter>();
         protected ExecutionContext? CommandExecutionContext { get; set; }
-        public int? LimitValue { get; internal set; }
-
-        //HACK: Jrod, will move to concrete insert builder...
-        public T1 InsertRecord { get; set; }
         #endregion
 
-        #region interface properties
-        public DBExpressionEntity<T2> BaseEntity { get; protected set; }
+        #region interface
+        public DBExpressionEntity BaseEntity { get; protected set; }
 
         public DBExpressionSet Expression { get; set; } = new DBExpressionSet();
 
@@ -49,26 +42,27 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T2> baseEntity) 
-             : this(ConfigurationManager.ConnectionStrings[connectionStringName], baseEntity)
+        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity baseEntity)  : this(ConfigurationManager.ConnectionStrings[connectionStringName], baseEntity)
         {
         }
 
-        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T2> baseEntity)
+        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity)
         {
             ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentNullException(nameof(connectionStringSettings));
             BaseEntity = baseEntity;
         }
         #endregion
 
-        #region query build methods
-        public virtual SqlExpressionBuilder<T1,T2> Enlist(SqlConnection sqlClient)
+        #region enlist
+        public virtual SqlExpressionBuilder Enlist(SqlConnection sqlClient)
         {
             this.SqlClient = sqlClient;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> Select(params DBSelectExpression[] selectExpressions)
+        #region select
+        public virtual SqlExpressionBuilder Select(params DBSelectExpression[] selectExpressions)
         {
             for (int i = 0; i < selectExpressions.Length; i++)
             {
@@ -76,20 +70,26 @@ namespace HTL.DbEx.Sql.Expression
             }
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> Select(DBSelectExpressionSet selectExpressionSet)
-        {
-            Expression &= selectExpressionSet;
-            return this;
-        }
-
-        public virtual SqlExpressionBuilder<T1,T2> Distinct()
+        #region distinct
+        public virtual SqlExpressionBuilder Distinct()
         {
             IsDistinct = true;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> SetFields(params DBAssignmentExpression[] assignmentExpressions)
+        #region skip
+        public virtual DBSkipDirective Skip(int count)
+        {
+            SkipValue = count;
+            return new DBSkipDirective(this);
+        }
+        #endregion
+
+        #region set fields
+        public virtual SqlExpressionBuilder SetFields(params DBAssignmentExpression[] assignmentExpressions)
         {
             for (int i = 0; i < assignmentExpressions.Length; i++)
             {
@@ -97,26 +97,34 @@ namespace HTL.DbEx.Sql.Expression
             }
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> SetFields(DBAssignmentExpressionSet assignmentExpressionSet)
+        #region set fields
+        public virtual SqlExpressionBuilder SetFields(DBAssignmentExpressionSet assignmentExpressionSet)
         {
             Expression &= assignmentExpressionSet;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> Where(DBFilterExpressionSet filter)
+        #region where 
+        public virtual SqlExpressionBuilder Where(DBFilterExpressionSet filter)
         {
             Expression &= filter;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> OrderBy(DBOrderByExpressionSet orderBy)
+        #region order by
+        public virtual SqlExpressionBuilder OrderBy(DBOrderByExpressionSet orderBy)
         {
             Expression &= orderBy;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> GroupBy(params DBGroupByExpression[] groupBy)
+        #region group by
+        public virtual SqlExpressionBuilder GroupBy(params DBGroupByExpression[] groupBy)
         {
             foreach (DBGroupByExpression g in groupBy)
             {
@@ -124,346 +132,62 @@ namespace HTL.DbEx.Sql.Expression
             }
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> Having(DBHavingExpression havingCondition)
+        #region having
+        public virtual SqlExpressionBuilder Having(DBHavingExpression havingCondition)
         {
             Expression &= havingCondition;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> Top(int count)
+        #region top
+        public virtual SqlExpressionBuilder Top(int count)
         {
             TopValue = count;
             return this;
         }
+        #endregion
 
-        public virtual SqlExpressionBuilder<T1,T2> Bottom(int count)
+        #region bottom
+        public virtual SqlExpressionBuilder Bottom(int count)
         {
             BottomValue = count;
             return this;
         }
+        #endregion
 
-        public virtual DBSkipDirective<T1,T2> Skip(int count)
+        #region inner join
+        public virtual DBJoinDirective InnerJoin(DBExpressionEntity joinTo)
         {
-            SkipValue = count;
-            return new DBSkipDirective<T1,T2>(this);
-        }
-
-        public virtual DBJoinDirective<T1,T2> InnerJoin(DBExpressionEntity<T1> joinTo)
-        {
-            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.INNER);
-        }
-
-        public virtual DBJoinDirective<T1,T2> LeftJoin(DBExpressionEntity<T1> joinTo)
-        {
-            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.LEFT);
-        }
-
-        public virtual DBJoinDirective<T1,T2> RightJoin(DBExpressionEntity<T1> joinTo)
-        {
-            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.RIGHT);
-        }
-
-        public virtual DBJoinDirective<T1,T2> FullJoin(DBExpressionEntity<T1> joinTo)
-        {
-            return new DBJoinDirective<T1,T2>(this, joinTo, DBExpressionJoinType.FULL);
-        }
-
-        //TODO: Cross join does not have any condition, chanage to not return join directive, JRod...
-        public virtual DBJoinDirective<T1,T2> CrossJoin(DBExpressionEntity<T1> joinTo)
-        {
-            throw new NotImplementedException();
-            //return new DBJoinDirective<T>(this, joinTo, DBExpressionJoinType.CROSS);
+            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.INNER);
         }
         #endregion
 
-        #region execution methods
-        public T2 Get()
+        #region left join
+        public virtual DBJoinDirective LeftJoin(DBExpressionEntity joinTo)
         {
-            CommandExecutionContext = ExecutionContext.Get;
-            this.ValidateExpression();
-
-            Expression.ClearSelect();
-            Expression &= BaseEntity.GetInclusiveSelectExpression();
-
-            string sql = this.AssembleSql();
-
-            T2 obj = this.SqlClient.ExecuteObject<T2>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
-            return obj;
-        }
-
-        public dynamic GetDynamic()
-        {
-            CommandExecutionContext = ExecutionContext.GetDynamic;
-            this.ValidateExpression();
-
-            if (Expression.Select == null)
-            {
-                Expression &= BaseEntity.GetInclusiveSelectExpression();
-            }
-
-            string sql = this.AssembleSql();
-
-            var obj = this.SqlClient.ExecuteDynamic(sql, DbCommandType.SqlText, DbParams);
-            return obj;
-        }
-
-        public IList<T2> GetList(out int resultSetCount)
-        {
-            TotalCountValue = null;
-            GetTotalCount = true;
-            IList<T2> tmp = this.GetList();
-            resultSetCount = TotalCountValue ?? -1;
-            return tmp;
-        }
-
-        public IList<T2> GetList()
-        {
-            CommandExecutionContext = ExecutionContext.GetList;
-            this.ValidateExpression();
-
-            Expression.ClearSelect();
-            Expression &= BaseEntity.GetInclusiveSelectExpression();
-
-            string sql = this.AssembleSql();
-
-            IList<T2> lst = this.SqlClient.ExecuteObjectList<T2>(sql, DbCommandType.SqlText, DbParams, BaseEntity.FillObject);
-
-            if (GetTotalCount)
-            {
-                TotalCountValue = this.ResolveResultSetCount();
-            }
-
-            //TODO: holy crap... technically T1 and T2 are exactly the same when exe context is GetList
-            return lst;
-        }
-
-        public IList<dynamic> GetDynamicList(out int resultSetCount)
-        {
-            TotalCountValue = null;
-            GetTotalCount = true;
-            IList<dynamic> tmp = this.GetDynamicList();
-            resultSetCount = TotalCountValue ?? -1;
-            return tmp;
-        }
-
-        public IList<dynamic> GetDynamicList()
-        {
-            CommandExecutionContext = ExecutionContext.GetDynamicList;
-            this.ValidateExpression();
-
-            if (Expression.Select == null)
-            {
-                Expression &= BaseEntity.GetInclusiveSelectExpression();
-            }
-
-            string sql = this.AssembleSql();
-
-            IList<dynamic> lst = this.SqlClient.ExecuteDynamicList(sql, DbCommandType.SqlText, DbParams);
-
-            if (GetTotalCount)
-            {
-                TotalCountValue = this.ResolveResultSetCount();
-            }
-
-            return lst;
-        }
-
-        public IList<Y> GetValueList<Y>(DBSelectExpression select, out int resultSetCount)
-        {
-            TotalCountValue = null;
-            GetTotalCount = true;
-            IList<Y> tmp = this.GetValueList<Y>(select);
-            resultSetCount = TotalCountValue ?? -1;
-            return tmp;
-        }
-
-        public IList<Y> GetValueList<Y>(DBSelectExpression select)
-        {
-            CommandExecutionContext = ExecutionContext.GetValueList;
-            this.ValidateExpression();
-
-            Expression.ClearSelect();
-            Expression &= select;
-
-            string sql = this.AssembleSql();
-
-            IList<Y> lst = this.SqlClient.ExecuteValueList<Y>(sql, DbCommandType.SqlText, DbParams);
-
-            if (GetTotalCount)
-            {
-                TotalCountValue = this.ResolveResultSetCount();
-            }
-
-            return lst;
-        }
-
-        public IList<Y> GetValueList<Y>(DBExpressionField<T1> field)
-        {
-            return this.GetValueList<Y>(new DBSelectExpression(field));
-        }
-
-        public IList<Y> GetValueList<Y>(DBExpressionField<Y> field, out int resultSetCount)
-        {
-            return this.GetValueList<Y>(new DBSelectExpression(field), out resultSetCount);
-        }
-
-        public Y GetValue<Y>(DBSelectExpression select)
-        {
-            CommandExecutionContext = ExecutionContext.GetValue;
-            this.ValidateExpression();
-
-            Expression.ClearSelect();
-            Expression &= select;
-
-            string sql = this.AssembleSql();
-
-            object val = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
-
-            return (val == null) ? default(Y) : (Y)val;
-        }
-
-        public Y GetValue<Y>(DBExpressionField<T1> field)
-        {
-            return this.GetValue<Y>(new DBSelectExpression(field));
-        }
-
-        public DataTable GetValueTable(out int resultSetCount)
-        {
-            TotalCountValue = null;
-            GetTotalCount = true;
-            DataTable tmp = this.GetValueTable();
-            resultSetCount = TotalCountValue ?? -1;
-            return tmp;
-        }
-
-        public DataTable GetValueTable()
-        {
-            CommandExecutionContext = ExecutionContext.GetValueTable;
-            this.ValidateExpression();
-
-            string sql = this.AssembleSql();
-
-            DataTable dt = this.SqlClient.ExecuteDataTable(sql, DbCommandType.SqlText, DbParams);
-
-            if (GetTotalCount)
-            {
-                TotalCountValue = this.ResolveResultSetCount();
-            }
-
-            return dt;
-        }
-
-        public void Insert(T2 obj)
-        {
-            CommandExecutionContext = ExecutionContext.Insert;
-            this.ValidateExpression();
-
-            Expression &= BaseEntity.GetInclusiveInsertExpression(obj);
-
-            IsIdentityEntity = (obj is IIdentityDBEntity);
-            string sql = this.AssembleSql();
-            if (IsIdentityEntity)
-            {
-                object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
-
-                I32BitIdentityDBEntity identity32 = (obj as I32BitIdentityDBEntity);
-                if (identity32 != null)
-                {
-                    identity32.Id = Convert.ToInt32(o);
-                }
-                else
-                {
-                    I64BitIdentityDBEntity identity64 = (obj as I64BitIdentityDBEntity);
-                    if (identity64 != null)
-                    {
-                        identity64.Id = Convert.ToInt64(o);
-                    }
-                    else
-                    {
-                        IU32BitIdentityDBEntity uIdentity32 = (obj as IU32BitIdentityDBEntity);
-                        if (uIdentity32 != null)
-                        {
-                            uIdentity32.Id = Convert.ToUInt32(o);
-                        }
-                        else //must be u 64 bit identity
-                        {
-                            (obj as IU64BitIdentityDBEntity).Id = Convert.ToUInt64(o);
-                        }
-                    }
-
-                }
-            }
-            else
-            {
-                this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
-            }
-        }
-
-        public void Update(out int affectedRecordCount)
-        {
-            TotalCountValue = null;
-            GetTotalCount = true;
-            this.Update();
-            affectedRecordCount = TotalCountValue ?? -1;
-        }
-
-        public void Update()
-        {
-            CommandExecutionContext = ExecutionContext.Update;
-            this.ValidateExpression();
-
-            string sql = this.AssembleSql();
-
-            this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
-
-            if (GetTotalCount)
-            {
-                TotalCountValue = this.ResolveAffectedRecordCount();
-            }
-        }
-
-        public void Delete(out int affectedRecordCount)
-        {
-            TotalCountValue = null;
-            GetTotalCount = true;
-            this.Delete();
-            affectedRecordCount = TotalCountValue ?? -1;
-        }
-
-        public void Delete()
-        {
-            CommandExecutionContext = ExecutionContext.Delete;
-            this.ValidateExpression();
-
-            string sql = this.AssembleSql();
-
-            this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
-
-            if (GetTotalCount)
-            {
-                TotalCountValue = this.ResolveAffectedRecordCount();
-            }
+            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.LEFT);
         }
         #endregion
 
-        #region set execution context
-        public void SetExecutionContext(ExecutionContext context)
+        #region right join
+        public virtual DBJoinDirective RightJoin(DBExpressionEntity joinTo)
         {
-            CommandExecutionContext = context;
+            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.RIGHT);
+        }
+        #endregion
+
+        #region full join
+        public virtual DBJoinDirective FullJoin(DBExpressionEntity joinTo)
+        {
+            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.FULL);
         }
         #endregion
 
         #region assemble sql
         protected abstract string AssembleSql();
-        #endregion
-
-        #region resolve result set count
-        protected abstract int ResolveResultSetCount();
-        #endregion
-
-        #region resolve affected record count
-        protected abstract int ResolveAffectedRecordCount();
         #endregion
 
         #region expression validation
@@ -609,25 +333,235 @@ namespace HTL.DbEx.Sql.Expression
         }
         #endregion
 
+        #region get T
+        public virtual T Get<T>(Action<T, object[]> fill) where T : class, new()
+        {
+            CommandExecutionContext = ExecutionContext.Get;
+            //TODO: Jrod, in validation throw exception if select expression is null...
+            //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
+            this.ValidateExpression();
+
+            //Expression.ClearSelect();
+            //Expression &= BaseEntity.GetInclusiveSelectExpression();
+
+            string sql = this.AssembleSql();
+
+            T obj = this.SqlClient.ExecuteObject<T>(sql, DbCommandType.SqlText, DbParams, fill);
+            return obj;
+        }
+        #endregion
+
+        #region get list <T>
+        public virtual IList<T> GetList<T>(Action<T, object[]> fill) where T : class, new()
+        {
+            CommandExecutionContext = ExecutionContext.GetList;
+            //TODO: Jrod, in validation throw exception if select expression is null...
+            //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
+            this.ValidateExpression();
+
+            //Expression.ClearSelect();
+            //Expression &= BaseEntity.GetInclusiveSelectExpression();
+
+            string sql = this.AssembleSql();
+
+            IList<T> lst = this.SqlClient.ExecuteObjectList<T>(sql, DbCommandType.SqlText, DbParams, fill);
+
+            return lst;
+        }
+        #endregion
+
+        #region get dynamic
+        public virtual dynamic GetDynamic()
+        {
+            CommandExecutionContext = ExecutionContext.GetDynamic;
+            //TODO: Jrod, in validation throw exception if select expression is null...
+            //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
+            this.ValidateExpression();
+
+            //if (Expression.Select == null)
+            //{
+            //    Expression &= BaseEntity.GetInclusiveSelectExpression();
+            //}
+
+            string sql = this.AssembleSql();
+
+            var obj = this.SqlClient.ExecuteDynamic(sql, DbCommandType.SqlText, DbParams);
+            return obj;
+        }
+        #endregion
+
+        #region get dynamic list
+        public virtual IList<dynamic> GetDynamicList()
+        {
+            CommandExecutionContext = ExecutionContext.GetDynamicList;
+            //TODO: Jrod, in validation throw exception if select expression is null...
+            //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
+            this.ValidateExpression();
+
+            //if (Expression.Select == null)
+            //{
+            //    Expression &= BaseEntity.GetInclusiveSelectExpression();
+            //}
+
+            string sql = this.AssembleSql();
+
+            IList<dynamic> lst = this.SqlClient.ExecuteDynamicList(sql, DbCommandType.SqlText, DbParams);
+
+            return lst;
+        }
+        #endregion
+
+        #region get value list <Y>
+        public virtual IList<Y> GetValueList<Y>(DBSelectExpression select)
+        {
+            CommandExecutionContext = ExecutionContext.GetValueList;
+            this.ValidateExpression();
+
+            Expression.ClearSelect();
+            Expression &= select;
+
+            string sql = this.AssembleSql();
+
+            IList<Y> lst = this.SqlClient.ExecuteValueList<Y>(sql, DbCommandType.SqlText, DbParams);
+
+            return lst;
+        }
+
+        public virtual IList<Y> GetValueList<Y>(DBExpressionField<Y> field)
+        {
+            return this.GetValueList<Y>(new DBSelectExpression(field));
+        }
+        #endregion
+
+        #region get value
+        public virtual Y GetValue<Y>(DBSelectExpression select)
+        {
+            CommandExecutionContext = ExecutionContext.GetValue;
+            this.ValidateExpression();
+
+            Expression.ClearSelect();
+            Expression &= select;
+
+            string sql = this.AssembleSql();
+
+            object val = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
+
+            return (val == null) ? default(Y) : (Y)val;
+        }
+
+        public virtual Y GetValue<Y>(DBExpressionField<Y> field)
+        {
+            return this.GetValue<Y>(new DBSelectExpression(field));
+        }
+        #endregion
+
+        #region get value table
+        public virtual DataTable GetValueTable()
+        {
+            CommandExecutionContext = ExecutionContext.GetValueTable;
+            this.ValidateExpression();
+
+            string sql = this.AssembleSql();
+
+            DataTable dt = this.SqlClient.ExecuteDataTable(sql, DbCommandType.SqlText, DbParams);
+
+            return dt;
+        }
+        #endregion
+
+        #region insert
+        public virtual void Insert<T>(T record)
+        {
+            CommandExecutionContext = ExecutionContext.Insert;
+            //TODO: Jrod, in validation throw exception if insert expression is null...
+            //it is concrete impl responsibility to get the inclusive insert expression as we DO NOT have typed DbExpressionEntity at this level...
+            this.ValidateExpression();
+
+            //Expression &= BaseEntity.GetInclusiveInsertExpression(obj);
+
+            bool isIdentity = (record is IIdentityDBEntity);
+            string sql = this.AssembleSql();
+            if (isIdentity)
+            {
+                object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
+
+                I32BitIdentityDBEntity identity32 = (record as I32BitIdentityDBEntity);
+                if (identity32 != null)
+                {
+                    identity32.Id = Convert.ToInt32(o);
+                }
+                else
+                {
+                    I64BitIdentityDBEntity identity64 = (record as I64BitIdentityDBEntity);
+                    if (identity64 != null)
+                    {
+                        identity64.Id = Convert.ToInt64(o);
+                    }
+                    else
+                    {
+                        IU32BitIdentityDBEntity uIdentity32 = (record as IU32BitIdentityDBEntity);
+                        if (uIdentity32 != null)
+                        {
+                            uIdentity32.Id = Convert.ToUInt32(o);
+                        }
+                        else //must be u 64 bit identity
+                        {
+                            (record as IU64BitIdentityDBEntity).Id = Convert.ToUInt64(o);
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
+            }
+        }
+        #endregion
+
+        #region update
+        public virtual void Update()
+        {
+            CommandExecutionContext = ExecutionContext.Update;
+            this.ValidateExpression();
+
+            string sql = this.AssembleSql();
+
+            this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
+        }
+        #endregion
+
+        #region delete
+        public virtual void Delete()
+        {
+            CommandExecutionContext = ExecutionContext.Delete;
+            this.ValidateExpression();
+
+            string sql = this.AssembleSql();
+
+            this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
+        }
+        #endregion
+
         #region get sql connection
         protected abstract SqlConnection GetSqlConnection();
         #endregion
-    }
 
-    #region contained enums
-    public enum ExecutionContext : int
-    {
-        Get,
-        GetDynamic,
-        GetList,
-        GetDynamicList,
-        GetValueList,
-        GetValue,
-        GetValueTable,
-        //InsertParams,
-        Insert,
-        Update,
-        Delete
+        #region contained enums
+        public enum ExecutionContext : int
+        {
+            Get,
+            GetDynamic,
+            GetList,
+            GetDynamicList,
+            GetValueList,
+            GetValue,
+            GetValueTable,
+            //InsertParams,
+            Insert,
+            Update,
+            Delete
+        }
+        #endregion
     }
-    #endregion
 }

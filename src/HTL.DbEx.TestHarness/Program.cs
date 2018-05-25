@@ -37,11 +37,15 @@ namespace HTL.DbEx.TestHarness
 
             var e5 = db.Select<int>(p.Id).From(p);
 
+            var xxx = db.Select<dynamic>(p.Id).From(p);
+
             var e6 = db.Select<string>((p.FullName + " " + p.PatientRefId).As("FullName")).From(p);
 
             var e7 = db.Update(p.FullName.Set("Jorge"), p.PatientRefId.Set("111221212")).From(p).Where(p.Id == 3);
 
             var e8 = db.Delete().From(p).Where(p.Id == 3);
+
+            dynamic d 
         }
 
         #region db
@@ -50,20 +54,25 @@ namespace HTL.DbEx.TestHarness
             public static string ConnectionStringName { get; } = "cquentia";
 
             #region internals
-            private static MsSqlExpressionBuilderSelector _selector;
+            private static MsSqlBuilderSelector _selector;
             #endregion
 
             #region constructors
             static db()
             {
-                _selector = new MsSqlExpressionBuilderSelector(ConnectionStringName);
+                _selector = new MsSqlBuilderSelector(ConnectionStringName);
             }
             #endregion
 
             #region builder selectors
-            public static IFromEntitySelector<T> Select<T>(params DBExpressionField[] fields)
+            public static IFromEntitySelector<Y> Select<Y>(params DBExpressionField[] fields)
             {
-                return _selector.Select<T>(fields);
+                return _selector.Select<Y>(fields);
+            }
+
+            public static IFromEntitySelector<T> Select<T>() where T : class, new()
+            {
+                return _selector.Select<T>();
             }
 
             public static IFromEntitySelector<T> Select<T>(DBSelectExpression select)

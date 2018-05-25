@@ -12,7 +12,7 @@ using HTL.DbEx.Sql.Expression;
 namespace HTL.DbEx.MsSql.Expression
 {
     #region ms sql expression builder selector
-    public class MsSqlExpressionBuilderSelector
+    public class MsSqlBuilderSelector
     {
         #region internals
         private ConnectionStringSettings _connSettings;
@@ -23,7 +23,7 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region constructors
-        public MsSqlExpressionBuilderSelector(string connectionStringName)
+        public MsSqlBuilderSelector(string connectionStringName)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
@@ -101,21 +101,21 @@ namespace HTL.DbEx.MsSql.Expression
     #region i from entity selector <T>
     public interface IFromEntitySelector<T>
     {
-        MsSqlExpressionBuilder<T,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new();
+        MsSqlExpressionBuilder<Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new();
     }
     #endregion
 
     #region i from entity selector
     public interface IFromEntitySelector
     {
-        MsSqlExpressionBuilder<Y,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new();
+        MsSqlExpressionBuilder<T> From<T>(DBExpressionEntity<T> from) where T : class, new();
     }
     #endregion
 
     #region i into entity selector <T>
     public interface IIntoEntitySelector<T>
     {
-        MsSqlExpressionBuilder<T,Y> Into<Y>(DBExpressionEntity<Y> from) where Y : class, new();
+        MsSqlExpressionBuilder<T> Into<T>(DBExpressionEntity<T> from) where Y : class, new();
     }
     #endregion
 
@@ -141,9 +141,9 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region from
-        public MsSqlExpressionBuilder<Y, Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        public MsSqlExpressionBuilder<T> From<T>(DBExpressionEntity<T> from) where T : class, new()
         {
-            var builder = new MsSqlExpressionBuilder<Y, Y>(ConnectionSettings, from);
+            var builder = new MsSqlExpressionBuilder<T>(ConnectionSettings, from);
             builder.Expression = this.ExpressionSet;
             return builder;
         }
@@ -174,18 +174,18 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region from
-        public new MsSqlExpressionBuilder<T,Y> From<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        public new MsSqlExpressionBuilder<T> From<T>(DBExpressionEntity<T> from) where T : class, new()
         {
-            var builder =  new MsSqlExpressionBuilder<T,Y>(base.ConnectionSettings, from);
+            var builder =  new MsSqlExpressionBuilder<T>(base.ConnectionSettings, from);
             builder.Expression = base.ExpressionSet;
             return builder;
         }
         #endregion
 
         #region into
-        public new MsSqlExpressionBuilder<T, Y> Into<Y>(DBExpressionEntity<Y> from) where Y : class, new()
+        public MsSqlExpressionBuilder<T> Into<T>(DBExpressionEntity<T> from) where T : class, new()
         {
-            var builder = new MsSqlExpressionBuilder<T, Y>(base.ConnectionSettings, from);
+            var builder = new MsSqlExpressionBuilder<T>(base.ConnectionSettings, from);
             builder.Expression = base.ExpressionSet;
             builder.InsertRecord = _recForInsert;
             return builder;

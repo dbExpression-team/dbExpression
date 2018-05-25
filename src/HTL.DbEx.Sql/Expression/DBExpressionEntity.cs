@@ -25,6 +25,10 @@ namespace HTL.DbEx.Sql.Expression
         }
         #endregion
 
+        #region join
+        public DBJoinExpression Join(DBExpressionJoinType joinType, DBFilterExpression joinCondition) => new DBJoinExpression(this, joinType, joinCondition);
+        #endregion
+
         #region to string
         public override string ToString() => this.IsCorrelated ? this.AliasName : this.ToString("[s].[e]");
 
@@ -108,8 +112,6 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region join
-        public DBJoinExpression Join(DBExpressionJoinType joinType, DBFilterExpression joinCondition) => new DBJoinExpression(this, joinType, joinCondition);
-
         public abstract DBSelectExpressionSet GetInclusiveSelectExpression();
 
         public abstract DBInsertExpressionSet GetInclusiveInsertExpression(T entity);

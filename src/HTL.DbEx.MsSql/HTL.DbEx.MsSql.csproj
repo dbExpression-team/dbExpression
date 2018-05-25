@@ -43,8 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\MsSqlConnection.cs" />
-    <Compile Include="Expression\MsSqlExpressionBuilder.cs" />
-    <Compile Include="Expression\MsSqlExpressionBuilderSelector.cs" />
+    <Compile Include="Expression\DBInsertDirective{T}.cs" />
+    <Compile Include="Expression\DBSelectDirective{T}.cs" />
+    <Compile Include="Expression\DeleteMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\InsertMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\MsSqlBuilder.cs" />
+    <Compile Include="Expression\MsSqlBuilderSelector.cs" />
+    <Compile Include="Expression\SelectEntityMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\SelectMsSqlBuilder.cs" />
+    <Compile Include="Expression\SelectValueMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\UpdateMsSqlBuilder{T}.cs" />
     <Compile Include="ObjectMap\MsSqlEntity.cs" />
     <Compile Include="ObjectMap\MsSqlField.cs" />
     <Compile Include="ObjectMap\MsSqlModel.cs" />
