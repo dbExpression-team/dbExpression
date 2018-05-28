@@ -1,5 +1,5 @@
 ﻿
-namespace HTL.DbEx.Sql.Expression
+namespace HTL.DbEx.Sql
 {
     public interface I32BitIdentityDBEntity : IIdentityDBEntity
     {

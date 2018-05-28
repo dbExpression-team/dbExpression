@@ -14,18 +14,24 @@ namespace HTL.DbEx.MsSql.Expression
     public class SelectMsSqlBuilder<T> : MsSqlBuilder<T>
     {
         #region constructors
-        public SelectMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public SelectMsSqlBuilder(string connectionStringName, DBExpressionEntity baseEntity, ExecutionContext context) : base(connectionStringName, baseEntity, context)
         {
         }
 
-        public SelectMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public SelectMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity, ExecutionContext context) : base(connectionStringSettings, baseEntity, context)
         {
-            BaseEntity = baseEntity;
+        }
+        #endregion
+
+        #region validate
+        protected override void Validate()
+        {
+            base.Validate();
         }
         #endregion
 
         #region assemble query
-        private string AssembleQuery()
+        protected string AssembleQuery()
         {
             string select = string.Empty;
             string where = string.Empty;
@@ -81,7 +87,7 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region assemble skip take restricted query
-        private string AssembleSkipTakeRestrictedQuery()
+        protected string AssembleSkipTakeRestrictedQuery()
         {
             string select = string.Empty;
             string where = string.Empty;

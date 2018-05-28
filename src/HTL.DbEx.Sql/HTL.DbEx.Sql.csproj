@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\SqlConnection.cs" />
+    <Compile Include="IDBEntity.cs" />
     <Compile Include="IIdentityDBEntity.cs" />
     <Compile Include="DbCommandType.cs" />
     <Compile Include="Expression\Builder\SqlExpressionBuilder.cs" />
@@ -79,8 +80,6 @@
     <Compile Include="Expression\DBSelectExpressionSet.cs" />
     <Compile Include="Expression\DBSkipDirective.cs" />
     <Compile Include="Expression\IDBExpression.cs" />
-    <Compile Include="IU64BitIdentityDBEntity.cs" />
-    <Compile Include="IU32BitIdentityDBEntity.cs" />
     <Compile Include="I64BitIdentityDBEntity.cs" />
     <Compile Include="I32BitIdentityDBEntity.cs" />
     <Compile Include="ObjectMap\SqlModel.cs" />

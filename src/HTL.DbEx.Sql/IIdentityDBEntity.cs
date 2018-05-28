@@ -1,6 +1,6 @@
 ﻿namespace HTL.DbEx.Sql
 {
-    public interface IIdentityDBEntity
+    public interface IIdentityDBEntity : IDBEntity
     {
     }
 }

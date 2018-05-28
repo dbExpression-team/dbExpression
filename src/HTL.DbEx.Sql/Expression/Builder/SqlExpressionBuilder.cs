@@ -17,12 +17,12 @@ namespace HTL.DbEx.Sql.Expression
         protected int? SkipValue { get; set; }
         public int? LimitValue { get; set; }
         protected int? BottomValue { get; set; }
-        protected bool IsValidated { get; set; }
         protected List<DbParameter> DbParams { get; } = new List<DbParameter>();
-        protected ExecutionContext? CommandExecutionContext { get; set; }
         #endregion
 
         #region interface
+        public ExecutionContext Context { get; private set; }
+
         public DBExpressionEntity BaseEntity { get; protected set; }
 
         public DBExpressionSet Expression { get; set; } = new DBExpressionSet();
@@ -42,14 +42,15 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity baseEntity)  : this(ConfigurationManager.ConnectionStrings[connectionStringName], baseEntity)
+        public SqlExpressionBuilder(string connectionStringName, DBExpressionEntity baseEntity, ExecutionContext context)  : this(ConfigurationManager.ConnectionStrings[connectionStringName], baseEntity, context)
         {
         }
 
-        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity)
+        public SqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity, ExecutionContext context)
         {
             ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentNullException(nameof(connectionStringSettings));
             BaseEntity = baseEntity;
+            Context = context;
         }
         #endregion
 
@@ -186,18 +187,10 @@ namespace HTL.DbEx.Sql.Expression
         }
         #endregion
 
-        #region assemble sql
-        protected abstract string AssembleSql();
-        #endregion
-
-        #region expression validation
-        protected virtual void ValidateExpression()
+        #region validate
+        protected virtual void Validate()
         {
-            //Only do validation 1 time to ensure any concrete classes can call validate, then make
-            //adjustments without future validation conflicts...
-            if (IsValidated) { return; }
-
-            if (!CommandExecutionContext.HasValue)
+            if (Context == ExecutionContext.None)
             {
                 throw new InvalidOperationException("ExecutionContext was not set for the data service execution request.  Concrete classes that override execution methods must set 'CommandExecutionContext' prior to calling 'ValidateExpression'.");
             }
@@ -219,132 +212,37 @@ namespace HTL.DbEx.Sql.Expression
                 throw new InvalidOperationException("Cannot perform the 'Bottom' or 'Skip/Take' expressions without specifying an 'OrderBy' clause.  This query utilizes a sql ranking function 'Row_Number', which requires an OrderBy clause.");
             }
 
-            switch (CommandExecutionContext.Value)
+            switch (Context)
             {
                 case ExecutionContext.Get:
-                    if (Expression.Select != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'Get' execution context failed.  'Get' returns 1 fully loaded business object and does not allow a consumer to specify specific fields for selection.");
-                    }
-                    //if (BaseEntity.SelectExpressionProvider == null)
-                    //{
-                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
-                    //}
-                    break;
                 case ExecutionContext.GetDynamic:
-                    //if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
-                    //{
-                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
-                    //}
-                    break;
                 case ExecutionContext.GetList:
-                    if (Expression.Select != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'GetList' execution context failed.  'GetList' returns a List where T is a fully loaded business object and does not allow a consumer to specify specific fields for selection.  Try using 'GetValueTable'.");
-                    }
-                    //if (BaseEntity.SelectExpressionProvider == null)
-                    //{
-                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetList' execution context.");
-                    //}
-                    break;
                 case ExecutionContext.GetDynamicList:
-                    //if (Expression.Select == null && BaseEntity.SelectExpressionProvider == null)
-                    //{
-                    //    throw new InvalidOperationException("No 'MasterSelectExpressionProvider' was provided during construction of this expression builder.  A 'MasterSelectExpressionProvider' delegate is required within the 'GetDynamic' execution context for queries which do not have an explicit select expression set.");
-                    //}
-                    break;
                 case ExecutionContext.GetValueList:
-                    if (Expression.Select != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'GetValueList' execution context failed.  'GetValueList' returns a List for the field specified in parameter 'field' and does not allow a consumer to specify specific fields for selection.");
-                    }
-                    break;
                 case ExecutionContext.GetValue:
-                    if (SkipValue.HasValue && LimitValue.Value > 1)
-                    {
-                        throw new InvalidOperationException("An attempt to execute a Skip/Take expression within a 'GetValue' execution context failed.  'GetValue' returns only a single value and the Take declaration was > 1.");
-                    }
-                    if (Expression.Select != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'GetValue' execution context failed.  'GetValue' returns a single value that represents the field specified in parameter 'field' and does not allow a consumer to specify specific fields for selection.");
-                    }
-                    break;
                 case ExecutionContext.GetValueTable:
-                    if (Expression.Select == null)
-                    {
-                        throw new InvalidOperationException("An attempt to execute an empty/null 'Select Expression' within a 'GetValueTable' execution context failed.  'GetValueTable' returns a DataTable represening the 'Select Expression' executed.  The 'Select Expression' must be specified.");
-                    }
-                    break;
                 case ExecutionContext.Insert:
-                    //if (BaseEntity.InsertExpressionProvider == null)
-                    //{
-                    //    throw new InvalidOperationException("No 'InsertExpressionProvider<T>' was provided.  A 'MasterSelectExpressionProvider' delegate is required within the 'Get' execution context.");
-                    //}
-                    break;
                 case ExecutionContext.Update:
-                    if (Expression.Assign == null)
-                    {
-                        throw new InvalidOperationException("An attempt to execute an empty/null 'Assignmnet Expression' within an 'Update' execution context failed.  'Update' requires a valid 'Assignment Expression'.");
-                    }
-                    if (Expression.OrderBy != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set an 'Order Expression' within an 'Update' execution context failed.  An 'Order Expression' cannot be applied to an 'Update' execution request.");
-                    }
-                    if (Expression.GroupBy != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Group By Expression' within an 'Update' execution context failed.  A 'Group By Expression' cannot be applied to an 'Update' execution request.");
-                    }
-                    if (Expression.GroupBy != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Select Expression' within an 'Update' execution context failed.  A 'Select Expression' cannot be applied to an 'Update' execution request.");
-                    }
-                    if (SkipValue.HasValue)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Skip/Take' Expression' within an 'Update' execution context failed.  A 'Skip/Take Expression' cannot be applied to an 'Update' execution request.");
-                    }
-                    break;
                 case ExecutionContext.Delete:
-                    if (Expression.Assign != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set an 'Assignment Expression' within a 'Delete' execution context failed.  'Delete' does not allow a consumer to specify any fields for assignment.");
-                    }
-                    if (Expression.OrderBy != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set an 'Order Expression' within a 'Delete' execution context failed.  An 'Order Expression' cannot be applied to a 'Delete' execution request.");
-                    }
-                    if (Expression.GroupBy != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Group By Expression' within a 'Delete' execution context failed.  An 'Group By Expression' cannot be applied to a 'Delete' execution request.");
-                    }
-                    if (Expression.Select != null)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'Delete' execution context failed.  A 'Select Expression' cannot be applied to a 'Delete' execution request.");
-                    }
-                    if (SkipValue.HasValue)
-                    {
-                        throw new InvalidOperationException("An attempt to set a 'Skip/Take' Expression' within a 'Delete' execution context failed.  A 'Skip/Take Expression' cannot be applied to a 'Delete' execution request.");
-                    }
                     break;
                 default:
-                    throw new InvalidOperationException("ExecutionContext could not be determined for the data service execution request.");
+                    throw new InvalidOperationException("encountered unknown execution context");
             }
-
-            IsValidated = true;
         }
         #endregion
 
         #region get T
-        public virtual T Get<T>(Action<T, object[]> fill) where T : class, new()
+        protected virtual T Get<T>(string sql, Action<T, object[]> fill) where T : class, new()
         {
-            CommandExecutionContext = ExecutionContext.Get;
+            //ExecutionContext = ExecutionContext.Get;
             //TODO: Jrod, in validation throw exception if select expression is null...
             //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
-            this.ValidateExpression();
+            //this.ValidateExpression();
 
             //Expression.ClearSelect();
             //Expression &= BaseEntity.GetInclusiveSelectExpression();
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             T obj = this.SqlClient.ExecuteObject<T>(sql, DbCommandType.SqlText, DbParams, fill);
             return obj;
@@ -352,17 +250,17 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region get list <T>
-        public virtual IList<T> GetList<T>(Action<T, object[]> fill) where T : class, new()
+        protected virtual IList<T> GetList<T>(string sql, Action<T, object[]> fill) where T : class, new()
         {
-            CommandExecutionContext = ExecutionContext.GetList;
+            //ExecutionContext = ExecutionContext.GetList;
             //TODO: Jrod, in validation throw exception if select expression is null...
             //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
-            this.ValidateExpression();
+            //this.ValidateExpression();
 
             //Expression.ClearSelect();
             //Expression &= BaseEntity.GetInclusiveSelectExpression();
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             IList<T> lst = this.SqlClient.ExecuteObjectList<T>(sql, DbCommandType.SqlText, DbParams, fill);
 
@@ -371,19 +269,19 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region get dynamic
-        public virtual dynamic GetDynamic()
+        protected virtual dynamic GetDynamic(string sql)
         {
-            CommandExecutionContext = ExecutionContext.GetDynamic;
+            //ExecutionContext = ExecutionContext.GetDynamic;
             //TODO: Jrod, in validation throw exception if select expression is null...
             //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
-            this.ValidateExpression();
+            //this.ValidateExpression();
 
             //if (Expression.Select == null)
             //{
             //    Expression &= BaseEntity.GetInclusiveSelectExpression();
             //}
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             var obj = this.SqlClient.ExecuteDynamic(sql, DbCommandType.SqlText, DbParams);
             return obj;
@@ -391,19 +289,19 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region get dynamic list
-        public virtual IList<dynamic> GetDynamicList()
+        protected virtual IList<dynamic> GetDynamicList(string sql)
         {
-            CommandExecutionContext = ExecutionContext.GetDynamicList;
+            //ExecutionContext = ExecutionContext.GetDynamicList;
             //TODO: Jrod, in validation throw exception if select expression is null...
             //it is concrete impl responsibility to get the inclusive select expression as we DO NOT have typed DbExpressionEntity at this level...
-            this.ValidateExpression();
+            //this.ValidateExpression();
 
             //if (Expression.Select == null)
             //{
             //    Expression &= BaseEntity.GetInclusiveSelectExpression();
             //}
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             IList<dynamic> lst = this.SqlClient.ExecuteDynamicList(sql, DbCommandType.SqlText, DbParams);
 
@@ -412,56 +310,56 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region get value list <Y>
-        public virtual IList<Y> GetValueList<Y>(DBSelectExpression select)
+        protected virtual IList<Y> GetValueList<Y>(string sql/*DBSelectExpression select*/)
         {
-            CommandExecutionContext = ExecutionContext.GetValueList;
-            this.ValidateExpression();
+            //ExecutionContext = ExecutionContext.GetValueList;
+            //this.ValidateExpression();
 
-            Expression.ClearSelect();
-            Expression &= select;
+            //Expression.ClearSelect();
+            //Expression &= select;
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             IList<Y> lst = this.SqlClient.ExecuteValueList<Y>(sql, DbCommandType.SqlText, DbParams);
 
             return lst;
         }
 
-        public virtual IList<Y> GetValueList<Y>(DBExpressionField<Y> field)
-        {
-            return this.GetValueList<Y>(new DBSelectExpression(field));
-        }
+        //public virtual IList<Y> GetValueList<Y>(string sql/*DBExpressionField<Y> field*/)
+        //{
+        //    return this.GetValueList<Y>(new DBSelectExpression(field));
+        //}
         #endregion
 
         #region get value
-        public virtual Y GetValue<Y>(DBSelectExpression select)
+        protected virtual Y GetValue<Y>(string sql /*DBSelectExpression select*/)
         {
-            CommandExecutionContext = ExecutionContext.GetValue;
-            this.ValidateExpression();
+            //ExecutionContext = ExecutionContext.GetValue;
+            //this.ValidateExpression();
 
-            Expression.ClearSelect();
-            Expression &= select;
+            //Expression.ClearSelect();
+            //Expression &= select;
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             object val = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
 
             return (val == null) ? default(Y) : (Y)val;
         }
 
-        public virtual Y GetValue<Y>(DBExpressionField<Y> field)
-        {
-            return this.GetValue<Y>(new DBSelectExpression(field));
-        }
+        //public virtual Y GetValue<Y>(DBExpressionField<Y> field)
+        //{
+        //    return this.GetValue<Y>(new DBSelectExpression(field));
+        //}
         #endregion
 
         #region get value table
-        public virtual DataTable GetValueTable()
+        protected virtual DataTable GetValueTable(string sql)
         {
-            CommandExecutionContext = ExecutionContext.GetValueTable;
-            this.ValidateExpression();
+            //ExecutionContext = ExecutionContext.GetValueTable;
+            //this.ValidateExpression();
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             DataTable dt = this.SqlClient.ExecuteDataTable(sql, DbCommandType.SqlText, DbParams);
 
@@ -470,74 +368,45 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region insert
-        public virtual void Insert<T>(T record)
+        protected virtual void Insert(string sql)
         {
-            CommandExecutionContext = ExecutionContext.Insert;
-            //TODO: Jrod, in validation throw exception if insert expression is null...
-            //it is concrete impl responsibility to get the inclusive insert expression as we DO NOT have typed DbExpressionEntity at this level...
-            this.ValidateExpression();
+            this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
+        }
 
-            //Expression &= BaseEntity.GetInclusiveInsertExpression(obj);
+        protected virtual void Insert(string sql, I32BitIdentityDBEntity identity32)
+        {
+            object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
 
-            bool isIdentity = (record is IIdentityDBEntity);
-            string sql = this.AssembleSql();
-            if (isIdentity)
-            {
-                object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
+            identity32.Id = (int)o;
+        }
 
-                I32BitIdentityDBEntity identity32 = (record as I32BitIdentityDBEntity);
-                if (identity32 != null)
-                {
-                    identity32.Id = Convert.ToInt32(o);
-                }
-                else
-                {
-                    I64BitIdentityDBEntity identity64 = (record as I64BitIdentityDBEntity);
-                    if (identity64 != null)
-                    {
-                        identity64.Id = Convert.ToInt64(o);
-                    }
-                    else
-                    {
-                        IU32BitIdentityDBEntity uIdentity32 = (record as IU32BitIdentityDBEntity);
-                        if (uIdentity32 != null)
-                        {
-                            uIdentity32.Id = Convert.ToUInt32(o);
-                        }
-                        else //must be u 64 bit identity
-                        {
-                            (record as IU64BitIdentityDBEntity).Id = Convert.ToUInt64(o);
-                        }
-                    }
+        protected virtual void Insert(string sql, I64BitIdentityDBEntity identity64)
+        {
+            object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
 
-                }
-            }
-            else
-            {
-                this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
-            }
+            identity64.Id = (long)o;
         }
         #endregion
 
         #region update
-        public virtual void Update()
+        protected virtual void Update(string sql)
         {
-            CommandExecutionContext = ExecutionContext.Update;
-            this.ValidateExpression();
+            //ExecutionContext = ExecutionContext.Update;
+            //this.ValidateExpression();
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
         }
         #endregion
 
         #region delete
-        public virtual void Delete()
+        protected virtual void Delete(string sql)
         {
-            CommandExecutionContext = ExecutionContext.Delete;
-            this.ValidateExpression();
+            //ExecutionContext = ExecutionContext.Delete;
+            //this.ValidateExpression();
 
-            string sql = this.AssembleSql();
+            //string sql = this.AssembleSql();
 
             this.SqlClient.Execute(sql, DbCommandType.SqlText, DbParams);
         }
@@ -546,22 +415,22 @@ namespace HTL.DbEx.Sql.Expression
         #region get sql connection
         protected abstract SqlConnection GetSqlConnection();
         #endregion
-
-        #region contained enums
-        public enum ExecutionContext : int
-        {
-            Get,
-            GetDynamic,
-            GetList,
-            GetDynamicList,
-            GetValueList,
-            GetValue,
-            GetValueTable,
-            //InsertParams,
-            Insert,
-            Update,
-            Delete
-        }
-        #endregion
     }
+
+    #region contained enums
+    public enum ExecutionContext : int
+    {
+        None,
+        Get,
+        GetDynamic,
+        GetList,
+        GetDynamicList,
+        GetValueList,
+        GetValue,
+        GetValueTable,
+        Insert,
+        Update,
+        Delete
+    }
+    #endregion
 }

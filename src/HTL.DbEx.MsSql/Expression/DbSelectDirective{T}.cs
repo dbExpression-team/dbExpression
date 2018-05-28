@@ -5,80 +5,177 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using HTL.DbEx.Sql.Expression;
+using HTL.DbEx.Sql;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class DBSelectDirective
+    #region select [entity]
+    //this is used when select expression can be implied / provided by the db expression entity (base select entity)
+    public class SelectEntityDirective<T> where T : class, IDBEntity, new()
     {
-        #region internals
-        private string _connStringName;
-        private ConnectionStringSettings _connSettings;
-        #endregion
-
         #region interface
-        protected ConnectionStringSettings ConnectionStringSettings { get { return _connSettings; } }
+        protected string ConnectionStringName { get; set; }
+
+        protected ConnectionStringSettings ConnectionStringSettings { get; set; }
         #endregion
 
         #region constructors
-        public DBSelectDirective(string connectionStringName)
+        public SelectEntityDirective(string connectionStringName)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
                 throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
             }
 
-            _connStringName = connectionStringName;
-            _connSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+            ConnectionStringName = connectionStringName;
+            ConnectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
-            if (_connSettings == null)
+            if (ConnectionStringSettings == null)
             {
                 throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
             }
         }
         #endregion
 
-        #region into
-        public SelectMsSqlBuilder<T> From<T>(DBExpressionEntity<T> entity)
+        #region from
+        public SelectEntityMsSqlBuilder<T> From<Y>(Y entity) where Y : IDbExpressionEntity<T>
         {
-            var builder = new SelectMsSqlBuilder<T>(_connSettings, entity);
+            var builder = new SelectEntityMsSqlBuilder<T>(ConnectionStringSettings, entity as DBExpressionEntity<T>);
             return builder;
         }
         #endregion
     }
+    #endregion
 
-    public class DBSelectDirective<T> : DBSelectDirective
+    #region select many [entity]
+    public class SelectManyEntityDirective<T> : SelectEntityDirective<T> where T : class, IDBEntity, new()
     {
-        #region internals
-        private DBSelectExpressionSet _selectSet;
+        #region constructors
+        public SelectManyEntityDirective(string connectionStringName) : base(connectionStringName)
+        {
+        }
+        #endregion
+
+        #region from
+        public new SelectManyEntityMsSqlBuilder<T> From<Y>(Y entity) where Y : IDbExpressionEntity<T>
+        {
+            return new SelectManyEntityMsSqlBuilder<T>(base.ConnectionStringSettings, entity as DBExpressionEntity<T>);
+        }
+        #endregion
+    }
+    #endregion
+
+    #region select [values]
+    //this is used where providing an explicit select expression (select fields)
+    public class SelectValueDirective<Y>
+    {
+        #region interface
+        protected string ConnectionStringName { get; set; }
+
+        protected ConnectionStringSettings ConnectionStringSettings { get; set; }
+
+        protected DBSelectExpressionSet SelectSet { get; set; }
         #endregion
 
         #region constructors
-        public DBSelectDirective(string connectionStringName, params DBExpressionField[] fields) : base(connectionStringName)
+        public SelectValueDirective(string connectionStringName, params DBExpressionField[] fields)
         {
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
+            }
+
+            ConnectionStringName = connectionStringName;
+            ConnectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (ConnectionStringSettings == null)
+            {
+                throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
+            }
+
             for (int i = 0; i < fields.Length; i++)
             {
-                _selectSet &= fields[i];
+                SelectSet &= fields[i];
             }
         }
 
-        public DBSelectDirective(string connectionStringName, DBSelectExpression select) : base(connectionStringName)
+        public SelectValueDirective(string connectionStringName, DBSelectExpression select)
         {
-            _selectSet &= select;
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
+            }
+
+            ConnectionStringName = connectionStringName;
+            ConnectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (ConnectionStringSettings == null)
+            {
+                throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
+            }
+
+            SelectSet &= select;
         }
 
-        public DBSelectDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName)
+        public SelectValueDirective(string connectionStringName, DBSelectExpressionSet selectSet)
         {
-            _selectSet = selectSet;
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
+            }
+
+            ConnectionStringName = connectionStringName;
+            ConnectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (ConnectionStringSettings == null)
+            {
+                throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
+            }
+
+            SelectSet = selectSet;
         }
         #endregion
 
-        #region into
-        public SelectMsSqlBuilder<T> From(DBExpressionEntity<T> entity)
+        #region from
+        public SelectValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
         {
-            var builder = new SelectMsSqlBuilder<T>(base.ConnectionStringSettings, entity);
-            builder.Expression &= _selectSet;
+            var builder = new SelectValueMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity);
             return builder;
         }
         #endregion
     }
+    #endregion
+
+    #region select many [values]
+    public class SelectManyValueDirective<Y> : SelectValueDirective<Y>
+    {
+        #region interface
+        protected string ConnectionStringName { get; set; }
+
+        protected ConnectionStringSettings ConnectionStringSettings { get; set; }
+        #endregion
+
+        #region constructors
+        public SelectManyValueDirective(string connectionStringName, params DBExpressionField[] fields) : base(connectionStringName, fields)
+        {
+        }
+
+        public SelectManyValueDirective(string connectionStringName, DBSelectExpression select) : base(connectionStringName, select)
+        {
+        }
+
+        public SelectManyValueDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName, selectSet)
+        {
+        }
+        #endregion
+
+        #region from
+        public new SelectManyValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
+        {
+            var builder = new SelectManyValueMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity);
+            return builder;
+        }
+        #endregion
+    }
+    #endregion
 }

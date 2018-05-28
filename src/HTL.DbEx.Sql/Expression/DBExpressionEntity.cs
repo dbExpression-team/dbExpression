@@ -111,11 +111,15 @@ namespace HTL.DbEx.Sql.Expression
         }
         #endregion
 
-        #region join
+        #region get inclusive select expression
         public abstract DBSelectExpressionSet GetInclusiveSelectExpression();
+        #endregion
 
+        #region get inclusive insert expression
         public abstract DBInsertExpressionSet GetInclusiveInsertExpression(T entity);
+        #endregion
 
+        #region fill object
         public abstract void FillObject(T entity, object[] values);
         #endregion
     }

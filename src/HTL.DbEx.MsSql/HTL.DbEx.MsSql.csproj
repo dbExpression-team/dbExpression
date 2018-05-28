@@ -50,8 +50,9 @@
     <Compile Include="Expression\DeleteMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\InsertMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\MsSqlBuilder.cs" />
-    <Compile Include="Expression\MsSqlBuilderSelector.cs" />
     <Compile Include="Expression\SelectEntityMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\SelectManyEntityMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\SelectManyValueMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\SelectMsSqlBuilder.cs" />
     <Compile Include="Expression\SelectValueMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\UpdateMsSqlBuilder{T}.cs" />

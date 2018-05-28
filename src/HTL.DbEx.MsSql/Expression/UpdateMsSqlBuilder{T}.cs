@@ -14,13 +14,52 @@ namespace HTL.DbEx.MsSql.Expression
     public class UpdateMsSqlBuilder<T> : MsSqlBuilder<T>
     {
         #region constructors
-        public UpdateMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public UpdateMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity, ExecutionContext.Update)
         {
         }
 
-        public UpdateMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public UpdateMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity, ExecutionContext.Update)
         {
             BaseEntity = baseEntity;
+        }
+        #endregion
+
+        #region execute
+        public void Execute()
+        {
+            Validate();
+
+            string sql = this.AssembleUpdateSql();
+
+            base.Update(sql);
+        }
+        #endregion
+
+        #region validate
+        protected override void Validate()
+        {
+            base.Validate();
+
+            if (Expression.Assign == null)
+            {
+                throw new InvalidOperationException("An attempt to execute an empty/null 'Assignmnet Expression' within an 'Update' execution context failed.  'Update' requires a valid 'Assignment Expression'.");
+            }
+            if (Expression.OrderBy != null)
+            {
+                throw new InvalidOperationException("An attempt to set an 'Order Expression' within an 'Update' execution context failed.  An 'Order Expression' cannot be applied to an 'Update' execution request.");
+            }
+            if (Expression.GroupBy != null)
+            {
+                throw new InvalidOperationException("An attempt to set a 'Group By Expression' within an 'Update' execution context failed.  A 'Group By Expression' cannot be applied to an 'Update' execution request.");
+            }
+            if (Expression.Select != null)
+            {
+                throw new InvalidOperationException("An attempt to set a 'Select Expression' within an 'Update' execution context failed.  A 'Select Expression' cannot be applied to an 'Update' execution request.");
+            }
+            if (SkipValue.HasValue || LimitValue.HasValue)
+            {
+                throw new InvalidOperationException("An attempt to set a 'Skip/Take' Expression' within an 'Update' execution context failed.  A 'Skip/Take Expression' cannot be applied to an 'Update' execution request.");
+            }
         }
         #endregion
 

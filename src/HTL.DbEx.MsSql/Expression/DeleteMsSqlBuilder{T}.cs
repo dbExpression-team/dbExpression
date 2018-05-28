@@ -14,13 +14,52 @@ namespace HTL.DbEx.MsSql.Expression
     public class DeleteMsSqlBuilder<T> : MsSqlBuilder<T>
     {
         #region constructors
-        public DeleteMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
+        public DeleteMsSqlBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity, ExecutionContext.Delete)
         {
         }
 
-        public DeleteMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
+        public DeleteMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity, ExecutionContext.Delete)
         {
             BaseEntity = baseEntity;
+        }
+        #endregion
+
+        #region execute
+        public void Execute()
+        {
+            Validate();
+
+            string sql = AssembleDeleteSql();
+
+            base.Delete(sql);
+        }
+        #endregion
+
+        #region validate
+        protected override void Validate()
+        {
+            base.Validate();
+
+            if (Expression.Assign != null)
+            {
+                throw new InvalidOperationException("An attempt to set an 'Assignment Expression' within a 'Delete' execution context failed.  'Delete' does not allow a consumer to specify any fields for assignment.");
+            }
+            if (Expression.OrderBy != null)
+            {
+                throw new InvalidOperationException("An attempt to set an 'Order Expression' within a 'Delete' execution context failed.  An 'Order Expression' cannot be applied to a 'Delete' execution request.");
+            }
+            if (Expression.GroupBy != null)
+            {
+                throw new InvalidOperationException("An attempt to set a 'Group By Expression' within a 'Delete' execution context failed.  An 'Group By Expression' cannot be applied to a 'Delete' execution request.");
+            }
+            if (Expression.Select != null)
+            {
+                throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'Delete' execution context failed.  A 'Select Expression' cannot be applied to a 'Delete' execution request.");
+            }
+            if (SkipValue.HasValue)
+            {
+                throw new InvalidOperationException("An attempt to set a 'Skip/Take' Expression' within a 'Delete' execution context failed.  A 'Skip/Take Expression' cannot be applied to a 'Delete' execution request.");
+            }
         }
         #endregion
 

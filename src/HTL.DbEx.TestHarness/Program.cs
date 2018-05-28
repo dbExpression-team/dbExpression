@@ -30,27 +30,25 @@ namespace HTL.DbEx.TestHarness
 
             var e1 = db.Insert(physician).Into(p);
 
-            var e2 = db.Insert(new Physician() { Id = 3 }).Into(p);
+            var e2 = db.Select<Physician>().From(p).Execute();
 
-            var e3 = db.Select<Physician>().From(p);
-            var e4 = db.Select().From(p).InnerJoin(p).On(p.Id == p.Id);
+            var e4 = db.Select<int>(p.Id).From(p);
 
-            var e5 = db.Select<int>(p.Id).From(p);
-
-            var xxx = db.Select<dynamic>(p.Id).From(p);
+            var e5 = db.Select<dynamic>(p.Id).From(p);
 
             var e6 = db.Select<string>((p.FullName + " " + p.PatientRefId).As("FullName")).From(p);
 
             var e7 = db.Update(p.FullName.Set("Jorge"), p.PatientRefId.Set("111221212")).From(p).Where(p.Id == 3);
 
             var e8 = db.Delete().From(p).Where(p.Id == 3);
+
+            var e9 = db.SelectAll<Physician>().From(p).Where(p.Id > 0);
         }
 
         #region db
         public static class db
         {
             public static string ConnectionStringName { get; } = "cquentia";
-
 
             #region constructors
             static db()
@@ -59,24 +57,44 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region builder selectors
-            public static DBSelectDirective<Y> Select<Y>(params DBExpressionField[] fields)
+            public static SelectValueDirective<Y> Select<Y>(params DBExpressionField[] fields)
             {
-                return new DBSelectDirective<Y>(ConnectionStringName, fields);
+                return new SelectValueDirective<Y>(ConnectionStringName, fields);
             }
 
-            public static DBSelectDirective<T> Select<T>() where T : class, new()
+            public static SelectValueDirective<Y> Select<Y>(DBSelectExpression select)
             {
-                return new DBSelectDirective<T>(ConnectionStringName);
+                return new SelectValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static DBSelectDirective<Y> Select<Y>(DBSelectExpression select)
+            public static SelectValueDirective<Y> Select<Y>(DBSelectExpressionSet select)
             {
-                return new DBSelectDirective<Y>(ConnectionStringName, select);
+                return new SelectValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static DBSelectDirective Select()
+            public static SelectManyValueDirective<Y> SelectAll<Y>(params DBExpressionField[] fields)
             {
-                return new DBSelectDirective(ConnectionStringName);
+                return new SelectManyValueDirective<Y>(ConnectionStringName, fields);
+            }
+
+            public static SelectManyValueDirective<Y> SelectAll<Y>(DBSelectExpression select)
+            {
+                return new SelectManyValueDirective<Y>(ConnectionStringName, select);
+            }
+
+            public static SelectManyValueDirective<Y> SelectALL<Y>(DBSelectExpressionSet select)
+            {
+                return new SelectManyValueDirective<Y>(ConnectionStringName, select);
+            }
+
+            public static SelectEntityDirective<T> Select<T>() where T : class, IDBEntity, new()
+            {
+                return new SelectEntityDirective<T>(ConnectionStringName);
+            }
+
+            public static SelectManyEntityDirective<T> SelectAll<T>() where T : class, IDBEntity, new()
+            {
+                return new SelectManyEntityDirective<T>(ConnectionStringName);
             }
 
             public static DBInsertDirective<T> Insert<T>(T record)
