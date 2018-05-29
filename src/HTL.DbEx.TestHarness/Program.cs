@@ -31,6 +31,18 @@ namespace HTL.DbEx.TestHarness
 
             db.Insert(physician).Into(p).Execute();
 
+            IList<PatientReport> rpts = db.SelectAll<PatientReport>()
+                                          .From(pr)
+                                          .InnerJoin(p).On(p.PatientReportId == pr.Id)
+                                          .Where(p.Id > 100)
+                                          .OrderBy(pr.SampleId.Desc)
+                                          .Execute();
+
+
+            var sss = db.SelectAll<dynamic>(dbo.Physician.FullName, dbo.Physician.Id).From(p).Execute();
+
+            IList<int> ids = db.SelectAll<int>(dbo.PatientReport.Id).From(pr).Execute();
+
             var e2 = db.Select<Physician>().From(p).InnerJoin(pr).On(pr.Id == p.PatientReportId).Execute();
 
             int id = db.Select<int>(p.Id).From(p).Where(p.FullName == "HECTOR AMAYA").Execute();
@@ -83,7 +95,7 @@ namespace HTL.DbEx.TestHarness
                 return new SelectManyValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static SelectManyValueDirective<Y> SelectALL<Y>(DBSelectExpressionSet select)
+            public static SelectManyValueDirective<Y> SelectAll<Y>(DBSelectExpressionSet select)
             {
                 return new SelectManyValueDirective<Y>(ConnectionStringName, select);
             }

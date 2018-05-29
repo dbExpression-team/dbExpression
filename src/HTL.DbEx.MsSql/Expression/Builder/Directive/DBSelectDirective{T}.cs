@@ -150,12 +150,6 @@ namespace HTL.DbEx.MsSql.Expression
     #region select many [values]
     public class SelectManyValueDirective<Y> : SelectValueDirective<Y>
     {
-        #region interface
-        protected string ConnectionStringName { get; set; }
-
-        protected ConnectionStringSettings ConnectionStringSettings { get; set; }
-        #endregion
-
         #region constructors
         public SelectManyValueDirective(string connectionStringName, params DBExpressionField[] fields) : base(connectionStringName, fields)
         {
@@ -173,7 +167,8 @@ namespace HTL.DbEx.MsSql.Expression
         #region from
         public new SelectManyValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
         {
-            var builder = new SelectManyValueMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity);
+            var builder = new SelectManyValueMsSqlBuilder<Y>(base.ConnectionStringSettings, entity as DBExpressionEntity);
+            builder.Expression &= base.SelectSet;
             return builder;
         }
         #endregion
