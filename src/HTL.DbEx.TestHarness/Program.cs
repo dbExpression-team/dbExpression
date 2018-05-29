@@ -29,16 +29,22 @@ namespace HTL.DbEx.TestHarness
             PhysicianEntity<Physician> p = dbo.Physician;
 
             var e1 = db.Insert(physician).Into(p);
+            e1.Execute();
 
-            var e2 = db.Select<Physician>().From(p).Execute();
+            var e2 = db.Select<Physician>().From(p).Where(p.Id == 3).InnerJoin(p).On(p.Id == p.Id);
+            Physician ph = e2.Execute();
 
-            var e4 = db.Select<int>(p.Id).From(p);
+            var e4 = db.Select<int>(p.Id).From(p).Where(p.FullName == "jerry doe");
+            int id = e4.Execute();
 
             var e5 = db.Select<dynamic>(p.Id).From(p);
+            var xxx = e5.Execute();
 
             var e6 = db.Select<string>((p.FullName + " " + p.PatientRefId).As("FullName")).From(p);
+            string key = e6.Execute();
 
             var e7 = db.Update(p.FullName.Set("Jorge"), p.PatientRefId.Set("111221212")).From(p).Where(p.Id == 3);
+            
 
             var e8 = db.Delete().From(p).Where(p.Id == 3);
 
@@ -227,5 +233,33 @@ namespace HTL.DbEx.TestHarness
             #endregion
         }
         #endregion
+
+
+        public class Builder
+        {
+        }
+
+        public class Executor
+        {
+            
+        }
+
+        public class GetExecutor
+        {
+            protected T Execute<T>(string sql, Action<T, object[]> fill) where T : class, new()
+            {
+                T obj = default(T);
+                return obj;
+            }
+        }
+
+        public class GetListExecutor
+        {
+            protected IList<T> Execute<T>(string sql, Action<T, object[]> fill) where T : class, new()
+            {
+                IList<T> lst = new List<T>();
+                return lst;
+            }
+        }
     }
 }

@@ -90,9 +90,9 @@ namespace HTL.DbEx.Sql
         protected void EnsureOpenConnection()
         {
             this.EnsureConnection();
-            if (DbConnection.State != ConnectionState.Open)
+            if (_dbConnection.State != ConnectionState.Open)
             {
-                DbConnection.Open();
+                _dbConnection.Open();
             }
         }
 

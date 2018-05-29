@@ -11,7 +11,7 @@ using HTL.DbEx.Sql.Expression;
 
 namespace HTL.DbEx.MsSql.Expression
 {
-    public class SelectMsSqlBuilder<T> : MsSqlBuilder<T>
+    public abstract class SelectMsSqlBuilder<T> : MsSqlBuilder<T>
     {
         #region constructors
         public SelectMsSqlBuilder(string connectionStringName, DBExpressionEntity baseEntity, ExecutionContext context) : base(connectionStringName, baseEntity, context)

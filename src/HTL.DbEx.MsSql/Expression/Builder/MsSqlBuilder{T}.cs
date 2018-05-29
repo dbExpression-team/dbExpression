@@ -86,12 +86,5 @@ namespace HTL.DbEx.MsSql.Expression
         //    return sql;
         //}
         #endregion
-
-        #region execute
-        public void Execute()
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
     }
 }

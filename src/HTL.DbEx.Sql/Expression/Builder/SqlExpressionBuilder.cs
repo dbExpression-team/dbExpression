@@ -181,10 +181,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region full join
-        public virtual DBJoinDirective FullJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.FULL);
-        }
+        public virtual DBJoinDirective FullJoin(DBExpressionEntity joinTo) => new DBJoinDirective(this, joinTo, DBExpressionJoinType.FULL);
         #endregion
 
         #region validate
@@ -232,7 +229,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region get T
-        protected virtual T Get<T>(string sql, Action<T, object[]> fill) where T : class, new()
+        public virtual T Get<T>(string sql, Action<T, object[]> fill) where T : class, new()
         {
             //ExecutionContext = ExecutionContext.Get;
             //TODO: Jrod, in validation throw exception if select expression is null...
@@ -250,7 +247,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region get list <T>
-        protected virtual IList<T> GetList<T>(string sql, Action<T, object[]> fill) where T : class, new()
+        public virtual IList<T> GetList<T>(string sql, Action<T, object[]> fill) where T : class, new()
         {
             //ExecutionContext = ExecutionContext.GetList;
             //TODO: Jrod, in validation throw exception if select expression is null...
@@ -324,11 +321,6 @@ namespace HTL.DbEx.Sql.Expression
 
             return lst;
         }
-
-        //public virtual IList<Y> GetValueList<Y>(string sql/*DBExpressionField<Y> field*/)
-        //{
-        //    return this.GetValueList<Y>(new DBSelectExpression(field));
-        //}
         #endregion
 
         #region get value
@@ -346,11 +338,6 @@ namespace HTL.DbEx.Sql.Expression
 
             return (val == null) ? default(Y) : (Y)val;
         }
-
-        //public virtual Y GetValue<Y>(DBExpressionField<Y> field)
-        //{
-        //    return this.GetValue<Y>(new DBSelectExpression(field));
-        //}
         #endregion
 
         #region get value table
