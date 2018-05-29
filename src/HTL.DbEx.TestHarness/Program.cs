@@ -70,9 +70,9 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region builder selectors
-            public static SelectValueDirective<Y> Select<Y>(params DBExpressionField[] fields)
+            public static SelectValueDirective<Y> Select<Y>(DBExpressionField field)
             {
-                return new SelectValueDirective<Y>(ConnectionStringName, fields);
+                return new SelectValueDirective<Y>(ConnectionStringName, field);
             }
 
             public static SelectValueDirective<Y> Select<Y>(DBSelectExpression select)
@@ -80,14 +80,9 @@ namespace HTL.DbEx.TestHarness
                 return new SelectValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static SelectValueDirective<Y> Select<Y>(DBSelectExpressionSet select)
+            public static SelectManyValueDirective<Y> SelectAll<Y>(DBExpressionField field)
             {
-                return new SelectValueDirective<Y>(ConnectionStringName, select);
-            }
-
-            public static SelectManyValueDirective<Y> SelectAll<Y>(params DBExpressionField[] fields)
-            {
-                return new SelectManyValueDirective<Y>(ConnectionStringName, fields);
+                return new SelectManyValueDirective<Y>(ConnectionStringName, field);
             }
 
             public static SelectManyValueDirective<Y> SelectAll<Y>(DBSelectExpression select)
@@ -95,9 +90,24 @@ namespace HTL.DbEx.TestHarness
                 return new SelectManyValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static SelectManyValueDirective<Y> SelectAll<Y>(DBSelectExpressionSet select)
+            public static SelectDynamicDirective<Y> Select<Y>(params DBExpressionField[] fields)
             {
-                return new SelectManyValueDirective<Y>(ConnectionStringName, select);
+                return new SelectDynamicDirective<Y>(ConnectionStringName, fields);
+            }
+
+            public static SelectDynamicDirective<Y> Select<Y>(DBSelectExpressionSet select)
+            {
+                return new SelectDynamicDirective<Y>(ConnectionStringName, select);
+            }
+
+            public static SelectManyDynamicDirective<Y> SelectAll<Y>(params DBExpressionField[] fields)
+            {
+                return new SelectManyDynamicDirective<Y>(ConnectionStringName, fields);
+            }
+
+            public static SelectManyDynamicDirective<Y> SelectAll<Y>(DBSelectExpressionSet select)
+            {
+                return new SelectManyDynamicDirective<Y>(ConnectionStringName, select);
             }
 
             public static SelectEntityDirective<T> Select<T>() where T : class, IDBEntity, new()

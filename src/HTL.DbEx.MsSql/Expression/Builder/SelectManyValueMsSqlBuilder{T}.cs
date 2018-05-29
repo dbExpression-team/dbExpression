@@ -18,13 +18,14 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region constructors
-        public SelectManyValueMsSqlBuilder(string connectionStringName, DBExpressionEntity baseEntity) : base(connectionStringName, baseEntity, ExecutionContext.GetValueList)
+        public SelectManyValueMsSqlBuilder(string connectionStringName, DBExpressionEntity baseEntity, DBSelectExpression select) : base(connectionStringName, baseEntity, ExecutionContext.GetValueList)
         {
+            base.Expression &= select;
         }
 
-        public SelectManyValueMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity) : base(connectionStringSettings, baseEntity, ExecutionContext.GetValueList)
+        public SelectManyValueMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity, DBSelectExpression select) : base(connectionStringSettings, baseEntity, ExecutionContext.GetValueList)
         {
-            BaseEntity = baseEntity;
+            base.Expression &= select;
         }
         #endregion
 

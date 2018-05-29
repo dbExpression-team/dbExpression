@@ -36,7 +36,7 @@ namespace HTL.DbEx.MsSql.Expression
         {
             Validate();
 
-            string sql = base.SkipValue.HasValue ? base.AssembleSkipTakeRestrictedQuery() : base.AssembleQuery();
+            string sql = base.AssembleQuery();
 
             T obj = base.Get<T>(sql, _typedEntity.FillObject);
 
@@ -76,7 +76,8 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region skip
-        public new DBSkipDirective Skip(int count)
+        //HACK
+        private new DBSkipDirective Skip(int count)
         {
             base.SkipValue = count;
             return new DBSkipDirective(this);

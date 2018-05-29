@@ -17,15 +17,14 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region constructors
-        public SelectValueMsSqlBuilder(string connectionStringName, DBExpressionEntity baseEntity) 
-             : base(connectionStringName, baseEntity, ExecutionContext.GetValue)
+        public SelectValueMsSqlBuilder(string connectionStringName, DBExpressionEntity baseEntity, DBSelectExpression select) : base(connectionStringName, baseEntity, ExecutionContext.GetValue)
         {
+            base.Expression &= select;
         }
 
-        public SelectValueMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity) 
-             : base(connectionStringSettings, baseEntity, ExecutionContext.GetValue)
+        public SelectValueMsSqlBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity, DBSelectExpression select) : base(connectionStringSettings, baseEntity, ExecutionContext.GetValue)
         {
-            BaseEntity = baseEntity;
+            base.Expression &= select;
         }
         #endregion
 
@@ -34,7 +33,7 @@ namespace HTL.DbEx.MsSql.Expression
         {
             Validate();
 
-            string sql = base.SkipValue.HasValue ? base.AssembleSkipTakeRestrictedQuery() : base.AssembleQuery();
+            string sql = base.AssembleQuery();
 
             T obj = base.GetValue<T>(sql);
 
@@ -79,7 +78,8 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region skip
-        public new DBSkipDirective Skip(int count)
+        //HACK
+        private new DBSkipDirective Skip(int count)
         {
             base.SkipValue = count;
             return new DBSkipDirective(this);

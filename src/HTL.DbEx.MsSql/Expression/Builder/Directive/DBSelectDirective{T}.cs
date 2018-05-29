@@ -10,7 +10,6 @@ using HTL.DbEx.Sql;
 namespace HTL.DbEx.MsSql.Expression
 {
     #region select [entity]
-    //this is used when select expression can be implied / provided by the db expression entity (base select entity)
     public class SelectEntityDirective<T> where T : class, IDBEntity, new()
     {
         #region interface
@@ -65,9 +64,77 @@ namespace HTL.DbEx.MsSql.Expression
     }
     #endregion
 
-    #region select [values]
-    //this is used where providing an explicit select expression (select fields)
+    #region select [value]
     public class SelectValueDirective<Y>
+    {
+        #region interface
+        protected string ConnectionStringName { get; set; }
+
+        protected ConnectionStringSettings ConnectionStringSettings { get; set; }
+
+        //protected DBSelectExpressionSet SelectSet { get; set; }
+        protected DBSelectExpression Select { get; set; }
+        #endregion
+
+        #region constructors
+        public SelectValueDirective(string connectionStringName, DBSelectExpression select)
+        {
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
+            }
+
+            ConnectionStringName = connectionStringName;
+            ConnectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (ConnectionStringSettings == null)
+            {
+                throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
+            }
+
+            Select = select;
+        }
+        #endregion
+
+        #region from
+        public SelectValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
+        {
+            var builder = new SelectValueMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity, Select);
+            return builder;
+        }
+        #endregion
+    }
+    #endregion
+
+    #region select many [value]
+    public class SelectManyValueDirective<Y> : SelectValueDirective<Y>
+    {
+        #region constructors
+        //public SelectManyValueDirective(string connectionStringName, params DBExpressionField[] fields) : base(connectionStringName, fields)
+        //{
+        //}
+
+        public SelectManyValueDirective(string connectionStringName, DBSelectExpression select) : base(connectionStringName, select)
+        {
+        }
+
+        //public SelectManyValueDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName, selectSet)
+        //{
+        //}
+        #endregion
+
+        #region from
+        public new SelectManyValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
+        {
+            var builder = new SelectManyValueMsSqlBuilder<Y>(base.ConnectionStringSettings, entity as DBExpressionEntity, base.Select);
+            return builder;
+        }
+        #endregion
+    }
+    #endregion
+
+    #region select [dynamic]
+    public class SelectDynamicDirective<Y>
     {
         #region interface
         protected string ConnectionStringName { get; set; }
@@ -78,7 +145,7 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region constructors
-        public SelectValueDirective(string connectionStringName, params DBExpressionField[] fields)
+        public SelectDynamicDirective(string connectionStringName, params DBExpressionField[] fields)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
@@ -99,7 +166,7 @@ namespace HTL.DbEx.MsSql.Expression
             }
         }
 
-        public SelectValueDirective(string connectionStringName, DBSelectExpression select)
+        public SelectDynamicDirective(string connectionStringName, DBSelectExpression select)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
@@ -117,7 +184,7 @@ namespace HTL.DbEx.MsSql.Expression
             SelectSet &= select;
         }
 
-        public SelectValueDirective(string connectionStringName, DBSelectExpressionSet selectSet)
+        public SelectDynamicDirective(string connectionStringName, DBSelectExpressionSet selectSet)
         {
             if (string.IsNullOrEmpty(connectionStringName))
             {
@@ -137,38 +204,37 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region from
-        public SelectValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
+        public SelectDynamicMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
         {
-            var builder = new SelectValueMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity);
-            builder.Expression &= SelectSet;
+            var builder = new SelectDynamicMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity, SelectSet);
             return builder;
         }
         #endregion
     }
     #endregion
 
-    #region select many [values]
-    public class SelectManyValueDirective<Y> : SelectValueDirective<Y>
+    #region select many [dynamic]
+    public class SelectManyDynamicDirective<Y> : SelectDynamicDirective<Y>
     {
         #region constructors
-        public SelectManyValueDirective(string connectionStringName, params DBExpressionField[] fields) : base(connectionStringName, fields)
+        public SelectManyDynamicDirective(string connectionStringName, params DBExpressionField[] fields) : base(connectionStringName, fields)
+        {
+
+        }
+
+        public SelectManyDynamicDirective(string connectionStringName, DBSelectExpression select) : base(connectionStringName, select)
         {
         }
 
-        public SelectManyValueDirective(string connectionStringName, DBSelectExpression select) : base(connectionStringName, select)
-        {
-        }
-
-        public SelectManyValueDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName, selectSet)
+        public SelectManyDynamicDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName, selectSet)
         {
         }
         #endregion
 
         #region from
-        public new SelectManyValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
+        public new SelectManyDynamicMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
         {
-            var builder = new SelectManyValueMsSqlBuilder<Y>(base.ConnectionStringSettings, entity as DBExpressionEntity);
-            builder.Expression &= base.SelectSet;
+            var builder = new SelectManyDynamicMsSqlBuilder<Y>(base.ConnectionStringSettings, entity as DBExpressionEntity, base.SelectSet);
             return builder;
         }
         #endregion
