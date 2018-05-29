@@ -140,60 +140,28 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region inner join
-        //HACK
-        private new DBJoinDirective InnerJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.INNER);
-        }
-        #endregion
-
-        #region left join
-        //HACK
-        private new DBJoinDirective LeftJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.LEFT);
-        }
-        #endregion
-
-        #region right join
-        //HACK
-        private new DBJoinDirective RightJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.RIGHT);
-        }
-        #endregion
-
-        #region full join
-        //Hack
-        private new DBJoinDirective FullJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.FULL);
-        }
-        #endregion
-
-        #region inner join
-        public SelectManyEntityDBJoinDirective<T> InnerJoin(DBExpressionEntity<T> joinTo)
+        public new SelectManyEntityDBJoinDirective<T> InnerJoin(DBExpressionEntity joinTo)
         {
             return new SelectManyEntityDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.INNER);
         }
         #endregion
 
         #region left join
-        public SelectManyEntityDBJoinDirective<T> LeftJoin(DBExpressionEntity<T> joinTo)
+        public new SelectManyEntityDBJoinDirective<T> LeftJoin(DBExpressionEntity joinTo)
         {
             return new SelectManyEntityDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.LEFT);
         }
         #endregion
 
         #region right join
-        public SelectManyEntityDBJoinDirective<T> RightJoin(DBExpressionEntity<T> joinTo)
+        public new SelectManyEntityDBJoinDirective<T> RightJoin(DBExpressionEntity joinTo)
         {
             return new SelectManyEntityDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.RIGHT);
         }
         #endregion
 
         #region full join
-        public SelectManyEntityDBJoinDirective<T> FullJoin(DBExpressionEntity<T> joinTo)
+        public new SelectManyEntityDBJoinDirective<T> FullJoin(DBExpressionEntity joinTo)
         {
             return new SelectManyEntityDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.FULL);
         }

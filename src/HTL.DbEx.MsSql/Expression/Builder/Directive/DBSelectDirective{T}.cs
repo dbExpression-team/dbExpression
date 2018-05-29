@@ -140,6 +140,7 @@ namespace HTL.DbEx.MsSql.Expression
         public SelectValueMsSqlBuilder<Y> From<X>(X entity) where X : DBExpressionEntity
         {
             var builder = new SelectValueMsSqlBuilder<Y>(ConnectionStringSettings, entity as DBExpressionEntity);
+            builder.Expression &= SelectSet;
             return builder;
         }
         #endregion

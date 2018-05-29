@@ -364,14 +364,14 @@ namespace HTL.DbEx.Sql.Expression
         {
             object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
 
-            identity32.Id = (int)o;
+            identity32.Id = Convert.ToInt32(o);
         }
 
         protected virtual void Insert(string sql, I64BitIdentityDBEntity identity64)
         {
             object o = this.SqlClient.ExecuteScalar(sql, DbCommandType.SqlText, DbParams);
 
-            identity64.Id = (long)o;
+            identity64.Id = Convert.ToInt64(o);
         }
         #endregion
 

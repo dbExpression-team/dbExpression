@@ -183,60 +183,28 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region inner join
-        //HACK
-        private new DBJoinDirective InnerJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.INNER);
-        }
-        #endregion
-
-        #region left join
-        //HACK
-        private new DBJoinDirective LeftJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.LEFT);
-        }
-        #endregion
-
-        #region right join
-        //HACK
-        private new DBJoinDirective RightJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.RIGHT);
-        }
-        #endregion
-
-        #region full join
-        //Hack
-        private new DBJoinDirective FullJoin(DBExpressionEntity joinTo)
-        {
-            return new DBJoinDirective(this, joinTo, DBExpressionJoinType.FULL);
-        }
-        #endregion
-
-        #region inner join
-        public DeleteDBJoinDirective<T> InnerJoin(DBExpressionEntity<T> joinTo)
+        public new DeleteDBJoinDirective<T> InnerJoin(DBExpressionEntity joinTo)
         {
             return new DeleteDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.INNER);
         }
         #endregion
 
         #region left join
-        public DeleteDBJoinDirective<T> LeftJoin(DBExpressionEntity<T> joinTo)
+        public new DeleteDBJoinDirective<T> LeftJoin(DBExpressionEntity joinTo)
         {
             return new DeleteDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.LEFT);
         }
         #endregion
 
         #region right join
-        public DeleteDBJoinDirective<T> RightJoin(DBExpressionEntity<T> joinTo)
+        public new DeleteDBJoinDirective<T> RightJoin(DBExpressionEntity joinTo)
         {
             return new DeleteDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.RIGHT);
         }
         #endregion
 
         #region full join
-        public DeleteDBJoinDirective<T> FullJoin(DBExpressionEntity<T> joinTo)
+        public new DeleteDBJoinDirective<T> FullJoin(DBExpressionEntity joinTo)
         {
             return new DeleteDBJoinDirective<T>(this, joinTo, DBExpressionJoinType.FULL);
         }
