@@ -24,10 +24,15 @@ namespace HTL.DbEx.TestHarness
                 CreatedAt = DateTime.Now
             };
 
-            Action<Physician, object[]> f = dbo.Physician.FillObject;
+            
 
-            var pr = dbo.PatientReport;
-            var p = dbo.Physician;
+            Action<Physician, object[]> f = kai.Physician.FillObject;
+
+            var pr = kai.PatientReport;
+            var p = kai.Physician;
+
+
+            db.SelectDynamic<int>(p.Id, p.FullName).From(p);
 
             db.Insert(physician).Into(p).Execute();
 
@@ -39,15 +44,13 @@ namespace HTL.DbEx.TestHarness
                                           .Execute();
 
 
-            var sss = db.SelectAll<dynamic>(dbo.Physician.FullName, dbo.Physician.Id).From(p).Execute();
+            var sss = db.SelectAllDynamic<dynamic>(kai.Physician.FullName, kai.Physician.Id).From(p).Execute();
 
-            IList<int> ids = db.SelectAll<int>(dbo.PatientReport.Id).From(pr).Execute();
-
-            var e2 = db.Select<Physician>().From(p).InnerJoin(pr).On(pr.Id == p.PatientReportId).Execute();
-
+            IList<int> ids = db.SelectAll<int>(kai.PatientReport.Id).From(pr).Execute();
+            
             int id = db.Select<int>(p.Id).From(p).Where(p.FullName == "HECTOR AMAYA").Execute();
 
-            //var e5 = db.Select<dynamic>(p.Id).From(p).Execute();
+            var e5 = db.SelectDynamic<dynamic>(p.Id).From(p).Execute();
 
             var reference = db.Select<string>((p.FullName + " " + p.PatientRefId).As("FullName")).From(p).Execute();
 
@@ -59,7 +62,7 @@ namespace HTL.DbEx.TestHarness
         }
 
         #region db
-        public static class db
+        public class db
         {
             public static string ConnectionStringName { get; } = "cq.genres";
 
@@ -70,42 +73,42 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region builder selectors
-            public static SelectValueDirective<Y> Select<Y>(DBExpressionField field)
+            public static SelectValueDirective<Y> Select<Y>(DBExpressionField<Y> field) where Y : IComparable
             {
                 return new SelectValueDirective<Y>(ConnectionStringName, field);
             }
 
-            public static SelectValueDirective<Y> Select<Y>(DBSelectExpression select)
+            public static SelectValueDirective<Y> Select<Y>(DBSelectExpression select) where Y : IComparable
             {
                 return new SelectValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static SelectManyValueDirective<Y> SelectAll<Y>(DBExpressionField field)
+            public static SelectManyValueDirective<Y> SelectAll<Y>(DBExpressionField field) where Y : IComparable
             {
                 return new SelectManyValueDirective<Y>(ConnectionStringName, field);
             }
 
-            public static SelectManyValueDirective<Y> SelectAll<Y>(DBSelectExpression select)
+            public static SelectManyValueDirective<Y> SelectAll<Y>(DBSelectExpression select) where Y : IComparable
             {
                 return new SelectManyValueDirective<Y>(ConnectionStringName, select);
             }
 
-            public static SelectDynamicDirective<Y> Select<Y>(params DBExpressionField[] fields)
+            public static SelectDynamicDirective<Y> SelectDynamic<Y>(params DBExpressionField[] fields)
             {
                 return new SelectDynamicDirective<Y>(ConnectionStringName, fields);
             }
 
-            public static SelectDynamicDirective<Y> Select<Y>(DBSelectExpressionSet select)
+            public static SelectDynamicDirective<Y> SelectDynamic<Y>(DBSelectExpressionSet select)
             {
                 return new SelectDynamicDirective<Y>(ConnectionStringName, select);
             }
 
-            public static SelectManyDynamicDirective<Y> SelectAll<Y>(params DBExpressionField[] fields)
+            public static SelectManyDynamicDirective<Y> SelectAllDynamic<Y>(params DBExpressionField[] fields)
             {
                 return new SelectManyDynamicDirective<Y>(ConnectionStringName, fields);
             }
 
-            public static SelectManyDynamicDirective<Y> SelectAll<Y>(DBSelectExpressionSet select)
+            public static SelectManyDynamicDirective<Y> SelectAllDynamic<Y>(DBSelectExpressionSet select)
             {
                 return new SelectManyDynamicDirective<Y>(ConnectionStringName, select);
             }
@@ -138,21 +141,21 @@ namespace HTL.DbEx.TestHarness
         }
         #endregion
 
-        #region dbo
-        public static class dbo
+        #region kai
+        public class kai
         {            
             #region db expression entities
-            private static PhysicianEntity<Physician> _physician;
-            private static PatientReportEntity<PatientReport> _patientReport;
+            private static volatile PhysicianEntity _physician;
+            private static volatile PatientReportEntity _patientReport;
 
-            public static PhysicianEntity<Physician> Physician { get { return _physician == null ? _physician = new PhysicianEntity<Physician>("kai", "Physician") : _physician; } }
-            public static PatientReportEntity<PatientReport> PatientReport { get { return _patientReport == null ? _patientReport = new PatientReportEntity<PatientReport>("kai", "PatientReport") : _patientReport; } }
+            public static PhysicianEntity Physician { get { return _physician == null ? _physician = new PhysicianEntity("kai", "Physician") : _physician; } }
+            public static PatientReportEntity PatientReport { get { return _patientReport == null ? _patientReport = new PatientReportEntity("kai", "PatientReport") : _patientReport; } }
             #endregion
         }
         #endregion
 
         #region patient report entity
-        public partial class PatientReportEntity<T> : DBExpressionEntity<T>
+        public partial class PatientReportEntity : DBExpressionEntity<PatientReport>
         {
             #region internals
             private DBExpressionField<int> _id;
@@ -261,9 +264,8 @@ namespace HTL.DbEx.TestHarness
                 return select;
             }
 
-            public override DBInsertExpressionSet GetInclusiveInsertExpression(T patientReport)
+            public override DBInsertExpressionSet GetInclusiveInsertExpression(PatientReport p)
             {
-                PatientReport p = patientReport as PatientReport;
                 DBInsertExpressionSet expr = null;
                 expr &= _sampleId.Insert(p.SampleId);
                 expr &= _externalId.Insert(p.ExternalId);
@@ -289,9 +291,8 @@ namespace HTL.DbEx.TestHarness
                 return expr;
             }
 
-            public override void FillObject(T patientReport, object[] values)
+            public override void FillObject(PatientReport p, object[] values)
             {
-                PatientReport p = patientReport as PatientReport;
                 //if the column allows null, do the dbnull check, else just cast in..???
                 p.Id = (int)values[0];
                 p.SampleId = (int)values[1];
@@ -321,7 +322,7 @@ namespace HTL.DbEx.TestHarness
         #endregion
 
         #region physician entity
-        public class PhysicianEntity<T> : DBExpressionEntity<T>
+        public class PhysicianEntity : DBExpressionEntity<Physician>
         {
             #region internals
             private DBExpressionField<int> _id;
@@ -366,9 +367,8 @@ namespace HTL.DbEx.TestHarness
                 return select;
             }
 
-            public override DBInsertExpressionSet GetInclusiveInsertExpression(T physician)
+            public override DBInsertExpressionSet GetInclusiveInsertExpression(Physician p)
             {
-                Physician p = physician as Physician;
                 DBInsertExpressionSet expr = null;
                 expr &= _patientReportId.Insert(p.PatientReportId);
                 expr &= _fullName.Insert(p.FullName);
@@ -378,9 +378,8 @@ namespace HTL.DbEx.TestHarness
                 return expr;
             }
 
-            public override void FillObject(T physician, object[] values)
+            public override void FillObject(Physician p, object[] values)
             {
-                Physician p = physician as Physician;
                 //if the column allows null, do the dbnull check, else just cast in..???
                 p.Id = (int)values[0];
                 p.PatientReportId = (int)values[1];
