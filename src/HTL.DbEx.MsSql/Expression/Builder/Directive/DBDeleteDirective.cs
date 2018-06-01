@@ -32,6 +32,12 @@ namespace HTL.DbEx.MsSql.Expression
                 throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
             }
         }
+
+        public DBDeleteDirective(ConnectionStringSettings connectionStringSettings)
+        {
+            _connSettings = connectionStringSettings ?? throw new ArgumentException("no connections string setting found for provided name");
+            _connStringName = connectionStringSettings.Name;
+        }
         #endregion
 
         #region into
