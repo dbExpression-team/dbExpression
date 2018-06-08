@@ -68,10 +68,10 @@ namespace HTL.DbEx.MsSql.Expression
         #endregion
 
         #region skip
-        public new DBSkipDirective Skip(int count)
+        public new SelectManyDynamicDBSkipDirective<T> Skip(int count)
         {
             base.SkipValue = count;
-            return new DBSkipDirective(this);
+            return new SelectManyDynamicDBSkipDirective<T>(this);
         }
         #endregion
 

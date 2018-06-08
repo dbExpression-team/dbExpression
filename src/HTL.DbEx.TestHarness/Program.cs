@@ -41,7 +41,11 @@ namespace HTL.DbEx.TestHarness
                                           .InnerJoin(p).On(p.PatientReportId == pr.Id)
                                           .Where(p.Id > 100)
                                           .OrderBy(pr.SampleId.Desc)
+                                          .Skip(1).Limit(1)
+
                                           .Execute();
+
+
 
 
             var sss = db.SelectAllDynamic<dynamic>(kai.Physician.FullName, kai.Physician.Id).From(p).Execute();
@@ -61,14 +65,20 @@ namespace HTL.DbEx.TestHarness
             var e9 = db.SelectAll<Physician>().From(p).Where(p.Id > 0).Execute();
         }
 
-        #region db
-        public class db
+        public class db : BuildSelector
         {
-            public static string ConnectionStringName { get; } = "cq.genres";
+            public db() : base("cq.genres")
+            { }
+        }
 
+        #region db
+        public class BuildSelector
+        {
+            public static string ConnectionStringName { get; private set; }
             #region constructors
-            static db()
+            public BuildSelector(string connName)
             {
+                ConnectionStringName = connName;
             }
             #endregion
 
