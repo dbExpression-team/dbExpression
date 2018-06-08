@@ -38,6 +38,13 @@ namespace HTL.DbEx.MsSql.Expression
                 throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
             }
         }
+
+        public DBInsertDirective(ConnectionStringSettings connectionStringSettings, T record)
+        {
+            _record = record;
+            _connSettings = connectionStringSettings ?? throw new ArgumentNullException("connections string settings are required");
+            _connStringName = connectionStringSettings.Name;
+        }
         #endregion
 
         #region into
