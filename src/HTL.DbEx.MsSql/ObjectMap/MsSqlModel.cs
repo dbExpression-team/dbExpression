@@ -471,7 +471,15 @@ namespace HTL.DbEx.MsSql.ObjectMap
             //get data table for table info...
             DataTable typeCodeDT;
             string sql = this.BuildTypeCodeInfoSql();
-            typeCodeDT = _sqlDbConnection.ExecuteDataTable(sql, DbCommandType.SqlText, null);
+
+            try
+            {
+                typeCodeDT = _sqlDbConnection.ExecuteDataTable(sql, DbCommandType.SqlText, null);
+            }
+            catch (System.Data.SqlClient.SqlException)
+            {
+                return;
+            }
 
             //List<TypeCodeInfo> typeCodeDefList = new List<TypeCodeInfo>();
             string currentName = null;
