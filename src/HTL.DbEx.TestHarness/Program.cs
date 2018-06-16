@@ -65,20 +65,14 @@ namespace HTL.DbEx.TestHarness
             var e9 = db.SelectAll<Physician>().From(p).Where(p.Id > 0).Execute();
         }
 
-        public class db : BuildSelector
-        {
-            public db() : base("cq.genres")
-            { }
-        }
-
         #region db
-        public class BuildSelector
+        public class db
         {
-            public static string ConnectionStringName { get; private set; }
+            public static string ConnectionStringName { get; } = "cq.genres";
+
             #region constructors
-            public BuildSelector(string connName)
+            static db()
             {
-                ConnectionStringName = connName;
             }
             #endregion
 
