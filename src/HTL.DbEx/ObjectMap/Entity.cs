@@ -9,6 +9,8 @@ namespace HTL.DbEx.ObjectMap
 
         public string Name { get; set; }
 
+        public string AliasName { get; set; }
+
         public bool IsIgnored { get; set; }
 
         public IList<Field> Fields { get; set; } = new List<Field>();

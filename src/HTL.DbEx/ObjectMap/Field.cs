@@ -9,6 +9,8 @@ namespace HTL.DbEx.ObjectMap
         #region interface properties
         public string Name { get; set; }
 
+        public string AliasName { get; set; }
+
         public Type AssemblyType { get; set; }
 
         public Type AssemblyTypeOverride { get; set; }

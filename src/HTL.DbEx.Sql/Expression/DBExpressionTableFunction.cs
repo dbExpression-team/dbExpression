@@ -13,6 +13,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region methods
+        //TODO: JRod/GWG need to provide correct providers
         public DBExpressionTableFunction(string schema, string tableName, string function, params object[] arguments) : base(schema, tableName)
         {
             Function = function;
@@ -39,7 +40,7 @@ namespace HTL.DbEx.Sql.Expression
                 }
             }
 
-            builder.Append(") AS [" + Name + "]");
+            builder.Append(") AS [" + EntityName + "]");
 
             return builder.ToString();
         }
@@ -55,7 +56,7 @@ namespace HTL.DbEx.Sql.Expression
                 builder.Append(Arguments[i]);
             }
 
-            builder.Append(") AS [" + Name + "]");
+            builder.Append(") AS [" + EntityName + "]");
 
             return builder.ToString();
         }

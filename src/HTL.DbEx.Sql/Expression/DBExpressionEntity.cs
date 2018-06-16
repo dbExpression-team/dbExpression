@@ -1,14 +1,14 @@
-﻿using System;
+﻿using HTL.DbEx.Utility;
+using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    //TODO: JRod, need to add schema to the entity name...
-    public class DBExpressionEntity
+    public abstract class DBExpressionEntity
     {
         #region interface
         public virtual string Schema { get; private set; }
 
-        public virtual string Name { get; private set; }
+        public virtual string EntityName { get; private set; }
 
         public virtual string AliasName { get; protected set; }
 
@@ -18,19 +18,11 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public DBExpressionEntity(string schema, string name)
+        protected DBExpressionEntity(string schema, string name)
         {
             this.Schema = schema;
-            this.Name = name;
+            this.EntityName = name;
         }
-        #endregion
-
-        #region as
-        public DBExpressionEntity As(string alias) => new DBExpressionEntity(this.Schema, this.Name) { AliasName = alias, IsAliased = true };
-        #endregion
-
-        #region correlate
-        public DBExpressionEntity Correlate(string name) => new DBExpressionEntity(this.Schema, this.Name) { AliasName = name, IsCorrelated = true };
         #endregion
 
         #region join
@@ -48,19 +40,19 @@ namespace HTL.DbEx.Sql.Expression
             switch (format)
             {
                 case "e":
-                    val = this.Name;
+                    val = this.EntityName;
                     break;
                 case "s.e":
-                    val = $"{this.Schema}.{this.Name}";
+                    val = $"{this.Schema}.{this.EntityName}";
                     break;
                 case "[e]":
-                    val = $"[{this.Name}]";
+                    val = $"[{this.EntityName}]";
                     break;
                 case "[s.e]":
-                    val = $"[{this.Schema}.{this.Name}]";
+                    val = $"[{this.Schema}.{this.EntityName}]";
                     break;
                 case "[s].[e]":
-                    val = $"[{this.Schema}].[{this.Name}]";
+                    val = $"[{this.Schema}].[{this.EntityName}]";
                     break;
                 default:
                     throw new ArgumentException("encountered unknown format string");
@@ -76,4 +68,60 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
     }
 
+    #region i db expression entity <T>
+    public interface IDbExpressionEntity<T>
+    {
+        DBSelectExpressionSet GetInclusiveSelectExpression();
+
+        DBInsertExpressionSet GetInclusiveInsertExpression(T entity);
+
+        void FillObject(T entity, object[] values);
+    }
+    #endregion
+
+    #region db expression entity <t>
+    public abstract class DBExpressionEntity<T> : DBExpressionEntity, IDbExpressionEntity<T>
+    {
+        #region interface
+        #endregion
+
+        #region constructors
+        public DBExpressionEntity(string schema, string name) : base(schema, name)
+        {
+        }
+        #endregion
+
+        #region as
+        public DBExpressionEntity<T> As(string alias)
+        {
+            var clone = CloneUtility.DeepCopy(this);
+            clone.AliasName = alias;
+            clone.IsAliased = true;
+            return clone;
+        }
+        #endregion
+
+        #region correlate
+        public DBExpressionEntity<T> Correlate(string name)
+        {
+            var clone = CloneUtility.DeepCopy(this);
+            clone.AliasName = name;
+            clone.IsCorrelated = true;
+            return clone;
+        }
+        #endregion
+
+        #region get inclusive select expression
+        public abstract DBSelectExpressionSet GetInclusiveSelectExpression();
+        #endregion
+
+        #region get inclusive insert expression
+        public abstract DBInsertExpressionSet GetInclusiveInsertExpression(T entity);
+        #endregion
+
+        #region fill object
+        public abstract void FillObject(T entity, object[] values);
+        #endregion
+    }
+    #endregion
 }

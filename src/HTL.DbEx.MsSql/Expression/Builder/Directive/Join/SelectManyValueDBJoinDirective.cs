@@ -1,15 +1,18 @@
-﻿namespace HTL.DbEx.Sql.Expression
+﻿using HTL.DbEx.Sql;
+using HTL.DbEx.Sql.Expression;
+
+namespace HTL.DbEx.MsSql.Expression
 {
-    public class DBJoinDirective
+    public class SelectManyValueDBJoinDirective<T>
     {
         #region internals
-        private readonly SqlExpressionBuilder _dbQuery;
+        private readonly SelectManyValueMsSqlBuilder<T> _dbQuery;
         private readonly DBExpressionEntity _joinEntity;
         private readonly DBExpressionJoinType _joinType;
         #endregion
 
         #region constructors
-        public DBJoinDirective(SqlExpressionBuilder dbQuery, DBExpressionEntity joinEntity, DBExpressionJoinType joinType)
+        public SelectManyValueDBJoinDirective(SelectManyValueMsSqlBuilder<T> dbQuery, DBExpressionEntity joinEntity, DBExpressionJoinType joinType)
         {
             _dbQuery = dbQuery;
             _joinEntity = joinEntity;
@@ -18,7 +21,7 @@
         #endregion
 
         #region methods
-        public SqlExpressionBuilder On(DBFilterExpression filter)
+        public SelectManyValueMsSqlBuilder<T> On(DBFilterExpression filter)
         {
             _dbQuery.Expression &= _joinEntity.Join(_joinType, filter);
             return _dbQuery;

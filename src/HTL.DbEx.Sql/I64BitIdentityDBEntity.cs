@@ -1,7 +1,7 @@
 ﻿
-namespace HTL.DbEx.Sql.Expression
+namespace HTL.DbEx.Sql
 {
-    public interface I64BitIdentityDBEntity
+    public interface I64BitIdentityDBEntity : IIdentityDBEntity
     {
         long Id { get; set; }
     }

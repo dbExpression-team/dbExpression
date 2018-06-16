@@ -8,6 +8,7 @@ namespace HTL.DbEx.ObjectMap
         #endregion
 
         #region interface properties
+        public virtual string Name { get; protected set; }
         public virtual string EntityName { get; protected set; }
         public virtual bool IsComposite
         {

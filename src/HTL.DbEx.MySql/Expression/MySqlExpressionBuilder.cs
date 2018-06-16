@@ -7,18 +7,18 @@ using HTL.DbEx.Sql;
 
 namespace HTL.DbEx.MySql.Expression
 {
-    public class MySqlExpressionBuilder<T> : SqlExpressionBuilder<T> where T : new()
+    public class MySqlExpressionBuilder<T> : SqlExpressionBuilder<T> where T : class, new()
     {
         #region internals
         private readonly string _totalRecCountParamName = "total_count";
         #endregion
 
         #region constructors
-        public MySqlExpressionBuilder(string connectionStringName, DBExpressionEntity baseEntity) : base(connectionStringName, baseEntity)
+        public MySqlExpressionBuilder(string connectionStringName, DBExpressionEntity<T> baseEntity) : base(connectionStringName, baseEntity)
         {
         }
 
-        public MySqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity baseEntity) : base(connectionStringSettings, baseEntity)
+        public MySqlExpressionBuilder(ConnectionStringSettings connectionStringSettings, DBExpressionEntity<T> baseEntity) : base(connectionStringSettings, baseEntity)
         {
         }
         #endregion

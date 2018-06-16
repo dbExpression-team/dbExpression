@@ -159,5 +159,4 @@ namespace HTL.DbEx.Sql.Expression
         public override int GetHashCode() => base.GetHashCode();
         #endregion
     }
-
 }

@@ -76,11 +76,17 @@ namespace HTL.DbEx.Sql.ObjectMap
                             base.UnknownAssemblyTypeOverride = val;
                         }
                     }
+                    else if (p.ToLower().StartsWith("alias="))
+                    {
+                        string val = p.Substring(6, (p.Length - 6));
+                        base.AliasName = val;
+                    }
                     else if (p.ToLower().StartsWith("attr="))
                     {
                         string val = p.Substring(5, (p.Length - 5));
                         base.AttributeDefinitions = val;
                     }
+                    
                 }
             }
         }

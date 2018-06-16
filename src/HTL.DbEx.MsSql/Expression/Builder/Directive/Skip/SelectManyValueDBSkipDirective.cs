@@ -1,20 +1,20 @@
-﻿namespace HTL.DbEx.Sql.Expression
+﻿namespace HTL.DbEx.MsSql.Expression
 {
-    public class DBSkipDirective
+    public class SelectManyValueDBSkipDirective<T>
     {
         #region internals
-        private SqlExpressionBuilder _dbQuery;
+        private SelectManyValueMsSqlBuilder<T> _dbQuery;
         #endregion
 
         #region constructors
-        public DBSkipDirective(SqlExpressionBuilder dbQuery)
+        public SelectManyValueDBSkipDirective(SelectManyValueMsSqlBuilder<T> dbQuery)
         {
             _dbQuery = dbQuery;
         }
         #endregion
 
         #region methods
-        public SqlExpressionBuilder Limit(int count)
+        public SelectManyValueMsSqlBuilder<T> Limit(int count)
         {
             _dbQuery.LimitValue = count;
             return _dbQuery;
