@@ -38,6 +38,17 @@ namespace HTL.DbEx.MsSql.Expression
                 _assignments &= assignments[i];
             }
         }
+
+        public DBUpdateDirective(ConnectionStringSettings connectionStringSettings, params DBAssignmentExpression[] assignments)
+        {
+            _connSettings = connectionStringSettings ?? throw new ArgumentNullException("connection string settings are required");
+            _connStringName = connectionStringSettings.Name;
+
+            for (int i = 0; i < assignments.Length; i++)
+            {
+                _assignments &= assignments[i];
+            }
+        }
         #endregion
 
         #region into

@@ -34,6 +34,12 @@ namespace HTL.DbEx.MsSql.Expression
                 throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
             }
         }
+
+        public SelectEntityDirective(ConnectionStringSettings connectionStringSettings)
+        {
+            ConnectionStringSettings = connectionStringSettings ??  throw new ArgumentNullException("connections string settings are required");
+            ConnectionStringName = connectionStringSettings.Name;
+        }
         #endregion
 
         #region from
@@ -51,6 +57,10 @@ namespace HTL.DbEx.MsSql.Expression
     {
         #region constructors
         public SelectManyEntityDirective(string connectionStringName) : base(connectionStringName)
+        {
+        }
+
+        public SelectManyEntityDirective(ConnectionStringSettings connectionStringSettings) : base(connectionStringSettings)
         {
         }
         #endregion
@@ -94,6 +104,13 @@ namespace HTL.DbEx.MsSql.Expression
 
             Select = select;
         }
+
+        public SelectValueDirective(ConnectionStringSettings connectionStringSettings, DBSelectExpression select)
+        {
+            ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentException("connection string settings are required", nameof(connectionStringSettings));
+            ConnectionStringName = connectionStringSettings.Name;
+            Select = select;
+        }
         #endregion
 
         #region from
@@ -121,6 +138,10 @@ namespace HTL.DbEx.MsSql.Expression
         //public SelectManyValueDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName, selectSet)
         //{
         //}
+
+        public SelectManyValueDirective(ConnectionStringSettings connectionStringSettings, DBSelectExpression select) : base(connectionStringSettings, select)
+        {
+        }
         #endregion
 
         #region from
@@ -201,6 +222,31 @@ namespace HTL.DbEx.MsSql.Expression
 
             SelectSet = selectSet;
         }
+
+        public SelectDynamicDirective(ConnectionStringSettings connectionStringSettings, params DBExpressionField[] fields)
+        {
+            ConnectionStringSettings =  connectionStringSettings ?? throw new ArgumentNullException("connections string settings are required");
+            ConnectionStringName = connectionStringSettings.Name;
+
+            for (int i = 0; i < fields.Length; i++)
+            {
+                SelectSet &= fields[i];
+            }
+        }
+
+        public SelectDynamicDirective(ConnectionStringSettings connectionStringSettings, DBSelectExpression select)
+        {
+            ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentNullException("connections string settings are required");
+            ConnectionStringName = connectionStringSettings.Name;
+            SelectSet &= select;
+        }
+
+        public SelectDynamicDirective(ConnectionStringSettings connectionStringSettings, DBSelectExpressionSet selectSet)
+        {
+            ConnectionStringSettings = connectionStringSettings ?? throw new ArgumentNullException("connections string settings are required");
+            ConnectionStringName = connectionStringSettings.Name;
+            SelectSet = selectSet;
+        }
         #endregion
 
         #region from
@@ -227,6 +273,19 @@ namespace HTL.DbEx.MsSql.Expression
         }
 
         public SelectManyDynamicDirective(string connectionStringName, DBSelectExpressionSet selectSet) : base(connectionStringName, selectSet)
+        {
+        }
+
+        public SelectManyDynamicDirective(ConnectionStringSettings connectionStringSettings, params DBExpressionField[] fields) : base(connectionStringSettings, fields)
+        {
+
+        }
+
+        public SelectManyDynamicDirective(ConnectionStringSettings connectionStringSettings, DBSelectExpression select) : base(connectionStringSettings, select)
+        {
+        }
+
+        public SelectManyDynamicDirective(ConnectionStringSettings connectionStringSettings, DBSelectExpressionSet selectSet) : base(connectionStringSettings, selectSet)
         {
         }
         #endregion
