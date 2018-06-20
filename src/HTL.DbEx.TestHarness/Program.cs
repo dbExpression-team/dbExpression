@@ -8,6 +8,7 @@ using HTL.DbEx.Sql;
 using HTL.DbEx.MsSql;
 using HTL.DbEx.Sql.Expression;
 using HTL.DbEx.MsSql.Expression;
+using HTL.DbEx.MsSql.Expression._New.Test;
 
 namespace HTL.DbEx.TestHarness
 {
@@ -15,6 +16,9 @@ namespace HTL.DbEx.TestHarness
     {
         static void Main(string[] args)
         {
+            MySchema.Test();
+
+
             Physician physician = new Physician()
             {
                 PatientReportId = 304,

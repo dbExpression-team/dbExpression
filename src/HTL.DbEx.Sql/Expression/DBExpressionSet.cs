@@ -1,6 +1,18 @@
 ﻿namespace HTL.DbEx.Sql.Expression
 {
-    public class DBExpressionSet
+    //TODO: feature/interface-implementation: remove this partial once all is accepted and no longer need a visual cue to new code
+    public partial class DBExpressionSet
+    {
+        public object Instance { get; set; }
+        public DBExpressionEntity BaseEntity { get; set; }
+        public ExecutionContext ExecutionContext { get; set; }
+        public int? SkipValue { get; set; }
+        public int? LimitValue { get; set; }
+        public bool Distinct { get; set; }
+        public int? Top { get; set; }
+    }
+
+    public partial class DBExpressionSet
     {
         #region interface
         public DBSelectExpressionSet Select { get; private set; }
@@ -13,11 +25,11 @@
 
         public DBJoinExpressionSet Joins { get; private set; }
 
-        public DBOrderByExpressionSet OrderBy { get; private set; }
+        public DBOrderByExpressionSet OrderBy { get; /*private*/ set; }
 
-        public DBGroupByExpressionSet GroupBy { get; private set; }
+        public DBGroupByExpressionSet GroupBy { get; /*private*/ set; }
 
-        public DBHavingExpression Having { get; private set; }
+        public DBHavingExpression Having { get; /*private*/ set; }
         #endregion
 
         #region operators
