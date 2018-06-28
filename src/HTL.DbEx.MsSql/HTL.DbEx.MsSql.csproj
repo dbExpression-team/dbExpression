@@ -69,6 +69,7 @@
     <Compile Include="Expression\Builder\SelectMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\Builder\SelectValueMsSqlBuilder{T}.cs" />
     <Compile Include="Expression\Builder\UpdateMsSqlBuilder{T}.cs" />
+    <Compile Include="Expression\Builder\_New\Assembler\SqlAssembler.cs" />
     <Compile Include="Expression\Builder\_New\MsSqlBuilder{T,U,V}.cs" />
     <Compile Include="Expression\Builder\_New\MsSqlBuilder{T,U}.cs" />
     <Compile Include="Expression\Builder\_New\MsSqlBuilder{T}.cs" />
