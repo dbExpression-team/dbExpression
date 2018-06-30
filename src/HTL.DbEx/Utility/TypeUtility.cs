@@ -36,6 +36,9 @@ namespace HTL.DbEx.Utility
                     case "DateTime":
                         t = typeof(DateTime);
                         break; // "System.DateTime";
+                    case "DateTimeOffset":
+                        t = typeof(DateTimeOffset);
+                        break; // "System.DateTimeOffset";
                     case "bool":
                         t = typeof(bool);
                         break; // "System.Boolean";
@@ -81,6 +84,9 @@ namespace HTL.DbEx.Utility
                     case "DateTime?":
                         t = typeof(DateTime?);
                         break; // "System.DateTime?";
+                    case "DateTimeOffset?":
+                        t = typeof(DateTimeOffset?);
+                        break; // "System.DateTimeOffset?";
                     case "decimal?":
                         t = typeof(decimal?);
                         break; // "System.Decimal?";
@@ -261,6 +267,8 @@ namespace HTL.DbEx.Utility
                     return "System.Decimal";
                 case "DateTime":
                     return "System.DateTime";
+                case "DateTimeOffset":
+                    return "System.DateTimeOffset";
                 case "bool":
                     return "System.Boolean";
                 case "byte":
@@ -328,6 +336,8 @@ namespace HTL.DbEx.Utility
                     return "decimal";
                 case "System.DateTime":
                     return "DateTime";
+                case "System.DateTimeOffset":
+                    return "DateTimeOffset";
                 case "System.Boolean":
                     return "bool";
                 case "System.Byte":

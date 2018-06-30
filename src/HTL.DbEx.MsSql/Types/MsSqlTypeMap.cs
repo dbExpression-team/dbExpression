@@ -82,7 +82,7 @@ namespace HTL.DbEx.MsSql.Types
                     t = (allowNull) ? typeof(DateTime?) : typeof(DateTime);
                     break;
                 case SqlDbType.DateTimeOffset:
-                    t = (allowNull) ? typeof(DateTime?) : typeof(DateTime); //TODO: JRod, this may be timespan
+                    t = (allowNull) ? typeof(DateTimeOffset?) : typeof(DateTimeOffset);
                     break;
                 case SqlDbType.Decimal:
                     t = (allowNull) ? typeof(decimal?) : typeof(decimal);
@@ -388,6 +388,7 @@ namespace HTL.DbEx.MsSql.Types
                     _sqlTypeDict.Add(typeof(int), SqlDbType.Int);
                     _sqlTypeDict.Add(typeof(decimal), SqlDbType.Decimal);
                     _sqlTypeDict.Add(typeof(DateTime), SqlDbType.DateTime);
+                    _sqlTypeDict.Add(typeof(DateTimeOffset), SqlDbType.DateTimeOffset);
                     _sqlTypeDict.Add(typeof(bool), SqlDbType.Bit);
                     _sqlTypeDict.Add(typeof(byte), SqlDbType.TinyInt);
                     _sqlTypeDict.Add(typeof(long), SqlDbType.BigInt);
@@ -405,6 +406,7 @@ namespace HTL.DbEx.MsSql.Types
                     _sqlTypeDict.Add(typeof(int?), SqlDbType.Int);
                     _sqlTypeDict.Add(typeof(bool?), SqlDbType.Bit);
                     _sqlTypeDict.Add(typeof(DateTime?), SqlDbType.DateTime);
+                    _sqlTypeDict.Add(typeof(DateTimeOffset?), SqlDbType.DateTimeOffset);
                     _sqlTypeDict.Add(typeof(decimal?), SqlDbType.Decimal);
                     _sqlTypeDict.Add(typeof(long?), SqlDbType.BigInt);
                     _sqlTypeDict.Add(typeof(ulong?), SqlDbType.BigInt);
