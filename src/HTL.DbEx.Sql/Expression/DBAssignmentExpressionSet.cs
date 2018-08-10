@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using HTL.DbEx.Sql.Assembler;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBAssignmentExpressionSet : DBExpression, IDBExpression
+    public class DBAssignmentExpressionSet : DBExpression, IDBExpressionSet<DBAssignmentExpression>, ISqlAssemblyPart
     {
         #region internals
-        private readonly List<DBAssignmentExpression> _assignments = new List<DBAssignmentExpression>();
+        public IList<DBAssignmentExpression> Expressions { get; } = new List<DBAssignmentExpression>();
         #endregion
 
         #region constructors
@@ -16,22 +17,18 @@ namespace HTL.DbEx.Sql.Expression
 
         internal DBAssignmentExpressionSet(DBAssignmentExpression a1)
         {
-            _assignments.Add(a1);
+            Expressions.Add(a1);
         }
 
         internal DBAssignmentExpressionSet(DBAssignmentExpression a1, DBAssignmentExpression a2)
         {
-            _assignments.Add(a1);
-            _assignments.Add(a2);
+            Expressions.Add(a1);
+            Expressions.Add(a2);
         }
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", _assignments.ConvertAll(a => a.ToString()));
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService) => string.Join(", ", _assignments.ConvertAll(a => a.ToParameterizedString(parameters, dbService)));
+        public override string ToString() => string.Join(", ", Expressions.Select(a => a.ToString()));
         #endregion
 
         #region logical & operator
@@ -43,7 +40,7 @@ namespace HTL.DbEx.Sql.Expression
             }
             else
             {
-                aSet._assignments.Add(b);
+                aSet.Expressions.Add(b);
             }
             return aSet;
         }
@@ -54,7 +51,8 @@ namespace HTL.DbEx.Sql.Expression
             {
                 aSet = new DBAssignmentExpressionSet();
             }
-            aSet._assignments.AddRange(bSet._assignments);
+            foreach (var b in bSet.Expressions)
+                aSet.Expressions.Add(b);
             return aSet;
         }
         #endregion

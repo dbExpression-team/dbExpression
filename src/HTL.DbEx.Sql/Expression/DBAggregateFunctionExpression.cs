@@ -1,25 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBAggregateFunctionExpression : DBExpression, IDBExpression
+    public class DBAggregateFunctionExpression : DBExpression
     {
-        #region internals
-        private readonly DBSelectExpression _select;
-        private readonly DBSelectExpressionAggregateFunction _aggregateFunction;
-        private readonly bool _distinct;
-        #endregion
-
         #region interface
+        public (Type, object) Expression { get; private set; }
+        public DBAggregateFunction AggregateFunction { get; private set; }
+        public bool Distinct { get; private set; }
         #endregion
 
         #region constructors
-        internal DBAggregateFunctionExpression(DBSelectExpression select, DBSelectExpressionAggregateFunction aggregateFunction, bool distinct = false)
+        internal DBAggregateFunctionExpression(DBSelectExpression select, DBAggregateFunction aggregateFunction, bool distinct = false)
         {
-            _select = select;
-            _aggregateFunction = aggregateFunction;
-            _distinct = distinct;
+            Expression = (typeof(DBSelectExpression), select);
+            AggregateFunction = aggregateFunction;
+            Distinct = distinct;
         }
         #endregion
 
@@ -28,11 +24,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"{_aggregateFunction}({(_distinct ? " DISTINCT " : string.Empty)}{_select})";
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService) => $"{_aggregateFunction}({(_distinct ? " DISTINCT " : string.Empty)}{_select.ToParameterizedString(parameters, dbService)})";
+        public override string ToString() => $"{AggregateFunction}({(Distinct ? " DISTINCT " : string.Empty)}{Expression.Item2})";
         #endregion
 
         #region implicit select operators

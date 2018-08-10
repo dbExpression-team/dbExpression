@@ -14,7 +14,7 @@ namespace HTL.DbEx.Sql
         #region internals
         protected DbConnection _dbConnection;
         protected ConnectionStringSettings ConnectionSettings { get; private set; }
-        protected DbTransaction DbTransaction { get; private set; }
+        public DbTransaction DbTransaction { get; private set; }
         #endregion
 
         #region interface properties
@@ -87,7 +87,7 @@ namespace HTL.DbEx.Sql
         #endregion
 
         #region connection management methods
-        protected void EnsureOpenConnection()
+        public void EnsureOpenConnection()
         {
             this.EnsureConnection();
             if (_dbConnection.State != ConnectionState.Open)

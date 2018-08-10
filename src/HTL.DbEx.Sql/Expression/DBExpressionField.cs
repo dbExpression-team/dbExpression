@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using HTL.DbEx.Sql.Assembler;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBExpressionField
+    public class DBExpressionField : IDBExpression, IDBExpressionSelectClausePart
     {
         #region interface
         public DBExpressionEntity ParentEntity { get; protected set; }
@@ -69,15 +72,15 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region aggregate functions
-        public DBSelectExpression Avg(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.AVG, distinct);
+        public DBSelectExpression Avg(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.AVG, distinct);
 
-        public DBSelectExpression Min(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.MIN, distinct);
+        public DBSelectExpression Min(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.MIN, distinct);
 
-        public DBSelectExpression Max(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.MAX, distinct);
+        public DBSelectExpression Max(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.MAX, distinct);
 
-        public DBSelectExpression Sum(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.SUM, distinct);
+        public DBSelectExpression Sum(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.SUM, distinct);
 
-        public DBSelectExpression Count(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.COUNT, distinct);
+        public DBSelectExpression Count(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.COUNT, distinct);
         #endregion
 
         #region implicit select operator

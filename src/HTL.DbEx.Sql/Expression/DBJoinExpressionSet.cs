@@ -1,46 +1,44 @@
-﻿using System;
+﻿using HTL.DbEx.Sql.Assembler;
+using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Linq;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBJoinExpressionSet : DBExpression, IDBExpression
+    public class DBJoinExpressionSet : DBExpression, IDBExpressionSet<DBJoinExpression>, ISqlAssemblyPart
     {
         #region internals
-        private readonly List<DBJoinExpression> _joins = new List<DBJoinExpression>();
+        public IList<DBJoinExpression> Expressions { get; }  = new List<DBJoinExpression>();
         #endregion
 
         #region constructors
         public DBJoinExpressionSet(DBJoinExpression a)
         {
-            _joins.Add(a);
+            Expressions.Add(a);
         }
 
         public DBJoinExpressionSet(DBJoinExpression a, DBJoinExpression b)
         {
-            _joins.Add(a);
-            _joins.Add(b);
+            Expressions.Add(a);
+            Expressions.Add(b);
         }
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(Environment.NewLine, _joins.ConvertAll(j => j.ToString()));
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService) => string.Join(Environment.NewLine, _joins.ConvertAll<string>(j => j.ToParameterizedString(parameters, dbService)));
+        public override string ToString() => string.Join(Environment.NewLine, Expressions.Select(j => j.ToString()));
         #endregion
 
         #region logical & operator
         public static DBJoinExpressionSet operator &(DBJoinExpressionSet aSet, DBJoinExpression b)
         {
-            aSet._joins.Add(b);
+            aSet.Expressions.Add(b);
             return aSet;
         }
 
         public static DBJoinExpressionSet operator &(DBJoinExpressionSet aSet, DBJoinExpressionSet bSet)
         {
-            aSet._joins.AddRange(bSet._joins);
+            foreach (var b in bSet.Expressions)
+                aSet.Expressions.Add(b);
             return aSet;
         }
         #endregion

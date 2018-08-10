@@ -1,45 +1,49 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
+using System.Linq;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBGroupByExpressionSet : DBExpression, IDBExpression
+    public class DBGroupByExpressionSet : DBExpression, IDBExpressionSet<DBGroupByExpression>
     {
         #region internals
-        private readonly List<DBGroupByExpression> _groupings = new List<DBGroupByExpression>();
+        public IList<DBGroupByExpression> Expressions { get; } = new List<DBGroupByExpression>();
         #endregion
 
         #region constructors
         internal DBGroupByExpressionSet(DBGroupByExpression a)
         {
-            _groupings.Add(a);
+            Expressions.Add(a);
         }
 
         internal DBGroupByExpressionSet(DBGroupByExpression a, DBGroupByExpression b)
         {
-            _groupings.Add(a);
-            _groupings.Add(b);
+            Expressions.Add(a);
+            Expressions.Add(b);
         }
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", _groupings.ConvertAll(g => g.ToString()));
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService) => string.Join(", ", _groupings.ConvertAll(g => g.ToParameterizedString(parameters, dbService)));
+        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
         #endregion
 
         #region conditional & operator
         public static DBGroupByExpressionSet operator &(DBGroupByExpressionSet aSet, DBGroupByExpression b)
         {
-            aSet._groupings.Add(b);
+            if (aSet == null)
+            {
+                aSet = new DBGroupByExpressionSet(b);
+            }
+            else
+            {
+                aSet.Expressions.Add(b);
+            }
             return aSet;
         }
 
         public static DBGroupByExpressionSet operator &(DBGroupByExpressionSet aSet, DBGroupByExpressionSet bSet)
         {
-            aSet._groupings.AddRange(bSet._groupings);
+            foreach (var b in bSet.Expressions)
+                aSet.Expressions.Add(b);
             return aSet;
         }
         #endregion

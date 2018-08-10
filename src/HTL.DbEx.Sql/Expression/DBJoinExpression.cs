@@ -1,64 +1,34 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBJoinExpression : DBExpression, IDBExpression
+    public class DBJoinExpression : DBExpression
     {
-        #region internals
-        private readonly DBExpressionEntity _entity;
-        private readonly DBExpressionJoinType _joinType;
-        private DBFilterExpression OnCondition { get; set; }
+        #region interface
+        public (Type,object) Expression { get; private set; }
+        public DBExpressionEntity Entity { get; private set; }
+        public DBExpressionJoinType JoinType { get; private set; }
         #endregion
 
         #region constructors
         public DBJoinExpression(DBExpressionEntity entity, DBExpressionJoinType joinType, DBFilterExpression onCondition)
         {
-            _entity = entity;
-            _joinType = joinType;
-            OnCondition = onCondition;
+            Entity = entity;
+            JoinType = joinType;
+            Expression = (typeof(DBFilterExpression), onCondition);
         }
         #endregion
 
         #region on
         public DBJoinExpression On(DBFilterExpression filter)
         {
-            OnCondition = filter;
+            Expression = (typeof(DBFilterExpression),filter);
             return this;
         }
         #endregion
 
         #region to string
-        public override string ToString()
-        {
-            string expression; 
-           
-            if (_joinType == DBExpressionJoinType.CROSS)
-            {
-                expression = $"{_joinType} JOIN {_entity}";
-            }
-            else
-            {
-                expression = $"{_joinType} JOIN {_entity} ON {OnCondition}";
-            }
-            return expression;
-        }
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            string expression = null;
-            if (_joinType == DBExpressionJoinType.CROSS)
-            {
-                expression = $"CROSS JOIN {_entity}";
-            }
-            else
-            {
-                expression = $"{_joinType} JOIN {_entity} ON {OnCondition.ToParameterizedString(parameters, dbService)}";
-            }
-            return expression;
-        }
+        public override string ToString() => JoinType == DBExpressionJoinType.CROSS ? $"{JoinType} JOIN {Entity}" : $"{JoinType} JOIN {Entity} ON {Expression.Item2}";
         #endregion
 
         #region logical & operator

@@ -1,100 +1,40 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBArithmeticExpression : DBExpression, IDBExpression
+    public class DBArithmeticExpression : DBExpression, IDBExpressionSelectClausePart
     {
-        #region internals
-        private readonly object _leftOperand;
-        private readonly object _rightOperand;
-        private readonly DBArithmeticExpressionOperator _arithmeticOperator;
-
-        private string[] _operatorStrings = { " + ", " - ", " * ", " / ", " % " };
-        #endregion
-
         #region interface
+        public (Type, object) Expression { get; private set; }
+        public (Type, object) LeftPart => ((DBExpressionPartPair)Expression.Item2).LeftPart;
+        public (Type, object) RightPart => ((DBExpressionPartPair)Expression.Item2).RightPart;
+        public DBArithmeticExpressionOperator ExpressionOperator { get; private set; }
         #endregion
 
         #region constructors
-        internal DBArithmeticExpression(object leftOperand, object rightOperand, DBArithmeticExpressionOperator arithmeticOperator)
+        internal DBArithmeticExpression(object leftArg, object rightArg, DBArithmeticExpressionOperator arithmeticOperator)
         {
-            _leftOperand = leftOperand;
-            _rightOperand = rightOperand;
-            _arithmeticOperator = arithmeticOperator;
+            Expression = (typeof(DBExpressionPartPair), new DBExpressionPartPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
+            //LeftPart = (leftArg.GetType(), leftArg);
+            //RightPart = (rightArg.GetType(), rightArg);
+            ExpressionOperator = arithmeticOperator;
         }
         #endregion
 
         #region aggregate functions
-        public DBSelectExpression Avg(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.AVG, distinct);
+        public DBSelectExpression Avg(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.AVG, distinct);
 
-        public DBSelectExpression Min(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.MIN, distinct);
+        public DBSelectExpression Min(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.MIN, distinct);
 
-        public DBSelectExpression Max(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.MAX, distinct);
+        public DBSelectExpression Max(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.MAX, distinct);
 
-        public DBSelectExpression Sum(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.SUM, distinct);
+        public DBSelectExpression Sum(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.SUM, distinct);
 
-        public DBSelectExpression Count(bool distinct = false) => new DBAggregateFunctionExpression(this, DBSelectExpressionAggregateFunction.COUNT, distinct);
+        public DBSelectExpression Count(bool distinct = false) => new DBAggregateFunctionExpression(this, DBAggregateFunction.COUNT, distinct);
         #endregion
 
         #region to string
-        public override string ToString() => $"({this.FormatOperand(_leftOperand)}{_operatorStrings[(int)_arithmeticOperator]}{this.FormatOperand(_rightOperand)})";
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            string expression = null;
-            string left = null;
-            string right  = null;
-
-            if (_leftOperand is string)
-            {
-                string paramName = "@AR" + (parameters.Count + 1);
-                left = paramName;
-                parameters.Add(dbService.GetDbParameter(paramName, _leftOperand, _leftOperand.GetType()));
-            }
-            else if (_leftOperand is IDBExpression)
-            {
-                left = (_leftOperand as IDBExpression).ToParameterizedString(parameters, dbService);
-            }
-            else if (_leftOperand is DBExpressionField)
-            {
-                left = _leftOperand.ToString();
-            }
-            else
-            {
-                left = _leftOperand.ToString();
-            }
-
-
-            if (_rightOperand is string)
-            {
-                string paramName = "@AR" + (parameters.Count + 1);
-                right = paramName;
-                parameters.Add(dbService.GetDbParameter(paramName, _rightOperand, _rightOperand.GetType()));
-            }
-            else if (_rightOperand is IDBExpression)
-            {
-                right = (_rightOperand as IDBExpression).ToParameterizedString(parameters, dbService);
-            }
-            else if ((_rightOperand is DBExpressionField))
-            {
-                right = _rightOperand.ToString();
-            }
-            else
-            {
-                right = _rightOperand.ToString();
-            }
-
-            expression = $"({left}{_operatorStrings[(int)_arithmeticOperator]}{right})";
-
-            return expression;
-        }
-        #endregion
-
-        #region format operand
-        private string FormatOperand(object operand) => operand is string ? $"'{((string)operand).Replace("'", "''")}'" : operand.ToString();
+        public override string ToString() => $"({LeftPart.Item2} {ExpressionOperator} {RightPart.Item2})";
         #endregion
 
         #region as

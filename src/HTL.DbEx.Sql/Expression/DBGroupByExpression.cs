@@ -1,36 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBGroupByExpression : DBExpression, IDBExpression
+    public class DBGroupByExpression : DBExpression
     {
         #region internals
-        private readonly DBExpression _groupingExpression;
+        public (Type,object) Expression { get; private set; }
         #endregion
 
         #region constructors
         internal DBGroupByExpression(DBExpressionField field)
         {
-            _groupingExpression = field;
+            Expression = (typeof(DBExpressionField),field);
         }
 
         internal DBGroupByExpression(DBSelectExpression expression)
         {
-            _groupingExpression = expression;
+            Expression = (typeof(DBSelectExpression), expression);
         }
         #endregion
 
         #region to string
-        public override string ToString() => _groupingExpression.ToString();
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            var asDbExpression = _groupingExpression as IDBExpression;
-            return asDbExpression == null ? _groupingExpression.ToString() : asDbExpression.ToParameterizedString(parameters, dbService);
-        }
+        public override string ToString() => Expression.Item2.ToString();
         #endregion
 
         #region conditional & operator

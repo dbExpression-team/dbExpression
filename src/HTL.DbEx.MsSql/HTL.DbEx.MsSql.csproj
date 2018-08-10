@@ -42,70 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembler\MsSqlAssemblerFactory.cs" />
+    <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
+    <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
+    <Compile Include="Assembler\StringValueTypeFormatter.cs" />
     <Compile Include="Connection\MsSqlConnection.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\DeleteDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\SelectDynamicDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\SelectManyDynamicDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\SelectManyEntityDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\SelectManyValueDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\SelectValueDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\UpdateDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\DBDeleteDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\DBInsertDirective{T}.cs" />
-    <Compile Include="Expression\Builder\Directive\DBSelectDirective{T}.cs" />
-    <Compile Include="Expression\Builder\Directive\DBUpdateDirective.cs" />
-    <Compile Include="Expression\Builder\DeleteMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\Directive\Join\SelectEntityDBJoinDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Skip\SelectManyDynamicSkipDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Skip\SelectManyEntityDBSkipDirective.cs" />
-    <Compile Include="Expression\Builder\Directive\Skip\SelectManyValueDBSkipDirective.cs" />
-    <Compile Include="Expression\Builder\InsertMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\MsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectDynamicMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectEntityMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectManyDynamicMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectManyEntityMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectManyValueMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\SelectValueMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\UpdateMsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Assembler\SqlAssembler.cs" />
-    <Compile Include="Expression\Builder\_New\MsSqlBuilder{T,U,V}.cs" />
-    <Compile Include="Expression\Builder\_New\MsSqlBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\MsSqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\MsSqlInsertBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\SkipBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\SqlBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\JoinBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\SqlBuilder{T,U,V}.cs" />
-    <Compile Include="Expression\Builder\_New\SqlInsertBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IContinuationBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IContinuationBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IDeleteContinuationBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IDeleteFromBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IInsertBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISelectAllContinuationBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISelectAllContinuationBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISelectAllFromBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISelectAllSkipContinuationBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISelectContinuationBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISkipBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IJoinBuilder{T,U}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IJoinBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ITerminationBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ISelectContinuationBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IFromBuilder{T,U,V}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\ITerminationBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IUpdateContinuationBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IUpdateFromBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\MsSqlBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\SqlBuilder{T}.cs" />
-    <Compile Include="Expression\Builder\_New\SqlBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\SqlBuilderExtensions.cs" />
-    <Compile Include="Expression\Builder\_New\Syntax\IUpdateInitiationBuilder.cs" />
-    <Compile Include="Expression\Builder\_New\Test.cs" />
+    <Compile Include="Assembler\SelectAllMsSqlAssembler.cs" />
+    <Compile Include="Builder\MsSqlBuilder{T,U,V}.cs" />
+    <Compile Include="Builder\MsSqlBuilder{T,U}.cs" />
+    <Compile Include="Builder\MsSqlBuilder{T}.cs" />
+    <Compile Include="Builder\MsSqlInsertBuilder{T}.cs" />
+    <Compile Include="Builder\MsSqlBuilder.cs" />
+    <Compile Include="Connection\MsSqlConnectionFactory.cs" />
+    <Compile Include="Executor\MsSqlExecutorFactory.cs" />
     <Compile Include="ObjectMap\MsSqlEntity.cs" />
     <Compile Include="ObjectMap\MsSqlField.cs" />
     <Compile Include="ObjectMap\MsSqlModel.cs" />
@@ -122,6 +71,9 @@
       <Project>{196feda7-33a3-4f84-b5c4-e8471041a4cc}</Project>
       <Name>HTL.DbEx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Expression\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

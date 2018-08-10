@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using HTL.DbEx.Sql.Assembler;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBInsertExpressionSet : DBExpression, IDBExpression
+    public class DBInsertExpressionSet : DBExpression, IDBExpressionSet<DBInsertExpression>, ISqlAssemblyPart
     {
         #region internals
-        private readonly List<DBInsertExpression> _insertExpressions = new List<DBInsertExpression>();
+        public IList<DBInsertExpression> Expressions { get; } = new List<DBInsertExpression>();
         #endregion
 
         #region constructors
@@ -16,32 +17,18 @@ namespace HTL.DbEx.Sql.Expression
 
         public DBInsertExpressionSet(DBInsertExpression a)
         {
-            _insertExpressions.Add(a);
+            Expressions.Add(a);
         }
 
         public DBInsertExpressionSet(DBInsertExpression a, DBInsertExpression b)
         {
-            _insertExpressions.Add(a);
-            _insertExpressions.Add(b);
+            Expressions.Add(a);
+            Expressions.Add(b);
         }
         #endregion
 
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            string[] cols = new string[_insertExpressions.Count];
-            string[] parms = new string[_insertExpressions.Count];
-            for (int i = 0; i < _insertExpressions.Count; i++)
-            {
-                cols[i] = _insertExpressions[i]._field.ToString();
-                parms[i] = "@I" + (i + 1);
-
-                parameters.Add(dbService.GetDbParameter(parms[i], _insertExpressions[i]._value, _insertExpressions[i]._type, _insertExpressions[i]._field.Size));
-            }
-
-            string expr = $"({string.Join(", ", cols)}) VALUES ({string.Join(", ", parms)})";
-            return expr;
-        }
+        #region to string
+        public override string ToString() => $"{(string.Join(", ", Expressions.Select(e => e.ToString())))}";
         #endregion
 
         #region logical & operator
@@ -53,7 +40,7 @@ namespace HTL.DbEx.Sql.Expression
             }
             else
             {
-                aSet._insertExpressions.Add(b);
+                aSet.Expressions.Add(b);
             }
             return aSet;
         }
@@ -64,7 +51,8 @@ namespace HTL.DbEx.Sql.Expression
             {
                 aSet = new DBInsertExpressionSet();
             }
-            aSet._insertExpressions.AddRange(bSet._insertExpressions);
+            foreach (var b in bSet.Expressions)
+                aSet.Expressions.Add(b);
             return aSet;
         }
         #endregion

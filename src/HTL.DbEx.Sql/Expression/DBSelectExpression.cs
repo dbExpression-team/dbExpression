@@ -1,60 +1,44 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBSelectExpression : DBExpression, IDBExpression
+    public class DBSelectExpression : IDBExpressionSelectClausePart, IDBExpression, IAliasable
     {
         #region internals
-        private readonly object _expressionRoot;
-        private string Alias { get; set; }
+        private string _alias;
         #endregion
 
         #region interface
+        public (Type,object) Expression { get; }
         public bool IsDistinct { get; private set; }
+        string IAliasable.Alias => _alias;
         #endregion
 
         #region constructors
         public DBSelectExpression(DBExpressionField field)
         {
-            _expressionRoot = field;
+            Expression = (typeof(DBExpressionField), field);
         }
 
         public DBSelectExpression(DBArithmeticExpression arithmeticExpression)
         {
-            _expressionRoot = arithmeticExpression;
+            Expression = (typeof(DBArithmeticExpression), arithmeticExpression);
         }
 
         public DBSelectExpression(DBAggregateFunctionExpression aggregateFunctionExpression)
         {
-            _expressionRoot = aggregateFunctionExpression;
+            Expression = (typeof(DBAggregateFunctionExpression), aggregateFunctionExpression);
         }
         #endregion
 
         #region to string
-        public override string ToString() => _expressionRoot.ToString() + (string.IsNullOrWhiteSpace(Alias) ? string.Empty : (" AS " + Alias));
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            string expression = null;
-            if (_expressionRoot is IDBExpression)
-            {
-                expression = (_expressionRoot as IDBExpression).ToParameterizedString(parameters, dbService);
-            }
-            else
-            {
-                expression = _expressionRoot.ToString();
-            }
-            return !string.IsNullOrWhiteSpace(Alias) ? $"{expression} AS {Alias}" : expression;
-        }
+        public override string ToString() => Expression.Item2.ToString() + (string.IsNullOrWhiteSpace(_alias) ? string.Empty : (" AS " + _alias));
         #endregion
 
         #region as
         public virtual DBSelectExpression As(string alias)
         {
-            this.Alias = alias;
+            this._alias = alias;
             return this;
         }
         #endregion

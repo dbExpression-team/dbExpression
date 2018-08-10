@@ -1,107 +1,58 @@
-﻿using System.Collections.Generic;
+﻿using HTL.DbEx.Sql.Assembler;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBFilterExpressionSet : DBExpression, IDBExpression
+    public class DBFilterExpressionSet : DBExpression, IDBExpressionSet<DBFilterExpression>, ISqlAssemblyPart
     {
         #region interface
-        private readonly object _leftArg;
-        private readonly object _rightArg;
-        private readonly DBConditionalExpressionOperator _conditionalOperator;
-        private bool Negate { get; set; }
+        public IList<DBFilterExpression> Expressions { get; } = new List<DBFilterExpression>();
+        public readonly DBConditionalExpressionOperator ConditionalOperator;
+        public bool Negate { get; set; }
+        public (Type,object) LeftPart { get; set; }
+        public (Type,object) RightPart { get; set; }
         #endregion
 
         #region constructors
         internal DBFilterExpressionSet(DBFilterExpression singleFilter)
         {
-            this._rightArg = singleFilter;
+            RightPart = (typeof(DBFilterExpression), singleFilter);
+            Expressions.Add(singleFilter);
         }
 
         internal DBFilterExpressionSet(DBFilterExpression leftArg, DBFilterExpression rightArg, DBConditionalExpressionOperator conditinalOperator)
         {
-            _leftArg = leftArg;
-            _rightArg = rightArg;
-            _conditionalOperator = conditinalOperator;
+            LeftPart = (typeof(DBFilterExpression), leftArg);
+            RightPart = (typeof(DBFilterExpression), rightArg);
+            ConditionalOperator = conditinalOperator;
+            Expressions.Add(leftArg);
+            Expressions.Add(rightArg);
         }
 
         internal DBFilterExpressionSet(DBFilterExpressionSet leftArg, DBFilterExpression rightArg, DBConditionalExpressionOperator conditinalOperator)
         {
-            _leftArg = leftArg;
-            _rightArg = rightArg;
-            _conditionalOperator = conditinalOperator;
+            LeftPart = (typeof(DBFilterExpressionSet), leftArg);
+            RightPart = (typeof(DBFilterExpression), rightArg);
+            ConditionalOperator = conditinalOperator;
+            Expressions.Add(rightArg);
         }
 
         internal DBFilterExpressionSet(DBFilterExpressionSet leftArg, DBFilterExpressionSet rightArg, DBConditionalExpressionOperator conditinalOperator)
         {
-            _leftArg = leftArg;
-            _rightArg = rightArg;
-            _conditionalOperator = conditinalOperator;
+            LeftPart = (typeof(DBFilterExpressionSet), leftArg);
+            RightPart = (typeof(DBFilterExpressionSet), rightArg);
+            ConditionalOperator = conditinalOperator;
         }
         #endregion
 
         #region to string
         public override string ToString()
         {
-            string left = (_leftArg == null) ? string.Empty : _leftArg.ToString();
-            string right = _rightArg.ToString();
-            string expression = null;
-
-            if (_leftArg != null)
-            {
-                if (_conditionalOperator == DBConditionalExpressionOperator.And)
-                {
-                    if (left != null)
-                    {
-                        expression = $"({left} AND {right})";
-                    }
-                    else
-                    {
-                        expression = right;
-                    }
-                }
-                else if (_conditionalOperator == DBConditionalExpressionOperator.Or)
-                {
-                    expression = $"({left} OR {right})";
-                }
-            }
-            else
-            {
-                expression = right;
-            }
-            return (Negate) ? $"NOT ({expression})" : expression;
-        }
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            string left = (_leftArg == null) ? string.Empty : (_leftArg as IDBExpression).ToParameterizedString(parameters, dbService);
-            string right = (_rightArg as IDBExpression).ToParameterizedString(parameters, dbService);
-
-            string expression = null;
-            if (_leftArg != null)
-            {
-                if (_conditionalOperator == DBConditionalExpressionOperator.And)
-                {
-                    if (left != null)
-                    {
-                        expression = $"({left} AND {right})";
-                    }
-                    else
-                    {
-                        expression = right;
-                    }
-                }
-                else if (_conditionalOperator == DBConditionalExpressionOperator.Or)
-                {
-                    expression = $"({left} OR {right})";
-                }
-            }
-            else
-            {
-                expression = right;
-            }
+            string left = default(ValueTuple<Type,object>).Equals(LeftPart) ? string.Empty : LeftPart.Item2.ToString();
+            string right = RightPart.Item2.ToString();
+            string expression = $"{left} {ConditionalOperator} {right}";
             return (Negate) ? $"NOT ({expression})" : expression;
         }
         #endregion

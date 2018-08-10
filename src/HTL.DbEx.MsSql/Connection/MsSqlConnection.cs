@@ -4,8 +4,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
 using HTL.DbEx.MsSql.Types;
-using HTL.DbEx.Sql.Expression;
-using HTL.DbEx.MsSql.Expression;
 using htl = HTL.DbEx.Sql;
 
 namespace HTL.DbEx.MsSql

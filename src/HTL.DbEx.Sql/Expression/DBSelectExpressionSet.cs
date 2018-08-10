@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using HTL.DbEx.Sql.Assembler;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBSelectExpressionSet : DBExpression, IDBExpression
+    public class DBSelectExpressionSet : DBExpression, IDBExpressionSet<DBSelectExpression>, ISqlAssemblyPart
     {
         #region internals
-        private readonly List<DBSelectExpression> _selectExpressions = new List<DBSelectExpression>();
+        public IList<DBSelectExpression> Expressions { get; } = new List<DBSelectExpression>();
         #endregion
 
         #region constructor
@@ -16,22 +17,18 @@ namespace HTL.DbEx.Sql.Expression
 
         internal DBSelectExpressionSet(DBSelectExpression a)
         {
-            _selectExpressions.Add(a);
+            Expressions.Add(a);
         }
 
         internal DBSelectExpressionSet(DBSelectExpression a, DBSelectExpression b)
         {
-            _selectExpressions.Add(a);
-            _selectExpressions.Add(b);
+            Expressions.Add(a);
+            Expressions.Add(b);
         }
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", _selectExpressions.ConvertAll(s => s.ToString()));
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService) => string.Join(", ", _selectExpressions.ConvertAll(s => s.ToParameterizedString(parameters, dbService)));
+        public override string ToString() => string.Join(", ", Expressions.Select(s => s.ToString()));
         #endregion
 
         #region logical & operator
@@ -43,7 +40,7 @@ namespace HTL.DbEx.Sql.Expression
             }
             else
             {
-                aSet._selectExpressions.Add(b);
+                aSet.Expressions.Add(b);
             }
             return aSet;
         }
@@ -54,7 +51,10 @@ namespace HTL.DbEx.Sql.Expression
             {
                 aSet = new DBSelectExpressionSet();
             }
-            aSet._selectExpressions.AddRange(bSet._selectExpressions);
+            foreach (var e in bSet.Expressions)
+            {
+                aSet.Expressions.Add(e);
+            }
             return aSet;
         }
         #endregion

@@ -1,47 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBOrderByExpression : DBExpression, IDBExpression
+    public class DBOrderByExpression : DBExpression
     {
         #region interface
-        private readonly object _orderExpression;
-        private readonly DBOrderExpressionDirection _direction;
+        public (Type,object) Expression { get; private set; }
+        public DBOrderExpressionDirection Direction { get; private set; }
         #endregion
 
         #region constructors
         internal DBOrderByExpression(DBExpressionField field, DBOrderExpressionDirection direction)
         {
-            _orderExpression = field;
-            _direction = direction;
+            Expression = (typeof(DBExpressionField),field);
+            Direction = direction;
         }
 
         internal DBOrderByExpression(DBExpression expression, DBOrderExpressionDirection direction)
         {
-            _orderExpression = expression;
-            _direction = direction;
+            Expression = (typeof(DBExpression), expression);
+            Direction = direction;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{_orderExpression} {_direction}";
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService)
-        {
-            string expression = null;
-            if (_orderExpression is DBExpression)
-            {
-                expression = $"{(_orderExpression as IDBExpression).ToParameterizedString(parameters, dbService)} {_direction}";
-            }
-            else
-            {
-                expression = this.ToString();
-            }
-            return expression;
-        }
+        public override string ToString() => $"{Expression.Item2} {Direction}";
         #endregion
 
         #region conditional & operator

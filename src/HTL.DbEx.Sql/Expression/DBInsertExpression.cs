@@ -2,20 +2,18 @@
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBInsertExpression : DBExpression
+    public class DBInsertExpression : DBExpression, IDBExpression
     {
         #region internals
-        public readonly DBExpressionField _field;
-        public readonly object _value;
-        public readonly Type _type;
+        public readonly (Type, object) Part;
+        public readonly (Type, object) PartValue;
         #endregion
 
         #region constructors
         public DBInsertExpression(DBExpressionField field, object value, Type type)
         {
-            _field = field;
-            _value = value;
-            _type = type;
+            Part = (typeof(DBExpressionField), field);
+            PartValue = (type, value);
         }
         #endregion
 

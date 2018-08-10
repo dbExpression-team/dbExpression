@@ -1,38 +1,38 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
+﻿using HTL.DbEx.Sql.Assembler;
+using System;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBHavingExpression : DBExpression, IDBExpression
+    public class DBHavingExpression : DBExpression, ISqlAssemblyPart
     {
-        #region internals
-        private DBFilterExpressionSet HavingCondition { get; set; }
+        #region interface
+        public (Type,object) Expression { get; private set; }
         #endregion
 
         #region constructors
         internal DBHavingExpression(DBFilterExpression havingCondition)
         {
-            HavingCondition = new DBFilterExpressionSet(havingCondition);
+            Expression = (typeof(DBFilterExpression), havingCondition);
         }
 
         public DBHavingExpression(DBFilterExpressionSet havingCondition)
         {
-            HavingCondition = havingCondition;
+            Expression = (typeof(DBFilterExpressionSet), havingCondition);
         }
         #endregion
 
         #region to string
-        public override string ToString() => HavingCondition.ToString();
-        #endregion
-
-        #region to parameterized string
-        public string ToParameterizedString(IList<DbParameter> parameters, SqlConnection dbService) => HavingCondition.ToParameterizedString(parameters, dbService);
+        public override string ToString() => Expression.Item2.ToString();
         #endregion
 
         #region conditional & operator
         public static DBHavingExpression operator &(DBHavingExpression a, DBHavingExpression b)
         {
-            a.HavingCondition &= b.HavingCondition;
+            if (a.Expression.Item1 == typeof(DBFilterExpression) && b.Expression.Item1 == typeof(DBFilterExpression))
+            {
+                var c = a.Expression.Item2 as DBFilterExpression;
+                c.RightPart = (typeof(DBFilterExpression),b);
+            }
             return a;
         }
         #endregion

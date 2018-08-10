@@ -1,4 +1,6 @@
-﻿namespace HTL.DbEx.Sql.Expression
+﻿using HTL.DbEx.Sql.Builder;
+
+namespace HTL.DbEx.Sql.Expression
 {
     public class DBJoinDirective
     {

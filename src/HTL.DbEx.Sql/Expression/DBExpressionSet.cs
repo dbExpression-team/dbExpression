@@ -1,20 +1,27 @@
-﻿namespace HTL.DbEx.Sql.Expression
-{
-    //TODO: feature/interface-implementation: remove this partial once all is accepted and no longer need a visual cue to new code
-    public partial class DBExpressionSet
-    {
-        public object Instance { get; set; }
-        public DBExpressionEntity BaseEntity { get; set; }
-        public ExecutionContext ExecutionContext { get; set; }
-        public int? SkipValue { get; set; }
-        public int? LimitValue { get; set; }
-        public bool Distinct { get; set; }
-        public int? Top { get; set; }
-    }
+﻿using HTL.DbEx.Sql.Builder;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 
+namespace HTL.DbEx.Sql.Expression
+{
     public partial class DBExpressionSet
     {
         #region interface
+        public object Instance { get; set; }
+
+        public DBExpressionEntity BaseEntity { get; set; }
+
+        public ExecutionContext ExecutionContext { get; set; }
+
+        public int? SkipValue { get; set; }
+
+        public int? LimitValue { get; set; }
+
+        public bool Distinct { get; set; }
+
+        public int? Top { get; set; }
+
         public DBSelectExpressionSet Select { get; private set; }
 
         public DBInsertExpressionSet Insert { get; private set; }
