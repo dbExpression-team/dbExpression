@@ -248,6 +248,7 @@ namespace HTL.DbEx.Sql.Builder
         {
             return Join<T, ITypeListContinuationBuilder<T, U>>(entity, DBExpressionJoinType.INNER);
         }
+
         IJoinBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.LeftJoin(DBExpressionEntity entity)
         {
             return Join<T, ITypeListContinuationBuilder<T, U>>(entity, DBExpressionJoinType.LEFT);

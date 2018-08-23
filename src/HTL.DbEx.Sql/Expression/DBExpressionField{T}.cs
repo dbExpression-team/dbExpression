@@ -1,5 +1,8 @@
-﻿namespace HTL.DbEx.Sql.Expression
+﻿using System;
+
+namespace HTL.DbEx.Sql.Expression
 {
+    [Serializable]
     public class DBExpressionField<T> : DBExpressionField
     {
         #region constructors

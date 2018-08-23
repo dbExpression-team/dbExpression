@@ -10,6 +10,9 @@ namespace HTL.DbEx.Sql.Assembler
             => Assemble(expressionPart as DBExpressionField, builder);
 
         public string Assemble(DBExpressionField expressionPart, ISqlStatementBuilder builder)
-            => $"[{expressionPart.ParentEntity.Schema}].[{expressionPart.ParentEntity.EntityName}].[{expressionPart.Name}]";
+        {
+            var entity = builder.AssemblePart<DBExpressionEntity>(expressionPart.ParentEntity);
+            return $"{entity}.[{expressionPart.Name}]";
+        }
     }
 }

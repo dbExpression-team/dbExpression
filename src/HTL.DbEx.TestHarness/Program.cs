@@ -57,7 +57,8 @@ namespace HTL.DbEx.TestHarness
 
             var pr = kai.PatientReport;
             var p = kai.Physician;
-
+            var aliasedPr = kai.PatientReport.As("pr");
+            var aliasedP = kai.Physician.As("p");
 
             var exp = db.Select(p.Id, p.FullName).From(p);
             exp.InnerJoin(pr).On(p.Id == pr.Id);
@@ -72,10 +73,10 @@ namespace HTL.DbEx.TestHarness
             //DBFilterExpressionSet set = p.Id > 100;
             //set.
             IList<PatientReport> rpts = db.SelectAll<PatientReport>()
-                                          .From(pr)
-                                          .InnerJoin(p).On(p.PatientReportId == pr.Id)
-                                          .Where(p.Id > 100)
-                                          .OrderBy(pr.SampleId.Desc)
+                                          .From(aliasedPr)
+                                          .InnerJoin(aliasedP).On(aliasedP.PatientReportId == aliasedPr.Id)
+                                          .Where(aliasedP.Id > 100)
+                                          .OrderBy(aliasedPr.SampleId.Desc)
                                           .Skip(1).Limit(1)
 
                                           .Execute();
@@ -106,18 +107,25 @@ namespace HTL.DbEx.TestHarness
 
         #region kai
         public class kai
-        {            
+        {
             #region db expression entities
+            private static volatile kaiSchema _kaiSchema;
             private static volatile PhysicianEntity _physician;
             private static volatile PatientReportEntity _patientReport;
 
-            public static PhysicianEntity Physician { get { return _physician == null ? _physician = new PhysicianEntity("cq.genres", "kai", "Physician") : _physician; } }
-            public static PatientReportEntity PatientReport { get { return _patientReport == null ? _patientReport = new PatientReportEntity("cq.genres", "kai", "PatientReport") : _patientReport; } }
+            public static PhysicianEntity Physician { get { return _physician == null ? _physician = new PhysicianEntity(_kaiSchema ?? (_kaiSchema = new kaiSchema()), "Physician") : _physician; } }
+            public static PatientReportEntity PatientReport { get { return _patientReport == null ? _patientReport = new PatientReportEntity(_kaiSchema ?? (_kaiSchema = new kaiSchema()), "PatientReport") : _patientReport; } }
             #endregion
+        }
+
+        public class kaiSchema : DBExpressionSchema
+        {
+            public kaiSchema() : base("kai", "cq.genres") { }
         }
         #endregion
 
         #region patient report entity
+        [Serializable]
         public partial class PatientReportEntity : DBExpressionEntity<PatientReport>
         {
             #region internals
@@ -171,7 +179,11 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region constructors
-            public PatientReportEntity(string connectionName, string schema, string entityName) : base(connectionName, schema, entityName)
+            public PatientReportEntity(DBExpressionSchema schema, string entityName) : this(schema, entityName, null)
+            {
+
+            }
+            public PatientReportEntity(DBExpressionSchema schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
             {
                 _id = new DBExpressionField<int>(this, "Id", 4);
                 _sampleId = new DBExpressionField<int>(this, "SampleId", 4);
@@ -199,6 +211,11 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region methods
+            public PatientReportEntity As(string alias)
+            {
+                return new PatientReportEntity(Schema, EntityName, alias);
+            }
+
             public override DBSelectExpressionSet GetInclusiveSelectExpression()
             {
                 DBSelectExpressionSet select = null;
@@ -285,6 +302,7 @@ namespace HTL.DbEx.TestHarness
         #endregion
 
         #region physician entity
+        [Serializable]
         public class PhysicianEntity : DBExpressionEntity<Physician>
         {
             #region internals
@@ -306,7 +324,12 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region constructors
-            public PhysicianEntity(string connectionStringName, string schema, string entityName) : base(connectionStringName, schema, entityName)
+            public PhysicianEntity(DBExpressionSchema schema, string entityName) : this(schema, entityName, null)
+            {
+
+            }
+
+            public PhysicianEntity(DBExpressionSchema schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
             {
                 _id = new DBExpressionField<int>(this, "Id", 4);
                 _patientReportId = new DBExpressionField<int>(this, "PatientReportId", 4);
@@ -318,6 +341,11 @@ namespace HTL.DbEx.TestHarness
             #endregion
 
             #region methods
+            public PhysicianEntity As(string alias)
+            {
+                return new PhysicianEntity(Schema, EntityName, alias);
+            }
+
             public override DBSelectExpressionSet GetInclusiveSelectExpression()
             {
                 DBSelectExpressionSet select = null;
@@ -356,6 +384,7 @@ namespace HTL.DbEx.TestHarness
         #endregion
 
         #region physician
+        [Serializable]
         public class Physician : I32BitIdentityDBEntity
         {
             #region interface
@@ -377,6 +406,7 @@ namespace HTL.DbEx.TestHarness
         #endregion
 
         #region patient report
+        [Serializable]
         public partial class PatientReport : I32BitIdentityDBEntity
         {
             #region interface

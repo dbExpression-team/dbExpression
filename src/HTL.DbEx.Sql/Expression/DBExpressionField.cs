@@ -5,7 +5,8 @@ using HTL.DbEx.Sql.Assembler;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBExpressionField : IDBExpression, IDBExpressionSelectClausePart
+    [Serializable]
+    public class DBExpressionField : IDBExpression, IDBExpressionSelectClausePart, ISqlAssemblyPart
     {
         #region interface
         public DBExpressionEntity ParentEntity { get; protected set; }

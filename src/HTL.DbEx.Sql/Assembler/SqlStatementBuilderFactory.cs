@@ -63,6 +63,8 @@ namespace HTL.DbEx.Sql.Assembler
         {
             partAssemblers.Add(typeof(DBAssignmentExpressionSet), () => new UpdateClauseAssembler());
             partAssemblers.Add(typeof(DBInsertExpressionSet), () => new InsertClauseAssembler());
+            partAssemblers.Add(typeof(DBExpressionSchema), () => new SchemaAssembler());
+            partAssemblers.Add(typeof(DBExpressionEntity), () => new EntityAssembler());
             partAssemblers.Add(typeof(DBExpressionField), () => new FieldAssembler());
             partAssemblers.Add(typeof(DBSelectExpression), () => new SelectClauseAssembler());
             partAssemblers.Add(typeof(DBSelectExpressionSet), () => new SelectClauseAssembler());

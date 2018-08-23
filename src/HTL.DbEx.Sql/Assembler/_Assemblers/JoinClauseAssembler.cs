@@ -22,8 +22,9 @@ namespace HTL.DbEx.Sql.Assembler
             }
             else
             {
+                string entity = expressionPart.Entity.ToString("[s].[e]");
                 string joinOn = builder.AssemblePart(expressionPart.Expression);
-                expression = $"{expressionPart.JoinType} JOIN {expressionPart.Entity} ON {joinOn}";
+                expression = $"{expressionPart.JoinType} JOIN {entity} ON {joinOn}";
             }
             return expression;
         }

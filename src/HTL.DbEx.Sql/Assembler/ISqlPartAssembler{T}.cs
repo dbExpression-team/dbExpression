@@ -1,4 +1,6 @@
-﻿namespace HTL.DbEx.Sql.Assembler
+﻿using HTL.DbEx.Sql.Expression;
+
+namespace HTL.DbEx.Sql.Assembler
 {
     public interface ISqlPartAssembler<T> : ISqlPartAssembler
     {

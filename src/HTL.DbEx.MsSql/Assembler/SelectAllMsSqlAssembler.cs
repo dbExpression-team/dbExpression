@@ -34,7 +34,7 @@ namespace HTL.DbEx.MsSql.Assembler
             string sql = null;
             if (expression.SkipValue.HasValue || expression.LimitValue.HasValue)
             {
-                sql = $"SELECT * FROM {after("(")}{after("SELECT")}{distinct}{after(select)},ROW_NUMBER() OVER ({orderBys}) AS {after("[RowIndex]")}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}) AS {after(expression.BaseEntity.ToString("[s.e]"))}{after("WHERE")}[RowIndex] BETWEEN {(assemblerContext.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)} AND {(assemblerContext.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1))}{before(after("ORDER BY"))}[RowIndex];";
+                sql = $"SELECT * FROM {after("(")}{after("SELECT")}{distinct}{after(select)},ROW_NUMBER() OVER ({orderBys}) AS {after("[RowIndex]")}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}) AS {after(expression.BaseEntity.ToString("[s.e]", true))}{after("WHERE")}[RowIndex] BETWEEN {(assemblerContext.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)} AND {(assemblerContext.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1))}{before(after("ORDER BY"))}[RowIndex];";
             }
             else
             {

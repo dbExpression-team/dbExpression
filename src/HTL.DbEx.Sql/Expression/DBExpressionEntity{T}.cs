@@ -8,23 +8,19 @@ using System.Threading.Tasks;
 
 namespace HTL.DbEx.Sql.Expression
 {
+    [Serializable]
     public abstract class DBExpressionEntity<T> : DBExpressionEntity, IDbExpressionEntity<T>
     {
         #region interface
         #endregion
 
         #region constructors
-        public DBExpressionEntity(string connectionName, string schema, string name) : base(connectionName, schema, name)
+        public DBExpressionEntity(DBExpressionSchema schema, string name) : this(schema, name, null)
         {
         }
-        #endregion
 
-        #region as
-        public DBExpressionEntity<T> As(string alias)
+        public DBExpressionEntity(DBExpressionSchema schema, string name, string alias) : base(schema, name, alias)
         {
-            var clone = CloneUtility.DeepCopy(this);
-            clone.AliasName = alias;
-            return clone;
         }
         #endregion
 

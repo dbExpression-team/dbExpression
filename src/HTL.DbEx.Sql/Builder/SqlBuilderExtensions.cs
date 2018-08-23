@@ -21,7 +21,7 @@ namespace HTL.DbEx.Sql.Builder
             var expression = (builder as IDBExpressionProvider).GetExpression();
 
             if (transaction == null)
-                transaction = DBExpressionConfiguration.ConnectionFactory.CreateSqlConnection(DBExpressionConfiguration.ConnectionStringSettings.Single(c => c.Name == expression.BaseEntity.ConnectionName));
+                transaction = DBExpressionConfiguration.ConnectionFactory.CreateSqlConnection(DBExpressionConfiguration.ConnectionStringSettings.Single(c => c.Name == expression.BaseEntity.Schema.ConnectionName));
 
             //var validator  ??;
 
@@ -164,7 +164,7 @@ namespace HTL.DbEx.Sql.Builder
 
         private static ResultSet Execute(DBExpressionSet expression, SqlConnection transaction)
         {
-            transaction = transaction ?? DBExpressionConfiguration.ConnectionFactory.CreateSqlConnection(DBExpressionConfiguration.ConnectionStringSettings.Single(c => c.Name == expression.BaseEntity.ConnectionName));
+            transaction = transaction ?? DBExpressionConfiguration.ConnectionFactory.CreateSqlConnection(DBExpressionConfiguration.ConnectionStringSettings.Single(c => c.Name == expression.BaseEntity.Schema.ConnectionName));
             
             //var validator  ??;
 
