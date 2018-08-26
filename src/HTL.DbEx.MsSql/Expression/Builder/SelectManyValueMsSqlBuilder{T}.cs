@@ -47,10 +47,10 @@ namespace HTL.DbEx.MsSql.Expression
         {
             base.Validate();
 
-            if (SkipValue.HasValue && LimitValue.Value > 1)
-            {
-                throw new InvalidOperationException("An attempt to execute a Skip/Take expression within a 'GetValue' execution context failed.  'GetValue' returns only a single value and the Take declaration was > 1.");
-            }
+            //if (SkipValue.HasValue && LimitValue.Value > 1)
+            //{
+            //    throw new InvalidOperationException("An attempt to execute a Skip/Take expression within a 'GetValue' execution context failed.  'GetValue' returns only a single value and the Take declaration was > 1.");
+            //}
             //if (Expression.Select != null)
             //{
             //    throw new InvalidOperationException("An attempt to set a 'Select Expression' within a 'GetValue' execution context failed.  'GetValue' returns a single value that represents the field specified in parameter 'field' and does not allow a consumer to specify specific fields for selection.");
