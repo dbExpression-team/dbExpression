@@ -8,10 +8,10 @@ namespace HTL.DbEx.Sql.Assembler
     public class UpdateClauseAssembler : 
         ISqlPartAssembler<DBAssignmentExpressionSet>
     {
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder)
-            => Assemble(expressionPart as DBAssignmentExpressionSet, builder);
+        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => Assemble(expressionPart as DBAssignmentExpressionSet, builder, overrides);
 
-        public string Assemble(DBAssignmentExpressionSet expressionPart, ISqlStatementBuilder builder)
+        public string Assemble(DBAssignmentExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {
@@ -24,7 +24,7 @@ namespace HTL.DbEx.Sql.Assembler
             for (int i = 0; i < assignments.Count; i++)
             {
                 var partPair = (DBExpressionPartPair)assignments[i].Expression.Item2;
-                assignmentParts.Add((builder.AssemblePart(partPair.LeftPart), builder.Parameters.Add(partPair.RightPart.Item2, partPair.RightPart.Item1).ParameterName));
+                assignmentParts.Add((builder.AssemblePart(partPair.LeftPart, overrides), builder.Parameters.Add(partPair.RightPart.Item2, partPair.RightPart.Item1).ParameterName));
             }
 
             return Assemble(expressionPart, assignmentParts);

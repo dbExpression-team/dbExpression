@@ -5,7 +5,6 @@ namespace HTL.DbEx.Sql.Builder.Syntax
     public interface ITypeListContinuationBuilder<T,U> : ITypeListContinuationBuilder<T>, IContinuationBuilder<T,U>
         where U : class, IContinuationBuilder<T>
     {
-        ITypeListContinuationBuilder<T, U> Distinct();
         ITypeListContinuationBuilder<T, U> Where(DBFilterExpression expression);
         ITypeListContinuationBuilder<T, U> Where(DBFilterExpressionSet expression);
         IJoinBuilder<T, ITypeListContinuationBuilder<T, U>> InnerJoin(DBExpressionEntity entity);

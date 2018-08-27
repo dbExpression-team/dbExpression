@@ -9,7 +9,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public (Type,object) Expression { get; }
+        public (Type, object) Expression { get; }
         public bool IsDistinct { get; private set; }
         string IAliasable.Alias => _alias;
         #endregion

@@ -14,15 +14,15 @@ namespace HTL.DbEx.Sql.Assembler
         private static IDictionary<DBConditionalExpressionOperator, string> ConditionalOperatorMap => _conditionalOperatorMap ?? (_conditionalOperatorMap = typeof(DBConditionalExpressionOperator).GetValuesAndConditionalOperators());
         private static Func<bool, string, string> negate = (bool negate, string s) => negate ? $" NOT ({s})" : s;
 
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder)
+        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             return expressionPart is DBFilterExpressionSet ?
-                Assemble((DBFilterExpressionSet)expressionPart, builder)
+                Assemble((DBFilterExpressionSet)expressionPart, builder, overrides)
                 :
-                Assemble((DBFilterExpression)expressionPart, builder);
+                Assemble((DBFilterExpression)expressionPart, builder, overrides);
         }
 
-        public string Assemble(DBFilterExpressionSet expressionPart, ISqlStatementBuilder builder)
+        public string Assemble(DBFilterExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (ReferenceEquals(expressionPart, null))
             {
@@ -32,12 +32,12 @@ namespace HTL.DbEx.Sql.Assembler
             string left = string.Empty;
             if (!expressionPart.LeftPart.Equals(default(ValueTuple<Type,object>)))
             {
-                left = builder.AssemblePart(expressionPart.LeftPart);
+                left = builder.AssemblePart(expressionPart.LeftPart, overrides);
             }
             string right = string.Empty;
             if (!expressionPart.RightPart.Equals(default(ValueTuple<Type, object>)))
             {
-                right = builder.AssemblePart(expressionPart.RightPart);
+                right = builder.AssemblePart(expressionPart.RightPart, overrides);
             }
 
             return negate
@@ -48,19 +48,19 @@ namespace HTL.DbEx.Sql.Assembler
             );
         }
 
-        public string Assemble(DBFilterExpression expressionPart, ISqlStatementBuilder builder)
+        public string Assemble(DBFilterExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {
                 return null;
             }
 
-            string left = builder.AssemblePart(expressionPart.LeftPart);
+            string left = builder.AssemblePart(expressionPart.LeftPart, overrides);
             if (!expressionPart.RightPart.Equals(default(ValueTuple<Type, object>)))
             {
                 if (expressionPart.ExpressionOperator == DBFilterExpressionOperator.In)
                 {
-                    var inParts = builder.AssemblePart(expressionPart.RightPart);
+                    var inParts = builder.AssemblePart(expressionPart.RightPart, overrides);
                     if (!string.IsNullOrWhiteSpace(inParts))
                         return negate(expressionPart.Negate, $"{left}{FilterOperatorMap[expressionPart.ExpressionOperator]}({inParts})");
                     return $"{left} IS NULL"; //TODO: is this right? if the "in" list is empty is it a null comparison?
@@ -69,7 +69,7 @@ namespace HTL.DbEx.Sql.Assembler
                 string right = typeof(IComparable).IsAssignableFrom(expressionPart.RightPart.Item1) ? 
                     builder.Parameters.Add(builder.FormatValueType(expressionPart.RightPart), expressionPart.RightPart.Item1).ParameterName
                     :
-                    builder.AssemblePart(expressionPart.RightPart);
+                    builder.AssemblePart(expressionPart.RightPart, overrides);
 
                 if (!string.IsNullOrWhiteSpace(right))
                     return negate(expressionPart.Negate, $"{left}{FilterOperatorMap[expressionPart.ExpressionOperator]}{right}");

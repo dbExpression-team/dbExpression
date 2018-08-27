@@ -5,6 +5,6 @@ namespace HTL.DbEx.Sql.Assembler
 {
     public interface ISqlPartAssembler
     {
-        string Assemble(object part, ISqlStatementBuilder builder);
+        string Assemble(object part, ISqlStatementBuilder builder, AssemblerOverrides overrides);
     }
 }

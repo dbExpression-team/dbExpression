@@ -6,16 +6,16 @@ namespace HTL.DbEx.Sql.Assembler
 {
     public class HavingClauseAssembler : ISqlPartAssembler<DBHavingExpression>
     {
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder)
-            => Assemble(expressionPart as DBHavingExpression, builder);
+        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => Assemble(expressionPart as DBHavingExpression, builder, overrides);
 
-        public string Assemble(DBHavingExpression expressionPart, ISqlStatementBuilder builder)
+        public string Assemble(DBHavingExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {
                 return null;
             }
-            return builder.AssemblePart(expressionPart.Expression);
+            return builder.AssemblePart(expressionPart.Expression, overrides);
         }
     }
 }

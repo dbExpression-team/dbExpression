@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembler\AssemblerOverrides.cs" />
     <Compile Include="Assembler\SqlStatementBuilder.cs" />
     <Compile Include="Assembler\ISqlStatementAssembler.cs" />
     <Compile Include="Assembler\ISqlStatementBuilder.cs" />
@@ -100,6 +103,7 @@
     <Compile Include="Builder\Syntax\IJoinBuilder{T,U}.cs" />
     <Compile Include="Builder\Syntax\IJoinBuilder{T}.cs" />
     <Compile Include="Builder\Syntax\IDBExpressionProvider.cs" />
+    <Compile Include="Builder\Syntax\IListFromBuilder{T,U,V}.cs" />
     <Compile Include="Builder\Syntax\_Type\ITypeListTerminationBuilder{T}.cs" />
     <Compile Include="Builder\Syntax\_Type\ITypeListSkipContinuationBuilder{T,U}.cs" />
     <Compile Include="Builder\Syntax\_Type\ITypeListContinuationBuilder{T,U}.cs" />
@@ -108,7 +112,6 @@
     <Compile Include="Builder\Syntax\_Value\IValueListContinuationBuilder{T,U}.cs" />
     <Compile Include="Builder\Syntax\_Type\ITypeListContinuationBuilder{T}.cs" />
     <Compile Include="Builder\Syntax\_Value\IValueListContinuationBuilder{T}.cs" />
-    <Compile Include="Builder\Syntax\_Value\IValueListFromBuilder{T,U}.cs" />
     <Compile Include="Builder\Syntax\_Value\IValueListSkipContinuationBuilder{T,U}.cs" />
     <Compile Include="Builder\Syntax\_Value\IValueContinuationBuilder{T,U}.cs" />
     <Compile Include="Builder\Syntax\_Value\IValueContinuationBuilder{T}.cs" />

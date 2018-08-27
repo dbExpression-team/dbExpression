@@ -12,7 +12,7 @@ namespace HTL.DbEx.Sql.Expression
 
         public virtual string EntityName { get; private set; }
 
-        public virtual string AliasName { get; protected set; }
+        public virtual string AliasName { get; set; }
 
         public bool IsAliased => !string.IsNullOrWhiteSpace(AliasName);
 
@@ -33,7 +33,7 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region copy
-        protected void CopyTo(DBExpressionEntity destination)
+        public void CopyTo(DBExpressionEntity destination)
         {
             destination.Schema = Schema;
             destination.EntityName = EntityName;

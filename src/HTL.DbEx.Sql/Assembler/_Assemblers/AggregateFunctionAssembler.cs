@@ -11,10 +11,10 @@ namespace HTL.DbEx.Sql.Assembler
         private static IDictionary<DBAggregateFunction, string> _aggregateFunctionMap;
         private static IDictionary<DBAggregateFunction, string> AggregateFunctionMap => _aggregateFunctionMap ?? (_aggregateFunctionMap = typeof(DBAggregateFunction).GetValuesAndAggregateFunctions());
 
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder)
-            => Assemble(expressionPart as DBAggregateFunctionExpression, builder);
+        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => Assemble(expressionPart as DBAggregateFunctionExpression, builder, overrides);
 
-        public string Assemble(DBAggregateFunctionExpression expressionPart, ISqlStatementBuilder builder)
-            => $"{AggregateFunctionMap[expressionPart.AggregateFunction]}({(expressionPart.Distinct ? " DISTINCT " : string.Empty)}{builder.AssemblePart(expressionPart.Expression)})";
+        public string Assemble(DBAggregateFunctionExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => $"{AggregateFunctionMap[expressionPart.AggregateFunction]}({(expressionPart.Distinct ? " DISTINCT " : string.Empty)}{builder.AssemblePart(expressionPart.Expression, overrides)})";
     }
 }

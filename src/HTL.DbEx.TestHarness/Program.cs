@@ -60,6 +60,17 @@ namespace HTL.DbEx.TestHarness
             var aliasedPr = kai.PatientReport.As("pr");
             var aliasedP = kai.Physician.As("p");
 
+            db.SelectAll(aliasedP.Id, aliasedP.FullName, aliasedPr.ExternalId)
+                .Distinct()
+                .From(aliasedP)
+                .InnerJoin(aliasedPr).On(aliasedP.Id == aliasedPr.Id)
+                .Where(aliasedPr.ExternalId.Like("Foo%"))
+                .Skip(0)
+                .Limit(100)
+                .OrderBy(aliasedP.FullName.Asc, aliasedPr.ExternalId.Asc)
+                .Execute();
+
+
             var exp = db.Select(p.Id, p.FullName).From(p);
             exp.InnerJoin(pr).On(p.Id == pr.Id);
             exp.Where(pr.ExternalId.Like("Foo%"));

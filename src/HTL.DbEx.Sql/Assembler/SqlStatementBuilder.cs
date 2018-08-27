@@ -57,17 +57,22 @@ namespace HTL.DbEx.Sql.Assembler
         public (string,IList<DbParameter>) CreateSqlStatement()
             => Assembler.Assemble(DBExpression, this);
 
-        public string AssemblePart((Type, object) part)
+        public string AssemblePart((Type, object) part) => AssemblePart(part, (AssemblerOverrides)null);
+
+        public string AssemblePart((Type, object) part, AssemblerOverrides overrides)
         {
             var assembler = ResolvePartAssembler(part.Item1);
-            return assembler.Assemble(part.Item2, this);
+            return assembler.Assemble(part.Item2, this, overrides);
         }
 
         public string AssemblePart<T>(object part)
+            where T : ISqlAssemblyPart => AssemblePart<T>(part, (AssemblerOverrides)null);
+
+        public string AssemblePart<T>(object part, AssemblerOverrides overrides)
             where T : ISqlAssemblyPart
         {
             var assembler = ResolvePartAssembler(typeof(T));
-            return assembler.Assemble(part, this);
+            return assembler.Assemble(part, this, overrides);
         }
     }
 }

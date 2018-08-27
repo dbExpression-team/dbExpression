@@ -18,18 +18,6 @@ namespace HTL.DbEx.Sql.Builder
         #endregion
 
         #region distinct
-        IValueListContinuationBuilder<T, U> IValueListContinuationBuilder<T, U>.Distinct()
-        {
-            Distinct();
-            return this;
-        }
-
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Distinct()
-        {
-            Distinct();
-            return this;
-        }
-
         private void Distinct()
         {
             Expression.Distinct = true;

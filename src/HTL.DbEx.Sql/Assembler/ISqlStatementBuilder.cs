@@ -17,8 +17,11 @@ namespace HTL.DbEx.Sql.Assembler
         (string,IList<DbParameter>) CreateSqlStatement();
 
         string AssemblePart((Type, object) part);
+        string AssemblePart((Type, object) part, AssemblerOverrides overrides);
 
         string AssemblePart<T>(object part)
+            where T : ISqlAssemblyPart;
+        string AssemblePart<T>(object part, AssemblerOverrides overrides)
             where T : ISqlAssemblyPart;
     }
 }
