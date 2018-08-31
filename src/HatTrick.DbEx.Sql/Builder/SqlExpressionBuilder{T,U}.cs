@@ -256,6 +256,83 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             return Join<T, ITypeListContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.CROSS);
         }
+
+        IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> IValueContinuationExpressionBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.INNER);
+        }
+        IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> IValueContinuationExpressionBuilder<T, U>.LeftJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.LEFT);
+        }
+
+        IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> IValueContinuationExpressionBuilder<T, U>.RightJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.RIGHT);
+        }
+
+        IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> IValueContinuationExpressionBuilder<T, U>.FullJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
+        }
+
+        IJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> IValueListContinuationExpressionBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.INNER);
+        }
+        IJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> IValueListContinuationExpressionBuilder<T, U>.LeftJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.LEFT);
+        }
+
+        IJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> IValueListContinuationExpressionBuilder<T, U>.RightJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.RIGHT);
+        }
+
+        IJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> IValueListContinuationExpressionBuilder<T, U>.FullJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, IValueListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
+        }
+
+        IJoinExpressionBuilder<T, ITypeContinuationBuilder<T, U>> ITypeContinuationBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.INNER);
+        }
+        IJoinExpressionBuilder<T, ITypeContinuationBuilder<T, U>> ITypeContinuationBuilder<T, U>.LeftJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.LEFT);
+        }
+
+        IJoinExpressionBuilder<T, ITypeContinuationBuilder<T, U>> ITypeContinuationBuilder<T, U>.RightJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.RIGHT);
+        }
+
+        IJoinExpressionBuilder<T, ITypeContinuationBuilder<T, U>> ITypeContinuationBuilder<T, U>.FullJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
+        }
+
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.INNER);
+        }
+
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.LeftJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.LEFT);
+        }
+
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.RightJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.RIGHT);
+        }
+
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.FullJoin(ISubqueryTerminationExpressionBuilder subquery)
+        {
+            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
+        }
         #endregion
 
         #region skip/limit

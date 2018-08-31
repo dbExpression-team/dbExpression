@@ -6,13 +6,15 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class EntityAssembler :
         IDbExpressionAssemblyPartAssembler<EntityExpression>
     {
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => Assemble(expressionPart as EntityExpression, builder, overrides);
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => AssemblePart(expressionPart as EntityExpression, builder, overrides);
 
-        public string Assemble(EntityExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(EntityExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            if (!string.IsNullOrWhiteSpace(overrides?.EntityName))
-                return overrides.EntityName;
+            if (overrides != null && !overrides.EntityName.Equals(default) && overrides.EntityName.Item1 == expressionPart)
+            {
+                return overrides.EntityName.Item2;
+            }
 
             if (expressionPart.IsAliased)
                 return expressionPart.AliasName;

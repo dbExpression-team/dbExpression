@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class SqlExpressionBuilder<T> : SqlExpressionBuilder,
         IValueContinuationExpressionBuilder<T>,
-        IValueListContinuationBuilder<T>
+        IValueListContinuationExpressionBuilder<T>
     {
 
         #region constructors

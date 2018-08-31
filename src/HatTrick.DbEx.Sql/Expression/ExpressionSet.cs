@@ -1,11 +1,8 @@
-﻿using HatTrick.DbEx.Sql.Builder;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using HatTrick.DbEx.Sql.Assembler;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class ExpressionSet
+    public partial class ExpressionSet : IDbExpressionAssemblyPart
     {
         #region interface
         public object Instance { get; set; }
@@ -22,21 +19,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public int? Top { get; set; }
 
-        public SelectExpressionSet Select { get; private set; }
+        public SelectExpressionSet Select { get; set; }
 
-        public InsertExpressionSet Insert { get; private set; }
+        public InsertExpressionSet Insert { get; set; }
 
-        public AssignmentExpressionSet Assign { get; private set; }
+        public AssignmentExpressionSet Assign { get; set; }
 
         public WhereExpressionSet Where { get; set; }
 
         public JoinExpressionSet Joins { get; set; }
 
-        public OrderByExpressionSet OrderBy { get; /*private*/ set; }
+        public OrderByExpressionSet OrderBy { get; set; }
 
-        public GroupByExpressionSet GroupBy { get; /*private*/ set; }
+        public GroupByExpressionSet GroupBy { get; set; }
 
-        public HavingExpression Having { get; /*private*/ set; }
+        public HavingExpression Having { get; set; }
         #endregion
 
         #region operators

@@ -6,10 +6,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class HavingClauseAssembler : IDbExpressionAssemblyPartAssembler<HavingExpression>
     {
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => Assemble(expressionPart as HavingExpression, builder, overrides);
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => AssemblePart(expressionPart as HavingExpression, builder, overrides);
 
-        public string Assemble(HavingExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(HavingExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {

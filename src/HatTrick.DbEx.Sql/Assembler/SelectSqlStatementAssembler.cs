@@ -1,21 +1,28 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SelectSqlStatementAssembler : SqlStatementAssembler
+    public class SelectSqlStatementAssembler : SqlStatementAssembler, IDbExpressionAssemblyPartAssembler<ExpressionSet>
     {
-        public override SqlStatement Assemble(ExpressionSet expression, ISqlStatementBuilder builder)
+        public string AssemblePart(object part, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            string select = Equals(expression.Select, null) ? string.Empty : builder.AssemblePart<SelectExpressionSet>(expression.Select);
-            string where = Equals(expression.Where, null) ? string.Empty : builder.AssemblePart<WhereExpressionSet>(expression.Where);
-            string joins = Equals(expression.Joins, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins);
-            string groupBy = Equals(expression.GroupBy, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.GroupBy);
-            string having = Equals(expression.Having, null) ? string.Empty : builder.AssemblePart<HavingExpression>(expression.Having);
-            string orderBy = Equals(expression.OrderBy, null) ? string.Empty : builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy);
+            return AssembleStatement((ExpressionSet)part, builder, overrides).ExecutionCommand;
+        }
+
+        public string AssemblePart(ExpressionSet part, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        {
+            return AssembleStatement(part, builder, overrides).ExecutionCommand;
+        }
+
+        public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        {
+            string joins = Equals(expression.Joins, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
+            string select = Equals(expression.Select, null) ? string.Empty : builder.AssemblePart<SelectExpressionSet>(expression.Select, overrides);
+            string where = Equals(expression.Where, null) ? string.Empty : builder.AssemblePart<WhereExpressionSet>(expression.Where, overrides);
+            string groupBy = Equals(expression.GroupBy, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.GroupBy, overrides);
+            string having = Equals(expression.Having, null) ? string.Empty : builder.AssemblePart<HavingExpression>(expression.Having, overrides);
+            string orderBy = Equals(expression.OrderBy, null) ? string.Empty : builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy, overrides);
 
             string sql = Assemble(
                 expression,
@@ -31,6 +38,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             );
 
             return new SqlStatement(sql, builder.Parameters.Parameters, DbCommandType.SqlText);
+        }
+
+        public string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        {
+            throw new System.NotImplementedException();
         }
 
         protected virtual string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, string select, string distinct, string fromEntity, string where, string joins, string groupBy, string having, string orderBy)
@@ -55,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (!string.IsNullOrWhiteSpace(orderBy))
                 orderBy = after("ORDER BY") + orderBy;
 
-            return $"{after("SELECT")}{distinct}{after(select)}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}{orderBy};";
+            return $"{after("SELECT")}{distinct}{after(select)}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}{orderBy}";
         }
     }
 }

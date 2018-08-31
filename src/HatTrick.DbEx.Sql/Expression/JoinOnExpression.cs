@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinOnExpression : DbExpression
+    public class JoinOnExpression : DbExpression, IDbExpressionAssemblyPart
     {
         #region interface
         public (Type,object) LeftPart { get; set; }

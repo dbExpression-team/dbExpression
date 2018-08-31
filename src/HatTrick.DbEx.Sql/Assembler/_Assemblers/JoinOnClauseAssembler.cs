@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class JoinOnClauseAssembler :
-        IDbExpressionAssemblyPartAssembler<JoinOnExpressionSet>
+        IDbExpressionAssemblyPartAssembler<JoinOnExpressionSet>,
+        IDbExpressionAssemblyPartAssembler<JoinOnExpression>
     {
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
         private static IDictionary<ConditionalExpressionOperator, string> _conditionalOperatorMap;
@@ -14,15 +15,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static IDictionary<ConditionalExpressionOperator, string> ConditionalOperatorMap => _conditionalOperatorMap ?? (_conditionalOperatorMap = typeof(ConditionalExpressionOperator).GetValuesAndConditionalOperators());
         private static Func<bool, string, string> negate = (bool negate, string s) => negate ? $" NOT ({s})" : s;
 
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             return expressionPart is JoinOnExpressionSet ?
-                Assemble((JoinOnExpressionSet)expressionPart, builder, overrides)
+                AssemblePart((JoinOnExpressionSet)expressionPart, builder, overrides)
                 :
-                Assemble((JoinOnExpression)expressionPart, builder, overrides);
+                AssemblePart((JoinOnExpression)expressionPart, builder, overrides);
         }
 
-        public string Assemble(JoinOnExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(JoinOnExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (ReferenceEquals(expressionPart, null))
             {
@@ -48,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             );
         }
 
-        public string Assemble(JoinOnExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(JoinOnExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {

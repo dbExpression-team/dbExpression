@@ -61,6 +61,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public virtual void RegisterDefaultPartAssemblers()
         {
+            partAssemblers.Add(typeof(ExpressionSet), () => new SelectSqlStatementAssembler());
             partAssemblers.Add(typeof(AssignmentExpressionSet), () => new UpdateClauseAssembler());
             partAssemblers.Add(typeof(InsertExpressionSet), () => new InsertClauseAssembler());
             partAssemblers.Add(typeof(SchemaExpression), () => new SchemaAssembler());
@@ -73,8 +74,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAssemblers.Add(typeof(JoinExpression), () => new JoinClauseAssembler());
             partAssemblers.Add(typeof(JoinExpressionSet), () => new JoinClauseAssembler());
             partAssemblers.Add(typeof(JoinOnExpression), () => new JoinOnClauseAssembler());
-            partAssemblers.Add(typeof(GroupByExpression), () => new GroupByAssembler());
-            partAssemblers.Add(typeof(GroupByExpressionSet), () => new GroupByAssembler());
+            partAssemblers.Add(typeof(GroupByExpression), () => new GroupByClauseAssembler());
+            partAssemblers.Add(typeof(GroupByExpressionSet), () => new GroupByClauseAssembler());
             partAssemblers.Add(typeof(HavingExpression), () => new HavingClauseAssembler());
             partAssemblers.Add(typeof(OrderByExpression), () => new OrderByClauseAssembler());
             partAssemblers.Add(typeof(OrderByExpressionSet), () => new OrderByClauseAssembler());

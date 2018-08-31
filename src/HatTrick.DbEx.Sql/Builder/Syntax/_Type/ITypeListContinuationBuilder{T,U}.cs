@@ -12,6 +12,10 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> RightJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> FullJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> CrossJoin(EntityExpression entity);
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> InnerJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> LeftJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> RightJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> FullJoin(ISubqueryTerminationExpressionBuilder subquery);
         ITypeListContinuationBuilder<T, U> OrderBy(OrderByExpressionSet orderBy);
         ITypeListContinuationBuilder<T, U> OrderBy(params OrderByExpression[] orderBy);
         ITypeListContinuationBuilder<T, U> GroupBy(params GroupByExpression[] groupBy);

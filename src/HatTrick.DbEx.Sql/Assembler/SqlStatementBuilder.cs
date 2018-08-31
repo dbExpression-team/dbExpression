@@ -1,12 +1,12 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class SqlStatementBuilder : ISqlStatementBuilder
     {
+        private int _currentAliasCounter;
+
         public ExpressionSet DBExpression { get; }
         public ISqlStatementAssembler Assembler { get; }
         public Func<Type, IDbExpressionAssemblyPartAssembler> PartAssemblerResolver { get; }
@@ -55,24 +55,26 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public SqlStatement CreateSqlStatement()
-            => Assembler.Assemble(DBExpression, this);
+            => Assembler.AssembleStatement(DBExpression, this, new AssemblerOverrides());
 
-        public string AssemblePart((Type, object) part) => AssemblePart(part, (AssemblerOverrides)null);
+        public string AssemblePart((Type, object) part) => AssemblePart(part, new AssemblerOverrides());
 
         public string AssemblePart((Type, object) part, AssemblerOverrides overrides)
         {
             var assembler = ResolvePartAssembler(part.Item1);
-            return assembler.Assemble(part.Item2, this, overrides);
+            return assembler.AssemblePart(part.Item2, this, overrides);
         }
 
         public string AssemblePart<T>(object part)
-            where T : IDbExpressionAssemblyPart => AssemblePart<T>(part, (AssemblerOverrides)null);
+            where T : IDbExpressionAssemblyPart => AssemblePart<T>(part, new AssemblerOverrides());
 
         public string AssemblePart<T>(object part, AssemblerOverrides overrides)
             where T : IDbExpressionAssemblyPart
         {
             var assembler = ResolvePartAssembler(typeof(T));
-            return assembler.Assemble(part, this, overrides);
+            return assembler.AssemblePart(part, this, overrides);
         }
+
+        public string GenerateAlias() => $"t{++_currentAliasCounter}";
     }
 }

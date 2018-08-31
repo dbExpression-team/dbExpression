@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class WhereClauseAssembler :
-        IDbExpressionAssemblyPartAssembler<WhereExpressionSet>
+        IDbExpressionAssemblyPartAssembler<WhereExpressionSet>,
+        IDbExpressionAssemblyPartAssembler<WhereExpression>
     {
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
         private static IDictionary<ConditionalExpressionOperator, string> _conditionalOperatorMap;
@@ -14,15 +15,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static IDictionary<ConditionalExpressionOperator, string> ConditionalOperatorMap => _conditionalOperatorMap ?? (_conditionalOperatorMap = typeof(ConditionalExpressionOperator).GetValuesAndConditionalOperators());
         private static Func<bool, string, string> negate = (bool negate, string s) => negate ? $" NOT ({s})" : s;
 
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             return expressionPart is WhereExpressionSet ?
-                Assemble((WhereExpressionSet)expressionPart, builder, overrides)
+                AssemblePart((WhereExpressionSet)expressionPart, builder, overrides)
                 :
-                Assemble((WhereExpression)expressionPart, builder, overrides);
+                AssemblePart((WhereExpression)expressionPart, builder, overrides);
         }
 
-        public string Assemble(WhereExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(WhereExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (ReferenceEquals(expressionPart, null))
             {
@@ -48,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             );
         }
 
-        public string Assemble(WhereExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(WhereExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {
@@ -56,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             string left = builder.AssemblePart(expressionPart.LeftPart, overrides);
-            if (!expressionPart.RightPart.Equals(default(ValueTuple<Type, object>)))
+            if (!expressionPart.RightPart.Equals(default))
             {
                 if (expressionPart.ExpressionOperator == FilterExpressionOperator.In)
                 {

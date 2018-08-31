@@ -5,28 +5,42 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class JoinClauseAssembler : 
-        IDbExpressionAssemblyPartAssembler<JoinExpressionSet>
+        IDbExpressionAssemblyPartAssembler<JoinExpressionSet>,
+        IDbExpressionAssemblyPartAssembler<JoinExpression>
     {
-        public string Assemble(JoinExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => expressionPart == null ? string.Empty : string.Join(", ", expressionPart.Expressions.Select(j => Assemble(j, builder, overrides)));
+        public string AssemblePart(JoinExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => expressionPart == null ? string.Empty : string.Join(", ", expressionPart.Expressions.Select(j => AssemblePart(j, builder, overrides)));
 
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => Assemble(expressionPart as JoinExpressionSet, builder, overrides);
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => AssemblePart(expressionPart as JoinExpressionSet, builder, overrides);
 
-        public string Assemble(JoinExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(JoinExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            string expression = null;
+            if (expressionPart.JoinToo.Item1 == typeof(ExpressionSet))
+            {
+                var joinExpression = expressionPart.JoinToo.Item2 as ExpressionSet;
+                string subselect = builder.AssemblePart<ExpressionSet>(joinExpression, overrides);
+
+                //get the base entity of the subselect
+                var subselectBaseEntity = (expressionPart.JoinToo.Item2 as ExpressionSet).BaseEntity;
+
+                //get the left or right side of join on condition that matches the base entity
+                //var currentAlias = overrides.EntityName;
+                var newAlias = builder.GenerateAlias();
+                overrides.EntityName = (subselectBaseEntity, newAlias);
+                string joinSubselect = builder.AssemblePart<JoinOnExpression>(expressionPart.JoinOnExpression, overrides);
+                //overrides.EntityName = currentAlias;
+
+                return $"{expressionPart.JoinType} JOIN ({subselect}) AS {newAlias} ON {joinSubselect}";
+            }
             if (expressionPart.JoinType == JoinOperationExpressionOperator.CROSS)
             {
-                expression = $"CROSS JOIN {expressionPart.Entity}";
+                return $"CROSS JOIN {builder.AssemblePart(expressionPart.JoinToo, overrides)}";
             }
-            else
-            {
-                string entity = expressionPart.Entity.ToString("[s].[e]");
-                string joinOn = builder.AssemblePart(expressionPart.Expression, overrides);
-                expression = $"{expressionPart.JoinType} JOIN {entity} ON {joinOn}";
-            }
-            return expression;
+
+            string joinToo = builder.AssemblePart(expressionPart.JoinToo, overrides);
+            string joinEntity = builder.AssemblePart<JoinOnExpression>(expressionPart.JoinOnExpression, overrides);
+            return $"{expressionPart.JoinType} JOIN {joinToo} ON {joinEntity}";
         }
     }
 }

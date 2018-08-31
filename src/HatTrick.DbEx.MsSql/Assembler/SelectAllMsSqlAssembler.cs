@@ -37,11 +37,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
             //expression is marked as DISTINCT and uses paging, must perform a subselect with the distinct prior
             //to using ROW_NUMBER as inclusing of ROW_NUMBER with DISTINCT uses the generated index of the row
             //as part of the DISTINCT, effectively disabling the distinct
-            var tableAlias = expression.BaseEntity.AliasName == "t1" ? "t2" : "t1";
-            var overrides = new AssemblerOverrides { EntityName = tableAlias };
+            var tableAlias = builder.GenerateAlias();
+            var overrides = new AssemblerOverrides { EntityName = (expression.BaseEntity, tableAlias) };
             var aliasedSelectClause = builder.AssemblePart<SelectExpressionSet>(expression.Select, overrides);
             var aliasedOrderBys = builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy, overrides);
-            return $"SELECT {after(aliasedSelectClause)} FROM {after("(")}{after("SELECT")}{after(aliasedSelectClause)},ROW_NUMBER() OVER (ORDER BY {aliasedOrderBys}) AS {after("[RowIndex]")}{after("FROM ")}{after("(")}{after("SELECT DISTINCT")}{after(select)}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}) AS {tableAlias}) AS {after(tableAlias)}{after("WHERE")}{tableAlias}.[RowIndex] BETWEEN {(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)} AND {(builder.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1))}{before(after("ORDER BY"))}{tableAlias}.[RowIndex];";
+            return $"SELECT {after(aliasedSelectClause)} FROM {after("(")}{after("SELECT")}{after(aliasedSelectClause)},ROW_NUMBER() OVER (ORDER BY {aliasedOrderBys}) AS {after("[RowIndex]")}{after("FROM ")}{after("(")}{after("SELECT DISTINCT")}{after(select)}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}) AS {tableAlias}) AS {after(tableAlias)}{after("WHERE")}{tableAlias}.[RowIndex] BETWEEN {(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)} AND {(builder.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1))}{before(after("ORDER BY"))}{tableAlias}.[RowIndex]";
         }
     }
 }

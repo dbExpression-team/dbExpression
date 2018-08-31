@@ -7,13 +7,13 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class SelectClauseAssembler : 
         IDbExpressionAssemblyPartAssembler<SelectExpressionSet>
     {
-        public string Assemble(SelectExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides) 
-            => expressionPart == null ? null : string.Join(", ", expressionPart.Expressions.Select(s => Assemble(s, builder, overrides)));
+        public string AssemblePart(SelectExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides) 
+            => expressionPart == null ? null : string.Join(", ", expressionPart.Expressions.Select(s => AssemblePart(s, builder, overrides)));
 
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => Assemble(expressionPart as SelectExpressionSet, builder, overrides);
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => AssemblePart(expressionPart as SelectExpressionSet, builder, overrides);
 
-        public string Assemble(SelectExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(SelectExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {

@@ -62,6 +62,19 @@ namespace HatTrick.DbEx.TestHarness
             db.SelectAll(aliasedP.Id, aliasedP.FullName, aliasedPr.ExternalId)
                 .Distinct()
                 .From(aliasedP)
+                .InnerJoin(
+                    db.SelectAll(kai.PatientReport.Id)
+                    .From(aliasedPr)
+                    .Where(aliasedPr.ExternalId.Like("Foo%"))
+                ).On(aliasedP.Id == aliasedPr.Id)
+                //.Skip(0)
+                //.Limit(100)
+                .OrderBy(aliasedP.FullName.Asc, aliasedPr.ExternalId.Asc)
+                .Execute();
+
+            db.SelectAll(aliasedP.Id, aliasedP.FullName, aliasedPr.ExternalId)
+                .Distinct()
+                .From(aliasedP)
                 .InnerJoin(aliasedPr).On(aliasedP.Id == aliasedPr.Id)
                 .Where(aliasedPr.ExternalId.Like("Foo%"))
                 .Skip(0)

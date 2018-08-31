@@ -8,10 +8,10 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class UpdateClauseAssembler : 
         IDbExpressionAssemblyPartAssembler<AssignmentExpressionSet>
     {
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => Assemble(expressionPart as AssignmentExpressionSet, builder, overrides);
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => AssemblePart(expressionPart as AssignmentExpressionSet, builder, overrides);
 
-        public string Assemble(AssignmentExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(AssignmentExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {
@@ -27,10 +27,10 @@ namespace HatTrick.DbEx.Sql.Assembler
                 assignmentParts.Add((builder.AssemblePart(partPair.LeftPart, overrides), builder.Parameters.Add(partPair.RightPart.Item2, partPair.RightPart.Item1).ParameterName));
             }
 
-            return Assemble(expressionPart, assignmentParts);
+            return AssemblePart(expressionPart, assignmentParts);
         }
 
-        protected virtual string Assemble(AssignmentExpressionSet expressionPart, IList<(string, string)> values)
+        protected virtual string AssemblePart(AssignmentExpressionSet expressionPart, IList<(string, string)> values)
             => string.Join(", ", values.Select(v => $"{v.Item1} = {v.Item2}"));
     }
 }

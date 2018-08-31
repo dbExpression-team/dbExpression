@@ -59,29 +59,29 @@ namespace HatTrick.DbEx.MsSql.Builder
                 as IListFromExpressionBuilder<T, ITypeListContinuationBuilder<T>, ITypeListContinuationBuilder<T, ITypeListContinuationBuilder<T>>>;
         }
 
-        public static IListFromExpressionBuilder<T, IValueListContinuationBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationBuilder<T>>> SelectAll<T>(FieldExpression<T> field)
+        public static IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>> SelectAll<T>(FieldExpression<T> field)
              where T : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
+            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
             builder.Expression &= field;
-            return builder as IListFromExpressionBuilder<T, IValueListContinuationBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationBuilder<T>>>;
+            return builder as IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>;
         }
 
-        public static IListFromExpressionBuilder<T, IValueListContinuationBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationBuilder<T>>> SelectAll<T>(IDbExpressionSelectClausePart field)
+        public static IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>> SelectAll<T>(IDbExpressionSelectClausePart field)
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
+            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
             builder.Expression &= field.ToSelectExpression();
-            return builder as IListFromExpressionBuilder<T, IValueListContinuationBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationBuilder<T>>>;
+            return builder as IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>;
         }
 
-        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationBuilder<ExpandoObject>>> SelectAll(IDbExpressionSelectClausePart field1, IDbExpressionSelectClausePart field2, params IDbExpressionSelectClausePart[] fields)
+        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectAll(IDbExpressionSelectClausePart field1, IDbExpressionSelectClausePart field2, params IDbExpressionSelectClausePart[] fields)
         {
-            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationBuilder<ExpandoObject>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetDynamicList });
+            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetDynamicList });
             builder.Expression &= field1.ToSelectExpression();
             builder.Expression &= field2.ToSelectExpression();
             foreach (var f in fields)
                 builder.Expression &= f.ToSelectExpression();
-            return builder as IListFromExpressionBuilder<ExpandoObject, IValueListContinuationBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationBuilder<ExpandoObject>>>;
+            return builder as IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>;
         }
         #endregion
 

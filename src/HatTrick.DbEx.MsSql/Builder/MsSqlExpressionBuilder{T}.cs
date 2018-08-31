@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 {
     public class MsSqlExpressionBuilder<T> : SqlExpressionBuilder<T>,
         IValueContinuationExpressionBuilder<T>,
-        IValueListContinuationBuilder<T>
+        IValueListContinuationExpressionBuilder<T>
     {
         public MsSqlExpressionBuilder(ExpressionSet expression) : base(expression)
         { }

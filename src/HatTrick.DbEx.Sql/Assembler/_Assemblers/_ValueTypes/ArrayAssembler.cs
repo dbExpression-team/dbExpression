@@ -5,10 +5,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class ArrayAssembler : IDbExpressionAssemblyPartAssembler<Array>
     {
-        public string Assemble(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => Assemble(expressionPart as Array, builder, overrides);
+        public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+            => AssemblePart(expressionPart as Array, builder, overrides);
 
-        public string Assemble(Array expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(Array expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (!(expressionPart is Array arry) || arry.Length == 0)
                 return string.Empty;

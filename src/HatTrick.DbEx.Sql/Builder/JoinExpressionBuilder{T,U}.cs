@@ -12,5 +12,10 @@ namespace HatTrick.DbEx.Sql.Builder
         {
         }
 
+        internal JoinExpressionBuilder(ExpressionSet expression, ExpressionSet joinOn, JoinOperationExpressionOperator joinType, U caller)
+            : base(expression, joinOn, joinType, caller)
+        {
+        }
+
     }
 }

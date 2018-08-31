@@ -145,5 +145,11 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             return new JoinExpressionBuilder<T, TBuilder>(Expression, joinEntity, joinType, this as TBuilder);
         }
+
+        protected IJoinExpressionBuilder<T, TBuilder> Join<T, TBuilder>(ISubqueryTerminationExpressionBuilder subquery, JoinOperationExpressionOperator joinType)
+            where TBuilder : class, IExpressionBuilder<T>
+        {
+            return new JoinExpressionBuilder<T, TBuilder>(Expression, (subquery as IExpressionProvider).GetExpression(), joinType, this as TBuilder);
+        }
     }
 }
