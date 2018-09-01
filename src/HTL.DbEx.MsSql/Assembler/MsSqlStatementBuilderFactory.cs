@@ -3,7 +3,7 @@ using HTL.DbEx.Sql.Assembler;
 
 namespace HTL.DbEx.MsSql.Assembler
 {
-    public class MsSqlAssemblerFactory : SqlStatementBuilderFactory
+    public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
         #region methods
         public override void RegisterDefaultAssemblers()

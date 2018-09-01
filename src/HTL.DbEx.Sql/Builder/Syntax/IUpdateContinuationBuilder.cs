@@ -4,7 +4,8 @@ namespace HTL.DbEx.Sql.Builder.Syntax
 {
     public interface IUpdateContinuationBuilder : IBuilder, ITerminationBuilder
     {
-        IUpdateContinuationBuilder Where(DBFilterExpressionSet expression);
+        IUpdateContinuationBuilder Where(DBWhereExpression expression);
+        IUpdateContinuationBuilder Where(DBWhereExpressionSet expression);
         IJoinBuilder<IUpdateContinuationBuilder> InnerJoin(DBExpressionEntity entity);
         IJoinBuilder<IUpdateContinuationBuilder> LeftJoin(DBExpressionEntity entity);
         IJoinBuilder<IUpdateContinuationBuilder> RightJoin(DBExpressionEntity entity);

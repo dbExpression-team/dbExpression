@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using HTL.DbEx.Sql.Assembler;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HTL.DbEx.Sql.Expression
 {
-    public class DBGroupByExpressionSet : DBExpression, IDBExpressionSet<DBGroupByExpression>
+    public class DBGroupByExpressionSet : DBExpression, IDBExpressionSet<DBGroupByExpression>, ISqlAssemblyPart
     {
         #region internals
         public IList<DBGroupByExpression> Expressions { get; } = new List<DBGroupByExpression>();

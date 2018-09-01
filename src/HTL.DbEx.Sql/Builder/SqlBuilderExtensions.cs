@@ -25,7 +25,7 @@ namespace HTL.DbEx.Sql.Builder
 
             //var validator  ??;
 
-            var assembler = DBExpressionConfiguration.AssemblerFactory.CreateSqlStatementBuilder(expression, DBExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var assembler = DBExpressionConfiguration.StatementBuilderFactory.CreateSqlStatementBuilder(expression, DBExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
             (string sql, IList<DbParameter> parameters) = assembler.CreateSqlStatement();
 
             var executor = DBExpressionConfiguration.ExecutorFactory.CreateSqlStatementExecutor(expression);
@@ -168,7 +168,7 @@ namespace HTL.DbEx.Sql.Builder
             
             //var validator  ??;
 
-            var builder = DBExpressionConfiguration.AssemblerFactory.CreateSqlStatementBuilder(expression, DBExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = DBExpressionConfiguration.StatementBuilderFactory.CreateSqlStatementBuilder(expression, DBExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
             (string sql, IList<DbParameter> parameters) = builder.CreateSqlStatement();
 
             var executor = DBExpressionConfiguration.ExecutorFactory.CreateSqlStatementExecutor(expression);

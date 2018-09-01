@@ -28,9 +28,9 @@ namespace HTL.DbEx.Sql.Expression
 
         public DBAssignmentExpressionSet Assign { get; private set; }
 
-        public DBFilterExpressionSet Where { get; private set; }
+        public DBWhereExpressionSet Where { get; set; }
 
-        public DBJoinExpressionSet Joins { get; private set; }
+        public DBJoinExpressionSet Joins { get; set; }
 
         public DBOrderByExpressionSet OrderBy { get; /*private*/ set; }
 
@@ -110,17 +110,17 @@ namespace HTL.DbEx.Sql.Expression
             return set;
         }
 
-        public static DBExpressionSet operator &(DBExpressionSet set, DBFilterExpression filterExpression)
+        public static DBExpressionSet operator &(DBExpressionSet set, DBWhereExpression filterExpression)
         {
             if (set != null)
             {
-                if (set.Where == null) { set.Where = new DBFilterExpressionSet(filterExpression); }
+                if (set.Where == null) { set.Where = new DBWhereExpressionSet(filterExpression); }
                 else { set.Where &= filterExpression; }
             }
             return set;
         }
 
-        public static DBExpressionSet operator &(DBExpressionSet set, DBFilterExpressionSet filterExpressionSet)
+        public static DBExpressionSet operator &(DBExpressionSet set, DBWhereExpressionSet filterExpressionSet)
         {
             if (set != null)
             {

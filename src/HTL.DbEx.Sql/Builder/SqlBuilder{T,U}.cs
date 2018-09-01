@@ -118,42 +118,42 @@ namespace HTL.DbEx.Sql.Builder
         #endregion
 
         #region where
-        IValueContinuationBuilder<T, U> IValueContinuationBuilder<T, U>.Where(DBFilterExpression expression)
+        IValueContinuationBuilder<T, U> IValueContinuationBuilder<T, U>.Where(DBWhereExpression expression)
         {
             return Where<T, U>(expression) as IValueContinuationBuilder<T, U>;
         }
 
-        IValueContinuationBuilder<T, U> IValueContinuationBuilder<T, U>.Where(DBFilterExpressionSet expression)
+        IValueContinuationBuilder<T, U> IValueContinuationBuilder<T, U>.Where(DBWhereExpressionSet expression)
         {
             return Where<T, U>(expression) as IValueContinuationBuilder<T, U>;
         }
 
-        IValueListContinuationBuilder<T, U> IValueListContinuationBuilder<T, U>.Where(DBFilterExpression expression)
+        IValueListContinuationBuilder<T, U> IValueListContinuationBuilder<T, U>.Where(DBWhereExpression expression)
         {
             return Where<T, U>(expression) as IValueListContinuationBuilder<T, U>;
         }
 
-        IValueListContinuationBuilder<T, U> IValueListContinuationBuilder<T, U>.Where(DBFilterExpressionSet expression)
+        IValueListContinuationBuilder<T, U> IValueListContinuationBuilder<T, U>.Where(DBWhereExpressionSet expression)
         {
             return Where<T, U>(expression) as IValueListContinuationBuilder<T, U>;
         }
 
-        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(DBFilterExpression expression)
+        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(DBWhereExpression expression)
         {
             return Where<T, U>(expression) as ITypeContinuationBuilder<T, U>;
         }
 
-        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(DBFilterExpressionSet expression)
+        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(DBWhereExpressionSet expression)
         {
             return Where<T, U>(expression) as ITypeContinuationBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(DBFilterExpression expression)
+        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(DBWhereExpression expression)
         {
             return Where<T, U>(expression) as ITypeListContinuationBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(DBFilterExpressionSet expression)
+        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(DBWhereExpressionSet expression)
         {
             return Where<T, U>(expression) as ITypeListContinuationBuilder<T, U>;
         }

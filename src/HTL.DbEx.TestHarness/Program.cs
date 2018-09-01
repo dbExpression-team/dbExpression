@@ -21,11 +21,11 @@ namespace HTL.DbEx.TestHarness
         static void Main(string[] args)
         {
             DBExpressionConfiguration.ConnectionStringSettings = new List<ConnectionStringSettings> { ConfigurationManager.ConnectionStrings["cq.genres"] };
-            var assemblerFactory = new MsSqlAssemblerFactory();
-            assemblerFactory.RegisterDefaultAssemblers();
-            assemblerFactory.RegisterDefaultPartAssemblers();
-            assemblerFactory.RegisterDefaultValueFormatters();
-            DBExpressionConfiguration.AssemblerFactory = assemblerFactory;
+            var factory = new MsSqlStatementBuilderFactory();
+            factory.RegisterDefaultAssemblers();
+            factory.RegisterDefaultPartAssemblers();
+            factory.RegisterDefaultValueFormatters();
+            DBExpressionConfiguration.StatementBuilderFactory = factory;
             DBExpressionConfiguration.ParameterBuilderFactory = new MsSqlParameterBuilderFactory();
 
             var executor = new MsSqlExecutorFactory();

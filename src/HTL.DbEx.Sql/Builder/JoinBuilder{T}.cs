@@ -19,9 +19,12 @@ namespace HTL.DbEx.Sql.Builder
             Caller = caller;
         }
 
-        T IJoinBuilder<T>.On(DBFilterExpression expression)
+        T IJoinBuilder<T>.On(DBJoinOnExpression expression)
         {
-            Expression &= new DBJoinExpression(JoinOn, JoinType, expression);
+            if (Expression.Joins == null)
+                Expression.Joins = new DBJoinExpressionSet(new DBJoinExpression(JoinOn, JoinType, expression));
+            else
+                Expression.Joins.Expressions.Add(new DBJoinExpression(JoinOn, JoinType, expression));
             return Caller;
         }
     }

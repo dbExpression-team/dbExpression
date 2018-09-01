@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assembler\AssemblerOverrides.cs" />
+    <Compile Include="Assembler\ISqlStatementAssemblerFactory.cs" />
+    <Compile Include="Assembler\ISqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\SqlStatementBuilder.cs" />
     <Compile Include="Assembler\ISqlStatementAssembler.cs" />
     <Compile Include="Assembler\ISqlStatementBuilder.cs" />
@@ -53,15 +55,17 @@
     <Compile Include="Assembler\DeleteSqlStatementAssembler.cs" />
     <Compile Include="Assembler\IValueTypeFormatter.cs" />
     <Compile Include="Assembler\IValueTypeFormatter{T}.cs" />
-    <Compile Include="Assembler\SqlAssembler.cs" />
+    <Compile Include="Assembler\SqlStatementAssembler.cs" />
     <Compile Include="Assembler\UpdateSqlStatementAssembler.cs" />
     <Compile Include="Assembler\InsertSqlStatementAssembler.cs" />
     <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\ValueTypeFormatter.cs" />
     <Compile Include="Assembler\_Assemblers\AggregateFunctionAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\ArithmeticAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\JoinOnClauseAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\SchemaAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\EntityAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\WhereClauseAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\_ValueTypes\ArrayAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\FieldAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\UpdateClauseAssembler.cs" />
@@ -72,7 +76,6 @@
     <Compile Include="Assembler\_Assemblers\JoinClauseAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\FilterAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\SelectClauseAssembler.cs" />
-    <Compile Include="Assembler\ISqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\ISqlParameterBuilder.cs" />
     <Compile Include="Assembler\SelectAllSqlStatementAssembler.cs" />
     <Compile Include="Assembler\SelectSqlStatementAssembler.cs" />
@@ -143,6 +146,10 @@
     <Compile Include="Expression\DBExpressionEntity{T}.cs" />
     <Compile Include="Expression\DBExpressionPartPair.cs" />
     <Compile Include="Expression\DBExpressionSchema.cs" />
+    <Compile Include="Expression\DBJoinOnExpression.cs" />
+    <Compile Include="Expression\DBJoinOnExpressionSet.cs" />
+    <Compile Include="Expression\DBWhereExpression.cs" />
+    <Compile Include="Expression\DBWhereExpressionSet.cs" />
     <Compile Include="Expression\IAliasable.cs" />
     <Compile Include="Expression\IDBExpressionEntity{T}.cs" />
     <Compile Include="Assembler\ISqlAssemblyPart.cs" />

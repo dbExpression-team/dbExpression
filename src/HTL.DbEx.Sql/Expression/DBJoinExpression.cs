@@ -11,19 +11,11 @@ namespace HTL.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public DBJoinExpression(DBExpressionEntity entity, DBExpressionJoinType joinType, DBFilterExpression onCondition)
+        public DBJoinExpression(DBExpressionEntity entity, DBExpressionJoinType joinType, DBJoinOnExpression onCondition)
         {
             Entity = entity;
             JoinType = joinType;
-            Expression = (typeof(DBFilterExpression), onCondition);
-        }
-        #endregion
-
-        #region on
-        public DBJoinExpression On(DBFilterExpression filter)
-        {
-            Expression = (typeof(DBFilterExpression),filter);
-            return this;
+            Expression = (typeof(DBJoinOnExpression), onCondition);
         }
         #endregion
 

@@ -29,7 +29,13 @@ namespace HTL.DbEx.Sql.Builder
             Expression.BaseEntity = entity;
             return this;
         }
-        IDeleteContinuationBuilder IDeleteContinuationBuilder.Where(DBFilterExpressionSet filter)
+
+        IDeleteContinuationBuilder IDeleteContinuationBuilder.Where(DBWhereExpression filter)
+        {
+            return Where<IDeleteContinuationBuilder>(filter) as IDeleteContinuationBuilder;
+        }
+
+        IDeleteContinuationBuilder IDeleteContinuationBuilder.Where(DBWhereExpressionSet filter)
         {
             return Where<IDeleteContinuationBuilder>(filter) as IDeleteContinuationBuilder;
         }
@@ -74,7 +80,12 @@ namespace HTL.DbEx.Sql.Builder
             return this as IUpdateContinuationBuilder;
         }
 
-        IUpdateContinuationBuilder IUpdateContinuationBuilder.Where(DBFilterExpressionSet filter)
+        IUpdateContinuationBuilder IUpdateContinuationBuilder.Where(DBWhereExpression filter)
+        {
+            return Where<IUpdateContinuationBuilder>(filter) as IUpdateContinuationBuilder;
+        }
+
+        IUpdateContinuationBuilder IUpdateContinuationBuilder.Where(DBWhereExpressionSet filter)
         {
             return Where<IUpdateContinuationBuilder>(filter) as IUpdateContinuationBuilder;
         }
@@ -105,15 +116,21 @@ namespace HTL.DbEx.Sql.Builder
         }
         #endregion
 
-        protected U Where<U>(DBFilterExpressionSet expression) where U : class, IBuilder
+        protected U Where<U>(DBWhereExpressionSet expression) where U : class, IBuilder
         {
-            Expression &= expression;
+            if (Expression.Where == null)
+                Expression.Where = expression;
+            else
+                Expression.Where &= expression;
             return this as U;
         }
 
-        protected U Where<T, U>(DBFilterExpressionSet expression) where U : class, IBuilder<T>
+        protected U Where<T, U>(DBWhereExpressionSet expression) where U : class, IBuilder<T>
         {
-            Expression &= expression;
+            if (Expression.Where == null)
+                Expression.Where = expression;
+            else
+                Expression.Where &= expression;
             return this as U;
         }
 

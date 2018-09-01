@@ -11,7 +11,7 @@ namespace HTL.DbEx.Sql
     public static class DBExpressionConfiguration
     {
         public static IList<ConnectionStringSettings> ConnectionStringSettings { get; set; } = new List<ConnectionStringSettings>();
-        public static ISqlStatementBuilderFactory AssemblerFactory { get; set; }
+        public static ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
         public static ISqlParameterBuilderFactory ParameterBuilderFactory { get; set; }
         public static ISqlExecutorFactory ExecutorFactory { get; set; }
         public static ISqlConnectionFactory ConnectionFactory { get; set; }
