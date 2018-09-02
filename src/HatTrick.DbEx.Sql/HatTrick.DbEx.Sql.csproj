@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HatTrick.DbEx.Sql</RootNamespace>
+    <AssemblyName>HatTrick.DbEx.Sql</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assembler\AssemblerOverrides.cs" />
+    <Compile Include="Assembler\ISqlStatementAssemblerFactory.cs" />
+    <Compile Include="Assembler\ISqlStatementBuilderFactory.cs" />
+    <Compile Include="Assembler\SqlStatementBuilder.cs" />
+    <Compile Include="Assembler\ISqlStatementAssembler.cs" />
+    <Compile Include="Assembler\ISqlStatementBuilder.cs" />
+    <Compile Include="Assembler\IDbExpressionAssemblyPartAssembler.cs" />
+    <Compile Include="Assembler\IDbExpressionAssemblyPartAssembler{T}.cs" />
+    <Compile Include="Assembler\DeleteSqlStatementAssembler.cs" />
+    <Compile Include="Assembler\IValueTypeFormatter.cs" />
+    <Compile Include="Assembler\IValueTypeFormatter{T}.cs" />
+    <Compile Include="Assembler\SqlStatementAssembler.cs" />
+    <Compile Include="Assembler\UpdateSqlStatementAssembler.cs" />
+    <Compile Include="Assembler\InsertSqlStatementAssembler.cs" />
+    <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
+    <Compile Include="Assembler\ValueTypeFormatter.cs" />
+    <Compile Include="Assembler\_Assemblers\AggregateFunctionAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\ArithmeticAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\JoinOnClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\SchemaAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\EntityAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\WhereClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\ArrayAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\FieldAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\UpdateClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\InsertClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\OrderByClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\HavingClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\GroupByClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\JoinClauseAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\SelectClauseAssembler.cs" />
+    <Compile Include="Assembler\ISqlParameterBuilder.cs" />
+    <Compile Include="Assembler\SelectAllSqlStatementAssembler.cs" />
+    <Compile Include="Assembler\SelectSqlStatementAssembler.cs" />
+    <Compile Include="Assembler\SqlStatementBuilderFactory.cs" />
+    <Compile Include="Assembler\SqlParameterBuilder.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\DateTimeAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\EnumAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\GuidAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\StringAssembler.cs" />
+    <Compile Include="Attribute\ExpressionOperatorAttribute.cs" />
+    <Compile Include="Builder\JoinExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\JoinExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\SqlExpressionBuilder.cs" />
+    <Compile Include="Builder\SqlExpressionBuilderExtensions.cs" />
+    <Compile Include="Builder\SqlExpressionBuilder{T,U,V}.cs" />
+    <Compile Include="Builder\SqlExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\SqlExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\SqlInsertExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\IExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\IExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\IContinuationExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\IContinuationExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\IContinuationExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\IDeleteContinuationExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\IDeleteFromExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\IFromExpressionBuilder{T,U,V}.cs" />
+    <Compile Include="Builder\Syntax\IInsertExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\IJoinExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\IJoinExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\IExpressionProvider.cs" />
+    <Compile Include="Builder\Syntax\IListFromExpressionBuilder{T,U,V}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeListTerminationBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeListSkipContinuationBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeListContinuationBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeContinuationBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeContinuationBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueListContinuationExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeListContinuationBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueListContinuationBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueListSkipContinuationExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueContinuationExpressionBuilder{T,U}.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueContinuationExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\ITerminationExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueListTerminationExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\_Type\ITypeTerminationBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\_Value\IValueTerminationExpressionBuilder{T}.cs" />
+    <Compile Include="Builder\Syntax\IUpdateContinuationExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\IUpdateFromExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\IUpdateInitiationExpressionBuilder.cs" />
+    <Compile Include="Connection\SqlConnection.cs" />
+    <Compile Include="DbExpressionConfiguration.cs" />
+    <Compile Include="ExecutionContext.cs" />
+    <Compile Include="Executor\InsertSqlStatementExecutor.cs" />
+    <Compile Include="Executor\DeleteSqlStatementExecutor.cs" />
+    <Compile Include="Connection\ISqlConnectionFactory.cs" />
+    <Compile Include="Executor\ISqlStatementExecutor.cs" />
+    <Compile Include="Executor\ISqlStatementExecutorFactory.cs" />
+    <Compile Include="Connection\SqlConnectionFactory.cs" />
+    <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
+    <Compile Include="SqlStatement.cs" />
+    <Compile Include="Executor\SqlStatementExecutionResultSet.cs" />
+    <Compile Include="Executor\UpdateSqlStatementExecutor.cs" />
+    <Compile Include="Executor\_Value\SelectValueListSqlStatementExecutor.cs" />
+    <Compile Include="Executor\_Dynamic\SelectDynamicListSqlStatementExecutor.cs" />
+    <Compile Include="Executor\_Dynamic\SelectDynamicSqlStatementExecutor.cs" />
+    <Compile Include="Executor\_Type\SelectTypeListSqlStatementExecutor.cs" />
+    <Compile Include="Executor\_Value\SelectValueSqlStatementExecutor.cs" />
+    <Compile Include="Executor\_Type\SelectTypeSqlStatementExecutor.cs" />
+    <Compile Include="Executor\SqlStatementExecutor.cs" />
+    <Compile Include="Executor\SqlStatementExecutorFactory.cs" />
+    <Compile Include="Expression\DbExpression.cs" />
+    <Compile Include="Expression\EntityExpression{T}.cs" />
+    <Compile Include="Expression\DbExpressionPair.cs" />
+    <Compile Include="Expression\SchemaExpression.cs" />
+    <Compile Include="Expression\JoinOnExpression.cs" />
+    <Compile Include="Expression\JoinOnExpressionSet.cs" />
+    <Compile Include="Expression\WhereExpression.cs" />
+    <Compile Include="Expression\WhereExpressionSet.cs" />
+    <Compile Include="Expression\IAliasable.cs" />
+    <Compile Include="Expression\IDbExpressionEntity{T}.cs" />
+    <Compile Include="Assembler\IDbExpressionAssemblyPart.cs" />
+    <Compile Include="Expression\IDbExpressionSelectClausePart.cs" />
+    <Compile Include="Expression\IDbExpressionSet{T}.cs" />
+    <Compile Include="Expression\IDbExpressionSet.cs" />
+    <Compile Include="Extensions\Attribute\AggregateFunctionAttributeExtensions.cs" />
+    <Compile Include="Extensions\Attribute\ArithmeticiExpressionOperatorAttributeExtensions.cs" />
+    <Compile Include="Extensions\Attribute\ConditionalExpressionOperatorAttributeExtensions.cs" />
+    <Compile Include="Extensions\Attribute\FilterExpressionOperatorAttributeExtensions.cs" />
+    <Compile Include="Extensions\Expression\IDbExpressionSelectClausePartExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="IDbEntity.cs" />
+    <Compile Include="IIdentityDbEntity.cs" />
+    <Compile Include="DbCommandType.cs" />
+    <Compile Include="Expression\AggregateFunctionExpression.cs" />
+    <Compile Include="Expression\ArithmeticExpression.cs" />
+    <Compile Include="Expression\ArithmeticExpressionOperator.cs" />
+    <Compile Include="Expression\AssignmentExpression.cs" />
+    <Compile Include="Expression\AssignmentExpressionSet.cs" />
+    <Compile Include="Expression\ConditionalExpressionOperator.cs" />
+    <Compile Include="Expression\EntityExpression.cs" />
+    <Compile Include="Expression\FieldExpression.cs" />
+    <Compile Include="Expression\FieldExpression{T}.cs" />
+    <Compile Include="Expression\JoinOperationExpressionOperator.cs" />
+    <Compile Include="Expression\ExpressionSet.cs" />
+    <Compile Include="Expression\FilterExpression.cs" />
+    <Compile Include="Expression\FilterExpressionOperator.cs" />
+    <Compile Include="Expression\FilterExpressionSet.cs" />
+    <Compile Include="Expression\GroupByExpression.cs" />
+    <Compile Include="Expression\GroupByExpressionSet.cs" />
+    <Compile Include="Expression\HavingExpression.cs" />
+    <Compile Include="Expression\InsertExpression.cs" />
+    <Compile Include="Expression\InsertExpressionSet.cs" />
+    <Compile Include="Expression\JoinExpression.cs" />
+    <Compile Include="Expression\JoinExpressionSet.cs" />
+    <Compile Include="Expression\OrderByExpression.cs" />
+    <Compile Include="Expression\OrderByExpressionSet.cs" />
+    <Compile Include="Expression\OrderExpressionDirection.cs" />
+    <Compile Include="Expression\SelectExpression.cs" />
+    <Compile Include="Expression\AggregateFunction.cs" />
+    <Compile Include="Expression\SelectExpressionSet.cs" />
+    <Compile Include="Expression\IDbExpression.cs" />
+    <Compile Include="I64BitIdentityDbEntity.cs" />
+    <Compile Include="I32BitIdentityDbEntity.cs" />
+    <Compile Include="Mapper\FieldMapperFactory.cs" />
+    <Compile Include="ObjectMap\SqlModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\ColumnInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\EntityInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\IndexInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\ParameterInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\SprocInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\TableColumnInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\TypeCodeInfo.cs" />
+    <Compile Include="ObjectMap\SchemaInfo\ViewColumnInfo.cs" />
+    <Compile Include="ObjectMap\SqlEntity.cs" />
+    <Compile Include="ObjectMap\SqlEnumeration.cs" />
+    <Compile Include="ObjectMap\SqlEnumerationItem.cs" />
+    <Compile Include="ObjectMap\SqlField.cs" />
+    <Compile Include="ObjectMap\SqlIndex.cs" />
+    <Compile Include="ObjectMap\SqlIndexedField.cs" />
+    <Compile Include="ObjectMap\SqlParameter.cs" />
+    <Compile Include="ObjectMap\SqlRelationship.cs" />
+    <Compile Include="ObjectMap\SqlSproc.cs" />
+    <Compile Include="SqlDbClientType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HatTrick.DbEx\HatTrick.DbEx.csproj">
+      <Project>{196feda7-33a3-4f84-b5c4-e8471041a4cc}</Project>
+      <Name>HatTrick.DbEx</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,61 @@
+﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+
+namespace HatTrick.DbEx.Sql.Assembler
+{
+    public class SelectSqlStatementAssembler : SqlStatementAssembler
+    {
+        public override SqlStatement Assemble(ExpressionSet expression, ISqlStatementBuilder builder)
+        {
+            string select = Equals(expression.Select, null) ? string.Empty : builder.AssemblePart<SelectExpressionSet>(expression.Select);
+            string where = Equals(expression.Where, null) ? string.Empty : builder.AssemblePart<WhereExpressionSet>(expression.Where);
+            string joins = Equals(expression.Joins, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins);
+            string groupBy = Equals(expression.GroupBy, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.GroupBy);
+            string having = Equals(expression.Having, null) ? string.Empty : builder.AssemblePart<HavingExpression>(expression.Having);
+            string orderBy = Equals(expression.OrderBy, null) ? string.Empty : builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy);
+
+            string sql = Assemble(
+                expression,
+                builder,
+                select,
+                expression.Distinct ? "DISTINCT " : string.Empty,
+                expression.BaseEntity.ToString("[s].[e]"),
+                where,
+                joins,
+                groupBy,
+                having,
+                orderBy
+            );
+
+            return new SqlStatement(sql, builder.Parameters.Parameters, DbCommandType.SqlText);
+        }
+
+        protected virtual string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, string select, string distinct, string fromEntity, string where, string joins, string groupBy, string having, string orderBy)
+        {
+            string after(string s) => s.SpaceAfter().NewLineAfter(DbExpressionConfiguration.Minify);
+
+            if (!string.IsNullOrWhiteSpace(distinct))
+                distinct = after(distinct);
+
+            if (!string.IsNullOrWhiteSpace(where))
+                where = after("WHERE") + after(where);
+
+            if (!string.IsNullOrWhiteSpace(joins))
+                joins = after(joins);
+
+            if (!string.IsNullOrWhiteSpace(groupBy))
+                groupBy = after("GROUP BY") + after(groupBy);
+
+            if (!string.IsNullOrWhiteSpace(having))
+                having = after("HAVING") + after(having);
+
+            if (!string.IsNullOrWhiteSpace(orderBy))
+                orderBy = after("ORDER BY") + orderBy;
+
+            return $"{after("SELECT")}{distinct}{after(select)}{after("FROM")}{after(fromEntity)}{joins}{where}{groupBy}{having}{orderBy};";
+        }
+    }
+}

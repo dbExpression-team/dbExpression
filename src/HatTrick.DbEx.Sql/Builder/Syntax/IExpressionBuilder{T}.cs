@@ -1,0 +1,6 @@
+﻿namespace HatTrick.DbEx.Sql.Builder.Syntax
+{
+    public interface IExpressionBuilder<T> : IExpressionBuilder
+    {
+    }
+}

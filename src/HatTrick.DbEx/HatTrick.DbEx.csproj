@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HatTrick.DbEx</RootNamespace>
+    <AssemblyName>HatTrick.DbEx</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ObjectMap\Assembly\Attributes.cs" />
+    <Compile Include="ObjectMap\Entity.cs" />
+    <Compile Include="ObjectMap\Enumeration.cs" />
+    <Compile Include="ObjectMap\EnumerationItem.cs" />
+    <Compile Include="ObjectMap\Field.cs" />
+    <Compile Include="ObjectMap\Index.cs" />
+    <Compile Include="ObjectMap\IndexedField.cs" />
+    <Compile Include="ObjectMap\Model.cs" />
+    <Compile Include="ObjectMap\Relationship.cs" />
+    <Compile Include="ObjectMap\Assembly\AssemblyEntity.cs" />
+    <Compile Include="ObjectMap\Assembly\AssemblyEnumeration.cs" />
+    <Compile Include="ObjectMap\Assembly\AssemblyEnumerationItem.cs" />
+    <Compile Include="ObjectMap\Assembly\AssemblyField.cs" />
+    <Compile Include="ObjectMap\Assembly\AssemblyModel.cs" />
+    <Compile Include="Configuration\ConfigurationSectionHandler.cs" />
+    <Compile Include="Configuration\ConfigurationService.cs" />
+    <Compile Include="Configuration\Sections\DatabaseConfigurationSection.cs" />
+    <Compile Include="Configuration\Sections\MongoDBConfigurationSection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\Clone.cs" />
+    <Compile Include="Utility\Reflection\Assembly.cs" />
+    <Compile Include="Utility\Reflection\Class.cs" />
+    <Compile Include="Utility\Reflection\Expression.cs" />
+    <Compile Include="Utility\StringInterpolation.cs" />
+    <Compile Include="Utility\TypeUtility.cs" />
+    <Compile Include="Utility\Reflection\NoPropertyExistsException.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
