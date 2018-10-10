@@ -295,6 +295,21 @@ namespace HTL.DbEx.TestHarness
                 return expr;
             }
 
+            public override DBAssignmentExpressionSet GetAssignmentExpression(PatientReport from, PatientReport to, params DBExpressionField[] exclude)
+            {
+                DBAssignmentExpressionSet expr = null;
+                if (!exclude.Contains(_sampleId) && from.SampleId != to.SampleId)
+                    expr &= _sampleId.Set(to.SampleId);
+                if (!exclude.Contains(_externalId) && from.ExternalId != to.ExternalId)
+                    expr &= _externalId.Set(to.ExternalId);
+                if (!exclude.Contains(_reportType) && from.ReportType != to.ReportType)
+                    expr &= _reportType.Set(to.ReportType);
+
+                //TODO: fill others as needed
+
+                return expr;
+            }
+
             public override void FillObject(PatientReport p, object[] values)
             {
                 //if the column allows null, do the dbnull check, else just cast in..???
@@ -379,6 +394,23 @@ namespace HTL.DbEx.TestHarness
                 expr &= _facility.Insert(p.Facility);
                 expr &= _patientRefId.Insert(p.PatientRefId);
                 expr &= _createdAt.Insert(p.CreatedAt);
+                return expr;
+            }
+
+            public override DBAssignmentExpressionSet GetAssignmentExpression(Physician from, Physician to, params DBExpressionField[] exclude)
+            {
+                DBAssignmentExpressionSet expr = null;
+                if (!exclude.Contains(_patientReportId) && from.PatientReportId != to.PatientReportId)
+                    expr &= _patientReportId.Set(to.PatientReportId);
+                if (!exclude.Contains(_fullName) && from.FullName != to.FullName)
+                    expr &= _fullName.Set(to.FullName);
+                if (!exclude.Contains(_facility) && from.Facility != to.Facility)
+                    expr &= _facility.Set(to.Facility);
+                if (!exclude.Contains(_patientRefId) && from.PatientRefId != to.PatientRefId)
+                    expr &= _patientRefId.Set(to.PatientRefId);
+                if (!exclude.Contains(_createdAt) && from.CreatedAt != to.CreatedAt)
+                    expr &= _createdAt.Set(to.CreatedAt);
+
                 return expr;
             }
 

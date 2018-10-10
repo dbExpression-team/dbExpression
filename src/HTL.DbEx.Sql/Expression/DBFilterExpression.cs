@@ -73,9 +73,16 @@ namespace HTL.DbEx.Sql.Expression
                     }
                     else
                     {
-                        string paramName = $"@F{(parameters.Count + 1)}";
-                        expression = $"{this.FormatArgument(_leftArg)}{_operatorStrings[(int)_expressionOperator]}{paramName}";
-                        parameters.Add(dbService.GetDbParameter(paramName, _rightArg, _rightArg.GetType()));
+                        if (_rightArg == DBNull.Value)
+                        {
+                            expression = $"{this.FormatArgument(_leftArg)} IS NULL";
+                        }
+                        else
+                        {
+                            string paramName = $"@F{(parameters.Count + 1)}";
+                            expression = $"{this.FormatArgument(_leftArg)}{_operatorStrings[(int)_expressionOperator]}{paramName}";
+                            parameters.Add(dbService.GetDbParameter(paramName, _rightArg, _rightArg.GetType()));
+                        }
                     }
                 }
             }

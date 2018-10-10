@@ -65,10 +65,6 @@
       <Project>{578c7237-d1a1-40f2-8e1d-7a9b656bc6dc}</Project>
       <Name>HTL.DbEx.MsSql</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HTL.DbEx.MySql\HTL.DbEx.MySql.csproj">
-      <Project>{dc5ce101-bc63-416b-9419-9dcd11b834ff}</Project>
-      <Name>HTL.DbEx.MySql</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HTL.DbEx.Sql\HTL.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
       <Name>HTL.DbEx.Sql</Name>

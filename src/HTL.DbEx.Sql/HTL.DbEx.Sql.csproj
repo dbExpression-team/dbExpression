@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\SqlConnection.cs" />
+    <Compile Include="Extensions\Expression\DBExpressionFieldExtensions.cs" />
     <Compile Include="IDBEntity.cs" />
     <Compile Include="IIdentityDBEntity.cs" />
     <Compile Include="DbCommandType.cs" />

@@ -49,6 +49,33 @@ namespace HTL.DbEx.MsSql.Expression
                 _assignments &= assignments[i];
             }
         }
+
+        public DBUpdateDirective(string connectionStringName, DBAssignmentExpressionSet assignments)
+        {
+            if (string.IsNullOrEmpty(connectionStringName))
+            {
+                throw new ArgumentException("parameter must contain a value", nameof(connectionStringName));
+            }
+
+            _connStringName = connectionStringName;
+
+            _connSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (_connSettings == null)
+            {
+                throw new ArgumentException("no connections string setting found for provided name", nameof(connectionStringName));
+            }
+
+            _assignments &= assignments;
+        }
+
+        public DBUpdateDirective(ConnectionStringSettings connectionStringSettings, DBAssignmentExpressionSet assignments)
+        {
+            _connSettings = connectionStringSettings ?? throw new ArgumentNullException("connection string settings are required");
+            _connStringName = connectionStringSettings.Name;
+
+            _assignments &= assignments;
+        }
         #endregion
 
         #region into

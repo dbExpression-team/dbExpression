@@ -119,6 +119,10 @@ namespace HTL.DbEx.Sql.Expression
         public abstract DBInsertExpressionSet GetInclusiveInsertExpression(T entity);
         #endregion
 
+        #region get assignment expression
+        public abstract DBAssignmentExpressionSet GetAssignmentExpression(T from, T to, params DBExpressionField[] exclude);
+        #endregion
+
         #region fill object
         public abstract void FillObject(T entity, object[] values);
         #endregion

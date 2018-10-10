@@ -11,7 +11,7 @@ namespace HTL.DbEx.Sql.Expression
 
         public int? Size { get; private set; }
 
-        public DBFilterExpression IsNull { get { return new DBFilterExpression(this, null, DBFilterExpressionOperator.Equal); } }
+        public DBFilterExpression IsNull { get { return new DBFilterExpression(this, DBNull.Value, DBFilterExpressionOperator.Equal); } }
 
         public DBOrderByExpression Asc { get { return new DBOrderByExpression(this, DBOrderExpressionDirection.ASC); } }
 
