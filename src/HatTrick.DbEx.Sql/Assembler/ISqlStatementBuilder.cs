@@ -19,5 +19,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : IDbExpressionAssemblyPart;
 
         string GenerateAlias();
+
+        Appender CreateAppender();
     }
 }

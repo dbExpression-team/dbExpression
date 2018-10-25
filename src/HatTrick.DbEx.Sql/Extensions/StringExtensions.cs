@@ -8,10 +8,7 @@ namespace HatTrick.DbEx.Sql.Extensions
 {
     public static class StringExtensions
     {
-        public static string SpaceBefore(this string s) => string.IsNullOrWhiteSpace(s) ? s : " " + s;
-        public static string SpaceAfter(this string s) => string.IsNullOrWhiteSpace(s) ? s : s + " ";
-        public static string NewLineBefore(this string s, bool minify) => string.IsNullOrWhiteSpace(s) || minify ? s : Environment.NewLine + s;
-        public static string NewLineAfter(this string s, bool minify) => string.IsNullOrWhiteSpace(s) || minify ? s : s + Environment.NewLine;
-
+        public static string Before(this string s, string before) => string.IsNullOrWhiteSpace(s) || string.IsNullOrWhiteSpace(before) ? s : before + s;
+        public static string After(this string s, string after) => string.IsNullOrWhiteSpace(s) || string.IsNullOrWhiteSpace(after) ? s : s + after;
     }
 }

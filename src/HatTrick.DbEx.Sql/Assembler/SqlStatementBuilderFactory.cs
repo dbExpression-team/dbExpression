@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 
@@ -140,8 +141,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             valueFormatters.Add(typeof(Array), () => new ValueTypeFormatter());
         }
 
-        public ISqlStatementBuilder CreateSqlStatementBuilder(ExpressionSet expression, ISqlParameterBuilder parameterBuilder)
-            => new SqlStatementBuilder(expression, assemblers[expression.ExecutionContext](), PartAssemblerResolver, ValueTypeFormatterResolver, parameterBuilder);
+        public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, ISqlParameterBuilder parameterBuilder)
+            => new SqlStatementBuilder(config, expression, assemblers[expression.ExecutionContext](), PartAssemblerResolver, ValueTypeFormatterResolver, parameterBuilder);
 
         #endregion
     }

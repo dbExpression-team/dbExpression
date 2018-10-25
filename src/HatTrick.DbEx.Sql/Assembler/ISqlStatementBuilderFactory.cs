@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -26,6 +27,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         void RegisterValueFormatter<T>(IValueTypeFormatter<T> valueFormatter)
             where T : IComparable, IValueTypeFormatter;
 
-        ISqlStatementBuilder CreateSqlStatementBuilder(ExpressionSet expression, ISqlParameterBuilder parameterBuilder);
+        ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, ISqlParameterBuilder parameterBuilder);
     }
 }

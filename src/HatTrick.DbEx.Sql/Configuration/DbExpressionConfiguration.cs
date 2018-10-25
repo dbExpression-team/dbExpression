@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Configuration
 {
     public static class DbExpressionConfiguration
     {
@@ -17,6 +17,6 @@ namespace HatTrick.DbEx.Sql
         public static ISqlConnectionFactory ConnectionFactory { get; set; }
         public static IMapperFactory MapperFactory { get; set; }
 
-        public static bool Minify { get; set; } = true;
+        public static DbExpressionAssemblerConfiguration AssemblerConfiguration { get; set; } = new DbExpressionAssemblerConfiguration();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Extensions.Assembler;
 using System;
 using System.Linq;
 
@@ -21,17 +22,16 @@ namespace HatTrick.DbEx.Sql.Assembler
                 var joinExpression = expressionPart.JoinToo.Item2 as ExpressionSet;
                 string subselect = builder.AssemblePart<ExpressionSet>(joinExpression, overrides);
 
-                //get the base entity of the subselect
-                var subselectBaseEntity = (expressionPart.JoinToo.Item2 as ExpressionSet).BaseEntity;
-
-                //get the left or right side of join on condition that matches the base entity
-                //var currentAlias = overrides.EntityName;
-                var newAlias = builder.GenerateAlias();
-                overrides.EntityName = (subselectBaseEntity, newAlias);
+                //get the base entity of the subselect and set an alias to build the ON condition (x.field == t1.field)
+                string subselectAlias = builder.GenerateAlias();
+                overrides.EntityAliases.SetAliasForEntity(subselectAlias, (expressionPart.JoinToo.Item2 as ExpressionSet).BaseEntity);
                 string joinSubselect = builder.AssemblePart<JoinOnExpression>(expressionPart.JoinOnExpression, overrides);
-                //overrides.EntityName = currentAlias;
 
-                return $"{expressionPart.JoinType} JOIN ({subselect}) AS {newAlias} ON {joinSubselect}";
+                string exp = $"{expressionPart.JoinType} JOIN ({subselect}) AS {subselectAlias} ON {joinSubselect}";
+
+                //set aliases for all entities effected (x.field -> t1.field)
+                overrides.EntityAliases.SetAliasesForEntities(subselectAlias, joinExpression.Select);
+                return exp;
             }
             if (expressionPart.JoinType == JoinOperationExpressionOperator.CROSS)
             {

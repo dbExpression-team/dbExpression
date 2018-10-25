@@ -10,9 +10,12 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            string insert = Equals(expression.Insert, null) ? string.Empty : builder.AssemblePart<InsertExpressionSet>(expression.Insert, overrides);
-            //TODO: use part assembler to build base entity
-            insert = Assemble(expression, overrides, expression.BaseEntity.ToString("[s].[e]"), insert);
+            string insert = expression.Insert == null ? string.Empty : builder.AssemblePart<InsertExpressionSet>(expression.Insert, overrides);
+
+            string from = builder.AssemblePart<EntityExpression>(expression.BaseEntity, overrides);
+
+            insert = Assemble(expression, overrides, from, insert);
+
             return new SqlStatement(insert, builder.Parameters.Parameters, DbCommandType.SqlText);
         }
 

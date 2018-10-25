@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     /// </summary>
     public class SelectAllSqlStatementAssembler : SelectSqlStatementAssembler
     {
-        protected override string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, string select, string distinct, string fromEntity, string where, string joins, string groupBy, string having, string orderBys)
+        protected override string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides, string select, string distinct, string fromEntity, string where, string joins, string groupBy, string having, string orderBys)
         {
             throw new NotImplementedException("Assembly requires database platform specific implementations");
         }

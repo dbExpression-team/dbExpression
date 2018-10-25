@@ -11,23 +11,29 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            string where = Equals(expression.Where, null) ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
-            string joins = Equals(expression.Joins, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
-            string ex = Assemble(expression, overrides, expression.BaseEntity.ToString("[s].[e]"), where, joins);
+            string where = expression.Where == null ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
+            string joins = expression.Joins == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
+            string ex = Assemble(expression, builder, overrides, expression.BaseEntity.ToString("[s].[e]"), where, joins);
             return new SqlStatement(ex, builder.Parameters.Parameters, DbCommandType.SqlText);
         }
 
-        protected virtual string Assemble(ExpressionSet expression, AssemblerOverrides overrides, string fromEntity, string where, string joins)
+        protected virtual string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides, string fromEntity, string where, string joins)
         {
-            string after(string s) => s.SpaceAfter().NewLineAfter(DbExpressionConfiguration.Minify);
+            var appender = builder.CreateAppender();
 
-            if (!string.IsNullOrWhiteSpace(where))
-                where = after("WHERE") + after(where);
+            appender.Write("DELETE").LineBreak()
+                .IndentLevel++.Indent().Write(fromEntity).LineBreak()
+                .IndentLevel--.Indent().Write("FROM").LineBreak()
+                .IndentLevel++.Indent().Write(fromEntity).LineBreak()
+                .Indent().Write(joins).LineBreak()
+                .IfNotEmpty(where, a =>
+                    a.IndentLevel--.Indent().Write("WHERE").LineBreak()
+                        .IndentLevel++.Indent().Write(where).LineBreak()
+                        .IndentLevel--
+                );
 
-            if (!string.IsNullOrWhiteSpace(joins))
-                joins = after(joins);
-
-            return $"{after("DELETE")}{after(fromEntity)}{after("FROM")}{after(fromEntity)}{joins}{where}";
+            return appender.ToString();
+            //return $"{after("DELETE")}{after(fromEntity)}{after("FROM")}{after(fromEntity)}{joins}{where}";
         }
         #endregion
     }

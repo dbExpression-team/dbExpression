@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -25,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
             //var validator  ??;
 
-            var assembler = DbExpressionConfiguration.StatementBuilderFactory.CreateSqlStatementBuilder(expression, DbExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var assembler = DbExpressionConfiguration.StatementBuilderFactory.CreateSqlStatementBuilder(DbExpressionConfiguration.AssemblerConfiguration, expression, DbExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var statement = assembler.CreateSqlStatement();
 
             var executor = DbExpressionConfiguration.ExecutorFactory.CreateSqlStatementExecutor(expression);
@@ -168,7 +169,7 @@ namespace HatTrick.DbEx.Sql.Builder
             
             //var validator  ??;
 
-            var builder = DbExpressionConfiguration.StatementBuilderFactory.CreateSqlStatementBuilder(expression, DbExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = DbExpressionConfiguration.StatementBuilderFactory.CreateSqlStatementBuilder(DbExpressionConfiguration.AssemblerConfiguration, expression, DbExpressionConfiguration.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var statement = builder.CreateSqlStatement();
 
             var executor = DbExpressionConfiguration.ExecutorFactory.CreateSqlStatementExecutor(expression);

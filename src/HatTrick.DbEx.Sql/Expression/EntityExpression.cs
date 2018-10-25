@@ -80,6 +80,29 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            var entity = obj as EntityExpression;
+            if (entity == null)
+                return false;
+
+            if (string.Compare(entity.EntityName, this.EntityName, true) != 0)
+                return false;
+
+            if (string.Compare(entity.AliasName, this.AliasName, true) != 0)
+                return false;
+
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public abstract SelectExpressionSet GetInclusiveSelectExpression();
     }
 }

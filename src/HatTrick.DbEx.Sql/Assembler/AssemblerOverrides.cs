@@ -1,9 +1,7 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-
-namespace HatTrick.DbEx.Sql.Assembler
+﻿namespace HatTrick.DbEx.Sql.Assembler
 {
     public class AssemblerOverrides
     {
-        public (EntityExpression,string) EntityName { get; set; }
+        public EntityExpressionOverride EntityAliases { get; set; } = new EntityExpressionOverride();
     }
 }

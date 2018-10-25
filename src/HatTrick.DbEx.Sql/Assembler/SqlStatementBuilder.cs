@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -6,6 +7,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class SqlStatementBuilder : ISqlStatementBuilder
     {
         private int _currentAliasCounter;
+        private DbExpressionAssemblerConfiguration _config;
 
         public ExpressionSet DBExpression { get; }
         public ISqlStatementAssembler Assembler { get; }
@@ -14,12 +16,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
+            DbExpressionAssemblerConfiguration config,
             ExpressionSet dbExpression,
             ISqlStatementAssembler assembler,
             Func<Type, IDbExpressionAssemblyPartAssembler> partAssemblerResolver,
             Func<Type, IValueTypeFormatter> valueTypeFormatterResolver,
             ISqlParameterBuilder parameterBuilder)
         {
+            _config = config;
             DBExpression = dbExpression;
             Assembler = assembler;
             PartAssemblerResolver = partAssemblerResolver;
@@ -76,5 +80,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public string GenerateAlias() => $"t{++_currentAliasCounter}";
+
+        public Appender CreateAppender() => new Appender(_config);
     }
 }

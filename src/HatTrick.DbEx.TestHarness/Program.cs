@@ -3,6 +3,7 @@ using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Executor;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
@@ -32,7 +33,7 @@ namespace HatTrick.DbEx.TestHarness
 
             DbExpressionConfiguration.ExecutorFactory = executor;
             DbExpressionConfiguration.ConnectionFactory = new MsSqlConnectionFactory();
-            DbExpressionConfiguration.Minify = false;
+            DbExpressionConfiguration.AssemblerConfiguration.Minify = false;
 
             var mapperFactory = new MapperFactory();
             mapperFactory.RegisterDefaultMaps();
@@ -59,16 +60,20 @@ namespace HatTrick.DbEx.TestHarness
             var aliasedPr = kai.PatientReport.As("pr");
             var aliasedP = kai.Physician.As("p");
 
-            db.SelectAll(aliasedP.Id, aliasedP.FullName, aliasedPr.ExternalId)
+            db.SelectAll(
+                    aliasedP.Id, 
+                    aliasedP.FullName, 
+                    aliasedPr.ExternalId
+                )
                 .Distinct()
                 .From(aliasedP)
                 .InnerJoin(
-                    db.SelectAll(kai.PatientReport.Id)
+                    db.SelectAll(aliasedPr.Id, aliasedPr.ExternalId)
                     .From(aliasedPr)
                     .Where(aliasedPr.ExternalId.Like("Foo%"))
                 ).On(aliasedP.Id == aliasedPr.Id)
-                //.Skip(0)
-                //.Limit(100)
+                .Skip(0)
+                .Limit(100)
                 .OrderBy(aliasedP.FullName.Asc, aliasedPr.ExternalId.Asc)
                 .Execute();
 

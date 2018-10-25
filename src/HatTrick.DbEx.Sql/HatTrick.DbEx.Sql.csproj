@@ -44,9 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembler\Appender.cs" />
     <Compile Include="Assembler\AssemblerOverrides.cs" />
+    <Compile Include="Assembler\EntityExpressionOverride.cs" />
     <Compile Include="Assembler\ISqlStatementAssemblerFactory.cs" />
     <Compile Include="Assembler\ISqlStatementBuilderFactory.cs" />
+    <Compile Include="Assembler\OverrideScope.cs" />
     <Compile Include="Assembler\SqlStatementBuilder.cs" />
     <Compile Include="Assembler\ISqlStatementAssembler.cs" />
     <Compile Include="Assembler\ISqlStatementBuilder.cs" />
@@ -125,8 +128,9 @@
     <Compile Include="Builder\Syntax\IUpdateContinuationExpressionBuilder.cs" />
     <Compile Include="Builder\Syntax\IUpdateFromExpressionBuilder.cs" />
     <Compile Include="Builder\Syntax\IUpdateInitiationExpressionBuilder.cs" />
+    <Compile Include="Configuration\DbExpressionAssemblerConfiguration.cs" />
     <Compile Include="Connection\SqlConnection.cs" />
-    <Compile Include="DbExpressionConfiguration.cs" />
+    <Compile Include="Configuration\DbExpressionConfiguration.cs" />
     <Compile Include="ExecutionContext.cs" />
     <Compile Include="Executor\InsertSqlStatementExecutor.cs" />
     <Compile Include="Executor\DeleteSqlStatementExecutor.cs" />
@@ -135,6 +139,7 @@
     <Compile Include="Executor\ISqlStatementExecutorFactory.cs" />
     <Compile Include="Connection\SqlConnectionFactory.cs" />
     <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
+    <Compile Include="Extensions\Assembler\EntityExpressionOverrideExtensions.cs" />
     <Compile Include="SqlStatement.cs" />
     <Compile Include="Executor\SqlStatementExecutionResultSet.cs" />
     <Compile Include="Executor\UpdateSqlStatementExecutor.cs" />

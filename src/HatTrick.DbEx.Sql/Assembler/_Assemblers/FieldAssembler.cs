@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Extensions.Assembler;
 using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -11,8 +12,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string AssemblePart(FieldExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            var entity = builder.AssemblePart<EntityExpression>(expressionPart.ParentEntity, overrides);
-            return $"{entity}.[{expressionPart.Name}]";
+            if (overrides != null && overrides.EntityAliases.Contains(expressionPart.ParentEntity))
+                return $"{overrides.EntityAliases.ResolveEntityName(expressionPart.ParentEntity)}.[{expressionPart.Name}]";
+
+            return $"{builder.AssemblePart<EntityExpression>(expressionPart.ParentEntity, overrides)}.[{expressionPart.Name}]";
         }
     }
 }
