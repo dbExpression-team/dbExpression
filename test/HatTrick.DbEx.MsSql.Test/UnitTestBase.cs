@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace HTL.DbEx.MsSql.Test
+namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class UnitTestBase
     {

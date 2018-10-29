@@ -10,6 +10,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         private Action increase;
         private Action decrease;
 
+        public byte CurrentLevel { get; set; }
+
         public AppenderIndentation(IAppender appender, Action increase, Action decrease)
         {
             this.appender = appender;
@@ -19,13 +21,18 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public static AppenderIndentation operator ++(AppenderIndentation a)
         {
+            a.CurrentLevel++;
             a.increase();
             return a;
         }
 
         public static AppenderIndentation operator --(AppenderIndentation a)
         {
-            a.decrease();
+            if (a.CurrentLevel > 0)
+            {
+                a.CurrentLevel--;
+                a.decrease();
+            }
             return a;
         }
 
@@ -49,24 +56,19 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         private readonly StringBuilder builder = new StringBuilder();
         private readonly bool minify;
-        private int _currentIndentationLevel;
         private string _currentIndentationValue = string.Empty;
 
-        public AppenderIndentation IndentLevel { get; set; }
+        public AppenderIndentation Indentation { get; set; }
 
         public Appender(DbExpressionAssemblerConfiguration config)
         {
             minify = config.Minify;
-            IndentLevel = new AppenderIndentation(this, () => IncreaseIndent(), () => DecreaseIndent());
+            Indentation = new AppenderIndentation(this, () => IncreaseIndent(), () => DecreaseIndent());
         }
 
         public IAppender LineBreak()
         {
-            if (minify)
-                builder.Append(" ");
-            else
-                builder.Append(Environment.NewLine);
-
+            builder.Append(minify ? " " : Environment.NewLine);
             return this;
         }
 
@@ -111,7 +113,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private Appender IncreaseIndent()
         {
-            _currentIndentationLevel++;
             if (!minify)
                 _currentIndentationValue += "\t";
 
@@ -120,13 +121,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private Appender DecreaseIndent()
         {
-            if (_currentIndentationLevel > 0)
-                _currentIndentationLevel--;
-
             if (!minify)
             {
                 _currentIndentationValue = string.Empty;
-                for (var i = 0; i < _currentIndentationLevel; i++)
+                for (var i = 0; i < Indentation.CurrentLevel; i++)
                     _currentIndentationValue += "\t";
             }
 
@@ -138,7 +136,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
     public interface IAppender
     {
-        AppenderIndentation IndentLevel { get; set; }
+        AppenderIndentation Indentation { get; set; }
 
         IAppender LineBreak();
 

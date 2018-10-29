@@ -1,14 +1,14 @@
 ﻿using System;
 using Xunit;
 
-namespace HTL.DbEx.MsSql.Test
+namespace HatTrick.DbEx.MsSql.Test
 {
     public class PersonTests : UnitTestBase
     {
         [Fact]
         public void TestMethod1()
         {
-
+            //dbo.SelectAll()
         }
 
         [Fact]

@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 
-namespace HTL.DbEx.MsSql.Test
+namespace HatTrick.DbEx.MsSql.Test
 {
     public class Seeder
     {

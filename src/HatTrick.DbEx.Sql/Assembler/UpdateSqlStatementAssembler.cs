@@ -26,14 +26,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indent().Write("UPDATE").LineBreak()
                 .Indent().Write(fromEntity).LineBreak()
                 .Indent().Write("SET").LineBreak()
-                .IndentLevel++.Indent().Write(update).LineBreak()
-                .IndentLevel--.Indent().Write("FROM").LineBreak()
-                .IndentLevel++.Indent().Write(fromEntity).LineBreak()
+                .Indentation++.Indent().Write(update).LineBreak()
+                .Indentation--.Indent().Write("FROM").LineBreak()
+                .Indentation++.Indent().Write(fromEntity).LineBreak()
                 .Indent().Write(joins).LineBreak()
                 .IfNotEmpty(where, a =>
-                    a.IndentLevel--.Indent().Write("WHERE").LineBreak()
-                        .IndentLevel++.Indent().Write(where).LineBreak()
-                        .IndentLevel--
+                    a.Indentation--.Indent().Write("WHERE").LineBreak()
+                        .Indentation++.Indent().Write(where).LineBreak()
+                        .Indentation--
                 );
 
             return appender.ToString();
