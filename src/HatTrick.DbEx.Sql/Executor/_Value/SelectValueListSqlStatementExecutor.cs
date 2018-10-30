@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Executor
                 while (dr.Read())
                 {
                     var val = dr.GetValue(0);
-                    @return.Rows.Add(new SqlStatementExecutionResultSet.Row((0, dr.GetName(0), val == DBNull.Value ? null : val)));
+                    @return.Rows.Add(new SqlStatementExecutionResultSet.Row(0, new SqlStatementExecutionResultSet.Field(dr.GetName(0), val == DBNull.Value ? null : val)));
                 }
                 dr.Close();
                 if (!connection.IsTransactional) { connection.Disconnect(); }

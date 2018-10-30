@@ -8,7 +8,7 @@ namespace Generated.DataService
     public class dboSchema : SchemaExpression
     {
         #region internals
-        private static readonly string _connectionStringName = "hattrick.mssql.test";
+        private static readonly string _connectionStringName = "hattrick.dbex.mssql.test";
         #endregion
 
         #region constructors
@@ -37,7 +37,7 @@ namespace Generated.DataService
     }
 	#endregion
 }
-namespace Gednerated.DataService
+namespace Generated.DataService
 {
     using static Generated.sec.Data.sec;
     
@@ -45,7 +45,7 @@ namespace Gednerated.DataService
     public class secSchema : SchemaExpression
     {
         #region internals
-        private static readonly string _connectionStringName = "hattrick.mssql.test";
+        private static readonly string _connectionStringName = "hattrick.dbex.mssql.test";
         #endregion
 
         #region constructors

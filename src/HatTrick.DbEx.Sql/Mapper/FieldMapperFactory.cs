@@ -13,14 +13,20 @@ namespace HatTrick.DbEx.Sql.Mapper
     public interface IMapper
     { }
 
-    public interface IMapper<T> : IMapper
+    public interface IValueMapper<T> : IMapper
+    {
+        Func<SqlStatementExecutionResultSet.Field, T> Map { get; }
+    }
+
+    public interface IEntityMapper<T> : IMapper
+        where T : class, IDbEntity
     {
         Action<T, SqlStatementExecutionResultSet.Row> Map { get; }
     }
 
-    public interface IEntityMapper<T> : IMapper<T>
-        where T : class, IDbEntity
+    public interface IExpandoObjectMapper : IMapper
     {
+        Action<ExpandoObject, SqlStatementExecutionResultSet.Row> Map { get; }
     }
 
     public class EntityMapper<T> : IEntityMapper<T>
@@ -34,13 +40,13 @@ namespace HatTrick.DbEx.Sql.Mapper
         }
     }
 
-    public class ExpandoObjectMapper : IMapper<ExpandoObject>
+    public class ExpandoObjectMapper : IExpandoObjectMapper
     {
         public Action<ExpandoObject, SqlStatementExecutionResultSet.Row> Map { get; } = new Action<ExpandoObject, SqlStatementExecutionResultSet.Row>((e, o) =>
             {
                 var expando = e as IDictionary<string, object>;
                 for (int i = 0; i < o.Fields.Count(); i++)
-                    expando.Add(o.Fields[i].Item1, o.Fields[i].Item2);
+                    expando.Add(o.Fields[i].Name, o.Fields[i].Value);
             });
     }
 
@@ -55,11 +61,11 @@ namespace HatTrick.DbEx.Sql.Mapper
     //    }
     //}
 
-    public class PrimitiveMapper<T> : IMapper<T>
+    public class PrimitiveMapper<T> : IValueMapper<T>
     {
-        public Action<T, SqlStatementExecutionResultSet.Row> Map { get; }
+        public Func<SqlStatementExecutionResultSet.Field, T> Map { get; }
 
-        public PrimitiveMapper(Action<T, SqlStatementExecutionResultSet.Row> mapper)
+        public PrimitiveMapper(Func<SqlStatementExecutionResultSet.Field, T> mapper)
         {
             Map = mapper;
         }
@@ -72,10 +78,12 @@ namespace HatTrick.DbEx.Sql.Mapper
         void RegisterEntityMap<T>(Action<T, SqlStatementExecutionResultSet.Row> mapFunction)
             where T : class, IDbEntity;
 
-        IMapper<T> CreateMapper<T>(EntityExpression<T> entity)
+        IEntityMapper<T> CreateEntityMapper<T>(EntityExpression<T> entity)
             where T : class, IDbEntity;
 
-        IMapper<T> CreateMapper<T>();
+        IValueMapper<T> CreateValueMapper<T>();
+
+        IExpandoObjectMapper CreateExpandoObjectMapper();
     }
 
     public class MapperFactory : IMapperFactory
@@ -84,23 +92,23 @@ namespace HatTrick.DbEx.Sql.Mapper
 
         public void RegisterDefaultMaps()
         {
-            maps.Add(typeof(bool), () => new PrimitiveMapper<bool>((o, r) => Convert.ToBoolean(r.Fields[0].Item2)));
-            maps.Add(typeof(bool?), () => new PrimitiveMapper<bool?>((o, r) => o = r.Fields[0].Item2 == null ? default(bool?) : Convert.ToBoolean(r.Fields[0].Item2)));
-            maps.Add(typeof(short), () => new PrimitiveMapper<short>((o, r) => Convert.ToInt16(r.Fields[0].Item2)));
-            maps.Add(typeof(short?), () => new PrimitiveMapper<short?>((o, r) => o = r.Fields[0].Item2 == null ? default(short?) : Convert.ToInt16(r.Fields[0].Item2)));
-            maps.Add(typeof(int), () => new PrimitiveMapper<int>((o,r) => Convert.ToInt32(r.Fields[0].Item2)));
-            maps.Add(typeof(int?), () => new PrimitiveMapper<int?>((o, r) => o = r.Fields[0].Item2 == null ? default(int?) : Convert.ToInt32(r.Fields[0].Item2)));
-            maps.Add(typeof(long), () => new PrimitiveMapper<long>((o, r) => Convert.ToInt64(r.Fields[0].Item2)));
-            maps.Add(typeof(long?), () => new PrimitiveMapper<long?>((o, r) => o = r.Fields[0].Item2 == null ? default(long?) : Convert.ToInt64(r.Fields[0].Item2)));
-            maps.Add(typeof(double), () => new PrimitiveMapper<double>((o, r) => Convert.ToDouble(r.Fields[0].Item2)));
-            maps.Add(typeof(double?), () => new PrimitiveMapper<double?>((o, r) => o = r.Fields[0].Item2 == null ? default(double?) : Convert.ToDouble(r.Fields[0].Item2)));
-            maps.Add(typeof(decimal), () => new PrimitiveMapper<decimal>((o, r) => Convert.ToDecimal(r.Fields[0].Item2)));
-            maps.Add(typeof(decimal?), () => new PrimitiveMapper<decimal?>((o, r) => o = r.Fields[0].Item2 == null ? default(decimal?) : Convert.ToDecimal(r.Fields[0].Item2)));
-            maps.Add(typeof(DateTime), () => new PrimitiveMapper<DateTime>((o, r) => Convert.ToDateTime(r.Fields[0].Item2)));
-            maps.Add(typeof(DateTime?), () => new PrimitiveMapper<DateTime?>((o, r) => o = r.Fields[0].Item2 == null ? default(DateTime?) : Convert.ToDateTime(r.Fields[0].Item2)));
-            maps.Add(typeof(Guid), () => new PrimitiveMapper<Guid>((o, r) => new GuidConverter().ConvertFrom(r.Fields[0].Item2)));
-            maps.Add(typeof(Guid?), () => new PrimitiveMapper<Guid?>((o, r) => o = r.Fields[0].Item2 == null ? default(Guid?) : (Guid)(new GuidConverter().ConvertFrom(r.Fields[0].Item2))));
-            maps.Add(typeof(string), () => new PrimitiveMapper<string>((o, r) => Convert.ToString(r.Fields[0].Item2)));
+            maps.Add(typeof(bool), () => new PrimitiveMapper<bool>((f) => Convert.ToBoolean(f.Value)));
+            maps.Add(typeof(bool?), () => new PrimitiveMapper<bool?>((f) => f.Value == null ? default(bool?) : Convert.ToBoolean(f.Value)));
+            maps.Add(typeof(short), () => new PrimitiveMapper<short>((f) => Convert.ToInt16(f.Value)));
+            maps.Add(typeof(short?), () => new PrimitiveMapper<short?>((f) => f.Value == null ? default(short?) : Convert.ToInt16(f.Value)));
+            maps.Add(typeof(int), () => new PrimitiveMapper<int>((f) => Convert.ToInt32(f.Value)));
+            maps.Add(typeof(int?), () => new PrimitiveMapper<int?>((f) => f.Value == null ? default(int?) : Convert.ToInt32(f.Value)));
+            maps.Add(typeof(long), () => new PrimitiveMapper<long>((f) => Convert.ToInt64(f.Value)));
+            maps.Add(typeof(long?), () => new PrimitiveMapper<long?>((f) => f.Value == null ? default(long?) : Convert.ToInt64(f.Value)));
+            maps.Add(typeof(double), () => new PrimitiveMapper<double>((f) => Convert.ToDouble(f.Value)));
+            maps.Add(typeof(double?), () => new PrimitiveMapper<double?>((f) => f.Value == null ? default(double?) : Convert.ToDouble(f.Value)));
+            maps.Add(typeof(decimal), () => new PrimitiveMapper<decimal>((f) => Convert.ToDecimal(f.Value)));
+            maps.Add(typeof(decimal?), () => new PrimitiveMapper<decimal?>((f) => f.Value == null ? default(decimal?) : Convert.ToDecimal(f.Value)));
+            maps.Add(typeof(DateTime), () => new PrimitiveMapper<DateTime>((f) => Convert.ToDateTime(f.Value)));
+            maps.Add(typeof(DateTime?), () => new PrimitiveMapper<DateTime?>((f) => f.Value == null ? default(DateTime?) : Convert.ToDateTime(f.Value)));
+            maps.Add(typeof(Guid), () => new PrimitiveMapper<Guid>((f) => (Guid)new GuidConverter().ConvertFrom(f.Value)));
+            maps.Add(typeof(Guid?), () => new PrimitiveMapper<Guid?>((f) => f.Value == null ? default(Guid?) : (Guid)(new GuidConverter().ConvertFrom(f.Value))));
+            maps.Add(typeof(string), () => new PrimitiveMapper<string>((f) => Convert.ToString(f.Value)));
             maps.Add(typeof(ExpandoObject), () => new ExpandoObjectMapper());
         }
 
@@ -110,19 +118,24 @@ namespace HatTrick.DbEx.Sql.Mapper
             maps[typeof(T)] = () => new EntityMapper<T>(mapFunction);
         }
 
-        public IMapper<T> CreateMapper<T>(EntityExpression<T> entity)
+        public IEntityMapper<T> CreateEntityMapper<T>(EntityExpression<T> entity)
             where T : class, IDbEntity
         {
             if (!maps.ContainsKey(typeof(T)))
             {
                 maps.Add(typeof(T), () => new EntityMapper<T>(entity.FillObject));
             }
-            return maps[typeof(T)]() as IMapper<T>;
+            return maps[typeof(T)]() as IEntityMapper<T>;
         }
 
-        public IMapper<T> CreateMapper<T>()
+        public IValueMapper<T> CreateValueMapper<T>()
         {
-            return maps[typeof(T)]() as IMapper<T>;
+            return maps[typeof(T)]() as IValueMapper<T>;
+        }
+
+        public IExpandoObjectMapper CreateExpandoObjectMapper()
+        {
+            return maps[typeof(ExpandoObject)]() as IExpandoObjectMapper;
         }
 
     }

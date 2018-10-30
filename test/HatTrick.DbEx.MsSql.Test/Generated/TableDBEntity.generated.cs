@@ -37,7 +37,7 @@ namespace Generated.dbo.Data
             #endregion
 
             #region constructors
-            public AddressEntity(SchemaExpression schema, string entityName) : base(schema, entityName, null)
+            public AddressEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
             {
 
             }
@@ -152,7 +152,7 @@ namespace Generated.dbo.Data
             #endregion
 
             #region constructors
-            public PersonEntity(SchemaExpression schema, string entityName) : base(schema, entityName, null)
+            public PersonEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
             {
 
             }
@@ -245,7 +245,7 @@ namespace Generated.dbo.Data
             #endregion
 
             #region constructors
-            public Person_AddressEntity(SchemaExpression schema, string entityName) : base(schema, entityName, null)
+            public Person_AddressEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
             {
 
             }
@@ -328,7 +328,7 @@ namespace Generated.dbo.Data
             #endregion
 
             #region constructors
-            public ProductEntity(SchemaExpression schema, string entityName) : base(schema, entityName, null)
+            public ProductEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
             {
 
             }
@@ -428,7 +428,7 @@ namespace Generated.dbo.Data
             #endregion
 
             #region constructors
-            public PurchaseEntity(SchemaExpression schema, string entityName) : base(schema, entityName, null)
+            public PurchaseEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
             {
 
             }

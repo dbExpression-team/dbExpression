@@ -42,13 +42,11 @@ namespace HatTrick.DbEx.Sql.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item2 == null)
+            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Value == null)
                 return value;
 
-            var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper<T>();
-            mapper.Map(value, queryResults.Rows[0]);
-
-            return value;
+            var mapper = DbExpressionConfiguration.MapperFactory.CreateValueMapper<T>();
+            return mapper.Map(queryResults.Rows[0].Fields[0]);
         }
 
         public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder) => builder.Execute((SqlConnection)null);
@@ -63,13 +61,9 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!queryResults.HasData())
                 return values;
 
-            var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper<T>();
+            var mapper = DbExpressionConfiguration.MapperFactory.CreateValueMapper<T>();
             foreach (var row in queryResults.Rows)
-            {
-                var value = default(T);
-                mapper.Map(value, row);
-                values.Add(value);
-            }
+                values.Add(mapper.Map(row.Fields[0]));
 
             return values;
         }
@@ -83,10 +77,10 @@ namespace HatTrick.DbEx.Sql.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item2 == null)
+            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Value == null)
                 return value;
 
-            var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper<ExpandoObject>();
+            var mapper = DbExpressionConfiguration.MapperFactory.CreateExpandoObjectMapper();
             mapper.Map(value, queryResults.Rows[0]);
 
             return (dynamic)value;
@@ -105,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!queryResults.HasData())
                 return values;
 
-            var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper<ExpandoObject>();
+            var mapper = DbExpressionConfiguration.MapperFactory.CreateExpandoObjectMapper();
             foreach (var row in queryResults.Rows)
             {
                 var value = new ExpandoObject();
@@ -127,11 +121,11 @@ namespace HatTrick.DbEx.Sql.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item2 == null)
+            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Value == null)
                 return value;
 
             value = new T();
-            var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper(expression.BaseEntity as EntityExpression<T>);
+            var mapper = DbExpressionConfiguration.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
             mapper.Map(value, queryResults.Rows[0]);
 
             return value;
@@ -153,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Builder
             if (!queryResults.HasData())
                 return values;
 
-            var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper(expression.BaseEntity as EntityExpression<T>);
+            var mapper = DbExpressionConfiguration.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
             foreach (var row in queryResults.Rows)
             {
                 var t = new T();

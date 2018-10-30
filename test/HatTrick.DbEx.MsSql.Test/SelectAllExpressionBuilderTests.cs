@@ -1,4 +1,4 @@
-﻿using Gednerated.DataService;
+﻿using Generated.DataService;
 using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;

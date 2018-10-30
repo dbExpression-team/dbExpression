@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     for (var i = 0; i < dr.FieldCount; i++)
                     {
                         var value = dr.GetValue(i);
-                        row.Fields.Add(i, (dr.GetName(i), value == DBNull.Value ? null : value));
+                        row.Fields.Add(i, new SqlStatementExecutionResultSet.Field(dr.GetName(i), value == DBNull.Value ? null : value));
                     }
                 }
                 dr.Close();
