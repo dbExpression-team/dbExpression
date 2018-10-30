@@ -1,7 +1,7 @@
 using System;
 using HatTrick.DbEx.Sql;
 
-namespace HatTrick.DbEx.MsSql.Test.dbo.Data
+namespace Generated.dbo.Data
 {
 	#region address
 	[Serializable]
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.MsSql.Test.dbo.Data
     }
 	#endregion
 }
-namespace HatTrick.DbEx.MsSql.Test.sec.Data
+namespace Generated.sec.Data
 {
 	#region person
 	[Serializable]

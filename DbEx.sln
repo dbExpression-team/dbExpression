@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E797F978-C42D-491C-B5A4-4DEADB7342A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.Sql.Test", "test\HatTrick.DbEx.Sql.Test\HatTrick.DbEx.Sql.Test.csproj", "{F55435B5-13AA-411B-815F-E9ABDD703F8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test", "test\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx", "src\HatTrick.DbEx\HatTrick.DbEx.csproj", "{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.Sql", "src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj", "{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql", "src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj", "{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F55435B5-13AA-411B-815F-E9ABDD703F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F55435B5-13AA-411B-815F-E9ABDD703F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F55435B5-13AA-411B-815F-E9ABDD703F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F55435B5-13AA-411B-815F-E9ABDD703F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F55435B5-13AA-411B-815F-E9ABDD703F8A} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
+		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}
+	EndGlobalSection
+EndGlobal

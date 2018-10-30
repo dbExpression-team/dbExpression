@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item3 == null)
+            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item2 == null)
                 return value;
 
             var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper<T>();
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item3 == null)
+            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item2 == null)
                 return value;
 
             var mapper = DbExpressionConfiguration.MapperFactory.CreateMapper<ExpandoObject>();
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.Sql.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item3 == null)
+            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Item2 == null)
                 return value;
 
             value = new T();

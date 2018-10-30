@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace HatTrick.DbEx.MsSql.Test
+namespace Generated.dbo.Data
 {
 	#region AddressType
 	public enum AddressType : int

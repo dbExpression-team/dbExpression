@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.SqlServer.BatchParserClient, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
@@ -44,6 +46,7 @@
     <Reference Include="Microsoft.SqlServer.Smo, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.SqlServer.SqlEnum, Version=14.100.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Data.dll</HintPath>
@@ -72,15 +75,15 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ExpressionBuilderTests.cs" />
     <Compile Include="Generated\DBEntityProvider.generated.cs" />
     <Compile Include="Generated\SqlDB.cs" />
     <Compile Include="Generated\TableData.generated.cs" />
     <Compile Include="Generated\TableDBEntity.generated.cs" />
     <Compile Include="Generated\TypeCode.generated.cs" />
-    <Compile Include="Generated\ViewData.generated.cs" />
-    <Compile Include="Generated\ViewDBEntity.generated.cs" />
     <Compile Include="Seeder.cs" />
-    <Compile Include="PersonTests.cs" />
+    <Compile Include="SelectAllExpressionBuilderTests.cs" />
+    <Compile Include="SelectExpressionBuilderTests.cs" />
     <Compile Include="UnitTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -96,6 +99,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj">
+      <Project>{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}</Project>
+      <Name>HatTrick.DbEx.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
       <Name>HatTrick.DbEx.Sql</Name>

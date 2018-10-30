@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace HatTrick.DbEx.MsSql.Test.dbo.DataService
+namespace Generated.dbo.Data
 {
 	using Data;
+    using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
 
     public static partial class dbo
@@ -96,19 +97,18 @@ namespace HatTrick.DbEx.MsSql.Test.dbo.DataService
 				expr &= _dateUpdated.Set(DateTime.UtcNow);
 				return expr;
 			}
-		
-			public void FillObject(Address address, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
-				address.Id = (int)values[0];
-				address.AddressType = (values[1] != DBNull.Value) ? (AddressType)values[1] : default(AddressType);
-				address.Line1 = (string)values[2];
-				address.Line2 = (values[3] != DBNull.Value) ? (string)values[3] : default(string);
-				address.City = (string)values[4];
-				address.State = (string)values[5];
-				address.Zip = (string)values[6];
-				address.DateCreated = DateTime.SpecifyKind((DateTime)values[7], DateTimeKind.Utc);
-				address.DateUpdated = DateTime.SpecifyKind((DateTime)values[8], DateTimeKind.Utc);
+
+            public override void FillObject(Address address, SqlStatementExecutionResultSet.Row values)
+            {
+				address.Id = values.GetValue<int>(0);
+				address.AddressType = values.GetValue<AddressType>(1);
+				address.Line1 = values.GetValue<string>(2);
+				address.Line2 = values.GetValue<string>(3);
+				address.City = values.GetValue<string>(4);
+				address.State = values.GetValue<string>(5);
+				address.Zip = values.GetValue<string>(6);
+				address.DateCreated = DateTime.SpecifyKind(values.GetValue<DateTime>(7), DateTimeKind.Utc);
+				address.DateUpdated = DateTime.SpecifyKind(values.GetValue<DateTime>(8), DateTimeKind.Utc);
 			}
 
 			protected bool IsPersistSafe(Address address, out List<string> validationMessages)
@@ -287,16 +287,15 @@ namespace HatTrick.DbEx.MsSql.Test.dbo.DataService
 				return expr;
 			}
 		
-			public void FillObject(Person_Address person_Address, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
-				person_Address.Id = (int)values[0];
-				person_Address.PersonId = (int)values[1];
-				person_Address.AddressId = (int)values[2];
-				person_Address.DateCreated = DateTime.SpecifyKind((DateTime)values[3], DateTimeKind.Utc);
-			}
+            public override void FillObject(Person_Address person_Address, SqlStatementExecutionResultSet.Row values)
+            {
+                person_Address.Id = values.GetValue<int>(0);
+                person_Address.PersonId = values.GetValue<int>(1);
+                person_Address.AddressId = values.GetValue<int>(2);
+                person_Address.DateCreated = DateTime.SpecifyKind(values.GetValue<DateTime>(3), DateTimeKind.Utc);
+            }
 
-			protected bool IsPersistSafe(Person_Address person_Address, out List<string> validationMessages)
+            protected bool IsPersistSafe(Person_Address person_Address, out List<string> validationMessages)
 			{
 				validationMessages = new List<string>();
 				if (person_Address.DateCreated == default(DateTime)) { validationMessages.Add("Date Created must contain a value."); }
@@ -383,19 +382,18 @@ namespace HatTrick.DbEx.MsSql.Test.dbo.DataService
 				return expr;
 			}
 		
-			public void FillObject(Product product, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
-				product.Id = (int)values[0];
-				product.Name = (string)values[1];
-				product.Description = (values[2] != DBNull.Value) ? (string)values[2] : default(string);
-				product.Price = (decimal)values[3];
-				product.Quantity = (int)values[4];
-				product.DateCreated = DateTime.SpecifyKind((DateTime)values[5], DateTimeKind.Utc);
-				product.DateUpdated = DateTime.SpecifyKind((DateTime)values[6], DateTimeKind.Utc);
-			}
+			public override void FillObject(Product product, SqlStatementExecutionResultSet.Row values)
+            {
+                product.Id = values.GetValue<int>(0);
+                product.Name = values.GetValue<string>(1);
+                product.Description = values.GetValue<string>(2);
+                product.Price = values.GetValue<decimal>(3);
+                product.Quantity = values.GetValue<int>(4);
+                product.DateCreated = DateTime.SpecifyKind(values.GetValue<DateTime>(5), DateTimeKind.Utc);
+                product.DateUpdated = DateTime.SpecifyKind(values.GetValue<DateTime>(6), DateTimeKind.Utc);
+            }
 
-			protected bool IsPersistSafe(Product product, out List<string> validationMessages)
+            protected bool IsPersistSafe(Product product, out List<string> validationMessages)
 			{
 				validationMessages = new List<string>();
 				if (product.Name == null) { validationMessages.Add("Name cannot be empty."); }
@@ -480,18 +478,16 @@ namespace HatTrick.DbEx.MsSql.Test.dbo.DataService
 				return expr;
 			}
 		
-			public void FillObject(Purchase purchase, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
-				purchase.Id = (int)values[0];
-				purchase.PersonId = (int)values[1];
-				purchase.ProductId = (int)values[2];
-				purchase.PurchasePrice = (decimal)values[3];
-				purchase.PurchaseDate = DateTime.SpecifyKind((DateTime)values[4], DateTimeKind.Utc);
-				purchase.DateCreated = DateTime.SpecifyKind((DateTime)values[5], DateTimeKind.Utc);
-			}
+            public override void FillObject(Purchase purchase, SqlStatementExecutionResultSet.Row values)
+            {
+                purchase.Id = values.GetValue<int>(0);
+                purchase.PersonId = values.GetValue<int>(1);
+                purchase.ProductId = values.GetValue<int>(2);
+                purchase.PurchasePrice = values.GetValue<decimal>(3);
+                purchase.DateCreated = DateTime.SpecifyKind(values.GetValue<DateTime>(4), DateTimeKind.Utc);
+            }
 
-			protected bool IsPersistSafe(Purchase purchase, out List<string> validationMessages)
+            protected bool IsPersistSafe(Purchase purchase, out List<string> validationMessages)
 			{
 				validationMessages = new List<string>();
 				if (purchase.PurchaseDate == default(DateTime)) { validationMessages.Add("Purchase Date must contain a value."); }
@@ -503,9 +499,10 @@ namespace HatTrick.DbEx.MsSql.Test.dbo.DataService
 		#endregion
 	}
 }
-namespace HatTrick.DbEx.MsSql.Test.sec.DataService
+namespace Generated.sec.Data
 {
 	using Data;
+    using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
 
     public static partial class sec
@@ -576,17 +573,15 @@ namespace HatTrick.DbEx.MsSql.Test.sec.DataService
 				return expr;
 			}
 		
-			public void FillObject(Person person, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
-				person.Id = (int)values[0];
-				person.PersonId = (long)values[1];
-				person.SSN = (string)values[2];
-				person.DateCreated = DateTime.SpecifyKind((DateTime)values[3], DateTimeKind.Utc);
-				person.DateUpdated = DateTime.SpecifyKind((DateTime)values[4], DateTimeKind.Utc);
-			}
+            public override void FillObject(Person person, SqlStatementExecutionResultSet.Row values)
+            {
+                person.Id = values.GetValue<int>(0);
+                person.PersonId = values.GetValue<int>(1);
+                person.SSN = values.GetValue<string>(2);
+                person.DateCreated = DateTime.SpecifyKind(values.GetValue<DateTime>(3), DateTimeKind.Utc);
+            }
 
-			protected bool IsPersistSafe(Person person, out List<string> validationMessages)
+            protected bool IsPersistSafe(Person person, out List<string> validationMessages)
 			{
 				validationMessages = new List<string>();
 				if (person.SSN == null) { validationMessages.Add("S S N cannot be empty."); }
