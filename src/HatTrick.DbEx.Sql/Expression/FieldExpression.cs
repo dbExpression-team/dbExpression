@@ -131,7 +131,22 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public override bool Equals(object obj) => base.Equals(obj);
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (!(obj is FieldExpression f))
+                return false;
+
+            if (string.Compare(f.Name, this.Name, true) != 0)
+                return false;
+
+            if (f.ParentEntity != this.ParentEntity)
+                return false;
+
+            return true;
+        }
         #endregion
 
         #region override get hash code

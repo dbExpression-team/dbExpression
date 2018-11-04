@@ -15,7 +15,21 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal FilterExpression(object leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        internal FilterExpression(FieldExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            LeftPart = (leftArg.GetType(), leftArg);
+            RightPart = (rightArg.GetType(), rightArg);
+            ExpressionOperator = expressionOperator;
+        }
+
+        internal FilterExpression(ArithmeticExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            LeftPart = (leftArg.GetType(), leftArg);
+            RightPart = (rightArg.GetType(), rightArg);
+            ExpressionOperator = expressionOperator;
+        }
+
+        internal FilterExpression(SelectExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
             LeftPart = (leftArg.GetType(), leftArg);
             RightPart = (rightArg.GetType(), rightArg);

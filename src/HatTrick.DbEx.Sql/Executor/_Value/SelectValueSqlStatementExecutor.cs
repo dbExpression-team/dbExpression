@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 connection.EnsureOpenConnection();
                 var val = cmd.ExecuteScalar();
-                @return.Rows.Add(new SqlStatementExecutionResultSet.Row((0, null, val == DBNull.Value ? null : val)));
+                @return.Rows.Add(new SqlStatementExecutionResultSet.Row(0, new SqlStatementExecutionResultSet.Field(null, val == DBNull.Value ? null : val)));
                 if (!connection.IsTransactional) { connection.Disconnect(); }
             }
             catch

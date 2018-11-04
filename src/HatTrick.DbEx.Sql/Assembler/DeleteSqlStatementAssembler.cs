@@ -22,14 +22,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             var appender = builder.CreateAppender();
 
             appender.Write("DELETE").LineBreak()
-                .IndentLevel++.Indent().Write(fromEntity).LineBreak()
-                .IndentLevel--.Indent().Write("FROM").LineBreak()
-                .IndentLevel++.Indent().Write(fromEntity).LineBreak()
+                .Indentation++.Indent().Write(fromEntity).LineBreak()
+                .Indentation--.Indent().Write("FROM").LineBreak()
+                .Indentation++.Indent().Write(fromEntity).LineBreak()
                 .Indent().Write(joins).LineBreak()
                 .IfNotEmpty(where, a =>
-                    a.IndentLevel--.Indent().Write("WHERE").LineBreak()
-                        .IndentLevel++.Indent().Write(where).LineBreak()
-                        .IndentLevel--
+                    a.Indentation--.Indent().Write("WHERE").LineBreak()
+                        .Indentation++.Indent().Write(where).LineBreak()
+                        .Indentation--
                 );
 
             return appender.ToString();

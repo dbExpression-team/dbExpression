@@ -12,28 +12,40 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public class Row
         {
-            public IList<(int, string, object)> Fields { get; } = new List<(int, string, object)>();
+            public IDictionary<int, Field> Fields { get; } = new Dictionary<int, Field>();
 
             public Row() { }
 
-            public Row((int, string, object) field)
+            public Row(int index, Field field)
             {
-                Fields.Add(field);
+                Fields.Add(index, field);
             }
 
             public Row(IList<(int, string, object)> fields)
             {
-                Fields = fields;
+                Fields = fields.ToDictionary(f => f.Item1, f => new Field(f.Item2, f.Item3));
             }
 
             public T GetValue<T>(int index)
             {
-                var field = Fields.FirstOrDefault(f => f.Item1 == index);
-                if (Equals(field, default((int, string, object))))
+                var field = Fields[index];
+                if (field == default)
                     throw new IndexOutOfRangeException();
-                if (Equals(field.Item3, default(T)))
-                    return default(T);
-                return (T)Convert.ChangeType(field.Item3, typeof(T));
+                if (field.Value == default)
+                    return default;
+                return (T)Convert.ChangeType(field.Value, typeof(T));
+            }
+        }
+
+        public class Field
+        {
+            public string Name { get; set; }
+            public object Value { get; set; }
+
+            public Field(string name, object value)
+            {
+                Name = name;
+                Value = value;
             }
         }
     }

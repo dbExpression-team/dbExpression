@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Mapper;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,6 +9,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         InsertExpressionSet GetInclusiveInsertExpression(T entity);
 
-        void FillObject(T entity, SqlStatementExecutionResultSet.Row values);
+        void FillObject(SqlStatementExecutionResultSet.Row data, T entity, IValueMapper mapper);
     }
 }

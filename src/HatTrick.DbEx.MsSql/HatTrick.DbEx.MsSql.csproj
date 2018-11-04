@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,6 +48,7 @@
     <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\StringValueTypeFormatter.cs" />
+    <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
     <Compile Include="Connection\MsSqlConnection.cs" />
     <Compile Include="Assembler\SelectAllMsSqlAssembler.cs" />
     <Compile Include="Builder\MsSqlExpressionBuilder{T,U,V}.cs" />

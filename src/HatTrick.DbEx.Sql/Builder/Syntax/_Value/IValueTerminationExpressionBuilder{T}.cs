@@ -3,7 +3,9 @@ using System.ComponentModel;
 
 namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
-    public interface IValueTerminationExpressionBuilder<T> : ITerminationExpressionBuilder
+    public interface IValueTerminationExpressionBuilder<T> :
+        IExpressionBuilder<T>,
+        ITerminationExpressionBuilder
     {
     }
 }

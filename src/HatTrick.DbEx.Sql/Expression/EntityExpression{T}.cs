@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Utility;
 using System;
 using System.Collections.Generic;
@@ -42,8 +43,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public abstract InsertExpressionSet GetInclusiveInsertExpression(T entity);
         #endregion
 
+        #region get inclusive assignment expression
+        public abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
+        #endregion
+
         #region fill object
-        public abstract void FillObject(T entity, SqlStatementExecutionResultSet.Row values);
+        public abstract void FillObject(SqlStatementExecutionResultSet.Row data, T entity, IValueMapper mapper);
         #endregion
     }
 }

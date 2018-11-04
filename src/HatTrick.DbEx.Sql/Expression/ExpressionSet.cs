@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public AssignmentExpressionSet Assign { get; set; }
 
-        public WhereExpressionSet Where { get; set; }
+        public FilterExpressionSet Where { get; set; }
 
         public JoinExpressionSet Joins { get; set; }
 
@@ -107,17 +107,17 @@ namespace HatTrick.DbEx.Sql.Expression
             return set;
         }
 
-        public static ExpressionSet operator &(ExpressionSet set, WhereExpression filterExpression)
+        public static ExpressionSet operator &(ExpressionSet set, FilterExpression filterExpression)
         {
             if (set != null)
             {
-                if (set.Where == null) { set.Where = new WhereExpressionSet(filterExpression); }
+                if (set.Where == null) { set.Where = new FilterExpressionSet(filterExpression); }
                 else { set.Where &= filterExpression; }
             }
             return set;
         }
 
-        public static ExpressionSet operator &(ExpressionSet set, WhereExpressionSet filterExpressionSet)
+        public static ExpressionSet operator &(ExpressionSet set, FilterExpressionSet filterExpressionSet)
         {
             if (set != null)
             {

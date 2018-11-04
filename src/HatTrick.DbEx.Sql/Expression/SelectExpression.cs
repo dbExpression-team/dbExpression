@@ -17,7 +17,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public SelectExpression(FieldExpression field)
         {
-            Expression = (typeof(FieldExpression), field);
+            //Expression = (typeof(FieldExpression), field);
+            Expression = (field.GetType(), field);
         }
 
         public SelectExpression(ArithmeticExpression arithmeticExpression)

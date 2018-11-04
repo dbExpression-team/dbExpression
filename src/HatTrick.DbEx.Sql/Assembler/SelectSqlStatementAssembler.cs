@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             string joins = expression.Joins == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
             string select = expression.Select == null ? string.Empty : builder.AssemblePart<SelectExpressionSet>(expression.Select, overrides);
-            string where = expression.Where == null ? string.Empty : builder.AssemblePart<WhereExpressionSet>(expression.Where, overrides);
+            string where = expression.Where == null ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
             string groupBy = expression.GroupBy == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.GroupBy, overrides);
             string having = expression.Having == null ? string.Empty : builder.AssemblePart<HavingExpression>(expression.Having, overrides);
             string orderBy = expression.OrderBy == null ? string.Empty : builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy, overrides);
@@ -53,25 +53,25 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             appender.Write("SELECT").LineBreak()
                 .IfNotEmpty(distinct, a => a.Indent().Write(distinct).LineBreak())
-                .IndentLevel++.Indent().Write(select).LineBreak()
-                .IndentLevel--.Indent().Write("FROM").LineBreak()
-                .IndentLevel++.Indent().Write(fromEntity).LineBreak()
+                .Indentation++.Indent().Write(select).LineBreak()
+                .Indentation--.Indent().Write("FROM").LineBreak()
+                .Indentation++.Indent().Write(fromEntity).LineBreak()
                 .Indent().Write(joins).LineBreak()
                 .IfNotEmpty(where, a =>
-                    a.IndentLevel--.Indent().Write("WHERE").LineBreak()
-                        .IndentLevel++.Indent().Write(where).LineBreak()
+                    a.Indentation--.Indent().Write("WHERE").LineBreak()
+                        .Indentation++.Indent().Write(where).LineBreak()
                 )
                 .IfNotEmpty(groupBy, a =>
-                    a.IndentLevel--.Indent().Write("GROUP BY").LineBreak()
-                        .IndentLevel++.Indent().Write(groupBy).LineBreak()
+                    a.Indentation--.Indent().Write("GROUP BY").LineBreak()
+                        .Indentation++.Indent().Write(groupBy).LineBreak()
                 )
                 .IfNotEmpty(having, a =>
-                    a.IndentLevel--.Indent().Write("HAVING").LineBreak()
-                        .IndentLevel++.Indent().Write(having).LineBreak()
+                    a.Indentation--.Indent().Write("HAVING").LineBreak()
+                        .Indentation++.Indent().Write(having).LineBreak()
                 )
                 .IfNotEmpty(orderBy, a =>
-                    a.IndentLevel--.Indent().Write("ORDER BY").LineBreak()
-                        .IndentLevel++.Indent().Write(orderBy).LineBreak()
+                    a.Indentation--.Indent().Write("ORDER BY").LineBreak()
+                        .Indentation++.Indent().Write(orderBy).LineBreak()
                 );
 
             return appender.ToString();

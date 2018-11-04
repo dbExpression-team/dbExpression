@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.1</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -91,7 +91,8 @@
     <Compile Include="Builder\JoinExpressionBuilder{T,U}.cs" />
     <Compile Include="Builder\JoinExpressionBuilder{T}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder.cs" />
-    <Compile Include="Builder\SqlExpressionBuilderExtensions.cs" />
+    <Compile Include="Configuration\DbExConfigurationBuilder.cs" />
+    <Compile Include="Extensions\Builder\SqlExpressionBuilderExtensions.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U,V}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T}.cs" />
@@ -140,6 +141,19 @@
     <Compile Include="Connection\SqlConnectionFactory.cs" />
     <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
     <Compile Include="Extensions\Assembler\EntityExpressionOverrideExtensions.cs" />
+    <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
+    <Compile Include="Mapper\EntityFactory.cs" />
+    <Compile Include="Mapper\EntityMapper{T}.cs" />
+    <Compile Include="Mapper\ExpandoObjectMapper.cs" />
+    <Compile Include="Mapper\IEntityFactory.cs" />
+    <Compile Include="Mapper\IEntityMapper{T}.cs" />
+    <Compile Include="Mapper\IExpandoObjectMapper.cs" />
+    <Compile Include="Mapper\IMapper.cs" />
+    <Compile Include="Mapper\IMapperFactory.cs" />
+    <Compile Include="Mapper\IValueMapper.cs" />
+    <Compile Include="Mapper\IValueMapper{T}.cs" />
+    <Compile Include="Mapper\PrimitiveMapper{T}.cs" />
+    <Compile Include="Mapper\ValueMapper.cs" />
     <Compile Include="SqlStatement.cs" />
     <Compile Include="Executor\SqlStatementExecutionResultSet.cs" />
     <Compile Include="Executor\UpdateSqlStatementExecutor.cs" />
@@ -157,8 +171,6 @@
     <Compile Include="Expression\SchemaExpression.cs" />
     <Compile Include="Expression\JoinOnExpression.cs" />
     <Compile Include="Expression\JoinOnExpressionSet.cs" />
-    <Compile Include="Expression\WhereExpression.cs" />
-    <Compile Include="Expression\WhereExpressionSet.cs" />
     <Compile Include="Expression\IAliasable.cs" />
     <Compile Include="Expression\IDbExpressionEntity{T}.cs" />
     <Compile Include="Assembler\IDbExpressionAssemblyPart.cs" />
@@ -204,7 +216,7 @@
     <Compile Include="Expression\IDbExpression.cs" />
     <Compile Include="I64BitIdentityDbEntity.cs" />
     <Compile Include="I32BitIdentityDbEntity.cs" />
-    <Compile Include="Mapper\FieldMapperFactory.cs" />
+    <Compile Include="Mapper\MapperFactory.cs" />
     <Compile Include="ObjectMap\SqlModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectMap\SchemaInfo\ColumnInfo.cs" />
