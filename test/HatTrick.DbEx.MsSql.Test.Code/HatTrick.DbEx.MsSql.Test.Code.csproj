@@ -98,10 +98,6 @@
     <Analyzer Include="..\..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj">
-      <Project>{8db886a6-1b1c-4fdf-874e-987516986b16}</Project>
-      <Name>HatTrick.DbEx.MsSql.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj">
       <Project>{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}</Project>
       <Name>HatTrick.DbEx.MsSql</Name>
@@ -109,6 +105,10 @@
     <ProjectReference Include="..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
       <Name>HatTrick.DbEx.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj">
+      <Project>{8db886a6-1b1c-4fdf-874e-987516986b16}</Project>
+      <Name>HatTrick.DbEx.MsSql.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

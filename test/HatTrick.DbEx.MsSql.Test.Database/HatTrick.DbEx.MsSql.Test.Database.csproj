@@ -95,10 +95,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj">
-      <Project>{8db886a6-1b1c-4fdf-874e-987516986b16}</Project>
-      <Name>HatTrick.DbEx.MsSql.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj">
       <Project>{578c7237-d1a1-40f2-8e1d-7a9b656bc6dc}</Project>
       <Name>HatTrick.DbEx.MsSql</Name>
@@ -106,6 +102,10 @@
     <ProjectReference Include="..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
       <Name>HatTrick.DbEx.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj">
+      <Project>{8db886a6-1b1c-4fdf-874e-987516986b16}</Project>
+      <Name>HatTrick.DbEx.MsSql.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +120,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Reset.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

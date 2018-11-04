@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test.Database", "test\HatTrick.DbEx.MsSql.Test.Database\HatTrick.DbEx.MsSql.Test.Database.csproj", "{3892AC25-4D66-48E7-A81F-C513FB65D570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test", "HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{8DB886A6-1B1C-4FDF-874E-987516986B16}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test", "test\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{8DB886A6-1B1C-4FDF-874E-987516986B16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
