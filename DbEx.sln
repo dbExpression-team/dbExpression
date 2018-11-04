@@ -7,13 +7,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E797F978-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.Sql.Test", "test\HatTrick.DbEx.Sql.Test\HatTrick.DbEx.Sql.Test.csproj", "{F55435B5-13AA-411B-815F-E9ABDD703F8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test", "test\HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test.Code", "test\HatTrick.DbEx.MsSql.Test.Code\HatTrick.DbEx.MsSql.Test.Code.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx", "src\HatTrick.DbEx\HatTrick.DbEx.csproj", "{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.Sql", "src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj", "{FAEE287E-A5BB-4893-8ABB-D285E7BC0CA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql", "src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj", "{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test.Database", "test\HatTrick.DbEx.MsSql.Test.Database\HatTrick.DbEx.MsSql.Test.Database.csproj", "{3892AC25-4D66-48E7-A81F-C513FB65D570}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HatTrick.DbEx.MsSql.Test", "HatTrick.DbEx.MsSql.Test\HatTrick.DbEx.MsSql.Test.csproj", "{8DB886A6-1B1C-4FDF-874E-987516986B16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,14 @@ Global
 		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{578C7237-D1A1-40F2-8E1D-7A9B656BC6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3892AC25-4D66-48E7-A81F-C513FB65D570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3892AC25-4D66-48E7-A81F-C513FB65D570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3892AC25-4D66-48E7-A81F-C513FB65D570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3892AC25-4D66-48E7-A81F-C513FB65D570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DB886A6-1B1C-4FDF-874E-987516986B16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB886A6-1B1C-4FDF-874E-987516986B16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB886A6-1B1C-4FDF-874E-987516986B16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB886A6-1B1C-4FDF-874E-987516986B16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +60,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F55435B5-13AA-411B-815F-E9ABDD703F8A} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
 		{2E3DF5C2-8A38-4A03-86D7-8D463C917E47} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
+		{3892AC25-4D66-48E7-A81F-C513FB65D570} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
+		{8DB886A6-1B1C-4FDF-874E-987516986B16} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}

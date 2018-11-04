@@ -2,7 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
-    public interface IListFromExpressionBuilder<T, U, V> : IExpressionBuilder<T>
+    public interface IListFromExpressionBuilder<T, U, V> : 
+        IExpressionBuilder<T>
         where U : class, IContinuationExpressionBuilder<T>
         where V : class, IContinuationExpressionBuilder<T, U>
     {

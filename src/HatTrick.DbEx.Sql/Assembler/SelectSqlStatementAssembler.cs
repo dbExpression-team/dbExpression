@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             string joins = expression.Joins == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
             string select = expression.Select == null ? string.Empty : builder.AssemblePart<SelectExpressionSet>(expression.Select, overrides);
-            string where = expression.Where == null ? string.Empty : builder.AssemblePart<WhereExpressionSet>(expression.Where, overrides);
+            string where = expression.Where == null ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
             string groupBy = expression.GroupBy == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.GroupBy, overrides);
             string having = expression.Having == null ? string.Empty : builder.AssemblePart<HavingExpression>(expression.Having, overrides);
             string orderBy = expression.OrderBy == null ? string.Empty : builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy, overrides);

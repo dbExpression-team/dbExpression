@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Extensions.Assembler
         {
             foreach (var x in selects.Expressions)
             {
-                if (x.Expression.Item1 == typeof(FieldExpression))
+                if (x.Expression.Item1.IsAssignableFrom(typeof(FieldExpression)))
                     @override.Aliases[((FieldExpression)x.Expression.Item2).ParentEntity] = alias;
             }
         }

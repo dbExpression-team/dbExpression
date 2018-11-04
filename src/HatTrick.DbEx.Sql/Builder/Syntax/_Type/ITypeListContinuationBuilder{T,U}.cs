@@ -5,8 +5,8 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
     public interface ITypeListContinuationBuilder<T,U> : ITypeListContinuationBuilder<T>, IContinuationExpressionBuilder<T,U>
         where U : class, IContinuationExpressionBuilder<T>
     {
-        ITypeListContinuationBuilder<T, U> Where(WhereExpression expression);
-        ITypeListContinuationBuilder<T, U> Where(WhereExpressionSet expression);
+        ITypeListContinuationBuilder<T, U> Where(FilterExpression expression);
+        ITypeListContinuationBuilder<T, U> Where(FilterExpressionSet expression);
         IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> InnerJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> LeftJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> RightJoin(EntityExpression entity);

@@ -2,10 +2,13 @@
 
 namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
-    public interface IDeleteContinuationExpressionBuilder : IContinuationExpressionBuilder, ITerminationExpressionBuilder
+    public interface IDeleteContinuationExpressionBuilder :
+        IExpressionBuilder,
+        IContinuationExpressionBuilder, 
+        ITerminationExpressionBuilder
     {
-        IDeleteContinuationExpressionBuilder Where(WhereExpression filter);
-        IDeleteContinuationExpressionBuilder Where(WhereExpressionSet filter);
+        IDeleteContinuationExpressionBuilder Where(FilterExpression filter);
+        IDeleteContinuationExpressionBuilder Where(FilterExpressionSet filter);
         IJoinExpressionBuilder<IDeleteContinuationExpressionBuilder> InnerJoin(EntityExpression joinOn);
         IJoinExpressionBuilder<IDeleteContinuationExpressionBuilder> LeftJoin(EntityExpression joinOn);
         IJoinExpressionBuilder<IDeleteContinuationExpressionBuilder> RightJoin(EntityExpression joinOn);

@@ -8,15 +8,21 @@ using System.Configuration;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public static class DbExpressionConfiguration
+    public static class DbExConfigurationSettings
     {
-        public static IList<ConnectionStringSettings> ConnectionStringSettings { get; set; } = new List<ConnectionStringSettings>();
-        public static ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
-        public static ISqlParameterBuilderFactory ParameterBuilderFactory { get; set; }
-        public static ISqlStatementExecutorFactory ExecutorFactory { get; set; }
-        public static ISqlConnectionFactory ConnectionFactory { get; set; }
-        public static IMapperFactory MapperFactory { get; set; }
+        public static DbExpressionConfiguration Settings = new DbExpressionConfiguration();
+    }
 
-        public static DbExpressionAssemblerConfiguration AssemblerConfiguration { get; set; } = new DbExpressionAssemblerConfiguration();
+    public class DbExpressionConfiguration
+    {
+        public IDictionary<string, ConnectionStringSettings> ConnectionStringSettings { get; set; } = new Dictionary<string,ConnectionStringSettings>();
+        public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
+        public ISqlParameterBuilderFactory ParameterBuilderFactory { get; set; }
+        public ISqlStatementExecutorFactory ExecutorFactory { get; set; }
+        public ISqlConnectionFactory ConnectionFactory { get; set; }
+        public IMapperFactory MapperFactory { get; set; }
+        public IEntityFactory EntityFactory { get; set; }
+
+        public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; set; } = new DbExpressionAssemblerConfiguration();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Utility;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region fill object
-        public abstract void FillObject(T entity, SqlStatementExecutionResultSet.Row values);
+        public abstract void FillObject(SqlStatementExecutionResultSet.Row data, T entity, IValueMapper mapper);
         #endregion
     }
 }

@@ -95,6 +95,9 @@ namespace HatTrick.DbEx.Sql.Expression
             if (string.Compare(entity.AliasName, this.AliasName, true) != 0)
                 return false;
 
+            if (entity.Schema != this.Schema)
+                return false;
+
             return base.Equals(obj);
         }
 

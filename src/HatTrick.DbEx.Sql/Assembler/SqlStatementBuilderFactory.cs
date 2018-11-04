@@ -70,8 +70,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAssemblers.Add(typeof(FieldExpression), () => new FieldAssembler());
             partAssemblers.Add(typeof(SelectExpression), () => new SelectClauseAssembler());
             partAssemblers.Add(typeof(SelectExpressionSet), () => new SelectClauseAssembler());
-            partAssemblers.Add(typeof(WhereExpression), () => new WhereClauseAssembler());
-            partAssemblers.Add(typeof(WhereExpressionSet), () => new WhereClauseAssembler());
+            partAssemblers.Add(typeof(FilterExpression), () => new WhereClauseAssembler());
+            partAssemblers.Add(typeof(FilterExpressionSet), () => new WhereClauseAssembler());
             partAssemblers.Add(typeof(JoinExpression), () => new JoinClauseAssembler());
             partAssemblers.Add(typeof(JoinExpressionSet), () => new JoinClauseAssembler());
             partAssemblers.Add(typeof(JoinOnExpression), () => new JoinOnClauseAssembler());

@@ -118,42 +118,42 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region where
-        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.Where(WhereExpression expression)
+        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.Where(FilterExpression expression)
         {
             return Where<T, U>(expression) as IValueContinuationExpressionBuilder<T, U>;
         }
 
-        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.Where(WhereExpressionSet expression)
+        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.Where(FilterExpressionSet expression)
         {
             return Where<T, U>(expression) as IValueContinuationExpressionBuilder<T, U>;
         }
 
-        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Where(WhereExpression expression)
+        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Where(FilterExpression expression)
         {
             return Where<T, U>(expression) as IValueListContinuationExpressionBuilder<T, U>;
         }
 
-        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Where(WhereExpressionSet expression)
+        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Where(FilterExpressionSet expression)
         {
             return Where<T, U>(expression) as IValueListContinuationExpressionBuilder<T, U>;
         }
 
-        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(WhereExpression expression)
+        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(FilterExpression expression)
         {
             return Where<T, U>(expression) as ITypeContinuationBuilder<T, U>;
         }
 
-        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(WhereExpressionSet expression)
+        ITypeContinuationBuilder<T, U> ITypeContinuationBuilder<T, U>.Where(FilterExpressionSet expression)
         {
             return Where<T, U>(expression) as ITypeContinuationBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(WhereExpression expression)
+        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(FilterExpression expression)
         {
             return Where<T, U>(expression) as ITypeListContinuationBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(WhereExpressionSet expression)
+        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(FilterExpressionSet expression)
         {
             return Where<T, U>(expression) as ITypeListContinuationBuilder<T, U>;
         }

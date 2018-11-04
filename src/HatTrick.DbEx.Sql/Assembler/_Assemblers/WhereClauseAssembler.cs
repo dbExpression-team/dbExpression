@@ -6,8 +6,8 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class WhereClauseAssembler :
-        IDbExpressionAssemblyPartAssembler<WhereExpressionSet>,
-        IDbExpressionAssemblyPartAssembler<WhereExpression>
+        IDbExpressionAssemblyPartAssembler<FilterExpressionSet>,
+        IDbExpressionAssemblyPartAssembler<FilterExpression>
     {
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
         private static IDictionary<ConditionalExpressionOperator, string> _conditionalOperatorMap;
@@ -17,13 +17,12 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
-            return expressionPart is WhereExpressionSet ?
-                AssemblePart((WhereExpressionSet)expressionPart, builder, overrides)
-                :
-                AssemblePart((WhereExpression)expressionPart, builder, overrides);
+            if (expressionPart is FilterExpressionSet set)
+                return AssemblePart(set, builder, overrides);
+            return AssemblePart((FilterExpression)expressionPart, builder, overrides);
         }
 
-        public string AssemblePart(WhereExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(FilterExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (ReferenceEquals(expressionPart, null))
             {
@@ -31,25 +30,25 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             string left = string.Empty;
-            if (!expressionPart.LeftPart.Equals(default))
+            if (expressionPart.LeftPart != default)
             {
                 left = builder.AssemblePart(expressionPart.LeftPart, overrides);
             }
-            string right = string.Empty;
-            if (!expressionPart.RightPart.Equals(default))
+            string right = null;
+            if (expressionPart.RightPart != default)
             {
                 right = builder.AssemblePart(expressionPart.RightPart, overrides);
             }
 
             return negate
                 (expressionPart.Negate, 
-                !string.IsNullOrWhiteSpace(left) 
+                right != null 
                     ? $"({left}{ConditionalOperatorMap[expressionPart.ConditionalOperator]}{right})"
-                    : right
+                    : left
             );
         }
 
-        public string AssemblePart(WhereExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public string AssemblePart(FilterExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             if (expressionPart is null)
             {
@@ -57,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             string left = builder.AssemblePart(expressionPart.LeftPart, overrides);
-            if (!expressionPart.RightPart.Equals(default))
+            if (expressionPart.RightPart != default)
             {
                 if (expressionPart.ExpressionOperator == FilterExpressionOperator.In)
                 {
@@ -67,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                     return $"{left} IS NULL"; //TODO: is this right? if the "in" list is empty is it a null comparison?
                 }
 
-                string right = typeof(IComparable).IsAssignableFrom(expressionPart.RightPart.Item1) ? 
+                string right = typeof(IComparable).IsAssignableFrom(expressionPart.RightPart.Item1) ?
                     builder.Parameters.Add(builder.FormatValueType(expressionPart.RightPart), expressionPart.RightPart.Item1).ParameterName
                     :
                     builder.AssemblePart(expressionPart.RightPart, overrides);
