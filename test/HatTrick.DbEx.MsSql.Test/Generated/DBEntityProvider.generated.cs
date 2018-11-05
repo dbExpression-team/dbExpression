@@ -23,6 +23,7 @@ namespace DataService
         private static volatile Person_AddressEntity _person_AddressEntity;
         private static volatile ProductEntity _productEntity;
         private static volatile PurchaseEntity _purchaseEntity;
+        private static volatile PersonTotalPurchasesViewEntity _personTotalPurchasesViewEntity;
         #endregion
 
         #region interface
@@ -31,6 +32,7 @@ namespace DataService
         public static Person_AddressEntity Person_Address => _person_AddressEntity;
         public static ProductEntity Product => _productEntity;
         public static PurchaseEntity Purchase => _purchaseEntity;
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView => _personTotalPurchasesViewEntity;
         #endregion
 
         #region constructors
@@ -42,6 +44,7 @@ namespace DataService
             _person_AddressEntity = new Person_AddressEntity(_schema, "Person_Address");
             _productEntity = new ProductEntity(_schema, "Product");
             _purchaseEntity = new PurchaseEntity(_schema, "Purchase");
+            _personTotalPurchasesViewEntity = new PersonTotalPurchasesViewEntity(_schema, "PersonTotalPurchasesView");
         }
         #endregion
     }
