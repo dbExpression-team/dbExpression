@@ -5,7 +5,10 @@ using System.Data;
 namespace DataService
 {
 	using Data;
+    using Data.dbo;
+    using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
+    using HatTrick.DbEx.Sql.Mapper;
 
     public static partial class dbo
 	{
@@ -47,8 +50,19 @@ namespace DataService
 			public void FillObject(PersonTotalPurchasesView personTotalPurchasesView, object[] values)
 			{
 				//if the column allows null, do the dbnull check, else just cast in..???
+                personTotalPurchasesView.TotalPurchases = mapper.Map<decimal>("PersonTotalPurchasesView.TotalPurchases", row.Fields[1]);
+			}
 				personTotalPurchasesView.Id = (int)values[0];
+            public override InsertExpressionSet GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
+            {
+                //return null?
+                throw new NotImplementedException();
+            }
 				personTotalPurchasesView.TotalPurchases = (values[1] != DBNull.Value) ? (decimal)values[1] : default(decimal?);
+            public override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView from, PersonTotalPurchasesView to)
+            {
+                //return null?
+                throw new NotImplementedException();
 			}
 			#endregion
 		}

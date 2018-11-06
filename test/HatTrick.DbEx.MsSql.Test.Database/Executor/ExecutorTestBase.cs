@@ -10,6 +10,11 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
 {
     public abstract class ExecutorTestBase : TestBase
     {
+        protected ExecutorTestBase()
+        {
+            ResetDatabase();
+        }
+
         public override DbExpressionConfiguration ConfigureForMsSqlVersion(int version)
         {
             switch (version)
@@ -25,6 +30,12 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
                     }
             }
             throw new NotImplementedException($"MsSql version {version} has not been implemented");
+        }
+
+        public void ResetDatabase()
+        {
+            var seeder = new Seeder(ConfigurationManager.ConnectionStrings["hattrick.dbex.mssql.test"]);
+            seeder.RunScript("data.sql");
         }
     }
 }
