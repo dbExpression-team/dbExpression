@@ -133,14 +133,15 @@ namespace DataService
 		}
 		#endregion
 		#region person
-		public partial class PersonEntity : EntityExpression
+		public partial class PersonEntity : EntityExpression<Person>
 		{
 			#region internals
 			private FieldExpression<int> _id;
 			private FieldExpression<string> _firstName;
 			private FieldExpression<string> _lastName;
 			private FieldExpression<DateTime> _birthDate;
-			private FieldExpression<DateTime> _dateCreated;
+            private FieldExpression<GenderType> _genderType;
+            private FieldExpression<DateTime> _dateCreated;
 			private FieldExpression<DateTime> _dateUpdated;
 			#endregion
 
@@ -149,7 +150,8 @@ namespace DataService
 			public FieldExpression<string> FirstName { get { return _firstName; } }
 			public FieldExpression<string> LastName { get { return _lastName; } }
 			public FieldExpression<DateTime> BirthDate { get { return _birthDate; } }
-			public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
+            public FieldExpression<GenderType> GenderType { get { return _genderType; } }
+            public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
 			public FieldExpression<DateTime> DateUpdated { get { return _dateUpdated; } }
             #endregion
 
@@ -164,7 +166,8 @@ namespace DataService
 				_firstName = new FieldExpression<string>(this, "FirstName", 20);
 				_lastName = new FieldExpression<string>(this, "LastName", 20);
 				_birthDate = new FieldExpression<DateTime>(this, "BirthDate", 8);
-				_dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
+                _genderType = new FieldExpression<GenderType>(this, "GenderType", 4);
+                _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
 				_dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
 			}
 			#endregion
@@ -177,44 +180,47 @@ namespace DataService
            		select &= _firstName;
            		select &= _lastName;
            		select &= _birthDate;
+                select &= _genderType;
            		select &= _dateCreated;
            		select &= _dateUpdated;
 				return select;
 			}
 
-			public InsertExpressionSet GetInclusiveInsertExpression(Person person)
+			public override InsertExpressionSet GetInclusiveInsertExpression(Person person)
 			{
 				InsertExpressionSet expr = null;
 				expr &= _firstName.Insert(person.FirstName);
 				expr &= _lastName.Insert(person.LastName);
 				expr &= _birthDate.Insert(person.BirthDate);
-				expr &= _dateCreated.Insert(person.DateCreated);
+                expr &= _genderType.Insert(person.GenderType);
+                expr &= _dateCreated.Insert(person.DateCreated);
 				expr &= _dateUpdated.Insert(person.DateUpdated);
 				return expr;
 			}
 
-			public AssignmentExpressionSet GetAssignmentExpression(Person from, Person to)
+			public override AssignmentExpressionSet GetAssignmentExpression(Person from, Person to)
 			{
 				AssignmentExpressionSet expr = null;
 				if (from.FirstName != to.FirstName) { expr &= _firstName.Set(to.FirstName); }
 				if (from.LastName != to.LastName) { expr &= _lastName.Set(to.LastName); }
 				if (from.BirthDate != to.BirthDate) { expr &= _birthDate.Set(to.BirthDate); }
-				expr &= _dateUpdated.Set(DateTime.UtcNow);
+                if (from.GenderType != to.GenderType) { expr &= _genderType.Set(to.GenderType); }
+                expr &= _dateUpdated.Set(DateTime.UtcNow);
 				return expr;
 			}
-		
-			public void FillObject(Person person, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
-				person.Id = (int)values[0];
-				person.FirstName = (string)values[1];
-				person.LastName = (string)values[2];
-				person.BirthDate = DateTime.SpecifyKind((DateTime)values[3], DateTimeKind.Utc);
-				person.DateCreated = DateTime.SpecifyKind((DateTime)values[4], DateTimeKind.Utc);
-				person.DateUpdated = DateTime.SpecifyKind((DateTime)values[5], DateTimeKind.Utc);
-			}
 
-			protected bool IsPersistSafe(Person person, out List<string> validationMessages)
+            public override void FillObject(SqlStatementExecutionResultSet.Row row, Person person, IValueMapper mapper)
+            {
+                person.Id = mapper.Map<int>("Person.Id", row.Fields[0]);
+                person.FirstName = mapper.Map<string>("Person.FirstName", row.Fields[1]);
+                person.LastName = mapper.Map<string>("Person.LastName", row.Fields[2]);
+                person.BirthDate = mapper.Map<DateTime>("Person.BirthDate", row.Fields[3]);
+                person.GenderType = (GenderType)mapper.Map<int>("Person.GenderType", row.Fields[4]);
+                person.DateCreated = mapper.Map<DateTime>("Person.DateCreated", row.Fields[5]);
+                person.DateUpdated = mapper.Map<DateTime>("Person.DateUpdated", row.Fields[6]);
+            }
+
+            protected bool IsPersistSafe(Person person, out List<string> validationMessages)
 			{
 				validationMessages = new List<string>();
 				if (person.FirstName == null) { validationMessages.Add("First Name cannot be empty."); }
@@ -222,7 +228,7 @@ namespace DataService
 				if (person.LastName == null) { validationMessages.Add("Last Name cannot be empty."); }
 				if (person.LastName != null && person.LastName.Length > 20) { validationMessages.Add("Last Name cannot be longer than 20 characters."); }
 				if (person.BirthDate == default(DateTime)) { validationMessages.Add("Birth Date must contain a value."); }
-				if (person.DateCreated == default(DateTime)) { validationMessages.Add("Date Created must contain a value."); }
+                if (person.DateCreated == default(DateTime)) { validationMessages.Add("Date Created must contain a value."); }
 				if (person.DateUpdated == default(DateTime)) { validationMessages.Add("Date Updated must contain a value."); }
 				return validationMessages.Count == 0;
 			}
@@ -311,20 +317,24 @@ namespace DataService
 		{
 			#region internals
 			private FieldExpression<int> _id;
-			private FieldExpression<string> _name;
+            private FieldExpression<ProductCategoryType> _productCategoryType;
+            private FieldExpression<string> _name;
 			private FieldExpression<string> _description;
 			private FieldExpression<decimal> _price;
-			private FieldExpression<int> _quantity;
+            private FieldExpression<decimal> _listPrice;
+            private FieldExpression<int> _quantity;
 			private FieldExpression<DateTime> _dateCreated;
 			private FieldExpression<DateTime> _dateUpdated;
 			#endregion
 
 			#region interface properties
 			public FieldExpression<int> Id { get { return _id; } }
-			public FieldExpression<string> Name { get { return _name; } }
+            public FieldExpression<ProductCategoryType> ProductCategoryType { get { return _productCategoryType; } }
+            public FieldExpression<string> Name { get { return _name; } }
 			public FieldExpression<string> Description { get { return _description; } }
 			public FieldExpression<decimal> Price { get { return _price; } }
-			public FieldExpression<int> Quantity { get { return _quantity; } }
+            public FieldExpression<decimal> ListPrice { get { return _listPrice; } }
+            public FieldExpression<int> Quantity { get { return _quantity; } }
 			public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
 			public FieldExpression<DateTime> DateUpdated { get { return _dateUpdated; } }
             #endregion
@@ -338,10 +348,12 @@ namespace DataService
             public ProductEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
 			{
 				_id = new FieldExpression<int>(this, "Id", 4);
-				_name = new FieldExpression<string>(this, "Name", 80);
+                _productCategoryType = new FieldExpression<ProductCategoryType>(this, "ProductCategoryType", 4);
+                _name = new FieldExpression<string>(this, "Name", 80);
 				_description = new FieldExpression<string>(this, "Description", 300);
 				_price = new FieldExpression<decimal>(this, "Price", 9);
-				_quantity = new FieldExpression<int>(this, "Quantity", 4);
+                _listPrice = new FieldExpression<decimal>(this, "ListPrice", 9);
+                _quantity = new FieldExpression<int>(this, "Quantity", 4);
 				_dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
 				_dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
 			}
@@ -352,10 +364,12 @@ namespace DataService
 			{
 				SelectExpressionSet select = null;
            		select &= _id;
-           		select &= _name;
+                select &= _productCategoryType;
+                select &= _name;
            		select &= _description;
            		select &= _price;
-           		select &= _quantity;
+                select &= _listPrice;
+                select &= _quantity;
            		select &= _dateCreated;
            		select &= _dateUpdated;
 				return select;
@@ -364,10 +378,12 @@ namespace DataService
 			public override InsertExpressionSet GetInclusiveInsertExpression(Product product)
 			{
 				InsertExpressionSet expr = null;
-				expr &= _name.Insert(product.Name);
+                expr &= _productCategoryType.Insert(product.ProductCategoryType);
+                expr &= _name.Insert(product.Name);
 				expr &= _description.Insert(product.Description);
 				expr &= _price.Insert(product.Price);
-				expr &= _quantity.Insert(product.Quantity);
+                expr &= _listPrice.Insert(product.ListPrice);
+                expr &= _quantity.Insert(product.Quantity);
 				expr &= _dateCreated.Insert(product.DateCreated);
 				expr &= _dateUpdated.Insert(product.DateUpdated);
 				return expr;
@@ -376,10 +392,12 @@ namespace DataService
 			public override AssignmentExpressionSet GetAssignmentExpression(Product from, Product to)
 			{
 				AssignmentExpressionSet expr = null;
-				if (from.Name != to.Name) { expr &= _name.Set(to.Name); }
+                if (from.ProductCategoryType != to.ProductCategoryType) { expr &= _productCategoryType.Set(to.ProductCategoryType); }
+                if (from.Name != to.Name) { expr &= _name.Set(to.Name); }
 				if (from.Description != to.Description) { expr &= _description.Set(to.Description); }
 				if (from.Price != to.Price) { expr &= _price.Set(to.Price); }
-				if (from.Quantity != to.Quantity) { expr &= _quantity.Set(to.Quantity); }
+                if (from.ListPrice != to.ListPrice) { expr &= _listPrice.Set(to.ListPrice); }
+                if (from.Quantity != to.Quantity) { expr &= _quantity.Set(to.Quantity); }
 				expr &= _dateUpdated.Set(DateTime.UtcNow);
 				return expr;
 			}
@@ -387,12 +405,14 @@ namespace DataService
 			public override void FillObject(SqlStatementExecutionResultSet.Row row, Product product, IValueMapper mapper)
             {
                 product.Id = mapper.Map<int>("Product.Id", row.Fields[0]);
-                product.Name = mapper.Map<string>("Product.Name", row.Fields[1]);
-                product.Description = mapper.Map<string>("Product.Description", row.Fields[2]);
-                product.Price = mapper.Map<decimal>("Product.Price", row.Fields[3]);
-                product.Quantity = mapper.Map<int>("Product.Quantity", row.Fields[4]);
-                product.DateCreated = mapper.Map<DateTime>("Product.DateCreated", row.Fields[5]);
-                product.DateUpdated = mapper.Map<DateTime>("Product.IdDateUpdted", row.Fields[6]);
+                product.ProductCategoryType = (ProductCategoryType)mapper.Map<int>("Product.ProductCategoryType", row.Fields[1]);
+                product.Name = mapper.Map<string>("Product.Name", row.Fields[2]);
+                product.Description = mapper.Map<string>("Product.Description", row.Fields[3]);
+                product.Price = mapper.Map<decimal>("Product.Price", row.Fields[4]);
+                product.ListPrice = mapper.Map<decimal>("Product.ListPrice", row.Fields[5]);
+                product.Quantity = mapper.Map<int>("Product.Quantity", row.Fields[6]);
+                product.DateCreated = mapper.Map<DateTime>("Product.DateCreated", row.Fields[7]);
+                product.DateUpdated = mapper.Map<DateTime>("Product.IdDateUpdted", row.Fields[8]);
             }
 
             protected bool IsPersistSafe(Product product, out List<string> validationMessages)
@@ -414,19 +434,21 @@ namespace DataService
 			#region internals
 			private FieldExpression<int> _id;
 			private FieldExpression<int> _personId;
-			private FieldExpression<int> _productId;
-			private FieldExpression<decimal> _purchasePrice;
+			private FieldExpression<decimal> _totalPurchaseAmount;
 			private FieldExpression<DateTime> _purchaseDate;
-			private FieldExpression<DateTime> _dateCreated;
-			#endregion
+            private FieldExpression<DateTime> _shipDate;
+            private FieldExpression<DateTime> _dateCreated;
+            private FieldExpression<DateTime> _dateUpdated;
+            #endregion
 
-			#region interface properties
-			public FieldExpression<int> Id { get { return _id; } }
+            #region interface properties
+            public FieldExpression<int> Id { get { return _id; } }
 			public FieldExpression<int> PersonId { get { return _personId; } }
-			public FieldExpression<int> ProductId { get { return _productId; } }
-			public FieldExpression<decimal> PurchasePrice { get { return _purchasePrice; } }
+			public FieldExpression<decimal> TotalPurchaseAmount { get { return _totalPurchaseAmount; } }
 			public FieldExpression<DateTime> PurchaseDate { get { return _purchaseDate; } }
-			public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
+            public FieldExpression<DateTime> ShipDate { get { return _shipDate; } }
+            public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
+            public FieldExpression<DateTime> DateUpdated { get { return _dateUpdated; } }
             #endregion
 
             #region constructors
@@ -438,56 +460,61 @@ namespace DataService
 			{
 				_id = new FieldExpression<int>(this, "Id", 4);
 				_personId = new FieldExpression<int>(this, "PersonId", 4);
-				_productId = new FieldExpression<int>(this, "ProductId", 4);
-				_purchasePrice = new FieldExpression<decimal>(this, "PurchasePrice", 9);
+				_totalPurchaseAmount = new FieldExpression<decimal>(this, "TotalPurchaseAmount", 9);
 				_purchaseDate = new FieldExpression<DateTime>(this, "PurchaseDate", 8);
-				_dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
-			}
-			#endregion
+                _shipDate = new FieldExpression<DateTime>(this, "ShipDate", 8);
+                _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
+                _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
+            }
+            #endregion
 
-			#region methods
-			
-			public override SelectExpressionSet GetInclusiveSelectExpression()
+            #region methods
+
+            public override SelectExpressionSet GetInclusiveSelectExpression()
 			{
 				SelectExpressionSet select = null;
            		select &= _id;
            		select &= _personId;
-           		select &= _productId;
-           		select &= _purchasePrice;
+           		select &= _totalPurchaseAmount;
            		select &= _purchaseDate;
-           		select &= _dateCreated;
-				return select;
+                select &= _shipDate;
+                select &= _dateCreated;
+                select &= _dateUpdated;
+                return select;
 			}
 
 			public override InsertExpressionSet GetInclusiveInsertExpression(Purchase purchase)
 			{
 				InsertExpressionSet expr = null;
 				expr &= _personId.Insert(purchase.PersonId);
-				expr &= _productId.Insert(purchase.ProductId);
-				expr &= _purchasePrice.Insert(purchase.PurchasePrice);
+				expr &= _totalPurchaseAmount.Insert(purchase.TotalPurchaseAmount);
 				expr &= _purchaseDate.Insert(purchase.PurchaseDate);
-				expr &= _dateCreated.Insert(purchase.DateCreated);
-				return expr;
+                expr &= _shipDate.Insert(purchase.ShipDate);
+                expr &= _dateCreated.Insert(purchase.DateCreated);
+                expr &= _dateUpdated.Insert(purchase.DateUpdated);
+                return expr;
 			}
 
 			public override AssignmentExpressionSet GetAssignmentExpression(Purchase from, Purchase to)
 			{
 				AssignmentExpressionSet expr = null;
 				if (from.PersonId != to.PersonId) { expr &= _personId.Set(to.PersonId); }
-				if (from.ProductId != to.ProductId) { expr &= _productId.Set(to.ProductId); }
-				if (from.PurchasePrice != to.PurchasePrice) { expr &= _purchasePrice.Set(to.PurchasePrice); }
+				if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= _totalPurchaseAmount.Set(to.TotalPurchaseAmount); }
 				if (from.PurchaseDate != to.PurchaseDate) { expr &= _purchaseDate.Set(to.PurchaseDate); }
-				return expr;
+                if (from.ShipDate != to.ShipDate) { expr &= _shipDate.Set(to.ShipDate); }
+                expr &= _dateUpdated.Set(DateTime.UtcNow);
+                return expr;
 			}
 		
             public override void FillObject(SqlStatementExecutionResultSet.Row row, Purchase purchase, IValueMapper mapper)
             {
                 purchase.Id = mapper.Map<int>("Purchase.Id", row.Fields[0]);
                 purchase.PersonId = mapper.Map<int>("Purchase.PersonId", row.Fields[1]);
-                purchase.ProductId = mapper.Map<int>("Purchase.ProductId", row.Fields[2]);
-                purchase.PurchasePrice = mapper.Map<decimal>("Purchase.PurchasePrice", row.Fields[3]);
-                purchase.PurchaseDate = mapper.Map<DateTime>("Purchase.PurchaseDate", row.Fields[4]);
+                purchase.TotalPurchaseAmount = mapper.Map<decimal>("Purchase.TotalPurchaseAmount", row.Fields[2]);
+                purchase.PurchaseDate = mapper.Map<DateTime>("Purchase.PurchaseDate", row.Fields[3]);
+                purchase.ShipDate = mapper.Map<DateTime>("Purchase.ShipDate", row.Fields[4]);
                 purchase.DateCreated = mapper.Map<DateTime>("Purchase.DateCreated", row.Fields[5]);
+                purchase.DateUpdated = mapper.Map<DateTime>("Purchase.DateUpdated", row.Fields[6]);
             }
 
             protected bool IsPersistSafe(Purchase purchase, out List<string> validationMessages)
@@ -499,8 +526,108 @@ namespace DataService
 			}
 			#endregion
 		}
-		#endregion
-	}
+        #endregion
+        #region purchase line
+        public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
+        {
+            #region internals
+            private FieldExpression<int> _id;
+            private FieldExpression<int> _purchaseId;
+            private FieldExpression<int> _productId;
+            private FieldExpression<decimal> _purchasePrice;
+            private FieldExpression<int> _quantity;
+            private FieldExpression<DateTime> _dateCreated;
+            private FieldExpression<DateTime> _dateUpdated;
+            #endregion
+
+            #region interface properties
+            public FieldExpression<int> Id { get { return _id; } }
+            public FieldExpression<int> PurchaseId { get { return _purchaseId; } }
+            public FieldExpression<int> ProductId { get { return _productId; } }
+            public FieldExpression<decimal> PurchasePrice { get { return _purchasePrice; } }
+            public FieldExpression<int> Quantity { get { return _quantity; } }
+            public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
+            public FieldExpression<DateTime> DateUpdated { get { return _dateUpdated; } }
+            #endregion
+
+            #region constructors
+            public PurchaseLineEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
+            {
+
+            }
+            public PurchaseLineEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            {
+                _id = new FieldExpression<int>(this, "Id", 4);
+                _purchaseId = new FieldExpression<int>(this, "Purchase", 4);
+                _productId = new FieldExpression<int>(this, "ProductId", 4);
+                _purchasePrice = new FieldExpression<decimal>(this, "PurchasePrice", 9);
+                _quantity = new FieldExpression<int>(this, "Quantity", 4);
+                _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
+                _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
+            }
+            #endregion
+
+            #region methods
+
+            public override SelectExpressionSet GetInclusiveSelectExpression()
+            {
+                SelectExpressionSet select = null;
+                select &= _id;
+                select &= _purchaseId;
+                select &= _productId;
+                select &= _purchasePrice;
+                select &= _quantity;
+                select &= _dateCreated;
+                select &= _dateUpdated;
+                return select;
+            }
+
+            public override InsertExpressionSet GetInclusiveInsertExpression(PurchaseLine purchaseLine)
+            {
+                InsertExpressionSet expr = null;
+                expr &= _purchaseId.Insert(purchaseLine.PurchaseId);
+                expr &= _productId.Insert(purchaseLine.ProductId);
+                expr &= _purchasePrice.Insert(purchaseLine.PurchasePrice);
+                expr &= _quantity.Insert(purchaseLine.Quantity);
+                expr &= _dateCreated.Insert(purchaseLine.DateCreated);
+                expr &= _dateUpdated.Insert(purchaseLine.DateUpdated);
+                return expr;
+            }
+
+            public override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine from, PurchaseLine to)
+            {
+                AssignmentExpressionSet expr = null;
+                if (from.PurchaseId != to.PurchaseId) { expr &= _purchaseId.Set(to.PurchaseId); }
+                if (from.ProductId != to.ProductId) { expr &= _productId.Set(to.ProductId); }
+                if (from.PurchasePrice != to.PurchasePrice) { expr &= _purchasePrice.Set(to.PurchasePrice); }
+                if (from.Quantity != to.Quantity) { expr &= _quantity.Set(to.Quantity); }
+                if (from.DateCreated != to.DateCreated) { expr &= _dateCreated.Set(to.DateCreated); }
+                if (from.DateUpdated != to.DateUpdated) { expr &= _dateUpdated.Set(to.DateUpdated); }
+                return expr;
+            }
+
+            public override void FillObject(SqlStatementExecutionResultSet.Row row, PurchaseLine purchaseLine, IValueMapper mapper)
+            {
+                purchaseLine.Id = mapper.Map<int>("Purchase.Id", row.Fields[0]);
+                purchaseLine.PurchaseId = mapper.Map<int>("Purchase.PurchaseId", row.Fields[1]);
+                purchaseLine.ProductId = mapper.Map<int>("Purchase.ProductId", row.Fields[2]);
+                purchaseLine.PurchasePrice = mapper.Map<decimal>("Purchase.PurchasePrice", row.Fields[3]);
+                purchaseLine.Quantity = mapper.Map<int>("Purchase.Quantity", row.Fields[4]);
+                purchaseLine.DateCreated = mapper.Map<DateTime>("Purchase.DateCreated", row.Fields[5]);
+                purchaseLine.DateUpdated = mapper.Map<DateTime>("Purchase.DateUpdated", row.Fields[6]);
+            }
+
+            protected bool IsPersistSafe(Purchase purchase, out List<string> validationMessages)
+            {
+                validationMessages = new List<string>();
+                if (purchase.PurchaseDate == default(DateTime)) { validationMessages.Add("Purchase Date must contain a value."); }
+                if (purchase.DateCreated == default(DateTime)) { validationMessages.Add("Date Created must contain a value."); }
+                return validationMessages.Count == 0;
+            }
+            #endregion
+        }
+        #endregion
+    }
 }
 namespace DataService
 {

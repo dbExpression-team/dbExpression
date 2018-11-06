@@ -13,7 +13,7 @@ namespace DataService
     public static partial class dbo
 	{
 		#region person total purchases view
-		public partial class PersonTotalPurchasesViewEntity : EntityExpression
+		public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
 		{
 			#region internals
 			private FieldExpression<int> _id;
@@ -47,18 +47,18 @@ namespace DataService
 				return select;
 			}
 
-			public void FillObject(PersonTotalPurchasesView personTotalPurchasesView, object[] values)
-			{
-				//if the column allows null, do the dbnull check, else just cast in..???
+            public override void FillObject(SqlStatementExecutionResultSet.Row row, PersonTotalPurchasesView personTotalPurchasesView, IValueMapper mapper)
+            {
+                personTotalPurchasesView.Id = mapper.Map<int>("PersonTotalPurchasesView.Id", row.Fields[0]);
                 personTotalPurchasesView.TotalPurchases = mapper.Map<decimal>("PersonTotalPurchasesView.TotalPurchases", row.Fields[1]);
-			}
-				personTotalPurchasesView.Id = (int)values[0];
+            }
+
             public override InsertExpressionSet GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
             {
                 //return null?
                 throw new NotImplementedException();
             }
-				personTotalPurchasesView.TotalPurchases = (values[1] != DBNull.Value) ? (decimal)values[1] : default(decimal?);
+
             public override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView from, PersonTotalPurchasesView to)
             {
                 //return null?

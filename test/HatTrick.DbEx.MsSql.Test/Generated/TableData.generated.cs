@@ -36,6 +36,7 @@ namespace Data.dbo
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
+        public GenderType GenderType { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
 		#endregion
@@ -73,9 +74,11 @@ namespace Data.dbo
     {
 		#region interface
         public int Id { get; set; }
+        public ProductCategoryType ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+        public decimal ListPrice { get; set; }
         public int Quantity { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
@@ -96,20 +99,43 @@ namespace Data.dbo
 		#region interface
         public int Id { get; set; }
         public int PersonId { get; set; }
-        public int ProductId { get; set; }
-        public decimal PurchasePrice { get; set; }
+        public decimal TotalPurchaseAmount { get; set; }
         public DateTime PurchaseDate { get; set; }
+        public DateTime ShipDate { get; set; }
         public DateTime DateCreated { get; set; }
-		#endregion
+        public DateTime DateUpdated { get; set; }
+        #endregion
 
-		#region constructor
-		public Purchase()
+        #region constructor
+        public Purchase()
         {
             
         }
 		#endregion
     }
-	#endregion
+    #endregion
+    #region purchase
+    [Serializable]
+    public partial class PurchaseLine : I32BitIdentityDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public int PurchaseId { get; set; }
+        public int ProductId { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public int Quantity { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public PurchaseLine()
+        {
+
+        }
+        #endregion
+    }
+    #endregion
 }
 namespace Data.sec
 {
