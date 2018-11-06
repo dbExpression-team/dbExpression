@@ -13,5 +13,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         DbParameter Add(object value);
         DbParameter Add(object value, Type valueType);
         DbParameter Add(object value, Type valueType, int? size);
+        DbParameter Add<T>(T value) where T : IComparable;
+        DbParameter Add<T>(T value, int? size) where T : IComparable;
     }
 }

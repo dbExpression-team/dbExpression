@@ -45,6 +45,7 @@
     <Reference Include="FluentAssertions, Version=5.4.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.5.4.2\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.SqlServer.BatchParserClient">
       <HintPath>C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Tasks\Microsoft.SqlServer.BatchParserClient.dll</HintPath>
     </Reference>

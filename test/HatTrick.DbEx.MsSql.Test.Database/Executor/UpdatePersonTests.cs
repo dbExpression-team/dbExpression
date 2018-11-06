@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
     {
         [Theory]
         [InlineData(2014)]
-        public void Can_a_persons_firstname_update(int version)
+        public void Can_person_with_id_1_update_firstname(int version)
         {
             //given
             ConfigureForMsSqlVersion(version);

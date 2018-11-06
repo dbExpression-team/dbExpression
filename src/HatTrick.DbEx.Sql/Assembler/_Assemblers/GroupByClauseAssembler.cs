@@ -12,7 +12,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             => expressionPart == null ? string.Empty : string.Join(", ", expressionPart.Expressions.Where(g => !(g is null)).Select(g => AssemblePart(g, builder, overrides)));
 
         public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => AssemblePart(expressionPart as GroupByExpressionSet, builder, overrides);
+            => expressionPart is GroupByExpression ?
+            AssemblePart(expressionPart as GroupByExpression, builder, overrides)
+            : AssemblePart(expressionPart as GroupByExpressionSet, builder, overrides);
 
         public string AssemblePart(GroupByExpression expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {

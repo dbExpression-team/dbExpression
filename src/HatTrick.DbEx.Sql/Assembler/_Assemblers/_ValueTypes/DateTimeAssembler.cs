@@ -8,6 +8,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             => AssemblePart((DateTime)expressionPart, builder, overrides);
 
         public string AssemblePart(DateTime expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => builder.Parameters.Add(expressionPart, typeof(DateTime)).ParameterName;
+            => builder.Parameters.Add(expressionPart).ParameterName;
     }
 }

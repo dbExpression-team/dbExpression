@@ -28,6 +28,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #region conditional & operator
         public static HavingExpression operator &(HavingExpression a, HavingExpression b)
         {
+            if (a?.Expression == default)
+            {
+                b.Expression = (typeof(FilterExpression), b.Expression.Item2);
+                return b;
+            }
             if (a.Expression.Item1 == typeof(FilterExpression) && b.Expression.Item1 == typeof(FilterExpression))
             {
                 var c = a.Expression.Item2 as FilterExpression;

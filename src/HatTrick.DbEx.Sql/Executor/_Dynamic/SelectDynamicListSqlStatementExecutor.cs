@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Executor
             for (int i = 0; i < @count; i++)
             {
                 object value = dr.GetValue(i);
-                columns[i] = ((i, dr.GetName(i), value == DBNull.Value ? null : value));
+                columns.Add((i, dr.GetName(i), value == DBNull.Value ? null : value));
             }
 
             return columns;

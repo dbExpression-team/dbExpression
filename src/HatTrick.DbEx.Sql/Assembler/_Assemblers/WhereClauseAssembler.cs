@@ -66,10 +66,12 @@ namespace HatTrick.DbEx.Sql.Assembler
                     return $"{left} IS NULL"; //TODO: is this right? if the "in" list is empty is it a null comparison?
                 }
 
-                string right = typeof(IComparable).IsAssignableFrom(expressionPart.RightPart.Item1) ?
-                    builder.Parameters.Add(builder.FormatValueType(expressionPart.RightPart), expressionPart.RightPart.Item1).ParameterName
-                    :
-                    builder.AssemblePart(expressionPart.RightPart, overrides);
+                string right = builder.AssemblePart(expressionPart.RightPart, overrides);
+
+                //string right = typeof(IComparable).IsAssignableFrom(expressionPart.RightPart.Item1) ?
+                //    builder.Parameters.Add(builder.FormatValueType(expressionPart.RightPart), expressionPart.RightPart.Item1).ParameterName
+                //    :
+                //    builder.AssemblePart(expressionPart.RightPart, overrides);
 
                 if (!string.IsNullOrWhiteSpace(right))
                     return negate(expressionPart.Negate, $"{left}{FilterOperatorMap[expressionPart.ExpressionOperator]}{right}");

@@ -8,6 +8,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             => AssemblePart((Enum)expressionPart, builder, overrides);
 
         public string AssemblePart(Enum expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => builder.Parameters.Add(Convert.ToInt32(expressionPart), typeof(int)).ParameterName;
+            => builder.Parameters.Add(Convert.ToInt32(expressionPart)).ParameterName;
     }
 }

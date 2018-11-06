@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         IDbExpressionAssemblyPartAssembler<JoinExpression>
     {
         public string AssemblePart(JoinExpressionSet expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => expressionPart == null ? string.Empty : string.Join(", ", expressionPart.Expressions.Select(j => AssemblePart(j, builder, overrides)));
+            => expressionPart == null ? string.Empty : string.Join(" ", expressionPart.Expressions.Select(j => AssemblePart(j, builder, overrides)));
 
         public string AssemblePart(object expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
             => AssemblePart(expressionPart as JoinExpressionSet, builder, overrides);

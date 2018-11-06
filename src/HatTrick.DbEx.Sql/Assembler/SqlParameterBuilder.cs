@@ -22,6 +22,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         public virtual DbParameter Add(object value) => Add(value, value.GetType(), null);
         public virtual DbParameter Add(object value, Type valueType) => Add(value, valueType, null);
         public abstract DbParameter Add(object value, Type valueType, int? size);
+        public virtual DbParameter Add<T>(T value) where T : IComparable => Add(value, typeof(T), null);
+        public virtual DbParameter Add<T>(T value, int? size) where T : IComparable => Add(value, typeof(T), size);
         #endregion
     }
 }

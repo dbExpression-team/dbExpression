@@ -62,6 +62,7 @@
     <Compile Include="Assembler\UpdateSqlStatementAssembler.cs" />
     <Compile Include="Assembler\InsertSqlStatementAssembler.cs" />
     <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
+    <Compile Include="Assembler\EnumValueTypeFormatter.cs" />
     <Compile Include="Assembler\ValueTypeFormatter.cs" />
     <Compile Include="Assembler\_Assemblers\AggregateFunctionAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\ArithmeticAssembler.cs" />
@@ -85,6 +86,12 @@
     <Compile Include="Assembler\SqlParameterBuilder.cs" />
     <Compile Include="Assembler\_Assemblers\_ValueTypes\DateTimeAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\_ValueTypes\EnumAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\ByteAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\BooleanAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\Int16Assembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\DecimalAssembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\Int64Assembler.cs" />
+    <Compile Include="Assembler\_Assemblers\_ValueTypes\Int32Assembler.cs" />
     <Compile Include="Assembler\_Assemblers\_ValueTypes\GuidAssembler.cs" />
     <Compile Include="Assembler\_Assemblers\_ValueTypes\StringAssembler.cs" />
     <Compile Include="Attribute\ExpressionOperatorAttribute.cs" />

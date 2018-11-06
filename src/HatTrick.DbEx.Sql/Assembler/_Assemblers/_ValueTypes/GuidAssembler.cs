@@ -8,6 +8,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             => AssemblePart((Guid)expressionPart, builder, overrides);
 
         public string AssemblePart(Guid expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-            => builder.Parameters.Add(expressionPart, typeof(Guid)).ParameterName;
+            => builder.Parameters.Add(expressionPart).ParameterName;
     }
 }

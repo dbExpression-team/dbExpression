@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public string AssemblePart(string expressionPart, ISqlStatementBuilder builder, AssemblerOverrides overrides)
         {
             var @fixed = builder.FormatValueType<string>(expressionPart);
-            return builder.Parameters.Add(@fixed, typeof(string), @fixed.Length).ParameterName;
+            return builder.Parameters.Add(@fixed, @fixed.Length).ParameterName;
         }
     }
 }
