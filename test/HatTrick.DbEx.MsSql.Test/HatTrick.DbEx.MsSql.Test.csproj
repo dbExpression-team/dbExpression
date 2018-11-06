@@ -67,6 +67,8 @@
     <Compile Include="Generated\DBEntityProvider.generated.cs" />
     <Compile Include="Generated\TableData.generated.cs" />
     <Compile Include="Generated\TableDBEntity.generated.cs" />
+    <Compile Include="Generated\ViewData.generated.cs" />
+    <Compile Include="Generated\ViewDBEntity.generated.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="_TypeCode\AddressType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
