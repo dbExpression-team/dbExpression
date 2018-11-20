@@ -16,6 +16,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
+        protected EntityExpression(EntityExpressionMetadata metadata) : base(metadata)
+        {
+
+        }
+
         public EntityExpression(SchemaExpression schema, string name) : this(schema, name, null)
         {
         }
@@ -29,7 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         public EntityExpression<T> Correlate(string name)
         {
             var clone = CloneUtility.DeepCopy(this);
-            clone.AliasName = name;
+            //TODO: do we need to support correlate?
+            //clone.AliasName = name;
             clone.IsCorrelated = true;
             return clone;
         }

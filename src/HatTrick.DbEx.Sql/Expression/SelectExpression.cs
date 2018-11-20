@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class SelectExpression : DbExpression, IDbExpressionSelectClausePart, IDbExpression, IAliasable
+    public class SelectExpression : DbExpression, IDbExpressionSelectClausePart, IDbExpression, IAliasable, IAssemblyPart
     {
         #region internals
         private string _alias;
@@ -17,7 +18,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public SelectExpression(FieldExpression field)
         {
-            //Expression = (typeof(FieldExpression), field);
             Expression = (field.GetType(), field);
         }
 

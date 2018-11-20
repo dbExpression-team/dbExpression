@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinExpression : DbExpression
+    public class JoinExpression : DbExpression, IAssemblyPart
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }

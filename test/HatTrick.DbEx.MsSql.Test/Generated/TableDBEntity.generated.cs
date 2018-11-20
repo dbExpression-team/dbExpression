@@ -8,6 +8,7 @@ namespace DataService
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
+    using HatTrick.DbEx.Utility;
 
     public static partial class dbo
     {
@@ -39,11 +40,7 @@ namespace DataService
             #endregion
 
             #region constructors
-            public AddressEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-            public AddressEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private AddressEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
                 _addressType = new FieldExpression<AddressType>(this, "AddressType", 4);
@@ -53,11 +50,28 @@ namespace DataService
                 _state = new FieldExpression<string>(this, "State", 2);
                 _zip = new FieldExpression<string>(this, "Zip", 10);
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
-                _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
+                _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);             
+            }
+
+            public AddressEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+
+            public AddressEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
             }
             #endregion
 
             #region methods
+            public AddressEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new AddressEntity(newMeta);
+            }
+
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {
                 SelectExpressionSet select = null;
@@ -156,11 +170,7 @@ namespace DataService
             #endregion
 
             #region constructors
-            public PersonEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-            public PersonEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private PersonEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
                 _firstName = new FieldExpression<string>(this, "FirstName", 20);
@@ -170,9 +180,25 @@ namespace DataService
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
                 _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
             }
+
+            public PersonEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+            public PersonEntity(SchemaExpression schema, string entityName, string aliasName) : base(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
+            }
             #endregion
 
             #region methods
+            public PersonEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new PersonEntity(newMeta);
+            }
+
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {
                 SelectExpressionSet select = null;
@@ -253,20 +279,31 @@ namespace DataService
             #endregion
 
             #region constructors
-            public Person_AddressEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-            public Person_AddressEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private Person_AddressEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
                 _personId = new FieldExpression<int>(this, "PersonId", 4);
                 _addressId = new FieldExpression<int>(this, "AddressId", 4);
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
             }
+
+            public Person_AddressEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+            public Person_AddressEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
+            }
             #endregion
 
             #region methods
+            public Person_AddressEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new Person_AddressEntity(newMeta);
+            }
 
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {
@@ -340,12 +377,7 @@ namespace DataService
             #endregion
 
             #region constructors
-            public ProductEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-
-            public ProductEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private ProductEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
                 _productCategoryType = new FieldExpression<ProductCategoryType>(this, "ProductCategoryType", 4);
@@ -357,9 +389,26 @@ namespace DataService
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
                 _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
             }
+
+            public ProductEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+
+            public ProductEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
+            }
             #endregion
 
             #region methods
+            public ProductEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new ProductEntity(newMeta);
+            }
+
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {
                 SelectExpressionSet select = null;
@@ -452,11 +501,7 @@ namespace DataService
             #endregion
 
             #region constructors
-            public PurchaseEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-            public PurchaseEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private PurchaseEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
                 _personId = new FieldExpression<int>(this, "PersonId", 4);
@@ -466,9 +511,24 @@ namespace DataService
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
                 _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
             }
+
+            public PurchaseEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+            public PurchaseEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
+            }
             #endregion
 
             #region methods
+            public PurchaseEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new PurchaseEntity(newMeta);
+            }
 
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {
@@ -551,23 +611,34 @@ namespace DataService
             #endregion
 
             #region constructors
-            public PurchaseLineEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-            public PurchaseLineEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private PurchaseLineEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
-                _purchaseId = new FieldExpression<int>(this, "Purchase", 4);
+                _purchaseId = new FieldExpression<int>(this, "PurchaseId", 4);
                 _productId = new FieldExpression<int>(this, "ProductId", 4);
                 _purchasePrice = new FieldExpression<decimal>(this, "PurchasePrice", 9);
                 _quantity = new FieldExpression<int>(this, "Quantity", 4);
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
                 _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
             }
+
+            public PurchaseLineEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+            public PurchaseLineEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
+            }
             #endregion
 
             #region methods
+            public PurchaseLineEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new PurchaseLineEntity(newMeta);
+            }
 
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {
@@ -635,6 +706,7 @@ namespace DataService
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
+    using HatTrick.DbEx.Utility;
 
     public static partial class sec
     {
@@ -658,11 +730,7 @@ namespace DataService
             #endregion
 
             #region constructors
-            public PersonEntity(SchemaExpression schema, string entityName) : this(schema, entityName, null)
-            {
-
-            }
-            public PersonEntity(SchemaExpression schema, string entityName, string aliasName) : base(schema, entityName, aliasName)
+            private PersonEntity(EntityExpressionMetadata metadata) : base(metadata)
             {
                 _id = new FieldExpression<int>(this, "Id", 4);
                 _personId = new FieldExpression<long>(this, "PersonId", 8);
@@ -670,9 +738,24 @@ namespace DataService
                 _dateCreated = new FieldExpression<DateTime>(this, "DateCreated", 8);
                 _dateUpdated = new FieldExpression<DateTime>(this, "DateUpdated", 8);
             }
+
+            public PersonEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+            {
+
+            }
+            public PersonEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+            {
+            }
             #endregion
 
             #region methods
+            public PersonEntity As(string name)
+            {
+                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+                var newMeta = CloneUtility.DeepCopy(meta);
+                newMeta.AliasName = name;
+                return new PersonEntity(newMeta);
+            }
 
             public override SelectExpressionSet GetInclusiveSelectExpression()
             {

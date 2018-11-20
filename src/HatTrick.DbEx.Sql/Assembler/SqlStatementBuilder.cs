@@ -1,42 +1,50 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SqlStatementBuilder : ISqlStatementBuilder
+    public class SqlStatementBuilder : 
+        ISqlStatementBuilder
     {
+        #region internals
         private int _currentAliasCounter;
-        private DbExpressionAssemblerConfiguration _config;
+        private SqlStatement _sqlStatement;
+        #endregion
 
+        public DbExpressionAssemblerConfiguration Configuration { get; }
         public ExpressionSet DBExpression { get; }
-        public ISqlStatementAssembler Assembler { get; }
-        public Func<Type, IDbExpressionAssemblyPartAssembler> PartAssemblerResolver { get; }
+        public Func<ExecutionContext, ISqlStatementAssembler> AssemblerResolver { get; }
+        public Func<Type, IAssemblyPartAliasProvider> AliasProviderResolver { get; }
+        public Func<Type, IAssemblyPartAppender> PartAppenderResolver { get; }
         public Func<Type, IValueTypeFormatter> ValueTypeFormatterResolver { get; }
+        public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
             ExpressionSet dbExpression,
-            ISqlStatementAssembler assembler,
-            Func<Type, IDbExpressionAssemblyPartAssembler> partAssemblerResolver,
+            Func<ExecutionContext, ISqlStatementAssembler> assemblerResolver,
+            Func<Type, IAssemblyPartAliasProvider> aliasProviderResolver,
+            Func<Type, IAssemblyPartAppender> partAppenderResolver,
             Func<Type, IValueTypeFormatter> valueTypeFormatterResolver,
-            ISqlParameterBuilder parameterBuilder)
+            IAppender appender,
+            ISqlParameterBuilder parameterBuilder
+        )
         {
-            _config = config;
+            Configuration = config;
             DBExpression = dbExpression;
-            Assembler = assembler;
-            PartAssemblerResolver = partAssemblerResolver;
+            AssemblerResolver = assemblerResolver;
+            AliasProviderResolver = aliasProviderResolver;
+            PartAppenderResolver = partAppenderResolver;
             ValueTypeFormatterResolver = valueTypeFormatterResolver;
+            Appender = appender;
             Parameters = parameterBuilder;
         }
 
-        protected virtual IDbExpressionAssemblyPartAssembler<T> ResolvePartAssembler<T>()
-            where T : IDbExpression
-            => PartAssemblerResolver(typeof(T)) as IDbExpressionAssemblyPartAssembler<T>;
-
-        protected virtual IDbExpressionAssemblyPartAssembler ResolvePartAssembler(Type t)
-            => PartAssemblerResolver(t);
+        protected virtual IAssemblyPartAppender ResolvePartAppender(Type t)
+            => PartAppenderResolver(t);
 
         protected virtual IValueTypeFormatter<T> ResolveValueFormatter<T>()
             where T : IComparable
@@ -44,6 +52,14 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual IValueTypeFormatter ResolveValueFormatter(Type t)
             => ValueTypeFormatterResolver(t);
+
+        protected virtual IAssemblyPartAppender<T> ResolvePartAppender<T>()
+            where T : IAssemblyPart
+            => PartAppenderResolver(typeof(T)) as IAssemblyPartAppender<T>;
+
+        protected virtual IAssemblyPartAliasProvider<T> ResolveAliasProvider<T>()
+            where T : IAssemblyPart
+            => AliasProviderResolver(typeof(T)) as IAssemblyPartAliasProvider<T>;
 
         public string FormatValueType((Type, object) value)
         {
@@ -59,28 +75,61 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public SqlStatement CreateSqlStatement()
-            => Assembler.AssembleStatement(DBExpression, this, new AssemblerOverrides());
-
-        public string AssemblePart((Type, object) part) => AssemblePart(part, new AssemblerOverrides());
-
-        public string AssemblePart((Type, object) part, AssemblerOverrides overrides)
         {
-            var assembler = ResolvePartAssembler(part.Item1);
-            return assembler.AssemblePart(part.Item2, this, overrides);
+            if (_sqlStatement != null)
+                return _sqlStatement;
+
+            var discoveredAliases = new Dictionary<int, AliasDiscovery>();
+            DiscoverAliases(DBExpression, 0, Configuration, discoveredAliases);
+            var context = new AssemblerContext
+            {
+                Configuration = Configuration,
+                EntityAliases = discoveredAliases,
+                CurrentDepth = 0
+            };
+
+            AssemblerResolver(DBExpression.ExecutionContext).AssembleStatement(DBExpression, this, context);
+            _sqlStatement = new SqlStatement(Appender.ToString(), Parameters.Parameters, DbCommandType.SqlText);
+
+            return _sqlStatement;
         }
 
-        public string AssemblePart<T>(object part)
-            where T : IDbExpressionAssemblyPart => AssemblePart<T>(part, new AssemblerOverrides());
-
-        public string AssemblePart<T>(object part, AssemblerOverrides overrides)
-            where T : IDbExpressionAssemblyPart
+        public void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+            where T : IAssemblyPart
         {
-            var assembler = ResolvePartAssembler(typeof(T));
-            return assembler.AssemblePart(part, this, overrides);
+            var provider = ResolveAliasProvider<T>();
+            if (provider == null)
+                return;
+
+            provider.DiscoverAliases(expression, this, currentLevel, config, discoveredAliases);
+        }
+
+        public void AppendPart<T>(object part)
+          where T : IAssemblyPart => AppendPart<T>(part, new AssemblerContext());
+
+        public void AppendPart((Type, object) part, AssemblerContext context)
+        {
+            if (part.Item2 is ExpressionSet set)
+            {
+                AssemblerResolver(set.ExecutionContext).AssembleStatement(set, this, context);
+                return;
+            }
+            var assembler = ResolvePartAppender(part.Item1);
+            assembler.AppendPart(part.Item2, this, context);
+        }
+
+        public void AppendPart<T>(object part, AssemblerContext context)
+            where T : IAssemblyPart
+        {
+            if (part is ExpressionSet set)
+            {
+                AssemblerResolver(set.ExecutionContext).AssembleStatement(set, this, context);
+                return;
+            }
+            var assembler = ResolvePartAppender(typeof(T));
+            assembler.AppendPart(part, this, context);
         }
 
         public string GenerateAlias() => $"t{++_currentAliasCounter}";
-
-        public Appender CreateAppender() => new Appender(_config);
     }
 }

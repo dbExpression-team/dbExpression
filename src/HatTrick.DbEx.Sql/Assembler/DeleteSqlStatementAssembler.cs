@@ -9,31 +9,39 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class DeleteSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            string where = expression.Where == null ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
-            string joins = expression.Joins == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
-            string ex = Assemble(expression, builder, overrides, expression.BaseEntity.ToString("[s].[e]"), where, joins);
-            return new SqlStatement(ex, builder.Parameters.Parameters, DbCommandType.SqlText);
-        }
+            builder.Appender.Write("DELETE").LineBreak();
 
-        protected virtual string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides, string fromEntity, string where, string joins)
-        {
-            var appender = builder.CreateAppender();
+            builder.Appender.Indentation++.Indent();
+            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+            builder.Appender.LineBreak();
 
-            appender.Write("DELETE").LineBreak()
-                .Indentation++.Indent().Write(fromEntity).LineBreak()
-                .Indentation--.Indent().Write("FROM").LineBreak()
-                .Indentation++.Indent().Write(fromEntity).LineBreak()
-                .Indent().Write(joins).LineBreak()
-                .IfNotEmpty(where, a =>
-                    a.Indentation--.Indent().Write("WHERE").LineBreak()
-                        .Indentation++.Indent().Write(where).LineBreak()
-                        .Indentation--
-                );
+            builder.Appender.Indentation--.Indent().Write("FROM").LineBreak();
 
-            return appender.ToString();
-            //return $"{after("DELETE")}{after(fromEntity)}{after("FROM")}{after(fromEntity)}{joins}{where}";
+            builder.Appender.Indentation++.Indent();
+            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+            builder.Appender.LineBreak();
+            builder.Appender.Indentation--;
+
+            if (expression.Joins != null)
+            {
+                builder.Appender.Indentation++;
+                builder.Appender.Indent();
+                foreach (var join in expression.Joins.Expressions)
+                    builder.AppendPart<JoinExpression>(expression.Joins, context);
+                builder.Appender.LineBreak();
+                builder.Appender.Indentation--;
+            }
+
+            if (expression.Where != null)
+            {
+                builder.Appender.Indent().Write("WHERE").LineBreak();
+                builder.Appender.Indentation++;
+                builder.AppendPart<FilterExpressionSet>(expression.Where, context);
+                builder.Appender.LineBreak();
+                builder.Appender.Indentation--;
+            }
         }
         #endregion
     }

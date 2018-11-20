@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Executor\ExecutorTestBase.cs" />
     <Compile Include="Executor\SelectAllPersonTests.cs" />
+    <Compile Include="Executor\SelectAllPurchaseTests.cs" />
     <Compile Include="Executor\UpdatePersonTests.cs" />
     <Compile Include="Seeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

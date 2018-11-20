@@ -3,7 +3,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class HavingExpression : DbExpression, IDbExpressionAssemblyPart
+    public class HavingExpression : DbExpression, IAssemblyPart
     {
         #region interface
         public (Type,object) Expression { get; private set; }
@@ -33,11 +33,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 b.Expression = (typeof(FilterExpression), b.Expression.Item2);
                 return b;
             }
-            if (a.Expression.Item1 == typeof(FilterExpression) && b.Expression.Item1 == typeof(FilterExpression))
-            {
-                var c = a.Expression.Item2 as FilterExpression;
-                c.RightPart = (typeof(FilterExpression),b);
-            }
+            a.Expression = (typeof(DbExpressionPair), new DbExpressionPair(a.Expression, (typeof(FilterExpression),b)));
             return a;
         }
         #endregion

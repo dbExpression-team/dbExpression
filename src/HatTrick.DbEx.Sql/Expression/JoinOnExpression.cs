@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinOnExpression : DbExpression, IDbExpressionAssemblyPart
+    public class JoinOnExpression : DbExpression, IAssemblyPart
     {
         #region interface
         public (Type,object) LeftPart { get; set; }
@@ -27,8 +27,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         internal JoinOnExpression(FilterExpression expression)
         {
-            LeftPart = expression.LeftPart;
-            RightPart = expression.RightPart;
+            LeftPart = expression.Expression.LeftPart;
+            RightPart = expression.Expression.RightPart;
             ExpressionOperator = expression.ExpressionOperator;
             Negate = expression.Negate;
         }

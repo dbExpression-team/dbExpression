@@ -5,27 +5,25 @@ using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class FilterExpressionSet : DbExpression, /*IDbExpressionSet<FilterExpression>,*/ IDbExpressionAssemblyPart
+    public class FilterExpressionSet : DbExpression, /*IDbExpressionSet<FilterExpression>,*/ IAssemblyPart
     {
         #region interface
         //public IList<FilterExpression> Expressions { get; } = new List<FilterExpression>();
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
-        public (Type,object) LeftPart { get; set; }
-        public (Type,object) RightPart { get; set; }
+        public DbExpressionPair Expression { get; set; }
         #endregion
 
         #region constructors
         internal FilterExpressionSet(FilterExpression singleFilter)
         {
-            LeftPart = (typeof(FilterExpression), singleFilter);
+            Expression = new DbExpressionPair((typeof(FilterExpression), singleFilter), (null, null));
             //Expressions.Add(singleFilter);
         }
 
         internal FilterExpressionSet(FilterExpression leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditinalOperator)
         {
-            LeftPart = (typeof(FilterExpressionSet), new FilterExpressionSet(leftArg));
-            RightPart = (typeof(FilterExpressionSet), new FilterExpressionSet(rightArg));
+            Expression = new DbExpressionPair((typeof(FilterExpression), leftArg), (typeof(FilterExpression), rightArg));
             ConditionalOperator = conditinalOperator;
             //Expressions.Add(leftArg);
             //Expressions.Add(rightArg);
@@ -33,16 +31,14 @@ namespace HatTrick.DbEx.Sql.Expression
 
         internal FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditinalOperator)
         {
-            LeftPart = (typeof(FilterExpressionSet), leftArg);
-            RightPart = (typeof(FilterExpression), rightArg);
+            Expression = new DbExpressionPair((typeof(FilterExpressionSet), leftArg), (typeof(FilterExpressionSet), rightArg));
             ConditionalOperator = conditinalOperator;
             //Expressions.Add(rightArg);
         }
 
         internal FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditinalOperator)
         {
-            LeftPart = (typeof(FilterExpressionSet), leftArg);
-            RightPart = (typeof(FilterExpressionSet), rightArg);
+            Expression = new DbExpressionPair((typeof(FilterExpressionSet), leftArg), (typeof(FilterExpressionSet), rightArg));
             ConditionalOperator = conditinalOperator;
         }
         #endregion
@@ -50,8 +46,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #region to string
         public override string ToString()
         {
-            string left = LeftPart.Item2.ToString();
-            string right = RightPart == default ? string.Empty : RightPart.Item2.ToString();
+            string left = Expression.LeftPart.Item2.ToString();
+            string right = Expression.RightPart == default ? string.Empty : Expression.RightPart.Item2.ToString();
             string expression = $"{left} {ConditionalOperator} {right}";
             return (Negate) ? $"NOT ({expression})" : expression;
         }

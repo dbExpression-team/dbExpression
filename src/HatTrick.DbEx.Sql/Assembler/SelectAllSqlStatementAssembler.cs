@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -8,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     /// </summary>
     public class SelectAllSqlStatementAssembler : SelectSqlStatementAssembler
     {
-        protected override string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides, string select, string distinct, string fromEntity, string where, string joins, string groupBy, string having, string orderBys)
+        public override void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             throw new NotImplementedException("Assembly requires database platform specific implementations");
         }

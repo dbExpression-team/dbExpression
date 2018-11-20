@@ -5,55 +5,57 @@ using HatTrick.DbEx.Sql.Assembler;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    [Serializable]
-    public class FieldExpression : DbExpression, IDbExpressionSelectClausePart, IDbExpressionAssemblyPart
+    public class FieldExpression : 
+        DbExpression,
+        IDbExpressionSelectClausePart, 
+        IAssemblyPart,
+        IExpressionMetadataProvider<FieldExpressionMetadata>
     {
+        #region internals
+        private FieldExpressionMetadata _metadata;
+        #endregion
+
         #region interface
-        public EntityExpression ParentEntity { get; protected set; }
-
-        public string Name { get; private set; }
-
-        public int? Size { get; private set; }
-
         public FilterExpression IsNull { get { return new FilterExpression(this, null, FilterExpressionOperator.Equal); } }
 
         public OrderByExpression Asc { get { return new OrderByExpression(this, OrderExpressionDirection.ASC); } }
 
         public OrderByExpression Desc { get { return new OrderByExpression(this, OrderExpressionDirection.DESC); } }
+
+        FieldExpressionMetadata IExpressionMetadataProvider<FieldExpressionMetadata>.Metadata => _metadata;
         #endregion
 
         #region constructors
         internal FieldExpression(EntityExpression parentEntity, string name, int size) : this(parentEntity, name)
         {
-            this.Size = size;
+            this._metadata.Size = size;
         }
 
         internal FieldExpression(EntityExpression parentEntity, string name)
         {
-            this.ParentEntity = parentEntity;
-            this.Name = name;
+            this._metadata = new FieldExpressionMetadata(parentEntity, name);
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{this.ParentEntity.ToString()}.[{this.Name}]";
+        public override string ToString() => $"{this._metadata.ParentEntity.ToString()}.[{this._metadata.Name}]";
 
         public string ToString(string format)
         {
             switch (format)
             {
                 case "f":
-                    return this.Name;
+                    return this._metadata.Name;
                 case "[f]":
-                    return $"[{this.Name}]";
+                    return $"[{this._metadata.Name}]";
                 case "e.f":
                     return this.ToString();
                 case "s.e.f":
-                    return $"{this.ParentEntity.ToString("s.e")}.{this.Name}";
+                    return $"{this._metadata.ParentEntity.ToString("s.e")}.{this._metadata.Name}";
                 case "[s].[e].[f]":
-                    return $"{this.ParentEntity.ToString("[s].[e]")}.[{this.Name}]";
+                    return $"{this._metadata.ParentEntity.ToString("[s].[e]")}.[{this._metadata.Name}]";
                 case "[s.e.f]":
-                    return $"[{this.ParentEntity.ToString("s.e")}.{this.Name}]";
+                    return $"[{this._metadata.ParentEntity.ToString("s.e")}.{this._metadata.Name}]";
                 default:
                     throw new ArgumentException($"encountered unknown format string: {format} valid formats are 'e','f','[e]','[f]','e.f','[e].[f]'", "format");
             }
@@ -131,26 +133,41 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public override bool Equals(object obj)
+        public bool Equals(FieldExpression obj)
         {
-            if (obj == null)
-                return false;
-
-            if (!(obj is FieldExpression f))
-                return false;
-
-            if (string.Compare(f.Name, this.Name, true) != 0)
-                return false;
-
-            if (f.ParentEntity != this.ParentEntity)
-                return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (string.Compare(obj._metadata.Name, this._metadata.Name, true) != 0) return false;
+            if (obj._metadata.ParentEntity != this._metadata.ParentEntity) return false;
 
             return true;
         }
-        #endregion
 
-        #region override get hash code
-        public override int GetHashCode() => base.GetHashCode();
+        public override bool Equals(object obj)
+        {
+            if (!(obj is FieldExpression other)) return false;
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            if (other._metadata.ParentEntity != this._metadata.ParentEntity) return false;
+
+            return true;
+        }
+
+        public override int GetHashCode()
+            => base.GetHashCode();
+
+        public static bool operator ==(FieldExpression obj1, FieldExpression obj2)
+        {
+            if (ReferenceEquals(obj1, obj2)) return true;
+            if (ReferenceEquals(obj1, null)) return false;
+            if (ReferenceEquals(obj2, null)) return false;
+            if (obj1._metadata.ParentEntity != obj2._metadata.ParentEntity) return false;
+
+            return true;
+        }
+
+        public static bool operator !=(FieldExpression obj1, FieldExpression obj2)
+            => !(obj1 == obj2);
         #endregion
     }
 

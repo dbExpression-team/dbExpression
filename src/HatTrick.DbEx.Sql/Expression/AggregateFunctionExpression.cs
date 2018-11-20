@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AggregateFunctionExpression : DbExpression
+    public class AggregateFunctionExpression : DbExpression, IAssemblyPart
     {
         #region interface
         public (Type, object) Expression { get; private set; }

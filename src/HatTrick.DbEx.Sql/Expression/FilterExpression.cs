@@ -8,8 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class FilterExpression : DbExpression, IDbExpression
     {
         #region interface
-        public (Type,object) LeftPart { get; set; }
-        public (Type,object) RightPart { get; set; }
+        public DbExpressionPair Expression { get; set; }
         public readonly FilterExpressionOperator ExpressionOperator;
         public bool Negate { get; set; }
         #endregion
@@ -17,22 +16,40 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         internal FilterExpression(FieldExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
-            LeftPart = (leftArg.GetType(), leftArg);
-            RightPart = (rightArg.GetType(), rightArg);
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+            }
             ExpressionOperator = expressionOperator;
         }
 
         internal FilterExpression(ArithmeticExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
-            LeftPart = (leftArg.GetType(), leftArg);
-            RightPart = (rightArg.GetType(), rightArg);
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+            }
             ExpressionOperator = expressionOperator;
         }
 
         internal FilterExpression(SelectExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
-            LeftPart = (leftArg.GetType(), leftArg);
-            RightPart = (rightArg.GetType(), rightArg);
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+            }
             ExpressionOperator = expressionOperator;
         }
 
@@ -41,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region to string
         public override string ToString()
         {
-            string expression = $"{LeftPart.Item2} {ExpressionOperator} {RightPart.Item2}";
+            string expression = $"{Expression.LeftPart.Item2} {ExpressionOperator} {Expression.RightPart.Item2}";
             return (Negate) ? $" NOT ({expression})" : expression;
         }
         #endregion

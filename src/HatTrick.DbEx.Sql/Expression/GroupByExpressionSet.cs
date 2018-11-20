@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class GroupByExpressionSet : DbExpression, IDbExpressionSet<GroupByExpression>, IDbExpressionAssemblyPart
+    public class GroupByExpressionSet : DbExpression, IDbExpressionSet<GroupByExpression>, IAssemblyPart
     {
         #region internals
         public IList<GroupByExpression> Expressions { get; } = new List<GroupByExpression>();

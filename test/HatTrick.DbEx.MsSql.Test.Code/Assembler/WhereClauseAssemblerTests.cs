@@ -27,12 +27,14 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
                     .Where(sec.Person.Id > 0);
 
             ExpressionSet expressionSet = (exp as IExpressionProvider).GetExpression();
+            IAppender appender = settings.AppenderFactory.CreateAppender(settings.AssemblerConfiguration);
             ISqlParameterBuilder parameterBuilder = settings.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = settings.StatementBuilderFactory.CreateSqlStatementBuilder(settings.AssemblerConfiguration, expressionSet, parameterBuilder);
+            ISqlStatementBuilder builder = settings.StatementBuilderFactory.CreateSqlStatementBuilder(settings.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
             string whereClause;
 
             //when
-            whereClause = builder.AssemblePart<FilterExpressionSet>(expressionSet.Where, new AssemblerOverrides());
+            builder.AppendPart(expressionSet.Where.Expression.LeftPart, new AssemblerContext());
+            whereClause = builder.Appender.ToString();
 
             //then
             whereClause.Should().NotBeNullOrWhiteSpace();

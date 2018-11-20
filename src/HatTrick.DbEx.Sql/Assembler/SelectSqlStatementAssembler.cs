@@ -1,82 +1,196 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Extensions;
 using HatTrick.DbEx.Sql.Extensions.Assembler;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SelectSqlStatementAssembler : SqlStatementAssembler, IDbExpressionAssemblyPartAssembler<ExpressionSet>
+    public class SelectSqlStatementAssembler : 
+        SqlStatementAssembler, 
+        IAssemblyPartAppender<ExpressionSet>,
+        IAssemblyPartAliasProvider<ExpressionSet>
     {
-        public string AssemblePart(object part, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            return AssembleStatement((ExpressionSet)part, builder, overrides).ExecutionCommand;
+            AppendPart(expression, builder, context);
         }
 
-        public string AssemblePart(ExpressionSet part, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public virtual void DiscoverAliases(object expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+            => DiscoverAliases(expression as ExpressionSet, builder, currentLevel, config, discoveredAliases);
+
+        public virtual void DiscoverAliases(ExpressionSet expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
         {
-            return AssembleStatement(part, builder, overrides).ExecutionCommand;
+            if (expression.Joins?.Expressions == null || !expression.Joins.Expressions.Any())
+                return;
+
+            foreach (var join in expression.Joins.Expressions)
+                builder.DiscoverAliases(join, currentLevel, config, discoveredAliases);
         }
 
-        public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public void AppendPart(object part, ISqlStatementBuilder builder, AssemblerContext context)
+            => AppendPart(part as ExpressionSet, builder, context);
+
+        public virtual void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            string joins = expression.Joins == null ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
-            string select = expression.Select == null ? string.Empty : builder.AssemblePart<SelectExpressionSet>(expression.Select, overrides);
-            string where = expression.Where == null ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
-            string groupBy = expression.GroupBy == null ? string.Empty : builder.AssemblePart<GroupByExpressionSet>(expression.GroupBy, overrides);
-            string having = expression.Having == null ? string.Empty : builder.AssemblePart<HavingExpression>(expression.Having, overrides);
-            string orderBy = expression.OrderBy == null ? string.Empty : builder.AssemblePart<OrderByExpressionSet>(expression.OrderBy, overrides);
-
-            if (expression.BaseEntity.IsAliased && !overrides.EntityAliases.Contains(expression.BaseEntity))
-                overrides.EntityAliases.SetAliasForEntity(expression.BaseEntity.AliasName, expression.BaseEntity);
-
-            string from = builder.AssemblePart<EntityExpression>(expression.BaseEntity, overrides);
-
-            string sql = Assemble(
-                expression,
-                builder,
-                overrides,
-                select,
-                expression.Distinct ? "DISTINCT " : string.Empty,
-                from,
-                where,
-                joins,
-                groupBy,
-                having,
-                orderBy
-            );
-
-            return new SqlStatement(sql, builder.Parameters.Parameters, DbCommandType.SqlText);
+            AppendSelectClause(expression, builder, context);
+            AppendFromClause(expression, builder, context);
+            AppendJoinClauses(expression, builder, context);
+            AppendWhereClause(expression, builder, context);
+            AppendGroupByClause(expression, builder, context);
+            AppendHavingClause(expression, builder, context);
+            AppendOrderByClause(expression, builder, context);
         }
 
-        protected virtual string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides, string select, string distinct, string fromEntity, string where, string joins, string groupBy, string having, string orderBy)
+        protected virtual void AppendSelectClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            var appender = builder.CreateAppender();
+            builder.Appender
+                .Indent().Write("SELECT");
 
-            appender.Write("SELECT").LineBreak()
-                .IfNotEmpty(distinct, a => a.Indent().Write(distinct).LineBreak())
-                .Indentation++.Indent().Write(select).LineBreak()
-                .Indentation--.Indent().Write("FROM").LineBreak()
-                .Indentation++.Indent().Write(fromEntity).LineBreak()
-                .Indent().Write(joins).LineBreak()
-                .IfNotEmpty(where, a =>
-                    a.Indentation--.Indent().Write("WHERE").LineBreak()
-                        .Indentation++.Indent().Write(where).LineBreak()
-                )
-                .IfNotEmpty(groupBy, a =>
-                    a.Indentation--.Indent().Write("GROUP BY").LineBreak()
-                        .Indentation++.Indent().Write(groupBy).LineBreak()
-                )
-                .IfNotEmpty(having, a =>
-                    a.Indentation--.Indent().Write("HAVING").LineBreak()
-                        .Indentation++.Indent().Write(having).LineBreak()
-                )
-                .IfNotEmpty(orderBy, a =>
-                    a.Indentation--.Indent().Write("ORDER BY").LineBreak()
-                        .Indentation++.Indent().Write(orderBy).LineBreak()
-                );
+            if (expression.Distinct)
+                builder.Appender.Write(" DISTINCT");
 
-            return appender.ToString();
+            builder.Appender.LineBreak()
+                .Indentation++;
 
-            //return $"{overrides.FormatEndOfSegment("SELECT")}{overrides.FormatEndOfSegment(distinct)}{overrides.FormatEndOfSegment(select)}{overrides.FormatEndOfSegment("FROM")}{overrides.FormatEndOfSegment(fromEntity)}{joins}{where}{groupBy}{having}{orderBy}";
+            for (var i = 0; i < expression.Select.Expressions.Count; i++)
+            {
+                builder.Appender.Indent();
+                if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
+                    builder.Appender.Write(",");
+
+                builder.AppendPart<SelectExpression>(expression.Select.Expressions[i], context);
+
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.Select.Expressions.Count - 1)
+                    builder.Appender.Write(",");
+
+                builder.Appender.LineBreak();
+            }
+
+            builder.Appender.Indentation--;
+        }
+
+        protected virtual void AppendFromClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            builder.Appender.Indent().Write("FROM").LineBreak();
+
+            builder.Appender
+                .Indentation++
+                .Indent();
+
+            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+
+            var alias = context.ResolveEntityName(expression.BaseEntity, context.CurrentDepth + 1);
+            if (!string.IsNullOrWhiteSpace(alias))
+            {
+                builder.Appender.Write(" AS ");
+                builder.Appender.Write(alias);
+            }
+
+            builder.Appender
+                .Indentation--
+                .LineBreak();
+        }
+
+        protected virtual void AppendJoinClauses(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            if (expression.Joins != null)
+            {
+                builder.Appender
+                    .Indentation++;
+
+                foreach (var join in expression.Joins.Expressions)
+                {
+                    builder.AppendPart<JoinExpression>(join, context);
+                    builder.Appender.LineBreak();
+                }
+
+                builder.Appender
+                    .Indentation--;
+            }
+        }
+
+        protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            if (expression.Where != null)
+            {
+                builder.Appender.Indent().Write("WHERE").LineBreak()
+                    .Indentation++;
+
+                builder.AppendPart<FilterExpressionSet>(expression.Where, context);
+                
+                builder.Appender.LineBreak()
+                    .Indentation--;
+            }
+        }
+
+        protected virtual void AppendGroupByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            if (expression.GroupBy != null)
+            {
+                builder.Appender.Indent().Write("GROUP BY").LineBreak()
+                    .Indentation++;
+
+                for (var i = 0; i < expression.GroupBy.Expressions.Count; i++)
+                {
+                    builder.Appender.Indent();
+
+                    if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
+                        builder.Appender.Write(",");
+
+                    builder.AppendPart<GroupByExpression>(expression.GroupBy.Expressions[i], context);
+
+                    if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.GroupBy.Expressions.Count - 1)
+                        builder.Appender.Write(",");
+
+                    builder.Appender.LineBreak();
+                }
+
+                builder.Appender
+                    .Indentation--;
+            }
+        }
+
+        protected virtual void AppendHavingClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            if (expression.Having != null)
+            {
+                builder.Appender.Indent().Write("HAVING").LineBreak()
+                    .Indentation++;
+
+                builder.AppendPart<HavingExpression>(expression.Having, context);
+
+                builder.Appender.LineBreak()
+                    .Indentation--;
+            }
+        }
+
+        protected virtual void AppendOrderByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            if (expression.OrderBy != null)
+            {
+                builder.Appender.Indent().Write("ORDER BY").LineBreak()
+                    .Indentation++;
+
+                for (var i = 0; i < expression.OrderBy.Expressions.Count; i++)
+                {
+                    builder.Appender.Indent();
+
+                    if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
+                        builder.Appender.Write(",");
+
+                    builder.AppendPart<OrderByExpression>(expression.OrderBy.Expressions[i], context);
+
+                    if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.OrderBy.Expressions.Count - 1)
+                        builder.Appender.Write(",");
+
+                    builder.Appender.LineBreak();
+                }
+
+                builder.Appender
+                    .Indentation--;
+            }
         }
     }
 }

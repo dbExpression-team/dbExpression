@@ -5,15 +5,13 @@ namespace HatTrick.DbEx.Sql.Expression
     public class InsertExpression : DbExpression
     {
         #region internals
-        public readonly (Type, object) Part;
-        public readonly (Type, object) PartValue;
+        public DbExpressionPair Expression { get; private set; }
         #endregion
 
         #region constructors
         public InsertExpression(FieldExpression field, object value, Type type)
         {
-            Part = (typeof(FieldExpression), field);
-            PartValue = (type, value);
+            Expression = new DbExpressionPair((typeof(FieldExpression), field), (type, value));
         }
         #endregion
 

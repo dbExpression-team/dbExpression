@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.MsSql.Assembler;
 using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Executor;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Mapper;
 
@@ -15,10 +16,14 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
 
             //configure the builder that constructs sql statements
             var factory = new MsSqlStatementBuilderFactory();
+            factory.RegisterDefaultAliasProviders();
             factory.RegisterDefaultAssemblers();
-            factory.RegisterDefaultPartAssemblers();
+            factory.RegisterDefaultPartAppenders();
             factory.RegisterDefaultValueFormatters();
             settings.StatementBuilderFactory = factory;
+
+            //configure the appender factory
+            settings.AppenderFactory = new AppenderFactory();
 
             //configure the parameter builder factory
             settings.ParameterBuilderFactory = new MsSqlParameterBuilderFactory();

@@ -4,8 +4,9 @@ using Xunit;
 using FluentAssertions;
 
 using db = HatTrick.DbEx.MsSql.Builder.MsSqlExpressionBuilder;
+using HatTrick.DbEx.MsSql.Test.Executor;
 
-namespace HatTrick.DbEx.MsSql.Test.Executor
+namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     public class UpdatePersonTests : ExecutorTestBase
     {

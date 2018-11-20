@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
@@ -18,11 +19,19 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
             var expression = (builder as IExpressionProvider).GetExpression();
 
             if (transaction == null)
-                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[expression.BaseEntity.Schema.ConnectionName]);
+            {
+                var provider = expression.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
+                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.ConnectionName]);
+            }
 
             //var validator  ??;
 
-            var assembler = DbExConfigurationSettings.Settings.StatementBuilderFactory.CreateSqlStatementBuilder(DbExConfigurationSettings.Settings.AssemblerConfiguration, expression, DbExConfigurationSettings.Settings.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var assembler = DbExConfigurationSettings.Settings.StatementBuilderFactory.CreateSqlStatementBuilder(
+                DbExConfigurationSettings.Settings.AssemblerConfiguration,
+                expression,
+                DbExConfigurationSettings.Settings.AppenderFactory.CreateAppender(DbExConfigurationSettings.Settings.AssemblerConfiguration),
+                DbExConfigurationSettings.Settings.ParameterBuilderFactory.CreateSqlParameterBuilder()
+            );
             var statement = assembler.CreateSqlStatement();
 
             var executor = DbExConfigurationSettings.Settings.ExecutorFactory.CreateSqlStatementExecutor(expression);
@@ -157,11 +166,20 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
 
         private static SqlStatementExecutionResultSet Execute(ExpressionSet expression, SqlConnection transaction)
         {
-            transaction = transaction ?? DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[expression.BaseEntity.Schema.ConnectionName]);
-            
+            if (transaction == null)
+            {
+                var provider = expression.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
+                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.ConnectionName]);
+            }
+
             //var validator  ??;
 
-            var builder = DbExConfigurationSettings.Settings.StatementBuilderFactory.CreateSqlStatementBuilder(DbExConfigurationSettings.Settings.AssemblerConfiguration, expression, DbExConfigurationSettings.Settings.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = DbExConfigurationSettings.Settings.StatementBuilderFactory.CreateSqlStatementBuilder(
+                DbExConfigurationSettings.Settings.AssemblerConfiguration,
+                expression,
+                DbExConfigurationSettings.Settings.AppenderFactory.CreateAppender(DbExConfigurationSettings.Settings.AssemblerConfiguration),
+                DbExConfigurationSettings.Settings.ParameterBuilderFactory.CreateSqlParameterBuilder()
+            );
             var statement = builder.CreateSqlStatement();
 
             var executor = DbExConfigurationSettings.Settings.ExecutorFactory.CreateSqlStatementExecutor(expression);

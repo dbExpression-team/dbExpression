@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class GroupByExpression : DbExpression
+    public class GroupByExpression : DbExpression, IAssemblyPart
     {
         #region internals
         public (Type,object) Expression { get; private set; }

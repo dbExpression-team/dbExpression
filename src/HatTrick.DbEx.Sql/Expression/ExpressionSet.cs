@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class ExpressionSet : IDbExpressionAssemblyPart
+    public partial class ExpressionSet : IAssemblyPart
     {
         #region interface
         public object Instance { get; set; }

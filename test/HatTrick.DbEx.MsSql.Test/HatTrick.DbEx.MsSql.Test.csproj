@@ -84,6 +84,10 @@
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
       <Name>HatTrick.DbEx.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\HatTrick.DbEx\HatTrick.DbEx.csproj">
+      <Project>{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}</Project>
+      <Name>HatTrick.DbEx</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -7,6 +7,11 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface ISqlStatementBuilderFactory
     {
-        ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, ISqlParameterBuilder parameterBuilder);
+        ISqlStatementBuilder CreateSqlStatementBuilder(
+            DbExpressionAssemblerConfiguration config,
+            ExpressionSet expression, 
+            IAppender appender,
+            ISqlParameterBuilder parameterBuilder
+        );
     }
 }

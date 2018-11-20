@@ -8,20 +8,35 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class InsertSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            string insert = expression.Insert == null ? string.Empty : builder.AssemblePart<InsertExpressionSet>(expression.Insert, overrides);
+            builder.Appender.Write("INSERT INTO ");
+            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+            builder.Appender.Write(" (");
+            builder.Appender.Indentation++;
 
-            string from = builder.AssemblePart<EntityExpression>(expression.BaseEntity, overrides);
+            for (var i = 0; i < expression.Insert.Expressions.Count; i++)
+            {
+                builder.Appender.Indent();
+                builder.AppendPart(expression.Insert.Expressions[i].Expression.LeftPart, context);
+                if (i < expression.Insert.Expressions.Count - 1)
+                    builder.Appender.Write(", ").LineBreak();
+            }
 
-            insert = Assemble(expression, overrides, from, insert);
+            builder.Appender.LineBreak()
+                .Indentation--.Write(") VALUES (").LineBreak()
+                .Indentation++;
 
-            return new SqlStatement(insert, builder.Parameters.Parameters, DbCommandType.SqlText);
+            for (var i = 0; i < expression.Insert.Expressions.Count; i++)
+            {
+                builder.Appender.Indent();
+                builder.Appender.Write(builder.Parameters.Add(expression.Insert.Expressions[i].Expression.RightPart).ParameterName);
+                if (i < expression.Insert.Expressions.Count - 1)
+                    builder.Appender.Write(", ").LineBreak();
+            }
+
+            builder.Appender.Write(")");
         }
-
-        protected virtual string Assemble(ExpressionSet expression, AssemblerOverrides overrides, string entity, string insert)
-             => $"INSERT INTO {entity} {insert};";
-
         #endregion
     }
 }
