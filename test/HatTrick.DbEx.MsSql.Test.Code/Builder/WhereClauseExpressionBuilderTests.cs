@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             FilterExpression idFilter;
 
             //when
-            exp = db.Select(sec.Person.Id)
+            exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
                .Where(sec.Person.Id > 0);
 
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             FilterExpression ssnFilter;
 
             //when
-            exp = db.Select(sec.Person.Id)
+            exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX");
 
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             FilterExpression dateCreatedFilter;
 
             //when
-            exp = db.Select(sec.Person.Id)
+            exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != new DateTime(2000,1,1));
 

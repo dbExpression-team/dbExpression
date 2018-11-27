@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ExpressionSet expressionSet;
 
             //when
-            exp = db.Select(sec.Person.Id)
+            exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person);
 
             expressionSet = (exp as IExpressionProvider).GetExpression();
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ExpressionSet expressionSet;
 
             //when
-            exp = db.Select(sec.Person.Id, sec.Person.DateCreated)
+            exp = db.SelectOne(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
             expressionSet = (exp as IExpressionProvider).GetExpression();

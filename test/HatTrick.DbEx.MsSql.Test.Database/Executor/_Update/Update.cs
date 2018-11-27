@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute();
 
             //then
-            var firstName = db.Select(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
+            var firstName = db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
             firstName.Should().NotBeNullOrWhiteSpace();
             firstName.Should().Be("Foo");
         }

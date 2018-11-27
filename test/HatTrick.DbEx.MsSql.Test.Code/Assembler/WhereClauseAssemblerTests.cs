@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
 
             ITerminationExpressionBuilder exp = 
 
-                db.Select(sec.Person.Id)
+                db.SelectOne(sec.Person.Id)
                     .From(sec.Person)
                     .Where(sec.Person.Id > 0);
 
