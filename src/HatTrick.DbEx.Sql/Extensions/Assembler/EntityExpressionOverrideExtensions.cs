@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.Sql.Extensions.Assembler
                 var aliases = context.EntityAliases[specifiedLevel];
                 foreach (var alias in aliases.Aliases)
                 {
-                    if (alias.Key == entity)
-                        return alias.Value;
+                    if (alias.Entity == entity)
+                        return alias.Alias;
                 }
             }
             var provider = entity as IExpressionMetadataProvider<EntityExpressionMetadata>;

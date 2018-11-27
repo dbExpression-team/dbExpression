@@ -6,15 +6,20 @@ namespace HatTrick.DbEx.Sql.Expression
     [Serializable]
     public abstract class SchemaExpression : IAssemblyPart, IEquatable<SchemaExpression>
     {
+        #region interface
         public string SchemaName { get; set; }
         public virtual string ConnectionName { get; set; }
+        #endregion
 
+        #region constructors
         public SchemaExpression(string schemaName, string connectionName)
         {
             SchemaName = schemaName;
             ConnectionName = connectionName;
         }
+        #endregion
 
+        #region methods
         public override string ToString() => ToString("[s]");
 
         public string ToString(string format)
@@ -69,5 +74,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static bool operator !=(SchemaExpression obj1, SchemaExpression obj2)
             => !(obj1 == obj2);
+
+        #endregion
     }
 }

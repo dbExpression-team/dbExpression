@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpression : DbExpression, IAssemblyPart
     {
-        #region internals
+        #region interface
         public (Type,object) Expression { get; private set; }
         #endregion
 

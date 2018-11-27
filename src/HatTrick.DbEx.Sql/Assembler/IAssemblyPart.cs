@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql.Assembler
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface IAssemblyPart
     {

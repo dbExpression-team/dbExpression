@@ -1,8 +1,18 @@
-using HatTrick.DbEx.Sql.Expression;
-using System;
 
 namespace DataService
 {
+    using HatTrick.DbEx.Sql.Expression;
+    using HatTrick.DbEx.MsSql.Builder;
+    using System;
+
+    #region db
+    public class db : MsSqlExpressionBuilder
+    {
+        public db(ExpressionSet expression) : base(expression)
+        { }
+    }
+    #endregion
+
     #region dbo
     [Serializable]
     public class dboSchema : SchemaExpression
@@ -57,6 +67,9 @@ namespace DataService
 }
 namespace DataService
 {
+    using System;
+    using HatTrick.DbEx.Sql.Expression;
+
     #region sec
     [Serializable]
     public class secSchema : SchemaExpression

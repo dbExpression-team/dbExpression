@@ -12,9 +12,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public (Type,object) RightPart { get; set; }
         public readonly FilterExpressionOperator ExpressionOperator;
         public bool Negate { get; set; }
-        
-        //TODO: JRod, remove this and cache some static based on enum attributes to avoid out of sync issues moving forward...
-        private static string[] _operatorStrings = new string[] { " = ", " <> ", " < ", " <= ", " > ", " >= ", " LIKE ", " IN " };
         #endregion
 
         #region constructors

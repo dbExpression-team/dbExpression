@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         void AppendPart<T>(object part, AssemblerContext context)
             where T : IAssemblyPart;
 
-        void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+        void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
             where T : IAssemblyPart;
 
         string GenerateAlias();

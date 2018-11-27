@@ -1,13 +1,9 @@
-﻿using FluentAssertions;
+﻿using DataService;
+using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
-using System;
 using Xunit;
-using DataService;
-
-using db = HatTrick.DbEx.MsSql.Builder.MsSqlExpressionBuilder;
 
 namespace HatTrick.DbEx.MsSql.Test.Assembler
 {

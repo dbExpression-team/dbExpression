@@ -17,17 +17,17 @@ namespace HatTrick.DbEx.Sql.Assembler
             throw new NotImplementedException("Should be handled by outer builder");
         }
 
-        public void DiscoverAliases(object expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+        public void DiscoverAliases(object expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
             => DiscoverAliases(expression as JoinExpression, builder, currentLevel, config, discoveredAliases);
 
-        public void DiscoverAliases(JoinExpression expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+        public void DiscoverAliases(JoinExpression expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
         {
             if (!(expression.JoinToo.Item2 is ExpressionSet joinExpression))
                 return;
 
             var provider = joinExpression.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
             string subselectBaseAlias = provider.Metadata.IsAliased ? provider.Metadata.AliasName : builder.GenerateAlias();
-            discoveredAliases.SetAlias(currentLevel, joinExpression.BaseEntity, subselectBaseAlias);
+            discoveredAliases.SetAlias(currentLevel, new EntityAlias(joinExpression.BaseEntity, subselectBaseAlias));
 
             if (joinExpression.Joins == null)
                 return;
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
                 var childProvider = child.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
                 string childAlias = childProvider.Metadata.IsAliased ? childProvider.Metadata.AliasName : builder.GenerateAlias();
-                discoveredAliases.SetAlias(currentLevel + 1, child.BaseEntity, childAlias);
+                discoveredAliases.SetAlias(currentLevel + 1, new EntityAlias(child.BaseEntity, childAlias));
             }
 
             discoveredAliases.CopyChildrenWithNewAlias(currentLevel, subselectBaseAlias);

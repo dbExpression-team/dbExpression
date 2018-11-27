@@ -10,24 +10,23 @@ namespace HatTrick.DbEx.Sql.Extensions.Assembler
 {
     public static class DictionaryExtensions
     {
-        public static void SetAlias(this IDictionary<int, AliasDiscovery> discovery, int level, EntityExpression entity, string alias)
+        public static void SetAlias(this IDictionary<int, EntityAliasDiscovery> discovery, int level, EntityAlias alias)
         {
             if (!discovery.ContainsKey(level))
             {
-                discovery.Add(level, new AliasDiscovery(entity, alias));
+                discovery.Add(level, new EntityAliasDiscovery(alias));
                 return;
             }
-            discovery[level].Aliases.Add(entity, alias);
-
+            discovery[level].Aliases.Add(alias);
         }
 
-        public static void CopyChildrenWithNewAlias(this IDictionary<int, AliasDiscovery> discovery, int level, string alias)
+        public static void CopyChildrenWithNewAlias(this IDictionary<int, EntityAliasDiscovery> discovery, int level, string alias)
         {
             if (!discovery.ContainsKey(level + 1))
                 return;
 
             foreach (var child in discovery[level + 1].Aliases)
-                discovery.SetAlias(level, child.Key, alias);
+                discovery.SetAlias(level, new EntityAlias(child.Entity, alias));
         }
     }
 }

@@ -17,10 +17,10 @@ namespace HatTrick.DbEx.Sql.Assembler
             AppendPart(expression, builder, context);
         }
 
-        public virtual void DiscoverAliases(object expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+        public virtual void DiscoverAliases(object expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
             => DiscoverAliases(expression as ExpressionSet, builder, currentLevel, config, discoveredAliases);
 
-        public virtual void DiscoverAliases(ExpressionSet expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+        public virtual void DiscoverAliases(ExpressionSet expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
         {
             if (expression.Joins?.Expressions == null || !expression.Joins.Expressions.Any())
                 return;

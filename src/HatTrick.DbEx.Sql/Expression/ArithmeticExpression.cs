@@ -16,8 +16,6 @@ namespace HatTrick.DbEx.Sql.Expression
         internal ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
-            //LeftPart = (leftArg.GetType(), leftArg);
-            //RightPart = (rightArg.GetType(), rightArg);
             ExpressionOperator = arithmeticOperator;
         }
         #endregion

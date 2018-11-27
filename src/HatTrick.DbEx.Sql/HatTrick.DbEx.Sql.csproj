@@ -48,7 +48,8 @@
     <Compile Include="Assembler\AppenderFactory.cs" />
     <Compile Include="Assembler\AssemblerContext.cs" />
     <Compile Include="Assembler\AssemblerOverrides.cs" />
-    <Compile Include="Assembler\AliasDiscovery.cs" />
+    <Compile Include="Assembler\EntityAlias.cs" />
+    <Compile Include="Assembler\EntityAliasDiscovery.cs" />
     <Compile Include="Assembler\IAppenderFactory.cs" />
     <Compile Include="Assembler\IAssemblyPartAliasProvider.cs" />
     <Compile Include="Assembler\IAssemblyPartAliasProvider{T}.cs" />

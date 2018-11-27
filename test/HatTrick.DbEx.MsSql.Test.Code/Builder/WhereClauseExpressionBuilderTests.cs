@@ -5,8 +5,6 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
 
-using db = HatTrick.DbEx.MsSql.Builder.MsSqlExpressionBuilder;
-
 namespace HatTrick.DbEx.MsSql.Test.Builder
 {
     public class WhereClauseExpressionBuilderTests

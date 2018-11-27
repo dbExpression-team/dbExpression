@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpressionSet : DbExpression, IDbExpressionSet<JoinExpression>, IAssemblyPart
     {
-        #region internals
+        #region interface
         public IList<JoinExpression> Expressions { get; }  = new List<JoinExpression>();
         #endregion
 

@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (_sqlStatement != null)
                 return _sqlStatement;
 
-            var discoveredAliases = new Dictionary<int, AliasDiscovery>();
+            var discoveredAliases = new Dictionary<int, EntityAliasDiscovery>();
             DiscoverAliases(DBExpression, 0, Configuration, discoveredAliases);
             var context = new AssemblerContext
             {
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             return _sqlStatement;
         }
 
-        public void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, AliasDiscovery> discoveredAliases)
+        public void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
             where T : IAssemblyPart
         {
             var provider = ResolveAliasProvider<T>();
