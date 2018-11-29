@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Extensions.Assembler
 {
-    public static class EntityExpressionOverrideExtensions
+    public static class AssemblerContextExtensions
     {
         public static string ResolveEntityName(this AssemblerContext context, EntityExpression entity)
             => context.ResolveEntityName(entity, context.CurrentDepth);

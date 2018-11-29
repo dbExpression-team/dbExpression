@@ -8,32 +8,31 @@ namespace HatTrick.DbEx.Sql.Expression
     public class FilterExpressionSet : DbExpression, /*IDbExpressionSet<FilterExpression>,*/ IAssemblyPart
     {
         #region interface
-        //public IList<FilterExpression> Expressions { get; } = new List<FilterExpression>();
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
         public DbExpressionPair Expression { get; set; }
         #endregion
 
         #region constructors
+        internal FilterExpressionSet()
+        {
+        }
+
         internal FilterExpressionSet(FilterExpression singleFilter)
         {
             Expression = new DbExpressionPair((typeof(FilterExpression), singleFilter), (null, null));
-            //Expressions.Add(singleFilter);
         }
 
         internal FilterExpressionSet(FilterExpression leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditinalOperator)
         {
             Expression = new DbExpressionPair((typeof(FilterExpression), leftArg), (typeof(FilterExpression), rightArg));
             ConditionalOperator = conditinalOperator;
-            //Expressions.Add(leftArg);
-            //Expressions.Add(rightArg);
         }
 
         internal FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditinalOperator)
         {
             Expression = new DbExpressionPair((typeof(FilterExpressionSet), leftArg), (typeof(FilterExpressionSet), rightArg));
             ConditionalOperator = conditinalOperator;
-            //Expressions.Add(rightArg);
         }
 
         internal FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditinalOperator)
@@ -103,5 +102,4 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
     }
-    
 }

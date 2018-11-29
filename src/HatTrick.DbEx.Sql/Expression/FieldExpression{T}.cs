@@ -3,7 +3,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class FieldExpression<T> : FieldExpression
+    public class FieldExpression<T> : FieldExpression,
+        IDbExpressionSelectClausePart<T>
     {
         #region constructors
         public FieldExpression(EntityExpression parentEntity, string name) : base(parentEntity, name)
@@ -68,27 +69,27 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region field to value arithmetic operators
-        public static ArithmeticExpression operator +(FieldExpression<T> a, T b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        public static ArithmeticExpression<T> operator +(FieldExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator -(FieldExpression<T> a, T b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        public static ArithmeticExpression<T> operator -(FieldExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator *(FieldExpression<T> a, T b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        public static ArithmeticExpression<T> operator *(FieldExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator /(FieldExpression<T> a, T b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
+        public static ArithmeticExpression<T> operator /(FieldExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator %(FieldExpression<T> a, T b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        public static ArithmeticExpression<T> operator %(FieldExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Modulo);
         #endregion
 
         #region field to field arithmetic operators
-        public static ArithmeticExpression operator +(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        public static ArithmeticExpression<T> operator +(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        public static ArithmeticExpression<T> operator -(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator *(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        public static ArithmeticExpression<T> operator *(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator /(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
+        public static ArithmeticExpression<T> operator /(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator %(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        public static ArithmeticExpression<T> operator %(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Modulo);
         #endregion
 
         #region equals

@@ -94,6 +94,11 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private void Having(HavingExpression having)
         {
+            if (Expression.Having?.Expression == null || Expression.Having.Expression == default)
+            {
+                Expression.Having = having;
+                return;
+            }
             Expression.Having &= having;
         }
         #endregion

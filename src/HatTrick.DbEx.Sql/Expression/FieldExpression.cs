@@ -137,21 +137,15 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (string.Compare(obj._metadata.Name, this._metadata.Name, true) != 0) return false;
             if (obj._metadata.ParentEntity != this._metadata.ParentEntity) return false;
+            if (string.Compare(obj._metadata.Name, this._metadata.Name, true) != 0) return false;
+            if (obj._metadata.Size != this._metadata.Size) return false;
 
             return true;
         }
 
         public override bool Equals(object obj)
-        {
-            if (!(obj is FieldExpression other)) return false;
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            if (other._metadata.ParentEntity != this._metadata.ParentEntity) return false;
-
-            return true;
-        }
+         => Equals(obj as FieldExpression);
 
         public override int GetHashCode()
             => base.GetHashCode();
@@ -162,6 +156,8 @@ namespace HatTrick.DbEx.Sql.Expression
             if (ReferenceEquals(obj1, null)) return false;
             if (ReferenceEquals(obj2, null)) return false;
             if (obj1._metadata.ParentEntity != obj2._metadata.ParentEntity) return false;
+            if (string.Compare(obj1._metadata.Name, obj2._metadata.Name, true) != 0) return false;
+            if (obj1._metadata.Size != obj2._metadata.Size) return false;
 
             return true;
         }

@@ -1,6 +1,12 @@
-﻿namespace HatTrick.DbEx.Sql.Expression
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IDbExpressionSelectClausePart
+    public interface IDbExpressionSelectClausePart : IDbExpression
+    {
+    }
+
+    public interface IDbExpressionSelectClausePart<T> : IDbExpressionSelectClausePart
     {
     }
 }

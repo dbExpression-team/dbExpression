@@ -13,6 +13,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
+        internal OrderByExpressionSet()
+        {
+        }
+
         internal OrderByExpressionSet(OrderByExpression a)
         {
             Expressions.Add(a);

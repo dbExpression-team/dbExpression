@@ -21,6 +21,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (expression is FilterExpressionSet set)
             {
+                if (set.Expression == null)
+                    return;
+
                 AppendPart(set, builder, context);
                 return;
             }
@@ -29,16 +32,19 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(FilterExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            builder.Appender.Indent().Write("(");
+            if (expression == null || expression.Expression == null)
+                return;
+
+            builder.Appender.Write("(");
             if (expression.Negate)
             {
                 builder.Appender.Write("NOT (");
             }
-            if (expression.Expression.LeftPart != default)
+            if (expression.Expression?.LeftPart != null && expression.Expression?.LeftPart != default)
             {
                 builder.AppendPart(expression.Expression.LeftPart, context);
             }
-            if (expression.Expression.RightPart != default)
+            if (expression.Expression?.RightPart != null && expression.Expression.RightPart != default)
             {
                 builder.Appender.Write(ConditionalOperatorMap[expression.ConditionalOperator]);
                 builder.AppendPart(expression.Expression.RightPart, context);

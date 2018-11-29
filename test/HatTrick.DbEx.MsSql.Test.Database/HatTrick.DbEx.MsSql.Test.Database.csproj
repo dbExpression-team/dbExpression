@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -116,6 +117,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Subquery.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAll.Functions.cs" />
     <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>

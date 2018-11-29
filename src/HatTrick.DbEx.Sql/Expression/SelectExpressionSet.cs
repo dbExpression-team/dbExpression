@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class SelectExpressionSet : DbExpression, IDbExpressionSet<SelectExpression>, IAssemblyPart
+    public class SelectExpressionSet : DbExpression//, IDbExpressionSet<IDbExpressionSelectClausePart>, IAssemblyPart
     {
         #region interface
-        public IList<SelectExpression> Expressions { get; } = new List<SelectExpression>();
+        public IList<(Type,object)> Expressions { get; } = new List<(Type, object)>();
         #endregion
 
         #region constructor
@@ -18,13 +18,34 @@ namespace HatTrick.DbEx.Sql.Expression
 
         internal SelectExpressionSet(SelectExpression a)
         {
-            Expressions.Add(a);
+            Expressions.Add((a.GetType(), a));
         }
 
         internal SelectExpressionSet(SelectExpression a, SelectExpression b)
         {
-            Expressions.Add(a);
-            Expressions.Add(b);
+            Expressions.Add((a.GetType(), a));
+            Expressions.Add((b.GetType(), b));
+        }
+
+        internal SelectExpressionSet(FieldExpression a, FieldExpression b)
+        {
+            Expressions.Add((a.GetType(), a));
+            Expressions.Add((b.GetType(), b));
+        }
+
+        internal SelectExpressionSet(ArithmeticExpression arithmeticExpression)
+        {
+            Expressions.Add((arithmeticExpression.GetType(), arithmeticExpression));
+        }
+
+        internal SelectExpressionSet(AggregateFunctionExpression aggregateFunctionExpression)
+        {
+            Expressions.Add((aggregateFunctionExpression.GetType(), aggregateFunctionExpression));
+        }
+
+        internal SelectExpressionSet(CoalesceFunctionExpression coalesceFunctionExpression)
+        {
+            Expressions.Add((coalesceFunctionExpression.GetType(), coalesceFunctionExpression));
         }
         #endregion
 
@@ -41,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else
             {
-                aSet.Expressions.Add(b);
+                aSet.Expressions.Add((b.GetType(), b));
             }
             return aSet;
         }

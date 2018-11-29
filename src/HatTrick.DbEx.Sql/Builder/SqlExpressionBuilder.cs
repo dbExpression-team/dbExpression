@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<U>(FilterExpressionSet expression) where U : class, IExpressionBuilder
         {
-            if (Expression.Where == null)
+            if (Expression.Where?.Expression == null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<T, U>(FilterExpressionSet expression) where U : class, IExpressionBuilder<T>
         {
-            if (Expression.Where == null)
+            if (Expression.Where?.Expression == null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;

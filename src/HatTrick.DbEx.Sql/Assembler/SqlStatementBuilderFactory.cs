@@ -25,6 +25,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly OrderByAppender _orderByClauseAppender = new OrderByAppender();
         private static readonly ArithmeticAppender _arithmeticAppender = new ArithmeticAppender();
         private static readonly AggregateFunctionAppender _aggregateFunctionAppender = new AggregateFunctionAppender();
+        private static readonly CoalesceFunctionAppender _coalesceFunctionAppender = new CoalesceFunctionAppender();
+        private static readonly AverageFunctionAppender _averageFunctionAppender = new AverageFunctionAppender();
         private static readonly StringAppender _stringAppender = new StringAppender();
         private static readonly ByteAppender _byteAppender = new ByteAppender();
         private static readonly Int16Appender _int16Appender = new Int16Appender();
@@ -89,6 +91,12 @@ namespace HatTrick.DbEx.Sql.Assembler
                                 return partAppenders[t.GetType()](); //appender configured for this specific (FieldExpression<T>) type has been registered
                             return partAppenders[typeof(FieldExpression)]();
                         }
+                        if (typeof(ArithmeticExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be DBExpressionField<int>, DBExpressionField<Guid>, etc
+                        {
+                            if (partAppenders.ContainsKey(t.GetType()))
+                                return partAppenders[t.GetType()](); //appender configured for this specific (ArithmeticExpression<T>) type has been registered
+                            return partAppenders[typeof(ArithmeticExpression)]();
+                        }
 
                         return partAppenders[t]();
                     }
@@ -151,6 +159,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAppenders.Add(typeof(OrderByExpressionSet), () => _orderByClauseAppender);
             partAppenders.Add(typeof(ArithmeticExpression), () => _arithmeticAppender);
             partAppenders.Add(typeof(AggregateFunctionExpression), () => _aggregateFunctionAppender);
+            partAppenders.Add(typeof(CoalesceFunctionExpression), () => _coalesceFunctionAppender);
+            partAppenders.Add(typeof(AverageFunctionExpression), () => _averageFunctionAppender);
             partAppenders.Add(typeof(string), () => _stringAppender);
             partAppenders.Add(typeof(byte), () => _byteAppender);
             partAppenders.Add(typeof(short), () => _int16Appender);

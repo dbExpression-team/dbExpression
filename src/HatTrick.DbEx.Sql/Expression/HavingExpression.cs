@@ -10,6 +10,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
+        internal HavingExpression()
+        {
+        }
+
         internal HavingExpression(FilterExpression havingCondition)
         {
             Expression = (typeof(FilterExpression), havingCondition);

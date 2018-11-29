@@ -70,7 +70,9 @@
     <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\EnumValueTypeFormatter.cs" />
     <Compile Include="Assembler\ValueTypeFormatter.cs" />
-    <Compile Include="Assembler\_Appenders\AggregateFunctionAppender.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\AverageFunctionAppender.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\CoalesceFunctionAppender.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\AggregateFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\ArithmeticAppender.cs" />
     <Compile Include="Assembler\_Appenders\JoinOnAppender.cs" />
     <Compile Include="Assembler\_Appenders\SchemaAppender.cs" />
@@ -104,11 +106,14 @@
     <Compile Include="Builder\JoinExpressionBuilder{T}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder.cs" />
     <Compile Include="Configuration\DbExConfigurationBuilder.cs" />
-    <Compile Include="Expression\EntityExpressionMetadata.cs" />
+    <Compile Include="Expression\ArithmeticExpression{T}.cs" />
+    <Compile Include="Expression\AverageFunctionExpression.cs" />
+    <Compile Include="Expression\CoalesceFunctionExpression.cs" />
+    <Compile Include="Expression\EntityExpressionMetadata{T}.cs" />
     <Compile Include="Expression\FieldExpressionMetadata.cs" />
     <Compile Include="Expression\IExpressionMetadata.cs" />
     <Compile Include="Expression\IFieldExpressionMetadataProvider.cs" />
-    <Compile Include="Extensions\Assembler\Dictionary{int_DiscoveredAlias}Extensions.cs" />
+    <Compile Include="Extensions\Assembler\Dictionary{int_EntityAliasDiscovery}Extensions.cs" />
     <Compile Include="Extensions\Builder\SqlExpressionBuilderExtensions.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U,V}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U}.cs" />
@@ -157,7 +162,7 @@
     <Compile Include="Executor\ISqlStatementExecutorFactory.cs" />
     <Compile Include="Connection\SqlConnectionFactory.cs" />
     <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
-    <Compile Include="Extensions\Assembler\EntityExpressionOverrideExtensions.cs" />
+    <Compile Include="Extensions\Assembler\AssemblerContextExtensions.cs" />
     <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
     <Compile Include="Mapper\EntityFactory.cs" />
     <Compile Include="Mapper\EntityMapper{T}.cs" />
@@ -198,7 +203,6 @@
     <Compile Include="Extensions\Attribute\ArithmeticiExpressionOperatorAttributeExtensions.cs" />
     <Compile Include="Extensions\Attribute\ConditionalExpressionOperatorAttributeExtensions.cs" />
     <Compile Include="Extensions\Attribute\FilterExpressionOperatorAttributeExtensions.cs" />
-    <Compile Include="Extensions\Expression\IDbExpressionSelectClausePartExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IDbEntity.cs" />
     <Compile Include="IIdentityDbEntity.cs" />
@@ -257,6 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="Extensions\Expression\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HatTrick.DbEx\HatTrick.DbEx.csproj">

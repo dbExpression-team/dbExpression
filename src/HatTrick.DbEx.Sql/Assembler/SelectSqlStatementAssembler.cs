@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart<SelectExpression>(expression.Select.Expressions[i], context);
+                builder.AppendPart(expression.Select.Expressions[i], context);
 
                 if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.Select.Expressions.Count - 1)
                     builder.Appender.Write(",");
@@ -95,102 +95,102 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendJoinClauses(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            if (expression.Joins != null)
+            if (expression.Joins?.Expressions == null || !expression.Joins.Expressions.Any())
+                return;
+
+            builder.Appender
+                .Indentation++;
+
+            foreach (var join in expression.Joins.Expressions)
             {
-                builder.Appender
-                    .Indentation++;
-
-                foreach (var join in expression.Joins.Expressions)
-                {
-                    builder.AppendPart<JoinExpression>(join, context);
-                    builder.Appender.LineBreak();
-                }
-
-                builder.Appender
-                    .Indentation--;
+                builder.AppendPart<JoinExpression>(join, context);
+                builder.Appender.LineBreak();
             }
+
+            builder.Appender
+                .Indentation--;
         }
 
         protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            if (expression.Where != null)
-            {
-                builder.Appender.Indent().Write("WHERE").LineBreak()
-                    .Indentation++;
+            if (expression.Where?.Expression == null || expression.Where.Expression == default)
+                return;
 
-                builder.AppendPart<FilterExpressionSet>(expression.Where, context);
+            builder.Appender.Indent().Write("WHERE").LineBreak()
+                .Indentation++;
+
+            builder.AppendPart<FilterExpressionSet>(expression.Where, context);
                 
-                builder.Appender.LineBreak()
-                    .Indentation--;
-            }
+            builder.Appender.LineBreak()
+                .Indentation--;
         }
 
         protected virtual void AppendGroupByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            if (expression.GroupBy != null)
+            if (expression.GroupBy?.Expressions == null || !expression.GroupBy.Expressions.Any())
+                return;
+
+            builder.Appender.Indent().Write("GROUP BY").LineBreak()
+                .Indentation++;
+
+            for (var i = 0; i < expression.GroupBy.Expressions.Count; i++)
             {
-                builder.Appender.Indent().Write("GROUP BY").LineBreak()
-                    .Indentation++;
+                builder.Appender.Indent();
 
-                for (var i = 0; i < expression.GroupBy.Expressions.Count; i++)
-                {
-                    builder.Appender.Indent();
+                if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
+                    builder.Appender.Write(",");
 
-                    if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
-                        builder.Appender.Write(",");
+                builder.AppendPart<GroupByExpression>(expression.GroupBy.Expressions[i], context);
 
-                    builder.AppendPart<GroupByExpression>(expression.GroupBy.Expressions[i], context);
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.GroupBy.Expressions.Count - 1)
+                    builder.Appender.Write(",");
 
-                    if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.GroupBy.Expressions.Count - 1)
-                        builder.Appender.Write(",");
-
-                    builder.Appender.LineBreak();
-                }
-
-                builder.Appender
-                    .Indentation--;
+                builder.Appender.LineBreak();
             }
+
+            builder.Appender
+                .Indentation--;
         }
 
         protected virtual void AppendHavingClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            if (expression.Having != null)
-            {
-                builder.Appender.Indent().Write("HAVING").LineBreak()
-                    .Indentation++;
+            if (expression.Having?.Expression == null || expression.Having.Expression == default)
+                return;
 
-                builder.AppendPart<HavingExpression>(expression.Having, context);
+            builder.Appender.Indent().Write("HAVING").LineBreak()
+                .Indentation++;
 
-                builder.Appender.LineBreak()
-                    .Indentation--;
-            }
+            builder.AppendPart<HavingExpression>(expression.Having, context);
+
+            builder.Appender.LineBreak()
+                .Indentation--;
         }
 
         protected virtual void AppendOrderByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            if (expression.OrderBy != null)
+            if (expression.OrderBy?.Expressions == null || !expression.OrderBy.Expressions.Any())
+                return;
+
+            builder.Appender.Indent().Write("ORDER BY").LineBreak()
+                .Indentation++;
+
+            for (var i = 0; i < expression.OrderBy.Expressions.Count; i++)
             {
-                builder.Appender.Indent().Write("ORDER BY").LineBreak()
-                    .Indentation++;
+                builder.Appender.Indent();
 
-                for (var i = 0; i < expression.OrderBy.Expressions.Count; i++)
-                {
-                    builder.Appender.Indent();
+                if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
+                    builder.Appender.Write(",");
 
-                    if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
-                        builder.Appender.Write(",");
+                builder.AppendPart<OrderByExpression>(expression.OrderBy.Expressions[i], context);
 
-                    builder.AppendPart<OrderByExpression>(expression.OrderBy.Expressions[i], context);
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.OrderBy.Expressions.Count - 1)
+                    builder.Appender.Write(",");
 
-                    if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.OrderBy.Expressions.Count - 1)
-                        builder.Appender.Write(",");
-
-                    builder.Appender.LineBreak();
-                }
-
-                builder.Appender
-                    .Indentation--;
+                builder.Appender.LineBreak();
             }
+
+            builder.Appender
+                .Indentation--;
         }
     }
 }

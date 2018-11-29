@@ -12,6 +12,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
+        internal GroupByExpressionSet()
+        {
+        }
+
         internal GroupByExpressionSet(GroupByExpression a)
         {
             Expressions.Add(a);

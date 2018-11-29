@@ -12,12 +12,16 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public JoinExpressionSet(JoinExpression a)
+        internal JoinExpressionSet()
+        {
+        }
+
+        internal JoinExpressionSet(JoinExpression a)
         {
             Expressions.Add(a);
         }
 
-        public JoinExpressionSet(JoinExpression a, JoinExpression b)
+        internal JoinExpressionSet(JoinExpression a, JoinExpression b)
         {
             Expressions.Add(a);
             Expressions.Add(b);

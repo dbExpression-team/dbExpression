@@ -20,21 +20,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public int? Top { get; set; }
 
-        public SelectExpressionSet Select { get; set; }
+        public SelectExpressionSet Select { get; set; } = new SelectExpressionSet();
 
-        public InsertExpressionSet Insert { get; set; }
+        public InsertExpressionSet Insert { get; set; } = new InsertExpressionSet();
 
-        public AssignmentExpressionSet Assign { get; set; }
+        public AssignmentExpressionSet Assign { get; set; } = new AssignmentExpressionSet();
 
-        public FilterExpressionSet Where { get; set; }
+        public FilterExpressionSet Where { get; set; } = new FilterExpressionSet();
 
-        public JoinExpressionSet Joins { get; set; }
+        public JoinExpressionSet Joins { get; set; } = new JoinExpressionSet();
 
-        public OrderByExpressionSet OrderBy { get; set; }
+        public OrderByExpressionSet OrderBy { get; set; } = new OrderByExpressionSet();
 
-        public GroupByExpressionSet GroupBy { get; set; }
+        public GroupByExpressionSet GroupBy { get; set; } = new GroupByExpressionSet();
 
-        public HavingExpression Having { get; set; }
+        public HavingExpression Having { get; set; } = new HavingExpression();
         #endregion
 
         #region operators

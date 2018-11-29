@@ -16,19 +16,29 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public SelectExpression(FieldExpression field)
+        internal SelectExpression(FieldExpression field)
         {
             Expression = (field.GetType(), field);
         }
 
-        public SelectExpression(ArithmeticExpression arithmeticExpression)
+        internal SelectExpression(ArithmeticExpression arithmeticExpression)
         {
-            Expression = (typeof(ArithmeticExpression), arithmeticExpression);
+            Expression = (arithmeticExpression.GetType(), arithmeticExpression);
         }
 
-        public SelectExpression(AggregateFunctionExpression aggregateFunctionExpression)
+        internal SelectExpression(AggregateFunctionExpression aggregateFunctionExpression)
         {
-            Expression = (typeof(AggregateFunctionExpression), aggregateFunctionExpression);
+            Expression = (aggregateFunctionExpression.GetType(), aggregateFunctionExpression);
+        }
+
+        internal SelectExpression(CoalesceFunctionExpression coalesceFunctionExpression)
+        {
+            Expression = (coalesceFunctionExpression.GetType(), coalesceFunctionExpression);
+        }
+
+        internal SelectExpression(AverageFunctionExpression averageFunctionExpression)
+        {
+            Expression = (averageFunctionExpression.GetType(), averageFunctionExpression);
         }
         #endregion
 
@@ -137,11 +147,25 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public override bool Equals(object obj) => base.Equals(obj);
-        #endregion
+        public bool Equals(SelectExpression obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (!ReferenceEquals(this.Expression.Item2, obj.Expression.Item2)) return false;
+            if (string.Compare(this._alias, obj._alias) != 0) return false;
+            if (this.IsDistinct != obj.IsDistinct) return false;
 
-        #region override get hash code
-        public override int GetHashCode() => base.GetHashCode();
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is SelectExpression other)) return false;
+            return Equals(other);
+        }
+
+        public override int GetHashCode()
+            => base.GetHashCode();
         #endregion
     }
 }
