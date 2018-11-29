@@ -12,6 +12,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(AverageFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             builder.Appender.Write("AVG(");
+            if (expression.IsDistinct)
+                builder.Appender.Write("DISTINCT ");
             builder.AppendPart(expression.Expression, context);
             builder.Appender.Write(")");
         }

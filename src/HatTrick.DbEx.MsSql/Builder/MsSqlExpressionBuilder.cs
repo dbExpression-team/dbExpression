@@ -116,22 +116,22 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new CoalesceFunctionExpression(parts);
         }
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<short> field)
-            => new AverageFunctionExpression(field);
+        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+            => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<int> field)
-            => new AverageFunctionExpression(field);
+        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+            => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<long> field)
-            => new AverageFunctionExpression(field);
+        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+            => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<double> field)
-            => new AverageFunctionExpression(field);
+        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+            => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<decimal> field)
-            => new AverageFunctionExpression(field);
+        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+            => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<float> field)
-            => new AverageFunctionExpression(field);
+        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+            => new AverageFunctionExpression(field, distinct);
     }
 }

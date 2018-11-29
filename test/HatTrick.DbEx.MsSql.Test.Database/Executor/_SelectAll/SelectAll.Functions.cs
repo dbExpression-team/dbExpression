@@ -123,5 +123,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor._SelectAll
                 average.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in averaging");
             }
         }
+
+        [Trait("Category", "Average")]
+        public partial class Average : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 21.367)]
+            public void Does_averaging_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Avg(dbo.Purchase.TotalPurchaseAmount, distinct:true).As("avg_amount")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var average = exp.Execute();
+
+                //then
+                average.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in averaging");
+            }
+        }
     }
 }

@@ -107,9 +107,9 @@
     <Compile Include="Builder\SqlExpressionBuilder.cs" />
     <Compile Include="Configuration\DbExConfigurationBuilder.cs" />
     <Compile Include="Expression\ArithmeticExpression{T}.cs" />
-    <Compile Include="Expression\AverageFunctionExpression.cs" />
-    <Compile Include="Expression\CoalesceFunctionExpression.cs" />
-    <Compile Include="Expression\EntityExpressionMetadata{T}.cs" />
+    <Compile Include="Expression\_Function\AverageFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\CoalesceFunctionExpression.cs" />
+    <Compile Include="Expression\EntityExpressionMetadata.cs" />
     <Compile Include="Expression\FieldExpressionMetadata.cs" />
     <Compile Include="Expression\IExpressionMetadata.cs" />
     <Compile Include="Expression\IFieldExpressionMetadataProvider.cs" />

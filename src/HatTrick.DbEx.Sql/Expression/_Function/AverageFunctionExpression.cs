@@ -12,6 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public (Type, object) Expression { get; }
+        public bool IsDistinct { get; }
         #endregion
 
         #region constructors
@@ -19,9 +20,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart expression)
+        public AverageFunctionExpression(IDbExpressionSelectClausePart expression, bool isDistinct)
         {
             Expression = (expression.GetType(), (object)expression);
+            IsDistinct = isDistinct;
         }
         #endregion
 
