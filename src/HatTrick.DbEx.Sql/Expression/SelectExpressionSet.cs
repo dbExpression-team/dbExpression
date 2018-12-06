@@ -21,6 +21,11 @@ namespace HatTrick.DbEx.Sql.Expression
             Expressions.Add((a.GetType(), a));
         }
 
+        internal SelectExpressionSet(SelectExpressionSet a)
+        {
+            Expressions = a.Expressions;
+        }
+
         internal SelectExpressionSet(SelectExpression a, SelectExpression b)
         {
             Expressions.Add((a.GetType(), a));
@@ -31,21 +36,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expressions.Add((a.GetType(), a));
             Expressions.Add((b.GetType(), b));
-        }
-
-        internal SelectExpressionSet(ArithmeticExpression arithmeticExpression)
-        {
-            Expressions.Add((arithmeticExpression.GetType(), arithmeticExpression));
-        }
-
-        internal SelectExpressionSet(AggregateFunctionExpression aggregateFunctionExpression)
-        {
-            Expressions.Add((aggregateFunctionExpression.GetType(), aggregateFunctionExpression));
-        }
-
-        internal SelectExpressionSet(CoalesceFunctionExpression coalesceFunctionExpression)
-        {
-            Expressions.Add((coalesceFunctionExpression.GetType(), coalesceFunctionExpression));
         }
         #endregion
 

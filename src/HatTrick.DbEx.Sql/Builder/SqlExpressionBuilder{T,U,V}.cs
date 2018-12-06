@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -22,16 +23,14 @@ namespace HatTrick.DbEx.Sql.Builder
         V IListFromExpressionBuilder<T, U, V>.From(EntityExpression entity)
         {
             Expression.BaseEntity = entity;
-            if (Expression.Select == null)
-                Expression &= entity.GetInclusiveSelectExpression();
+            Expression.Select = new SelectExpressionSet(entity.GetInclusiveSelectExpression());
             return this as V;
         }
 
         V IFromExpressionBuilder<T, U, V>.From(EntityExpression entity)
         {
             Expression.BaseEntity = entity;
-            if (Expression.Select == null)
-                Expression &= entity.GetInclusiveSelectExpression();
+            Expression.Select = new SelectExpressionSet(entity.GetInclusiveSelectExpression());
             return this as V;
         }
     }

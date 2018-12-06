@@ -116,15 +116,15 @@ namespace DataService
 
             public override void FillObject(SqlStatementExecutionResultSet.Row row, Address address, IValueMapper mapper)
             {
-                address.Id = mapper.Map<int>("Address.Id", row.Fields[0]);
-                address.AddressType = (AddressType)mapper.Map<int>("Address.AddressType", row.Fields[1]);
-                address.Line1 = mapper.Map<string>("Address.Line1", row.Fields[2]);
-                address.Line2 = mapper.Map<string>("Address.Line2", row.Fields[3]);
-                address.City = mapper.Map<string>("Address.City", row.Fields[4]);
-                address.State = mapper.Map<string>("Address.State", row.Fields[5]);
-                address.Zip = mapper.Map<string>("Address.Zip", row.Fields[6]);
-                address.DateCreated = mapper.Map<DateTime>("Address.DateCreated", row.Fields[7]);
-                address.DateUpdated = mapper.Map<DateTime>("Address.DateUpdated", row.Fields[8]);
+                address.Id = mapper.Map<int>("Address.Id", row.Fields[0].Value);
+                address.AddressType = (AddressType)mapper.Map<int>("Address.AddressType", row.Fields[1].Value);
+                address.Line1 = mapper.Map<string>("Address.Line1", row.Fields[2].Value);
+                address.Line2 = mapper.Map<string>("Address.Line2", row.Fields[3].Value);
+                address.City = mapper.Map<string>("Address.City", row.Fields[4].Value);
+                address.State = mapper.Map<string>("Address.State", row.Fields[5].Value);
+                address.Zip = mapper.Map<string>("Address.Zip", row.Fields[6].Value);
+                address.DateCreated = mapper.Map<DateTime>("Address.DateCreated", row.Fields[7].Value);
+                address.DateUpdated = mapper.Map<DateTime>("Address.DateUpdated", row.Fields[8].Value);
             }
 
             protected bool IsPersistSafe(Address address, out List<string> validationMessages)
@@ -237,13 +237,13 @@ namespace DataService
 
             public override void FillObject(SqlStatementExecutionResultSet.Row row, Person person, IValueMapper mapper)
             {
-                person.Id = mapper.Map<int>("Person.Id", row.Fields[0]);
-                person.FirstName = mapper.Map<string>("Person.FirstName", row.Fields[1]);
-                person.LastName = mapper.Map<string>("Person.LastName", row.Fields[2]);
-                person.BirthDate = mapper.Map<DateTime>("Person.BirthDate", row.Fields[3]);
-                person.GenderType = (GenderType)mapper.Map<int>("Person.GenderType", row.Fields[4]);
-                person.DateCreated = mapper.Map<DateTime>("Person.DateCreated", row.Fields[5]);
-                person.DateUpdated = mapper.Map<DateTime>("Person.DateUpdated", row.Fields[6]);
+                person.Id = mapper.Map<int>("Person.Id", row.Fields[0].Value);
+                person.FirstName = mapper.Map<string>("Person.FirstName", row.Fields[1].Value);
+                person.LastName = mapper.Map<string>("Person.LastName", row.Fields[2].Value);
+                person.BirthDate = mapper.Map<DateTime>("Person.BirthDate", row.Fields[3].Value);
+                person.GenderType = (GenderType)mapper.Map<int>("Person.GenderType", row.Fields[4].Value);
+                person.DateCreated = mapper.Map<DateTime>("Person.DateCreated", row.Fields[5].Value);
+                person.DateUpdated = mapper.Map<DateTime>("Person.DateUpdated", row.Fields[6].Value);
             }
 
             protected bool IsPersistSafe(Person person, out List<string> validationMessages)
@@ -334,10 +334,10 @@ namespace DataService
 
             public override void FillObject(SqlStatementExecutionResultSet.Row row, Person_Address person_Address, IValueMapper mapper)
             {
-                person_Address.Id = mapper.Map<int>("Person_Address.Id", row.Fields[0]);
-                person_Address.PersonId = mapper.Map<int>("Person_Address.PersonId", row.Fields[1]);
-                person_Address.AddressId = mapper.Map<int>("Person_Address.AddressId", row.Fields[2]);
-                person_Address.DateCreated = mapper.Map<DateTime>("Person_Address.DateCreated", row.Fields[3]);
+                person_Address.Id = mapper.Map<int>("Person_Address.Id", row.Fields[0].Value);
+                person_Address.PersonId = mapper.Map<int>("Person_Address.PersonId", row.Fields[1].Value);
+                person_Address.AddressId = mapper.Map<int>("Person_Address.AddressId", row.Fields[2].Value);
+                person_Address.DateCreated = mapper.Map<DateTime>("Person_Address.DateCreated", row.Fields[3].Value);
             }
 
             protected bool IsPersistSafe(Person_Address person_Address, out List<string> validationMessages)
@@ -453,15 +453,15 @@ namespace DataService
 
             public override void FillObject(SqlStatementExecutionResultSet.Row row, Product product, IValueMapper mapper)
             {
-                product.Id = mapper.Map<int>("Product.Id", row.Fields[0]);
-                product.ProductCategoryType = (ProductCategoryType)mapper.Map<int>("Product.ProductCategoryType", row.Fields[1]);
-                product.Name = mapper.Map<string>("Product.Name", row.Fields[2]);
-                product.Description = mapper.Map<string>("Product.Description", row.Fields[3]);
-                product.Price = mapper.Map<decimal>("Product.Price", row.Fields[4]);
-                product.ListPrice = mapper.Map<decimal>("Product.ListPrice", row.Fields[5]);
-                product.Quantity = mapper.Map<int>("Product.Quantity", row.Fields[6]);
-                product.DateCreated = mapper.Map<DateTime>("Product.DateCreated", row.Fields[7]);
-                product.DateUpdated = mapper.Map<DateTime>("Product.IdDateUpdted", row.Fields[8]);
+                product.Id = mapper.Map<int>("Product.Id", row.Fields[0].Value);
+                product.ProductCategoryType = (ProductCategoryType)mapper.Map<int>("Product.ProductCategoryType", row.Fields[1].Value);
+                product.Name = mapper.Map<string>("Product.Name", row.Fields[2].Value);
+                product.Description = mapper.Map<string>("Product.Description", row.Fields[3].Value);
+                product.Price = mapper.Map<decimal>("Product.Price", row.Fields[4].Value);
+                product.ListPrice = mapper.Map<decimal>("Product.ListPrice", row.Fields[5].Value);
+                product.Quantity = mapper.Map<int>("Product.Quantity", row.Fields[6].Value);
+                product.DateCreated = mapper.Map<DateTime>("Product.DateCreated", row.Fields[7].Value);
+                product.DateUpdated = mapper.Map<DateTime>("Product.IdDateUpdted", row.Fields[8].Value);
             }
 
             protected bool IsPersistSafe(Product product, out List<string> validationMessages)
@@ -568,13 +568,13 @@ namespace DataService
 
             public override void FillObject(SqlStatementExecutionResultSet.Row row, Purchase purchase, IValueMapper mapper)
             {
-                purchase.Id = mapper.Map<int>("Purchase.Id", row.Fields[0]);
-                purchase.PersonId = mapper.Map<int>("Purchase.PersonId", row.Fields[1]);
-                purchase.TotalPurchaseAmount = mapper.Map<decimal>("Purchase.TotalPurchaseAmount", row.Fields[2]);
-                purchase.PurchaseDate = mapper.Map<DateTime>("Purchase.PurchaseDate", row.Fields[3]);
-                purchase.ShipDate = mapper.Map<DateTime>("Purchase.ShipDate", row.Fields[4]);
-                purchase.DateCreated = mapper.Map<DateTime>("Purchase.DateCreated", row.Fields[5]);
-                purchase.DateUpdated = mapper.Map<DateTime>("Purchase.DateUpdated", row.Fields[6]);
+                purchase.Id = mapper.Map<int>("Purchase.Id", row.Fields[0].Value);
+                purchase.PersonId = mapper.Map<int>("Purchase.PersonId", row.Fields[1].Value);
+                purchase.TotalPurchaseAmount = mapper.Map<decimal>("Purchase.TotalPurchaseAmount", row.Fields[2].Value);
+                purchase.PurchaseDate = mapper.Map<DateTime>("Purchase.PurchaseDate", row.Fields[3].Value);
+                purchase.ShipDate = mapper.Map<DateTime>("Purchase.ShipDate", row.Fields[4].Value);
+                purchase.DateCreated = mapper.Map<DateTime>("Purchase.DateCreated", row.Fields[5].Value);
+                purchase.DateUpdated = mapper.Map<DateTime>("Purchase.DateUpdated", row.Fields[6].Value);
             }
 
             protected bool IsPersistSafe(Purchase purchase, out List<string> validationMessages)
@@ -679,13 +679,13 @@ namespace DataService
 
             public override void FillObject(SqlStatementExecutionResultSet.Row row, PurchaseLine purchaseLine, IValueMapper mapper)
             {
-                purchaseLine.Id = mapper.Map<int>("Purchase.Id", row.Fields[0]);
-                purchaseLine.PurchaseId = mapper.Map<int>("Purchase.PurchaseId", row.Fields[1]);
-                purchaseLine.ProductId = mapper.Map<int>("Purchase.ProductId", row.Fields[2]);
-                purchaseLine.PurchasePrice = mapper.Map<decimal>("Purchase.PurchasePrice", row.Fields[3]);
-                purchaseLine.Quantity = mapper.Map<int>("Purchase.Quantity", row.Fields[4]);
-                purchaseLine.DateCreated = mapper.Map<DateTime>("Purchase.DateCreated", row.Fields[5]);
-                purchaseLine.DateUpdated = mapper.Map<DateTime>("Purchase.DateUpdated", row.Fields[6]);
+                purchaseLine.Id = mapper.Map<int>("Purchase.Id", row.Fields[0].Value);
+                purchaseLine.PurchaseId = mapper.Map<int>("Purchase.PurchaseId", row.Fields[1].Value);
+                purchaseLine.ProductId = mapper.Map<int>("Purchase.ProductId", row.Fields[2].Value);
+                purchaseLine.PurchasePrice = mapper.Map<decimal>("Purchase.PurchasePrice", row.Fields[3].Value);
+                purchaseLine.Quantity = mapper.Map<int>("Purchase.Quantity", row.Fields[4].Value);
+                purchaseLine.DateCreated = mapper.Map<DateTime>("Purchase.DateCreated", row.Fields[5].Value);
+                purchaseLine.DateUpdated = mapper.Map<DateTime>("Purchase.DateUpdated", row.Fields[6].Value);
             }
 
             protected bool IsPersistSafe(Purchase purchase, out List<string> validationMessages)

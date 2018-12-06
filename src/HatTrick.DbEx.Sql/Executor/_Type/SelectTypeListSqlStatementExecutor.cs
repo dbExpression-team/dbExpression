@@ -31,6 +31,7 @@ namespace HatTrick.DbEx.Sql.Executor
                         var value = dr.GetValue(i);
                         row.Fields.Add(i, new SqlStatementExecutionResultSet.Field(dr.GetName(i), value == DBNull.Value ? null : value));
                     }
+                    list.Rows.Add(row);
                 }
                 dr.Close();
                 if (!connection.IsTransactional) { connection.Disconnect(); }

@@ -26,19 +26,9 @@ namespace HatTrick.DbEx.Sql.Expression
             Expression = (arithmeticExpression.GetType(), arithmeticExpression);
         }
 
-        internal SelectExpression(AggregateFunctionExpression aggregateFunctionExpression)
+        internal SelectExpression(IDbFunctionExpression function)
         {
-            Expression = (aggregateFunctionExpression.GetType(), aggregateFunctionExpression);
-        }
-
-        internal SelectExpression(CoalesceFunctionExpression coalesceFunctionExpression)
-        {
-            Expression = (coalesceFunctionExpression.GetType(), coalesceFunctionExpression);
-        }
-
-        internal SelectExpression(AverageFunctionExpression averageFunctionExpression)
-        {
-            Expression = (averageFunctionExpression.GetType(), averageFunctionExpression);
+            Expression = (function.GetType(), function);
         }
         #endregion
 

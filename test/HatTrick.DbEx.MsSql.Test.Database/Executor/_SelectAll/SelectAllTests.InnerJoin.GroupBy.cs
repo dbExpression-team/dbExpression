@@ -13,9 +13,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             public partial class GroupBy : ExecutorTestBase
             {
-
-
                 [Theory]
+                [Trait("Function", "COUNT")]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_have_correct_record_counts(int version)
                 {
@@ -24,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Address.Id.Count().As("AddressCount")
+                            db.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
@@ -41,6 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [Trait("Function", "COUNT")]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version)
                 {
@@ -49,13 +49,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Address.Id.Count().As("AddressCount")
+                            db.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
-                        .Having(dbo.Address.Id.Count() > 1);
+                        .Having(db.Count(dbo.Address.Id) > 1);
 
                     //when               
                     var persons = exp.Execute();
@@ -65,6 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [Trait("Function", "COUNT")]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version)
                 {
@@ -73,14 +74,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Address.Id.Count().As("AddressCount")
+                            db.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         //basically equal to 2, testing composite having statement
-                        .Having(dbo.Address.Id.Count() > 1 & dbo.Address.Id.Count() < 3);
+                        .Having(db.Count(dbo.Address.Id) > 1 & db.Count(dbo.Address.Id) < 3);
 
                     //when               
                     var persons = exp.Execute();
@@ -90,6 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [Trait("Function", "COUNT")]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version)
                 {
@@ -98,14 +100,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Address.Id.Count().As("AddressCount")
+                            db.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         //testing composite having statement with 3 parts
-                        .Having(dbo.Address.Id.Count() == 1 | dbo.Address.Id.Count() == 2 | dbo.Address.Id.Count() == 3);
+                        .Having(db.Count(dbo.Address.Id) == 1 | db.Count(dbo.Address.Id) == 2 | db.Count(dbo.Address.Id) == 3);
 
                     //when               
                     var persons = exp.Execute();

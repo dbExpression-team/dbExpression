@@ -5,11 +5,11 @@ using HatTrick.DbEx.Sql.Extensions.Builder;
 using System;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Database.Executor._SelectAll
+namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     public partial class SelectAll
     {
-		[Trait("Category", "Coalesce")]
+		[Trait("Function", "COALESCE")]
         public partial class Coalesce : ExecutorTestBase
         {
             [Theory]
@@ -102,7 +102,94 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor._SelectAll
             }
         }
 
-        [Trait("Category", "Average")]
+        [Trait("Function", "ISNULL")]
+        public partial class IsNull : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 15)]
+            public void Does_isnull_ship_date_and_purchase_date_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll<DateTime>(
+                        db.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var dates = exp.Execute();
+
+                //then
+                dates.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2014, 15)]
+            public void Does_isnull_all_product_dates_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll<DateTime>(
+                        db.IsNull(
+                            dbo.Purchase.ShipDate,
+                            DateTime.Now
+                        ).As("relevant_date")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var dates = exp.Execute();
+
+                //then
+                dates.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2014, 15)]
+            public void Does_isnull_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(
+                        dbo.Purchase.TotalPurchaseAmount,
+                        db.IsNull(
+                            dbo.Purchase.ShipDate,
+                            dbo.Purchase.PurchaseDate
+                        ).As("relevant_date")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var dates = exp.Execute();
+
+                //then
+                dates.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2014, 15)]
+            public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(
+                        dbo.Purchase.TotalPurchaseAmount,
+                        db.IsNull(
+                            dbo.Purchase.ShipDate,
+                            dbo.Purchase.DateCreated + DateTime.Now
+                        ).As("relevant_date")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var dates = exp.Execute();
+
+                //then
+                dates.Should().HaveCount(expectedCount);
+            }
+        }
+
+        [Trait("Function", "AVG")]
         public partial class Average : ExecutorTestBase
         {
             [Theory]
@@ -122,11 +209,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor._SelectAll
                 //then
                 average.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in averaging");
             }
-        }
 
-        [Trait("Category", "Average")]
-        public partial class Average : ExecutorTestBase
-        {
             [Theory]
             [InlineData(2014, 21.367)]
             public void Does_averaging_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
@@ -143,6 +226,344 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor._SelectAll
 
                 //then
                 average.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in averaging");
+            }
+        }
+
+        [Trait("Function", "MIN")]
+        public partial class Minimum : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 5.11)]
+            public void Does_selecting_minimum_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Min(dbo.Purchase.TotalPurchaseAmount).As("min_amount")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var min = exp.Execute();
+
+                //then
+                min.Should().Be(expectedValue);
+            }
+
+            [Theory]
+            [InlineData(2014, 5.11)]
+            public void Does_selecting_minimum_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Min(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("min_amount")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var min = exp.Execute();
+
+                //then
+                min.Should().Be(expectedValue);
+            }
+        }
+
+        [Trait("Function", "MAX")]
+        public partial class Maximum : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 55.96)]
+            public void Does_selecting_maximum_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Max(dbo.Purchase.TotalPurchaseAmount).As("max_amount")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var max = exp.Execute();
+
+                //then
+                max.Should().Be(expectedValue);
+            }
+
+            [Theory]
+            [InlineData(2014, 55.96)]
+            public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Max(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("max_amount")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var max = exp.Execute();
+
+                //then
+                max.Should().Be(expectedValue);
+            }
+        }
+
+        [Trait("Function", "COUNT")]
+        public partial class Count : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 15)]
+            public void Does_selecting_count_of_personid_succeed(int version, int expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<int>(
+                        db.Count(dbo.Purchase.PersonId).As("count")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var count = exp.Execute();
+
+                //then
+                count.Should().Be(expectedValue);
+            }
+
+            [Theory]
+            [InlineData(2014, 6)]
+            public void Does_selecting_count_of_distinct_personid_succeed(int version, int expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<int>(
+                        db.Count(dbo.Purchase.PersonId, distinct: true).As("count")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var max = exp.Execute();
+
+                //then
+                max.Should().Be(expectedValue);
+            }
+
+            [Theory]
+            [InlineData(2014, 15)]
+            public void Does_selecting_count_of_star_succeed(int version, int expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<int>(
+                        db.Count()
+                    ).From(dbo.Purchase);
+
+                //when               
+                var max = exp.Execute();
+
+                //then
+                max.Should().Be(expectedValue);
+            }
+        }
+
+        [Trait("Function", "SUM")]
+        public partial class Sum : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 308.15)]
+            public void Does_sum_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Sum(dbo.Purchase.TotalPurchaseAmount).As("sum")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var sum = exp.Execute();
+
+                //then
+                sum.Should().Be(expectedValue);
+            }
+
+            [Theory]
+            [InlineData(2014, 299.15)]
+            public void Does_sum_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Sum(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("sum")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var sum = exp.Execute();
+
+                //then
+                sum.Should().Be(expectedValue);
+            }
+        }
+
+        [Trait("Function", "STDEV")]
+        public partial class StandardDeviation : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 16.146)]
+            public void Does_standard_deviation_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.StDev(dbo.Purchase.TotalPurchaseAmount).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of standard deviation");
+            }
+
+            [Theory]
+            [InlineData(2014, 16.425)]
+            public void Does_standard_deviation_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.StDev(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of standard deviation");
+            }
+        }
+
+        [Trait("Function", "STDEVP")]
+        public partial class StandardDeviationPopulation : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 15.599)]
+            public void Does_standard_deviation_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.StDevP(dbo.Purchase.TotalPurchaseAmount).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of standard deviation");
+            }
+
+            [Theory]
+            [InlineData(2014, 15.827)]
+            public void Does_standard_deviation_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.StDevP(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of standard deviation");
+            }
+        }
+
+        [Trait("Function", "VAR")]
+        public partial class Var : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 260.712)]
+            public void Does_var_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Var(dbo.Purchase.TotalPurchaseAmount).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of standard deviation of population");
+            }
+
+            [Theory]
+            [InlineData(2014, 269.785)]
+            public void Does_var_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.Var(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of standard deviation of population");
+            }
+        }
+
+        [Trait("Function", "VARP")]
+        public partial class VariancePopulation : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2014, 243.331)]
+            public void Does_varp_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.VarP(dbo.Purchase.TotalPurchaseAmount).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of variance of population");
+            }
+
+            [Theory]
+            [InlineData(2014, 250.515)]
+            public void Does_varp_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<decimal>(
+                        db.VarP(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                    ).From(dbo.Purchase);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of variance of population");
             }
         }
     }

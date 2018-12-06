@@ -3,7 +3,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class HavingExpression : DbExpression, IAssemblyPart
+    public class HavingExpression :
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
         public (Type,object) Expression { get; private set; }
@@ -22,6 +24,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public HavingExpression(FilterExpressionSet havingCondition)
         {
             Expression = (typeof(FilterExpressionSet), havingCondition);
+        }
+
+        internal HavingExpression(IDbFunctionExpression function)
+        {
+            Expression = (function.GetType(), function);
         }
         #endregion
 

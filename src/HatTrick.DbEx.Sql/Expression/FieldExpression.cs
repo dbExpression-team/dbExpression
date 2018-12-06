@@ -74,18 +74,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public AssignmentExpression Set(DbExpression expression) => new AssignmentExpression(this, expression);
         #endregion
 
-        #region aggregate functions
-        public SelectExpression Avg(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.AVG, distinct);
-
-        public SelectExpression Min(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.MIN, distinct);
-
-        public SelectExpression Max(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.MAX, distinct);
-
-        public SelectExpression Sum(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.SUM, distinct);
-
-        public SelectExpression Count(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.COUNT, distinct);
-        #endregion
-
         #region implicit select operator
         public static implicit operator SelectExpression(FieldExpression field) => new SelectExpression(field);
         #endregion

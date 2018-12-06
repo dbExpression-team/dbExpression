@@ -20,18 +20,6 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region aggregate functions
-        public SelectExpression Avg(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.AVG, distinct);
-
-        public SelectExpression Min(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.MIN, distinct);
-
-        public SelectExpression Max(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.MAX, distinct);
-
-        public SelectExpression Sum(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.SUM, distinct);
-
-        public SelectExpression Count(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.COUNT, distinct);
-        #endregion
-
         #region to string
         public override string ToString() => $"({LeftPart.Item2} {ExpressionOperator} {RightPart.Item2})";
         #endregion

@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.dbo;
 using DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -19,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(dbo.Person.Id)
+            var exp = db.SelectAll<Person>()
                .From(dbo.Person);
 
             //when               
@@ -36,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(dbo.Purchase.Id)
+            var exp = db.SelectAll<Purchase>()
                .From(dbo.Purchase);
 
             //when               

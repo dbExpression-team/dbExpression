@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public GroupByExpressionSet GroupBy { get; set; } = new GroupByExpressionSet();
 
-        public HavingExpression Having { get; set; } = new HavingExpression();
+        public HavingExpression Having { get; set; }
         #endregion
 
         #region operators

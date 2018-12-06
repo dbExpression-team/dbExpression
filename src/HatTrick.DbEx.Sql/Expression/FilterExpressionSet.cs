@@ -5,7 +5,10 @@ using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class FilterExpressionSet : DbExpression, /*IDbExpressionSet<FilterExpression>,*/ IAssemblyPart
+    public class FilterExpressionSet : 
+        IDbExpression, 
+        IAssemblyPart,
+        IDbFunctionExpression
     {
         #region interface
         public readonly ConditionalExpressionOperator ConditionalOperator;
