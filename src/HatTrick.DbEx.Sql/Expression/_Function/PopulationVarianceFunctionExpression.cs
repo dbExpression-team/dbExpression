@@ -8,12 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
     public class PopulationVarianceFunctionExpression :
         IDbFunctionExpression,
         IAssemblyPart,
-        IDbExpressionSelectClausePart,
+        IDbExpressionColumnExpression,
+        IDbExpressionIsDistinctProvider,
+        IDbExpressionAliasProvider,
         IEquatable<PopulationVarianceFunctionExpression>
     {
+        #region internals
+        protected bool IsDistinct { get; private set; }
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public (Type, object) Expression { get; }
-        public bool IsDistinct { get; }
+        bool IDbExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -21,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public PopulationVarianceFunctionExpression(IDbExpressionSelectClausePart expression, bool isDistinct)
+        public PopulationVarianceFunctionExpression(IDbExpressionColumnExpression expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
@@ -29,7 +37,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
+        public PopulationVarianceFunctionExpression As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string

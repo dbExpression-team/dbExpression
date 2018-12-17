@@ -10,10 +10,17 @@ namespace HatTrick.DbEx.Sql.Expression
     public class CoalesceFunctionExpression :
         IDbFunctionExpression,
         IAssemblyPart,
-        IDbExpressionSelectClausePart
+        IDbExpressionColumnExpression,
+        IDbExpressionAliasProvider,
+        IEquatable<CoalesceFunctionExpression>
     {
+        #region internals
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public IList<(Type,object)> Expressions { get; } = new List<(Type,object)>();
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -21,15 +28,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public CoalesceFunctionExpression(IList<IDbExpressionSelectClausePart> expressions)
+        public CoalesceFunctionExpression(IList<IDbExpressionColumnExpression> expressions)
         {
             Expressions = expressions.Select(e => (e.GetType(), (object)e)).ToList();
         }
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
-
+        public CoalesceFunctionExpression As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string
@@ -52,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         public override bool Equals(object obj)
-         => obj is CoalesceFunctionExpression exp ? Equals(exp) : false;
+            => obj is CoalesceFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
             => base.GetHashCode();

@@ -1,7 +1,10 @@
-﻿using HatTrick.DbEx.MsSql.Types;
+﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
@@ -20,25 +23,33 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         }
 
-        public override DbParameter Add(object value, Type valueType, int? size)
+        public override DbParameter Add<T>(object value)
         {
-            object val = (value == null) ? DBNull.Value : value;
-            if (MsSqlTypeMap.IsSqlTypeKnown(valueType))
-            {
-                if (size.HasValue)
-                {
-                    var parameter = new SqlParameter($"@P{(Parameters.Count + 1)}", MsSqlTypeMap.GetSqlType(valueType), size.Value) { Value = val };
-                    Parameters.Add(parameter);
-                    return parameter;
-                }
-                else
-                {
-                    var parameter = new SqlParameter($"@P{(Parameters.Count + 1)}", MsSqlTypeMap.GetSqlType(valueType)) { Value = val };
-                    Parameters.Add(parameter);
-                    return parameter;
-                }
-            }
-            return new SqlParameter($"@P{(Parameters.Count + 1)}", val);
+           return Add(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
+        }
+
+        public override DbParameter Add(object value, Type valueType)
+        {
+            return Add(value, MsSqlTypeMap.GetSqlType(valueType), null, null, null);
+        }
+
+        public override DbParameter Add(object value, FieldExpressionMetadata metadata)
+        {
+            return Add(value, (SqlDbType)metadata.DbType, metadata.Size, metadata.Precision, metadata.Scale);
+        }
+
+        private DbParameter Add(object value, SqlDbType dbType, int? size, byte? precision, byte? scale)
+        {
+            object val = value ?? DBNull.Value;
+            var parameter = new SqlParameter($"@P{(Parameters.Count + 1)}", dbType) { Value = val };
+            if (size.HasValue)
+                parameter.Size = size.Value;
+            if (precision.HasValue)
+                parameter.Precision = precision.Value;
+            if (scale.HasValue)
+                parameter.Scale = scale.Value;
+            Parameters.Add(parameter);
+            return parameter;
         }
     }
 }

@@ -57,15 +57,15 @@ namespace HatTrick.DbEx.Sql.Executor
 
         private IList<(int, string, object)> GetColumns(IDataReader dr)
         {
-            int @count = dr.FieldCount;
+            int count = dr.FieldCount;
             if (count == 0)
                 return null;
 
-            var columns = new List<(int, string, object)>();
-            for (int i = 0; i < @count; i++)
+            var columns = new (int, string, object)[count];
+            for (int i = 0; i < count; i++)
             {
                 object value = dr.GetValue(i);
-                columns.Add((i, dr.GetName(i), value == DBNull.Value ? null : value));
+                columns[i] = (i, dr.GetName(i), value == DBNull.Value ? null : value);
             }
 
             return columns;

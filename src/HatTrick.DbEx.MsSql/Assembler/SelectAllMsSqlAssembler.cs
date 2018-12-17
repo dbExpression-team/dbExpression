@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 return;
             }
 
-            if (!expression.Distinct) //no distinct, return standard CTE for page
+            if (!(expression.Select as IDbExpressionIsDistinctProvider).IsDistinct) //no distinct, return standard CTE for page
             {
                 //start CTE
                 builder.Appender.Indent().Write("SELECT").LineBreak()
@@ -59,9 +59,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     .Indentation--.Indent().Write("WHERE").LineBreak()
                     .Indentation++
                         .Write("[__index] BETWEEN ")
-                        .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)
+                        .Write(builder.Parameters.Add<int>((expression.SkipValue ?? 0) + 1).ParameterName)
                         .Write(" AND ")
-                        .Write(builder.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1).ParameterName)
+                        .Write(builder.Parameters.Add<int>((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1).ParameterName)
                         .LineBreak()
                     .Indentation--.Indent().Write("ORDER BY").LineBreak()
                     .Indentation++.Indent().Write("[__index]");

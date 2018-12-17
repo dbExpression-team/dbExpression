@@ -8,12 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
     public class AverageFunctionExpression :
         IDbFunctionExpression,
         IAssemblyPart,
-        IDbExpressionSelectClausePart,
+        IDbExpressionColumnExpression,
+        IDbExpressionIsDistinctProvider,
+        IDbExpressionAliasProvider,
         IEquatable<AverageFunctionExpression>
     {
+        #region internals
+        protected bool IsDistinct { get; private set; }
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public (Type, object) Expression { get; }
-        public bool IsDistinct { get; }
+        bool IDbExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -21,43 +29,43 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<byte> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<byte> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<short> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<short> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<int> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<int> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<long> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<long> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<decimal> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<decimal> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<double> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<double> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public AverageFunctionExpression(IDbExpressionSelectClausePart<float> expression, bool isDistinct)
+        public AverageFunctionExpression(IDbExpressionColumnExpression<float> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
@@ -65,7 +73,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
+        public AverageFunctionExpression As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string

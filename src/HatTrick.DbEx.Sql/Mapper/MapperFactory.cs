@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         public void RegisterValueMapper<T>(Func<IValueMapper<T>> mapper)
             where T : IComparable => maps[typeof(T)] = mapper;
 
-        public void RegisterEntityMapper<T>(Action<SqlStatementExecutionResultSet.Row, T, IValueMapper> mapFunction)
+        public void RegisterEntityMapper<T>(Action<T, IFieldReader, IValueMapper> mapFunction)
             where T : class, IDbEntity => maps[typeof(T)] = () => new EntityMapper<T>(mapFunction);
 
         public IEntityMapper<T> CreateEntityMapper<T>(EntityExpression<T> entity)
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             if (!maps.ContainsKey(typeof(T)))
             {
                 // "auto-fill" on first request any entities that have not been specifically registered
-                RegisterEntityMapper<T>(entity.FillObject);
+                RegisterEntityMapper<T>((entity as IDbExpressionEntity<T>).HydrateEntity);
             }
             return maps[typeof(T)]() as IEntityMapper<T>;
         }

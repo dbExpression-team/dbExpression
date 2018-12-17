@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
             entity = DbExConfigurationSettings.Settings.EntityFactory.CreateEntity<T>();
             var entityMapper = DbExConfigurationSettings.Settings.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
             var valueMapper = DbExConfigurationSettings.Settings.MapperFactory.CreateValueMapper();
-            entityMapper.Map(queryResults.Rows[0], entity, valueMapper);
+            entityMapper.Map(entity, queryResults.Rows[0], valueMapper);
 
             return entity;
         }
@@ -158,7 +158,7 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
             foreach (var row in queryResults.Rows)
             {
                 var entity = DbExConfigurationSettings.Settings.EntityFactory.CreateEntity<T>();
-                entityMapper.Map(row, entity, valueMapper);
+                entityMapper.Map(entity, row, valueMapper);
                 values.Add(entity);
             }
             return values;

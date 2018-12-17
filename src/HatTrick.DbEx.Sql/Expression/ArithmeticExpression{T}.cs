@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class ArithmeticExpression<T> :
         ArithmeticExpression, 
-        IDbExpressionSelectClausePart<T>
+        IDbExpressionColumnExpression<T>
     {
         #region constructors
         internal ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
@@ -36,17 +36,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic expression to expression relational operators
-        public static FilterExpression operator ==(ArithmeticExpression<T> a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator ==(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator !=(ArithmeticExpression<T> a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator !=(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator <(ArithmeticExpression<T> a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator <(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <=(ArithmeticExpression<T> a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator <=(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator >(ArithmeticExpression<T> a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator >(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >=(ArithmeticExpression<T> a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator >=(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #region arithmetic to value relational operators

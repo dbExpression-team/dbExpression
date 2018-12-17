@@ -17,9 +17,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.AppendPart<SchemaExpression>(provider.Metadata.Schema, context);
                 builder.Appender.Write(".");
             }
-            builder.Appender.Write("[");
+            builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
             builder.Appender.Write(provider.Metadata.EntityName);
-            builder.Appender.Write("]");
+            builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
         }
     }
 }

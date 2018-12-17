@@ -9,7 +9,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(byte expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            builder.Appender.Write(builder.Parameters.Add(expression).ParameterName);
+            if (context.CurrentField != null)
+                builder.Appender.Write(builder.Parameters.Add(expression, context.CurrentField).ParameterName);
+            else
+                builder.Appender.Write(builder.Parameters.Add<byte>(expression).ParameterName);
         }
     }
 }

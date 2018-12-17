@@ -6,6 +6,7 @@ using HatTrick.DbEx.MsSql.Test.Executor;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
+    [Trait("Statement", "UPDATE")]
     public partial class Update : ExecutorTestBase
     {
         [Theory]
@@ -17,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var exp = db.Update(dbo.Person.FirstName.Set("Foo"))
                .From(dbo.Person)
-               .Where(dbo.Person.Id == 1);               
+               .Where(dbo.Person.Id == 1);
 
             //when               
             exp.Execute();

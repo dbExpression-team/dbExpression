@@ -5,13 +5,20 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AssignmentExpressionSet : DbExpression, IDbExpressionSet<AssignmentExpression>, IAssemblyPart
+    public class AssignmentExpressionSet : 
+        IDbExpressionSet<AssignmentExpression>, 
+        IAssemblyPart
     {
         #region interface
         public IList<AssignmentExpression> Expressions { get; } = new List<AssignmentExpression>();
         #endregion
 
         #region constructors
+        public AssignmentExpressionSet(params AssignmentExpression[] fields)
+        {
+            Expressions = fields.ToList();
+        }
+
         internal AssignmentExpressionSet()
         {
         }

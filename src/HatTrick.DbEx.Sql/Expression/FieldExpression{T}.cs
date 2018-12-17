@@ -1,19 +1,30 @@
 ﻿using System;
+using System.Data;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class FieldExpression<T> : FieldExpression,
-        IDbExpressionSelectClausePart<T>
+    public class FieldExpression<T> : 
+        FieldExpression,
+        IDbExpressionColumnExpression<T>,
+        IDbExpressionAliasProvider
     {
+        #region interface
+        string IDbExpressionAliasProvider.Alias => Alias;
+        #endregion
+
         #region constructors
-        public FieldExpression(EntityExpression parentEntity, string name) : base(parentEntity, name)
+        public FieldExpression(FieldExpressionMetadata metadata) : base(metadata)
         {
         }
 
-        public FieldExpression(EntityExpression parentEntity, string name, int size) : base(parentEntity, name, size)
+        private FieldExpression(FieldExpressionMetadata metadata, string alias) : base(metadata, alias)
         {
         }
+        #endregion
+
+        #region as
+        public FieldExpression<T> As(string alias) => new FieldExpression<T>(base.Metadata, alias);
         #endregion
 
         #region in value set
@@ -24,20 +35,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public AssignmentExpression Set(T value) => new AssignmentExpression(this, value);
         #endregion
 
+        public static implicit operator SelectExpression(FieldExpression<T> field) => new SelectExpression(field);
+
+
         #region set field
         public AssignmentExpression Set(FieldExpression<T> field) => new AssignmentExpression(this, field);
         #endregion
 
         #region insert (init) value
         public InsertExpression Insert(T value) => new InsertExpression(this, value, typeof(T));
-        #endregion
-
-        #region implicit select operator
-        public static implicit operator SelectExpression(FieldExpression<T> field) => new SelectExpression(field);
-        #endregion
-
-        #region implicit group by expression operator
-        public static implicit operator GroupByExpression(FieldExpression<T> a) => new GroupByExpression(a);
         #endregion
 
         #region field to value relational operators
@@ -81,7 +87,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region field to field arithmetic operators
-        public static ArithmeticExpression<T> operator +(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
+        public static ArithmeticExpression<T> operator +(FieldExpression<T> a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression<T> operator -(FieldExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression<T> operator *(FieldExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Multiply);
+
+        public static ArithmeticExpression<T> operator /(FieldExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Divide);
+
+        public static ArithmeticExpression<T> operator %(FieldExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Modulo);
+
+        public static ArithmeticExpression<T> operator +(ArithmeticExpression<T> a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
 
         public static ArithmeticExpression<T> operator -(ArithmeticExpression a, FieldExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Subtract);
 

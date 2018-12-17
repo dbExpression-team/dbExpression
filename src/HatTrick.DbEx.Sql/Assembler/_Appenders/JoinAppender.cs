@@ -67,7 +67,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 context.CurrentDepth--;
 
                 builder.Appender.Indentation--.Indent().Write(") AS ")
-                    .Write(context.ResolveEntityName(joinExpression.BaseEntity))
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write(context.ResolveEntityAlias(joinExpression.BaseEntity))
+                    .Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(" ON ");
 
                 builder.AppendPart<JoinOnExpression>(expression.JoinOnExpression, context);

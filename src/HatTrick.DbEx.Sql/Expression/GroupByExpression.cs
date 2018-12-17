@@ -3,7 +3,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class GroupByExpression : DbExpression, IAssemblyPart
+    public class GroupByExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
         public (Type,object) Expression { get; private set; }
@@ -12,12 +14,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         internal GroupByExpression(FieldExpression field)
         {
-            Expression = (typeof(FieldExpression),field);
+            Expression = (field.GetType(),field);
         }
 
-        internal GroupByExpression(SelectExpression expression)
+        internal GroupByExpression(ArithmeticExpression expression)
         {
-            Expression = (typeof(SelectExpression), expression);
+            Expression = (expression.GetType(), expression);
         }
         #endregion
 

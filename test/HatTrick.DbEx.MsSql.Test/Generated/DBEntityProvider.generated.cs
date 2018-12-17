@@ -3,6 +3,7 @@ namespace DataService
 {
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.MsSql.Builder;
+    using DataService.EntityExpression.dbo;
     using System;
 
     #region db
@@ -69,6 +70,7 @@ namespace DataService
 {
     using System;
     using HatTrick.DbEx.Sql.Expression;
+    using DataService.EntityExpression.sec;
 
     #region sec
     [Serializable]

@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender
                 .Indent().Write("SELECT");
 
-            if (expression.Distinct)
+            if ((expression.Select as IDbExpressionIsDistinctProvider).IsDistinct)
                 builder.Appender.Write(" DISTINCT");
 
             builder.Appender.LineBreak()
@@ -81,11 +81,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
 
-            var alias = context.ResolveEntityName(expression.BaseEntity, context.CurrentDepth + 1);
+            var alias = context.ResolveEntityAlias(expression.BaseEntity, context.CurrentDepth + 1);
             if (!string.IsNullOrWhiteSpace(alias))
             {
-                builder.Appender.Write(" AS ");
-                builder.Appender.Write(alias);
+                builder.Appender.Write(" AS ")
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write(alias)
+                    .Write(context.Configuration.IdentifierDelimiter.End);
             }
 
             builder.Appender

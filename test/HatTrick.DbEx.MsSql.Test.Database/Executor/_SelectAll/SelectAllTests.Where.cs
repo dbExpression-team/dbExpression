@@ -8,8 +8,10 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
+    [Trait("Statement", "SELECT")]
     public partial class SelectAll
     {
+        [Trait("Clause", "WHERE")]
         public class Where : ExecutorTestBase
         {
             [Theory]

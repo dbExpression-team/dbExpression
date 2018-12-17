@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.AppendPart(expression.Expression.LeftPart, context);
             builder.Appender.Write(" = ");
-            builder.Appender.Write(builder.Parameters.Add(expression.Expression.RightPart, expression.Expression.RightPart.GetType()).ParameterName);
+            builder.Appender.Write(builder.Parameters.Add(expression.Expression.RightPart, context.CurrentField).ParameterName);
         }
     }
 }

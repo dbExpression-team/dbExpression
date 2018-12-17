@@ -3,7 +3,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AssignmentExpression : DbExpression, IAssemblyPart
+    public class AssignmentExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
         public DbExpressionPair Expression { get; private set; }

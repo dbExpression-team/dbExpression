@@ -18,7 +18,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(OrderByExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             builder.AppendPart(expression.Expression, context);
-            builder.Appender.Write(" ").Write(expression.Direction.ToString());
+            builder.Appender.Write(" ")
+                .Write(expression.Direction.ToString());
         }
     }
 }

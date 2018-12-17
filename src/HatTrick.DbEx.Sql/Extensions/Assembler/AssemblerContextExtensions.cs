@@ -6,10 +6,10 @@ namespace HatTrick.DbEx.Sql.Extensions.Assembler
 {
     public static class AssemblerContextExtensions
     {
-        public static string ResolveEntityName(this AssemblerContext context, EntityExpression entity)
-            => context.ResolveEntityName(entity, context.CurrentDepth);
+        public static string ResolveEntityAlias(this AssemblerContext context, EntityExpression entity)
+            => context.ResolveEntityAlias(entity, context.CurrentDepth);
 
-        public static string ResolveEntityName(this AssemblerContext context, EntityExpression entity, int specifiedLevel)
+        public static string ResolveEntityAlias(this AssemblerContext context, EntityExpression entity, int specifiedLevel)
         {
             if (context.EntityAliases.ContainsKey(specifiedLevel))
             {
@@ -20,8 +20,7 @@ namespace HatTrick.DbEx.Sql.Extensions.Assembler
                         return alias.Alias;
                 }
             }
-            var provider = entity as IExpressionMetadataProvider<EntityExpressionMetadata>;
-            return provider.Metadata.IsAliased ? provider.Metadata.AliasName : null;
+            return null;
         }
     }
 }

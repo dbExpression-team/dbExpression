@@ -4,7 +4,9 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public abstract class SchemaExpression : IAssemblyPart, IEquatable<SchemaExpression>
+    public abstract class SchemaExpression : 
+        IAssemblyPart, 
+        IEquatable<SchemaExpression>
     {
         #region interface
         public string SchemaName { get; set; }

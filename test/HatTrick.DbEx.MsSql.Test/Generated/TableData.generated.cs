@@ -145,7 +145,7 @@ namespace Data.sec
     {
         #region interface
         public int Id { get; set; }
-        public long PersonId { get; set; }
+        public int PersonId { get; set; }
         public string SSN { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }

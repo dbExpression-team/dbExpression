@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Mapper
     {
         void RegisterDefaultMappers();
 
-        void RegisterEntityMapper<T>(Action<SqlStatementExecutionResultSet.Row, T, IValueMapper> mapFunction)
+        void RegisterEntityMapper<T>(Action<T, IFieldReader, IValueMapper> mapFunction)
             where T : class, IDbEntity;
 
         void RegisterValueMapper<T>(IValueMapper<T> mapper)

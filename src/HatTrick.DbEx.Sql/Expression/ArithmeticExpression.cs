@@ -3,16 +3,33 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ArithmeticExpression : DbExpression, IDbExpressionSelectClausePart, IAssemblyPart
+    public class ArithmeticExpression : 
+        IDbExpression, 
+        IDbExpressionColumnExpression, 
+        IAssemblyPart,
+        IDbExpressionAliasProvider
     {
+        #region internals
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public (Type, object) Expression { get; private set; }
         public (Type, object) LeftPart => ((DbExpressionPair)Expression.Item2).LeftPart;
         public (Type, object) RightPart => ((DbExpressionPair)Expression.Item2).RightPart;
         public ArithmeticExpressionOperator ExpressionOperator { get; private set; }
+
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
+        internal ArithmeticExpression((Type, object) expression, ArithmeticExpressionOperator arithmeticOperator, string alias)
+        {
+            Expression = expression;
+            ExpressionOperator = arithmeticOperator;
+            Alias = alias;
+        }
+
         internal ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
@@ -25,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
+        public ArithmeticExpression As(string alias) => new ArithmeticExpression(Expression, ExpressionOperator, alias);
         #endregion
 
         #region implicit select expression operator
@@ -81,17 +98,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic expression to expression relational operators
-        public static FilterExpression operator ==(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator ==(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator !=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator <(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator <(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, DbExpression b)  => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator <=(ArithmeticExpression a, IDbExpression b)  => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator >(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator >(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >=(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator >=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #region arithmetic to value relational operators
@@ -149,7 +166,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic expression to arithmetic expression operators
-        public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
         public static ArithmeticExpression operator -(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 

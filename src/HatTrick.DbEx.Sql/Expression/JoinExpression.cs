@@ -3,7 +3,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinExpression : DbExpression, IAssemblyPart
+    public class JoinExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }

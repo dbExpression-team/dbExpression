@@ -16,21 +16,23 @@ namespace HatTrick.DbEx.Sql.Builder
 
         IFromExpressionBuilder<T, U, V> IListFromExpressionBuilder<T, U, V>.Distinct()
         {
-            Expression.Distinct = true;
+            Expression.Select.Distinct(true);
             return this;
         }
 
         V IListFromExpressionBuilder<T, U, V>.From(EntityExpression entity)
         {
             Expression.BaseEntity = entity;
-            Expression.Select = new SelectExpressionSet(entity.GetInclusiveSelectExpression());
+            if (Expression.Select == null || !Expression.Select.Expressions.Any())
+                Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression());
             return this as V;
         }
 
-        V IFromExpressionBuilder<T, U, V>.From(EntityExpression entity)
+        V IFromExpressionBuilder<T, U, V>.From<W>(EntityExpression<W> entity)
         {
             Expression.BaseEntity = entity;
-            Expression.Select = new SelectExpressionSet(entity.GetInclusiveSelectExpression());
+            if (Expression.Select == null || !Expression.Select.Expressions.Any())
+                Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<W>).BuildInclusiveSelectExpression());
             return this as V;
         }
     }

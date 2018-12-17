@@ -9,7 +9,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(Enum expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            builder.Appender.Write(builder.Parameters.Add(Convert.ToInt32(expression)).ParameterName);
+            if (context.CurrentField != null)
+                builder.Appender.Write(builder.Parameters.Add(Convert.ToInt32(expression), context.CurrentField).ParameterName);
+            else
+                builder.Appender.Write(builder.Parameters.Add<int>(Convert.ToInt32(expression)).ParameterName);
         }
     }
 }

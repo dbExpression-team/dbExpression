@@ -5,7 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class IsNullFunctionExpression<T> :
         IsNullFunctionExpression,
-        IDbExpressionSelectClausePart<T>
+        IDbFunctionExpression,
+        IAssemblyPart,
+        IDbExpressionColumnExpression,
+        IDbExpressionAliasProvider,
+        IEquatable<IsNullFunctionExpression<T>>
         where T : IComparable
     {
         #region constructors
@@ -13,14 +17,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public IsNullFunctionExpression(IDbExpressionSelectClausePart<T> expression, T value)
+        public IsNullFunctionExpression(IDbExpressionColumnExpression<T> expression, T value)
             : base(expression, value)
         {
         }
 
-        public IsNullFunctionExpression(IDbExpressionSelectClausePart<T> expression, IDbExpressionSelectClausePart<T> value)
+        public IsNullFunctionExpression(IDbExpressionColumnExpression<T> expression, IDbExpressionColumnExpression<T> value)
             : base(expression, value)
         {
+        }
+        #endregion
+
+        #region as
+        public new IsNullFunctionExpression<T> As(string alias)
+        {
+            base.As(alias);
+            return this;
         }
         #endregion
 

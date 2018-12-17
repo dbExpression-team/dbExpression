@@ -17,13 +17,6 @@ namespace HatTrick.DbEx.Sql.Builder
         { }
         #endregion
 
-        #region distinct
-        private void Distinct()
-        {
-            Expression.Distinct = true;
-        }
-        #endregion
-
         #region order by
         IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.OrderBy(OrderByExpressionSet orderBy)
         {

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class CoalesceFunctionAppender :
+        FunctionAppender,
         IAssemblyPartAppender<CoalesceFunctionExpression>
     {
         #region methods
@@ -22,6 +23,8 @@ namespace HatTrick.DbEx.Sql.Assembler
                     builder.Appender.Write(", ");
             }
             builder.Appender.Write(")");
+
+            AppendAlias(expression, builder, context);
         }
         #endregion
     }

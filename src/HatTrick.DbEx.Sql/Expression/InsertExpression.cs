@@ -2,7 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpression : DbExpression
+    public class InsertExpression :
+        IDbExpression
     {
         #region internals
         public DbExpressionPair Expression { get; private set; }

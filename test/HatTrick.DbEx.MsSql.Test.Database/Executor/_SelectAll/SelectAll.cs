@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectAll<Person>()
-               .From(dbo.Person);
+                .From(dbo.Person);
 
             //when               
             var persons = exp.Execute();

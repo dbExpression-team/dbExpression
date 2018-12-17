@@ -10,6 +10,9 @@ namespace HatTrick.DbEx.Sql.Assembler
            => AppendPart(expression as HavingExpression, builder, context);
 
         public void AppendPart(HavingExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
-            => builder.AppendPart(expression.Expression, context);
+        {
+            builder.Appender.Indent();
+            builder.AppendPart(expression.Expression, context);
+        }
     }
 }

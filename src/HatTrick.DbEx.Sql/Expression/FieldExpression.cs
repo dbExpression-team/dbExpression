@@ -1,69 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using HatTrick.DbEx.Sql.Assembler;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class FieldExpression : 
-        DbExpression,
-        IDbExpressionSelectClausePart, 
+    public abstract class FieldExpression : 
+        IDbExpression,
+        IDbExpressionColumnExpression, 
         IAssemblyPart,
         IExpressionMetadataProvider<FieldExpressionMetadata>
     {
         #region internals
-        private FieldExpressionMetadata _metadata;
+        protected FieldExpressionMetadata Metadata { get; private set; }
+        protected string Alias { get; private set; }
         #endregion
 
         #region interface
-        public FilterExpression IsNull { get { return new FilterExpression(this, null, FilterExpressionOperator.Equal); } }
 
-        public OrderByExpression Asc { get { return new OrderByExpression(this, OrderExpressionDirection.ASC); } }
+        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
 
-        public OrderByExpression Desc { get { return new OrderByExpression(this, OrderExpressionDirection.DESC); } }
+        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
 
-        FieldExpressionMetadata IExpressionMetadataProvider<FieldExpressionMetadata>.Metadata => _metadata;
+        FieldExpressionMetadata IExpressionMetadataProvider<FieldExpressionMetadata>.Metadata => Metadata;
+
         #endregion
 
         #region constructors
-        internal FieldExpression(EntityExpression parentEntity, string name, int size) : this(parentEntity, name)
+        protected FieldExpression(FieldExpressionMetadata metadata) : this(metadata, null)
         {
-            this._metadata.Size = size;
         }
 
-        internal FieldExpression(EntityExpression parentEntity, string name)
+        protected FieldExpression(FieldExpressionMetadata metadata, string alias)
         {
-            this._metadata = new FieldExpressionMetadata(parentEntity, name);
+            this.Metadata = metadata;
+            Alias = alias;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{this._metadata.ParentEntity.ToString()}.[{this._metadata.Name}]";
+        public override string ToString() => $"{this.Metadata.ParentEntity.ToString()}.[{this.Metadata.Name}]";
 
         public string ToString(string format)
         {
             switch (format)
             {
                 case "f":
-                    return this._metadata.Name;
+                    return this.Metadata.Name;
                 case "[f]":
-                    return $"[{this._metadata.Name}]";
+                    return $"[{this.Metadata.Name}]";
                 case "e.f":
                     return this.ToString();
                 case "s.e.f":
-                    return $"{this._metadata.ParentEntity.ToString("s.e")}.{this._metadata.Name}";
+                    return $"{this.Metadata.ParentEntity.ToString("s.e")}.{this.Metadata.Name}";
                 case "[s].[e].[f]":
-                    return $"{this._metadata.ParentEntity.ToString("[s].[e]")}.[{this._metadata.Name}]";
+                    return $"{this.Metadata.ParentEntity.ToString("[s].[e]")}.[{this.Metadata.Name}]";
                 case "[s.e.f]":
-                    return $"[{this._metadata.ParentEntity.ToString("s.e")}.{this._metadata.Name}]";
+                    return $"[{this.Metadata.ParentEntity.ToString("s.e")}.{this.Metadata.Name}]";
                 default:
                     throw new ArgumentException($"encountered unknown format string: {format} valid formats are 'e','f','[e]','[f]','e.f','[e].[f]'", "format");
             }
         }
-        #endregion
-
-        #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
         #endregion
 
         #region like
@@ -71,25 +69,27 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set field
-        public AssignmentExpression Set(DbExpression expression) => new AssignmentExpression(this, expression);
+        public AssignmentExpression Set(IDbExpression expression) => new AssignmentExpression(this, expression);
         #endregion
 
         #region implicit select operator
         public static implicit operator SelectExpression(FieldExpression field) => new SelectExpression(field);
+        public static implicit operator OrderByExpression(FieldExpression field) => new OrderByExpression(field, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(FieldExpression field) => new GroupByExpression(field);
         #endregion
 
         #region field to expression relational operators
-        public static FilterExpression operator ==(FieldExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator ==(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator !=(FieldExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator !=(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator <(FieldExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator <(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <=(FieldExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator <=(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator >(FieldExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator >(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >=(FieldExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator >=(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #region field to field arithmetic operators
@@ -125,9 +125,9 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj._metadata.ParentEntity != this._metadata.ParentEntity) return false;
-            if (string.Compare(obj._metadata.Name, this._metadata.Name, true) != 0) return false;
-            if (obj._metadata.Size != this._metadata.Size) return false;
+            if (obj.Metadata.ParentEntity != this.Metadata.ParentEntity) return false;
+            if (string.Compare(obj.Metadata.Name, this.Metadata.Name, true) != 0) return false;
+            if (obj.Metadata.Size != this.Metadata.Size) return false;
 
             return true;
         }
@@ -143,9 +143,9 @@ namespace HatTrick.DbEx.Sql.Expression
             if (ReferenceEquals(obj1, obj2)) return true;
             if (ReferenceEquals(obj1, null)) return false;
             if (ReferenceEquals(obj2, null)) return false;
-            if (obj1._metadata.ParentEntity != obj2._metadata.ParentEntity) return false;
-            if (string.Compare(obj1._metadata.Name, obj2._metadata.Name, true) != 0) return false;
-            if (obj1._metadata.Size != obj2._metadata.Size) return false;
+            if (obj1.Metadata.ParentEntity != obj2.Metadata.ParentEntity) return false;
+            if (string.Compare(obj1.Metadata.Name, obj2.Metadata.Name, true) != 0) return false;
+            if (obj1.Metadata.Size != obj2.Metadata.Size) return false;
 
             return true;
         }

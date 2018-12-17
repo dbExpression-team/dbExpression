@@ -10,8 +10,10 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public bool HasData() => Rows.Any() && Rows[0].Fields.Any();
 
-        public class Row
+        public class Row : IFieldReader
         {
+            private int readIndex;
+
             public IDictionary<int, Field> Fields { get; } = new Dictionary<int, Field>();
 
             public Row() { }
@@ -27,14 +29,15 @@ namespace HatTrick.DbEx.Sql.Executor
             }
 
             public T GetValue<T>(int index)
+                where T : IComparable
             {
                 var field = Fields[index];
-                if (field == default)
-                    throw new IndexOutOfRangeException();
                 if (field.Value == default)
                     return default;
                 return (T)Convert.ChangeType(field.Value, typeof(T));
             }
+
+            public object Read() => Fields[readIndex++].Value;
         }
 
         public class Field

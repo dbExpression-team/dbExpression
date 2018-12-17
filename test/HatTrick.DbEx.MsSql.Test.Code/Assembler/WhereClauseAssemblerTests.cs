@@ -7,6 +7,8 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Assembler
 {
+    [Trait("Statement", "SELECT")]
+    [Trait("Clause", "WHERE")]
     public class WhereClauseAssemblerTests : TestBase
     {
         [Theory]

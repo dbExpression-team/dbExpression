@@ -91,12 +91,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Executor\ExecutorTestBase.cs" />
+    <Compile Include="Executor\_Insert\Insert.cs" />
     <Compile Include="Executor\_SelectAll\SelectAll.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.GroupBy.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Where.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.Where.cs" />
     <Compile Include="Executor\_Update\Update.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Seeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

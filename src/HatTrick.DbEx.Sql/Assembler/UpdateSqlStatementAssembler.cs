@@ -27,7 +27,12 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Indent();
                 builder.AppendPart(expression.Assign.Expressions[i].Expression.LeftPart, context);
                 builder.Appender.Write(" = ");
-                builder.Appender.Write(builder.Parameters.Add(expression.Assign.Expressions[i].Expression.RightPart.Item2).ParameterName);
+                builder.Appender.Write(
+                    builder.Parameters.Add(
+                        expression.Assign.Expressions[i].Expression.RightPart.Item2, 
+                        (expression.Assign.Expressions[i].Expression.LeftPart.Item2 as IExpressionMetadataProvider<FieldExpressionMetadata>).Metadata
+                    ).ParameterName
+                );
                 if (i < expression.Assign.Expressions.Count - 1)
                     builder.Appender.Write(",").LineBreak();
             }

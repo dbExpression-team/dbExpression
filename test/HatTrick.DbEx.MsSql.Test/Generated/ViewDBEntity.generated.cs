@@ -1,81 +1,80 @@
 using System;
 
-namespace DataService
+namespace DataService.EntityExpression.dbo
 {
     using Data.dbo;
+    using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
     using HatTrick.DbEx.Utility;
+    using System.Data;
 
-    public static partial class dbo
+    #region person total purchases view
+    public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
-        #region person total purchases view
-        public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
+        #region internals
+        private FieldExpression<int> _id;
+        private FieldExpression<decimal?> _totalPurchases;
+        #endregion
+
+        #region interface properties
+        public FieldExpression<int> Id { get { return _id; } }
+        public FieldExpression<decimal?> TotalPurchases { get { return _totalPurchases; } }
+        #endregion
+
+        #region constructors
+        private PersonTotalPurchasesViewEntity(EntityExpressionMetadata metadata) : base(metadata)
         {
-            #region internals
-            private FieldExpression<int> _id;
-            private FieldExpression<decimal?> _totalPurchases;
-            #endregion
+            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
+            _totalPurchases = new FieldExpression<decimal?>(new MsSqlFieldExpressionMetadata(this, "TotalPurchases", SqlDbType.Decimal, 12, 2));
 
-            #region interface properties
-            public FieldExpression<int> Id { get { return _id; } }
-            public FieldExpression<decimal?> TotalPurchases { get { return _totalPurchases; } }
-            #endregion
+        }
 
-            #region constructors
-            private PersonTotalPurchasesViewEntity(EntityExpressionMetadata metadata) : base(metadata)
-            {
-                _id = new FieldExpression<int>(this, "Id", 4);
-                _totalPurchases = new FieldExpression<decimal?>(this, "TotalPurchases", 17);
+        public PersonTotalPurchasesViewEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        {
+        }
 
-            }
+        public PersonTotalPurchasesViewEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
+        {
+        }
+        #endregion
 
-            public PersonTotalPurchasesViewEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
-            {
-            }
+        #region methods
+        public PersonTotalPurchasesViewEntity As(string name)
+        {
+            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
+            var newMeta = CloneUtility.DeepCopy(meta);
+            newMeta.AliasName = name;
+            return new PersonTotalPurchasesViewEntity(newMeta);
+        }
 
-            public PersonTotalPurchasesViewEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-            {
-            }
-            #endregion
+        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        {
+            return new SelectExpressionSet(
+                _id,
+                _totalPurchases
+            );
+        }
 
-            #region methods
-            public PersonTotalPurchasesViewEntity As(string name)
-            {
-                var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-                var newMeta = CloneUtility.DeepCopy(meta);
-                newMeta.AliasName = name;
-                return new PersonTotalPurchasesViewEntity(newMeta);
-            }
+        protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, IFieldReader reader, IValueMapper mapper)
+        {
+            personTotalPurchasesView.Id = mapper.Map<int>(_id, reader.Read());
+            personTotalPurchasesView.TotalPurchases = mapper.Map<decimal>(_totalPurchases, reader.Read());
+        }
 
-            public override SelectExpressionSet GetInclusiveSelectExpression()
-            {
-                SelectExpressionSet select = null;
-                select &= _id;
-                select &= _totalPurchases;
-                return select;
-            }
+        protected override InsertExpressionSet GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
+        {
+            //return null?
+            throw new NotImplementedException();
+        }
 
-            public override void FillObject(SqlStatementExecutionResultSet.Row row, PersonTotalPurchasesView personTotalPurchasesView, IValueMapper mapper)
-            {
-                personTotalPurchasesView.Id = mapper.Map<int>("PersonTotalPurchasesView.Id", row.Fields[0]);
-                personTotalPurchasesView.TotalPurchases = mapper.Map<decimal>("PersonTotalPurchasesView.TotalPurchases", row.Fields[1]);
-            }
-
-            public override InsertExpressionSet GetInclusiveInsertExpression(PersonTotalPurchasesView entity)
-            {
-                //return null?
-                throw new NotImplementedException();
-            }
-
-            public override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView from, PersonTotalPurchasesView to)
-            {
-                //return null?
-                throw new NotImplementedException();
-            }
-            #endregion
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView from, PersonTotalPurchasesView to)
+        {
+            //return null?
+            throw new NotImplementedException();
         }
         #endregion
     }
+    #endregion
 }

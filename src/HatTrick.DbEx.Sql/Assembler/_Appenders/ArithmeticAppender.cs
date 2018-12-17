@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
             if (typeof(IComparable).IsAssignableFrom(expression.RightPart.Item1))
             {
-                builder.Appender.Write(builder.Parameters.Add(builder.FormatValueType(expression.RightPart), expression.RightPart.Item1).ParameterName);
+                builder.Appender.Write(builder.Parameters.Add(expression.RightPart.Item2, expression.RightPart.Item1).ParameterName);
             }
             else
             {

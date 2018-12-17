@@ -5,13 +5,25 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class SelectExpressionSet : DbExpression//, IDbExpressionSet<IDbExpressionSelectClausePart>, IAssemblyPart
+    public class SelectExpressionSet : 
+        IDbExpression,
+        IDbExpressionIsDistinctProvider
     {
+        #region internals
+        protected bool _isDistinct;
+        #endregion
+
         #region interface
         public IList<(Type,object)> Expressions { get; } = new List<(Type, object)>();
+        bool IDbExpressionIsDistinctProvider.IsDistinct => _isDistinct;
         #endregion
 
         #region constructor
+        public SelectExpressionSet(params FieldExpression[] fields)
+        {
+            Expressions = fields.Select(f => (f.GetType(), (object)f)).ToList();
+        }
+
         internal SelectExpressionSet()
         {
         }
@@ -36,6 +48,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expressions.Add((a.GetType(), a));
             Expressions.Add((b.GetType(), b));
+        }
+        #endregion
+
+        #region distinct
+        public SelectExpressionSet Distinct(bool distinct = true)
+        {
+            _isDistinct = distinct & true;
+            return this;
         }
         #endregion
 

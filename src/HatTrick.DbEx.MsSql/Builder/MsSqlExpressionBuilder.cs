@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return builder as IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>;
         }
 
-        public static IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>> SelectOne<T>(IDbExpressionSelectClausePart field)
+        public static IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>> SelectOne<T>(IDbExpressionColumnExpression field)
             where T : IComparable
         {
             var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValue });
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return builder as IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>;
         }
 
-        public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(IDbExpressionSelectClausePart field1, IDbExpressionSelectClausePart field2, params IDbExpressionSelectClausePart[] fields)
+        public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(IDbExpressionColumnExpression field1, IDbExpressionColumnExpression field2, params IDbExpressionColumnExpression[] fields)
         {
             var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> (new ExpressionSet { ExecutionContext = ExecutionContext.GetDynamic });
             builder.Expression.Select.Expressions.Add((field1.GetType(), field1));
@@ -66,14 +66,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             return builder as IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>;
         }
 
-        public static IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>> SelectAll<T>(IDbExpressionSelectClausePart field)
+        public static IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>> SelectAll<T>(IDbExpressionColumnExpression field)
         {
             var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>;
         }
 
-        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectAll(IDbExpressionSelectClausePart field1, IDbExpressionSelectClausePart field2, params IDbExpressionSelectClausePart[] fields)
+        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectAll(IDbExpressionColumnExpression field1, IDbExpressionColumnExpression field2, params IDbExpressionColumnExpression[] fields)
         {
             var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetDynamicList });
             builder.Expression.Select.Expressions.Add((field1.GetType(), field1));
@@ -106,10 +106,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         }
 
         #region coalesce
-        public static CoalesceFunctionExpression Coalesce<T>(IDbExpressionSelectClausePart<T> field1, IDbExpressionSelectClausePart<T> field2, params IDbExpressionSelectClausePart<T>[] fields)
+        public static CoalesceFunctionExpression Coalesce<T>(IDbExpressionColumnExpression<T> field1, IDbExpressionColumnExpression<T> field2, params IDbExpressionColumnExpression<T>[] fields)
             where T : IComparable
         {
-            var parts = new List<IDbExpressionSelectClausePart>(fields == null ? 2 : 2 + fields.Length);
+            var parts = new List<IDbExpressionColumnExpression>(fields == null ? 2 : 2 + fields.Length);
             parts.Add(field1);
             parts.Add(field2);
             foreach (var f in fields)
@@ -119,13 +119,13 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region isnull
-        public static IsNullFunctionExpression IsNull<T>(IDbExpressionSelectClausePart<T> field, T value)
+        public static IsNullFunctionExpression IsNull<T>(IDbExpressionColumnExpression<T> field, T value)
             where T : IComparable
         {
             return new IsNullFunctionExpression<T>(field, value);
         }
 
-        public static IsNullFunctionExpression IsNull<T>(IDbExpressionSelectClausePart<T> field1, IDbExpressionSelectClausePart<T> field2)
+        public static IsNullFunctionExpression IsNull<T>(IDbExpressionColumnExpression<T> field1, IDbExpressionColumnExpression<T> field2)
             where T : IComparable
         {
             return new IsNullFunctionExpression<T>(field1, field2);
@@ -133,95 +133,95 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region average
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
 
-        public static AverageFunctionExpression Avg(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static AverageFunctionExpression Avg(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new AverageFunctionExpression(field, distinct);
         #endregion
 
         #region minimum
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<string> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<string> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<Guid> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<Guid> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<DateTime> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<DateTime> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
 
-        public static MinimumFunctionExpression Min(IDbExpressionSelectClausePart<DateTimeOffset> field, bool distinct = false)
+        public static MinimumFunctionExpression Min(IDbExpressionColumnExpression<DateTimeOffset> field, bool distinct = false)
             => new MinimumFunctionExpression(field, distinct);
         #endregion
 
         #region maximum
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<string> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<string> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<Guid> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<Guid> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<DateTime> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<DateTime> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
 
-        public static MaximumFunctionExpression Max(IDbExpressionSelectClausePart<DateTimeOffset> field, bool distinct = false)
+        public static MaximumFunctionExpression Max(IDbExpressionColumnExpression<DateTimeOffset> field, bool distinct = false)
             => new MaximumFunctionExpression(field, distinct);
         #endregion
 
@@ -234,117 +234,117 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region sum
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
 
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
 
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
 
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
 
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
 
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
 
-        public static SumFunctionExpression Sum(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static SumFunctionExpression Sum(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new SumFunctionExpression(field, distinct);
         #endregion
 
         #region standard deviation
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
 
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
 
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
 
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
 
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
 
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
 
-        public static StandardDeviationFunctionExpression StDev(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static StandardDeviationFunctionExpression StDev(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new StandardDeviationFunctionExpression(field, distinct);
         #endregion
 
         #region standard deviation p
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
 
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
 
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
 
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
 
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
 
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
 
-        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static PopulationStandardDeviationFunctionExpression StDevP(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new PopulationStandardDeviationFunctionExpression(field, distinct);
         #endregion
 
         #region variance
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
 
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
 
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
 
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
 
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
 
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
 
-        public static VarianceFunctionExpression Var(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static VarianceFunctionExpression Var(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new VarianceFunctionExpression(field, distinct);
         #endregion
 
         #region variance p
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<byte> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<byte> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
 
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<short> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<short> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
 
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<int> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<int> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
 
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<long> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<long> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
 
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<double> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<double> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
 
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<decimal> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<decimal> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
 
-        public static PopulationVarianceFunctionExpression VarP(IDbExpressionSelectClausePart<float> field, bool distinct = false)
+        public static PopulationVarianceFunctionExpression VarP(IDbExpressionColumnExpression<float> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
         #endregion
     }

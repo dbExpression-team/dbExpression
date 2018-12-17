@@ -48,6 +48,7 @@
     <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\StringValueTypeFormatter.cs" />
+    <Compile Include="Expression\MsSqlFieldExpressionMetadata.cs" />
     <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
     <Compile Include="Connection\MsSqlConnection.cs" />
     <Compile Include="Assembler\SelectAllMsSqlAssembler.cs" />
@@ -65,9 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\MsSqlTypeMap.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Expression\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>

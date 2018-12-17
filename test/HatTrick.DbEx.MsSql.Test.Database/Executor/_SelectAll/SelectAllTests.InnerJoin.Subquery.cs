@@ -7,10 +7,13 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
+    [Trait("Statement", "SELECT")]
     public partial class SelectAll
     {
+        [Trait("Operation", "INNER JOIN")]
         public partial class InnerJoin
         {
+            [Trait("Operation", "Subquery")]
             public class Subquery : ExecutorTestBase
             {
                 [Theory]

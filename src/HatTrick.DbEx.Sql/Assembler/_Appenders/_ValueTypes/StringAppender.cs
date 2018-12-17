@@ -9,8 +9,11 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(string expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            var @fixed = builder.FormatValueType<string>(expression);
-            builder.Appender.Write(builder.Parameters.Add(@fixed, @fixed.Length).ParameterName);
+            var @fixed = string.IsNullOrWhiteSpace(expression) ? null : builder.FormatValueType<string>(expression);
+            if (context.CurrentField != null)
+                builder.Appender.Write(builder.Parameters.Add(@fixed, context.CurrentField).ParameterName);
+            else
+                builder.Appender.Write(builder.Parameters.Add<string>(@fixed).ParameterName);
         }
     }
 }

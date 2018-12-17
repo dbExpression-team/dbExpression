@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class PopulationVarianceFunctionAppender :
+        FunctionAppender,
         IAssemblyPartAppender<PopulationVarianceFunctionExpression>
     {
         #region methods
@@ -12,10 +13,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(PopulationVarianceFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             builder.Appender.Write("VARP(");
-            if (expression.IsDistinct)
-                builder.Appender.Write("DISTINCT ");
+
+            AppendDistinct(expression, builder, context);
+
             builder.AppendPart(expression.Expression, context);
             builder.Appender.Write(")");
+
+            AppendAlias(expression, builder, context);
         }
         #endregion
     }

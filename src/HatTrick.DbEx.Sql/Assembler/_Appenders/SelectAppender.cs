@@ -19,11 +19,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(SelectExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             builder.AppendPart(expression.Expression, context);
-            var alias = (expression as IAliasable)?.Alias;
-            if (!string.IsNullOrWhiteSpace(alias))
+
+            if (expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
             {
-                builder.Appender.Write(" AS ");
-                builder.Appender.Write(alias);
+                builder.Appender.Write(" AS ")
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write(aliasable.Alias)
+                    .Write(context.Configuration.IdentifierDelimiter.End);
             }
         }
     }

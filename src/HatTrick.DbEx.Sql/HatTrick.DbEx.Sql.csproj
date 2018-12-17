@@ -70,6 +70,7 @@
     <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\EnumValueTypeFormatter.cs" />
     <Compile Include="Assembler\ValueTypeFormatter.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\FunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\IsNullFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\PopulationVarianceFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\VarianceFunctionAppender.cs" />
@@ -114,7 +115,9 @@
     <Compile Include="Builder\JoinExpressionBuilder{T}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder.cs" />
     <Compile Include="Configuration\DbExConfigurationBuilder.cs" />
+    <Compile Include="Executor\IFieldReader.cs" />
     <Compile Include="Expression\ArithmeticExpression{T}.cs" />
+    <Compile Include="Expression\IDbExpressionColumnExpression{T}.cs" />
     <Compile Include="Expression\_Function\IsNullFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\IsNullFunctionExpression.cs" />
     <Compile Include="Expression\_Function\PopulationVarianceFunctionExpression.cs" />
@@ -206,16 +209,15 @@
     <Compile Include="Executor\_Type\SelectTypeSqlStatementExecutor.cs" />
     <Compile Include="Executor\SqlStatementExecutor.cs" />
     <Compile Include="Executor\SqlStatementExecutorFactory.cs" />
-    <Compile Include="Expression\DbExpression.cs" />
     <Compile Include="Expression\EntityExpression{T}.cs" />
     <Compile Include="Expression\DbExpressionPair.cs" />
     <Compile Include="Expression\SchemaExpression.cs" />
     <Compile Include="Expression\JoinOnExpression.cs" />
     <Compile Include="Expression\JoinOnExpressionSet.cs" />
-    <Compile Include="Expression\IAliasable.cs" />
+    <Compile Include="Expression\IDbExpressionAliasProvider.cs" />
     <Compile Include="Expression\IDbExpressionEntity{T}.cs" />
     <Compile Include="Assembler\IAssemblyPart.cs" />
-    <Compile Include="Expression\IDbExpressionSelectClausePart.cs" />
+    <Compile Include="Expression\IDbExpressionColumnExpression.cs" />
     <Compile Include="Expression\IDbExpressionSet{T}.cs" />
     <Compile Include="Expression\IDbExpressionSet.cs" />
     <Compile Include="Extensions\Attribute\ArithmeticiExpressionOperatorAttributeExtensions.cs" />

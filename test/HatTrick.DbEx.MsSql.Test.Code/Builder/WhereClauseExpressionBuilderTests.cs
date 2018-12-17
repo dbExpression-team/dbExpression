@@ -7,6 +7,8 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Builder
 {
+    [Trait("Statement", "SELECT")]
+    [Trait("Clause", "WHERE")]
     public class WhereClauseExpressionBuilderTests
     {
         [Fact]

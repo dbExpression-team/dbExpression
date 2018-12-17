@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.Appender.Write("INSERT INTO ");
             builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
-            builder.Appender.Write(" (");
+            builder.Appender.Write(" (").LineBreak();
             builder.Appender.Indentation++;
 
             for (var i = 0; i < expression.Insert.Expressions.Count; i++)
@@ -30,12 +30,16 @@ namespace HatTrick.DbEx.Sql.Assembler
             for (var i = 0; i < expression.Insert.Expressions.Count; i++)
             {
                 builder.Appender.Indent();
-                builder.Appender.Write(builder.Parameters.Add(expression.Insert.Expressions[i].Expression.RightPart).ParameterName);
+                context.CurrentField = (expression.Insert.Expressions[i].Expression.LeftPart.Item2 as IExpressionMetadataProvider<FieldExpressionMetadata>).Metadata;
+                builder.AppendPart(expression.Insert.Expressions[i].Expression.RightPart, context);
+                context.CurrentField = null;
                 if (i < expression.Insert.Expressions.Count - 1)
                     builder.Appender.Write(", ").LineBreak();
             }
 
-            builder.Appender.Write(")");
+            builder.Appender.LineBreak();
+            builder.Appender.Indentation--;
+            builder.Appender.Indent().Write(")");
         }
         #endregion
     }

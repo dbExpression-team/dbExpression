@@ -8,12 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
     public class StandardDeviationFunctionExpression :
         IDbFunctionExpression,
         IAssemblyPart,
-        IDbExpressionSelectClausePart,
+        IDbExpressionColumnExpression,
+        IDbExpressionIsDistinctProvider,
+        IDbExpressionAliasProvider,
         IEquatable<StandardDeviationFunctionExpression>
     {
+        #region internals
+        protected bool IsDistinct { get; private set; }
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public (Type, object) Expression { get; }
-        public bool IsDistinct { get; }
+        bool IDbExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -21,43 +29,43 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<byte> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<byte> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<short> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<short> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<int> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<int> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<long> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<long> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<decimal> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<decimal> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<double> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<double> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public StandardDeviationFunctionExpression(IDbExpressionSelectClausePart<float> expression, bool isDistinct)
+        public StandardDeviationFunctionExpression(IDbExpressionColumnExpression<float> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
@@ -65,7 +73,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
+        public StandardDeviationFunctionExpression As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string

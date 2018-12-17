@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql.Mapper
+﻿using HatTrick.DbEx.Sql.Expression;
+
+namespace HatTrick.DbEx.Sql.Mapper
 {
     public class ValueMapper : IValueMapper
     {
@@ -9,7 +11,7 @@
             Factory = factory;
         }
 
-        public T Map<T>(string name, object value)
+        public T Map<T>(IExpressionMetadataProvider<FieldExpressionMetadata> field, object value)
             => Factory.CreateValueMapper<T>().Map(value);
     }
 }

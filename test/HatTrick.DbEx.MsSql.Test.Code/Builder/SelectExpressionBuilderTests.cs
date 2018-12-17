@@ -9,6 +9,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Builder
 {
+    [Trait("Statement", "SELECT")]
     public class SelectExpressionBuilderTests : TestBase
     {
         [Fact]

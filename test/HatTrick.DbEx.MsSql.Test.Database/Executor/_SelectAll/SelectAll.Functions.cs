@@ -79,6 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             [Theory]
             [InlineData(2014, 15)]
+            [Trait("Expression", "Arithmetic")]
             public void Does_coalesceing_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
             {
                 //given
@@ -90,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             dbo.Purchase.ShipDate,
                             dbo.Purchase.PurchaseDate,
                             dbo.Purchase.DateCreated + DateTime.Now,
-                            dbo.Purchase.DateUpdated
+                            dbo.Purchase.DateUpdated + dbo.Purchase.DateCreated
                         ).As("relevant_date")
                     ).From(dbo.Purchase);
 
@@ -168,6 +169,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             [Theory]
             [InlineData(2014, 15)]
+            [Trait("Expression", "Arithmetic")]
             public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
             {
                 //given

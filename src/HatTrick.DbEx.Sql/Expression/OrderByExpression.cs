@@ -3,7 +3,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class OrderByExpression : DbExpression, IAssemblyPart
+    public class OrderByExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
         public (Type,object) Expression { get; private set; }
@@ -16,12 +18,6 @@ namespace HatTrick.DbEx.Sql.Expression
             Expression = (typeof(FieldExpression),field);
             Direction = direction;
         }
-
-        //internal OrderByExpression(IDbExpression expression, OrderExpressionDirection direction)
-        //{
-        //    Expression = (expression.GetType(), expression);
-        //    Direction = direction;
-        //}
         #endregion
 
         #region to string

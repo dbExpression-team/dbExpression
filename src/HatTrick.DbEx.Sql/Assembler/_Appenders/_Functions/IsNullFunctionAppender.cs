@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class IsNullFunctionAppender :
+        FunctionAppender,
         IAssemblyPartAppender<IsNullFunctionExpression>
     {
         #region methods
@@ -19,6 +20,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write(", ");
             builder.AppendPart(expression.Value, context);
             builder.Appender.Write(")");
+
+            AppendAlias(expression, builder, context);
         }
         #endregion
     }

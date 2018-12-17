@@ -8,12 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
     public class SumFunctionExpression :
         IDbFunctionExpression,
         IAssemblyPart,
-        IDbExpressionSelectClausePart,
+        IDbExpressionColumnExpression,
+        IDbExpressionIsDistinctProvider,
+        IDbExpressionAliasProvider,
         IEquatable<SumFunctionExpression>
     {
+        #region internals
+        protected bool IsDistinct { get; private set; }
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public (Type, object) Expression { get; }
-        public bool IsDistinct { get; }
+        bool IDbExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -21,43 +29,43 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<byte> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<byte> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<short> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<short> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<int> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<int> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<long> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<long> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<decimal> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<decimal> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<double> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<double> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
         }
 
-        public SumFunctionExpression(IDbExpressionSelectClausePart<float> expression, bool isDistinct)
+        public SumFunctionExpression(IDbExpressionColumnExpression<float> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;
@@ -65,7 +73,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
+        public SumFunctionExpression As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string

@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class AverageFunctionAppender :
+        FunctionAppender,
         IAssemblyPartAppender<AverageFunctionExpression>
     {
         #region methods
@@ -12,10 +13,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(AverageFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             builder.Appender.Write("AVG(");
-            if (expression.IsDistinct)
-                builder.Appender.Write("DISTINCT ");
+
+            AppendDistinct(expression, builder, context);
+
             builder.AppendPart(expression.Expression, context);
             builder.Appender.Write(")");
+
+            AppendAlias(expression, builder, context);
         }
         #endregion
     }
