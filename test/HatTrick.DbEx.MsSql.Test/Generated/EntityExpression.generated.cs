@@ -6,6 +6,8 @@ namespace DataService.EntityExpression.dbo
     using Data;
     using Data.dbo;
     using HatTrick.DbEx.MsSql.Expression;
+    using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
@@ -16,6 +18,16 @@ namespace DataService.EntityExpression.dbo
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _addressTypeFieldName = "AddressType";
+        private const string _line1FieldName = "Line1";
+        private const string _line2FieldName = "Line2";
+        private const string _cityFieldName = "City";
+        private const string _stateFieldName = "State";
+        private const string _zipFieldName = "Zip";
+        private const string _dateCreatedFieldName = "DateCreated";
+        private const string _dateUpdatedFieldName = "DateUpdated";
+
         private FieldExpression<int> _id;
         private FieldExpression<AddressType> _addressType;
         private FieldExpression<string> _line1;
@@ -40,36 +52,49 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region constructors
-        private AddressEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public AddressEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity, 
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields?[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")}, 
+                    { _addressTypeFieldName, entity.Fields?[_addressTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_addressTypeFieldName}'")},
+                    { _line1FieldName, entity.Fields?[_line1FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_line1FieldName}'")},
+                    { _line2FieldName, entity.Fields?[_line2FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_line2FieldName}'")},
+                    { _cityFieldName, entity.Fields?[_cityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_cityFieldName}'")},
+                    { _stateFieldName, entity.Fields?[_stateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_stateFieldName}'")},
+                    { _zipFieldName, entity.Fields?[_zipFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_zipFieldName}'")},
+                    { _dateCreatedFieldName, entity.Fields?[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'")},
+                    { _dateUpdatedFieldName, entity.Fields?[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateUpdatedFieldName}'")}
+                }, 
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _addressType = new FieldExpression<AddressType>(new MsSqlFieldExpressionMetadata(this, "AddressType", SqlDbType.Int, 4));
-            _line1 = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "Line1", SqlDbType.VarChar, 50));
-            _line2 = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "Line2", SqlDbType.VarChar, 50));
-            _city = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "City", SqlDbType.VarChar, 60));
-            _state = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "State", SqlDbType.VarChar, 2));
-            _zip = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "Zip", SqlDbType.VarChar, 10));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            _dateUpdated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));             
         }
 
-        public AddressEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private AddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata, IDictionary<string, ISqlFieldMetadata> fields, string alias) 
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-
-        public AddressEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _addressType = new FieldExpression<AddressType>(this, fields[_addressTypeFieldName]);
+            _line1 = new FieldExpression<string>(this, fields[_line1FieldName]);
+            _line2 = new FieldExpression<string>(this, fields[_line2FieldName]);
+            _city = new FieldExpression<string>(this, fields[_cityFieldName]);
+            _state = new FieldExpression<string>(this, fields[_stateFieldName]);
+            _zip = new FieldExpression<string>(this, fields[_zipFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
+            _dateUpdated = new FieldExpression<DateTime>(this, fields[_dateUpdatedFieldName]);
         }
         #endregion
 
         #region methods
         public AddressEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new AddressEntity(newMeta);
+            return new AddressEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -150,6 +175,14 @@ namespace DataService.EntityExpression.dbo
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _firstNameFieldName = "FirstName";
+        private const string _lastNameFieldName = "LastName";
+        private const string _birthDateFieldName = "BirthDate";
+        private const string _genderTypeFieldName = "GenderType";
+        private const string _dateCreatedFieldName = "DateCreated";
+        private const string _dateUpdatedFieldName = "DateUpdated";
+
         private FieldExpression<int> _id;
         private FieldExpression<string> _firstName;
         private FieldExpression<string> _lastName;
@@ -170,33 +203,48 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region constructors
-        private PersonEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public PersonEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields?[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")},
+                    { _firstNameFieldName, entity.Fields?[_firstNameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_firstNameFieldName}'")},
+                    { _lastNameFieldName, entity.Fields?[_lastNameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_lastNameFieldName}'") },
+                    { _birthDateFieldName, entity.Fields?[_birthDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_birthDateFieldName}'") },
+                    { _genderTypeFieldName, entity.Fields?[_genderTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_genderTypeFieldName}'") },
+                    { _dateCreatedFieldName, entity.Fields?[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'") },
+                    { _dateUpdatedFieldName, entity.Fields?[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateUpdatedFieldName}'") }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _firstName = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "FirstName", SqlDbType.VarChar, 20));
-            _lastName = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "LastName", SqlDbType.VarChar, 20));
-            _birthDate = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "BirthDate", SqlDbType.DateTime, 8));
-            _genderType = new FieldExpression<GenderType>(new MsSqlFieldExpressionMetadata(this, "GenderType", SqlDbType.Int, 4));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            _dateUpdated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }
 
-        public PersonEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private PersonEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, string alias)
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-        public PersonEntity(SchemaExpression schema, string entityName, string aliasName) : base(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _firstName = new FieldExpression<string>(this, fields[_firstNameFieldName]);
+            _lastName = new FieldExpression<string>(this, fields[_lastNameFieldName]);
+            _birthDate = new FieldExpression<DateTime>(this, fields[_birthDateFieldName]);
+            _genderType = new FieldExpression<GenderType>(this, fields[_genderTypeFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
+            _dateUpdated = new FieldExpression<DateTime>(this, fields[_dateUpdatedFieldName]);
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new PersonEntity(newMeta);
+            return new PersonEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -265,6 +313,11 @@ namespace DataService.EntityExpression.dbo
     public partial class Person_AddressEntity : EntityExpression<Person_Address>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _personIdFieldName = "PersonId";
+        private const string _addressIdFieldName = "AddressId";
+        private const string _dateCreatedFieldName = "DateCreated";
+
         private FieldExpression<int> _id;
         private FieldExpression<int> _personId;
         private FieldExpression<int> _addressId;
@@ -279,30 +332,43 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region constructors
-        private Person_AddressEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public Person_AddressEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields?[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")},
+                    { _personIdFieldName, entity.Fields?[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_personIdFieldName}'") },
+                    { _addressIdFieldName, entity.Fields?[_addressIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_addressIdFieldName}'") },
+                    { _dateCreatedFieldName, entity.Fields?[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'") }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _personId = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "PersonId", SqlDbType.Int, 4));
-            _addressId = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "AddressId", SqlDbType.Int, 4));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
         }
 
-        public Person_AddressEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private Person_AddressEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, 
+            string alias)
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-        public Person_AddressEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _personId = new FieldExpression<int>(this, fields[_personIdFieldName]);
+            _addressId = new FieldExpression<int>(this, fields[_addressIdFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
         }
         #endregion
 
         #region methods
         public Person_AddressEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new Person_AddressEntity(newMeta);
+            return new Person_AddressEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -353,6 +419,16 @@ namespace DataService.EntityExpression.dbo
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _productCategoryTypeFieldName = "ProductCategoryType";
+        private const string _nameFieldName = "Name";
+        private const string _descriptionFieldName = "Description";
+        private const string _priceFieldName = "Price";
+        private const string _listPriceFieldName = "ListPrice";
+        private const string _quantityFieldName = "Quantity";
+        private const string _dateCreatedFieldName = "DateCreated";
+        private const string _dateUpdatedFieldName = "DateUpdated";
+
         private FieldExpression<int> _id;
         private FieldExpression<ProductCategoryType> _productCategoryType;
         private FieldExpression<string> _name;
@@ -377,36 +453,53 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region constructors
-        private ProductEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public ProductEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields?[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")},
+                    { _productCategoryTypeFieldName, entity.Fields?[_productCategoryTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_productCategoryTypeFieldName}'") },
+                    { _nameFieldName, entity.Fields?[_nameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_nameFieldName}'") },
+                    { _descriptionFieldName, entity.Fields?[_descriptionFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_descriptionFieldName}'") },
+                    { _priceFieldName, entity.Fields?[_priceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_priceFieldName}'") },
+                    { _listPriceFieldName, entity.Fields?[_listPriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_listPriceFieldName}'") },
+                    { _quantityFieldName, entity.Fields?[_quantityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_quantityFieldName}'") },
+                    { _dateCreatedFieldName, entity.Fields?[_dateCreatedFieldName]  ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'")},
+                    { _dateUpdatedFieldName, entity.Fields?[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateUpdatedFieldName}'") }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _productCategoryType = new FieldExpression<ProductCategoryType>(new MsSqlFieldExpressionMetadata(this, "ProductCategoryType", SqlDbType.Int, 4));
-            _name = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "Name", SqlDbType.VarChar, 80));
-            _description = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "Description", SqlDbType.VarChar, 300));
-            _price = new FieldExpression<decimal>(new MsSqlFieldExpressionMetadata(this, "Price", SqlDbType.Decimal, 12, 2));
-            _listPrice = new FieldExpression<decimal>(new MsSqlFieldExpressionMetadata(this, "ListPrice", SqlDbType.Decimal, 12, 2));
-            _quantity = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Quantity", SqlDbType.Int, 4));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            _dateUpdated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }
 
-        public ProductEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private ProductEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, 
+            string alias)
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-
-        public ProductEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _productCategoryType = new FieldExpression<ProductCategoryType>(this, fields[_productCategoryTypeFieldName]);
+            _name = new FieldExpression<string>(this, fields[_nameFieldName]);
+            _description = new FieldExpression<string>(this, fields[_descriptionFieldName]);
+            _price = new FieldExpression<decimal>(this, fields[_priceFieldName]);
+            _listPrice = new FieldExpression<decimal>(this, fields[_listPriceFieldName]);
+            _quantity = new FieldExpression<int>(this, fields[_quantityFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
+            _dateUpdated = new FieldExpression<DateTime>(this, fields[_dateUpdatedFieldName]);
         }
         #endregion
 
         #region methods
         public ProductEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new ProductEntity(newMeta);
+            return new ProductEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -481,11 +574,19 @@ namespace DataService.EntityExpression.dbo
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _personIdFieldName = "PersonId";
+        private const string _totalPurchaseAmountFieldName = "TotalPurchaseAmount";
+        private const string _purchaseDateFieldName = "PurchaseDate";
+        private const string _shipDateFieldName = "ShipDate";
+        private const string _dateCreatedFieldName = "DateCreated";
+        private const string _dateUpdatedFieldName = "DateUpdated";
+
         private FieldExpression<int> _id;
         private FieldExpression<int> _personId;
         private FieldExpression<decimal> _totalPurchaseAmount;
         private FieldExpression<DateTime> _purchaseDate;
-        private FieldExpression<DateTime> _shipDate;
+        private NullableFieldExpression<DateTime> _shipDate;
         private FieldExpression<DateTime> _dateCreated;
         private FieldExpression<DateTime> _dateUpdated;
         #endregion
@@ -495,39 +596,55 @@ namespace DataService.EntityExpression.dbo
         public FieldExpression<int> PersonId { get { return _personId; } }
         public FieldExpression<decimal> TotalPurchaseAmount { get { return _totalPurchaseAmount; } }
         public FieldExpression<DateTime> PurchaseDate { get { return _purchaseDate; } }
-        public FieldExpression<DateTime> ShipDate { get { return _shipDate; } }
+        public NullableFieldExpression<DateTime> ShipDate { get { return _shipDate; } }
         public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
         public FieldExpression<DateTime> DateUpdated { get { return _dateUpdated; } }
         #endregion
 
         #region constructors
-        private PurchaseEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public PurchaseEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields?[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")},
+                    { _personIdFieldName, entity.Fields?[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_personIdFieldName}'") },
+                    { _totalPurchaseAmountFieldName, entity.Fields?[_totalPurchaseAmountFieldName]  ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_totalPurchaseAmountFieldName}'")},
+                    { _purchaseDateFieldName, entity.Fields?[_purchaseDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_purchaseDateFieldName}'") },
+                    { _shipDateFieldName, entity.Fields?[_shipDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_shipDateFieldName}'") },
+                    { _dateCreatedFieldName, entity.Fields?[_dateCreatedFieldName]  ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'")},
+                    { _dateUpdatedFieldName, entity.Fields?[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateUpdatedFieldName}'") }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _personId = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "PersonId", SqlDbType.Int, 4));
-            _totalPurchaseAmount = new FieldExpression<decimal>(new MsSqlFieldExpressionMetadata(this, "TotalPurchaseAmount", SqlDbType.Decimal, 12, 2));
-            _purchaseDate = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "PurchaseDate", SqlDbType.DateTime, 8));
-            _shipDate = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "ShipDate", SqlDbType.DateTime, 8));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            _dateUpdated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }
 
-        public PurchaseEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private PurchaseEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, 
+            string alias)
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-        public PurchaseEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _personId = new FieldExpression<int>(this, fields[_personIdFieldName]);
+            _totalPurchaseAmount = new FieldExpression<decimal>(this, fields[_totalPurchaseAmountFieldName]);
+            _purchaseDate = new FieldExpression<DateTime>(this, fields[_purchaseDateFieldName]);
+            _shipDate = new NullableFieldExpression<DateTime>(this, fields[_shipDateFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
+            _dateUpdated = new FieldExpression<DateTime>(this, fields[_dateUpdatedFieldName]);
         }
         #endregion
 
         #region methods
         public PurchaseEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new PurchaseEntity(newMeta);
+            return new PurchaseEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -572,7 +689,7 @@ namespace DataService.EntityExpression.dbo
             purchase.PersonId = mapper.Map<int>(_personId, reader.Read());
             purchase.TotalPurchaseAmount = mapper.Map<decimal>(_totalPurchaseAmount, reader.Read());
             purchase.PurchaseDate = mapper.Map<DateTime>(_purchaseDate, reader.Read());
-            purchase.ShipDate = mapper.Map<DateTime>(_shipDate, reader.Read());
+            purchase.ShipDate = mapper.Map<DateTime?>(_shipDate, reader.Read());
             purchase.DateCreated = mapper.Map<DateTime>(_dateCreated, reader.Read());
             purchase.DateUpdated = mapper.Map<DateTime>(_dateUpdated, reader.Read());
         }
@@ -591,6 +708,14 @@ namespace DataService.EntityExpression.dbo
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _purchaseIdFieldName = "PurchaseId";
+        private const string _productIdFieldName = "ProductId";
+        private const string _purchasePriceFieldName = "PurchasePrice";
+        private const string _quantityFieldName = "Quantity";
+        private const string _dateCreatedFieldName = "DateCreated";
+        private const string _dateUpdatedFieldName = "DateUpdated";
+
         private FieldExpression<int> _id;
         private FieldExpression<int> _purchaseId;
         private FieldExpression<int> _productId;
@@ -611,33 +736,49 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region constructors
-        private PurchaseLineEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public PurchaseLineEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields?[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")},
+                    { _purchaseIdFieldName, entity.Fields?[_purchaseIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_purchaseIdFieldName}'") },
+                    { _productIdFieldName, entity.Fields?[_productIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_productIdFieldName}'") },
+                    { _purchasePriceFieldName, entity.Fields?[_purchasePriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_purchasePriceFieldName}'") },
+                    { _quantityFieldName, entity.Fields?[_quantityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_quantityFieldName}'") },
+                    { _dateCreatedFieldName, entity.Fields?[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'") },
+                    { _dateUpdatedFieldName, entity.Fields?[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateUpdatedFieldName}'") }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _purchaseId = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "PurchaseId", SqlDbType.Int, 4));
-            _productId = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "ProductId", SqlDbType.Int, 4));
-            _purchasePrice = new FieldExpression<decimal>(new MsSqlFieldExpressionMetadata(this, "PurchasePrice", SqlDbType.Decimal, 12, 2));
-            _quantity = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Quantity", SqlDbType.Int, 4));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            _dateUpdated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }
 
-        public PurchaseLineEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private PurchaseLineEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, 
+            string alias)
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-        public PurchaseLineEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _purchaseId = new FieldExpression<int>(this, fields[_purchaseIdFieldName]);
+            _productId = new FieldExpression<int>(this, fields[_productIdFieldName]);
+            _purchasePrice = new FieldExpression<decimal>(this, fields[_purchasePriceFieldName]);
+            _quantity = new FieldExpression<int>(this, fields[_quantityFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
+            _dateUpdated = new FieldExpression<DateTime>(this, fields[_dateUpdatedFieldName]);
         }
         #endregion
 
         #region methods
         public PurchaseLineEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new PurchaseLineEntity(newMeta);
+            return new PurchaseLineEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -704,6 +845,7 @@ namespace DataService.EntityExpression.sec
 {
     using Data.sec;
     using HatTrick.DbEx.MsSql.Expression;
+    using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
@@ -714,8 +856,12 @@ namespace DataService.EntityExpression.sec
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _sSNFieldName = "SSN";
+        private const string _dateCreatedFieldName = "DateCreated";
+        private const string _dateUpdatedFieldName = "DateUpdated";
+
         private static volatile FieldExpression<int> _id;
-        private static volatile FieldExpression<int> _personId;
         private static volatile FieldExpression<string> _sSN;
         private static volatile FieldExpression<DateTime> _dateCreated;
         private static volatile FieldExpression<DateTime> _dateUpdated;
@@ -723,45 +869,55 @@ namespace DataService.EntityExpression.sec
 
         #region interface properties
         public FieldExpression<int> Id { get { return _id; } }
-        public FieldExpression<int> PersonId { get { return _personId; } }
         public FieldExpression<string> SSN { get { return _sSN; } }
         public FieldExpression<DateTime> DateCreated { get { return _dateCreated; } }
         public FieldExpression<DateTime> DateUpdated { get { return _dateUpdated; } }
         #endregion
 
         #region constructors
-        private PersonEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public PersonEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_idFieldName}'")},
+                    { _sSNFieldName, entity.Fields[_sSNFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_sSNFieldName}'") },
+                    { _dateCreatedFieldName, entity.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateCreatedFieldName}'") },
+                    { _dateUpdatedFieldName, entity.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity {entity.Name} does not contain metadata for field '{_dateUpdatedFieldName}'") }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _personId = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "PersonId", SqlDbType.Int, 8));
-            _sSN = new FieldExpression<string>(new MsSqlFieldExpressionMetadata(this, "SSN", SqlDbType.VarChar, 9));
-            _dateCreated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            _dateUpdated = new FieldExpression<DateTime>(new MsSqlFieldExpressionMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }
 
-        public PersonEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private PersonEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, 
+            string alias)
+            : base(schema, metadata, fields, alias)
         {
-
-        }
-        public PersonEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, fields[_idFieldName]);
+            _sSN = new FieldExpression<string>(this, fields[_sSNFieldName]);
+            _dateCreated = new FieldExpression<DateTime>(this, fields[_dateCreatedFieldName]);
+            _dateUpdated = new FieldExpression<DateTime>(this, fields[_dateUpdatedFieldName]);
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new PersonEntity(newMeta);
+            return new PersonEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return new SelectExpressionSet(
                 _id,
-                _personId,
                 _sSN,
                 _dateCreated,
                 _dateUpdated
@@ -771,7 +927,6 @@ namespace DataService.EntityExpression.sec
         protected override InsertExpressionSet GetInclusiveInsertExpression(Person person)
         {
             return new InsertExpressionSet(
-                _personId.Insert(person.PersonId),
                 _sSN.Insert(person.SSN),
                 _dateCreated.Insert(person.DateCreated),
                 _dateUpdated.Insert(person.DateUpdated)
@@ -781,7 +936,6 @@ namespace DataService.EntityExpression.sec
         protected override AssignmentExpressionSet GetAssignmentExpression(Person from, Person to)
         {
             AssignmentExpressionSet expr = null;
-            if (from.PersonId != to.PersonId) { expr &= _personId.Set(to.PersonId); }
             if (from.SSN != to.SSN) { expr &= _sSN.Set(to.SSN); }
             expr &= _dateUpdated.Set(DateTime.UtcNow);
             return expr;
@@ -790,7 +944,6 @@ namespace DataService.EntityExpression.sec
         protected override void HydrateEntity(Person person, IFieldReader reader, IValueMapper valueMapper)
         {
             person.Id = valueMapper.Map<int>(_id, reader.Read());
-            person.PersonId = valueMapper.Map<int>(_personId, reader.Read());
             person.SSN = valueMapper.Map<string>(_sSN, reader.Read());
             person.DateCreated = valueMapper.Map<DateTime>(_dateCreated, reader.Read());
             person.DateUpdated = valueMapper.Map<DateTime>(_dateUpdated, reader.Read());

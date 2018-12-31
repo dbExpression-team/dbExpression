@@ -101,7 +101,7 @@ namespace Data.dbo
         public int PersonId { get; set; }
         public decimal TotalPurchaseAmount { get; set; }
         public DateTime PurchaseDate { get; set; }
-        public DateTime ShipDate { get; set; }
+        public DateTime? ShipDate { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
@@ -145,7 +145,6 @@ namespace Data.sec
     {
         #region interface
         public int Id { get; set; }
-        public int PersonId { get; set; }
         public string SSN { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }

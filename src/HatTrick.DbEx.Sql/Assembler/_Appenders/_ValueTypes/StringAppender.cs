@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             var @fixed = string.IsNullOrWhiteSpace(expression) ? null : builder.FormatValueType<string>(expression);
             if (context.CurrentField != null)
-                builder.Appender.Write(builder.Parameters.Add(@fixed, context.CurrentField).ParameterName);
+                builder.Appender.Write(builder.Parameters.Add(@fixed, context.CurrentField.Metadata).ParameterName);
             else
                 builder.Appender.Write(builder.Parameters.Add<string>(@fixed).ParameterName);
         }

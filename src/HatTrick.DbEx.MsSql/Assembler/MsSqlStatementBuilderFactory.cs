@@ -9,9 +9,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override void RegisterDefaultAssemblers()
         {
             base.RegisterDefaultAssemblers();
-            base.RegisterAssembler(ExecutionContext.GetList, new SelectAllMsSqlAssembler());
-            base.RegisterAssembler(ExecutionContext.GetDynamicList, new SelectAllMsSqlAssembler());
-            base.RegisterAssembler(ExecutionContext.GetValueList, new SelectAllMsSqlAssembler());
+            base.RegisterAssembler(SqlStatementExecutionType.GetList, new SelectAllMsSqlAssembler());
+            base.RegisterAssembler(SqlStatementExecutionType.GetDynamicList, new SelectAllMsSqlAssembler());
+            base.RegisterAssembler(SqlStatementExecutionType.GetValueList, new SelectAllMsSqlAssembler());
         }
 
         public override void RegisterDefaultValueFormatters()

@@ -1,23 +1,32 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public abstract class SchemaExpression : 
         IAssemblyPart, 
-        IEquatable<SchemaExpression>
+        IDbExpression,
+        IEquatable<SchemaExpression>,
+        IDbExpressionMetadataProvider<ISqlSchemaMetadata>,
+        IDbExpressionAliasProvider
     {
+        #region internals
+        protected ISqlSchemaMetadata Metadata { get; }
+        protected string Alias { get; }
+        #endregion
+
         #region interface
-        public string SchemaName { get; set; }
-        public virtual string ConnectionName { get; set; }
+        ISqlSchemaMetadata IDbExpressionMetadataProvider<ISqlSchemaMetadata>.Metadata => Metadata;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public SchemaExpression(string schemaName, string connectionName)
+        public SchemaExpression(ISqlSchemaMetadata metadata, string alias)
         {
-            SchemaName = schemaName;
-            ConnectionName = connectionName;
+            Metadata = metadata ?? throw new DbExpressionConfigurationException($"Schema expression is invalid - required argument is null", new ArgumentNullException($"{nameof(metadata)} is required"));
+            Alias = alias;
         }
         #endregion
 
@@ -30,10 +39,10 @@ namespace HatTrick.DbEx.Sql.Expression
             switch (format)
             {
                 case "s":
-                    val = this.SchemaName;
+                    val = this.Metadata.Name;
                     break;
                 case "[s]":
-                    val = $"[{this.SchemaName}]";
+                    val = $"[{this.Metadata.Name}]";
                     break;
                 default:
                     throw new ArgumentException("encountered unknown format string");
@@ -46,7 +55,8 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (string.Compare(obj.SchemaName, this.SchemaName, true) != 0) return false;
+            if (obj.Alias != this.Alias) return false;
+            if (obj.Metadata != this.Metadata) return false;
 
             return true;
         }
@@ -56,7 +66,8 @@ namespace HatTrick.DbEx.Sql.Expression
             if (!(obj is SchemaExpression other)) return false;
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            if (string.Compare(other.SchemaName, this.SchemaName, true) != 0) return false;
+            if (other.Alias != this.Alias) return false;
+            if (other.Metadata != this.Metadata) return false;
 
             return true;
         }
@@ -69,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (ReferenceEquals(obj1, obj2)) return true;
             if (ReferenceEquals(obj1, null)) return false;
             if (ReferenceEquals(obj2, null)) return false;
-            if (string.Compare(obj1.SchemaName, obj2.SchemaName, true) != 0) return false;
+            if (obj1.Metadata != obj2.Metadata) return false;
 
             return true;
         }

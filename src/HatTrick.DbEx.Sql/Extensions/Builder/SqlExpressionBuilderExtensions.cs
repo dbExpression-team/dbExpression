@@ -20,8 +20,8 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
 
             if (transaction == null)
             {
-                var provider = expression.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
-                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.ConnectionName]);
+                var provider = expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
+                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.Database.ConnectionName]);
             }
 
             //var validator  ??;
@@ -168,8 +168,8 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
         {
             if (transaction == null)
             {
-                var provider = expression.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
-                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.ConnectionName]);
+                var provider = expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
+                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.Database.ConnectionName]);
             }
 
             //var validator  ??;

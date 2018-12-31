@@ -19,14 +19,14 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IFromExpressionBuilder<T, ITypeContinuationBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationBuilder<T>>> SelectOne<T>()
             where T : class, IDbEntity
         {
-            return new MsSqlExpressionBuilder<T, ITypeContinuationBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.Get }) 
+            return new MsSqlExpressionBuilder<T, ITypeContinuationBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationBuilder<T>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.Get }) 
                 as IFromExpressionBuilder<T, ITypeContinuationBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationBuilder<T>>>;
         }
 
         public static IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>> SelectOne<T>(FieldExpression<T> field)
             where T : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValue });
+            var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetValue });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>;
         }
@@ -34,14 +34,14 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>> SelectOne<T>(IDbExpressionColumnExpression field)
             where T : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValue });
+            var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetValue });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>;
         }
 
         public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(IDbExpressionColumnExpression field1, IDbExpressionColumnExpression field2, params IDbExpressionColumnExpression[] fields)
         {
-            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> (new ExpressionSet { ExecutionContext = ExecutionContext.GetDynamic });
+            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> (new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetDynamic });
             builder.Expression.Select.Expressions.Add((field1.GetType(), field1));
             builder.Expression.Select.Expressions.Add((field2.GetType(), field2));
             foreach (var field in fields)
@@ -54,28 +54,28 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IListFromExpressionBuilder<T, ITypeListContinuationBuilder<T>, ITypeListContinuationBuilder<T, ITypeListContinuationBuilder<T>>> SelectAll<T>()
             where T : IDbEntity
         {
-            return new MsSqlExpressionBuilder<T, ITypeListContinuationBuilder<T>, ITypeListContinuationBuilder<T, ITypeListContinuationBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetList })
+            return new MsSqlExpressionBuilder<T, ITypeListContinuationBuilder<T>, ITypeListContinuationBuilder<T, ITypeListContinuationBuilder<T>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetList })
                 as IListFromExpressionBuilder<T, ITypeListContinuationBuilder<T>, ITypeListContinuationBuilder<T, ITypeListContinuationBuilder<T>>>;
         }
 
         public static IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>> SelectAll<T>(FieldExpression<T> field)
              where T : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
+            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetValueList });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>;
         }
 
         public static IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>> SelectAll<T>(IDbExpressionColumnExpression field)
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetValueList });
+            var builder = new MsSqlExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetValueList });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IListFromExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>, IValueListContinuationExpressionBuilder<T, IValueListContinuationExpressionBuilder<T>>>;
         }
 
         public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectAll(IDbExpressionColumnExpression field1, IDbExpressionColumnExpression field2, params IDbExpressionColumnExpression[] fields)
         {
-            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(new ExpressionSet { ExecutionContext = ExecutionContext.GetDynamicList });
+            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.GetDynamicList });
             builder.Expression.Select.Expressions.Add((field1.GetType(), field1));
             builder.Expression.Select.Expressions.Add((field2.GetType(), field2));
             foreach (var field in fields)
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public static IUpdateFromExpressionBuilder Update(params AssignmentExpression[] fields)
         {
-            var builder = new MsSqlExpressionBuilder(new ExpressionSet { ExecutionContext = ExecutionContext.Update });
+            var builder = new MsSqlExpressionBuilder(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.Update });
             foreach (var field in fields)
                 builder.Expression &= field;
             return builder as IUpdateFromExpressionBuilder;
@@ -94,14 +94,14 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public static IDeleteFromExpressionBuilder Delete()
         {
-            return new MsSqlExpressionBuilder(new ExpressionSet { ExecutionContext = ExecutionContext.Delete })
+            return new MsSqlExpressionBuilder(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.Delete })
                 as IDeleteFromExpressionBuilder;
         }
 
         public static IInsertExpressionBuilder<T> Insert<T>(T instance)
             where T : class, IDbEntity
         {
-            return new MsSqlInsertBuilder<T>(new ExpressionSet { ExecutionContext = ExecutionContext.Insert, Instance = instance })
+            return new MsSqlInsertBuilder<T>(new ExpressionSet { ExecutionContext = SqlStatementExecutionType.Insert, Instance = instance })
                 as IInsertExpressionBuilder<T>;
         }
 

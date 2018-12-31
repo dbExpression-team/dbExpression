@@ -11,10 +11,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     [Trait("Statement", "SELECT")]
     public class SelectAllExpressionBuilderTests : TestBase
     {
-        [Fact]
-        public void Does_select_all_for_single_field_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_all_for_single_field_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             //when
@@ -24,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet = (exp as IExpressionProvider).GetExpression();
 
             //then
-            expressionSet.ExecutionContext.Should().Be(ExecutionContext.GetValueList);
+            expressionSet.ExecutionContext.Should().Be(SqlStatementExecutionType.GetValueList);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
                 .Which.Item2.Should().BeOfType<FieldExpression<int>>();
@@ -34,10 +37,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .And.Equals(sec.Person);
         }
 
-        [Fact]
-        public void Does_select_all_for_multiple_values_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_all_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 
@@ -48,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet = (exp as IExpressionProvider).GetExpression();
 
             //then
-            expressionSet.ExecutionContext.Should().Be(ExecutionContext.GetDynamicList);
+            expressionSet.ExecutionContext.Should().Be(SqlStatementExecutionType.GetDynamicList);
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 

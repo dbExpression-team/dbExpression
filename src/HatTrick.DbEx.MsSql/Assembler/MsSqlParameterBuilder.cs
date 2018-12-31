@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Types;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -33,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return Add(value, MsSqlTypeMap.GetSqlType(valueType), null, null, null);
         }
 
-        public override DbParameter Add(object value, FieldExpressionMetadata metadata)
+        public override DbParameter Add(object value, ISqlFieldMetadata metadata)
         {
             return Add(value, (SqlDbType)metadata.DbType, metadata.Size, metadata.Precision, metadata.Scale);
         }

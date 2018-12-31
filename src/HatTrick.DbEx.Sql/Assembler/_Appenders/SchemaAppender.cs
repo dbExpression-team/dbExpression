@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(SchemaExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write(expression.SchemaName);
+            builder.Appender.Write((expression as IDbExpressionMetadataProvider<ISqlSchemaMetadata>).Metadata.Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

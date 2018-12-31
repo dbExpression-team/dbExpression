@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Utility;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,31 +9,31 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class EntityExpression : 
         IDbExpression, 
         IAssemblyPart, 
-        IExpressionMetadataProvider<EntityExpressionMetadata>,
+        IDbExpressionMetadataProvider<ISqlEntityMetadata>,
+        IDbExpressionProvider<SchemaExpression>,
+        IDbExpressionAliasProvider,
         IEquatable<EntityExpression>
-    {
+   {
         #region internals
-        private EntityExpressionMetadata Metadata { get; set; }
+        protected SchemaExpression Schema { get; }
+        protected ISqlEntityMetadata Metadata { get; }
+        protected IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        protected string Alias { get; }
         #endregion
 
         #region interface
-        EntityExpressionMetadata IExpressionMetadataProvider<EntityExpressionMetadata>.Metadata => Metadata;
+        SchemaExpression IDbExpressionProvider<SchemaExpression>.Expression => Schema;
+        ISqlEntityMetadata IDbExpressionMetadataProvider<ISqlEntityMetadata>.Metadata => Metadata;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected EntityExpression(EntityExpressionMetadata metadata)
+        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, IDictionary<string, ISqlFieldMetadata> fields, string alias)
         {
+            Schema = schema;
             Metadata = metadata;
-        }
-
-        protected EntityExpression(SchemaExpression schema, string name)
-        {
-            Metadata = new EntityExpressionMetadata(schema, name);
-        }
-
-        protected EntityExpression(SchemaExpression schema, string name, string alias) : this(schema, name)
-        {
-            Metadata.AliasName = alias;
+            Fields = fields;
+            Alias = alias;
         }
         #endregion
 
@@ -45,27 +46,27 @@ namespace HatTrick.DbEx.Sql.Expression
             switch (format)
             {
                 case "e":
-                    val = this.Metadata.EntityName;
+                    val = Metadata.Name;
                     break;
                 case "s.e":
-                    val = $"{this.Metadata.Schema.ToString("s")}.{this.Metadata.EntityName}";
+                    val = $"{Metadata.Schema.Name}.{Metadata.Name}";
                     break;
                 case "[e]":
-                    val = $"[{this.Metadata.EntityName}]";
+                    val = $"[{Metadata.Name}]";
                     break;
                 case "[s.e]":
-                    val = $"[{this.Metadata.Schema.ToString("s")}.{this.Metadata.EntityName}]";
+                    val = $"[{Metadata.Schema.Name}.{Metadata.Name}]";
                     break;
                 case "[s].[e]":
-                    val = $"{this.Metadata.Schema.ToString("[s]")}.[{this.Metadata.EntityName}]";
+                    val = $"{Metadata.Schema.Name}.[{Metadata.Name}]";
                     break;
                 default:
                     throw new ArgumentException("encountered unknown format string");
             }
 
-            if (!ignoreAlias && !string.IsNullOrWhiteSpace(this.Metadata.AliasName))
+            if (!ignoreAlias && !string.IsNullOrWhiteSpace(Alias))
             {
-                val += $" AS {this.Metadata.AliasName}";
+                val += $" AS {Alias}";
             }
 
             return val;
@@ -76,38 +77,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (string.Compare(obj.Metadata.EntityName, this.Metadata.EntityName, true) != 0) return false;
-            if (string.Compare(obj.Metadata.AliasName, this.Metadata.AliasName, true) != 0) return false;
-            if (obj.Metadata.Schema != this.Metadata.Schema) return false;
+            if (obj.Metadata != this.Metadata) return false;
+            if (obj.Alias != this.Alias) return false;
 
             return true;
         }
 
         public override bool Equals(object obj)
-        {
-            if (!(obj is EntityExpression other)) return false;
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            if (string.Compare(other.Metadata.EntityName, this.Metadata.EntityName, true) != 0) return false;
-            if (string.Compare(other.Metadata.AliasName, this.Metadata.AliasName, true) != 0) return false;
-            if (other.Metadata.Schema != this.Metadata.Schema) return false;
-
-            return true;
-        }
+            => Equals(obj as EntityExpression);
 
         public override int GetHashCode()
             => base.GetHashCode();
 
         public static bool operator ==(EntityExpression obj1, EntityExpression obj2)
         {
-            if (ReferenceEquals(obj1, obj2)) return true;
-            if (ReferenceEquals(obj1, null)) return false;
-            if (ReferenceEquals(obj2, null)) return false;
-            if (string.Compare(obj1.Metadata.EntityName, obj2.Metadata.EntityName, true) != 0) return false;
-            if (string.Compare(obj1.Metadata.AliasName, obj2.Metadata.AliasName, true) != 0) return false;
-            if (obj1.Metadata.Schema != obj2.Metadata.Schema) return false;
-
-            return true;
+            if (ReferenceEquals(null, obj1) && !ReferenceEquals(null, obj2)) return false;
+            return obj1.Equals(obj2);
         }
 
         public static bool operator !=(EntityExpression obj1, EntityExpression obj2)

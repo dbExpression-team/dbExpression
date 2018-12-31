@@ -4,27 +4,22 @@ using System.Data;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class FieldExpression<T> : 
+    public class FieldExpression<T> :
         FieldExpression,
-        IDbExpressionColumnExpression<T>,
-        IDbExpressionAliasProvider
+        IDbExpressionColumnExpression<T>
     {
-        #region interface
-        string IDbExpressionAliasProvider.Alias => Alias;
-        #endregion
-
         #region constructors
-        public FieldExpression(FieldExpressionMetadata metadata) : base(metadata)
+        public FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata) : base(entity, metadata)
         {
         }
 
-        private FieldExpression(FieldExpressionMetadata metadata, string alias) : base(metadata, alias)
+        protected FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, string alias) : base(entity, metadata, alias)
         {
         }
         #endregion
 
         #region as
-        public FieldExpression<T> As(string alias) => new FieldExpression<T>(base.Metadata, alias);
+        public virtual FieldExpression<T> As(string alias) => new FieldExpression<T>(base.Entity, base.Metadata, alias);
         #endregion
 
         #region in value set
@@ -42,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public AssignmentExpression Set(FieldExpression<T> field) => new AssignmentExpression(this, field);
         #endregion
 
-        #region insert (init) value
+        #region insert value
         public InsertExpression Insert(T value) => new InsertExpression(this, value, typeof(T));
         #endregion
 

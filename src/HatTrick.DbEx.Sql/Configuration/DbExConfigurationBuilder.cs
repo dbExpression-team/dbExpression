@@ -4,14 +4,12 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class DbExConfigurationBuilder
     {
-        public static void Configure(Action<DbExpressionConfiguration> configure)
+        public static void UseDbExpression<T>(Action<DbExpressionConfiguration> configure)
+            where T : class, IDatabaseMetadataProvider, new()
         {
-            Configure(DbExConfigurationSettings.Settings = new DbExpressionConfiguration(), configure);
-        }
-
-        public static void Configure(DbExpressionConfiguration config, Action<DbExpressionConfiguration> configure)
-        {
-            configure(config);
+            var metadata = new T();
+            DbExConfigurationSettings.Settings = new DbExpressionConfiguration { Metadata = metadata };
+            configure?.Invoke(DbExConfigurationSettings.Settings);
         }
     }
 }

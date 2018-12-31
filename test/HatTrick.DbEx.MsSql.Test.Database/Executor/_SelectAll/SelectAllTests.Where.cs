@@ -248,6 +248,24 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //then
                 purchases.Should().HaveCount(7);
             }
+
+            [Theory]
+            [InlineData(2014)]
+            public void Does_Integrated_ship_date_equal_to_nowI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_have_7_records(int version)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(dbo.Purchase.Id)
+                   .From(dbo.Purchase)
+                   .Where(!(dbo.Purchase.ShipDate == DateTime.Now) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(7);
+            }
             #endregion
         }
     }

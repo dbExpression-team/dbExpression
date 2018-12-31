@@ -12,9 +12,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(FieldExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            var provider = expression as IExpressionMetadataProvider<FieldExpressionMetadata>;
+            var metadataProvider = expression as IDbExpressionMetadataProvider<ISqlFieldMetadata>;
+            var entityProvider = expression as IDbExpressionProvider<EntityExpression>;
 
-            var alias = context.ResolveEntityAlias(provider.Metadata.ParentEntity);
+            var alias = context.ResolveEntityAlias(entityProvider.Expression);
             if (!string.IsNullOrWhiteSpace(alias))
             {
                 builder.Appender
@@ -24,13 +25,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             else
             {
-                builder.AppendPart<EntityExpression>(provider.Metadata.ParentEntity, context);
+                builder.AppendPart<EntityExpression>(entityProvider.Expression, context);
             }
 
             builder.Appender
                 .Write(".")
                 .Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write(!string.IsNullOrWhiteSpace(context.CurrentFieldNameOverride) ? context.CurrentFieldNameOverride : provider.Metadata.Name)
+                .Write(!string.IsNullOrWhiteSpace(context.CurrentField?.NameOverride) ? context.CurrentField.NameOverride : metadataProvider.Metadata.Name)
                 .Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

@@ -4,16 +4,21 @@ namespace DataService.EntityExpression.dbo
 {
     using Data.dbo;
     using HatTrick.DbEx.MsSql.Expression;
+    using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
     using HatTrick.DbEx.Utility;
+    using System.Collections.Generic;
     using System.Data;
 
     #region person total purchases view
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
+        private const string _idFieldName = "Id";
+        private const string _totalPurchasesFieldName = "TotalPurchases";
+
         private FieldExpression<int> _id;
         private FieldExpression<decimal?> _totalPurchases;
         #endregion
@@ -24,29 +29,39 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region constructors
-        private PersonTotalPurchasesViewEntity(EntityExpressionMetadata metadata) : base(metadata)
+        public PersonTotalPurchasesViewEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata entity,
+            string alias
+        ) : this(
+                schema,
+                entity,
+                new Dictionary<string, ISqlFieldMetadata>
+                {
+                    { _idFieldName, entity.Fields[_idFieldName]},
+                    { _totalPurchasesFieldName, entity.Fields[_totalPurchasesFieldName] }
+                },
+                alias
+        )
         {
-            _id = new FieldExpression<int>(new MsSqlFieldExpressionMetadata(this, "Id", SqlDbType.Int, 4));
-            _totalPurchases = new FieldExpression<decimal?>(new MsSqlFieldExpressionMetadata(this, "TotalPurchases", SqlDbType.Decimal, 12, 2));
-
         }
 
-        public PersonTotalPurchasesViewEntity(SchemaExpression schema, string entityName) : this(new EntityExpressionMetadata(schema, entityName))
+        private PersonTotalPurchasesViewEntity(
+            SchemaExpression schema,
+            ISqlEntityMetadata metadata, 
+            IDictionary<string, ISqlFieldMetadata> fields, 
+            string alias)
+            : base(schema, metadata, fields, alias)
         {
-        }
-
-        public PersonTotalPurchasesViewEntity(SchemaExpression schema, string entityName, string aliasName) : this(new EntityExpressionMetadata(schema, entityName, aliasName))
-        {
+            _id = new FieldExpression<int>(this, Fields[_idFieldName]);
+            _totalPurchases = new FieldExpression<decimal?>(this, Fields[_totalPurchasesFieldName]);
         }
         #endregion
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
         {
-            var meta = (this as IExpressionMetadataProvider<EntityExpressionMetadata>).Metadata;
-            var newMeta = CloneUtility.DeepCopy(meta);
-            newMeta.AliasName = name;
-            return new PersonTotalPurchasesViewEntity(newMeta);
+            return new PersonTotalPurchasesViewEntity(this.Schema, this.Metadata, this.Fields, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()

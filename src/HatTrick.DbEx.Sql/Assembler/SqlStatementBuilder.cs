@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public DbExpressionAssemblerConfiguration Configuration { get; }
         public ExpressionSet DBExpression { get; }
-        public Func<ExecutionContext, ISqlStatementAssembler> AssemblerResolver { get; }
+        public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerResolver { get; }
         public Func<Type, IAssemblyPartAliasProvider> AliasProviderResolver { get; }
         public Func<Type, IAssemblyPartAppender> PartAppenderResolver { get; }
         public Func<Type, IValueTypeFormatter> ValueTypeFormatterResolver { get; }
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public SqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
             ExpressionSet dbExpression,
-            Func<ExecutionContext, ISqlStatementAssembler> assemblerResolver,
+            Func<SqlStatementExecutionType, ISqlStatementAssembler> assemblerResolver,
             Func<Type, IAssemblyPartAliasProvider> aliasProviderResolver,
             Func<Type, IAssemblyPartAppender> partAppenderResolver,
             Func<Type, IValueTypeFormatter> valueTypeFormatterResolver,

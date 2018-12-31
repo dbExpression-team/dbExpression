@@ -1,9 +1,11 @@
 ﻿using HatTrick.DbEx.MsSql.Assembler;
 using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Executor;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Mapper;
+using System;
 
 namespace HatTrick.DbEx.MsSql.Extensions.Configuration
 {

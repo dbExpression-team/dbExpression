@@ -2,6 +2,7 @@
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
@@ -16,7 +17,9 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
         public void Does_a_single_where_predicate_result_in_valid_clause(int version)
         {
             //given
-            var settings = ConfigureForMsSqlVersion(version);
+            ConfigureForMsSqlVersion(version);
+
+            var settings = DbExConfigurationSettings.Settings;
 
             ITerminationExpressionBuilder exp = 
 

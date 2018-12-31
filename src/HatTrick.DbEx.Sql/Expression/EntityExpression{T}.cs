@@ -2,6 +2,7 @@
 using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Utility;
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -14,17 +15,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected EntityExpression(EntityExpressionMetadata metadata) : base(metadata)
+        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, IDictionary<string, ISqlFieldMetadata> fields, string alias) 
+            : base(schema, metadata, fields, alias)
         {
 
-        }
-
-        public EntityExpression(SchemaExpression schema, string name) : this(schema, name, null)
-        {
-        }
-
-        public EntityExpression(SchemaExpression schema, string name, string alias) : base(schema, name, alias)
-        {
         }
         #endregion
 

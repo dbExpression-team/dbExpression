@@ -48,7 +48,8 @@
     <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\StringValueTypeFormatter.cs" />
-    <Compile Include="Expression\MsSqlFieldExpressionMetadata.cs" />
+    <Compile Include="MsSqlDatabaseMetadata.cs" />
+    <Compile Include="MsSqlFieldMetadata.cs" />
     <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
     <Compile Include="Connection\MsSqlConnection.cs" />
     <Compile Include="Assembler\SelectAllMsSqlAssembler.cs" />

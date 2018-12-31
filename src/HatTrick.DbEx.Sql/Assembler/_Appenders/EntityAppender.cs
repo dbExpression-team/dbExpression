@@ -11,14 +11,14 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(EntityExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
-            var provider = expression as IExpressionMetadataProvider<EntityExpressionMetadata>;
+            var provider = expression as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
             if (context.Configuration.IncludeSchemaName)
             {
-                builder.AppendPart<SchemaExpression>(provider.Metadata.Schema, context);
+                builder.AppendPart<SchemaExpression>((expression as IDbExpressionProvider<SchemaExpression>).Expression, context);
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write(provider.Metadata.EntityName);
+            builder.Appender.Write(provider.Metadata.Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

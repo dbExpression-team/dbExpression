@@ -51,22 +51,22 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private IDictionary<Type, Func<IAssemblyPartAliasProvider>> aliasProviders { get; } = new Dictionary<Type, Func<IAssemblyPartAliasProvider>>();
         private IDictionary<Type, Func<IAssemblyPartAppender>> partAppenders { get; } = new Dictionary<Type, Func<IAssemblyPartAppender>>();
-        private IDictionary<ExecutionContext, Func<ISqlStatementAssembler>> assemblers { get; } = new Dictionary<ExecutionContext, Func<ISqlStatementAssembler>>();
+        private IDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> assemblers { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
         private IDictionary<Type, Func<IValueTypeFormatter>> valueFormatters { get; } = new Dictionary<Type, Func<IValueTypeFormatter>>();
 
-        private Func<ExecutionContext, ISqlStatementAssembler> _assemblerResolver;
+        private Func<SqlStatementExecutionType, ISqlStatementAssembler> _assemblerResolver;
         private Func<Type, IAssemblyPartAliasProvider> _aliasProviderAccessor;
         private Func<Type, IAssemblyPartAppender> _partAppenderAccessor;
         private Func<Type, IValueTypeFormatter> _valueFormatterAccessor;
 
-        public virtual Func<ExecutionContext, ISqlStatementAssembler> AssemblerResolver
+        public virtual Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerResolver
         {
             get
             {
                 if (_assemblerResolver != null)
                     return _assemblerResolver;
 
-                return _assemblerResolver = new Func<ExecutionContext, ISqlStatementAssembler>(ec => assemblers[ec]());
+                return _assemblerResolver = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(ec => assemblers[ec]());
             }
         }
 
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAppenders[typeof(T)] = () => new U();
         }
 
-        public void RegisterPartAssembler<T>(IAssemblyPartAppender<T> assembler)
+        public void RegisterPartAppender<T>(IAssemblyPartAppender<T> assembler)
             where T : class, IAssemblyPart
         {
             partAppenders[typeof(T)] = () => assembler;
@@ -196,13 +196,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAppenders.Add(typeof(Array), () => _arrayAppender);
         }
 
-        public virtual void RegisterAssembler<T>(ExecutionContext executionContext)
+        public virtual void RegisterAssembler<T>(SqlStatementExecutionType executionContext)
             where T : class, ISqlStatementAssembler, new()
         {
             assemblers[executionContext] = () => new T();
         }
 
-        public virtual void RegisterAssembler<T>(ExecutionContext executionContext, T assembler)
+        public virtual void RegisterAssembler<T>(SqlStatementExecutionType executionContext, T assembler)
             where T : class, ISqlStatementAssembler
         {
             assemblers[executionContext] = () => assembler;
@@ -210,15 +210,15 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public virtual void RegisterDefaultAssemblers()
         {
-            assemblers.Add(ExecutionContext.Get, () => _selectSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.GetDynamic, () => _selectSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.GetValue, () => _selectSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.GetList, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.GetDynamicList, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.GetValueList, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.Insert, () => _insertSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.Update, () => _updateSqlStatementAssembler);
-            assemblers.Add(ExecutionContext.Delete, () => _deleteSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.Get, () => _selectSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.GetDynamic, () => _selectSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.GetValue, () => _selectSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.GetList, () => _selectAllSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.GetDynamicList, () => _selectAllSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.GetValueList, () => _selectAllSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
         }
 
         public void RegisterValueFormatter<T, U>()

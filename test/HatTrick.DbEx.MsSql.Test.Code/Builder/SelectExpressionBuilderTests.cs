@@ -12,10 +12,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     [Trait("Statement", "SELECT")]
     public class SelectExpressionBuilderTests : TestBase
     {
-        [Fact]
-        public void Does_select_for_single_value_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_for_single_value_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 
@@ -26,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet = (exp as IExpressionProvider).GetExpression();
 
             //then
-            expressionSet.ExecutionContext.Should().Be(ExecutionContext.GetValue);
+            expressionSet.ExecutionContext.Should().Be(SqlStatementExecutionType.GetValue);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
                 .Which.Item2.Should().BeOfType<FieldExpression<int>>();
@@ -36,10 +39,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .And.Equals(sec.Person);
         }
 
-        [Fact]
-        public void Does_select_for_multiple_values_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 
@@ -50,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet = (exp as IExpressionProvider).GetExpression();
 
             //then
-            expressionSet.ExecutionContext.Should().Be(ExecutionContext.GetDynamic);
+            expressionSet.ExecutionContext.Should().Be(SqlStatementExecutionType.GetDynamic);
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 

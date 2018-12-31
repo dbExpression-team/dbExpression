@@ -1,6 +1,6 @@
 ﻿namespace HatTrick.DbEx.Sql
 {
-    public enum ExecutionContext : int
+    public enum SqlStatementExecutionType : int
     {
         None,
         Get,

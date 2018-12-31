@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region abstract methods
         public abstract DbParameter Add<T>(object value)
             where T : IComparable;
-        public abstract DbParameter Add(object value, FieldExpressionMetadata metadata);
+        public abstract DbParameter Add(object value, ISqlFieldMetadata metadata);
         public abstract DbParameter Add(object value, Type valueType);
         #endregion
     }

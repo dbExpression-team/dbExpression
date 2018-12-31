@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public static class DbExConfigurationSettings
     {
-        public static DbExpressionConfiguration Settings = new DbExpressionConfiguration();
+        public static DbExpressionConfiguration Settings { get; set; }
     }
 
     public class DbExpressionConfiguration
@@ -23,6 +23,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlConnectionFactory ConnectionFactory { get; set; }
         public IMapperFactory MapperFactory { get; set; }
         public IEntityFactory EntityFactory { get; set; }
+        public IDatabaseMetadataProvider Metadata { get; set; }
 
         public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; set; } = new DbExpressionAssemblerConfiguration();
     }

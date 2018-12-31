@@ -9,12 +9,15 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 {
     [Trait("Statement", "SELECT")]
     [Trait("Clause", "WHERE")]
-    public class WhereClauseExpressionBuilderTests
+    public class WhereClauseExpressionBuilderTests : TestBase
     {
-        [Fact]
-        public void Does_select_for_single_value_with_where_clause_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_for_single_value_with_where_clause_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             FilterExpression idFilter;
@@ -35,10 +38,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
         }
 
-        [Fact]
-        public void Does_select_for_single_value_with_multiple_where_clauses_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_for_single_value_with_multiple_where_clauses_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             FilterExpression idFilter;
@@ -69,10 +75,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
         }
 
-        [Fact]
-        public void Does_select_for_single_value_with_child_where_clauses_result_in_valid_expression()
+        [Theory]
+        [InlineData(2014)]
+        public void Does_select_for_single_value_with_child_where_clauses_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             FilterExpression idFilter;

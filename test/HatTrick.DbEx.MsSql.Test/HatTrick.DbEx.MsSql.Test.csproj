@@ -43,6 +43,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
@@ -67,10 +68,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Generated\DBEntityProvider.generated.cs" />
+    <Compile Include="Generated\Metadata.generated.cs" />
+    <Compile Include="Generated\SchemaExpression.generated.cs" />
     <Compile Include="Generated\TableData.generated.cs" />
-    <Compile Include="Generated\TableDBEntity.generated.cs" />
+    <Compile Include="Generated\EntityExpression.generated.cs" />
     <Compile Include="Generated\ViewData.generated.cs" />
-    <Compile Include="Generated\ViewDBEntity.generated.cs" />
+    <Compile Include="Generated\ViewEntity.generated.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="_TypeCode\ProductCategoryType.cs" />
     <Compile Include="_TypeCode\GenderType.cs" />

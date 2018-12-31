@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public EntityExpression BaseEntity { get; set; }
 
-        public ExecutionContext ExecutionContext { get; set; }
+        public SqlStatementExecutionType ExecutionContext { get; set; }
 
         public int? SkipValue { get; set; }
 

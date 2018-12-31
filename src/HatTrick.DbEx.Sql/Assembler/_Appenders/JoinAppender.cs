@@ -25,8 +25,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (!(expression.JoinToo.Item2 is ExpressionSet joinExpression))
                 return;
 
-            var provider = joinExpression.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
-            string subselectBaseAlias = provider.Metadata.IsAliased ? provider.Metadata.AliasName : builder.GenerateAlias();
+            var provider = joinExpression.BaseEntity as IDbExpressionAliasProvider;
+            string subselectBaseAlias = string.IsNullOrWhiteSpace(provider.Alias) ? builder.GenerateAlias() : provider.Alias;
             discoveredAliases.SetAlias(currentLevel, new EntityAlias(joinExpression.BaseEntity, subselectBaseAlias));
 
             if (joinExpression.Joins == null)
@@ -39,8 +39,8 @@ namespace HatTrick.DbEx.Sql.Assembler
 
                 builder.DiscoverAliases(child, currentLevel + 1, config, discoveredAliases);
 
-                var childProvider = child.BaseEntity as IExpressionMetadataProvider<EntityExpressionMetadata>;
-                string childAlias = childProvider.Metadata.IsAliased ? childProvider.Metadata.AliasName : builder.GenerateAlias();
+                var childProvider = child.BaseEntity as IDbExpressionAliasProvider;
+                string childAlias = string.IsNullOrWhiteSpace(childProvider.Alias) ? builder.GenerateAlias() : childProvider.Alias;
                 discoveredAliases.SetAlias(currentLevel + 1, new EntityAlias(child.BaseEntity, childAlias));
             }
 

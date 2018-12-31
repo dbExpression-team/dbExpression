@@ -15,6 +15,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         DbParameter Add<T>(object value)
             where T : IComparable;
         DbParameter Add(object value, Type valueType);
-        DbParameter Add(object value, FieldExpressionMetadata metadata);
+        DbParameter Add(object value, ISqlFieldMetadata metadata);
     }
 }

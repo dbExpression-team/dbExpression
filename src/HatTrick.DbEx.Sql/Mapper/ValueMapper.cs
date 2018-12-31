@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             Factory = factory;
         }
 
-        public T Map<T>(IExpressionMetadataProvider<FieldExpressionMetadata> field, object value)
+        public T Map<T>(IDbExpressionMetadataProvider<ISqlFieldMetadata> field, object value)
             => Factory.CreateValueMapper<T>().Map(value);
     }
 }

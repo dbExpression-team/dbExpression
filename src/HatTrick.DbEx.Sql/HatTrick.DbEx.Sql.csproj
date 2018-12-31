@@ -118,6 +118,8 @@
     <Compile Include="Executor\IFieldReader.cs" />
     <Compile Include="Expression\ArithmeticExpression{T}.cs" />
     <Compile Include="Expression\IDbExpressionColumnExpression{T}.cs" />
+    <Compile Include="Expression\IDbExpressionProvider{T}.cs" />
+    <Compile Include="Expression\NullableFieldExpression{T}.cs" />
     <Compile Include="Expression\_Function\IsNullFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\IsNullFunctionExpression.cs" />
     <Compile Include="Expression\_Function\PopulationVarianceFunctionExpression.cs" />
@@ -131,10 +133,9 @@
     <Compile Include="Expression\_Function\MinimumFunctionExpression.cs" />
     <Compile Include="Expression\_Function\AverageFunctionExpression.cs" />
     <Compile Include="Expression\_Function\CoalesceFunctionExpression.cs" />
-    <Compile Include="Expression\EntityExpressionMetadata.cs" />
-    <Compile Include="Expression\FieldExpressionMetadata.cs" />
-    <Compile Include="Expression\IExpressionMetadata.cs" />
-    <Compile Include="Expression\IFieldExpressionMetadataProvider.cs" />
+    <Compile Include="SqlFieldMetadata.cs" />
+    <Compile Include="IDbExpressionMetadata.cs" />
+    <Compile Include="IDbExpressionMetadataProvider{T}.cs" />
     <Compile Include="Extensions\Assembler\Dictionary{int_EntityAliasDiscovery}Extensions.cs" />
     <Compile Include="Extensions\Builder\SqlExpressionBuilderExtensions.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U,V}.cs" />
@@ -176,7 +177,7 @@
     <Compile Include="Configuration\DbExpressionAssemblerConfiguration.cs" />
     <Compile Include="Connection\SqlConnection.cs" />
     <Compile Include="Configuration\DbExpressionConfiguration.cs" />
-    <Compile Include="ExecutionContext.cs" />
+    <Compile Include="SqlStatementExecutionType.cs" />
     <Compile Include="Executor\InsertSqlStatementExecutor.cs" />
     <Compile Include="Executor\DeleteSqlStatementExecutor.cs" />
     <Compile Include="Connection\ISqlConnectionFactory.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
     <Compile Include="Extensions\Assembler\AssemblerContextExtensions.cs" />
     <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
+    <Compile Include="ISqlFieldMetadata.cs" />
     <Compile Include="Mapper\EntityFactory.cs" />
     <Compile Include="Mapper\EntityMapper{T}.cs" />
     <Compile Include="Mapper\ExpandoObjectMapper.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="Mapper\IValueMapper{T}.cs" />
     <Compile Include="Mapper\PrimitiveMapper{T}.cs" />
     <Compile Include="Mapper\ValueMapper.cs" />
+    <Compile Include="SqlDatabaseMetadata.cs" />
     <Compile Include="SqlStatement.cs" />
     <Compile Include="Executor\SqlStatementExecutionResultSet.cs" />
     <Compile Include="Executor\UpdateSqlStatementExecutor.cs" />
@@ -275,7 +278,9 @@
     <Compile Include="ObjectMap\SqlParameter.cs" />
     <Compile Include="ObjectMap\SqlRelationship.cs" />
     <Compile Include="ObjectMap\SqlSproc.cs" />
-    <Compile Include="SqlDbClientType.cs" />
+    <Compile Include="_Exceptions\DbExpressionConfigurationException.cs" />
+    <Compile Include="_Exceptions\DbExpressionException.cs" />
+    <Compile Include="IDatabaseMetadataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
