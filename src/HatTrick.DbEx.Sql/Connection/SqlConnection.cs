@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Configuration;
 using System.Dynamic;
 using HatTrick.DbEx.Configuration;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -17,6 +18,7 @@ namespace HatTrick.DbEx.Sql
         public DbTransaction DbTransaction { get; private set; }
         #endregion
 
+        //TODO: GWG do we need all of the parameter methods?
         #region interface properties
         public string ConnectionString
         {
@@ -96,6 +98,16 @@ namespace HatTrick.DbEx.Sql
             }
         }
 
+        public async Task EnsureOpenConnectionAsync()
+        {
+            this.EnsureConnection();
+            if (_dbConnection.State != ConnectionState.Open)
+            {
+                await _dbConnection.OpenAsync().ConfigureAwait(false);
+            }
+        }
+
+        //TODO: GWG, implement IDisposable
         public void Disconnect()
         {
             if (DbConnection != null)

@@ -1,17 +1,15 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SumFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<SumFunctionExpression>
+        IEquatable<SumFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -29,43 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public SumFunctionExpression(IDbExpressionColumnExpression<byte> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public SumFunctionExpression(IDbExpressionColumnExpression<short> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public SumFunctionExpression(IDbExpressionColumnExpression<int> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public SumFunctionExpression(IDbExpressionColumnExpression<long> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public SumFunctionExpression(IDbExpressionColumnExpression<decimal> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public SumFunctionExpression(IDbExpressionColumnExpression<double> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public SumFunctionExpression(IDbExpressionColumnExpression<float> expression, bool isDistinct)
+        public SumFunctionExpression(ISupportedForFunctionExpression<SumFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

@@ -10,35 +10,36 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
+        private static readonly SqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
         private IDictionary<SqlStatementExecutionType, Func<ISqlStatementExecutor>> executors { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementExecutor>>();
 
         public virtual void RegisterDefaultExecutors()
         {
-            executors.Add(SqlStatementExecutionType.Get, () => new SelectTypeSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.GetDynamic, () => new SelectDynamicSqlStatmentExecutor());
-            executors.Add(SqlStatementExecutionType.GetValue, () => new SelectValueSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.GetList, () => new SelectTypeListSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.GetDynamicList, () => new SelectDynamicListSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.GetValueList, () => new SelectValueListSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.Insert, () => new InsertSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.Update, () => new UpdateSqlStatementExecutor());
-            executors.Add(SqlStatementExecutionType.Delete, () => new DeleteSqlStatementExecutor());
+            executors.Add(SqlStatementExecutionType.SelectOneType, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectOneDynamic, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectOneValue, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectAllType, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectAllDynamic, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectAllValue, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.Insert, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.Update, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.Delete, () => sqlStatementExecutor);
         }
 
-        public void RegisterExecutor<T>(SqlStatementExecutionType executionContext)
+        public void RegisterExecutor<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementExecutor, new()
         {
-            executors[executionContext] = () => new T();
+            executors[statementExecutionType] = () => new T();
         }
 
-        public void RegisterExecutor(SqlStatementExecutionType executionContext, ISqlStatementExecutor executor)
+        public void RegisterExecutor(SqlStatementExecutionType statementExecutionType, ISqlStatementExecutor executor)
         {
-            executors[executionContext] = () => executor;
+            executors[statementExecutionType] = () => executor;
         }
 
         public ISqlStatementExecutor CreateSqlStatementExecutor(ExpressionSet expression)
         {
-            return executors[expression.ExecutionContext]();
+            return executors[expression.StatementExecutionType]();
         }
     }
 }

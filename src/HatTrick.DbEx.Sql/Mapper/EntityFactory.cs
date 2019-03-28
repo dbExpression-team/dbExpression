@@ -5,25 +5,39 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class EntityFactory : IEntityFactory
     {
-        private IDictionary<Type, Func<IEntityFactory>> factories = new Dictionary<Type, Func<IEntityFactory>>();
+        #region interface
+        protected IDictionary<Type, Func<IDbEntity>> TypeFactories { get; private set; } = new Dictionary<Type, Func<IDbEntity>>();
+        protected IEntityFactory GlobalFactory { get; private set; }
+        #endregion
 
-        public void RegisteFactory<T>(IEntityFactory factory)
+        #region methods
+        public virtual void RegisterFactory(IEntityFactory factory)
+        {
+            GlobalFactory = factory;
+        }
+
+        public virtual void RegisterFactory<T>(Func<T> factory)
             where T : class, IDbEntity
         {
-            factories[typeof(T)] = () => factory;
+            TypeFactories[typeof(T)] = factory;
         }
 
-        public void RegisterFactory<T>(Func<IEntityFactory> factory)
-            where T : class, IDbEntity
-        {
-            factories[typeof(T)] = factory;
-        }
-
-        public void RegisterDefaultFactories()
+        public virtual void RegisterDefaultFactories()
         {
         }
 
-        public T CreateEntity<T>() where T : class, IDbEntity, new() 
-            => factories.ContainsKey(typeof(T)) ? factories[typeof(T)]().CreateEntity<T>() : new T();
+        public virtual T CreateEntity<T>()
+            where T : class, IDbEntity, new()
+        {
+            if (TypeFactories.TryGetValue(typeof(T), out var factory))
+                return factory.Invoke() as T;
+
+            var entity = GlobalFactory?.CreateEntity<T>();
+            if (entity != null)
+                return entity as T;
+
+            return new T();
+        }
+        #endregion
     }
 }

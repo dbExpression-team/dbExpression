@@ -4,9 +4,8 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IEntityFactory
     {
-        void RegisteFactory<T>(IEntityFactory factory)
-            where T : class, IDbEntity;
-        void RegisterFactory<T>(Func<IEntityFactory> factory)
+        void RegisterFactory(IEntityFactory factory);
+        void RegisterFactory<T>(Func<T> factory)
             where T : class, IDbEntity;
         void RegisterDefaultFactories();
         T CreateEntity<T>() where T : class, IDbEntity, new();

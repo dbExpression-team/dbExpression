@@ -6,6 +6,6 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IExpandoObjectMapper : IMapper
     {
-        Action<ExpandoObject, SqlStatementExecutionResultSet.Row> Map { get; }
+        Action<ExpandoObject, ISqlRow> Map { get; }
     }
 }

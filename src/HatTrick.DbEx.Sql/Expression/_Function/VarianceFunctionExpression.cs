@@ -1,17 +1,15 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class VarianceFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<VarianceFunctionExpression>
+        IEquatable<VarianceFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -29,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public VarianceFunctionExpression(IDbExpressionColumnExpression expression, bool isDistinct)
+        public VarianceFunctionExpression(ISupportedForFunctionExpression<VarianceFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

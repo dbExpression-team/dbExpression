@@ -13,10 +13,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         void RegisterPartAssembler<T>(IAssemblyPartAppender<T> assembler)
             where T : class, IAssemblyPart;
 
-        void RegisterAssembler<T>(SqlStatementExecutionType executionContext)
+        void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementAssembler, new();
 
-        void RegisterAssembler<T>(SqlStatementExecutionType executionContext, T assembler)
+        void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
             where T : class, ISqlStatementAssembler;
 
         void RegisterValueFormatter<T, U>()

@@ -5,6 +5,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Extensions.Builder;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -13,6 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class Insert : ExecutorTestBase
     {
         [Theory]
+        [InlineData(2012)]
         [InlineData(2014)]
         public void Can_an_address_be_inserted(int version)
         {

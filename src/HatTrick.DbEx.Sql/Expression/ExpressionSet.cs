@@ -6,11 +6,11 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ExpressionSet : IAssemblyPart
     {
         #region interface
-        public object Instance { get; set; }
+        public IDbEntity Instance { get; set; }
 
         public EntityExpression BaseEntity { get; set; }
 
-        public SqlStatementExecutionType ExecutionContext { get; set; }
+        public SqlStatementExecutionType StatementExecutionType { get; set; }
 
         public int? SkipValue { get; set; }
 

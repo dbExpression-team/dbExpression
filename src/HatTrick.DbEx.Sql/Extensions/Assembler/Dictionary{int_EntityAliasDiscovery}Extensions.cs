@@ -20,7 +20,22 @@ namespace HatTrick.DbEx.Sql.Extensions.Assembler
             discovery[level].Aliases.Add(alias);
         }
 
-        public static void CopyChildrenWithNewAlias(this IDictionary<int, EntityAliasDiscovery> discovery, int level, string alias)
+        public static void RemoveAlias(this IDictionary<int, EntityAliasDiscovery> discovery, int level, EntityAlias alias)
+        {
+            if (!discovery.ContainsKey(level))
+                return;
+
+            var x = discovery[level].Aliases.SingleOrDefault(e => e.Entity == alias.Entity);
+            if (x == null)
+                return;
+
+            if (x.Alias != alias.Alias)
+                return;
+
+            discovery[level].Aliases.Remove(x);
+        }
+
+        public static void SetAliasesOnChildren(this IDictionary<int, EntityAliasDiscovery> discovery, int level, string alias)
         {
             if (!discovery.ContainsKey(level + 1))
                 return;

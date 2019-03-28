@@ -14,8 +14,8 @@ namespace HatTrick.DbEx.Sql.Expression
         public IList<JoinOnExpression> Expressions { get; } = new List<JoinOnExpression>();
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
-        public (Type,object) LeftPart { get; set; }
-        public (Type,object) RightPart { get; set; }
+        public (Type, object) LeftPart { get; set; }
+        public (Type, object) RightPart { get; set; }
         #endregion
 
         #region constructors

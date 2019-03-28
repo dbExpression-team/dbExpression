@@ -8,18 +8,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart
     {
         #region interface
-        public (Type,object) Expression { get; private set; }
+        public (Type, object) Expression { get; private set; }
         #endregion
 
         #region constructors
         internal GroupByExpression(FieldExpression field)
         {
-            Expression = (field.GetType(),field);
+            Expression = (typeof(FieldExpression),field);
         }
 
         internal GroupByExpression(ArithmeticExpression expression)
         {
-            Expression = (expression.GetType(), expression);
+            Expression = (typeof(ArithmeticExpression), expression);
         }
         #endregion
 

@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public IList<(Type,object)> Expressions { get; } = new List<(Type, object)>();
+        public IList<(Type, object)> Expressions { get; } = new List<(Type, object)>();
         bool IDbExpressionIsDistinctProvider.IsDistinct => _isDistinct;
         #endregion
 

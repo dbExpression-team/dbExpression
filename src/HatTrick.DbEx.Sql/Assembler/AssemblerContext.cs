@@ -13,12 +13,17 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public class CurrentFieldContext
         {
-            public ISqlFieldMetadata Metadata { get; set; }
+            public FieldExpression Field { get; set; }
+            public ISqlFieldMetadata Metadata => (Field as IDbExpressionMetadataProvider<ISqlFieldMetadata>)?.Metadata;
             public string NameOverride { get; set; }
 
-            public CurrentFieldContext(ISqlFieldMetadata metadata)
+            public CurrentFieldContext()
             {
-                Metadata = metadata;
+            }
+
+            public CurrentFieldContext(FieldExpression field)
+            {
+                Field = field;
             }
         }
     }

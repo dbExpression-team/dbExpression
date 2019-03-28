@@ -1,7 +1,9 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -93,26 +95,22 @@ namespace HatTrick.DbEx.Sql.Assembler
                         if (t.IsEnum)
                             return partAppenders[typeof(Enum)]();
 
-                        if (typeof(FieldExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be DBExpressionField<int>, DBExpressionField<Guid>, etc
-                        {
-                            if (partAppenders.ContainsKey(t.GetType()))
-                                return partAppenders[t.GetType()](); //appender configured for this specific (FieldExpression<T>) type has been registered
-                            return partAppenders[typeof(FieldExpression)]();
-                        }
-                        if (typeof(ArithmeticExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be ArithmeticExpression<int>, ArithmeticExpression<Guid>, etc
-                        {
-                            if (partAppenders.ContainsKey(t.GetType()))
-                                return partAppenders[t.GetType()](); //appender configured for this specific (ArithmeticExpression<T>) type has been registered
-                            return partAppenders[typeof(ArithmeticExpression)]();
-                        }
-                        if (typeof(IsNullFunctionExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be IsNullFunctionExpression<int>, IsNullFunctionExpression<Guid>, etc
-                        {
-                            if (partAppenders.ContainsKey(t.GetType()))
-                                return partAppenders[t.GetType()](); //appender configured for this specific (IsNullFunctionExpression<T>) type has been registered
-                            return partAppenders[typeof(IsNullFunctionExpression)]();
-                        }
+                        if (partAppenders.TryGetValue(t, out Func<IAssemblyPartAppender> value))
+                            return value();
 
-                        return partAppenders[t]();
+                        if (typeof(FieldExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be DBExpressionField<int>, DBExpressionField<Guid>, etc
+                            return partAppenders[typeof(FieldExpression)]();
+
+                        if (typeof(ArithmeticExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be ArithmeticExpression<int>, ArithmeticExpression<Guid>, etc
+                            return partAppenders[typeof(ArithmeticExpression)]();
+
+                        if (typeof(IsNullFunctionExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be IsNullFunctionExpression<int>, IsNullFunctionExpression<Guid>, etc
+                            return partAppenders[typeof(IsNullFunctionExpression)]();
+
+                        if (typeof(CoalesceFunctionExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be CoalesceFunctionExpression<int>, CoalesceFunctionExpression<Guid>, etc
+                            return partAppenders[typeof(CoalesceFunctionExpression)]();
+
+                        throw new ConfigurationErrorsException($"A part appender for type '{t}' has not been configured.");
                     }
                 );
 
@@ -196,26 +194,26 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAppenders.Add(typeof(Array), () => _arrayAppender);
         }
 
-        public virtual void RegisterAssembler<T>(SqlStatementExecutionType executionContext)
+        public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementAssembler, new()
         {
-            assemblers[executionContext] = () => new T();
+            assemblers[statementExecutionType] = () => new T();
         }
 
-        public virtual void RegisterAssembler<T>(SqlStatementExecutionType executionContext, T assembler)
+        public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
             where T : class, ISqlStatementAssembler
         {
-            assemblers[executionContext] = () => assembler;
+            assemblers[statementExecutionType] = () => assembler;
         }
 
         public virtual void RegisterDefaultAssemblers()
         {
-            assemblers.Add(SqlStatementExecutionType.Get, () => _selectSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.GetDynamic, () => _selectSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.GetValue, () => _selectSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.GetList, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.GetDynamicList, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.GetValueList, () => _selectAllSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.SelectAllType, () => _selectAllSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.SelectAllDynamic, () => _selectAllSqlStatementAssembler);
+            assemblers.Add(SqlStatementExecutionType.SelectAllValue, () => _selectAllSqlStatementAssembler);
             assemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
             assemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
             assemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
@@ -269,7 +267,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
             => new SqlStatementBuilder(config, expression, AssemblerResolver, AliasProviderResolver, PartAppenderResolver, ValueTypeFormatterResolver, appender, parameterBuilder);
-
         #endregion
     }
 }

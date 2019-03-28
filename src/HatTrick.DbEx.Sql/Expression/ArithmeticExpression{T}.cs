@@ -4,18 +4,20 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ArithmeticExpression<T> :
-        ArithmeticExpression, 
-        IDbExpressionColumnExpression<T>
+        ArithmeticExpression,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, T>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, T>,
+        ISupportedForExpression<SelectExpression>
     {
         #region constructors
         internal ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
-            :base(leftArg, rightArg, arithmeticOperator)
+            : base(leftArg, rightArg, arithmeticOperator)
         {
         }
         #endregion
 
         #region implicit select expression operator
-        public static implicit operator SelectExpression(ArithmeticExpression<T> a) => new SelectExpression(a);
+        //public static implicit operator SelectExpression(ArithmeticExpression<T> a) => new SelectExpression(a);
         #endregion
 
         #region implicit group by expression operator

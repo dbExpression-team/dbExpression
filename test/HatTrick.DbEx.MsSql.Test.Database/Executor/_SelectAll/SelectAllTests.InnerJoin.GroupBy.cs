@@ -15,6 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             {
                 [Theory]
                 [Trait("Function", "COUNT")]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_have_correct_record_counts(int version)
                 {
@@ -41,6 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 [Theory]
                 [Trait("Function", "COUNT")]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version)
                 {
@@ -66,6 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 [Theory]
                 [Trait("Function", "COUNT")]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version)
                 {
@@ -92,6 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 [Theory]
                 [Trait("Function", "COUNT")]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version)
                 {

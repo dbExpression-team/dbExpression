@@ -5,7 +5,7 @@ namespace Data.dbo
 {
     #region address
     [Serializable]
-    public partial class Address : I32BitIdentityDbEntity
+    public partial class Address : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -29,7 +29,7 @@ namespace Data.dbo
     #endregion
     #region person
     [Serializable]
-    public partial class Person : I32BitIdentityDbEntity
+    public partial class Person : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -51,7 +51,7 @@ namespace Data.dbo
     #endregion
     #region person_ address
     [Serializable]
-    public partial class Person_Address : I32BitIdentityDbEntity
+    public partial class Person_Address : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -70,7 +70,7 @@ namespace Data.dbo
     #endregion
     #region product
     [Serializable]
-    public partial class Product : I32BitIdentityDbEntity
+    public partial class Product : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -94,7 +94,7 @@ namespace Data.dbo
     #endregion
     #region purchase
     [Serializable]
-    public partial class Purchase : I32BitIdentityDbEntity
+    public partial class Purchase : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -116,7 +116,7 @@ namespace Data.dbo
     #endregion
     #region purchase
     [Serializable]
-    public partial class PurchaseLine : I32BitIdentityDbEntity
+    public partial class PurchaseLine : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -141,7 +141,7 @@ namespace Data.sec
 {
     #region person
     [Serializable]
-    public partial class Person : I32BitIdentityDbEntity
+    public partial class Person : IDbEntity
     {
         #region interface
         public int Id { get; set; }

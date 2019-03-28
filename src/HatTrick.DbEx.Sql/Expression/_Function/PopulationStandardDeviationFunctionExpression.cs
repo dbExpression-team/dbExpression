@@ -6,12 +6,12 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class PopulationStandardDeviationFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<PopulationStandardDeviationFunctionExpression>
+        IEquatable<PopulationStandardDeviationFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -29,43 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<byte> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<short> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<int> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<long> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<decimal> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<double> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public PopulationStandardDeviationFunctionExpression(IDbExpressionColumnExpression<float> expression, bool isDistinct)
+        public PopulationStandardDeviationFunctionExpression(ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

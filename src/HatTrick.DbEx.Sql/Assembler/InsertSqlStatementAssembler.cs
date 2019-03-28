@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             for (var i = 0; i < expression.Insert.Expressions.Count; i++)
             {
                 builder.Appender.Indent();
-                context.CurrentField = new AssemblerContext.CurrentFieldContext((expression.Insert.Expressions[i].Expression.LeftPart.Item2 as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata);
+                context.CurrentField = new AssemblerContext.CurrentFieldContext(expression.Insert.Expressions[i].Expression.LeftPart.Item2 as FieldExpression);
                 builder.AppendPart(expression.Insert.Expressions[i].Expression.RightPart, context);
                 context.CurrentField = null;
                 if (i < expression.Insert.Expressions.Count - 1)

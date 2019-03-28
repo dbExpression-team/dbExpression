@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Indent()
         {
-            if (string.IsNullOrWhiteSpace(_currentIndentationValue))
+            if (!string.IsNullOrEmpty(_currentIndentationValue))
                 builder.Append(_currentIndentationValue);
             return this;
         }

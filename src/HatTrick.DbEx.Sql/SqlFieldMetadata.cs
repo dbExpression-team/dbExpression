@@ -7,10 +7,11 @@ namespace HatTrick.DbEx.Sql
     {
         public ISqlEntityMetadata Entity { get; private set; }
         public string Name { get; private set; }
+        public object DbType { get; private set; }
         public int? Size { get; private set; }
         public byte? Precision { get; private set; }
         public byte? Scale { get; private set; }
-        public object DbType { get; private set; }
+        public bool IsIdentity { get; set; }
 
         public SqlFieldMetadata()
         { }

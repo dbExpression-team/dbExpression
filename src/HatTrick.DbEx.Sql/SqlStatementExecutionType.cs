@@ -3,13 +3,13 @@
     public enum SqlStatementExecutionType : int
     {
         None,
-        Get,
-        GetDynamic,
-        GetList,
-        GetDynamicList,
-        GetValueList,
-        GetValue,
-        GetValueTable,
+        SelectOneType,
+        SelectOneValue,
+        SelectOneDynamic,
+        SelectAllType,
+        SelectAllValue,
+        SelectAllDynamic,
+        //GetValueTable,
         Insert,
         Update,
         Delete

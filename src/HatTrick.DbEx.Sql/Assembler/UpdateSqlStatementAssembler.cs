@@ -30,8 +30,8 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write(
                     builder.Parameters.Add(
                         expression.Assign.Expressions[i].Expression.RightPart.Item2, 
-                        (expression.Assign.Expressions[i].Expression.LeftPart.Item2 as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata
-                    ).ParameterName
+                        expression.Assign.Expressions[i].Expression.LeftPart.Item2 as FieldExpression
+                    ).Parameter.ParameterName
                 );
                 if (i < expression.Assign.Expressions.Count - 1)
                     builder.Appender.Write(",").LineBreak();

@@ -6,12 +6,12 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class MaximumFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<MaximumFunctionExpression>
+        IEquatable<MaximumFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public MaximumFunctionExpression(IDbExpressionColumnExpression expression, bool isDistinct)
+        public MaximumFunctionExpression(ISupportedForFunctionExpression<MaximumFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

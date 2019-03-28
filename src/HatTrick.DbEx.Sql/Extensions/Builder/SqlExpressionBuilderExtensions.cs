@@ -1,189 +1,179 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+﻿using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Extensions.Builder
 {
     public static class SqlExpressionBuilderExtensions
     {
-        public static void Execute(this ITerminationExpressionBuilder builder) => builder.Execute((SqlConnection)null);
-
-        //TODO: feature/interface-implementation: should this be an actual Transaction and not a connection? 
-        public static void Execute(this ITerminationExpressionBuilder builder, SqlConnection transaction)
+        private static DatabaseConfiguration GetDatabaseConfiguration(this ITerminationExpressionBuilder builder)
         {
-            var expression = (builder as IExpressionProvider).GetExpression();
-
-            if (transaction == null)
-            {
-                var provider = expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
-                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.Database.ConnectionName]);
-            }
-
-            //var validator  ??;
-
-            var assembler = DbExConfigurationSettings.Settings.StatementBuilderFactory.CreateSqlStatementBuilder(
-                DbExConfigurationSettings.Settings.AssemblerConfiguration,
-                expression,
-                DbExConfigurationSettings.Settings.AppenderFactory.CreateAppender(DbExConfigurationSettings.Settings.AssemblerConfiguration),
-                DbExConfigurationSettings.Settings.ParameterBuilderFactory.CreateSqlParameterBuilder()
-            );
-            var statement = assembler.CreateSqlStatement();
-
-            var executor = DbExConfigurationSettings.Settings.ExecutorFactory.CreateSqlStatementExecutor(expression);
-            executor.ExecuteNonQuery(statement, transaction);
+            var dbName = ((builder as IDbExpressionSetProvider).Expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>).Metadata.Schema.Database.Name;
+            return DbExpression.Configuration.Databases[dbName];
         }
 
-        public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder) => builder.Execute((SqlConnection)null);
+        private static SyncExecutionPipeline CreateSyncExecutionPipeline(this ITerminationExpressionBuilder builder)
+            => builder.GetDatabaseConfiguration().ExecutionPipelineFactory.CreateSyncExecutionPipeline();
 
-        public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, SqlConnection transaction)
-        {
-            var value = default(T);
+        private static AsyncExecutionPipeline CreateAsyncExecutionPipeline(this ITerminationExpressionBuilder builder)
+            => builder.GetDatabaseConfiguration().ExecutionPipelineFactory.CreateAsyncExecutionPipeline();
 
-            var expression = (builder as IExpressionProvider).GetExpression();
+        #region TerminationExpressionBuilder
+        public static void Execute(this ITerminationExpressionBuilder builder)
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
 
-            var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Value == null)
-                return value;
+        public static void Execute(this ITerminationExpressionBuilder builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
 
-            var mapper = DbExConfigurationSettings.Settings.MapperFactory.CreateValueMapper<T>();
-            return mapper.Map(queryResults.Rows[0].Fields[0].Value);
-        }
+        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
 
-        public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder) => builder.Execute((SqlConnection)null);
+        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, SqlConnection connection)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
 
-        public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder, SqlConnection transaction)
-        {
-            var values = new List<T>();
+        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, ct).ConfigureAwait(false);
 
-            var expression = (builder as IExpressionProvider).GetExpression();
-
-            var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData())
-                return values;
-
-            var mapper = DbExConfigurationSettings.Settings.MapperFactory.CreateValueMapper<T>();
-            foreach (var row in queryResults.Rows)
-                values.Add(mapper.Map(row.Fields[0].Value));
-
-            return values;
-        }
-
-        public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder) => builder.Execute((SqlConnection)null);
-
-        public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection transaction)
-        {
-            var value = default(ExpandoObject);
-
-            var expression = (builder as IExpressionProvider).GetExpression();
-
-            var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Value == null)
-                return value;
-
-            var mapper = DbExConfigurationSettings.Settings.MapperFactory.CreateExpandoObjectMapper();
-            mapper.Map(value, queryResults.Rows[0]);
-
-            return (dynamic)value;
-        }
+        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
 
 
-        public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder) => builder.Execute((SqlConnection)null);
+        #region ValueTerminationExpressionBuilder
+        public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder) 
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
 
-        public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection transaction)
-        {
-            var values = new List<dynamic>();
+        public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
 
-            var expression = (builder as IExpressionProvider).GetExpression();
+        public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
 
-            var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData())
-                return values;
+        public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => await builder.GetDatabaseConfiguration().ExecutionPipelineFactory.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
 
-            var mapper = DbExConfigurationSettings.Settings.MapperFactory.CreateExpandoObjectMapper();
-            foreach (var row in queryResults.Rows)
-            {
-                var value = new ExpandoObject();
-                mapper.Map(value, row);
-                values.Add(value);
-            }
+        public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, ct).ConfigureAwait(false);
 
-            return values;
-        }
+        public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
 
-        public static T Execute<T>(this ITypeTerminationBuilder<T> builder) where T : class, IDbEntity, new()
-            => builder.Execute((SqlConnection)null);
+        #region ValueListTerminationExpressionBuilder
+        public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder)
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
 
-        public static T Execute<T>(this ITypeTerminationBuilder<T> builder, SqlConnection transaction)
+        public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, ct).ConfigureAwait(false);
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
+
+        #region ValueTerminationExpressionBuilder
+        public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder)
+            => builder.CreateSyncExecutionPipeline().Execute<ExpandoObject>(builder);
+
+        public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().Execute<ExpandoObject>(builder, connection);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, ct).ConfigureAwait(false);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
+
+        #region ValueListTerminationExpressionBuilder
+        public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder)
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
+
+        public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, null, ct).ConfigureAwait(false);
+
+        public static async Task<dynamic> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
+
+        #region TypeTerminationExpressionBuilder
+        public static T Execute<T>(this ITypeTerminationExpressionBuilder<T> builder) 
             where T : class, IDbEntity, new()
-        {
-            var entity = default(T);
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
 
-            var expression = (builder as IExpressionProvider).GetExpression();
-
-            var queryResults = Execute(expression, transaction);
-            if (!queryResults.HasData() || queryResults.Rows[0].Fields[0].Value == null)
-                return entity;
-
-            entity = DbExConfigurationSettings.Settings.EntityFactory.CreateEntity<T>();
-            var entityMapper = DbExConfigurationSettings.Settings.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = DbExConfigurationSettings.Settings.MapperFactory.CreateValueMapper();
-            entityMapper.Map(entity, queryResults.Rows[0], valueMapper);
-
-            return entity;
-        }
-
-        public static IList<T> Execute<T>(this ITypeListTerminationBuilder<T> builder)
+        public static T Execute<T>(this ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection)
             where T : class, IDbEntity, new()
-            => builder.Execute((SqlConnection)null);
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
 
-        public static IList<T> Execute<T>(this ITypeListTerminationBuilder<T> builder, SqlConnection transaction)
+        public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-        {
-            var values = new List<T>();
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
 
-            var expression = (builder as IExpressionProvider).GetExpression();
+        public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
 
-            var queryResults = Execute(expression, transaction);
+        public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, null, ct).ConfigureAwait(false);
 
-            if (!queryResults.HasData())
-                return values;
+        public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
 
-            var entityMapper = DbExConfigurationSettings.Settings.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = DbExConfigurationSettings.Settings.MapperFactory.CreateValueMapper();
-            foreach (var row in queryResults.Rows)
-            {
-                var entity = DbExConfigurationSettings.Settings.EntityFactory.CreateEntity<T>();
-                entityMapper.Map(entity, row, valueMapper);
-                values.Add(entity);
-            }
-            return values;
-        }
+        #region TypeListTerminationExpressionBuilder
+        public static IList<T> Execute<T>(this ITypeListTerminationExpressionBuilder<T> builder)
+            where T : class, IDbEntity, new()
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
 
-        private static SqlStatementExecutionResultSet Execute(ExpressionSet expression, SqlConnection transaction)
-        {
-            if (transaction == null)
-            {
-                var provider = expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
-                transaction = DbExConfigurationSettings.Settings.ConnectionFactory.CreateSqlConnection(DbExConfigurationSettings.Settings.ConnectionStringSettings[provider.Metadata.Schema.Database.ConnectionName]);
-            }
+        public static IList<T> Execute<T>(this ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            where T : class, IDbEntity, new()
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
 
-            //var validator  ??;
+        public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);
 
-            var builder = DbExConfigurationSettings.Settings.StatementBuilderFactory.CreateSqlStatementBuilder(
-                DbExConfigurationSettings.Settings.AssemblerConfiguration,
-                expression,
-                DbExConfigurationSettings.Settings.AppenderFactory.CreateAppender(DbExConfigurationSettings.Settings.AssemblerConfiguration),
-                DbExConfigurationSettings.Settings.ParameterBuilderFactory.CreateSqlParameterBuilder()
-            );
-            var statement = builder.CreateSqlStatement();
+        public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection).ConfigureAwait(false);
 
-            var executor = DbExConfigurationSettings.Settings.ExecutorFactory.CreateSqlStatementExecutor(expression);
-            return executor.ExecuteQuery(statement, transaction);
-        }
+        public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, ct).ConfigureAwait(false);
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder, connection, ct).ConfigureAwait(false);
+        #endregion
     }
 }

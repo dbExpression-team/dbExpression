@@ -2,6 +2,7 @@
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Extensions;
 using HatTrick.DbEx.Sql.Extensions.Assembler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,21 +55,26 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.LineBreak()
                 .Indentation++;
 
-            for (var i = 0; i < expression.Select.Expressions.Count; i++)
+            AppendSelectList(expression.Select.Expressions, builder, context);
+
+            builder.Appender.Indentation--;
+        }
+
+        protected virtual void AppendSelectList(IList<(Type, object)> expressions, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            for (var i = 0; i < expressions.Count; i++)
             {
                 builder.Appender.Indent();
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart(expression.Select.Expressions[i], context);
+                builder.AppendPart(expressions[i], context);
 
-                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.Select.Expressions.Count - 1)
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expressions.Count - 1)
                     builder.Appender.Write(",");
 
                 builder.Appender.LineBreak();
             }
-
-            builder.Appender.Indentation--;
         }
 
         protected virtual void AppendFromClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
@@ -176,23 +182,28 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write("ORDER BY").LineBreak()
                 .Indentation++;
 
-            for (var i = 0; i < expression.OrderBy.Expressions.Count; i++)
+            AppendOrderByList(expression.OrderBy.Expressions, builder, context);
+
+            builder.Appender
+                .Indentation--;
+        }
+
+        protected virtual void AppendOrderByList(IList<OrderByExpression> expressions, ISqlStatementBuilder builder, AssemblerContext context)
+        {
+            for (var i = 0; i < expressions.Count; i++)
             {
                 builder.Appender.Indent();
 
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart<OrderByExpression>(expression.OrderBy.Expressions[i], context);
+                builder.AppendPart<OrderByExpression>(expressions[i], context);
 
-                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.OrderBy.Expressions.Count - 1)
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expressions.Count - 1)
                     builder.Appender.Write(",");
 
                 builder.Appender.LineBreak();
             }
-
-            builder.Appender
-                .Indentation--;
         }
     }
 }

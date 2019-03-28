@@ -13,14 +13,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         private SqlStatement _sqlStatement;
         #endregion
 
-        public DbExpressionAssemblerConfiguration Configuration { get; }
-        public ExpressionSet DBExpression { get; }
+        public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; }
+        public ExpressionSet ExpressionSet { get; }
         public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerResolver { get; }
         public Func<Type, IAssemblyPartAliasProvider> AliasProviderResolver { get; }
         public Func<Type, IAssemblyPartAppender> PartAppenderResolver { get; }
         public Func<Type, IValueTypeFormatter> ValueTypeFormatterResolver { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
+        public IDictionary<int, EntityAliasDiscovery> DiscoveredAliases = new Dictionary<int, EntityAliasDiscovery>();
 
         public SqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
@@ -33,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             ISqlParameterBuilder parameterBuilder
         )
         {
-            Configuration = config;
-            DBExpression = dbExpression;
+            AssemblerConfiguration = config;
+            ExpressionSet = dbExpression;
             AssemblerResolver = assemblerResolver;
             AliasProviderResolver = aliasProviderResolver;
             PartAppenderResolver = partAppenderResolver;
@@ -79,17 +80,16 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (_sqlStatement != null)
                 return _sqlStatement;
 
-            var discoveredAliases = new Dictionary<int, EntityAliasDiscovery>();
-            DiscoverAliases(DBExpression, 0, Configuration, discoveredAliases);
+            DiscoverAliases(ExpressionSet, 0, AssemblerConfiguration, DiscoveredAliases);
             var context = new AssemblerContext
             {
-                Configuration = Configuration,
-                EntityAliases = discoveredAliases,
+                Configuration = AssemblerConfiguration,
+                EntityAliases = DiscoveredAliases,
                 CurrentDepth = 0
             };
 
-            AssemblerResolver(DBExpression.ExecutionContext).AssembleStatement(DBExpression, this, context);
-            _sqlStatement = new SqlStatement(Appender.ToString(), Parameters.Parameters, DbCommandType.SqlText);
+            AssemblerResolver(ExpressionSet.StatementExecutionType).AssembleStatement(ExpressionSet, this, context);
+            _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
 
             return _sqlStatement;
         }
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (provider == null)
                 return;
 
-            provider.DiscoverAliases(expression, this, currentLevel, config, discoveredAliases);
+            provider.DiscoverAliases(expression, this, currentLevel, config, DiscoveredAliases);
         }
 
         public void AppendPart<T>(object part)
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (part.Item2 is ExpressionSet set)
             {
-                AssemblerResolver(set.ExecutionContext).AssembleStatement(set, this, context);
+                AssemblerResolver(set.StatementExecutionType).AssembleStatement(set, this, context);
                 return;
             }
             var assembler = ResolvePartAppender(part.Item1);
@@ -123,7 +123,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (part is ExpressionSet set)
             {
-                AssemblerResolver(set.ExecutionContext).AssembleStatement(set, this, context);
+                AssemblerResolver(set.StatementExecutionType).AssembleStatement(set, this, context);
                 return;
             }
             var assembler = ResolvePartAppender(typeof(T));

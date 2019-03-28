@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -10,15 +11,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpression,
         IEquatable<SchemaExpression>,
         IDbExpressionMetadataProvider<ISqlSchemaMetadata>,
+        IDbExpressionListProvider<EntityExpression>,
         IDbExpressionAliasProvider
     {
         #region internals
         protected ISqlSchemaMetadata Metadata { get; }
+        protected IDictionary<string, Lazy<EntityExpression>> Entities { get; } = new Dictionary<string, Lazy<EntityExpression>>();
         protected string Alias { get; }
         #endregion
 
         #region interface
         ISqlSchemaMetadata IDbExpressionMetadataProvider<ISqlSchemaMetadata>.Metadata => Metadata;
+        IList<EntityExpression> IDbExpressionListProvider<EntityExpression>.Expressions => Entities.Values.Select(v => v.Value).ToList();
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 

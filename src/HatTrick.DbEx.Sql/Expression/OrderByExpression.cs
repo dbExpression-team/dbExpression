@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart
     {
         #region interface
-        public (Type,object) Expression { get; private set; }
+        public (Type, object) Expression { get; private set; }
         public OrderExpressionDirection Direction { get; private set; }
         #endregion
 

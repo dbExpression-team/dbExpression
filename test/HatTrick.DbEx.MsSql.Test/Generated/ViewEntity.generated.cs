@@ -18,64 +18,43 @@ namespace DataService.EntityExpression.dbo
         #region internals
         private const string _idFieldName = "Id";
         private const string _totalPurchasesFieldName = "TotalPurchases";
-
-        private FieldExpression<int> _id;
-        private FieldExpression<decimal?> _totalPurchases;
         #endregion
 
         #region interface properties
-        public FieldExpression<int> Id { get { return _id; } }
-        public FieldExpression<decimal?> TotalPurchases { get { return _totalPurchases; } }
+        public Int32FieldExpression<PersonTotalPurchasesView> Id { get { return Fields[_idFieldName].Value as Int32FieldExpression<PersonTotalPurchasesView>; } }
+        public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get { return Fields[_totalPurchasesFieldName].Value as NullableDecimalFieldExpression<PersonTotalPurchasesView>; } }
         #endregion
 
         #region constructors
-        public PersonTotalPurchasesViewEntity(
-            SchemaExpression schema,
-            ISqlEntityMetadata entity,
-            string alias
-        ) : this(
-                schema,
-                entity,
-                new Dictionary<string, ISqlFieldMetadata>
-                {
-                    { _idFieldName, entity.Fields[_idFieldName]},
-                    { _totalPurchasesFieldName, entity.Fields[_totalPurchasesFieldName] }
-                },
-                alias
-        )
+        public PersonTotalPurchasesViewEntity(SchemaExpression schema, ISqlEntityMetadata metadata) : this(schema, metadata, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(
-            SchemaExpression schema,
-            ISqlEntityMetadata metadata, 
-            IDictionary<string, ISqlFieldMetadata> fields, 
-            string alias)
-            : base(schema, metadata, fields, alias)
+        private PersonTotalPurchasesViewEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-            _id = new FieldExpression<int>(this, Fields[_idFieldName]);
-            _totalPurchases = new FieldExpression<decimal?>(this, Fields[_totalPurchasesFieldName]);
+            Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonTotalPurchasesView>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
+            Fields.Add(_totalPurchasesFieldName, new Lazy<FieldExpression>(() => new NullableDecimalFieldExpression<PersonTotalPurchasesView>(this, metadata.Fields[_totalPurchasesFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_totalPurchasesFieldName}'"), x => x.TotalPurchases)));
         }
         #endregion
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
         {
-            return new PersonTotalPurchasesViewEntity(this.Schema, this.Metadata, this.Fields, name);
+            return new PersonTotalPurchasesViewEntity(this.Schema, this.Metadata, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
             return new SelectExpressionSet(
-                _id,
-                _totalPurchases
+                Id,
+                TotalPurchases
             );
         }
 
-        protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, IFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, ISqlFieldReader reader, IValueMapper mapper)
         {
-            personTotalPurchasesView.Id = mapper.Map<int>(_id, reader.Read());
-            personTotalPurchasesView.TotalPurchases = mapper.Map<decimal>(_totalPurchases, reader.Read());
+            personTotalPurchasesView.Id = mapper.Map<int>(Id, reader.ReadField());
+            personTotalPurchasesView.TotalPurchases = mapper.Map<decimal>(TotalPurchases, reader.ReadField());
         }
 
         protected override InsertExpressionSet GetInclusiveInsertExpression(PersonTotalPurchasesView entity)

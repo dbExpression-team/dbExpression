@@ -7,30 +7,25 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class CoalesceFunctionExpression :
+    public abstract class CoalesceFunctionExpression :
         IDbFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionAliasProvider,
-        IEquatable<CoalesceFunctionExpression>
+        IEquatable<CoalesceFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected string Alias { get; private set; }
         #endregion
 
         #region interface
-        public IList<(Type,object)> Expressions { get; } = new List<(Type,object)>();
+        public IList<(Type, object)> Expressions { get; protected set; } = new List<(Type, object)>();
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
         internal CoalesceFunctionExpression()
         {
-        }
-
-        public CoalesceFunctionExpression(IList<IDbExpressionColumnExpression> expressions)
-        {
-            Expressions = expressions.Select(e => (e.GetType(), (object)e)).ToList();
         }
         #endregion
 

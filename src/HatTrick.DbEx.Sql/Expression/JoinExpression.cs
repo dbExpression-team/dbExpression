@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }
-        public (Type,object) JoinToo { get; private set; }
+        public (Type, object) JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         #endregion
 
@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
             JoinOnExpression = onCondition;
         }
 
-        public JoinExpression((Type,object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
+        public JoinExpression((Type, object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
         {
             JoinToo = joinToo;
             JoinType = joinType;

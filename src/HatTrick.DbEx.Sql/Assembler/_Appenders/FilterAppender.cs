@@ -95,9 +95,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             else
             {
-                if (expression.Expression.LeftPart.Item2 is IDbExpressionMetadataProvider<ISqlFieldMetadata> provider)
+                if (expression.Expression.LeftPart.Item2 is FieldExpression field)
                 {
-                    context.CurrentField = new AssemblerContext.CurrentFieldContext(provider.Metadata);
+                    context.CurrentField = new AssemblerContext.CurrentFieldContext(field);
                     builder.AppendPart(expression.Expression.RightPart, context);
                     context.CurrentField = null;
                 }

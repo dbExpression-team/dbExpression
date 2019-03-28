@@ -8,8 +8,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class DbExpressionPair
     {
-        public (Type,object) LeftPart { get; private set; }
-        public (Type,object) RightPart { get; private set; }
+        public (Type, object) LeftPart { get; private set; }
+        public (Type, object) RightPart { get; private set; }
 
         public DbExpressionPair((Type, object) leftPart, (Type, object) rightPart)
         {

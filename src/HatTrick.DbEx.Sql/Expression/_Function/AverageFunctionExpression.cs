@@ -6,12 +6,12 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class AverageFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<AverageFunctionExpression>
+        IEquatable<AverageFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -29,43 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public AverageFunctionExpression(IDbExpressionColumnExpression<byte> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public AverageFunctionExpression(IDbExpressionColumnExpression<short> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public AverageFunctionExpression(IDbExpressionColumnExpression<int> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public AverageFunctionExpression(IDbExpressionColumnExpression<long> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public AverageFunctionExpression(IDbExpressionColumnExpression<decimal> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public AverageFunctionExpression(IDbExpressionColumnExpression<double> expression, bool isDistinct)
-        {
-            Expression = (expression.GetType(), expression);
-            IsDistinct = isDistinct;
-        }
-
-        public AverageFunctionExpression(IDbExpressionColumnExpression<float> expression, bool isDistinct)
+        public AverageFunctionExpression(ISupportedForFunctionExpression<AverageFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

@@ -10,6 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
     public class Random : ExecutorTestBase
     {
         [Theory]
+        [InlineData(2012, 17)]
         [InlineData(2014, 17)]
         public void Does_select_all_for_single_field_result_in_valid_expression(int version, int count)
         {

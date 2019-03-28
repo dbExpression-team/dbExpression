@@ -18,9 +18,17 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.AppendPart(expression.LeftPart, context);
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
+
             if (typeof(IComparable).IsAssignableFrom(expression.RightPart.Item1))
             {
-                builder.Appender.Write(builder.Parameters.Add(expression.RightPart.Item2, expression.RightPart.Item1).ParameterName);
+                if (expression.LeftPart.Item2 is FieldExpression field)
+                {
+                    builder.Appender.Write(builder.Parameters.Add(expression.RightPart.Item2, field).Parameter.ParameterName);
+                }
+                else
+                {
+                    builder.Appender.Write(builder.Parameters.Add(expression.RightPart.Item2, expression.RightPart.Item1).ParameterName);
+                }
             }
             else
             {

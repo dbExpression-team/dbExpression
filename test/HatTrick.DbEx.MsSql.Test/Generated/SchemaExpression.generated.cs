@@ -35,28 +35,25 @@ namespace DataService
         #endregion
 
         #region interface
-        public AddressEntity Address { get; }
-        public PersonEntity Person { get; }
-        public Person_AddressEntity Person_Address { get; }
-        public ProductEntity Product { get; }
-        public PurchaseEntity Purchase { get; }
-        public PurchaseLineEntity PurchaseLine { get; }
-        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; }
+        public AddressEntity Address { get { return Entities[_addressEntityName].Value as AddressEntity; } }
+        public PersonEntity Person { get { return Entities[_personEntityName].Value as PersonEntity; } }
+        public Person_AddressEntity Person_Address { get { return Entities[_person_AddressEntityName].Value as Person_AddressEntity; } }
+        public ProductEntity Product { get { return Entities[_productEntityName].Value as ProductEntity; } }
+        public PurchaseEntity Purchase { get { return Entities[_purchaseEntityName].Value as PurchaseEntity; } }
+        public PurchaseLineEntity PurchaseLine { get { return Entities[_purchaseLineEntityName].Value as PurchaseLineEntity; } }
+        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return Entities[_personTotalPurchasesViewEntityName].Value as PersonTotalPurchasesViewEntity; } }
         #endregion
 
         #region constructors
-        public dboSchema(ISqlSchemaMetadata schema)
-            : base(schema, null)
+        public dboSchema(ISqlSchemaMetadata metadata) : base(metadata, null)
         {
-            if (schema.Entities == null)
-                throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entities");
-            Address = new AddressEntity(this, schema.Entities[_addressEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_addressEntityName}'"), null);
-            Person = new PersonEntity(this, schema.Entities[_personEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_personEntityName}'"), null);
-            Person_Address = new Person_AddressEntity(this, schema.Entities[_person_AddressEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_person_AddressEntityName}'"), null);
-            Product = new ProductEntity(this, schema.Entities[_productEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_productEntityName}'"), null);
-            Purchase = new PurchaseEntity(this, schema.Entities[_purchaseEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_purchaseEntityName}'"), null);
-            PurchaseLine = new PurchaseLineEntity(this, schema.Entities[_purchaseLineEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_purchaseLineEntityName}'"), null);
-            PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity(this, schema.Entities[_personTotalPurchasesViewEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_personTotalPurchasesViewEntityName}'"), null);
+            Entities.Add(_addressEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new AddressEntity(this, metadata.Entities[_addressEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_addressEntityName}'"))));
+            Entities.Add(_personEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonEntity(this, metadata.Entities[_personEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_personEntityName}'"))));
+            Entities.Add(_person_AddressEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new Person_AddressEntity(this, metadata.Entities[_person_AddressEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_person_AddressEntityName}'"))));
+            Entities.Add(_productEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new ProductEntity(this, metadata.Entities[_productEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_productEntityName}'"))));
+            Entities.Add(_purchaseEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PurchaseEntity(this, metadata.Entities[_purchaseEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_purchaseEntityName}'"))));
+            Entities.Add(_purchaseLineEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PurchaseLineEntity(this, metadata.Entities[_purchaseLineEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_purchaseLineEntityName}'"))));
+            Entities.Add(_personTotalPurchasesViewEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonTotalPurchasesViewEntity(this, metadata.Entities[_personTotalPurchasesViewEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_personTotalPurchasesViewEntityName}'"))));
         }
         #endregion
     }
@@ -79,16 +76,13 @@ namespace DataService
         #endregion
 
         #region interface
-        public PersonEntity Person { get; }
+        public PersonEntity Person { get { return Entities[_personEntityName].Value as PersonEntity; } }
         #endregion
 
         #region constructors
-        public secSchema(ISqlSchemaMetadata schema)
-            : base(schema, null)
+        public secSchema(ISqlSchemaMetadata metadata) : base(metadata, null)
         {
-            if (schema.Entities == null)
-                throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entities");
-            Person = new PersonEntity(this, schema.Entities[_personEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema {schema.Name} does not contain metadata for entity '{_personEntityName}'"), null);
+            Entities.Add(_personEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonEntity(this, metadata.Entities[_personEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personEntityName}'"))));
         }
         #endregion
     }

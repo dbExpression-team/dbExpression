@@ -21,11 +21,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (rightArg != null)
             {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+                Expression = new DbExpressionPair((typeof(FieldExpression), leftArg), (rightArg.GetType(), rightArg));
             }
             else
             {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+                Expression = new DbExpressionPair((typeof(FieldExpression), leftArg), (typeof(object), DBNull.Value));
             }
             ExpressionOperator = expressionOperator;
         }
@@ -34,11 +34,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (rightArg != null)
             {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+                Expression = new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (rightArg.GetType(), rightArg));
             }
             else
             {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+                Expression = new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (typeof(object), DBNull.Value));
             }
             ExpressionOperator = expressionOperator;
         }
@@ -47,11 +47,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (rightArg != null)
             {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+                Expression = new DbExpressionPair((typeof(SelectExpression), leftArg), (rightArg.GetType(), rightArg));
             }
             else
             {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+                Expression = new DbExpressionPair((typeof(SelectExpression), leftArg), (typeof(object), DBNull.Value));
             }
             ExpressionOperator = expressionOperator;
         }

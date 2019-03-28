@@ -1,4 +1,5 @@
-﻿using DataService;
+﻿using Data.sec;
+using DataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder.Syntax;
@@ -24,13 +25,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             exp = db.SelectAll(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = (exp as IExpressionProvider).GetExpression();
+            expressionSet = (exp as IDbExpressionSetProvider).Expression;
 
             //then
-            expressionSet.ExecutionContext.Should().Be(SqlStatementExecutionType.GetValueList);
+            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectAllValue);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
-                .Which.Item2.Should().BeOfType<FieldExpression<int>>();
+                .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Data.sec.Person>>()
@@ -51,21 +52,21 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             exp = db.SelectAll(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = (exp as IExpressionProvider).GetExpression();
+            expressionSet = (exp as IDbExpressionSetProvider).Expression;
 
             //then
-            expressionSet.ExecutionContext.Should().Be(SqlStatementExecutionType.GetDynamicList);
+            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectAllDynamic);
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
-                .Which.Item2.Should().BeOfType<FieldExpression<int>>();
+                .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.DateCreated))
-                .Which.Item2.Should().BeOfType<FieldExpression<DateTime>>();
+                .Which.Item2.Should().BeOfType<DateTimeFieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
-                .And.BeAssignableTo<EntityExpression<Data.sec.Person>>()
+                .And.BeAssignableTo<EntityExpression<Person>>()
                 .And.Equals(sec.Person);
         }
     }

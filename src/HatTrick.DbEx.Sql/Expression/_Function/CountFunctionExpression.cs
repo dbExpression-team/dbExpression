@@ -4,12 +4,12 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class CountFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<CountFunctionExpression>
+        IEquatable<CountFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
             Expression = (typeof(string), "*");
         }
 
-        public CountFunctionExpression(IDbExpressionColumnExpression expression, bool isDistinct)
+        public CountFunctionExpression(ISupportedForFunctionExpression<CountFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

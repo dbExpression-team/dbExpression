@@ -32,9 +32,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
 
-            if (expression.RightPart.Item2 is IDbExpressionMetadataProvider<ISqlFieldMetadata> field)
+            if (expression.RightPart.Item2 is FieldExpression field)
             {
-                context.CurrentField = new AssemblerContext.CurrentFieldContext(field.Metadata);
+                context.CurrentField = new AssemblerContext.CurrentFieldContext(field);
                 if (expression.RightPart.Item2 is IDbExpressionAliasProvider alias && !string.IsNullOrWhiteSpace(alias.Alias))
                 {
                     context.CurrentField.NameOverride = alias.Alias;
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             else if (typeof(IComparable).IsAssignableFrom(expression.RightPart.Item1))
             {
-                builder.Appender.Write(builder.Parameters.Add(builder.FormatValueType(expression.RightPart), context.CurrentField.Metadata).ParameterName);
+                builder.Appender.Write(builder.Parameters.Add(builder.FormatValueType(expression.RightPart), context.CurrentField.Field).Parameter.ParameterName);
             }
             else
             {

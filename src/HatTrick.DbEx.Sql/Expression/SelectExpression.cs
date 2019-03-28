@@ -5,7 +5,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
         IDbExpression, 
-        IDbExpressionColumnExpression, 
         IAssemblyPart
     {
         #region internals
@@ -17,19 +16,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal SelectExpression(FieldExpression field)
+        internal SelectExpression(ISupportedForExpression<SelectExpression> expression)
         {
-            Expression = (field.GetType(), field);
-        }
-
-        internal SelectExpression(ArithmeticExpression arithmeticExpression)
-        {
-            Expression = (arithmeticExpression.GetType(), arithmeticExpression);
-        }
-
-        internal SelectExpression(IDbFunctionExpression function)
-        {
-            Expression = (function.GetType(), function);
+            Expression = (expression.GetType(), expression);
         }
         #endregion
 

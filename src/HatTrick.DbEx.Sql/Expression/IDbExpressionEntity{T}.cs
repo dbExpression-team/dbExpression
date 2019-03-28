@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         AssignmentExpressionSet BuildAssignmentExpression(T from, T to);
 
-        void HydrateEntity(T entity, IFieldReader reader, IValueMapper valueMapper);
+        void HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper valueMapper);
 
     }
 }

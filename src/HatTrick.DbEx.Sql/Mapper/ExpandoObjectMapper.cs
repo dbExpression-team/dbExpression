@@ -8,11 +8,12 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class ExpandoObjectMapper : IExpandoObjectMapper
     {
-        public Action<ExpandoObject, SqlStatementExecutionResultSet.Row> Map { get; } = new Action<ExpandoObject, SqlStatementExecutionResultSet.Row>((e, o) =>
+        public Action<ExpandoObject, ISqlRow> Map { get; } = new Action<ExpandoObject, ISqlRow>((e, o) =>
         {
             var expando = e as IDictionary<string, object>;
-            for (int i = 0; i < o.Fields.Count(); i++)
-                expando.Add(o.Fields[i].Name, o.Fields[i].Value);
+            ISqlField field = null;
+            while ((field = o.ReadField()) != null)
+                expando.Add(field.Name, field.Value);
         });
     }
 }

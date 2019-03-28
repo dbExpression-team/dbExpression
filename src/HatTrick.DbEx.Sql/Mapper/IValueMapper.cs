@@ -1,9 +1,10 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IValueMapper
     {
-        T Map<T>(IDbExpressionMetadataProvider<ISqlFieldMetadata> field, object value);
+        T Map<T>(FieldExpression fieldExpression, ISqlField sqlField);
     }
 }

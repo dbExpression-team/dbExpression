@@ -17,9 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
         public void Does_a_single_where_predicate_result_in_valid_clause(int version)
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
-            var settings = DbExConfigurationSettings.Settings;
+            var database = ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp = 
 
@@ -27,10 +25,10 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
                     .From(sec.Person)
                     .Where(sec.Person.Id > 0);
 
-            ExpressionSet expressionSet = (exp as IExpressionProvider).GetExpression();
-            IAppender appender = settings.AppenderFactory.CreateAppender(settings.AssemblerConfiguration);
-            ISqlParameterBuilder parameterBuilder = settings.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = settings.StatementBuilderFactory.CreateSqlStatementBuilder(settings.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
+            ExpressionSet expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            IAppender appender = database.AppenderFactory.CreateAppender(database.AssemblerConfiguration);
+            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
             string whereClause;
 
             //when
@@ -42,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
             whereClause.Should().Be($"[sec].[Person].[Id] > @P1");
 
             parameterBuilder.Parameters.Should().ContainSingle()
-                .Which.ParameterName.Should().Be("@P1");
+                .Which.Parameter.ParameterName.Should().Be("@P1");
         }
     }
 }

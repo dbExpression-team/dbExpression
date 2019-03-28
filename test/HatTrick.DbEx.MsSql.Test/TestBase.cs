@@ -8,17 +8,25 @@ namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
-        public virtual void ConfigureForMsSqlVersion(int version)
+        public virtual DatabaseConfiguration ConfigureForMsSqlVersion(int version)
         {
             switch (version)
             {
+                case 2012:
+                    {
+                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        {
+                            c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>();
+                        });
+                        return DbExpression.Configuration.Databases["MsSqlDbExTest"];
+                    }
                 case 2014:
                     {
-                        DbExConfigurationBuilder.UseDbExpression<MsSqlDbExTestDatabaseMetadataProvider>(c =>
+                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.UseMsSql2014();
+                            c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>();
                         });
-                        return;
+                        return DbExpression.Configuration.Databases["MsSqlDbExTest"];
                     }
             }
             throw new NotImplementedException($"MsSql version {version} has not been implemented");

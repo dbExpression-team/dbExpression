@@ -10,6 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class Update : ExecutorTestBase
     {
         [Theory]
+        [InlineData(2012)]
         [InlineData(2014)]
         public void Can_person_with_id_1_update_firstname(int version)
         {

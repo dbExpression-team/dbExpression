@@ -10,8 +10,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart
     {
         #region interface
-        public (Type,object) LeftPart { get; set; }
-        public (Type,object) RightPart { get; set; }
+        public (Type, object) LeftPart { get; set; }
+        public (Type, object) RightPart { get; set; }
         public readonly FilterExpressionOperator ExpressionOperator;
         public bool Negate { get; set; }
         #endregion

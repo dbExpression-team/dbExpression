@@ -17,6 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             public partial class Where : ExecutorTestBase
             {
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_filtering_by_billing_addresstype_equal_to_billing_have_35_records(int version)
                 {
@@ -37,6 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_filtering_by_address_id_equal_to_1_have_14_records(int version)
                 {
@@ -57,6 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_filtering_by_addresstype_equal_to_billing_and_address_id_not_equal_to_1_have_35_records(int version)
                 {

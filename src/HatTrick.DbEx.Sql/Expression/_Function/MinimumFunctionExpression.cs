@@ -6,12 +6,12 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class MinimumFunctionExpression :
-        IDbFunctionExpression,
+        IDbNumericalFunctionExpression,
         IAssemblyPart,
-        IDbExpressionColumnExpression,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
-        IEquatable<MinimumFunctionExpression>
+        IEquatable<MinimumFunctionExpression>,
+        ISupportedForSelectExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public MinimumFunctionExpression(IDbExpressionColumnExpression expression, bool isDistinct)
+        public MinimumFunctionExpression(ISupportedForFunctionExpression<MinimumFunctionExpression> expression, bool isDistinct)
         {
             Expression = (expression.GetType(), expression);
             IsDistinct = isDistinct;

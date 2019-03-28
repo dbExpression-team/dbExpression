@@ -2,6 +2,7 @@
 using HatTrick.DbEx.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -11,28 +12,29 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart, 
         IDbExpressionMetadataProvider<ISqlEntityMetadata>,
         IDbExpressionProvider<SchemaExpression>,
+        IDbExpressionListProvider<FieldExpression>,
         IDbExpressionAliasProvider,
         IEquatable<EntityExpression>
    {
         #region internals
         protected SchemaExpression Schema { get; }
         protected ISqlEntityMetadata Metadata { get; }
-        protected IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        protected IDictionary<string, Lazy<FieldExpression>> Fields { get; } = new Dictionary<string, Lazy<FieldExpression>>();
         protected string Alias { get; }
         #endregion
 
         #region interface
         SchemaExpression IDbExpressionProvider<SchemaExpression>.Expression => Schema;
+        IList<FieldExpression> IDbExpressionListProvider<FieldExpression>.Expressions => Fields.Values.Select(v => v.Value).ToList();
         ISqlEntityMetadata IDbExpressionMetadataProvider<ISqlEntityMetadata>.Metadata => Metadata;
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, IDictionary<string, ISqlFieldMetadata> fields, string alias)
+        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, string alias)
         {
             Schema = schema;
             Metadata = metadata;
-            Fields = fields;
             Alias = alias;
         }
         #endregion

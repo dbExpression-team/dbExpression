@@ -17,6 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             public class Subquery : ExecutorTestBase
             {
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_addresses_with_auto_discover_aliases_have_52_records(int version)
                 {
@@ -45,6 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_addresses_with_aliases_set_using_As_have_52_records(int version)
                 {
@@ -73,6 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_addresses_with_aliases_set_using_variable_have_52_records(int version)
                 {
@@ -103,6 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_purchase_line_equal_to_30_with_auto_discover_aliases_have_1_records(int version)
                 {
@@ -141,6 +145,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_purchase_line_equal_to_30_with_aliases_set_have_1_records(int version)
                 {
@@ -179,6 +184,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_purchase_line_with_aliases_set_using_variables_have_1_records(int version)
                 {
@@ -220,6 +226,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_purchase_line_using_variables_with_redundant_and_aliased_inner_join_have_1_record(int version)
                 {
@@ -267,6 +274,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_purchase_line_using_variables_with_redundant_inner_join_fail(int version)
                 {
@@ -312,6 +320,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
+                [InlineData(2012)]
                 [InlineData(2014)]
                 public void Does_persons_with_purchase_line_using_variables_with_redundant_inner_join_using_alias_fail(int version)
                 {

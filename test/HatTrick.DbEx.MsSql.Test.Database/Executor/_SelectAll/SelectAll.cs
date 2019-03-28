@@ -14,6 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class SelectAll : ExecutorTestBase
     {
         [Theory]
+        [InlineData(2012)]
         [InlineData(2014)]
         public void Are_there_50_person_records(int version)
         {
@@ -31,6 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
+        [InlineData(2012)]
         [InlineData(2014)]
         public void Are_there_15_purchase_records(int version)
         {
@@ -45,6 +47,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             purchases.Should().HaveCount(15);
+        }
+
+        [Theory]
+        [InlineData(2012)]
+        [InlineData(2014)]
+        public void Can_retrieve_page_of_purchase_records(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectAll<int>(dbo.Purchase.PersonId)
+                .Distinct()
+                .From(dbo.Purchase)
+                .Skip(5)
+                .Limit(1000)
+                .OrderBy(dbo.Purchase.PersonId);
+
+            //when               
+            var purchases = exp.Execute();
+
+            //then
+            purchases.Should().HaveCount(1);
         }
     }
 }

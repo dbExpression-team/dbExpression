@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 discoveredAliases.SetAlias(currentLevel + 1, new EntityAlias(child.BaseEntity, childAlias));
             }
 
-            discoveredAliases.CopyChildrenWithNewAlias(currentLevel, subselectBaseAlias);
+            discoveredAliases.SetAliasesOnChildren(currentLevel, subselectBaseAlias);
 
             return;
         }

@@ -62,7 +62,7 @@ namespace DataService.Metadata.dbo
         public AddressEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("AddressType", new MsSqlFieldMetadata(this, "AddressType", SqlDbType.Int, 4));
             Fields.Add("Line1", new MsSqlFieldMetadata(this, "Line1", SqlDbType.VarChar, 50));
             Fields.Add("Line2", new MsSqlFieldMetadata(this, "Line2", SqlDbType.VarChar, 50));
@@ -87,7 +87,7 @@ namespace DataService.Metadata.dbo
         public PersonEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("FirstName", new MsSqlFieldMetadata(this, "FirstName", SqlDbType.VarChar, 20));
             Fields.Add("LastName", new MsSqlFieldMetadata(this, "LastName", SqlDbType.VarChar, 20));
             Fields.Add("BirthDate", new MsSqlFieldMetadata(this, "BirthDate", SqlDbType.DateTime, 8));
@@ -110,7 +110,7 @@ namespace DataService.Metadata.dbo
         public Person_AddressEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("PersonId", new MsSqlFieldMetadata(this, "PersonId", SqlDbType.Int, 4));
             Fields.Add("AddressId", new MsSqlFieldMetadata(this, "AddressId", SqlDbType.Int, 4));
             Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
@@ -130,7 +130,7 @@ namespace DataService.Metadata.dbo
         public ProductEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("ProductCategoryType", new MsSqlFieldMetadata(this, "ProductCategoryType", SqlDbType.Int, 4));
             Fields.Add("Name", new MsSqlFieldMetadata(this, "Name", SqlDbType.VarChar, 80));
             Fields.Add("Description", new MsSqlFieldMetadata(this, "Description", SqlDbType.VarChar, 300));
@@ -155,7 +155,7 @@ namespace DataService.Metadata.dbo
         public PurchaseEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("PersonId", new MsSqlFieldMetadata(this, "PersonId", SqlDbType.Int, 4));
             Fields.Add("TotalPurchaseAmount", new MsSqlFieldMetadata(this, "TotalPurchaseAmount", SqlDbType.Decimal, 12, 2));
             Fields.Add("PurchaseDate", new MsSqlFieldMetadata(this, "PurchaseDate", SqlDbType.DateTime, 8));
@@ -178,7 +178,7 @@ namespace DataService.Metadata.dbo
         public PurchaseLineEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("PurchaseId", new MsSqlFieldMetadata(this, "PurchaseId", SqlDbType.Int, 4));
             Fields.Add("ProductId", new MsSqlFieldMetadata(this, "ProductId", SqlDbType.Int, 4));
             Fields.Add("PurchasePrice", new MsSqlFieldMetadata(this, "PurchasePrice", SqlDbType.Decimal, 12, 2));
@@ -242,7 +242,7 @@ namespace DataService.Metadata.sec
         public PersonEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
+            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4) { IsIdentity = true });
             Fields.Add("SSN", new MsSqlFieldMetadata(this, "SSN", SqlDbType.VarChar, 9));
             Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
             Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
