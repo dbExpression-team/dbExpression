@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 _database.MapperFactory.CreateExpandoObjectMapper(),
                 (reader, mapper) =>
                 {
-                    var value = default(ExpandoObject);
+                    var value = new ExpandoObject();
 
                     var row = reader.ReadRow();
                     if (row == null)

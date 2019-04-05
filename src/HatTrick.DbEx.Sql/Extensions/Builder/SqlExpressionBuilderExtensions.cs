@@ -86,10 +86,10 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
 
         #region ValueTerminationExpressionBuilder
         public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder)
-            => builder.CreateSyncExecutionPipeline().Execute<ExpandoObject>(builder);
+            => builder.CreateSyncExecutionPipeline().Execute(builder);
 
         public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
-            => builder.CreateSyncExecutionPipeline().Execute<ExpandoObject>(builder, connection);
+            => builder.CreateSyncExecutionPipeline().Execute(builder, connection);
 
         public static async Task<dynamic> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder)
             => await builder.CreateAsyncExecutionPipeline().ExecuteAsync(builder).ConfigureAwait(false);

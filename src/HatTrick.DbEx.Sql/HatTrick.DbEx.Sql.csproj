@@ -71,6 +71,7 @@
     <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\EnumValueTypeFormatter.cs" />
     <Compile Include="Assembler\ValueTypeFormatter.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\ConcatFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\FunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\IsNullFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\PopulationVarianceFunctionAppender.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Expression\_FieldExpressions\Int64FieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\Int32FieldExpression{T}.cs" />
     <Compile Include="Expression\_Function\CoalesceFunctionExpression{T}.cs" />
+    <Compile Include="Expression\_Function\ConcatFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbNumericalFunctionExpression.cs" />
     <Compile Include="Pipeline\SyncExecutionPipeline.cs" />
     <Compile Include="Pipeline\ExecutionPipelineFactory.cs" />

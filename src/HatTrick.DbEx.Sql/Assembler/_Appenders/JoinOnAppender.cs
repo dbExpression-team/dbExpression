@@ -32,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
 
+            //TODO: JRod, is there any way to defer to  FieldAppender.AppendPart if this condition == true
             if (expression.RightPart.Item2 is FieldExpression field)
             {
                 context.CurrentField = new AssemblerContext.CurrentFieldContext(field);

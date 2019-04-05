@@ -34,6 +34,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.AppendPart(expression.RightPart, context);
             }
+
+            if (expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
+            {
+                builder.Appender.Write(" AS ")
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write(aliasable.Alias)
+                    .Write(context.Configuration.IdentifierDelimiter.End);
+            }
         }
     }
 }

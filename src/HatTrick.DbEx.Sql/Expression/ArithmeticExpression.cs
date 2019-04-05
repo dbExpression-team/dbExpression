@@ -6,8 +6,9 @@ namespace HatTrick.DbEx.Sql.Expression
     public class ArithmeticExpression : 
         IDbExpression, 
         IAssemblyPart,
-        IDbExpressionAliasProvider
-   {
+        IDbExpressionAliasProvider,
+        ISupportedForSelectExpression
+    {
         #region internals
         protected string Alias { get; private set; }
         #endregion
