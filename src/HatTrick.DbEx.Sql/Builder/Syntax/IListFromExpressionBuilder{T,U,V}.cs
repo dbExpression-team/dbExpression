@@ -8,6 +8,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         where V : class, IContinuationExpressionBuilder<T, U>
     {
         V From(EntityExpression entity);
-        IFromExpressionBuilder<T, U, V> Distinct();
+        IListFromExpressionBuilder<T, U, V> Distinct();
+        IListFromExpressionBuilder<T, U, V> Top(int count);
     }
 }

@@ -96,25 +96,6 @@ namespace HatTrick.DbEx.Sql.Builder
         }
         #endregion
 
-        #region top
-        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Top(int count)
-        {
-            Top(count);
-            return this;
-        }
-
-        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.Top(int count)
-        {
-            Top(count);
-            return this;
-        }
-
-        private void Top(int count)
-        {
-            Expression.Top = count;
-        }
-        #endregion
-
         #region where
         IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.Where(FilterExpression expression)
         {

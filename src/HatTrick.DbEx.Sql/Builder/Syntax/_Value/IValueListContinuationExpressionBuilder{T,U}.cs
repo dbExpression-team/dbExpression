@@ -24,6 +24,5 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IValueListContinuationExpressionBuilder<T, U> GroupBy(params GroupByExpression[] groupBy);
         IValueListContinuationExpressionBuilder<T, U> Having(HavingExpression havingCondition);
         IValueListSkipContinuationExpressionBuilder<T, U> Skip(int skipValue);
-        IValueListContinuationExpressionBuilder<T, U> Top(int count);
     }
 }

@@ -49,6 +49,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender
                 .Indent().Write("SELECT");
 
+            if (expression.Select is IDbExpressionIsTopProvider t && t.Top.HasValue)
+                builder.Appender.Write(" TOP(").Write(t.Top.ToString()).Write(")");
+
             if ((expression.Select as IDbExpressionIsDistinctProvider).IsDistinct)
                 builder.Appender.Write(" DISTINCT");
 

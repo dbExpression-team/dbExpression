@@ -9,4 +9,9 @@
     {
         bool IsDistinct { get; }
     }
+
+    public interface IDbExpressionIsTopProvider
+    {
+        int? Top { get; }
+    }
 }

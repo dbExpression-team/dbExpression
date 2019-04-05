@@ -14,17 +14,28 @@ namespace HatTrick.DbEx.Sql.Builder
         {
         }
 
-        IFromExpressionBuilder<T, U, V> IListFromExpressionBuilder<T, U, V>.Distinct()
+        IListFromExpressionBuilder<T, U, V> IListFromExpressionBuilder<T, U, V>.Distinct()
         {
             Expression.Select.Distinct(true);
+            return this;
+        }
+
+        IListFromExpressionBuilder<T, U, V> IListFromExpressionBuilder<T, U, V>.Top(int count)
+        {
+            Expression.Select.Top(count);
             return this;
         }
 
         V IListFromExpressionBuilder<T, U, V>.From(EntityExpression entity)
         {
             Expression.BaseEntity = entity;
-            if (Expression.Select == null || !Expression.Select.Expressions.Any())
-                Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression());
+            SelectExpressionSet select = Expression.Select;
+            if (select == null || !select.Expressions.Any())
+            {
+                Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression())
+                    .Distinct((select as IDbExpressionIsDistinctProvider).IsDistinct)
+                    .Top((select as IDbExpressionIsTopProvider).Top);
+            }
             return this as V;
         }
 

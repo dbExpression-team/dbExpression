@@ -16,8 +16,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public int? LimitValue { get; set; }
 
-        public int? Top { get; set; }
-
         public SelectExpressionSet Select { get; set; } = new SelectExpressionSet();
 
         public InsertExpressionSet Insert { get; set; } = new InsertExpressionSet();

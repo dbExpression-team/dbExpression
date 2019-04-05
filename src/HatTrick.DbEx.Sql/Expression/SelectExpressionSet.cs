@@ -7,15 +7,18 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpressionSet : 
         IDbExpression,
-        IDbExpressionIsDistinctProvider
+        IDbExpressionIsDistinctProvider,
+        IDbExpressionIsTopProvider
     {
         #region internals
         protected bool _isDistinct;
+        protected int? _top;
         #endregion
 
         #region interface
         public IList<(Type, object)> Expressions { get; } = new List<(Type, object)>();
         bool IDbExpressionIsDistinctProvider.IsDistinct => _isDistinct;
+        int? IDbExpressionIsTopProvider.Top => _top;
         #endregion
 
         #region constructor
@@ -55,6 +58,14 @@ namespace HatTrick.DbEx.Sql.Expression
         public SelectExpressionSet Distinct(bool distinct = true)
         {
             _isDistinct = distinct & true;
+            return this;
+        }
+        #endregion
+
+        #region top
+        public SelectExpressionSet Top(int? count)
+        {
+            _top = count;
             return this;
         }
         #endregion
