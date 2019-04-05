@@ -107,6 +107,21 @@ namespace HatTrick.DbEx.MsSql.Builder
                 as IInsertExpressionBuilder<T>;
         }
 
+        #region concat
+        public static ConcatFunctionExpression Concat(ISupportedForFunctionExpression<ConcatFunctionExpression, string> field1, ISupportedForFunctionExpression<ConcatFunctionExpression, string> field2, params ISupportedForFunctionExpression<ConcatFunctionExpression, string>[] fields) 
+            => concat(field1, field2, fields);
+
+        private static ConcatFunctionExpression concat(ISupportedForFunctionExpression<ConcatFunctionExpression, string> field1, ISupportedForFunctionExpression<ConcatFunctionExpression, string> field2, params ISupportedForFunctionExpression<ConcatFunctionExpression, string>[] fields)
+        {
+            var parts = new List<ISupportedForFunctionExpression<ConcatFunctionExpression, string>>(fields == null ? 2 : 2 + fields.Length);
+            parts.Add(field1);
+            parts.Add(field2);
+            foreach (var f in fields)
+                parts.Add(f);
+            return new ConcatFunctionExpression(parts);
+        }
+        #endregion
+
         #region coalesce
         public static CoalesceFunctionExpression Coalesce(ISupportedForFunctionExpression<CoalesceFunctionExpression, bool> field1, ISupportedForFunctionExpression<CoalesceFunctionExpression, bool> field2, params ISupportedForFunctionExpression<CoalesceFunctionExpression, bool>[] fields)
             => coalesce<bool>(field1, field2, fields);

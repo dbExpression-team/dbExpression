@@ -11,7 +11,8 @@ namespace HatTrick.DbEx.Sql.Expression
         ISupportedForFunctionExpression<CoalesceFunctionExpression, string>,
         ISupportedForFunctionExpression<CountFunctionExpression, string>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, string>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, string>
+        ISupportedForFunctionExpression<MaximumFunctionExpression, string>,
+        ISupportedForFunctionExpression<ConcatFunctionExpression, string>
         where TEntity : IDbEntity
     {
         public StringFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, string>> mapExpression) : base(entity, metadata, mapExpression)

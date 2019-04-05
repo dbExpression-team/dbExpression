@@ -27,6 +27,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly OrderByAppender _orderByClauseAppender = new OrderByAppender();
         private static readonly ArithmeticAppender _arithmeticAppender = new ArithmeticAppender();
         private static readonly CoalesceFunctionAppender _coalesceFunctionAppender = new CoalesceFunctionAppender();
+        private static readonly ConcatFunctionAppender _concatFunctionAppender = new ConcatFunctionAppender();
         private static readonly IsNullFunctionAppender _isNullFunctionAppender = new IsNullFunctionAppender();
         private static readonly AverageFunctionAppender _averageFunctionAppender = new AverageFunctionAppender();
         private static readonly MinimumFunctionAppender _minimumFunctionAppender = new MinimumFunctionAppender();
@@ -171,6 +172,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             partAppenders.Add(typeof(OrderByExpressionSet), () => _orderByClauseAppender);
             partAppenders.Add(typeof(ArithmeticExpression), () => _arithmeticAppender);
             partAppenders.Add(typeof(CoalesceFunctionExpression), () => _coalesceFunctionAppender);
+            partAppenders.Add(typeof(ConcatFunctionExpression), () => _concatFunctionAppender);
             partAppenders.Add(typeof(IsNullFunctionExpression), () => _isNullFunctionAppender);
             partAppenders.Add(typeof(AverageFunctionExpression), () => _averageFunctionAppender);
             partAppenders.Add(typeof(MinimumFunctionExpression), () => _minimumFunctionAppender);
