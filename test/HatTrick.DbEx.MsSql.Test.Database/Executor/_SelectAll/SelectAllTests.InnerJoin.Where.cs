@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(dbo.Person.Id)
+                    var exp = db.SelectAll<int>(dbo.Person.Id)
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(dbo.Person.Id)
+                    var exp = db.SelectAll<int>(dbo.Person.Id)
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(dbo.Person.Id)
+                    var exp = db.SelectAll<int>(dbo.Person.Id)
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)

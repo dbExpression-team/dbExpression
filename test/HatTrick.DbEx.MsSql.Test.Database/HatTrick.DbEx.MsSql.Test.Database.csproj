@@ -93,6 +93,7 @@
     <Compile Include="Executor\ExecutorTestBase.cs" />
     <Compile Include="Executor\_Insert\Insert.cs" />
     <Compile Include="Executor\_SelectAll\SelectAll.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAll.Functions.Interactions.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.GroupBy.cs" />
     <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Where.cs" />

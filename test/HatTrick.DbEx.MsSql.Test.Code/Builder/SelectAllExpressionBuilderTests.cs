@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             //when
-            exp = db.SelectAll(sec.Person.Id)
+            exp = db.SelectAll<int>(sec.Person.Id)
                .From(sec.Person);
 
             expressionSet = (exp as IDbExpressionSetProvider).Expression;

@@ -284,7 +284,7 @@ namespace HatTrick.DbEx.Sql
 
         public T ExecuteObject<T>(string executionCommand, DbCommandType commandType, List<DbParameter> param, Action<T, object[]> fillCallback) where T : new()
         {
-            T obj = default(T);
+            T obj = default;
             DbCommand cmd = this.GetDbCommand();
             IDataReader dr = null;
             cmd.Connection = this.DbConnection;
@@ -407,7 +407,7 @@ namespace HatTrick.DbEx.Sql
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    list.Add((dr[0] != DBNull.Value) ? (T)dr[0] : default(T));
+                    list.Add((dr[0] != DBNull.Value) ? (T)dr[0] : default);
                     //list.Add((T)dr[0]);
                 }
                 dr.Close();
@@ -666,7 +666,7 @@ namespace HatTrick.DbEx.Sql
                     columns[i] = dr.GetName(i);
                 }
             }
-            return (columns == null) ? new string[0] : columns;
+            return columns ?? (new string[0]);
         }
 
         protected ExpandoObject BuildObject(IDataReader dr, string[] columns)

@@ -5,9 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class NullableDateTimeFieldExpression<TEntity> : NullableFieldExpression<TEntity, DateTime>,
-        ISupportedForSelectExpression<TEntity, DateTime>,
+        ISupportedForSelectEntityExpression<TEntity, DateTime>,
+        ISupportedForSelectFieldExpression<DateTime>,
         ISupportedForExpression<AssignmentExpression, TEntity, DateTime>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<CastFunctionExpression, DateTime>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, DateTime>,
         ISupportedForFunctionExpression<CountFunctionExpression, DateTime>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, DateTime>,

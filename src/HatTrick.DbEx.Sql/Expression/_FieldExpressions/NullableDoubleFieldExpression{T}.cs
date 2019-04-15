@@ -5,9 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class NullableDoubleFieldExpression<TEntity> : NullableFieldExpression<TEntity, double>,
-        ISupportedForSelectExpression<TEntity, double>,
+        ISupportedForSelectEntityExpression<TEntity, double>,
+        ISupportedForSelectFieldExpression<double>,
         ISupportedForExpression<AssignmentExpression, TEntity, double>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, double>,
+        ISupportedForFunctionExpression<CastFunctionExpression, double>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, double>,
         ISupportedForFunctionExpression<CountFunctionExpression, double>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, double>,

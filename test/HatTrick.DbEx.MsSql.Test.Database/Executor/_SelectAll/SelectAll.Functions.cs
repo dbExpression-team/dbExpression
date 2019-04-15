@@ -1,6 +1,9 @@
-﻿using DataService;
+﻿using Data;
+using Data.dbo;
+using DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Extensions.Builder;
 using System;
 using Xunit;
@@ -9,7 +12,50 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     public partial class SelectAll
     {
-		[Trait("Function", "COALESCE")]
+        [Trait("Function", "CAST")]
+        public partial class Cast : ExecutorTestBase
+        {
+            [Theory]
+            [InlineData(2012, 15)]
+            [InlineData(2014, 15)]
+            public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll<string>(
+                        db.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                    ).From(dbo.Purchase);
+
+                //when               
+                var datesAsStrings = exp.Execute();
+
+                //then
+                datesAsStrings.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2012, 15)]
+            [InlineData(2014, 15)]
+            public void Does_selecting_multiple_fields_and_casting_ship_date_to_varchar_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(
+                        dbo.Purchase.Id,
+                        db.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                    ).From(dbo.Purchase);
+
+                //when               
+                var datesAsStrings = exp.Execute();
+
+                //then
+                datesAsStrings.Should().HaveCount(expectedCount);
+            }
+        }
+
+        [Trait("Function", "COALESCE")]
         public partial class Coalesce : ExecutorTestBase
         {
             [Theory]
@@ -132,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             [Theory]
             [InlineData(2012, 15)]
             [InlineData(2014, 15)]
-            public void Does_isnull_all_product_dates_succeed(int version, int expectedCount)
+            public void Does_isnull_of_shipdate_succeed(int version, int expectedCount)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -196,6 +242,52 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 //then
                 dates.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2012, 50)]
+            [InlineData(2014, 50)]
+            public void Does_isnull_persons_gender_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(
+                        dbo.Person.Id,
+                        db.IsNull(
+                            dbo.Person.GenderType,
+                            GenderType.Female
+                        )
+                    ).From(dbo.Person);
+
+                //when               
+                var persons = exp.Execute();
+
+                //then
+                persons.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2012, 32)]
+            [InlineData(2014, 32)]
+            public void Does_isnull_address_type_succeed(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(
+                        dbo.Address.Id,
+                        db.IsNull(
+                            dbo.Address.AddressType,
+                            AddressType.Billing
+                        )
+                    ).From(dbo.Address);
+
+                //when               
+                var addresses = exp.Execute();
+
+                //then
+                addresses.Should().HaveCount(expectedCount);
             }
         }
 

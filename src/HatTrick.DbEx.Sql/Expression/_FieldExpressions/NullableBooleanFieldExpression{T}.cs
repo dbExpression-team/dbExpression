@@ -5,9 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class NullableBooleanFieldExpression<TEntity> : NullableFieldExpression<TEntity, bool>,
-        ISupportedForSelectExpression<TEntity, bool>,
+        ISupportedForSelectEntityExpression<TEntity, bool>,
+        ISupportedForSelectFieldExpression<bool>,
         ISupportedForExpression<AssignmentExpression, TEntity, bool>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, bool>,
+        ISupportedForFunctionExpression<CastFunctionExpression, bool>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, bool>,
         ISupportedForFunctionExpression<CountFunctionExpression, bool>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, bool>,

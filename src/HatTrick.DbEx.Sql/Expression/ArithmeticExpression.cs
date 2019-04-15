@@ -66,6 +66,12 @@ namespace HatTrick.DbEx.Sql.Expression
             ExpressionOperator = arithmeticOperator;
         }
 
+        internal ArithmeticExpression(CastFunctionExpression leftArg, CastFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (typeof(CastFunctionExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
         internal ArithmeticExpression(CoalesceFunctionExpression leftArg, CoalesceFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (typeof(CoalesceFunctionExpression), rightArg)));

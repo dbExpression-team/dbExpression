@@ -5,9 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class DateTimeOffsetFieldExpression<TEntity> : FieldExpression<TEntity, DateTimeOffset>,
-        ISupportedForSelectExpression<TEntity, DateTimeOffset>,
+        ISupportedForSelectEntityExpression<TEntity, DateTimeOffset>,
+        ISupportedForSelectFieldExpression<DateTimeOffset>,
         ISupportedForExpression<AssignmentExpression, TEntity, DateTimeOffset>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, DateTimeOffset>,
+        ISupportedForFunctionExpression<CastFunctionExpression, DateTimeOffset>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, DateTimeOffset>,
         ISupportedForFunctionExpression<CountFunctionExpression, DateTimeOffset>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, DateTimeOffset>,

@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Write(!string.IsNullOrWhiteSpace(context.CurrentField?.NameOverride) ? context.CurrentField.NameOverride : metadataProvider.Metadata.Name)
                 .Write(context.Configuration.IdentifierDelimiter.End);
 
-            if (expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
+            if (context.EmitAlias && expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
             {
                 builder.Appender.Write(" AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)

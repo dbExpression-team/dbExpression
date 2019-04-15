@@ -11,8 +11,9 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbFunctionExpression,
         IAssemblyPart,
         IDbExpressionAliasProvider,
-        IEquatable<CoalesceFunctionExpression>,
-        ISupportedForSelectExpression
+        ISupportedForExpression<SelectExpression>,
+        ISupportedForFunctionExpression<CastFunctionExpression>,
+        IEquatable<CoalesceFunctionExpression>
     {
         #region internals
         protected string Alias { get; private set; }

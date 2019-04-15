@@ -26,6 +26,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly HavingAppender _havingClauseAppender = new HavingAppender();
         private static readonly OrderByAppender _orderByClauseAppender = new OrderByAppender();
         private static readonly ArithmeticAppender _arithmeticAppender = new ArithmeticAppender();
+        private static readonly CastFunctionAppender _castFunctionAppender = new CastFunctionAppender();
         private static readonly CoalesceFunctionAppender _coalesceFunctionAppender = new CoalesceFunctionAppender();
         private static readonly ConcatFunctionAppender _concatFunctionAppender = new ConcatFunctionAppender();
         private static readonly IsNullFunctionAppender _isNullFunctionAppender = new IsNullFunctionAppender();
@@ -38,6 +39,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly PopulationStandardDeviationFunctionAppender _populationStandardDeviationFunctionAppender = new PopulationStandardDeviationFunctionAppender();
         private static readonly VarianceFunctionAppender _varianceFunctionAppender = new VarianceFunctionAppender();
         private static readonly PopulationVarianceFunctionAppender _populationVarianceFunctionAppender = new PopulationVarianceFunctionAppender();
+        private static readonly LiteralAppender _literalAppender = new LiteralAppender();
         private static readonly StringAppender _stringAppender = new StringAppender();
         private static readonly ByteAppender _byteAppender = new ByteAppender();
         private static readonly Int16Appender _int16Appender = new Int16Appender();
@@ -52,10 +54,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly ValueTypeFormatter _valueTypeFormatter = new ValueTypeFormatter();
         private static readonly EnumValueTypeFormatter _enumValueTypeFormatter = new EnumValueTypeFormatter();
 
-        private IDictionary<Type, Func<IAssemblyPartAliasProvider>> aliasProviders { get; } = new Dictionary<Type, Func<IAssemblyPartAliasProvider>>();
-        private IDictionary<Type, Func<IAssemblyPartAppender>> partAppenders { get; } = new Dictionary<Type, Func<IAssemblyPartAppender>>();
-        private IDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> assemblers { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
-        private IDictionary<Type, Func<IValueTypeFormatter>> valueFormatters { get; } = new Dictionary<Type, Func<IValueTypeFormatter>>();
+        private IDictionary<Type, Func<IAssemblyPartAliasProvider>> AliasProviders { get; } = new Dictionary<Type, Func<IAssemblyPartAliasProvider>>();
+        private IDictionary<Type, Func<IAssemblyPartAppender>> PartAppenders { get; } = new Dictionary<Type, Func<IAssemblyPartAppender>>();
+        private IDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> Assemblers { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
+        private IDictionary<Type, Func<IValueTypeFormatter>> ValueFormatters { get; } = new Dictionary<Type, Func<IValueTypeFormatter>>();
 
         private Func<SqlStatementExecutionType, ISqlStatementAssembler> _assemblerResolver;
         private Func<Type, IAssemblyPartAliasProvider> _aliasProviderAccessor;
@@ -69,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (_assemblerResolver != null)
                     return _assemblerResolver;
 
-                return _assemblerResolver = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(ec => assemblers[ec]());
+                return _assemblerResolver = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(ec => Assemblers[ec]());
             }
         }
 
@@ -80,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (_aliasProviderAccessor != null)
                     return _aliasProviderAccessor;
 
-                return _aliasProviderAccessor = new Func<Type, IAssemblyPartAliasProvider>(t => aliasProviders[t]());
+                return _aliasProviderAccessor = new Func<Type, IAssemblyPartAliasProvider>(t => AliasProviders[t]());
             }
         }
 
@@ -94,22 +96,28 @@ namespace HatTrick.DbEx.Sql.Assembler
                 _partAppenderAccessor = new Func<Type, IAssemblyPartAppender>(t =>
                     {
                         if (t.IsEnum)
-                            return partAppenders[typeof(Enum)]();
+                            return PartAppenders[typeof(Enum)]();
 
-                        if (partAppenders.TryGetValue(t, out Func<IAssemblyPartAppender> value))
+                        if (PartAppenders.TryGetValue(t, out Func<IAssemblyPartAppender> value))
                             return value();
 
                         if (typeof(FieldExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be DBExpressionField<int>, DBExpressionField<Guid>, etc
-                            return partAppenders[typeof(FieldExpression)]();
+                            return PartAppenders[typeof(FieldExpression)]();
 
                         if (typeof(ArithmeticExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be ArithmeticExpression<int>, ArithmeticExpression<Guid>, etc
-                            return partAppenders[typeof(ArithmeticExpression)]();
+                            return PartAppenders[typeof(ArithmeticExpression)]();
 
                         if (typeof(IsNullFunctionExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be IsNullFunctionExpression<int>, IsNullFunctionExpression<Guid>, etc
-                            return partAppenders[typeof(IsNullFunctionExpression)]();
+                            return PartAppenders[typeof(IsNullFunctionExpression)]();
+
+                        if (typeof(CastFunctionExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be CastFunctionExpression<int>, CastFunctionExpression<Guid>, etc
+                            return PartAppenders[typeof(CastFunctionExpression)]();
 
                         if (typeof(CoalesceFunctionExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be CoalesceFunctionExpression<int>, CoalesceFunctionExpression<Guid>, etc
-                            return partAppenders[typeof(CoalesceFunctionExpression)]();
+                            return PartAppenders[typeof(CoalesceFunctionExpression)]();
+
+                        if (typeof(LiteralExpression).IsAssignableFrom(t))
+                            return PartAppenders[typeof(LiteralExpression)]();
 
                         throw new ConfigurationErrorsException($"A part appender for type '{t}' has not been configured.");
                     }
@@ -126,7 +134,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (_valueFormatterAccessor != null)
                     return _valueFormatterAccessor;
 
-                return _valueFormatterAccessor = new Func<Type, IValueTypeFormatter>(t => valueFormatters[t]());
+                return _valueFormatterAccessor = new Func<Type, IValueTypeFormatter>(t => ValueFormatters[t]());
             }
         }
         #endregion
@@ -143,128 +151,130 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : class, IAssemblyPart
             where U : class, IAssemblyPartAppender<T>, new()
         {
-            partAppenders[typeof(T)] = () => new U();
+            PartAppenders[typeof(T)] = () => new U();
         }
 
         public void RegisterPartAppender<T>(IAssemblyPartAppender<T> assembler)
             where T : class, IAssemblyPart
         {
-            partAppenders[typeof(T)] = () => assembler;
+            PartAppenders[typeof(T)] = () => assembler;
         }
 
         public virtual void RegisterDefaultPartAppenders()
         {
-            partAppenders.Add(typeof(ExpressionSet), () => _selectSqlStatementAssembler);
-            partAppenders.Add(typeof(SchemaExpression), () => _schemaAppender);
-            partAppenders.Add(typeof(EntityExpression), () => _entityAppender);
-            partAppenders.Add(typeof(FieldExpression), () => _fieldAppender);
-            partAppenders.Add(typeof(SelectExpression), () => _selectClauseAppender);
-            partAppenders.Add(typeof(SelectExpressionSet), () => _selectClauseAppender);
-            partAppenders.Add(typeof(FilterExpression), () => _whereClauseAppender);
-            partAppenders.Add(typeof(FilterExpressionSet), () => _whereClauseAppender);
-            partAppenders.Add(typeof(JoinExpression), () => _joinClauseAppender);
-            partAppenders.Add(typeof(JoinExpressionSet), () => _joinClauseAppender);
-            partAppenders.Add(typeof(JoinOnExpression), () => _joinOnClauseAppender);
-            partAppenders.Add(typeof(GroupByExpression), () => _groupByClauseAppender);
-            partAppenders.Add(typeof(GroupByExpressionSet), () => _groupByClauseAppender);
-            partAppenders.Add(typeof(HavingExpression), () => _havingClauseAppender);
-            partAppenders.Add(typeof(OrderByExpression), () => _orderByClauseAppender);
-            partAppenders.Add(typeof(OrderByExpressionSet), () => _orderByClauseAppender);
-            partAppenders.Add(typeof(ArithmeticExpression), () => _arithmeticAppender);
-            partAppenders.Add(typeof(CoalesceFunctionExpression), () => _coalesceFunctionAppender);
-            partAppenders.Add(typeof(ConcatFunctionExpression), () => _concatFunctionAppender);
-            partAppenders.Add(typeof(IsNullFunctionExpression), () => _isNullFunctionAppender);
-            partAppenders.Add(typeof(AverageFunctionExpression), () => _averageFunctionAppender);
-            partAppenders.Add(typeof(MinimumFunctionExpression), () => _minimumFunctionAppender);
-            partAppenders.Add(typeof(MaximumFunctionExpression), () => _maximumFunctionAppender);
-            partAppenders.Add(typeof(CountFunctionExpression), () => _countFunctionAppender);
-            partAppenders.Add(typeof(SumFunctionExpression), () => _sumFunctionAppender);
-            partAppenders.Add(typeof(StandardDeviationFunctionExpression), () => _standardDeviationFunctionAppender);
-            partAppenders.Add(typeof(PopulationStandardDeviationFunctionExpression), () => _populationStandardDeviationFunctionAppender);
-            partAppenders.Add(typeof(VarianceFunctionExpression), () => _varianceFunctionAppender);
-            partAppenders.Add(typeof(PopulationVarianceFunctionExpression), () => _populationVarianceFunctionAppender);
-            partAppenders.Add(typeof(string), () => _stringAppender);
-            partAppenders.Add(typeof(byte), () => _byteAppender);
-            partAppenders.Add(typeof(short), () => _int16Appender);
-            partAppenders.Add(typeof(int), () => _int32Appender);
-            partAppenders.Add(typeof(long), () => _int64Appender);
-            partAppenders.Add(typeof(bool), () => _booleanAppender);
-            partAppenders.Add(typeof(decimal), () => _decimalAppender);
-            partAppenders.Add(typeof(DateTime), () => _dateTimeAppender);
-            partAppenders.Add(typeof(Guid), () => _guidAppender);
-            partAppenders.Add(typeof(Enum), () => _enumAppender);
-            partAppenders.Add(typeof(Array), () => _arrayAppender);
+            PartAppenders.Add(typeof(ExpressionSet), () => _selectSqlStatementAssembler);
+            PartAppenders.Add(typeof(SchemaExpression), () => _schemaAppender);
+            PartAppenders.Add(typeof(EntityExpression), () => _entityAppender);
+            PartAppenders.Add(typeof(FieldExpression), () => _fieldAppender);
+            PartAppenders.Add(typeof(SelectExpression), () => _selectClauseAppender);
+            PartAppenders.Add(typeof(SelectExpressionSet), () => _selectClauseAppender);
+            PartAppenders.Add(typeof(FilterExpression), () => _whereClauseAppender);
+            PartAppenders.Add(typeof(FilterExpressionSet), () => _whereClauseAppender);
+            PartAppenders.Add(typeof(JoinExpression), () => _joinClauseAppender);
+            PartAppenders.Add(typeof(JoinExpressionSet), () => _joinClauseAppender);
+            PartAppenders.Add(typeof(JoinOnExpression), () => _joinOnClauseAppender);
+            PartAppenders.Add(typeof(GroupByExpression), () => _groupByClauseAppender);
+            PartAppenders.Add(typeof(GroupByExpressionSet), () => _groupByClauseAppender);
+            PartAppenders.Add(typeof(HavingExpression), () => _havingClauseAppender);
+            PartAppenders.Add(typeof(OrderByExpression), () => _orderByClauseAppender);
+            PartAppenders.Add(typeof(OrderByExpressionSet), () => _orderByClauseAppender);
+            PartAppenders.Add(typeof(ArithmeticExpression), () => _arithmeticAppender);
+            PartAppenders.Add(typeof(CastFunctionExpression), () => _castFunctionAppender);
+            PartAppenders.Add(typeof(CoalesceFunctionExpression), () => _coalesceFunctionAppender);
+            PartAppenders.Add(typeof(ConcatFunctionExpression), () => _concatFunctionAppender);
+            PartAppenders.Add(typeof(IsNullFunctionExpression), () => _isNullFunctionAppender);
+            PartAppenders.Add(typeof(AverageFunctionExpression), () => _averageFunctionAppender);
+            PartAppenders.Add(typeof(MinimumFunctionExpression), () => _minimumFunctionAppender);
+            PartAppenders.Add(typeof(MaximumFunctionExpression), () => _maximumFunctionAppender);
+            PartAppenders.Add(typeof(CountFunctionExpression), () => _countFunctionAppender);
+            PartAppenders.Add(typeof(SumFunctionExpression), () => _sumFunctionAppender);
+            PartAppenders.Add(typeof(StandardDeviationFunctionExpression), () => _standardDeviationFunctionAppender);
+            PartAppenders.Add(typeof(PopulationStandardDeviationFunctionExpression), () => _populationStandardDeviationFunctionAppender);
+            PartAppenders.Add(typeof(VarianceFunctionExpression), () => _varianceFunctionAppender);
+            PartAppenders.Add(typeof(PopulationVarianceFunctionExpression), () => _populationVarianceFunctionAppender);
+            PartAppenders.Add(typeof(LiteralExpression), () => _literalAppender);
+            PartAppenders.Add(typeof(string), () => _stringAppender);
+            PartAppenders.Add(typeof(byte), () => _byteAppender);
+            PartAppenders.Add(typeof(short), () => _int16Appender);
+            PartAppenders.Add(typeof(int), () => _int32Appender);
+            PartAppenders.Add(typeof(long), () => _int64Appender);
+            PartAppenders.Add(typeof(bool), () => _booleanAppender);
+            PartAppenders.Add(typeof(decimal), () => _decimalAppender);
+            PartAppenders.Add(typeof(DateTime), () => _dateTimeAppender);
+            PartAppenders.Add(typeof(Guid), () => _guidAppender);
+            PartAppenders.Add(typeof(Enum), () => _enumAppender);
+            PartAppenders.Add(typeof(Array), () => _arrayAppender);
         }
 
         public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementAssembler, new()
         {
-            assemblers[statementExecutionType] = () => new T();
+            Assemblers[statementExecutionType] = () => new T();
         }
 
         public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
             where T : class, ISqlStatementAssembler
         {
-            assemblers[statementExecutionType] = () => assembler;
+            Assemblers[statementExecutionType] = () => assembler;
         }
 
         public virtual void RegisterDefaultAssemblers()
         {
-            assemblers.Add(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.SelectAllType, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.SelectAllDynamic, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.SelectAllValue, () => _selectAllSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
-            assemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectAllType, () => _selectAllSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectAllDynamic, () => _selectAllSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectAllValue, () => _selectAllSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
         }
 
         public void RegisterValueFormatter<T, U>()
            where T : IComparable
            where U : class, IValueTypeFormatter<T>, new()
         {
-            valueFormatters[typeof(T)] = () => new U();
+            ValueFormatters[typeof(T)] = () => new U();
         }
 
         public void RegisterValueFormatter<T>(IValueTypeFormatter<T> valueFormatter)
             where T : IComparable, IValueTypeFormatter
         {
-            valueFormatters[typeof(T)] = () => valueFormatter;
+            ValueFormatters[typeof(T)] = () => valueFormatter;
         }
 
         public virtual void RegisterDefaultValueFormatters()
         {
-            valueFormatters.Add(typeof(string), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(bool), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(byte), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(short), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(int), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(long), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(decimal), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(DateTime), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(Guid), () => _valueTypeFormatter);
-            valueFormatters.Add(typeof(Enum), () => _enumValueTypeFormatter);
+            ValueFormatters.Add(typeof(string), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(bool), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(byte), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(short), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(int), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(long), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(decimal), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(DateTime), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(Guid), () => _valueTypeFormatter);
+            ValueFormatters.Add(typeof(Enum), () => _enumValueTypeFormatter);
         }
 
         public void RegisterAliasProvider<T, U>()
             where T : class, IAssemblyPart
             where U : class, IAssemblyPartAliasProvider<T>, new()
         {
-            aliasProviders[typeof(T)] = () => new U();
+            AliasProviders[typeof(T)] = () => new U();
         }
 
         public void RegisterAliasProvider<T>(IAssemblyPartAliasProvider<T> provider)
             where T : class, IAssemblyPart
         {
-            aliasProviders[typeof(T)] = () => provider;
+            AliasProviders[typeof(T)] = () => provider;
         }
 
         public virtual void RegisterDefaultAliasProviders()
         {
-            aliasProviders.Add(typeof(ExpressionSet), () => _selectSqlStatementAssembler);
-            aliasProviders.Add(typeof(JoinExpression), () => _joinClauseAppender);
+            AliasProviders.Add(typeof(ExpressionSet), () => _selectSqlStatementAssembler);
+            AliasProviders.Add(typeof(JoinExpression), () => _joinClauseAppender);
         }
 
         public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, IAppender appender, ISqlParameterBuilder parameterBuilder)

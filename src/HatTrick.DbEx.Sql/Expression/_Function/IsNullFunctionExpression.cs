@@ -7,8 +7,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbFunctionExpression,
         IAssemblyPart,
         IDbExpressionAliasProvider,
-        IEquatable<IsNullFunctionExpression>,
-        ISupportedForSelectExpression
+        ISupportedForExpression<SelectExpression>,
+        IEquatable<IsNullFunctionExpression>
     {
         #region internals
         protected string Alias { get; private set; }

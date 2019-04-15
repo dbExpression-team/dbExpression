@@ -5,9 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class StringFieldExpression<TEntity> : FieldExpression<TEntity, string>,
-        ISupportedForSelectExpression<TEntity, string>,
+        ISupportedForSelectEntityExpression<TEntity, string>,
+        ISupportedForSelectFieldExpression<string>,
         ISupportedForExpression<AssignmentExpression, TEntity, string>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, string>,
+        ISupportedForFunctionExpression<CastFunctionExpression, string>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, string>,
         ISupportedForFunctionExpression<CountFunctionExpression, string>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, string>,

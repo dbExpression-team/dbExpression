@@ -5,9 +5,10 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class NullableInt64FieldExpression<TEntity> : NullableFieldExpression<TEntity, long>,
-        ISupportedForSelectExpression<TEntity, long>,
+        ISupportedForSelectEntityExpression<TEntity, long>,
         ISupportedForExpression<AssignmentExpression, TEntity, long>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, long>,
+        ISupportedForFunctionExpression<CastFunctionExpression, long>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, long>,
         ISupportedForFunctionExpression<CountFunctionExpression, long>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, long>,

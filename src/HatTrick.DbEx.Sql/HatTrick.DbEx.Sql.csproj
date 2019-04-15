@@ -71,6 +71,8 @@
     <Compile Include="Assembler\ISqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\EnumValueTypeFormatter.cs" />
     <Compile Include="Assembler\ValueTypeFormatter.cs" />
+    <Compile Include="Assembler\_Appenders\LiteralAppender.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\CastFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\ConcatFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\FunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\IsNullFunctionAppender.cs" />
@@ -116,6 +118,8 @@
     <Compile Include="Builder\JoinExpressionBuilder{T,U}.cs" />
     <Compile Include="Builder\JoinExpressionBuilder{T}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder.cs" />
+    <Compile Include="Builder\Syntax\_Function\ICastFunctionExpressionBuilder.cs" />
+    <Compile Include="Builder\_Function\CastFunctionExpressionBuilder.cs" />
     <Compile Include="Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Configuration\DatabaseConfigurationBuilder.cs" />
     <Compile Include="Configuration\DbExpressionConfigurationBuilder.cs" />
@@ -127,8 +131,11 @@
     <Compile Include="Expression\ISupportedForFunctionExpression{T}.cs" />
     <Compile Include="Expression\ISupportedForExpression{T,U,V}.cs" />
     <Compile Include="Expression\ISupportedForSelectExpression.cs" />
-    <Compile Include="Expression\ISupportedForSelectExpression{T,U}.cs" />
-    <Compile Include="Expression\ISupportedForSelectExpression{T}.cs" />
+    <Compile Include="Expression\ISupportedForSelectEntityExpression{T,U}.cs" />
+    <Compile Include="Expression\ISupportedForSelectEntityExpression{T}.cs" />
+    <Compile Include="Expression\ISupportedForSelectFieldExpression{T}.cs" />
+    <Compile Include="Expression\LiteralExpression.cs" />
+    <Compile Include="Expression\LiteralExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\FloatFieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\DateTimeOffsetFieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\DoubleFieldExpression{T}.cs" />
@@ -154,6 +161,8 @@
     <Compile Include="Expression\_FieldExpressions\Int16FieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\Int64FieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\Int32FieldExpression{T}.cs" />
+    <Compile Include="Expression\_Function\CastFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\CastFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\CoalesceFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\ConcatFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbNumericalFunctionExpression.cs" />

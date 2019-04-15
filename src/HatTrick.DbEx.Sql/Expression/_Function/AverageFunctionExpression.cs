@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
         IEquatable<AverageFunctionExpression>,
-        ISupportedForSelectExpression
+        ISupportedForExpression<SelectExpression>
     {
         #region internals
         protected bool IsDistinct { get; private set; }

@@ -11,8 +11,9 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbFunctionExpression,
         IAssemblyPart,
         IDbExpressionAliasProvider,
-        IEquatable<ConcatFunctionExpression>,
-        ISupportedForSelectExpression
+        ISupportedForSelectFieldExpression<string>,
+        ISupportedForSelectExpression,
+        IEquatable<ConcatFunctionExpression>
     {
         #region internals
         protected string Alias { get; private set; }

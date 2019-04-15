@@ -14,9 +14,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class SelectAll : ExecutorTestBase
     {
         [Theory]
-        [InlineData(2012)]
-        [InlineData(2014)]
-        public void Are_there_50_person_records(int version)
+        [InlineData(2012, 50)]
+        [InlineData(2014, 50)]
+        public void Are_there_50_person_records(int version, int expectedCount)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -28,13 +28,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = exp.Execute();
 
             //then
-            persons.Should().HaveCount(50);
+            persons.Should().HaveCount(expectedCount);
         }
 
         [Theory]
-        [InlineData(2012)]
-        [InlineData(2014)]
-        public void Are_there_15_purchase_records(int version)
+        [InlineData(2012, 15)]
+        [InlineData(2014, 15)]
+        public void Are_there_15_purchase_records(int version, int expectedCount)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -46,13 +46,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var purchases = exp.Execute();
 
             //then
-            purchases.Should().HaveCount(15);
+            purchases.Should().HaveCount(expectedCount);
         }
 
         [Theory]
-        [InlineData(2012)]
-        [InlineData(2014)]
-        public void Can_retrieve_page_of_purchase_records(int version)
+        [InlineData(2012, 1)]
+        [InlineData(2014, 1)]
+        public void Can_retrieve_page_of_purchase_records(int version, int expectedCount)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -68,7 +68,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var purchases = exp.Execute();
 
             //then
-            purchases.Should().HaveCount(1);
+            purchases.Should().HaveCount(expectedCount);
         }
     }
 }

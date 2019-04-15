@@ -8,6 +8,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbFunctionExpression,
         IAssemblyPart,
         IDbExpressionAliasProvider,
+        ISupportedForFunctionExpression<CastFunctionExpression, T>,
+        ISupportedForSelectFieldExpression<T>,
         IEquatable<IsNullFunctionExpression<T>>
     {
         #region constructors

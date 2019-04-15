@@ -10,9 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<JoinOnExpression>
     {
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
-        private static IDictionary<ConditionalExpressionOperator, string> _conditionalOperatorMap;
         private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators());
-        private static IDictionary<ConditionalExpressionOperator, string> ConditionalOperatorMap => _conditionalOperatorMap ?? (_conditionalOperatorMap = typeof(ConditionalExpressionOperator).GetValuesAndConditionalOperators());
         
         public void AppendPart(JoinOnExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
@@ -36,12 +34,16 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression.RightPart.Item2 is FieldExpression field)
             {
                 context.CurrentField = new AssemblerContext.CurrentFieldContext(field);
+
+                var emit = context.EmitAlias;
+                context.EmitAlias = false;
                 if (expression.RightPart.Item2 is IDbExpressionAliasProvider alias && !string.IsNullOrWhiteSpace(alias.Alias))
                 {
                     context.CurrentField.NameOverride = alias.Alias;
                 }
                 builder.AppendPart(expression.RightPart, context);
                 context.CurrentField = null;
+                context.EmitAlias = emit;
             }
             else if (typeof(IComparable).IsAssignableFrom(expression.RightPart.Item1))
             {

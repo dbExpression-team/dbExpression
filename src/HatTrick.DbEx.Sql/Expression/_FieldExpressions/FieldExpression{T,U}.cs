@@ -7,7 +7,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public abstract class FieldExpression<TEntity, TValue> :
-        FieldExpression
+        FieldExpression,
+        ISupportedForSelectFieldExpression<TValue>
         where TEntity : IDbEntity
     {
         public virtual Lazy<Action<TEntity, TValue>> Mapper { get; private set; }

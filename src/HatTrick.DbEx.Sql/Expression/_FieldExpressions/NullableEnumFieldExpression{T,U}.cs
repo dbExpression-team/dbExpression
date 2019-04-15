@@ -5,9 +5,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
     public class NullableEnumFieldExpression<TEntity, TEnum> : NullableFieldExpression<TEntity, TEnum>,
-        ISupportedForSelectExpression<TEntity, TEnum>,
+        ISupportedForSelectEntityExpression<TEntity, TEnum>,
+        ISupportedForSelectFieldExpression<TEnum>,
         ISupportedForExpression<AssignmentExpression, TEntity, TEnum>,
         ISupportedForFunctionExpression<IsNullFunctionExpression, TEnum>,
+        ISupportedForFunctionExpression<CastFunctionExpression, TEnum>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, TEnum>,
         ISupportedForFunctionExpression<CountFunctionExpression, TEnum>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, TEnum>,
