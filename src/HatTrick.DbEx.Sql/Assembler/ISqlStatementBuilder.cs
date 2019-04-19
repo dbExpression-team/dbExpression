@@ -1,11 +1,18 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface ISqlStatementBuilder
     {
+        #region interface
         ISqlParameterBuilder Parameters { get; }
+        IAppender Appender { get; }
+        #endregion
 
+        #region methods
         string FormatValueType((Type, object) value);
 
         string FormatValueType<T>(object value)
@@ -13,13 +20,15 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         SqlStatement CreateSqlStatement();
 
-        string AssemblePart((Type, object) part, AssemblerOverrides overrides);
+        void AppendPart((Type, object) part, AssemblerContext context);
 
-        string AssemblePart<T>(object part, AssemblerOverrides overrides)
-            where T : IDbExpressionAssemblyPart;
+        void AppendPart<T>(object part, AssemblerContext context)
+            where T : IAssemblyPart;
+
+        void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
+            where T : IAssemblyPart;
 
         string GenerateAlias();
-
-        Appender CreateAppender();
+        #endregion
     }
 }

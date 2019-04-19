@@ -1,11 +1,14 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class GroupByExpression : DbExpression
+    public class GroupByExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
-        #region internals
-        public (Type,object) Expression { get; private set; }
+        #region interface
+        public (Type, object) Expression { get; private set; }
         #endregion
 
         #region constructors
@@ -14,9 +17,9 @@ namespace HatTrick.DbEx.Sql.Expression
             Expression = (typeof(FieldExpression),field);
         }
 
-        internal GroupByExpression(SelectExpression expression)
+        internal GroupByExpression(ArithmeticExpression expression)
         {
-            Expression = (typeof(SelectExpression), expression);
+            Expression = (typeof(ArithmeticExpression), expression);
         }
         #endregion
 

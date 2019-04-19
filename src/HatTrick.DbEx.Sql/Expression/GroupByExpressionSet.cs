@@ -1,16 +1,24 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class GroupByExpressionSet : DbExpression, IDbExpressionSet<GroupByExpression>, IDbExpressionAssemblyPart
+    public class GroupByExpressionSet : 
+        IDbExpression, 
+        IDbExpressionSet<GroupByExpression>, 
+        IAssemblyPart
     {
-        #region internals
+        #region interface
         public IList<GroupByExpression> Expressions { get; } = new List<GroupByExpression>();
         #endregion
 
         #region constructors
+        internal GroupByExpressionSet()
+        {
+        }
+
         internal GroupByExpressionSet(GroupByExpression a)
         {
             Expressions.Add(a);

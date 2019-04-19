@@ -5,16 +5,15 @@ using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinOnExpression : DbExpression, IDbExpressionAssemblyPart
+    public class JoinOnExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
-        public (Type,object) LeftPart { get; set; }
-        public (Type,object) RightPart { get; set; }
+        public (Type, object) LeftPart { get; set; }
+        public (Type, object) RightPart { get; set; }
         public readonly FilterExpressionOperator ExpressionOperator;
         public bool Negate { get; set; }
-        
-        //TODO: JRod, remove this and cache some static based on enum attributes to avoid out of sync issues moving forward...
-        private static string[] _operatorStrings = new string[] { " = ", " <> ", " < ", " <= ", " > ", " >= ", " LIKE ", " IN " };
         #endregion
 
         #region constructors
@@ -27,8 +26,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         internal JoinOnExpression(FilterExpression expression)
         {
-            LeftPart = expression.LeftPart;
-            RightPart = expression.RightPart;
+            LeftPart = expression.Expression.LeftPart;
+            RightPart = expression.Expression.RightPart;
             ExpressionOperator = expression.ExpressionOperator;
             Negate = expression.Negate;
         }

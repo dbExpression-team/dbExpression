@@ -5,14 +5,17 @@ using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinOnExpressionSet : DbExpression, IDbExpressionSet<JoinOnExpression>, IDbExpressionAssemblyPart
+    public class JoinOnExpressionSet : 
+        IDbExpression, 
+        IDbExpressionSet<JoinOnExpression>, 
+        IAssemblyPart
     {
         #region interface
         public IList<JoinOnExpression> Expressions { get; } = new List<JoinOnExpression>();
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
-        public (Type,object) LeftPart { get; set; }
-        public (Type,object) RightPart { get; set; }
+        public (Type, object) LeftPart { get; set; }
+        public (Type, object) RightPart { get; set; }
         #endregion
 
         #region constructors

@@ -1,87 +1,75 @@
-using HatTrick.DbEx.Sql.Expression;
 
 namespace DataService
 {
+    using DataService.EntityExpression.dbo;
+    using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Configuration;
+
     #region dbo
-    public class dboSchema : SchemaExpression
-    {
-        #region internals
-        private static readonly string _connectionStringName = "hattrick.dbex.mssql.test";
-        #endregion
-
-        #region constructors
-        public dboSchema() : base("dbo", _connectionStringName) { }
-        #endregion
-    }
-
     public static partial class dbo
     {
         #region internals
         private static volatile dboSchema _schema;
-        private static volatile AddressEntity _addressEntity;
-        private static volatile PersonEntity _personEntity;
-        private static volatile Person_AddressEntity _person_AddressEntity;
-        private static volatile ProductEntity _productEntity;
-        private static volatile PurchaseEntity _purchaseEntity;
-        private static volatile PersonTotalPurchasesViewEntity _personTotalPurchasesViewEntity;
         #endregion
 
         #region interface
-        public static AddressEntity Address => _addressEntity;
-        public static PersonEntity Person => _personEntity;
-        public static Person_AddressEntity Person_Address => _person_AddressEntity;
-        public static ProductEntity Product => _productEntity;
-        public static PurchaseEntity Purchase => _purchaseEntity;
-        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView => _personTotalPurchasesViewEntity;
+        public static AddressEntity Address { get { return _schema.Address; } }
+        public static PersonEntity Person { get { return _schema.Person; } }
+        public static Person_AddressEntity Person_Address { get { return _schema.Person_Address; } }
+        public static ProductEntity Product { get { return _schema.Product; } }
+        public static PurchaseEntity Purchase { get { return _schema.Purchase; } }
+        public static PurchaseLineEntity PurchaseLine { get { return _schema.PurchaseLine; } }
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return _schema.PersonTotalPurchasesView; } }
         #endregion
 
         #region constructors
         static dbo()
         {
-            _schema = new dboSchema();
-            _addressEntity = new AddressEntity(_schema, "Address");
-            _personEntity = new PersonEntity(_schema, "Person");
-            _person_AddressEntity = new Person_AddressEntity(_schema, "Person_Address");
-            _productEntity = new ProductEntity(_schema, "Product");
-            _purchaseEntity = new PurchaseEntity(_schema, "Purchase");
-            _personTotalPurchasesViewEntity = new PersonTotalPurchasesViewEntity(_schema, "PersonTotalPurchasesView");
+            if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest", out var config))
+                throw new DbExpressionConfigurationException($"Metadata for database named 'MsSqlDbExTest' has not been provided.");
+            var schema = config?.Metadata?.Schemas;
+            if (schema == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(dbo)}'");
+            schema.TryGetValue(nameof(dbo), out ISqlSchemaMetadata schemaMetadata);
+            if (schemaMetadata == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(dbo)}'");
+            _schema = new dboSchema(schemaMetadata);
         }
         #endregion
     }
-	#endregion
+    #endregion
 }
+
 namespace DataService
 {
+    using DataService.EntityExpression.sec;
+    using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Configuration;
+
     #region sec
-    public class secSchema : SchemaExpression
-    {
-        #region internals
-        private static readonly string _connectionStringName = "hattrick.dbex.mssql.test";
-        #endregion
-
-        #region constructors
-        public secSchema() : base("sec", _connectionStringName) { }
-        #endregion
-    }
-
     public static partial class sec
     {
         #region internals
         private static volatile secSchema _schema;
-        private static volatile PersonEntity _personEntity;
         #endregion
 
         #region interface
-        public static PersonEntity Person => _personEntity;
+        public static PersonEntity Person { get { return _schema.Person; } }
         #endregion
 
         #region constructors
         static sec()
         {
-            _schema = new secSchema();
-            _personEntity = new PersonEntity(_schema, "Person");
+            if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest", out var config))
+                throw new DbExpressionConfigurationException($"Metadata for database named 'MsSqlDbExTest' has not been provided.");
+            var schema = config?.Metadata?.Schemas;
+            if (schema == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
+            schema.TryGetValue(nameof(sec), out ISqlSchemaMetadata schemaMetadata);
+            if (schemaMetadata == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
+            _schema = new secSchema(schemaMetadata);
         }
-
         #endregion
     }
     #endregion

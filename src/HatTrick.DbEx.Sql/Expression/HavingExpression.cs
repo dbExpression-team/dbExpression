@@ -3,13 +3,19 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class HavingExpression : DbExpression, IDbExpressionAssemblyPart
+    public class HavingExpression :
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
-        public (Type,object) Expression { get; private set; }
+        public (Type, object) Expression { get; private set; }
         #endregion
 
         #region constructors
+        internal HavingExpression()
+        {
+        }
+
         internal HavingExpression(FilterExpression havingCondition)
         {
             Expression = (typeof(FilterExpression), havingCondition);
@@ -18,6 +24,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public HavingExpression(FilterExpressionSet havingCondition)
         {
             Expression = (typeof(FilterExpressionSet), havingCondition);
+        }
+
+        internal HavingExpression(IDbFunctionExpression function)
+        {
+            Expression = (function.GetType(), function);
         }
         #endregion
 
@@ -28,11 +39,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #region conditional & operator
         public static HavingExpression operator &(HavingExpression a, HavingExpression b)
         {
-            if (a.Expression.Item1 == typeof(FilterExpression) && b.Expression.Item1 == typeof(FilterExpression))
+            if (a?.Expression == default)
             {
-                var c = a.Expression.Item2 as FilterExpression;
-                c.RightPart = (typeof(FilterExpression),b);
+                b.Expression = (typeof(FilterExpression), b.Expression.Item2);
+                return b;
             }
+            a.Expression = (typeof(DbExpressionPair), new DbExpressionPair(a.Expression, (typeof(FilterExpression),b)));
             return a;
         }
         #endregion

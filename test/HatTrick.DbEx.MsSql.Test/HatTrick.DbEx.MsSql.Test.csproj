@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,6 +43,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
     </Reference>
@@ -65,10 +68,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Generated\DBEntityProvider.generated.cs" />
+    <Compile Include="Generated\Metadata.generated.cs" />
+    <Compile Include="Generated\SchemaExpression.generated.cs" />
     <Compile Include="Generated\TableData.generated.cs" />
-    <Compile Include="Generated\TableDBEntity.generated.cs" />
+    <Compile Include="Generated\EntityExpression.generated.cs" />
     <Compile Include="Generated\ViewData.generated.cs" />
-    <Compile Include="Generated\ViewDBEntity.generated.cs" />
+    <Compile Include="Generated\ViewEntity.generated.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="_TypeCode\ProductCategoryType.cs" />
     <Compile Include="_TypeCode\GenderType.cs" />
@@ -83,6 +88,10 @@
     <ProjectReference Include="..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj">
       <Project>{faee287e-a5bb-4893-8abb-d285e7bc0ca0}</Project>
       <Name>HatTrick.DbEx.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\HatTrick.DbEx\HatTrick.DbEx.csproj">
+      <Project>{196FEDA7-33A3-4F84-B5C4-E8471041A4CC}</Project>
+      <Name>HatTrick.DbEx</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

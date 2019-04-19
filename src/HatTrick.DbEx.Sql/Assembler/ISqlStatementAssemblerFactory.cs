@@ -7,16 +7,16 @@ namespace HatTrick.DbEx.Sql.Assembler
     public interface ISqlStatementAssemblerFactory
     {
         void RegisterPartAssembler<T, U>()
-            where T : class, IDbExpressionAssemblyPart
-            where U : class, IDbExpressionAssemblyPartAssembler<T>, new();
+            where T : class, IAssemblyPart
+            where U : class, IAssemblyPartAppender<T>, new();
 
-        void RegisterPartAssembler<T>(IDbExpressionAssemblyPartAssembler<T> assembler)
-            where T : class, IDbExpressionAssemblyPart;
+        void RegisterPartAssembler<T>(IAssemblyPartAppender<T> assembler)
+            where T : class, IAssemblyPart;
 
-        void RegisterAssembler<T>(ExecutionContext executionContext)
+        void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementAssembler, new();
 
-        void RegisterAssembler<T>(ExecutionContext executionContext, T assembler)
+        void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
             where T : class, ISqlStatementAssembler;
 
         void RegisterValueFormatter<T, U>()

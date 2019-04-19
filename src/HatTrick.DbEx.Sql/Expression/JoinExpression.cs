@@ -1,12 +1,15 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinExpression : DbExpression
+    public class JoinExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }
-        public (Type,object) JoinToo { get; private set; }
+        public (Type, object) JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         #endregion
 
@@ -25,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
             JoinOnExpression = onCondition;
         }
 
-        public JoinExpression((Type,object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
+        public JoinExpression((Type, object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
         {
             JoinToo = joinToo;
             JoinType = joinType;

@@ -1,36 +1,100 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ArithmeticExpression : DbExpression, IDbExpressionSelectClausePart
+    public class ArithmeticExpression : 
+        IDbExpression, 
+        IAssemblyPart,
+        IDbExpressionAliasProvider,
+        ISupportedForSelectExpression
     {
+        #region internals
+        protected string Alias { get; private set; }
+        #endregion
+
         #region interface
         public (Type, object) Expression { get; private set; }
         public (Type, object) LeftPart => ((DbExpressionPair)Expression.Item2).LeftPart;
         public (Type, object) RightPart => ((DbExpressionPair)Expression.Item2).RightPart;
         public ArithmeticExpressionOperator ExpressionOperator { get; private set; }
+
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        internal ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        protected ArithmeticExpression((Type, object) expression, ArithmeticExpressionOperator arithmeticOperator, string alias)
+        {
+            Expression = expression;
+            ExpressionOperator = arithmeticOperator;
+            Alias = alias;
+        }
+
+        protected ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
-            //LeftPart = (leftArg.GetType(), leftArg);
-            //RightPart = (rightArg.GetType(), rightArg);
             ExpressionOperator = arithmeticOperator;
         }
-        #endregion
 
-        #region aggregate functions
-        public SelectExpression Avg(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.AVG, distinct);
+        internal ArithmeticExpression(ArithmeticExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (rightArg.GetType(), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
 
-        public SelectExpression Min(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.MIN, distinct);
+        internal ArithmeticExpression(ArithmeticExpression leftArg, ArithmeticExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (typeof(ArithmeticExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
 
-        public SelectExpression Max(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.MAX, distinct);
+        internal ArithmeticExpression(FieldExpression leftArg, ArithmeticExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), leftArg), (typeof(ArithmeticExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
 
-        public SelectExpression Sum(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.SUM, distinct);
+        internal ArithmeticExpression(FieldExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), leftArg), (rightArg.GetType(), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
 
-        public SelectExpression Count(bool distinct = false) => new AggregateFunctionExpression(this, AggregateFunction.COUNT, distinct);
+        internal ArithmeticExpression(FieldExpression leftArg, FieldExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), leftArg), (typeof(FieldExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        internal ArithmeticExpression(CastFunctionExpression leftArg, CastFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (typeof(CastFunctionExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        internal ArithmeticExpression(CoalesceFunctionExpression leftArg, CoalesceFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (typeof(CoalesceFunctionExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        internal ArithmeticExpression(IsNullFunctionExpression leftArg, IsNullFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(IsNullFunctionExpression), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        internal ArithmeticExpression(IDbNumericalFunctionExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        internal ArithmeticExpression(IDbNumericalFunctionExpression leftArg, IDbNumericalFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
         #endregion
 
         #region to string
@@ -38,11 +102,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public SelectExpression As(string alias) => new SelectExpression(this).As(alias);
+        public ArithmeticExpression As(string alias) => new ArithmeticExpression(Expression, ExpressionOperator, alias);
         #endregion
 
         #region implicit select expression operator
-        public static implicit operator SelectExpression(ArithmeticExpression a) => new SelectExpression(a);
+        //public static implicit operator SelectExpression(ArithmeticExpression a) => new SelectExpression(a);
         #endregion
 
         #region implicit group by expression operator
@@ -94,17 +158,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic expression to expression relational operators
-        public static FilterExpression operator ==(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator ==(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator !=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator <(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator <(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, DbExpression b)  => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator <=(ArithmeticExpression a, IDbExpression b)  => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator >(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator >(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >=(ArithmeticExpression a, DbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator >=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #region arithmetic to value relational operators
@@ -162,7 +226,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic expression to arithmetic expression operators
-        public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
         public static ArithmeticExpression operator -(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 

@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             return a;
         }
 
-        public IAppender Append(string value)
+        public IAppender Write(string value)
             => appender.Write(value);
 
         public IAppender If(bool append, params Action<Appender>[] values)
@@ -74,7 +74,17 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Write(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (value == null)
+                return this;
+
+            builder.Append(value);
+
+            return this;
+        }
+
+        public IAppender Write(char value)
+        {
+            if (value == default)
                 return this;
 
             builder.Append(value);
@@ -84,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Indent()
         {
-            if (string.IsNullOrWhiteSpace(_currentIndentationValue))
+            if (!string.IsNullOrEmpty(_currentIndentationValue))
                 builder.Append(_currentIndentationValue);
             return this;
         }
@@ -142,6 +152,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         IAppender Write(string value);
 
+        IAppender Write(char value);
         IAppender Indent();
 
         IAppender If(bool append, params Action<Appender>[] values);

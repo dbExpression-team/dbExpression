@@ -7,21 +7,14 @@ namespace HatTrick.DbEx.Sql.Builder
         IValueContinuationExpressionBuilder<T, U>,
         IValueListContinuationExpressionBuilder<T, U>,
         ITypeContinuationBuilder<T, U>,
-        ITypeListContinuationBuilder<T, U>,
+        ITypeListContinuationExpressionBuilder<T, U>,
         IValueListSkipContinuationExpressionBuilder<T, U>,
-        ITypeListSkipContinuationBuilder<T, U>
+        ITypeListSkipContinuationExpressionBuilder<T, U>
         where U : class, IContinuationExpressionBuilder<T>
     {
         #region constructors
         public SqlExpressionBuilder(ExpressionSet expression) : base(expression)
         { }
-        #endregion
-
-        #region distinct
-        private void Distinct()
-        {
-            Expression.Distinct = true;
-        }
         #endregion
 
         #region order by
@@ -36,12 +29,12 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.OrderBy(OrderByExpressionSet orderBy)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.OrderBy(OrderByExpressionSet orderBy)
         {
             OrderBy(orderBy);
             return this;
         }
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.OrderBy(params OrderByExpression[] orderBy)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.OrderBy(params OrderByExpression[] orderBy)
         {
             OrderBy(orderBy);
             return this;
@@ -66,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.GroupBy(params GroupByExpression[] groupBy)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.GroupBy(params GroupByExpression[] groupBy)
         {
             GroupBy(groupBy);
             return this;
@@ -86,7 +79,7 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Having(HavingExpression having)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.Having(HavingExpression having)
         {
             Having(having);
             return this;
@@ -94,26 +87,12 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private void Having(HavingExpression having)
         {
+            if (Expression.Having?.Expression == null || Expression.Having.Expression == default)
+            {
+                Expression.Having = having;
+                return;
+            }
             Expression.Having &= having;
-        }
-        #endregion
-
-        #region top
-        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Top(int count)
-        {
-            Top(count);
-            return this;
-        }
-
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Top(int count)
-        {
-            Top(count);
-            return this;
-        }
-
-        private void Top(int count)
-        {
-            Expression.Top = count;
         }
         #endregion
 
@@ -148,14 +127,14 @@ namespace HatTrick.DbEx.Sql.Builder
             return Where<T, U>(expression) as ITypeContinuationBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(FilterExpression expression)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.Where(FilterExpression expression)
         {
-            return Where<T, U>(expression) as ITypeListContinuationBuilder<T, U>;
+            return Where<T, U>(expression) as ITypeListContinuationExpressionBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Where(FilterExpressionSet expression)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.Where(FilterExpressionSet expression)
         {
-            return Where<T, U>(expression) as ITypeListContinuationBuilder<T, U>;
+            return Where<T, U>(expression) as ITypeListContinuationExpressionBuilder<T, U>;
         }
         #endregion
 
@@ -232,29 +211,29 @@ namespace HatTrick.DbEx.Sql.Builder
             return Join<T, ITypeContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.CROSS);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.InnerJoin(EntityExpression entity)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.InnerJoin(EntityExpression entity)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.INNER);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(entity, JoinOperationExpressionOperator.INNER);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.LeftJoin(EntityExpression entity)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.LeftJoin(EntityExpression entity)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.LEFT);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(entity, JoinOperationExpressionOperator.LEFT);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.RightJoin(EntityExpression entity)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.RightJoin(EntityExpression entity)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.RIGHT);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(entity, JoinOperationExpressionOperator.RIGHT);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.FullJoin(EntityExpression entity)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.FullJoin(EntityExpression entity)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.FULL);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(entity, JoinOperationExpressionOperator.FULL);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.CrossJoin(EntityExpression entity)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.CrossJoin(EntityExpression entity)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(entity, JoinOperationExpressionOperator.CROSS);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(entity, JoinOperationExpressionOperator.CROSS);
         }
 
         IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> IValueContinuationExpressionBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
@@ -314,24 +293,24 @@ namespace HatTrick.DbEx.Sql.Builder
             return Join<T, ITypeContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.InnerJoin(ISubqueryTerminationExpressionBuilder subquery)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.INNER);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.INNER);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.LeftJoin(ISubqueryTerminationExpressionBuilder subquery)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.LeftJoin(ISubqueryTerminationExpressionBuilder subquery)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.LEFT);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.LEFT);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.RightJoin(ISubqueryTerminationExpressionBuilder subquery)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.RightJoin(ISubqueryTerminationExpressionBuilder subquery)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.RIGHT);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.RIGHT);
         }
 
-        IJoinExpressionBuilder<T, ITypeListContinuationBuilder<T, U>> ITypeListContinuationBuilder<T, U>.FullJoin(ISubqueryTerminationExpressionBuilder subquery)
+        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> ITypeListContinuationExpressionBuilder<T, U>.FullJoin(ISubqueryTerminationExpressionBuilder subquery)
         {
-            return Join<T, ITypeListContinuationBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
+            return Join<T, ITypeListContinuationExpressionBuilder<T, U>>(subquery, JoinOperationExpressionOperator.FULL);
         }
         #endregion
 
@@ -342,10 +321,10 @@ namespace HatTrick.DbEx.Sql.Builder
             return this as IValueListSkipContinuationExpressionBuilder<T, U>;
         }
 
-        ITypeListSkipContinuationBuilder<T, U> ITypeListContinuationBuilder<T, U>.Skip(int skipValue)
+        ITypeListSkipContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.Skip(int skipValue)
         {
             Skip(skipValue);
-            return this as ITypeListSkipContinuationBuilder<T, U>;
+            return this as ITypeListSkipContinuationExpressionBuilder<T, U>;
         }
 
         private void Skip(int skipValue)
@@ -359,10 +338,10 @@ namespace HatTrick.DbEx.Sql.Builder
             return this as IValueListContinuationExpressionBuilder<T, U>;
         }
 
-        ITypeListContinuationBuilder<T, U> ITypeListSkipContinuationBuilder<T, U>.Limit(int limitValue)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListSkipContinuationExpressionBuilder<T, U>.Limit(int limitValue)
         {
             Limit(limitValue);
-            return this as ITypeListContinuationBuilder<T, U>;
+            return this as ITypeListContinuationExpressionBuilder<T, U>;
         }
 
         private void Limit(int limitValue)

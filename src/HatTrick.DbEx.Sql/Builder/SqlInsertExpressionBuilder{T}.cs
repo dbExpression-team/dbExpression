@@ -6,8 +6,7 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class SqlInsertExpressionBuilder<T> : SqlExpressionBuilder<T>, 
         IInsertExpressionBuilder<T>,
-        ITerminationExpressionBuilder, 
-        IExpressionBuilder<T>
+        ITerminationExpressionBuilder
         where T : class, IDbEntity
     {
         public SqlInsertExpressionBuilder(ExpressionSet expression) : base(expression)
@@ -17,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Builder
         ITerminationExpressionBuilder IInsertExpressionBuilder<T>.Into<U>(U entity)
         {
             Expression.BaseEntity = entity;
-            Expression &= entity.GetInclusiveInsertExpression((T)Expression.Instance);
+            Expression.Insert = (entity as IDbExpressionEntity<T>).BuildInclusiveInsertExpression((T)Expression.Instance);
             return this;
         }
     }

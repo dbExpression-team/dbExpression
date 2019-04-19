@@ -1,26 +1,33 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpressionSet : DbExpression, IDbExpressionSet<InsertExpression>, IDbExpressionAssemblyPart
+    public class InsertExpressionSet : 
+        IDbExpression, IDbExpressionSet<InsertExpression>, IAssemblyPart
     {
-        #region internals
+        #region interface
         public IList<InsertExpression> Expressions { get; } = new List<InsertExpression>();
         #endregion
 
         #region constructors
-        public InsertExpressionSet()
+        public InsertExpressionSet(params InsertExpression[] fields)
+        {
+            Expressions = fields.ToList();
+        }
+
+        internal InsertExpressionSet()
         {
         }
 
-        public InsertExpressionSet(InsertExpression a)
+        internal InsertExpressionSet(InsertExpression a)
         {
             Expressions.Add(a);
         }
 
-        public InsertExpressionSet(InsertExpression a, InsertExpression b)
+        internal InsertExpressionSet(InsertExpression a, InsertExpression b)
         {
             Expressions.Add(a);
             Expressions.Add(b);

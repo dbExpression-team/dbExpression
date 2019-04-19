@@ -1,4 +1,6 @@
-﻿using HatTrick.DbEx.MsSql.Extensions.Configuration;
+﻿using DataService;
+using DataService.Metadata;
+using HatTrick.DbEx.MsSql.Extensions.Configuration;
 using HatTrick.DbEx.MsSql.Test.Database;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Extensions.Configuration;
@@ -15,18 +17,35 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
             ResetDatabase();
         }
 
-        public override DbExpressionConfiguration ConfigureForMsSqlVersion(int version)
+        public override DatabaseConfiguration ConfigureForMsSqlVersion(int version)
         {
             switch (version)
             {
-                case 2014:
+                case 2012:
                     {
-                        DbExConfigurationBuilder.Configure(c =>
+                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
                             c.UseConnectionStringsFromAppConfig();
-                            c.UseMsSql2014();
+                            c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                db =>
+                                {
+                                    db.ConfigureAssembler(a => a.Minify = false);
+                                });
                         });
-                        return DbExConfigurationSettings.Settings;
+                        return DbExpression.Configuration.Databases["MsSqlDbExTest"];
+                    }
+                case 2014:
+                    {
+                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        {
+                            c.UseConnectionStringsFromAppConfig();
+                            c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                db =>
+                                {
+                                    db.ConfigureAssembler(a => a.Minify = false);
+                                });
+                        });
+                        return DbExpression.Configuration.Databases["MsSqlDbExTest"];
                     }
             }
             throw new NotImplementedException($"MsSql version {version} has not been implemented");

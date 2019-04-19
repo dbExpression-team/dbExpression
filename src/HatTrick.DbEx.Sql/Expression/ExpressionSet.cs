@@ -1,37 +1,34 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class ExpressionSet : IDbExpressionAssemblyPart
+    public partial class ExpressionSet : IAssemblyPart
     {
         #region interface
-        public object Instance { get; set; }
+        public IDbEntity Instance { get; set; }
 
         public EntityExpression BaseEntity { get; set; }
 
-        public ExecutionContext ExecutionContext { get; set; }
+        public SqlStatementExecutionType StatementExecutionType { get; set; }
 
         public int? SkipValue { get; set; }
 
         public int? LimitValue { get; set; }
 
-        public bool Distinct { get; set; }
+        public SelectExpressionSet Select { get; set; } = new SelectExpressionSet();
 
-        public int? Top { get; set; }
+        public InsertExpressionSet Insert { get; set; } = new InsertExpressionSet();
 
-        public SelectExpressionSet Select { get; set; }
+        public AssignmentExpressionSet Assign { get; set; } = new AssignmentExpressionSet();
 
-        public InsertExpressionSet Insert { get; set; }
+        public FilterExpressionSet Where { get; set; } = new FilterExpressionSet();
 
-        public AssignmentExpressionSet Assign { get; set; }
+        public JoinExpressionSet Joins { get; set; } = new JoinExpressionSet();
 
-        public FilterExpressionSet Where { get; set; }
+        public OrderByExpressionSet OrderBy { get; set; } = new OrderByExpressionSet();
 
-        public JoinExpressionSet Joins { get; set; }
-
-        public OrderByExpressionSet OrderBy { get; set; }
-
-        public GroupByExpressionSet GroupBy { get; set; }
+        public GroupByExpressionSet GroupBy { get; set; } = new GroupByExpressionSet();
 
         public HavingExpression Having { get; set; }
         #endregion

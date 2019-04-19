@@ -6,13 +6,19 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class OrderByExpressionSet : DbExpression, IDbExpressionSet<OrderByExpression>, IDbExpressionAssemblyPart
+    public class OrderByExpressionSet : 
+        IDbExpression, 
+        IDbExpressionSet<OrderByExpression>, IAssemblyPart
     {
-        #region internals
+        #region interface
         public IList<OrderByExpression> Expressions { get; }  = new List<OrderByExpression>();
         #endregion
 
         #region constructors
+        internal OrderByExpressionSet()
+        {
+        }
+
         internal OrderByExpressionSet(OrderByExpression a)
         {
             Expressions.Add(a);

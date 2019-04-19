@@ -9,36 +9,66 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class UpdateSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override SqlStatement AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides)
-        {
-            string update = Equals(expression.Assign, null) ? string.Empty : builder.AssemblePart<AssignmentExpressionSet>(expression.Assign, overrides);
-            string where = Equals(expression.Where, null) ? string.Empty : builder.AssemblePart<FilterExpressionSet>(expression.Where, overrides);
-            string joins = Equals(expression.Joins, null) ? string.Empty : builder.AssemblePart<JoinExpressionSet>(expression.Joins, overrides);
-            string ex = Assemble(expression, builder, overrides, update, expression.BaseEntity.ToString("[s].[e]"), where, joins);
-            return new SqlStatement(ex, builder.Parameters.Parameters, DbCommandType.SqlText);
-        }
-
-        protected virtual string Assemble(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerOverrides overrides, string update, string fromEntity, string where, string joins)
-        {
-            var appender = builder.CreateAppender();
-
-            appender
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        {            
+            builder.Appender
                 .Indent().Write("UPDATE").LineBreak()
-                .Indent().Write(fromEntity).LineBreak()
+                .Indentation++.Indent();
+
+            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+
+            builder.Appender
+                .Indentation--.LineBreak()
                 .Indent().Write("SET").LineBreak()
-                .Indentation++.Indent().Write(update).LineBreak()
-                .Indentation--.Indent().Write("FROM").LineBreak()
-                .Indentation++.Indent().Write(fromEntity).LineBreak()
-                .Indent().Write(joins).LineBreak()
-                .IfNotEmpty(where, a =>
-                    a.Indentation--.Indent().Write("WHERE").LineBreak()
-                        .Indentation++.Indent().Write(where).LineBreak()
-                        .Indentation--
+                .Indentation++;
+
+            for (var i = 0; i < expression.Assign.Expressions.Count; i++)
+            {
+                builder.Appender.Indent();
+                builder.AppendPart(expression.Assign.Expressions[i].Expression.LeftPart, context);
+                builder.Appender.Write(" = ");
+                builder.Appender.Write(
+                    builder.Parameters.Add(
+                        expression.Assign.Expressions[i].Expression.RightPart.Item2, 
+                        expression.Assign.Expressions[i].Expression.LeftPart.Item2 as FieldExpression
+                    ).Parameter.ParameterName
                 );
+                if (i < expression.Assign.Expressions.Count - 1)
+                    builder.Appender.Write(",").LineBreak();
+            }
 
-            return appender.ToString();
+            builder.Appender.LineBreak()
+                .Indentation--.Indent().Write("FROM").LineBreak()
+                .Indentation++.Indent();
 
-            //return $"{after("UPDATE")}{after(fromEntity)}{after("SET")}{after(update)}{after("FROM")}{after(fromEntity)}{joins}{where}";
+            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+
+            builder.Appender.Indentation--;
+
+            if (expression.Joins != null)
+            {
+                builder.Appender.Indentation++;
+                for (var i = 0; i < expression.Joins.Expressions.Count; i++)
+                {
+                    builder.Appender.Indent();
+                    builder.AppendPart<JoinExpression>(expression.Joins.Expressions[i], context);
+                    if (i < expression.Joins.Expressions.Count - 1)
+                        builder.Appender.LineBreak();
+                }
+                builder.Appender.Indentation--;
+            }
+            builder.Appender.LineBreak();
+
+            if (expression.Where != null)
+            {
+                 builder.Appender.Indent().Write("WHERE").LineBreak()
+                     .Indentation++.Indent();
+
+                 builder.AppendPart<FilterExpressionSet>(expression.Where, context);
+
+                 builder.Appender.LineBreak()
+                     .Indentation--;
+             }
         }
         #endregion
     }

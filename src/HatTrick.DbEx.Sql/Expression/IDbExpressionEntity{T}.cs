@@ -5,10 +5,13 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public interface IDbExpressionEntity<T>
     {
-        SelectExpressionSet GetInclusiveSelectExpression();
+        SelectExpressionSet BuildInclusiveSelectExpression();
 
-        InsertExpressionSet GetInclusiveInsertExpression(T entity);
+        InsertExpressionSet BuildInclusiveInsertExpression(T entity);
 
-        void FillObject(SqlStatementExecutionResultSet.Row data, T entity, IValueMapper mapper);
+        AssignmentExpressionSet BuildAssignmentExpression(T from, T to);
+
+        void HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper valueMapper);
+
     }
 }

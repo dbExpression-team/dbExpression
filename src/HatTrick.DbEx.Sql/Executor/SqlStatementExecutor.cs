@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public abstract class SqlStatementExecutor : ISqlStatementExecutor
+    public class SqlStatementExecutor : ISqlStatementExecutor
     {
         public virtual int ExecuteNonQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
         {
@@ -15,13 +14,13 @@ namespace HatTrick.DbEx.Sql.Executor
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-            cmd.CommandText = statement.ExecutionCommand;
+            cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (commandTimeout.HasValue)
             {
                 cmd.CommandTimeout = commandTimeout.Value;
             }
-            if (statement.Parameters != null) { cmd.Parameters.AddRange(statement.Parameters.ToArray()); }
+            if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
             try
             {
                 connection.EnsureOpenConnection();
@@ -48,8 +47,70 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual SqlStatementExecutionResultSet ExecuteQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
-            => throw new NotImplementedException($"{this.GetType().Name} does not implement ExecuteQuery.");
+        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        {
+            int @return = 0;
 
+            DbCommand cmd = connection.GetDbCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+            cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+            if (commandTimeout.HasValue)
+            {
+                cmd.CommandTimeout = commandTimeout.Value;
+            }
+            if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            try
+            {
+                await connection.EnsureOpenConnectionAsync().ConfigureAwait(false);
+                @return = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                if (!connection.IsTransactional) { connection.Disconnect(); }
+            }
+            catch
+            {
+                if (connection.IsTransactional)
+                {
+                    connection.RollbackTransaction();
+                }
+                else
+                {
+                    connection.Disconnect();
+                }
+                throw;
+            }
+            finally
+            {
+                if (cmd != null) { cmd.Dispose(); }
+            }
+
+            return @return;
+        }
+
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        {
+            DbCommand cmd = connection.GetDbCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+            cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+            if (statement.Parameters != null && statement.Parameters.Any())
+                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            connection.EnsureOpenConnection();
+            return new DataReaderWrapper(connection, cmd.ExecuteReader());
+        }
+
+        public virtual async Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        {
+            DbCommand cmd = connection.GetDbCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+            cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+            cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+            if (statement.Parameters != null && statement.Parameters.Any())
+                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            await connection.EnsureOpenConnectionAsync();
+            return new DataReaderWrapper(connection, await cmd.ExecuteReaderAsync().ConfigureAwait(false));
+        }
     }
 }

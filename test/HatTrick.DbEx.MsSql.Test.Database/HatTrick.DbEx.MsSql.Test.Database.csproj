@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,6 +46,7 @@
     <Reference Include="FluentAssertions, Version=5.4.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.5.4.2\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.SqlServer.BatchParserClient">
       <HintPath>C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Tasks\Microsoft.SqlServer.BatchParserClient.dll</HintPath>
     </Reference>
@@ -89,8 +91,15 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Executor\ExecutorTestBase.cs" />
-    <Compile Include="Executor\SelectAllPersonTests.cs" />
-    <Compile Include="Executor\UpdatePersonTests.cs" />
+    <Compile Include="Executor\_Insert\Insert.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAll.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAll.Functions.Interactions.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.GroupBy.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Where.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAllTests.Where.cs" />
+    <Compile Include="Executor\_Update\Update.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Seeder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -110,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Subquery.cs" />
+    <Compile Include="Executor\_SelectAll\SelectAll.Functions.cs" />
     <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>

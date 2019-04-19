@@ -1,23 +1,25 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AssignmentExpression : DbExpression
+    public class AssignmentExpression : 
+        IDbExpression, 
+        IAssemblyPart
     {
         #region interface
-        public (Type,object) Expression { get; private set; }
-        public (Type, object) Value => ((DbExpressionPair)Expression.Item2).RightPart;
+        public DbExpressionPair Expression { get; private set; }
         #endregion
 
         #region constructors
         internal AssignmentExpression(FieldExpression field, object value)
         {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), field), (value.GetType(), value)));
+            Expression = new DbExpressionPair((typeof(FieldExpression), field), (value.GetType(), value));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{Expression.Item2} = {Value.Item2}";
+        public override string ToString() => $"{Expression.LeftPart} = {Expression.RightPart}";
         #endregion
         
         #region logical & operator

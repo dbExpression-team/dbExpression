@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IUpdateFromExpressionBuilder,
         IUpdateContinuationExpressionBuilder,
         ITerminationExpressionBuilder,
-        IExpressionProvider
+        IDbExpressionSetProvider
     {
         public ExpressionSet Expression { get; set; } = new ExpressionSet();
 
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression;
         }
 
-        ExpressionSet IExpressionProvider.GetExpression() => Expression;
+        ExpressionSet IDbExpressionSetProvider.Expression => Expression;
 
         #region Delete
         IDeleteContinuationExpressionBuilder IDeleteFromExpressionBuilder.From(EntityExpression entity)
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<U>(FilterExpressionSet expression) where U : class, IExpressionBuilder
         {
-            if (Expression.Where == null)
+            if (Expression.Where?.Expression == null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<T, U>(FilterExpressionSet expression) where U : class, IExpressionBuilder<T>
         {
-            if (Expression.Where == null)
+            if (Expression.Where?.Expression == null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;
@@ -149,7 +149,7 @@ namespace HatTrick.DbEx.Sql.Builder
         protected IJoinExpressionBuilder<T, TBuilder> Join<T, TBuilder>(ISubqueryTerminationExpressionBuilder subquery, JoinOperationExpressionOperator joinType)
             where TBuilder : class, IExpressionBuilder<T>
         {
-            return new JoinExpressionBuilder<T, TBuilder>(Expression, (subquery as IExpressionProvider).GetExpression(), joinType, this as TBuilder);
+            return new JoinExpressionBuilder<T, TBuilder>(Expression, (subquery as IDbExpressionSetProvider).Expression, joinType, this as TBuilder);
         }
     }
 }

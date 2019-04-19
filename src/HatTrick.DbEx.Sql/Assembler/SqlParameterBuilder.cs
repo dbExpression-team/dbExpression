@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public abstract class SqlParameterBuilder : ISqlParameterBuilder
     {
-        public IList<DbParameter> Parameters { get; set; }
+        public IList<ParameterizedFieldExpression> Parameters { get; set; } = new List<ParameterizedFieldExpression>();
 
-        protected SqlParameterBuilder(IList<DbParameter> parameters)
+        protected SqlParameterBuilder()
         {
-            Parameters = parameters;
-        }
-
-        protected virtual void AddParameter(DbParameter parameter)
-        {
-            Parameters.Add(parameter);
         }
 
         #region abstract methods
-        public virtual DbParameter Add(object value) => Add(value, value.GetType(), null);
-        public virtual DbParameter Add(object value, Type valueType) => Add(value, valueType, null);
-        public abstract DbParameter Add(object value, Type valueType, int? size);
+        public abstract DbParameter Add<T>(object value)
+            where T : IComparable;
+        public abstract ParameterizedFieldExpression Add(object value, FieldExpression expression);
+        public abstract DbParameter Add(object value, Type valueType);
+        public abstract ParameterizedFieldExpression AddOutput(FieldExpression expression);
         #endregion
     }
 }

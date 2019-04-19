@@ -2,6 +2,6 @@
 {
     public class AssemblerOverrides
     {
-        public EntityExpressionOverride EntityAliases { get; set; } = new EntityExpressionOverride();
+        public EntityAliasDiscovery EntityAliases { get; set; }
     }
 }

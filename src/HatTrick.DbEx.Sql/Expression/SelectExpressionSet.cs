@@ -1,29 +1,72 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class SelectExpressionSet : DbExpression, IDbExpressionSet<SelectExpression>, IDbExpressionAssemblyPart
+    public class SelectExpressionSet : 
+        IDbExpression,
+        IDbExpressionIsDistinctProvider,
+        IDbExpressionIsTopProvider
     {
         #region internals
-        public IList<SelectExpression> Expressions { get; } = new List<SelectExpression>();
+        protected bool _isDistinct;
+        protected int? _top;
+        #endregion
+
+        #region interface
+        public IList<(Type, object)> Expressions { get; } = new List<(Type, object)>();
+        bool IDbExpressionIsDistinctProvider.IsDistinct => _isDistinct;
+        int? IDbExpressionIsTopProvider.Top => _top;
         #endregion
 
         #region constructor
+        public SelectExpressionSet(params FieldExpression[] fields)
+        {
+            Expressions = fields.Select(f => (f.GetType(), (object)f)).ToList();
+        }
+
         internal SelectExpressionSet()
         {
         }
 
         internal SelectExpressionSet(SelectExpression a)
         {
-            Expressions.Add(a);
+            Expressions.Add((a.GetType(), a));
+        }
+
+        internal SelectExpressionSet(SelectExpressionSet a)
+        {
+            Expressions = a.Expressions;
         }
 
         internal SelectExpressionSet(SelectExpression a, SelectExpression b)
         {
-            Expressions.Add(a);
-            Expressions.Add(b);
+            Expressions.Add((a.GetType(), a));
+            Expressions.Add((b.GetType(), b));
+        }
+
+        internal SelectExpressionSet(FieldExpression a, FieldExpression b)
+        {
+            Expressions.Add((a.GetType(), a));
+            Expressions.Add((b.GetType(), b));
+        }
+        #endregion
+
+        #region distinct
+        public SelectExpressionSet Distinct(bool distinct = true)
+        {
+            _isDistinct = distinct & true;
+            return this;
+        }
+        #endregion
+
+        #region top
+        public SelectExpressionSet Top(int? count)
+        {
+            _top = count;
+            return this;
         }
         #endregion
 
@@ -40,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else
             {
-                aSet.Expressions.Add(b);
+                aSet.Expressions.Add((b.GetType(), b));
             }
             return aSet;
         }

@@ -5,19 +5,26 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class JoinExpressionSet : DbExpression, IDbExpressionSet<JoinExpression>, IDbExpressionAssemblyPart
+    public class JoinExpressionSet : 
+        IDbExpression, 
+        IDbExpressionSet<JoinExpression>, 
+        IAssemblyPart
     {
-        #region internals
+        #region interface
         public IList<JoinExpression> Expressions { get; }  = new List<JoinExpression>();
         #endregion
 
         #region constructors
-        public JoinExpressionSet(JoinExpression a)
+        internal JoinExpressionSet()
+        {
+        }
+
+        internal JoinExpressionSet(JoinExpression a)
         {
             Expressions.Add(a);
         }
 
-        public JoinExpressionSet(JoinExpression a, JoinExpression b)
+        internal JoinExpressionSet(JoinExpression a, JoinExpression b)
         {
             Expressions.Add(a);
             Expressions.Add(b);

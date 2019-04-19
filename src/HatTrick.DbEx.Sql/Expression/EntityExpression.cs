@@ -1,111 +1,105 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Utility;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public abstract class EntityExpression : DbExpression, IDbExpressionAssemblyPart
-    {
+    public abstract class EntityExpression : 
+        IDbExpression, 
+        IAssemblyPart, 
+        IDbExpressionMetadataProvider<ISqlEntityMetadata>,
+        IDbExpressionProvider<SchemaExpression>,
+        IDbExpressionListProvider<FieldExpression>,
+        IDbExpressionAliasProvider,
+        IEquatable<EntityExpression>
+   {
+        #region internals
+        protected SchemaExpression Schema { get; }
+        protected ISqlEntityMetadata Metadata { get; }
+        protected IDictionary<string, Lazy<FieldExpression>> Fields { get; } = new Dictionary<string, Lazy<FieldExpression>>();
+        protected string Alias { get; }
+        #endregion
+
         #region interface
-        public virtual SchemaExpression Schema { get; private set; }
-
-        public virtual string EntityName { get; private set; }
-
-        public virtual string AliasName { get; set; }
-
-        public bool IsAliased => !string.IsNullOrWhiteSpace(AliasName);
-
-        public bool IsCorrelated { get; protected set; }
+        SchemaExpression IDbExpressionProvider<SchemaExpression>.Expression => Schema;
+        IList<FieldExpression> IDbExpressionListProvider<FieldExpression>.Expressions => Fields.Values.Select(v => v.Value).ToList();
+        ISqlEntityMetadata IDbExpressionMetadataProvider<ISqlEntityMetadata>.Metadata => Metadata;
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected EntityExpression(SchemaExpression schema, string name)
+        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, string alias)
         {
             Schema = schema;
-            EntityName = name;
-        }
-
-        protected EntityExpression(SchemaExpression schema, string name, string alias) : this(schema, name)
-        {
-            AliasName = alias;
-        }
-        #endregion
-
-        #region copy
-        public void CopyTo(EntityExpression destination)
-        {
-            destination.Schema = Schema;
-            destination.EntityName = EntityName;
-            destination.AliasName = AliasName;
-            destination.IsCorrelated = IsCorrelated;
+            Metadata = metadata;
+            Alias = alias;
         }
         #endregion
 
         #region to string
-        public override string ToString() => this.IsCorrelated ? this.AliasName : this.ToString("[s].[e]");
+        public override string ToString() => this.ToString("[s].[e]");
 
         public string ToString(string format, bool ignoreAlias = false)
         {
-            if (this.IsCorrelated) { throw new InvalidOperationException("Correlated entities cannot be converted to string with a formatter."); }
-
             string val = null;
             switch (format)
             {
                 case "e":
-                    val = this.EntityName;
+                    val = Metadata.Name;
                     break;
                 case "s.e":
-                    val = $"{this.Schema.ToString("s")}.{this.EntityName}";
+                    val = $"{Metadata.Schema.Name}.{Metadata.Name}";
                     break;
                 case "[e]":
-                    val = $"[{this.EntityName}]";
+                    val = $"[{Metadata.Name}]";
                     break;
                 case "[s.e]":
-                    val = $"[{this.Schema.ToString("s")}.{this.EntityName}]";
+                    val = $"[{Metadata.Schema.Name}.{Metadata.Name}]";
                     break;
                 case "[s].[e]":
-                    val = $"{this.Schema.ToString("[s]")}.[{this.EntityName}]";
+                    val = $"{Metadata.Schema.Name}.[{Metadata.Name}]";
                     break;
                 default:
                     throw new ArgumentException("encountered unknown format string");
             }
 
-            if (!ignoreAlias && this.IsAliased)
+            if (!ignoreAlias && !string.IsNullOrWhiteSpace(Alias))
             {
-                val += $" AS {this.AliasName}";
+                val += $" AS {Alias}";
             }
 
             return val;
         }
         #endregion
 
-        public override bool Equals(object obj)
+        public bool Equals(EntityExpression obj)
         {
-            if (obj == null)
-                return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.Metadata != this.Metadata) return false;
+            if (obj.Alias != this.Alias) return false;
 
-            var entity = obj as EntityExpression;
-            if (entity == null)
-                return false;
-
-            if (string.Compare(entity.EntityName, this.EntityName, true) != 0)
-                return false;
-
-            if (string.Compare(entity.AliasName, this.AliasName, true) != 0)
-                return false;
-
-            if (entity.Schema != this.Schema)
-                return false;
-
-            return base.Equals(obj);
+            return true;
         }
+
+        public override bool Equals(object obj)
+            => Equals(obj as EntityExpression);
 
         public override int GetHashCode()
+            => base.GetHashCode();
+
+        public static bool operator ==(EntityExpression obj1, EntityExpression obj2)
         {
-            return base.GetHashCode();
+            if (ReferenceEquals(null, obj1) && !ReferenceEquals(null, obj2)) return false;
+            return obj1.Equals(obj2);
         }
 
-        public abstract SelectExpressionSet GetInclusiveSelectExpression();
+        public static bool operator !=(EntityExpression obj1, EntityExpression obj2)
+            => !(obj1 == obj2);
+
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression();
     }
 }
