@@ -15,8 +15,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         #region abstract methods
-        public abstract DbParameter Add<T>(object value)
-            where T : IComparable;
+        public abstract DbParameter Add<T>(object value);//where T : IComparable;
         public abstract ParameterizedFieldExpression Add(object value, FieldExpression expression);
         public abstract DbParameter Add(object value, Type valueType);
         public abstract ParameterizedFieldExpression AddOutput(FieldExpression expression);

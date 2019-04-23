@@ -42,6 +42,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly LiteralAppender _literalAppender = new LiteralAppender();
         private static readonly StringAppender _stringAppender = new StringAppender();
         private static readonly ByteAppender _byteAppender = new ByteAppender();
+        private static readonly ByteArrayAppender _byteArrayAppender = new ByteArrayAppender();
         private static readonly Int16Appender _int16Appender = new Int16Appender();
         private static readonly Int32Appender _int32Appender = new Int32Appender();
         private static readonly Int64Appender _int64Appender = new Int64Appender();
@@ -195,6 +196,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             PartAppenders.Add(typeof(LiteralExpression), () => _literalAppender);
             PartAppenders.Add(typeof(string), () => _stringAppender);
             PartAppenders.Add(typeof(byte), () => _byteAppender);
+            PartAppenders.Add(typeof(byte[]), () => _byteArrayAppender);
             PartAppenders.Add(typeof(short), () => _int16Appender);
             PartAppenders.Add(typeof(int), () => _int32Appender);
             PartAppenders.Add(typeof(long), () => _int64Appender);

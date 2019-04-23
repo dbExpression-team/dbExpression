@@ -8,8 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public interface ISqlParameterBuilder
     {
         IList<ParameterizedFieldExpression> Parameters { get; }
-        DbParameter Add<T>(object value)
-            where T : IComparable;
+        DbParameter Add<T>(object value);//where T : IComparable;
         DbParameter Add(object value, Type valueType);
         ParameterizedFieldExpression Add(object value, FieldExpression expression);
 
