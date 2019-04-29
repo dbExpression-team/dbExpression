@@ -23,9 +23,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<Person>()
+                var exp = db.SelectAll(dbo.Person.Id, sec.Person.Id)
                     .From(dbo.Person)
                     .InnerJoin(sec.Person).On(dbo.Person.Id == sec.Person.Id);
+
+                //when               
+                var persons = exp.Execute();
+
+                //then
+                persons.Should().HaveCount(expectedCount);
+            }
+
+            [Theory]
+            [InlineData(2012, 0)]
+            [InlineData(2014, 0)]
+            public void Are_there_no_records_for_persons_when_inner_joining_to_sec_schema_when_reversing_join_condition(int version, int expectedCount)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectAll(dbo.Person.Id, sec.Person.Id)
+                    .From(dbo.Person)
+                    .InnerJoin(sec.Person).On(sec.Person.Id == dbo.Person.Id);
 
                 //when               
                 var persons = exp.Execute();
