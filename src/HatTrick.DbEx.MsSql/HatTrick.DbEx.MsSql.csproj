@@ -49,13 +49,13 @@
     <Compile Include="Assembler\StringValueTypeFormatter.cs" />
     <Compile Include="Assembler\v2012\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlStatementBuilderFactory.cs" />
-    <Compile Include="Assembler\v2014\SelectAllMsSqlAssembler.cs" />
+    <Compile Include="Assembler\v2014\MsSqlExpressionSetAppender.cs" />
     <Compile Include="Extensions\Configuration\DatabaseConfigurationBuilderExtensions.cs" />
     <Compile Include="MsSqlDatabaseMetadata.cs" />
     <Compile Include="MsSqlFieldMetadata.cs" />
     <Compile Include="Extensions\Configuration\DbExpressionConfigurationExtensions.cs" />
     <Compile Include="Connection\MsSqlConnection.cs" />
-    <Compile Include="Assembler\v2012\SelectAllMsSqlAssembler.cs" />
+    <Compile Include="Assembler\v2012\MsSqlExpressionSetAppender.cs" />
     <Compile Include="Builder\MsSqlExpressionBuilder{T,U,V}.cs" />
     <Compile Include="Builder\MsSqlExpressionBuilder{T,U}.cs" />
     <Compile Include="Builder\MsSqlExpressionBuilder{T}.cs" />

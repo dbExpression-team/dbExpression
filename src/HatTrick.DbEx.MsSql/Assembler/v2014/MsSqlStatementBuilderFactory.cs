@@ -5,13 +5,19 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2014
 {
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
+        private static readonly ExpressionSetAppender _expressionSetAppender = new MsSqlExpressionSetAppender();
+
         #region methods
-        public override void RegisterDefaultAssemblers()
+        public override void RegisterDefaultPartAppenders()
         {
-            base.RegisterDefaultAssemblers();
-            base.RegisterAssembler(SqlStatementExecutionType.SelectAllType, new SelectAllMsSqlAssembler());
-            base.RegisterAssembler(SqlStatementExecutionType.SelectAllDynamic, new SelectAllMsSqlAssembler());
-            base.RegisterAssembler(SqlStatementExecutionType.SelectAllValue, new SelectAllMsSqlAssembler());
+            base.RegisterDefaultPartAppenders();
+            base.RegisterPartAppender(_expressionSetAppender);
+        }
+
+        public override void RegisterDefaultAliasProviders()
+        {
+            base.RegisterDefaultAliasProviders();
+            base.RegisterAliasProvider(_expressionSetAppender);
         }
 
         public override void RegisterDefaultValueFormatters()

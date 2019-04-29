@@ -104,16 +104,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             provider.DiscoverAliases(expression, this, currentLevel, config, DiscoveredAliases);
         }
 
-        public void AppendPart<T>(object part)
-          where T : IAssemblyPart => AppendPart<T>(part, new AssemblerContext());
-
         public void AppendPart((Type, object) part, AssemblerContext context)
         {
-            if (part.Item2 is ExpressionSet set)
-            {
-                AssemblerResolver(set.StatementExecutionType).AssembleStatement(set, this, context);
-                return;
-            }
             var assembler = ResolvePartAppender(part.Item1);
             assembler.AppendPart(part.Item2, this, context);
         }
@@ -121,11 +113,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart<T>(object part, AssemblerContext context)
             where T : IAssemblyPart
         {
-            if (part is ExpressionSet set)
-            {
-                AssemblerResolver(set.StatementExecutionType).AssembleStatement(set, this, context);
-                return;
-            }
             var assembler = ResolvePartAppender(typeof(T));
             assembler.AppendPart(part, this, context);
         }
