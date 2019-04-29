@@ -3,7 +3,7 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2014
 {
-    public class SelectAllMsSqlAssembler : SelectAllSqlStatementAssembler
+    public class MsSqlExpressionSetAppender : ExpressionSetAppender
     {
         public override void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {

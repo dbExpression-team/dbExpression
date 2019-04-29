@@ -11,10 +11,10 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region internals
         private static readonly SelectSqlStatementAssembler _selectSqlStatementAssembler = new SelectSqlStatementAssembler();
-        private static readonly SelectAllSqlStatementAssembler _selectAllSqlStatementAssembler = new SelectAllSqlStatementAssembler();
         private static readonly InsertSqlStatementAssembler _insertSqlStatementAssembler = new InsertSqlStatementAssembler();
         private static readonly UpdateSqlStatementAssembler _updateSqlStatementAssembler = new UpdateSqlStatementAssembler();
         private static readonly DeleteSqlStatementAssembler _deleteSqlStatementAssembler = new DeleteSqlStatementAssembler();
+        private static readonly ExpressionSetAppender _expressionSetAppender = new ExpressionSetAppender();
         private static readonly SchemaAppender _schemaAppender = new SchemaAppender();
         private static readonly EntityAppender _entityAppender = new EntityAppender();
         private static readonly FieldAppender _fieldAppender = new FieldAppender();
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public virtual void RegisterDefaultPartAppenders()
         {
-            PartAppenders.Add(typeof(ExpressionSet), () => _selectSqlStatementAssembler);
+            PartAppenders.Add(typeof(ExpressionSet), () => _expressionSetAppender);
             PartAppenders.Add(typeof(SchemaExpression), () => _schemaAppender);
             PartAppenders.Add(typeof(EntityExpression), () => _entityAppender);
             PartAppenders.Add(typeof(FieldExpression), () => _fieldAppender);
@@ -223,9 +223,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             Assemblers.Add(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            Assemblers.Add(SqlStatementExecutionType.SelectAllType, () => _selectAllSqlStatementAssembler);
-            Assemblers.Add(SqlStatementExecutionType.SelectAllDynamic, () => _selectAllSqlStatementAssembler);
-            Assemblers.Add(SqlStatementExecutionType.SelectAllValue, () => _selectAllSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectAllType, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectAllDynamic, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectAllValue, () => _selectSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
@@ -273,7 +273,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public virtual void RegisterDefaultAliasProviders()
         {
-            AliasProviders.Add(typeof(ExpressionSet), () => _selectSqlStatementAssembler);
+            AliasProviders.Add(typeof(ExpressionSet), () => _expressionSetAppender);
             AliasProviders.Add(typeof(JoinExpression), () => _joinClauseAppender);
         }
 

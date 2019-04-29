@@ -5,7 +5,7 @@ using HatTrick.DbEx.Sql.Extensions.Assembler;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2012
 {
-    public class SelectAllMsSqlAssembler : SelectAllSqlStatementAssembler
+    public class MsSqlExpressionSetAppender : ExpressionSetAppender
     {
         public override void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
         {
