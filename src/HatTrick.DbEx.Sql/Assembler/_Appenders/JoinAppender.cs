@@ -22,6 +22,21 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void DiscoverAliases(JoinExpression expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
         {
+            //if the join condition joins to a table with the same name but in different schemas, generate alias
+            var leftEntity = (expression.JoinOnExpression.LeftPart.Item2 as IDbExpressionMetadataProvider<ISqlFieldMetadata>)?.Metadata?.Entity;
+            var joinTooEntity = expression.JoinToo.Item2 as EntityExpression;
+            if (joinTooEntity != null && leftEntity != null)
+            {
+                var joinTooEntityMetadata = joinTooEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
+                if (string.Compare(leftEntity.Name, joinTooEntityMetadata.Metadata.Name, true) == 0)
+                {
+                    if (string.Compare(leftEntity.Name, joinTooEntityMetadata.Metadata.Schema.Name, true) != 0)
+                    {
+                        discoveredAliases.SetAlias(currentLevel, new EntityAlias(joinTooEntity, (joinTooEntity as IDbExpressionAliasProvider).Alias ?? builder.GenerateAlias()));
+                    }
+                }
+            }
+
             if (!(expression.JoinToo.Item2 is ExpressionSet joinExpression))
                 return;
 
@@ -79,6 +94,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write(expression.JoinType.ToString());
             builder.Appender.Write(" JOIN ");
             builder.AppendPart(expression.JoinToo, context);
+            var alias = expression.JoinToo.Item2 is EntityExpression entity ? context.ResolveEntityAlias(entity) : null;
+            if (!string.IsNullOrWhiteSpace(alias))
+            {
+                builder.Appender.Write(" AS ");
+                builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
+                builder.Appender.Write(alias);
+                builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
+            }
             if (expression.JoinType == JoinOperationExpressionOperator.CROSS)
                 return;
             builder.Appender.Write(" ON ");
