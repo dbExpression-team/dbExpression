@@ -1,7 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Extensions;
-using HatTrick.DbEx.Sql.Extensions.Assembler;
+﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +6,12 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class ExpressionSetAppender :
-        IAssemblyPartAppender<ExpressionSet>,
-        IAssemblyPartAliasProvider<ExpressionSet>
+        IAssemblyPartAppender<ExpressionSet>
     {
-        public virtual void DiscoverAliases(object expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
-            => DiscoverAliases(expression as ExpressionSet, builder, currentLevel, config, discoveredAliases);
-
-        public virtual void DiscoverAliases(ExpressionSet expression, ISqlStatementBuilder builder, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
-        {
-            if (expression.Joins?.Expressions == null || !expression.Joins.Expressions.Any())
-                return;
-
-            foreach (var join in expression.Joins.Expressions)
-                builder.DiscoverAliases(join, currentLevel, config, discoveredAliases);
-        }
-
-        public void AppendPart(object part, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object part, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(part as ExpressionSet, builder, context);
 
-        public virtual void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public virtual void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             AppendSelectClause(expression, builder, context);
             AppendFromClause(expression, builder, context);
@@ -38,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             AppendOrderByClause(expression, builder, context);
         }
 
-        protected virtual void AppendSelectClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendSelectClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender
                 .Indent().Write("SELECT");
@@ -46,18 +30,20 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression.Select is IDbExpressionIsTopProvider t && t.Top.HasValue)
                 builder.Appender.Write(" TOP(").Write(t.Top.ToString()).Write(")");
 
-            if ((expression.Select as IDbExpressionIsDistinctProvider).IsDistinct)
+            if (expression.Select is IDbExpressionIsDistinctProvider d && d.IsDistinct)
                 builder.Appender.Write(" DISTINCT");
 
             builder.Appender.LineBreak()
                 .Indentation++;
 
+            context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Declaration);
             AppendSelectList(expression.Select.Expressions, builder, context);
+            context.PopAppendStyles();
 
             builder.Appender.Indentation--;
         }
 
-        protected virtual void AppendSelectList(IList<(Type, object)> expressions, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendSelectList(IList<(Type, object)> expressions, ISqlStatementBuilder builder, AssemblyContext context)
         {
             for (var i = 0; i < expressions.Count; i++)
             {
@@ -65,7 +51,17 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart(expressions[i], context);
+                //if the expression is a "child" of an entity and the entity is aliased, the expression will be have a declaration somewhere else, override and tell the appender to use an alias append style 
+                if (!string.IsNullOrWhiteSpace(((expressions[i].Item2 as IDbExpressionProvider<EntityExpression>)?.Expression as IDbExpressionAliasProvider)?.Alias))
+                {
+                    context.PushAppendStyle(FieldExpressionAppendStyle.Alias);
+                    builder.AppendPart(expressions[i], context);
+                    context.PopAppendStyles();
+                }
+                else
+                {
+                    builder.AppendPart(expressions[i], context);
+                }
 
                 if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expressions.Count - 1)
                     builder.Appender.Write(",");
@@ -74,7 +70,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
         }
 
-        protected virtual void AppendFromClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendFromClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Indent().Write("FROM").LineBreak();
 
@@ -82,23 +78,16 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation++
                 .Indent();
 
-            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
-
-            var alias = context.ResolveEntityAlias(expression.BaseEntity, context.CurrentDepth + 1);
-            if (!string.IsNullOrWhiteSpace(alias))
-            {
-                builder.Appender.Write(" AS ")
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(alias)
-                    .Write(context.Configuration.IdentifierDelimiter.End);
-            }
+            context.PushAppendStyle(EntityExpressionAppendStyle.Declaration);
+            builder.AppendPart(expression.BaseEntity, context);
+            context.PopAppendStyles();
 
             builder.Appender
                 .Indentation--
                 .LineBreak();
         }
 
-        protected virtual void AppendJoinClauses(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendJoinClauses(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Joins?.Expressions == null || !expression.Joins.Expressions.Any())
                 return;
@@ -108,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             foreach (var join in expression.Joins.Expressions)
             {
-                builder.AppendPart<JoinExpression>(join, context);
+                builder.AppendPart(join, context);
                 builder.Appender.LineBreak();
             }
 
@@ -116,7 +105,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Where?.Expression == null || expression.Where.Expression == default)
                 return;
@@ -124,13 +113,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write("WHERE").LineBreak()
                 .Indentation++;
 
-            builder.AppendPart<FilterExpressionSet>(expression.Where, context);
+            builder.AppendPart(expression.Where, context);
 
             builder.Appender.LineBreak()
                 .Indentation--;
         }
 
-        protected virtual void AppendGroupByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendGroupByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.GroupBy?.Expressions == null || !expression.GroupBy.Expressions.Any())
                 return;
@@ -145,7 +134,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart<GroupByExpression>(expression.GroupBy.Expressions[i], context);
+                builder.AppendPart(expression.GroupBy.Expressions[i], context);
 
                 if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.GroupBy.Expressions.Count - 1)
                     builder.Appender.Write(",");
@@ -157,7 +146,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendHavingClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendHavingClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Having?.Expression == null || expression.Having.Expression == default)
                 return;
@@ -165,13 +154,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write("HAVING").LineBreak()
                 .Indentation++;
 
-            builder.AppendPart<HavingExpression>(expression.Having, context);
+            builder.AppendPart(expression.Having, context);
 
             builder.Appender.LineBreak()
                 .Indentation--;
         }
 
-        protected virtual void AppendOrderByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendOrderByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.OrderBy?.Expressions == null || !expression.OrderBy.Expressions.Any())
                 return;
@@ -185,7 +174,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendOrderByList(IList<OrderByExpression> expressions, ISqlStatementBuilder builder, AssemblerContext context)
+        protected virtual void AppendOrderByList(IList<OrderByExpression> expressions, ISqlStatementBuilder builder, AssemblyContext context)
         {
             for (var i = 0; i < expressions.Count; i++)
             {
@@ -194,7 +183,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart<OrderByExpression>(expressions[i], context);
+                builder.AppendPart(expressions[i], context);
 
                 if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expressions.Count - 1)
                     builder.Appender.Write(",");

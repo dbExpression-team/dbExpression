@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public abstract class SqlStatementAssembler : ISqlStatementAssembler
     {
         #region methods
-        public abstract void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context);
+        public abstract void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context);
         #endregion
     }
 }

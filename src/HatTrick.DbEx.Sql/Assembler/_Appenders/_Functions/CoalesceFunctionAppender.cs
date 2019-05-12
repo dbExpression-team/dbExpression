@@ -10,10 +10,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<CoalesceFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as CoalesceFunctionExpression, builder, context);
 
-        public void AppendPart(CoalesceFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(CoalesceFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("COALESCE(");
             for (var i = 0; i < expression.Expressions.Count; i++)

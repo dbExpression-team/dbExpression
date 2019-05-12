@@ -7,10 +7,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<PopulationVarianceFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as PopulationVarianceFunctionExpression, builder, context);
 
-        public void AppendPart(PopulationVarianceFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(PopulationVarianceFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("VARP(");
 

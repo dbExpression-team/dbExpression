@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression is FilterExpressionSet set)
             {
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             AppendPart(expression as FilterExpression, builder, context);
         }
 
-        public void AppendPart(FilterExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(FilterExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression == null || expression.Expression == null)
                 return;
@@ -56,8 +56,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write(")");
         }
 
-        public void AppendPart(FilterExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {           
+            context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
             if (expression.Expression.RightPart.Item2 == DBNull.Value)
             {
                 builder.AppendPart(expression.Expression.LeftPart, context);
@@ -95,21 +96,15 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             else
             {
-                if (expression.Expression.LeftPart.Item2 is FieldExpression field)
-                {
-                    context.CurrentField = new AssemblerContext.CurrentFieldContext(field);
-                    builder.AppendPart(expression.Expression.RightPart, context);
-                    context.CurrentField = null;
-                }
-                else
-                {
-                    builder.AppendPart(expression.Expression.RightPart, context);
-                }
+                context.Field = expression.Expression.LeftPart.Item2 as FieldExpression;
+                builder.AppendPart(expression.Expression.RightPart, context);
+                context.Field = null;
             }
             if (expression.Negate)
             {
                 builder.Appender.Write(")");
             }
+            context.PopAppendStyles();
         }
         #endregion
     }

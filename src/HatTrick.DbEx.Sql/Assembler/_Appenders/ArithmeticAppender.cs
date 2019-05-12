@@ -11,10 +11,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static IDictionary<ArithmeticExpressionOperator, string> _arithmeticOperatorMap;
         private static IDictionary<ArithmeticExpressionOperator, string> ArithmeticOperatorMap => _arithmeticOperatorMap ?? (_arithmeticOperatorMap = typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators());
 
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as ArithmeticExpression, builder, context);
 
-        public void AppendPart(ArithmeticExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(ArithmeticExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.AppendPart(expression.LeftPart, context);
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);

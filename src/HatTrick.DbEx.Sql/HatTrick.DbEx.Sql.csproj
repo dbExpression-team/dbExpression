@@ -46,16 +46,12 @@
   <ItemGroup>
     <Compile Include="Assembler\Appender.cs" />
     <Compile Include="Assembler\AppenderFactory.cs" />
-    <Compile Include="Assembler\AssemblerContext.cs" />
-    <Compile Include="Assembler\AssemblerOverrides.cs" />
-    <Compile Include="Assembler\EntityAlias.cs" />
-    <Compile Include="Assembler\EntityAliasDiscovery.cs" />
+    <Compile Include="Assembler\AssemblyContext.cs" />
+    <Compile Include="Assembler\EntityExpressionAppendStyle.cs" />
+    <Compile Include="Assembler\FieldExpressionAppendStyle.cs" />
     <Compile Include="Assembler\IAppenderFactory.cs" />
-    <Compile Include="Assembler\IAssemblyPartAliasProvider.cs" />
-    <Compile Include="Assembler\IAssemblyPartAliasProvider{T}.cs" />
     <Compile Include="Assembler\ISqlStatementAssemblerFactory.cs" />
     <Compile Include="Assembler\ISqlStatementBuilderFactory.cs" />
-    <Compile Include="Assembler\OverrideScope.cs" />
     <Compile Include="Assembler\ParameterizedFieldExpression.cs" />
     <Compile Include="Assembler\SqlStatementBuilder.cs" />
     <Compile Include="Assembler\ISqlStatementAssembler.cs" />
@@ -212,7 +208,6 @@
     <Compile Include="SqlFieldMetadata.cs" />
     <Compile Include="IDbExpressionMetadata.cs" />
     <Compile Include="IDbExpressionMetadataProvider{T}.cs" />
-    <Compile Include="Extensions\Assembler\Dictionary{int_EntityAliasDiscovery}Extensions.cs" />
     <Compile Include="Extensions\Builder\SqlExpressionBuilderExtensions.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U,V}.cs" />
     <Compile Include="Builder\SqlExpressionBuilder{T,U}.cs" />
@@ -259,7 +254,6 @@
     <Compile Include="Executor\ISqlStatementExecutorFactory.cs" />
     <Compile Include="Connection\SqlConnectionFactory.cs" />
     <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
-    <Compile Include="Extensions\Assembler\AssemblerContextExtensions.cs" />
     <Compile Include="Extensions\Configuration\DbExpressionConfigurationBuilderExtensions.cs" />
     <Compile Include="ISqlFieldMetadata.cs" />
     <Compile Include="Mapper\EntityFactory.cs" />

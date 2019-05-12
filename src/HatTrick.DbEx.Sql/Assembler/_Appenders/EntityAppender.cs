@@ -1,25 +1,46 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class EntityAppender :
         IAssemblyPartAppender<EntityExpression>
     {
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as EntityExpression, builder, context);
 
-        public void AppendPart(EntityExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(EntityExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Alias)
+            {
+                var alias = (expression as IDbExpressionAliasProvider).Alias;
+                if (!string.IsNullOrWhiteSpace(alias))
+                {
+                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
+                    builder.Appender.Write(alias);
+                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
+                    return;
+                }
+            }
+
             var provider = expression as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
             if (context.Configuration.IncludeSchemaName)
             {
-                builder.AppendPart<SchemaExpression>((expression as IDbExpressionProvider<SchemaExpression>).Expression, context);
+                builder.AppendPart((expression as IDbExpressionProvider<SchemaExpression>).Expression, context);
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
             builder.Appender.Write(provider.Metadata.Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
+
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)
+            {
+                var alias = (expression as IDbExpressionAliasProvider).Alias;
+                if (!string.IsNullOrWhiteSpace(alias))
+                    builder.Appender.Write(" AS ")
+                        .Write(context.Configuration.IdentifierDelimiter.Begin)
+                        .Write(alias)
+                        .Write(context.Configuration.IdentifierDelimiter.End);
+            }
         }
     }
 }

@@ -12,10 +12,10 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> RightJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> FullJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> CrossJoin(EntityExpression entity);
-        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> InnerJoin(ISubqueryTerminationExpressionBuilder subquery);
-        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> LeftJoin(ISubqueryTerminationExpressionBuilder subquery);
-        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> RightJoin(ISubqueryTerminationExpressionBuilder subquery);
-        IJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> FullJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IAliasRequiredJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> InnerJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IAliasRequiredJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> LeftJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IAliasRequiredJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> RightJoin(ISubqueryTerminationExpressionBuilder subquery);
+        IAliasRequiredJoinExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T, U>> FullJoin(ISubqueryTerminationExpressionBuilder subquery);
         ITypeListContinuationExpressionBuilder<T, U> OrderBy(OrderByExpressionSet orderBy);
         ITypeListContinuationExpressionBuilder<T, U> OrderBy(params OrderByExpression[] orderBy);
         ITypeListContinuationExpressionBuilder<T, U> GroupBy(params GroupByExpression[] groupBy);

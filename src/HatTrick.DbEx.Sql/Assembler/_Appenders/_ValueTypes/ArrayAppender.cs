@@ -23,10 +23,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         //    return $"{string.Join(", ", parameterNames)}";
         //}
 
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as Array, builder, context);
 
-        public void AppendPart(Array expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(Array expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             throw new NotImplementedException("Should not have an assembler for arrays");
         }

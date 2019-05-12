@@ -76,11 +76,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         public bool Equals(EntityExpression obj)
+            => Equals(obj, false);
+
+        public bool Equals(EntityExpression obj, bool ignoreAlias)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.Metadata != this.Metadata) return false;
-            if (obj.Alias != this.Alias) return false;
+            if (!ignoreAlias && obj.Alias != this.Alias) return false;
 
             return true;
         }

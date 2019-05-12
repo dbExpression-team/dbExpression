@@ -3,7 +3,9 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class JoinExpressionBuilder<T, U> : JoinExpressionBuilder<U>, IJoinExpressionBuilder<T, U>
+    public class JoinExpressionBuilder<T, U> : JoinExpressionBuilder<U>, 
+        IJoinExpressionBuilder<T, U>,
+        IAliasRequiredJoinExpressionBuilder<T, U>
         where U : IExpressionBuilder<T>
     {
 
@@ -17,5 +19,16 @@ namespace HatTrick.DbEx.Sql.Builder
         {
         }
 
+        IJoinExpressionBuilder<T, U> IJoinExpressionBuilder<T, U>.As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+
+        IJoinExpressionBuilder<T, U> IAliasRequiredJoinExpressionBuilder<T, U>.As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
     }
 }

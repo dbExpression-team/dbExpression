@@ -4,13 +4,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public abstract class FunctionAppender
     {
-        public void AppendDistinct(IDbExpressionIsDistinctProvider distinct, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendDistinct(IDbExpressionIsDistinctProvider distinct, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (distinct.IsDistinct)
                 builder.Appender.Write("DISTINCT ");
         }
 
-        public void AppendAlias(IDbExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendAlias(IDbExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (string.IsNullOrWhiteSpace(aliasable.Alias))
                 return;

@@ -7,10 +7,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<PopulationStandardDeviationFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as PopulationStandardDeviationFunctionExpression, builder, context);
 
-        public void AppendPart(PopulationStandardDeviationFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(PopulationStandardDeviationFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("STDEVP(");
 

@@ -14,12 +14,6 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
             base.RegisterPartAppender(_expressionSetAppender);
         }
 
-        public override void RegisterDefaultAliasProviders()
-        {
-            base.RegisterDefaultAliasProviders();
-            base.RegisterAliasProvider(_expressionSetAppender);
-        }
-
         public override void RegisterDefaultValueFormatters()
         {
             base.RegisterDefaultValueFormatters();

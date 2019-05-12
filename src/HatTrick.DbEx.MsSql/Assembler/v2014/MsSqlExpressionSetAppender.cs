@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2014
 {
     public class MsSqlExpressionSetAppender : ExpressionSetAppender
     {
-        public override void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public override void AppendPart(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             AppendSelectClause(expression, builder, context);
             AppendFromClause(expression, builder, context);

@@ -10,10 +10,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<CastFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as CastFunctionExpression, builder, context);
 
-        public void AppendPart(CastFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(CastFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("CAST(");
             builder.AppendPart(expression.Expression, context);

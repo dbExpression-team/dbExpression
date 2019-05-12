@@ -5,34 +5,40 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpression : 
         IDbExpression, 
-        IAssemblyPart
+        IAssemblyPart,
+        IDbExpressionAliasProvider
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }
         public (Type, object) JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
+        private string Alias { get; set; }
+        string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public JoinExpression(EntityExpression entity, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
+        public JoinExpression(EntityExpression entity, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
         {
             JoinToo = (typeof(EntityExpression), entity);
             JoinType = joinType;
             JoinOnExpression = onCondition;
+            Alias = alias;
         }
 
-        public JoinExpression(ExpressionSet subquery, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
+        public JoinExpression(ExpressionSet subquery, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
         {
             JoinToo = (typeof(ExpressionSet), subquery);
             JoinType = joinType;
             JoinOnExpression = onCondition;
+            Alias = alias;
         }
 
-        public JoinExpression((Type, object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition)
+        public JoinExpression((Type, object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
         {
             JoinToo = joinToo;
             JoinType = joinType;
             JoinOnExpression = onCondition;
+            Alias = alias;
         }
         #endregion
 

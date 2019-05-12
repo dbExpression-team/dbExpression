@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class DeleteSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("DELETE").LineBreak();
 
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Indentation++;
                 builder.Appender.Indent();
                 foreach (var join in expression.Joins.Expressions)
-                    builder.AppendPart<JoinExpression>(expression.Joins, context);
+                    builder.AppendPart<JoinExpression>(join, context);
                 builder.Appender.LineBreak();
                 builder.Appender.Indentation--;
             }
