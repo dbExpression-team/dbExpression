@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Executor
             executors.Add(SqlStatementExecutionType.SelectOneType, () => sqlStatementExecutor);
             executors.Add(SqlStatementExecutionType.SelectOneDynamic, () => sqlStatementExecutor);
             executors.Add(SqlStatementExecutionType.SelectOneValue, () => sqlStatementExecutor);
-            executors.Add(SqlStatementExecutionType.SelectAllType, () => sqlStatementExecutor);
-            executors.Add(SqlStatementExecutionType.SelectAllDynamic, () => sqlStatementExecutor);
-            executors.Add(SqlStatementExecutionType.SelectAllValue, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectManyType, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectManyDynamic, () => sqlStatementExecutor);
+            executors.Add(SqlStatementExecutionType.SelectManyValue, () => sqlStatementExecutor);
             executors.Add(SqlStatementExecutionType.Insert, () => sqlStatementExecutor);
             executors.Add(SqlStatementExecutionType.Update, () => sqlStatementExecutor);
             executors.Add(SqlStatementExecutionType.Delete, () => sqlStatementExecutor);

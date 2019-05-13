@@ -308,9 +308,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 case SqlStatementExecutionType.SelectOneValue:
                 case SqlStatementExecutionType.SelectOneType:
                 case SqlStatementExecutionType.SelectOneDynamic:
-                case SqlStatementExecutionType.SelectAllValue:
-                case SqlStatementExecutionType.SelectAllType:
-                case SqlStatementExecutionType.SelectAllDynamic:
+                case SqlStatementExecutionType.SelectManyValue:
+                case SqlStatementExecutionType.SelectManyType:
+                case SqlStatementExecutionType.SelectManyDynamic:
                     break;
                 default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
             }
@@ -329,9 +329,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     case SqlStatementExecutionType.SelectOneValue:
                     case SqlStatementExecutionType.SelectOneType:
                     case SqlStatementExecutionType.SelectOneDynamic:
-                    case SqlStatementExecutionType.SelectAllValue:
-                    case SqlStatementExecutionType.SelectAllType:
-                    case SqlStatementExecutionType.SelectAllDynamic:
+                    case SqlStatementExecutionType.SelectManyValue:
+                    case SqlStatementExecutionType.SelectManyType:
+                    case SqlStatementExecutionType.SelectManyDynamic:
                         break;
                     default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
                 }

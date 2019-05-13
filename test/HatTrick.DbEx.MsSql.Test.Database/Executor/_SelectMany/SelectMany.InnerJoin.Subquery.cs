@@ -8,7 +8,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     [Trait("Statement", "SELECT")]
-    public partial class SelectAll
+    public partial class SelectMany
     {
         [Trait("Operation", "INNER JOIN")]
         public partial class InnerJoin
@@ -24,14 +24,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             dbo.Person_Address.As("t1").PersonId,
                             dbo.Person_Address.As("t1").AddressId
                         )
                         .From(dbo.Person)
                         .InnerJoin(
-                            db.SelectAll(
+                            db.SelectMany(
                                 dbo.Person_Address.PersonId,
                                 dbo.Person_Address.AddressId
                             )
@@ -55,14 +55,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var t1 = dbo.Person_Address.As("t1");
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             t1.PersonId,
                             t1.AddressId
                         )
                         .From(dbo.Person)
                         .InnerJoin(
-                            db.SelectAll(
+                            db.SelectMany(
                                 dbo.Person_Address.PersonId,
                                 dbo.Person_Address.AddressId
                             )
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             dbo.Purchase.As("t2").PersonId,
                             dbo.Purchase.As("t2").TotalPurchaseAmount,
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         )
                         .From(dbo.Person)
                         .InnerJoin(
-                            db.SelectAll(
+                            db.SelectMany(
                                 dbo.Purchase.Id,
                                 dbo.Purchase.PersonId,
                                 dbo.Purchase.TotalPurchaseAmount,
@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             )
                             .From(dbo.Purchase)
                             .InnerJoin(
-                                db.SelectAll(
+                                db.SelectMany(
                                     dbo.PurchaseLine.PurchaseId,
                                     dbo.PurchaseLine.PurchasePrice)
                                 .From(dbo.PurchaseLine)
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var purchaseLine_t2 = dbo.PurchaseLine.As("t2");
                     var purchase_t2 = dbo.Purchase.As("t2");
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             purchase_t2.PersonId,
                             purchase_t2.TotalPurchaseAmount,
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         )
                         .From(dbo.Person)
                         .InnerJoin(
-                            db.SelectAll(
+                            db.SelectMany(
                                 purchase.Id,
                                 purchase.PersonId,
                                 purchase.TotalPurchaseAmount,
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             )
                             .From(purchase)
                             .InnerJoin(
-                                db.SelectAll(
+                                db.SelectMany(
                                     purchaseLine.PurchaseId,
                                     purchaseLine.PurchasePrice)
                                 .From(purchaseLine)
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var foo = dbo.PurchaseLine.As("foo");
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             dbo.Purchase.As("t3").PersonId,
                             dbo.Purchase.As("t3").TotalPurchaseAmount,
@@ -177,7 +177,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         )
                         .From(dbo.Person)
                         .InnerJoin(
-                            db.SelectAll(
+                            db.SelectMany(
                                 dbo.Purchase.Id,
                                 dbo.Purchase.PersonId,
                                 dbo.Purchase.TotalPurchaseAmount,
@@ -185,14 +185,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             )
                             .From(dbo.Purchase)
                             .InnerJoin(
-                                db.SelectAll(
+                                db.SelectMany(
                                     dbo.PurchaseLine.PurchaseId,
                                     dbo.PurchaseLine.PurchasePrice)
                                 .From(dbo.PurchaseLine)
                                 .Where(dbo.PurchaseLine.PurchasePrice == 30)
                             ).As("t1").On(dbo.Purchase.Id == dbo.PurchaseLine.As("t1").PurchaseId)
                             .InnerJoin(
-                                db.SelectAll(
+                                db.SelectMany(
                                     foo.PurchaseId,
                                     foo.PurchasePrice)
                                 .From(foo)

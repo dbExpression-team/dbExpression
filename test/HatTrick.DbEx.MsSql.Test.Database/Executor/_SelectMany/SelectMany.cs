@@ -11,7 +11,7 @@ using db = HatTrick.DbEx.MsSql.Builder.MsSqlExpressionBuilder;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public partial class SelectAll : ExecutorTestBase
+    public partial class SelectMany : ExecutorTestBase
     {
         [Theory]
         [InlineData(2012, 50)]
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll<Person>()
+            var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
 
             //when               
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll<Purchase>()
+            var exp = db.SelectMany<Purchase>()
                .From(dbo.Purchase);
 
             //when               
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll<int>(dbo.Purchase.PersonId)
+            var exp = db.SelectMany<int>(dbo.Purchase.PersonId)
                 .Distinct()
                 .From(dbo.Purchase)
                 .Skip(5)

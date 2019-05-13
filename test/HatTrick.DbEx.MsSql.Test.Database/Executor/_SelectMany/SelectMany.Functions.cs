@@ -10,7 +10,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public partial class SelectAll
+    public partial class SelectMany
     {
         [Trait("Function", "CAST")]
         public partial class Cast : ExecutorTestBase
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<string>(
+                var exp = db.SelectMany<string>(
                         db.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
                     ).From(dbo.Purchase);
 
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Purchase.Id,
                         db.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
                     ).From(dbo.Purchase);
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<DateTime>(
+                var exp = db.SelectMany<DateTime>(
                         db.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
                     ).From(dbo.Purchase);
 
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<DateTime>(
+                var exp = db.SelectMany<DateTime>(
                         db.Coalesce(
                             dbo.Purchase.ShipDate, 
                             dbo.Purchase.PurchaseDate,
@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
                         db.Coalesce(
                             dbo.Purchase.ShipDate,
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
                         db.Coalesce(
                             dbo.Purchase.ShipDate,
@@ -164,7 +164,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<DateTime>(
+                var exp = db.SelectMany<DateTime>(
                         db.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
                     ).From(dbo.Purchase);
 
@@ -183,7 +183,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<DateTime>(
+                var exp = db.SelectMany<DateTime>(
                         db.IsNull(
                             dbo.Purchase.ShipDate,
                             DateTime.Now
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
                         db.IsNull(
                             dbo.Purchase.ShipDate,
@@ -229,7 +229,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
                         db.IsNull(
                             dbo.Purchase.ShipDate,
@@ -252,7 +252,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Person.Id,
                         db.IsNull(
                             dbo.Person.GenderType,
@@ -275,7 +275,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(
+                var exp = db.SelectMany(
                         dbo.Address.Id,
                         db.IsNull(
                             dbo.Address.AddressType,

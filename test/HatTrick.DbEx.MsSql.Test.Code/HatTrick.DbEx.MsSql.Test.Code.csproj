@@ -84,7 +84,7 @@
   <ItemGroup>
     <Compile Include="Assembler\WhereClauseAssemblerTests.cs" />
     <Compile Include="Builder\WhereClauseExpressionBuilderTests.cs" />
-    <Compile Include="Builder\SelectAllExpressionBuilderTests.cs" />
+    <Compile Include="Builder\SelectManyExpressionBuilderTests.cs" />
     <Compile Include="Builder\SelectExpressionBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

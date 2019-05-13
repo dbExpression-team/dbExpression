@@ -213,9 +213,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             Assemblers.Add(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            Assemblers.Add(SqlStatementExecutionType.SelectAllType, () => _selectSqlStatementAssembler);
-            Assemblers.Add(SqlStatementExecutionType.SelectAllDynamic, () => _selectSqlStatementAssembler);
-            Assemblers.Add(SqlStatementExecutionType.SelectAllValue, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
+            Assemblers.Add(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
             Assemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);

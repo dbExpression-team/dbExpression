@@ -10,7 +10,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Builder
 {
     [Trait("Statement", "SELECT")]
-    public class SelectAllExpressionBuilderTests : TestBase
+    public class SelectManyExpressionBuilderTests : TestBase
     {
         [Theory]
         [InlineData(2014)]
@@ -22,13 +22,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             //when
-            exp = db.SelectAll<int>(sec.Person.Id)
+            exp = db.SelectMany<int>(sec.Person.Id)
                .From(sec.Person);
 
             expressionSet = (exp as IDbExpressionSetProvider).Expression;
 
             //then
-            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectAllValue);
+            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyValue);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
                 .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
@@ -49,13 +49,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ExpressionSet expressionSet;
 
             //when
-            exp = db.SelectAll(sec.Person.Id, sec.Person.DateCreated)
+            exp = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
             expressionSet = (exp as IDbExpressionSetProvider).Expression;
 
             //then
-            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectAllDynamic);
+            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyDynamic);
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
