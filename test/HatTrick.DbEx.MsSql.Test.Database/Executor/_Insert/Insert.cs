@@ -14,8 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class Insert : ExecutorTestBase
     {
         [Theory]
-        [InlineData(2012)]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void Can_an_address_be_inserted(int version)
         {
             //given
@@ -55,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void Foo(int version)
         {
             //given

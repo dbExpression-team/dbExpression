@@ -167,6 +167,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Executor\ExecutorTestBase.cs" />
+    <Compile Include="Executor\MsSqlVersions.cs" />
     <Compile Include="Executor\_Insert\Insert.cs" />
     <Compile Include="Executor\_SelectMany\SelectMany.MultiSchema.cs" />
     <Compile Include="Executor\_SelectMany\SelectMany.cs" />

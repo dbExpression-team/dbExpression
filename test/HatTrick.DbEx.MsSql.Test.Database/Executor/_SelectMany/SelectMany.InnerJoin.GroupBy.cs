@@ -15,9 +15,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             {
                 [Theory]
                 [Trait("Function", "COUNT")]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_address_count_by_person_have_correct_record_counts(int version)
+                [Trait("Operation", "GROUP BY")]
+                [MsSqlVersions.AllVersions]
+                public void Does_address_count_by_person_have_correct_record_counts(int version, int expectedCount = 35)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -35,16 +35,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(35);
+                    persons.Should().HaveCount(expectedCount);
                     persons.Count(a => a.AddressCount == 1).Should().Be(18);
                     persons.Count(a => a.AddressCount == 2).Should().Be(17);
                 }
 
                 [Theory]
                 [Trait("Function", "COUNT")]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version)
+                [Trait("Operation", "GROUP BY")]
+                [Trait("Operation", "HAVING")]
+                [MsSqlVersions.AllVersions]
+                public void Does_address_count_by_person_having_count_greater_than_1_have_18_records(int version, int expectedCount = 17)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -63,14 +64,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(17);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
                 [Trait("Function", "COUNT")]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version)
+                [Trait("Operation", "GROUP BY")]
+                [Trait("Operation", "HAVING")]
+                [MsSqlVersions.AllVersions]
+                public void Does_address_count_by_person_having_count_greater_than_1_and_less_than_3_have_18_records(int version, int expectedCount = 17)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -90,14 +92,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(17);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
                 [Trait("Function", "COUNT")]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version)
+                [Trait("Operation", "GROUP BY")]
+                [Trait("Operation", "HAVING")]
+                [MsSqlVersions.AllVersions]
+                public void Does_address_count_by_person_having_count_equal_to_1_2_or_3_have_35_records(int version, int expectedCount = 35)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -117,7 +120,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(35);
+                    persons.Should().HaveCount(expectedCount);
                 }
             }
         }

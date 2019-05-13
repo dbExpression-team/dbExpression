@@ -10,9 +10,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class Update : ExecutorTestBase
     {
         [Theory]
-        [InlineData(2012)]
-        [InlineData(2014)]
-        public void Can_person_with_id_1_update_firstname(int version)
+        [MsSqlVersions.AllVersions]
+        public void Can_person_with_id_1_update_firstname(int version, string expectedFirstName = "Foo")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -27,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             var firstName = db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
             firstName.Should().NotBeNullOrWhiteSpace();
-            firstName.Should().Be("Foo");
+            firstName.Should().Be(expectedFirstName);
         }
     }
 }

@@ -15,9 +15,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             public partial class CrossSchema : ExecutorTestBase
             {
                 [Theory]
-                [InlineData(2012, 0)]
-                [InlineData(2014, 0)]
-                public void Does_joining_across_schemas_succeed(int version, int expectedCount)
+                [MsSqlVersions.AllVersions]
+                public void Does_joining_across_schemas_succeed(int version, int expectedCount = 0)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -35,9 +34,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 }
 
                 [Theory]
-                [InlineData(2012, 0)]
-                [InlineData(2014, 0)]
-                public void Does_joining_across_schemas_with_explicit_alias_succeed(int version, int expectedCount)
+                [MsSqlVersions.AllVersions]
+                public void Does_joining_across_schemas_with_explicit_alias_succeed(int version, int expectedCount = 0)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);

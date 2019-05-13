@@ -12,9 +12,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class CastAndCoalesce : ExecutorTestBase
     {
         [Theory]
-        [InlineData(2012, 15)]
-        [InlineData(2014, 15)]
-        public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expectedCount = 15)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -31,9 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [InlineData(2012, 50)]
-        [InlineData(2014, 50)]
-        public void Does_selecting_coalesce_of_cast_of_gendertype_to_int_and_personid(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_coalesce_of_cast_of_gendertype_to_int_and_personid(int version, int expectedCount = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -55,9 +53,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class ConcatAndCast : ExecutorTestBase
     {
         [Theory]
-        [InlineData(2012, 15)]
-        [InlineData(2014, 15)]
-        public void Does_selecting_concat_of_ship_date_to_varchar_succeed(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_concat_of_ship_date_to_varchar_succeed(int version, int expectedCount = 15)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -74,9 +71,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [InlineData(2012, 15)]
-        [InlineData(2014, 15)]
-        public void Does_selecting_concat_of_literal_and_purchaseid_to_varchar_succeed(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_concat_of_literal_and_purchaseid_to_varchar_succeed(int version, int expectedCount = 15)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -98,9 +94,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public partial class CastAndIsNull : ExecutorTestBase
     {
         [Theory]
-        [InlineData(2012, 15)]
-        [InlineData(2014, 15)]
-        public void Does_selecting_cast_of_isnull_of_shipdate_and_purchasedate_to_varchar_succeed(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_cast_of_isnull_of_shipdate_and_purchasedate_to_varchar_succeed(int version, int expectedCount = 15)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -117,9 +112,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [InlineData(2012, 50)]
-        [InlineData(2014, 50)]
-        public void Does_selecting_cast_of_isnull_of_birthdate_and_datecreated_and_cast_to_varchar_succeed(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_cast_of_isnull_of_birthdate_and_datecreated_and_cast_to_varchar_succeed(int version, int expectedCount = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -136,9 +130,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [InlineData(2012, 50)]
-        [InlineData(2014, 50)]
-        public void Does_selecting_cast_of_isnull_of_birthdate_and_literal_date_and_cast_to_varchar_succeed(int version, int expectedCount)
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_cast_of_isnull_of_birthdate_and_literal_date_and_cast_to_varchar_succeed(int version, int expectedCount = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);

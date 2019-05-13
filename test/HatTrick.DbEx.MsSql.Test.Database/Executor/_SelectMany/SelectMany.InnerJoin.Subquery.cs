@@ -17,9 +17,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             public class Subquery : ExecutorTestBase
             {
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_addresses_have_52_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_persons_with_addresses_have_52_records(int version, int expectedCount = 52)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -42,13 +41,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(52);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_addresses_with_aliases_set_using_variable_have_52_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_persons_with_addresses_with_aliases_set_using_variable_have_52_records(int version, int expectedCount = 52)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -73,13 +71,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(52);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_purchase_line_equal_to_30_have_1_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_persons_with_purchase_line_equal_to_30_have_1_records(int version, int expectedCount = 1)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -112,13 +109,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(1);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_purchase_line_with_aliases_set_using_variables_have_1_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_persons_with_purchase_line_with_aliases_set_using_variables_have_1_records(int version, int expectedCount = 1)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -156,13 +152,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(1);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_purchase_line_using_variables_with_redundant_and_aliased_inner_join_have_1_record(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_persons_with_purchase_line_using_variables_with_redundant_and_aliased_inner_join_have_1_record(int version, int expectedCount = 1)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -204,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(1);
+                    persons.Should().HaveCount(expectedCount);
                 }
             }
         }
