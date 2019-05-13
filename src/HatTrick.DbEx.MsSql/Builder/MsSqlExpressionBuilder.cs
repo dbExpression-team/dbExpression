@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IFromExpressionBuilder<T, ITypeContinuationExpressionBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationExpressionBuilder<T>>> SelectOne<T>()
             where T : class, IDbEntity
         {
-            return new MsSqlExpressionBuilder<T, ITypeContinuationExpressionBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationExpressionBuilder<T>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneType }) 
+            return new MsSqlExpressionBuilder<T, ITypeContinuationExpressionBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationExpressionBuilder<T>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneType, Select = new SelectExpressionSet().Top(1) }) 
                 as IFromExpressionBuilder<T, ITypeContinuationExpressionBuilder<T>, ITypeContinuationBuilder<T, ITypeContinuationExpressionBuilder<T>>>;
         }
 
@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TEntity : IDbEntity
             where TValue : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneValue });
+            var builder = new MsSqlExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneValue, Select = new SelectExpressionSet().Top(1) });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>;
         }
@@ -35,14 +35,14 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>> SelectOne<T>(ISupportedForExpression<SelectExpression> field)
             where T : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneValue });
+            var builder = new MsSqlExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneValue, Select = new SelectExpressionSet().Top(1) });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IFromExpressionBuilder<T, IValueContinuationExpressionBuilder<T>, IValueContinuationExpressionBuilder<T, IValueContinuationExpressionBuilder<T>>>;
         }
 
         public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(ISupportedForExpression<SelectExpression> field1, ISupportedForExpression<SelectExpression> field2, params ISupportedForExpression<SelectExpression>[] fields)
         {
-            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> (new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneDynamic });
+            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> (new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneDynamic, Select = new SelectExpressionSet().Top(1) });
             builder.Expression.Select.Expressions.Add((field1.GetType(), field1));
             builder.Expression.Select.Expressions.Add((field2.GetType(), field2));
             foreach (var field in fields)
@@ -60,6 +60,14 @@ namespace HatTrick.DbEx.MsSql.Builder
         }
 
         public static IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> SelectMany<TValue>(ISupportedForSelectFieldExpression<TValue> field)
+            where TValue : IComparable
+        {
+            var builder = new MsSqlExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyValue });
+            builder.Expression.Select.Expressions.Add((field.GetType(), field));
+            return builder as IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>;
+        }
+
+        public static IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> SelectMany<TValue>(ISupportedForExpression<SelectExpression> field)
             where TValue : IComparable
         {
             var builder = new MsSqlExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyValue });

@@ -12,6 +12,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         public SqlExpressionBuilder(ExpressionSet expression) : base(expression)
         {
+
         }
 
         IListFromExpressionBuilder<T, U, V> IListFromExpressionBuilder<T, U, V>.Distinct()
@@ -42,8 +43,13 @@ namespace HatTrick.DbEx.Sql.Builder
         V IFromExpressionBuilder<T, U, V>.From<W>(EntityExpression<W> entity)
         {
             Expression.BaseEntity = entity;
-            if (Expression.Select == null || !Expression.Select.Expressions.Any())
-                Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<W>).BuildInclusiveSelectExpression());
+            SelectExpressionSet select = Expression.Select;
+            if (select == null || !select.Expressions.Any())
+            {
+                Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression())
+                    .Distinct((select as IDbExpressionIsDistinctProvider).IsDistinct)
+                    .Top((select as IDbExpressionIsTopProvider).Top);
+            }
             return this as V;
         }
     }
