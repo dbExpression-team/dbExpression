@@ -52,24 +52,24 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region select all
-        public static IListFromExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>, ITypeListContinuationExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>>> SelectAll<T>()
+        public static IListFromExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>, ITypeListContinuationExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>>> SelectMany<T>()
             where T : IDbEntity
         {
-            return new MsSqlExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>, ITypeListContinuationExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectAllType })
+            return new MsSqlExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>, ITypeListContinuationExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyType })
                 as IListFromExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>, ITypeListContinuationExpressionBuilder<T, ITypeListContinuationExpressionBuilder<T>>>;
         }
 
-        public static IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> SelectAll<TValue>(ISupportedForSelectFieldExpression<TValue> field)
+        public static IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> SelectMany<TValue>(ISupportedForSelectFieldExpression<TValue> field)
             where TValue : IComparable
         {
-            var builder = new MsSqlExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectAllValue });
+            var builder = new MsSqlExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyValue });
             builder.Expression.Select.Expressions.Add((field.GetType(), field));
             return builder as IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>;
         }
 
-        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectAll(ISupportedForExpression<SelectExpression> field1, ISupportedForExpression<SelectExpression> field2, params ISupportedForExpression<SelectExpression>[] fields)
+        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectMany(ISupportedForExpression<SelectExpression> field1, ISupportedForExpression<SelectExpression> field2, params ISupportedForExpression<SelectExpression>[] fields)
         {
-            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectAllDynamic });
+            var builder = new MsSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyDynamic });
             builder.Expression.Select.Expressions.Add((field1.GetType(), field1));
             builder.Expression.Select.Expressions.Add((field2.GetType(), field2));
             foreach (var field in fields)

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public partial class SelectAll
+    public partial class SelectMany
     {
         public partial class InnerJoin
         {
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             db.Count(dbo.Address.Id).As("AddressCount")
                         )
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             db.Count(dbo.Address.Id).As("AddressCount")
                         )
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             db.Count(dbo.Address.Id).As("AddressCount")
                         )
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             dbo.Person.Id,
                             db.Count(dbo.Address.Id).As("AddressCount")
                         )

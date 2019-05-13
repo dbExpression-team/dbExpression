@@ -11,7 +11,7 @@ using db = HatTrick.DbEx.MsSql.Builder.MsSqlExpressionBuilder;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public partial class SelectAll
+    public partial class SelectMany
     {
         public class MultiSchema : ExecutorTestBase
         {
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(dbo.Person.As("dboPerson").Id, sec.Person.Id)
+                var exp = db.SelectMany(dbo.Person.As("dboPerson").Id, sec.Person.Id)
                     .From(dbo.Person.As("dboPerson"))
                     .InnerJoin(sec.Person).On(dbo.Person.As("dboPerson").Id == sec.Person.Id);
 
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll(dbo.Person.As("dboPerson").Id, sec.Person.Id)
+                var exp = db.SelectMany(dbo.Person.As("dboPerson").Id, sec.Person.Id)
                     .From(dbo.Person.As("dboPerson"))
                     .InnerJoin(sec.Person).On(sec.Person.Id == dbo.Person.As("dboPerson").Id);
 

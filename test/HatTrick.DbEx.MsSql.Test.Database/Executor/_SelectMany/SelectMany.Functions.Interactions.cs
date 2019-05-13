@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Cast(db.Coalesce(dbo.Purchase.ShipDate, db.Literal(DateTime.Parse("1/1/2010")))).AsVarChar(50)
                 ).From(dbo.Purchase);
 
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Coalesce(db.Cast(dbo.Person.GenderType).AsInt(), dbo.Person.Id)
                 ).From(dbo.Person);
 
@@ -62,7 +62,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Concat(db.Literal("Shipped On: "), db.Cast(dbo.Purchase.ShipDate).AsVarChar(50))
                 ).From(dbo.Purchase);
 
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Concat(db.Literal("1"), db.Cast(dbo.Purchase.Id).AsVarChar(50))
                 ).From(dbo.Purchase);
 
@@ -105,7 +105,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Cast(db.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)).AsVarChar(50)
                 ).From(dbo.Purchase);
 
@@ -124,7 +124,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Cast(db.IsNull(dbo.Person.BirthDate, dbo.Person.DateCreated)).AsVarChar(50)
                 ).From(dbo.Person);
 
@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectAll(
+            var exp = db.SelectMany(
                     db.Cast(db.IsNull(dbo.Person.BirthDate, db.Literal(DateTime.Parse("1/1/2020")))).AsVarChar(50)
                 ).From(dbo.Person);
 

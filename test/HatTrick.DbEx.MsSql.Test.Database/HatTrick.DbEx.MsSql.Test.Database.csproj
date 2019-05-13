@@ -168,14 +168,14 @@
   <ItemGroup>
     <Compile Include="Executor\ExecutorTestBase.cs" />
     <Compile Include="Executor\_Insert\Insert.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAll.MultiSchema.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAll.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.CrossSchema.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAll.Functions.Interactions.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.GroupBy.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Where.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAllTests.Where.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.MultiSchema.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.CrossSchema.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.Functions.Interactions.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.GroupBy.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.Where.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.Where.cs" />
     <Compile Include="Executor\_Update\Update.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Seeder.cs" />
@@ -197,8 +197,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Compile Include="Executor\_SelectAll\SelectAllTests.InnerJoin.Subquery.cs" />
-    <Compile Include="Executor\_SelectAll\SelectAll.Functions.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.Subquery.cs" />
+    <Compile Include="Executor\_SelectMany\SelectMany.Functions.cs" />
     <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public partial class SelectAll
+    public partial class SelectMany
     {
         [Trait("Operation", "INNER JOIN")]
         public partial class InnerJoin
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             sec.Person.Id
                         ).From(dbo.Person.As("dboPerson"))
                         .InnerJoin(sec.Person).On(dbo.Person.As("dboPerson").Id == sec.Person.Id);
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var foo = sec.Person.As("foo");
 
-                    var exp = db.SelectAll(
+                    var exp = db.SelectMany(
                             foo.Id
                         ).From(dbo.Person)
                         .InnerJoin(foo).As("foo").On(dbo.Person.Id == foo.Id);

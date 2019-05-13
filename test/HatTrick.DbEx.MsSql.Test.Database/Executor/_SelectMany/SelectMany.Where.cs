@@ -9,7 +9,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     [Trait("Statement", "SELECT")]
-    public partial class SelectAll
+    public partial class SelectMany
     {
         [Trait("Clause", "WHERE")]
         public class Where : ExecutorTestBase
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Person.Id)
+                var exp = db.SelectMany<int>(dbo.Person.Id)
                    .From(dbo.Person)
                    .Where((dbo.Person.LastName == "Broflovski" | dbo.Person.LastName == "Marsh") & dbo.Person.GenderType == GenderType.Male);
 
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Person.Id)
+                var exp = db.SelectMany<int>(dbo.Person.Id)
                    .From(dbo.Person)
                    .Where(dbo.Person.LastName == "Broflovski" | (dbo.Person.LastName == "Marsh" & dbo.Person.GenderType == GenderType.Male));
 
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Person.Id)
+                var exp = db.SelectMany<int>(dbo.Person.Id)
                    .From(dbo.Person)
                    .Where((dbo.Person.LastName == "Broflovski" | dbo.Person.LastName == "Marsh") & (dbo.Person.GenderType == GenderType.Male | dbo.Person.BirthDate > new DateTime(1996, 1, 1)));
 
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(dbo.Purchase.ShipDate == null);
 
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(dbo.Purchase.ShipDate != null);
 
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(!(dbo.Purchase.ShipDate == null));
 
@@ -137,7 +137,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(!(dbo.Purchase.ShipDate != null));
 
@@ -156,7 +156,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(dbo.Purchase.ShipDate == null | dbo.Purchase.TotalPurchaseAmount > 55);
 
@@ -175,7 +175,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(dbo.Purchase.ShipDate != null & dbo.Purchase.TotalPurchaseAmount > 55);
 
@@ -194,7 +194,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(!(dbo.Purchase.ShipDate == null) & dbo.Purchase.TotalPurchaseAmount > 55);
 
@@ -213,7 +213,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(!(dbo.Purchase.ShipDate == null) & (dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
@@ -232,7 +232,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(dbo.Purchase.ShipDate != null & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(!(dbo.Purchase.ShipDate == null) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 
@@ -270,7 +270,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //given
                 ConfigureForMsSqlVersion(version);
 
-                var exp = db.SelectAll<int>(dbo.Purchase.Id)
+                var exp = db.SelectMany<int>(dbo.Purchase.Id)
                    .From(dbo.Purchase)
                    .Where(!(dbo.Purchase.ShipDate == DateTime.Now) & !(dbo.Purchase.TotalPurchaseAmount > 55 | dbo.Purchase.TotalPurchaseAmount < 10));
 

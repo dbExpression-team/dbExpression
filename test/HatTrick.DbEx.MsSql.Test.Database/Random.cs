@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
             ConfigureForMsSqlVersion(version);
 
             //when
-            var persons = db.SelectAll(
+            var persons = db.SelectMany(
                     dbo.Person.Id.As("foo"),
                     dbo.Person.FirstName,
                     dbo.Person.LastName,
