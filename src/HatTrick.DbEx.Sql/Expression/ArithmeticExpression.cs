@@ -84,13 +84,19 @@ namespace HatTrick.DbEx.Sql.Expression
             ExpressionOperator = arithmeticOperator;
         }
 
-        internal ArithmeticExpression(IDbNumericalFunctionExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        public ArithmeticExpression(IDbNumericalFunctionExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
             ExpressionOperator = arithmeticOperator;
         }
 
-        internal ArithmeticExpression(IDbNumericalFunctionExpression leftArg, IDbNumericalFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        public ArithmeticExpression(IDbNumericalFunctionExpression leftArg, IDbNumericalFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        public ArithmeticExpression(IDbDateFunctionExpression leftArg, IDbDateFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
             ExpressionOperator = arithmeticOperator;

@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql;
+﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
@@ -257,6 +258,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region variance p
         public static PopulationVarianceFunctionExpression VarP(ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression> field, bool distinct = false)
             => new PopulationVarianceFunctionExpression(field, distinct);
+        #endregion
+
+        #region datepart
+        public static DatePartFunctionExpression DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression> field)
+            => new DatePartFunctionExpression(field, datePart);
         #endregion
     }
 }

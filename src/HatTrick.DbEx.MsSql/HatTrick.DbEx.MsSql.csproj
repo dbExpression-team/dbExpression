@@ -44,12 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembler\DatePartFunctionAppender.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
     <Compile Include="Assembler\StringValueTypeFormatter.cs" />
     <Compile Include="Assembler\v2012\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlExpressionSetAppender.cs" />
+    <Compile Include="Expression\_Function\DateParts.cs" />
+    <Compile Include="Expression\_Function\DatePartFunctionExpression.cs" />
     <Compile Include="Extensions\Configuration\DatabaseConfigurationBuilderExtensions.cs" />
     <Compile Include="MsSqlDatabaseMetadata.cs" />
     <Compile Include="MsSqlFieldMetadata.cs" />

@@ -161,6 +161,7 @@
     <Compile Include="Expression\_Function\CastFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\CoalesceFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\ConcatFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\IDbDateFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbNumericalFunctionExpression.cs" />
     <Compile Include="Pipeline\SyncExecutionPipeline.cs" />
     <Compile Include="Pipeline\ExecutionPipelineFactory.cs" />

@@ -13,7 +13,8 @@ namespace HatTrick.DbEx.Sql.Expression
         ISupportedForFunctionExpression<CoalesceFunctionExpression, DateTime>,
         ISupportedForFunctionExpression<CountFunctionExpression, DateTime>,
         ISupportedForFunctionExpression<MinimumFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, DateTime>
+        ISupportedForFunctionExpression<MaximumFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<IDbDateFunctionExpression, DateTime>
         where TEntity : IDbEntity
     {
         public DateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, DateTime>> mapExpression) : base(entity, metadata, mapExpression)
