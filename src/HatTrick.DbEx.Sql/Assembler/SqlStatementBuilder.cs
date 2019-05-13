@@ -1,11 +1,10 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SqlStatementBuilder : 
+    public class SqlStatementBuilder :
         ISqlStatementBuilder
     {
         #region internals
@@ -16,18 +15,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; }
         public ExpressionSet ExpressionSet { get; }
         public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerResolver { get; }
-        public Func<Type, IAssemblyPartAliasProvider> AliasProviderResolver { get; }
         public Func<Type, IAssemblyPartAppender> PartAppenderResolver { get; }
         public Func<Type, IValueTypeFormatter> ValueTypeFormatterResolver { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
-        public IDictionary<int, EntityAliasDiscovery> DiscoveredAliases = new Dictionary<int, EntityAliasDiscovery>();
 
         public SqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
             ExpressionSet dbExpression,
             Func<SqlStatementExecutionType, ISqlStatementAssembler> assemblerResolver,
-            Func<Type, IAssemblyPartAliasProvider> aliasProviderResolver,
             Func<Type, IAssemblyPartAppender> partAppenderResolver,
             Func<Type, IValueTypeFormatter> valueTypeFormatterResolver,
             IAppender appender,
@@ -37,7 +33,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             AssemblerConfiguration = config;
             ExpressionSet = dbExpression;
             AssemblerResolver = assemblerResolver;
-            AliasProviderResolver = aliasProviderResolver;
             PartAppenderResolver = partAppenderResolver;
             ValueTypeFormatterResolver = valueTypeFormatterResolver;
             Appender = appender;
@@ -58,10 +53,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : IAssemblyPart
             => PartAppenderResolver(typeof(T)) as IAssemblyPartAppender<T>;
 
-        protected virtual IAssemblyPartAliasProvider<T> ResolveAliasProvider<T>()
-            where T : IAssemblyPart
-            => AliasProviderResolver(typeof(T)) as IAssemblyPartAliasProvider<T>;
-
         public string FormatValueType((Type, object) value)
         {
             var formatter = ResolveValueFormatter(value.Item1);
@@ -80,12 +71,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (_sqlStatement != null)
                 return _sqlStatement;
 
-            DiscoverAliases(ExpressionSet, 0, AssemblerConfiguration, DiscoveredAliases);
-            var context = new AssemblerContext
+            var context = new AssemblyContext
             {
                 Configuration = AssemblerConfiguration,
-                EntityAliases = DiscoveredAliases,
-                CurrentDepth = 0
             };
 
             AssemblerResolver(ExpressionSet.StatementExecutionType).AssembleStatement(ExpressionSet, this, context);
@@ -94,29 +82,22 @@ namespace HatTrick.DbEx.Sql.Assembler
             return _sqlStatement;
         }
 
-        public void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
-            where T : IAssemblyPart
-        {
-            var provider = ResolveAliasProvider<T>();
-            if (provider == null)
-                return;
+        public void AppendPart<T>(object part)
+          where T : class, IAssemblyPart => AppendPart(part as T, new AssemblyContext());
 
-            provider.DiscoverAliases(expression, this, currentLevel, config, DiscoveredAliases);
-        }
-
-        public void AppendPart((Type, object) part, AssemblerContext context)
+        public void AppendPart((Type, object) part, AssemblyContext context)
         {
             var assembler = ResolvePartAppender(part.Item1);
             assembler.AppendPart(part.Item2, this, context);
         }
 
-        public void AppendPart<T>(object part, AssemblerContext context)
-            where T : IAssemblyPart
+        public void AppendPart<T>(T part, AssemblyContext context)
+            where T : class, IAssemblyPart
         {
             var assembler = ResolvePartAppender(typeof(T));
             assembler.AppendPart(part, this, context);
         }
 
-        public string GenerateAlias() => $"t{++_currentAliasCounter}";
+        public string GenerateAlias() => $"_t{++_currentAliasCounter}";
     }
 }

@@ -7,10 +7,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<MinimumFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as MinimumFunctionExpression, builder, context);
 
-        public void AppendPart(MinimumFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(MinimumFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("MIN(");
 

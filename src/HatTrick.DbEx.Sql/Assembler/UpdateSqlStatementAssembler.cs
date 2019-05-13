@@ -1,21 +1,19 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class UpdateSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {            
             builder.Appender
                 .Indent().Write("UPDATE").LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+            context.PushAppendStyle(EntityExpressionAppendStyle.None);
+            builder.AppendPart(expression.BaseEntity, context);
+            context.PopAppendStyles();
 
             builder.Appender
                 .Indentation--.LineBreak()
@@ -41,7 +39,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--.Indent().Write("FROM").LineBreak()
                 .Indentation++.Indent();
 
-            builder.AppendPart<EntityExpression>(expression.BaseEntity, context);
+            context.PushAppendStyle(EntityExpressionAppendStyle.Declaration);
+            builder.AppendPart(expression.BaseEntity, context);
+            context.PopAppendStyles();
 
             builder.Appender.Indentation--;
 
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 for (var i = 0; i < expression.Joins.Expressions.Count; i++)
                 {
                     builder.Appender.Indent();
-                    builder.AppendPart<JoinExpression>(expression.Joins.Expressions[i], context);
+                    builder.AppendPart(expression.Joins.Expressions[i], context);
                     if (i < expression.Joins.Expressions.Count - 1)
                         builder.Appender.LineBreak();
                 }
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                  builder.Appender.Indent().Write("WHERE").LineBreak()
                      .Indentation++.Indent();
 
-                 builder.AppendPart<FilterExpressionSet>(expression.Where, context);
+                 builder.AppendPart(expression.Where, context);
 
                  builder.Appender.LineBreak()
                      .Indentation--;

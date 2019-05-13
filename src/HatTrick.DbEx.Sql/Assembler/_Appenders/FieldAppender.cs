@@ -1,46 +1,48 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Extensions.Assembler;
-using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class FieldAppender :
         IAssemblyPartAppender<FieldExpression>
     {
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as FieldExpression, builder, context);
 
-        public void AppendPart(FieldExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(FieldExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var metadataProvider = expression as IDbExpressionMetadataProvider<ISqlFieldMetadata>;
-            var entityProvider = expression as IDbExpressionProvider<EntityExpression>;
-
-            var entityAlias = context.ResolveEntityAlias(entityProvider.Expression);
-            if (!string.IsNullOrWhiteSpace(entityAlias))
+            if (context.EntityExpressionAppendStyle != EntityExpressionAppendStyle.None)
             {
-                builder.Appender
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(entityAlias)
-                    .Write(context.Configuration.IdentifierDelimiter.End);
+                builder.AppendPart((expression as IDbExpressionProvider<EntityExpression>).Expression, context);
+                builder.Appender.Write(".");
             }
-            else
+
+            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Alias)
             {
-                builder.AppendPart<EntityExpression>(entityProvider.Expression, context);
+                var alias = (expression as IDbExpressionAliasProvider).Alias;
+                if (!string.IsNullOrWhiteSpace(alias))
+                {
+                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin)
+                        .Write(alias)
+                        .Write(context.Configuration.IdentifierDelimiter.End);
+                    return;
+                }
             }
-            builder.Appender.Write(".");
 
-            //TODO: JRod, the following logic does not account for field level alias
-            builder.Appender
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write(!string.IsNullOrWhiteSpace(context.CurrentField?.NameOverride) ? context.CurrentField.NameOverride : metadataProvider.Metadata.Name)
-                .Write(context.Configuration.IdentifierDelimiter.End);
+            builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
+            builder.Appender.Write((expression as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata.Name);
+            builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
 
-            if (context.EmitAlias && expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
+            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Declaration)
             {
-                builder.Appender.Write(" AS ")
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(aliasable.Alias)
-                    .Write(context.Configuration.IdentifierDelimiter.End);
+                var alias = (expression as IDbExpressionAliasProvider).Alias;
+                if (!string.IsNullOrWhiteSpace(alias))
+                {
+                    builder.Appender.Write(" AS ")
+                        .Write(context.Configuration.IdentifierDelimiter.Begin)
+                        .Write(alias)
+                        .Write(context.Configuration.IdentifierDelimiter.End);
+                    return;
+                }
             }
         }
     }

@@ -5,9 +5,9 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class SelectSqlStatementAssembler : 
         SqlStatementAssembler
     {
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendPart<ExpressionSet>(expression, context);
+            builder.AppendPart(expression, context);
         }
     }
 }

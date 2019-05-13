@@ -11,6 +11,7 @@ namespace HatTrick.DbEx.Sql.Builder
         private (Type, object) JoinOn { get; set; }
         private JoinOperationExpressionOperator JoinType { get; set; }
         private T Caller { get; set; }
+        protected string Alias { get; set; }
 
         internal JoinExpressionBuilder(ExpressionSet expression, EntityExpression joinOn, JoinOperationExpressionOperator joinType, T caller)
         {
@@ -31,9 +32,9 @@ namespace HatTrick.DbEx.Sql.Builder
         T IJoinExpressionBuilder<T>.On(JoinOnExpression expression)
         {
             if (Expression.Joins == null)
-                Expression.Joins = new JoinExpressionSet(new JoinExpression(JoinOn, JoinType, expression));
+                Expression.Joins = new JoinExpressionSet(new JoinExpression(JoinOn, JoinType, expression, Alias));
             else
-                Expression.Joins.Expressions.Add(new JoinExpression(JoinOn, JoinType, expression));
+                Expression.Joins.Expressions.Add(new JoinExpression(JoinOn, JoinType, expression, Alias));
             return Caller;
         }
     }

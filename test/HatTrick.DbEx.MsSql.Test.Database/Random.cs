@@ -1,4 +1,5 @@
-﻿using DataService;
+﻿using Data.dbo;
+using DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Extensions.Builder;
@@ -43,6 +44,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database
             //then
             persons.Count().Should().Be(count);
         }
-        
+
+        [Theory]
+        [InlineData(2012)]
+        [InlineData(2014)]
+        public void AliasedField(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var t1 = dbo.Address.As("a");
+            var address = db.SelectOne<int>(
+                    dbo.Address.As("last_insert").Id.As("identity")
+                )
+                .From(t1)
+                .InnerJoin(
+                    db.SelectOne<int>(
+                        db.Max(dbo.Address.Id).As("identity")
+                    )
+                    .From(dbo.Address)
+                ).As("last_insert").On(t1.Id == dbo.Address.As("last_insert").Id.As("identity"))
+                .Execute();
+
+            address.Should().BeGreaterThan(0);
+        }
     }
 }

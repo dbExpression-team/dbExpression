@@ -7,10 +7,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<MaximumFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as MaximumFunctionExpression, builder, context);
 
-        public void AppendPart(MaximumFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(MaximumFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("MAX(");
 

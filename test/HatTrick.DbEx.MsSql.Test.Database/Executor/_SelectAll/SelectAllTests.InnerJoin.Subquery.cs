@@ -19,15 +19,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 [Theory]
                 [InlineData(2012)]
                 [InlineData(2014)]
-                public void Does_persons_with_addresses_with_auto_discover_aliases_have_52_records(int version)
+                public void Does_persons_with_addresses_have_52_records(int version)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Person_Address.PersonId,
-                            dbo.Person_Address.AddressId
+                            dbo.Person_Address.As("t1").PersonId,
+                            dbo.Person_Address.As("t1").AddressId
                         )
                         .From(dbo.Person)
                         .InnerJoin(
@@ -36,36 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                                 dbo.Person_Address.AddressId
                             )
                             .From(dbo.Person_Address)
-                        ).On(dbo.Person.Id == dbo.Person_Address.PersonId);
-
-                    //when               
-                    var persons = exp.Execute();
-
-                    //then
-                    persons.Should().HaveCount(52);
-                }
-
-                [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_addresses_with_aliases_set_using_As_have_52_records(int version)
-                {
-                    //given
-                    ConfigureForMsSqlVersion(version);
-
-                    var exp = db.SelectAll(
-                            dbo.Person.Id,
-                            dbo.Person_Address.As("foo").PersonId,
-                            dbo.Person_Address.As("foo").AddressId
-                        )
-                        .From(dbo.Person)
-                        .InnerJoin(
-                            db.SelectAll(
-                                dbo.Person_Address.As("foo").PersonId,
-                                dbo.Person_Address.As("foo").AddressId
-                            )
-                            .From(dbo.Person_Address.As("foo"))
-                        ).On(dbo.Person.Id == dbo.Person_Address.As("foo").PersonId);
+                        ).As("t1").On(dbo.Person.Id == dbo.Person_Address.As("t1").PersonId);
 
                     //when               
                     var persons = exp.Execute();
@@ -82,21 +53,21 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var foo = dbo.Person_Address.As("foo");
+                    var t1 = dbo.Person_Address.As("t1");
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            foo.PersonId,
-                            foo.AddressId
+                            t1.PersonId,
+                            t1.AddressId
                         )
                         .From(dbo.Person)
                         .InnerJoin(
                             db.SelectAll(
-                                foo.PersonId,
-                                foo.AddressId
+                                dbo.Person_Address.PersonId,
+                                dbo.Person_Address.AddressId
                             )
-                            .From(foo)
-                        ).On(dbo.Person.Id == foo.PersonId);
+                            .From(dbo.Person_Address)
+                        ).As("t1").On(dbo.Person.Id == t1.PersonId);
 
                     //when               
                     var persons = exp.Execute();
@@ -108,16 +79,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 [Theory]
                 [InlineData(2012)]
                 [InlineData(2014)]
-                public void Does_persons_with_purchase_line_equal_to_30_with_auto_discover_aliases_have_1_records(int version)
+                public void Does_persons_with_purchase_line_equal_to_30_have_1_records(int version)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Purchase.PersonId,
-                            dbo.Purchase.TotalPurchaseAmount,
-                            dbo.PurchaseLine.PurchasePrice
+                            dbo.Purchase.As("t2").PersonId,
+                            dbo.Purchase.As("t2").TotalPurchaseAmount,
+                            dbo.PurchaseLine.As("t2").PurchasePrice
                         )
                         .From(dbo.Person)
                         .InnerJoin(
@@ -125,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                                 dbo.Purchase.Id,
                                 dbo.Purchase.PersonId,
                                 dbo.Purchase.TotalPurchaseAmount,
-                                dbo.PurchaseLine.PurchasePrice
+                                dbo.PurchaseLine.As("t1").PurchasePrice
                             )
                             .From(dbo.Purchase)
                             .InnerJoin(
@@ -134,47 +105,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                                     dbo.PurchaseLine.PurchasePrice)
                                 .From(dbo.PurchaseLine)
                                 .Where(dbo.PurchaseLine.PurchasePrice == 30)
-                            ).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
-                        ).On(dbo.Person.Id == dbo.Purchase.PersonId);
-
-                    //when               
-                    var persons = exp.Execute();
-
-                    //then
-                    persons.Should().HaveCount(1);
-                }
-
-                [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_purchase_line_equal_to_30_with_aliases_set_have_1_records(int version)
-                {
-                    //given
-                    ConfigureForMsSqlVersion(version);
-
-                    var exp = db.SelectAll(
-                            dbo.Person.Id,
-                            dbo.Purchase.As("bar").PersonId,
-                            dbo.Purchase.As("bar").TotalPurchaseAmount,
-                            dbo.PurchaseLine.As("foo").PurchasePrice
-                        )
-                        .From(dbo.Person)
-                        .InnerJoin(
-                            db.SelectAll(
-                                dbo.Purchase.As("bar").Id,
-                                dbo.Purchase.As("bar").PersonId,
-                                dbo.Purchase.As("bar").TotalPurchaseAmount,
-                                dbo.PurchaseLine.As("foo").PurchasePrice
-                            )
-                            .From(dbo.Purchase.As("bar"))
-                            .InnerJoin(
-                                db.SelectAll(
-                                    dbo.PurchaseLine.As("foo").PurchaseId,
-                                    dbo.PurchaseLine.As("foo").PurchasePrice)
-                                .From(dbo.PurchaseLine.As("foo"))
-                                .Where(dbo.PurchaseLine.As("foo").PurchasePrice == 30)
-                            ).On(dbo.Purchase.As("bar").Id == dbo.PurchaseLine.As("foo").PurchaseId)
-                        ).On(dbo.Person.Id == dbo.Purchase.As("bar").PersonId);
+                            ).As("t1").On(dbo.Purchase.Id == dbo.PurchaseLine.As("t1").PurchaseId)
+                        ).As("t2").On(dbo.Person.Id == dbo.Purchase.As("t2").PersonId);
 
                     //when               
                     var persons = exp.Execute();
@@ -191,32 +123,34 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var foo = dbo.PurchaseLine.As("foo");
-                    var bar = dbo.Purchase.As("bar");
+                    var purchase = dbo.Purchase.As("t0");
+                    var purchaseLine = dbo.PurchaseLine.As("t1");
+                    var purchaseLine_t2 = dbo.PurchaseLine.As("t2");
+                    var purchase_t2 = dbo.Purchase.As("t2");
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            bar.PersonId,
-                            bar.TotalPurchaseAmount,
-                            foo.PurchasePrice
+                            purchase_t2.PersonId,
+                            purchase_t2.TotalPurchaseAmount,
+                            purchaseLine_t2.PurchasePrice
                         )
                         .From(dbo.Person)
                         .InnerJoin(
                             db.SelectAll(
-                                bar.Id,
-                                bar.PersonId,
-                                bar.TotalPurchaseAmount,
-                                foo.PurchasePrice
+                                purchase.Id,
+                                purchase.PersonId,
+                                purchase.TotalPurchaseAmount,
+                                purchaseLine.PurchasePrice
                             )
-                            .From(bar)
+                            .From(purchase)
                             .InnerJoin(
                                 db.SelectAll(
-                                    foo.PurchaseId,
-                                    foo.PurchasePrice)
-                                .From(foo)
-                                .Where(foo.PurchasePrice == 30)
-                            ).On(bar.Id == foo.PurchaseId)
-                        ).On(dbo.Person.Id == bar.PersonId);
+                                    purchaseLine.PurchaseId,
+                                    purchaseLine.PurchasePrice)
+                                .From(purchaseLine)
+                                .Where(purchaseLine.PurchasePrice == 30)
+                            ).As("t1").On(purchase.Id == purchaseLine.PurchaseId)
+                        ).As("t2").On(dbo.Person.Id == purchase_t2.PersonId);
 
                     //when               
                     var persons = exp.Execute();
@@ -237,9 +171,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectAll(
                             dbo.Person.Id,
-                            dbo.Purchase.PersonId,
-                            dbo.Purchase.TotalPurchaseAmount,
-                            foo.PurchasePrice
+                            dbo.Purchase.As("t3").PersonId,
+                            dbo.Purchase.As("t3").TotalPurchaseAmount,
+                            dbo.PurchaseLine.As("t3").PurchasePrice
                         )
                         .From(dbo.Person)
                         .InnerJoin(
@@ -247,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                                 dbo.Purchase.Id,
                                 dbo.Purchase.PersonId,
                                 dbo.Purchase.TotalPurchaseAmount,
-                                foo.PurchasePrice
+                                dbo.PurchaseLine.As("t1").PurchasePrice
                             )
                             .From(dbo.Purchase)
                             .InnerJoin(
@@ -256,116 +190,21 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                                     dbo.PurchaseLine.PurchasePrice)
                                 .From(dbo.PurchaseLine)
                                 .Where(dbo.PurchaseLine.PurchasePrice == 30)
-                            ).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
+                            ).As("t1").On(dbo.Purchase.Id == dbo.PurchaseLine.As("t1").PurchaseId)
                             .InnerJoin(
                                 db.SelectAll(
                                     foo.PurchaseId,
                                     foo.PurchasePrice)
                                 .From(foo)
                                 .Where(foo.PurchasePrice == 30)
-                            ).On(dbo.Purchase.Id == foo.PurchaseId)
-                        ).On(dbo.Person.Id == dbo.Purchase.PersonId);
+                            ).As("t2").On(dbo.Purchase.Id == foo.As("t2").PurchaseId)
+                        ).As("t3").On(dbo.Person.Id == dbo.Purchase.As("t3").PersonId);
 
                     //when               
                     var persons = exp.Execute();
 
                     //then
                     persons.Should().HaveCount(1);
-                }
-
-                [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_purchase_line_using_variables_with_redundant_inner_join_fail(int version)
-                {
-                    //given
-                    ConfigureForMsSqlVersion(version);
-
-                    var exp = db.SelectAll(
-                            dbo.Person.Id,
-                            dbo.Purchase.PersonId,
-                            dbo.Purchase.TotalPurchaseAmount,
-                            dbo.PurchaseLine.PurchasePrice
-                        )
-                        .From(dbo.Person)
-                        .InnerJoin(
-                            db.SelectAll(
-                                dbo.Purchase.Id,
-                                dbo.Purchase.PersonId,
-                                dbo.Purchase.TotalPurchaseAmount,
-                                dbo.PurchaseLine.PurchasePrice
-                            )
-                            .From(dbo.Purchase)
-                            .InnerJoin(
-                                db.SelectAll(
-                                    dbo.PurchaseLine.PurchaseId,
-                                    dbo.PurchaseLine.PurchasePrice)
-                                .From(dbo.PurchaseLine)
-                                .Where(dbo.PurchaseLine.PurchasePrice == 30)
-                            ).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
-                            .InnerJoin(
-                                db.SelectAll(
-                                    dbo.PurchaseLine.PurchaseId,
-                                    dbo.PurchaseLine.PurchasePrice)
-                                .From(dbo.PurchaseLine)
-                                .Where(dbo.PurchaseLine.PurchasePrice == 30)
-                            ).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
-                        ).On(dbo.Person.Id == dbo.Purchase.PersonId);
-
-                    //when
-                    var ex = Assert.Throws<SqlException>(() => exp.Execute());
-
-                    //then
-                    ex.Message.Should().Be("The correlation name 't2' is specified multiple times in a FROM clause.");
-                }
-
-                [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_persons_with_purchase_line_using_variables_with_redundant_inner_join_using_alias_fail(int version)
-                {
-                    //given
-                    ConfigureForMsSqlVersion(version);
-
-                    var foo = dbo.PurchaseLine.As("foo");
-                    var bar = dbo.Purchase.As("bar");
-
-                    var exp = db.SelectAll(
-                            dbo.Person.Id,
-                            bar.PersonId,
-                            bar.TotalPurchaseAmount,
-                            foo.PurchasePrice
-                        )
-                        .From(dbo.Person)
-                        .InnerJoin(
-                            db.SelectAll(
-                                bar.Id,
-                                bar.PersonId,
-                                bar.TotalPurchaseAmount,
-                                foo.PurchasePrice
-                            )
-                            .From(bar)
-                            .InnerJoin(
-                                db.SelectAll(
-                                    foo.PurchaseId,
-                                    foo.PurchasePrice)
-                                .From(foo)
-                                .Where(foo.PurchasePrice == 30)
-                            ).On(bar.Id == foo.PurchaseId)
-                            .InnerJoin(
-                                db.SelectAll(
-                                    dbo.PurchaseLine.As("foo").PurchaseId,
-                                    dbo.PurchaseLine.As("foo").PurchasePrice)
-                                .From(dbo.PurchaseLine.As("foo"))
-                                .Where(dbo.PurchaseLine.As("foo").PurchasePrice == 30)
-                            ).On(bar.Id == foo.PurchaseId)
-                        ).On(dbo.Person.Id == bar.PersonId);
-
-                    //when
-					var ex = Assert.Throws<SqlException>(() => exp.Execute());
-
-                    //then
-                    ex.Message.Should().Be("The correlation name 'foo' is specified multiple times in a FROM clause.");
                 }
             }
         }

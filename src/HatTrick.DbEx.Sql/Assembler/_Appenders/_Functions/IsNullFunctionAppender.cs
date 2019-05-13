@@ -10,10 +10,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<IsNullFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as IsNullFunctionExpression, builder, context);
 
-        public void AppendPart(IsNullFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(IsNullFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("ISNULL(");
             builder.AppendPart(expression.Expression, context);

@@ -7,10 +7,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<CountFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as CountFunctionExpression, builder, context);
 
-        public void AppendPart(CountFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(CountFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("COUNT(");
 

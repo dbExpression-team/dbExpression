@@ -6,5 +6,12 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IJoinExpressionBuilder<U>
         where U : IExpressionBuilder<T>
     {
+        IJoinExpressionBuilder<T, U> As(string alias);
+    }
+
+    public interface IAliasRequiredJoinExpressionBuilder<T, U>
+        where U : IExpressionBuilder<T>
+    {
+        IJoinExpressionBuilder<T, U> As(string alias);
     }
 }

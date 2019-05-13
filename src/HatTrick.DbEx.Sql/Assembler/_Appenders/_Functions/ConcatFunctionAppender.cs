@@ -10,10 +10,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         IAssemblyPartAppender<ConcatFunctionExpression>
     {
         #region methods
-        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblerContext context)
+        public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart(expression as ConcatFunctionExpression, builder, context);
 
-    public void AppendPart(ConcatFunctionExpression expression, ISqlStatementBuilder builder, AssemblerContext context)
+    public void AppendPart(ConcatFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
     {
         builder.Appender.Write("CONCAT(");
         for (var i = 0; i < expression.Expressions.Count; i++)

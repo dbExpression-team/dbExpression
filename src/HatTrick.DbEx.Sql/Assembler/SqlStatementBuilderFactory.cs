@@ -54,13 +54,11 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly ValueTypeFormatter _valueTypeFormatter = new ValueTypeFormatter();
         private static readonly EnumValueTypeFormatter _enumValueTypeFormatter = new EnumValueTypeFormatter();
 
-        private IDictionary<Type, Func<IAssemblyPartAliasProvider>> AliasProviders { get; } = new Dictionary<Type, Func<IAssemblyPartAliasProvider>>();
         private IDictionary<Type, Func<IAssemblyPartAppender>> PartAppenders { get; } = new Dictionary<Type, Func<IAssemblyPartAppender>>();
         private IDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> Assemblers { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
         private IDictionary<Type, Func<IValueTypeFormatter>> ValueFormatters { get; } = new Dictionary<Type, Func<IValueTypeFormatter>>();
 
         private Func<SqlStatementExecutionType, ISqlStatementAssembler> _assemblerResolver;
-        private Func<Type, IAssemblyPartAliasProvider> _aliasProviderAccessor;
         private Func<Type, IAssemblyPartAppender> _partAppenderAccessor;
         private Func<Type, IValueTypeFormatter> _valueFormatterAccessor;
 
@@ -72,17 +70,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                     return _assemblerResolver;
 
                 return _assemblerResolver = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(ec => Assemblers[ec]());
-            }
-        }
-
-        public virtual Func<Type, IAssemblyPartAliasProvider> AliasProviderResolver
-        {
-            get
-            {
-                if (_aliasProviderAccessor != null)
-                    return _aliasProviderAccessor;
-
-                return _aliasProviderAccessor = new Func<Type, IAssemblyPartAliasProvider>(t => AliasProviders[t]());
             }
         }
 
@@ -103,6 +90,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
                         if (typeof(FieldExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be DBExpressionField<int>, DBExpressionField<Guid>, etc
                             return PartAppenders[typeof(FieldExpression)]();
+
+                        if (typeof(EntityExpression).IsAssignableFrom(t))
+                            return PartAppenders[typeof(EntityExpression)]();
 
                         if (typeof(ArithmeticExpression).IsAssignableFrom(t)) //IsAssignableFrom is required as type may be ArithmeticExpression<int>, ArithmeticExpression<Guid>, etc
                             return PartAppenders[typeof(ArithmeticExpression)]();
@@ -258,27 +248,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             ValueFormatters.Add(typeof(Enum), () => _enumValueTypeFormatter);
         }
 
-        public void RegisterAliasProvider<T, U>()
-            where T : class, IAssemblyPart
-            where U : class, IAssemblyPartAliasProvider<T>, new()
-        {
-            AliasProviders[typeof(T)] = () => new U();
-        }
-
-        public void RegisterAliasProvider<T>(IAssemblyPartAliasProvider<T> provider)
-            where T : class, IAssemblyPart
-        {
-            AliasProviders[typeof(T)] = () => provider;
-        }
-
-        public virtual void RegisterDefaultAliasProviders()
-        {
-            AliasProviders.Add(typeof(ExpressionSet), () => _expressionSetAppender);
-            AliasProviders.Add(typeof(JoinExpression), () => _joinClauseAppender);
-        }
-
         public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
-            => new SqlStatementBuilder(config, expression, AssemblerResolver, AliasProviderResolver, PartAppenderResolver, ValueTypeFormatterResolver, appender, parameterBuilder);
+            => new SqlStatementBuilder(config, expression, AssemblerResolver, PartAppenderResolver, ValueTypeFormatterResolver, appender, parameterBuilder);
         #endregion
     }
 }

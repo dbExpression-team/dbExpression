@@ -39,20 +39,41 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute();
 
             //then
-            var lastAddress = dbo.Address.As("last_insert");
-
+            var t1 = dbo.Address.As("a");
             var address = db.SelectOne<Address>()
-                .From(dbo.Address)
+                .From(t1)
                 .InnerJoin(
                     db.SelectOne<int>(
-                        db.Max(lastAddress.Id).As("identity")
+                        db.Max(dbo.Address.Id).As("identity")
                     )
-                    .From(lastAddress)
-                ).On(dbo.Address.Id == lastAddress.Id.As("identity"))
+                    .From(dbo.Address)
+                ).As("last_insert").On(t1.Id == dbo.Address.As("last_insert").Id.As("identity"))
                 .Execute();
 
             address.Should().NotBeNull();
             address.Line1.Should().Be("123 Main St");
+        }
+
+        [Theory]
+        [InlineData(2014)]
+        public void Foo(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //then
+            var t1 = dbo.Address.As("a");
+            var address = db.SelectOne<Address>()
+                .From(t1)
+                .InnerJoin(
+                    db.SelectOne<int>(
+                        db.Max(dbo.Address.Id).As("identity")
+                    )
+                    .From(dbo.Address)
+                ).As("last_insert").On(t1.Id == dbo.Address.As("last_insert").Id.As("identity"))
+                .Execute();
+
+            address.Should().NotBeNull();
         }
     }
 }

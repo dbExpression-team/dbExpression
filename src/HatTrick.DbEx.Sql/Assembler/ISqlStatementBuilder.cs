@@ -20,13 +20,10 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         SqlStatement CreateSqlStatement();
 
-        void AppendPart((Type, object) part, AssemblerContext context);
+        void AppendPart((Type, object) part, AssemblyContext context);
 
-        void AppendPart<T>(object part, AssemblerContext context)
-            where T : IAssemblyPart;
-
-        void DiscoverAliases<T>(T expression, int currentLevel, DbExpressionAssemblerConfiguration config, IDictionary<int, EntityAliasDiscovery> discoveredAliases)
-            where T : IAssemblyPart;
+        void AppendPart<T>(T part, AssemblyContext context)
+            where T : class, IAssemblyPart;
 
         string GenerateAlias();
         #endregion

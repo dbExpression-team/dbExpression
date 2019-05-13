@@ -42,27 +42,41 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"{this.Metadata.Entity.Name.ToString()}.{this.Metadata.Name}";
+        public override string ToString() => this.ToString("[s].[e].[f]");
 
-        public string ToString(string format)
+        public string ToString(string format, bool ignoreAlias = false)
         {
+            string val = null;
             switch (format)
             {
                 case "f":
-                    return this.Metadata.Name;
+                    val = this.Metadata.Name;
+                    break;
                 case "[f]":
-                    return $"[{this.Metadata.Name}]";
+                    val = $"[{this.Metadata.Name}]";
+                    break;
                 case "e.f":
-                    return this.ToString();
+                    val = $"{this.Metadata.Entity.Name}.{this.Metadata.Name}";
+                    break;
                 case "s.e.f":
-                    return $"{this.Metadata.Entity.Schema.Name}.{this.Metadata.Entity.Name}.{this.Metadata.Name}";
+                    val = $"{this.Metadata.Entity.Schema.Name}.{this.Metadata.Entity.Name}.{this.Metadata.Name}";
+                    break;
                 case "[s].[e].[f]":
-                    return $"[{this.Metadata.Entity.Schema.Name}].[{this.Metadata.Entity.Name}].[{this.Metadata.Name}]";
+                    val = $"[{this.Metadata.Entity.Schema.Name}].[{this.Metadata.Entity.Name}].[{this.Metadata.Name}]";
+                    break;
                 case "[s.e.f]":
-                    return $"[{this.Metadata.Entity.Schema.Name}.{this.Metadata.Entity.Name}.{this.Metadata.Name}]";
+                    val = $"[{this.Metadata.Entity.Schema.Name}.{this.Metadata.Entity.Name}.{this.Metadata.Name}]";
+                    break;
                 default:
-                    throw new ArgumentException($"encountered unknown format string: {format} valid formats are 'e','f','[e]','[f]','e.f','[e].[f]'", "format");
+                    throw new ArgumentException($"encountered unknown format string: {format} valid formats are 'e','f','[e]','[f]','e.f','[e].[f]', s.e.f, [s].[e].[f], [s.e.f]", "format");
             }
+
+            if (!ignoreAlias && !string.IsNullOrWhiteSpace(Alias))
+            {
+                val += $" AS {Alias}";
+            }
+
+            return val;
         }
         #endregion
 
