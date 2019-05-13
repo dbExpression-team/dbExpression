@@ -13,8 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class InnerJoin : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012)]
-            [InlineData(2014)]
+            [MsSqlVersions.AllVersions]
             public void Does_persons_with_addresses_have_52_records(int version)
             {
                 //given

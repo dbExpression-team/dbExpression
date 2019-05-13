@@ -16,9 +16,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Cast : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_cast_of_ship_date_to_varchar_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -35,9 +34,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_selecting_multiple_fields_and_casting_ship_date_to_varchar_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_multiple_fields_and_casting_ship_date_to_varchar_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -59,9 +57,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Coalesce : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_coalesceing_ship_date_and_purchase_date_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_coalesceing_ship_date_and_purchase_date_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -78,9 +75,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_coalesceing_all_product_dates_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_coalesceing_all_product_dates_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -102,9 +98,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_coalesceing_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_coalesceing_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -127,10 +122,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
+            [MsSqlVersions.AllVersions]
             [Trait("Expression", "Arithmetic")]
-            public void Does_coalesceing_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
+            public void Does_coalesceing_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -157,9 +151,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class IsNull : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_isnull_ship_date_and_purchase_date_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_isnull_ship_date_and_purchase_date_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -176,9 +169,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_isnull_of_shipdate_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_isnull_of_shipdate_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -198,9 +190,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_isnull_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_isnull_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -221,10 +212,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
+            [MsSqlVersions.AllVersions]
             [Trait("Expression", "Arithmetic")]
-            public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount)
+            public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expectedCount = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -245,9 +235,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 50)]
-            [InlineData(2014, 50)]
-            public void Does_isnull_persons_gender_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_isnull_persons_gender_succeed(int version, int expectedCount = 50)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -268,9 +257,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 32)]
-            [InlineData(2014, 32)]
-            public void Does_isnull_address_type_succeed(int version, int expectedCount)
+            [MsSqlVersions.AllVersions]
+            public void Does_isnull_address_type_succeed(int version, int expectedCount = 32)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -295,9 +283,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Average : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 20.543)]
-            [InlineData(2014, 20.543)]
-            public void Does_averaging_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_averaging_total_purchase_amount_succeed(int version, decimal expectedValue = 20.543M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -314,9 +301,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 21.367)]
-            [InlineData(2014, 21.367)]
-            public void Does_averaging_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_averaging_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 21.367M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -337,9 +323,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Minimum : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 5.11)]
-            [InlineData(2014, 5.11)]
-            public void Does_selecting_minimum_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_minimum_total_purchase_amount_succeed(int version, decimal expectedValue = 5.11M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -356,9 +341,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 5.11)]
-            [InlineData(2014, 5.11)]
-            public void Does_selecting_minimum_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_minimum_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 5.11M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -379,9 +363,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Maximum : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 55.96)]
-            [InlineData(2014, 55.96)]
-            public void Does_selecting_maximum_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_maximum_total_purchase_amount_succeed(int version, decimal expectedValue = 55.96M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -398,9 +381,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 55.96)]
-            [InlineData(2014, 55.96)]
-            public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 55.96M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -421,9 +403,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Count : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_selecting_count_of_personid_succeed(int version, int expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_count_of_personid_succeed(int version, int expectedValue = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -440,9 +421,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 6)]
-            [InlineData(2014, 6)]
-            public void Does_selecting_count_of_distinct_personid_succeed(int version, int expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_count_of_distinct_personid_succeed(int version, int expectedValue = 6)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -459,9 +439,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15)]
-            [InlineData(2014, 15)]
-            public void Does_selecting_count_of_star_succeed(int version, int expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_selecting_count_of_star_succeed(int version, int expectedValue = 15)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -482,9 +461,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Sum : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 308.15)]
-            [InlineData(2014, 308.15)]
-            public void Does_sum_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_sum_of_total_purchase_amount_succeed(int version, decimal expectedValue = 308.15M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -501,9 +479,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 299.15)]
-            [InlineData(2014, 299.15)]
-            public void Does_sum_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_sum_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 299.15M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -524,9 +501,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class StandardDeviation : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 16.146)]
-            [InlineData(2014, 16.146)]
-            public void Does_standard_deviation_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_standard_deviation_of_total_purchase_amount_succeed(int version, decimal expectedValue = 16.146M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -543,8 +519,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2014, 16.425)]
-            public void Does_standard_deviation_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_standard_deviation_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 16.425M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -565,9 +541,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class StandardDeviationPopulation : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 15.599)]
-            [InlineData(2014, 15.599)]
-            public void Does_standard_deviation_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_standard_deviation_of_total_purchase_amount_succeed(int version, decimal expectedValue = 15.599M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -584,9 +559,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 15.827)]
-            [InlineData(2014, 15.827)]
-            public void Does_standard_deviation_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_standard_deviation_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 15.827M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -607,9 +581,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class Var : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 260.712)]
-            [InlineData(2014, 260.712)]
-            public void Does_var_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_var_of_total_purchase_amount_succeed(int version, decimal expectedValue = 260.712M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -626,9 +599,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 269.785)]
-            [InlineData(2014, 269.785)]
-            public void Does_var_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_var_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 269.785M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -649,9 +621,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public partial class VariancePopulation : ExecutorTestBase
         {
             [Theory]
-            [InlineData(2012, 243.331)]
-            [InlineData(2014, 243.331)]
-            public void Does_varp_of_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_varp_of_total_purchase_amount_succeed(int version, decimal expectedValue = 243.331M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -668,9 +639,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             }
 
             [Theory]
-            [InlineData(2012, 250.515)]
-            [InlineData(2014, 250.515)]
-            public void Does_varp_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue)
+            [MsSqlVersions.AllVersions]
+            public void Does_varp_of_distinct_total_purchase_amount_succeed(int version, decimal expectedValue = 250.515M)
             {
                 //given
                 ConfigureForMsSqlVersion(version);

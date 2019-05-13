@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     {
         [Theory]
         [InlineData(2014)]
-        public void Does_select_all_for_single_field_result_in_valid_expression(int version)
+        public void Does_select_many_for_single_field_result_in_valid_expression(int version)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
         [Theory]
         [InlineData(2014)]
-        public void Does_select_all_for_multiple_values_result_in_valid_expression(int version)
+        public void Does_select_many_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
             ConfigureForMsSqlVersion(version);

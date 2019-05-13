@@ -17,9 +17,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             public partial class Where : ExecutorTestBase
             {
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_filtering_by_billing_addresstype_equal_to_billing_have_35_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_filtering_by_billing_addresstype_equal_to_billing_have_35_records(int version, int expectedCount = 35)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -34,13 +33,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(35);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_filtering_by_address_id_equal_to_1_have_14_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_filtering_by_address_id_equal_to_1_have_14_records(int version, int expectedCount = 14)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -55,13 +53,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(14);
+                    persons.Should().HaveCount(expectedCount);
                 }
 
                 [Theory]
-                [InlineData(2012)]
-                [InlineData(2014)]
-                public void Does_filtering_by_addresstype_equal_to_billing_and_address_id_not_equal_to_1_have_35_records(int version)
+                [MsSqlVersions.AllVersions]
+                public void Does_filtering_by_addresstype_equal_to_billing_and_address_id_not_equal_to_1_have_35_records(int version, int expectedCount = 35)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);
@@ -76,9 +73,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     var persons = exp.Execute();
 
                     //then
-                    persons.Should().HaveCount(35);
+                    persons.Should().HaveCount(expectedCount);
                 }
-
             }
         }
     }
