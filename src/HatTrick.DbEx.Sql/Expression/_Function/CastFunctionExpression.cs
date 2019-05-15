@@ -10,6 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpressionAliasProvider,
         ISupportedForExpression<SelectExpression>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression>,
+        ISupportedForFunctionExpression<IDbDateFunctionExpression>,
         IEquatable<CastFunctionExpression>
     {
         #region internals

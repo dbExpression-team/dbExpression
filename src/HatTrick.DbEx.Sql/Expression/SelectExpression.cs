@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal SelectExpression(ISupportedForExpression<SelectExpression> expression)
+        public SelectExpression(ISupportedForExpression<SelectExpression> expression)
         {
             Expression = (expression.GetType(), expression);
         }

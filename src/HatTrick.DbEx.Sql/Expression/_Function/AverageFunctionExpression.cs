@@ -6,7 +6,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class AverageFunctionExpression :
-        IDbNumericalFunctionExpression,
+        IDbNumericFunctionExpression,
         IAssemblyPart,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,

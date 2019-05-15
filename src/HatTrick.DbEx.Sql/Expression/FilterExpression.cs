@@ -43,15 +43,67 @@ namespace HatTrick.DbEx.Sql.Expression
             ExpressionOperator = expressionOperator;
         }
 
-        internal FilterExpression(SelectExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        internal FilterExpression(CastFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
             if (rightArg != null)
             {
-                Expression = new DbExpressionPair((typeof(SelectExpression), leftArg), (rightArg.GetType(), rightArg));
+                Expression = new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (rightArg.GetType(), rightArg));
             }
             else
             {
-                Expression = new DbExpressionPair((typeof(SelectExpression), leftArg), (typeof(object), DBNull.Value));
+                Expression = new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (typeof(object), DBNull.Value));
+            }
+            ExpressionOperator = expressionOperator;
+        }
+
+        internal FilterExpression(CoalesceFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (typeof(object), DBNull.Value));
+            }
+            ExpressionOperator = expressionOperator;
+        }
+
+        internal FilterExpression(IsNullFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((typeof(IsNullFunctionExpression), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((typeof(IsNullFunctionExpression), leftArg), (typeof(object), DBNull.Value));
+            }
+            ExpressionOperator = expressionOperator;
+        }
+
+        public FilterExpression(IDbNumericFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((rightArg.GetType(), leftArg), (typeof(object), DBNull.Value));
+            }
+            ExpressionOperator = expressionOperator;
+        }
+
+        public FilterExpression(IDbDateFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((rightArg.GetType(), leftArg), (typeof(object), DBNull.Value));
             }
             ExpressionOperator = expressionOperator;
         }

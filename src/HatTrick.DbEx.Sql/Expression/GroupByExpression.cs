@@ -21,6 +21,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expression = (typeof(ArithmeticExpression), expression);
         }
+
+        public GroupByExpression(IDbFunctionExpression expression)
+        {
+            Expression = (expression.GetType(), expression);
+        }
         #endregion
 
         #region to string

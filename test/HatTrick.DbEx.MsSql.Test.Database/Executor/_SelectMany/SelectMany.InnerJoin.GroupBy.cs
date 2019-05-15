@@ -1,5 +1,6 @@
 ﻿using DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Extensions.Builder;
 using System.Linq;
@@ -115,6 +116,41 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         .GroupBy(dbo.Person.Id)
                         //testing composite having statement with 3 parts
                         .Having(db.Count(dbo.Address.Id) == 1 | db.Count(dbo.Address.Id) == 2 | db.Count(dbo.Address.Id) == 3);
+
+                    //when               
+                    var persons = exp.Execute();
+
+                    //then
+                    persons.Should().HaveCount(expectedCount);
+                }
+
+                [Theory]
+                [Trait("Function", "COUNT")]
+                [Trait("Operation", "GROUP BY")]
+                [Trait("Operation", "HAVING")]
+                [Trait("Function", "DATEPART")]
+                [MsSqlVersions.AllVersions]
+                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int version, int expectedCount = 3)
+                {
+                    //given
+                    ConfigureForMsSqlVersion(version);
+
+                    var exp = db.SelectMany(
+                            dbo.Person.Id,
+                            db.Count(dbo.Purchase.ShipDate).As("ShippedCount"),
+                            db.DatePart(DateParts.Year, dbo.Purchase.ShipDate).As("ShippedDay")
+                        )
+                        .From(dbo.Purchase)
+                        .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
+                        .Where(dbo.Purchase.ShipDate != null)
+                        .GroupBy(
+                            dbo.Person.Id,
+                            db.DatePart(DateParts.Year, dbo.Purchase.ShipDate)
+                        )
+                        .Having(
+                            db.Count(dbo.Purchase.ShipDate) == 3 
+                            & db.DatePart(DateParts.Year, dbo.Purchase.ShipDate) == 2017
+                        );
 
                     //when               
                     var persons = exp.Execute();

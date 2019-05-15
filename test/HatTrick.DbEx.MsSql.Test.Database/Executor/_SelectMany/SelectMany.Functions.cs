@@ -2,6 +2,7 @@
 using Data.dbo;
 using DataService;
 using FluentAssertions;
+using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Extensions.Builder;
@@ -654,6 +655,48 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 //then
                 s.Should().BeApproximately(expectedValue, 0.001M, "Rounding errors in calculation of variance of population");
+            }
+        }
+
+        [Trait("Function", "DATEPART")]
+        public partial class DatePart : ExecutorTestBase
+        {
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_datepart_selecting_year_of_shipdate_succeed(int version, int expectedValue = 2017)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<int>(
+                        db.DatePart(DateParts.Year, dbo.Purchase.DateCreated).As("s")
+                    ).From(dbo.Purchase)
+                    .Where(dbo.Purchase.ShipDate != null);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().Be(expectedValue);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_datepart_selecting_day_of_shipdate_succeed(int version, int expectedValue = 1)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectOne<int>(
+                        db.DatePart(DateParts.Day, dbo.Purchase.DateCreated).As("s")
+                    ).From(dbo.Purchase)
+                    .Where(dbo.Purchase.ShipDate != null);
+
+                //when               
+                var s = exp.Execute();
+
+                //then
+                s.Should().Be(expectedValue);
             }
         }
     }

@@ -71,6 +71,7 @@
     <Compile Include="Assembler\_Appenders\LiteralAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\CastFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\ConcatFunctionAppender.cs" />
+    <Compile Include="Assembler\_Appenders\_Functions\CurrentTimestampFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\FunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\IsNullFunctionAppender.cs" />
     <Compile Include="Assembler\_Appenders\_Functions\PopulationVarianceFunctionAppender.cs" />
@@ -161,7 +162,9 @@
     <Compile Include="Expression\_Function\CastFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\CoalesceFunctionExpression{T}.cs" />
     <Compile Include="Expression\_Function\ConcatFunctionExpression.cs" />
-    <Compile Include="Expression\_Function\IDbNumericalFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\CurrentTimestampFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\IDbDateFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\IDbNumericFunctionExpression.cs" />
     <Compile Include="Pipeline\SyncExecutionPipeline.cs" />
     <Compile Include="Pipeline\ExecutionPipelineFactory.cs" />
     <Compile Include="Pipeline\PipelinePair.cs" />
