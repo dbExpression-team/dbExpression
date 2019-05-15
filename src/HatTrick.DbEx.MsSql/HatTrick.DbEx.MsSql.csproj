@@ -54,7 +54,6 @@
     <Compile Include="Assembler\DatePartFunctionAppender.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
-    <Compile Include="Assembler\StringValueTypeFormatter.cs" />
     <Compile Include="Assembler\v2012\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlExpressionSetAppender.cs" />

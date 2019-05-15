@@ -29,12 +29,6 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
             base.RegisterPartAppender(_sysDateTimeOffsetFunctionAppender);
             base.RegisterPartAppender(_sysUtcDateTimeFunctionAppender);
         }
-
-        public override void RegisterDefaultValueFormatters()
-        {
-            base.RegisterDefaultValueFormatters();
-            base.RegisterValueFormatter<string,StringValueTypeFormatter>();
-        }
         #endregion
     }
 }

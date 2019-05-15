@@ -42,16 +42,16 @@ namespace HatTrick.DbEx.Sql.Assembler
         protected virtual IAssemblyPartAppender ResolvePartAppender(Type t)
             => PartAppenderResolver(t);
 
-        protected virtual IValueTypeFormatter<T> ResolveValueFormatter<T>()
-            where T : IComparable
-            => ValueTypeFormatterResolver(typeof(T)) as IValueTypeFormatter<T>;
-
-        protected virtual IValueTypeFormatter ResolveValueFormatter(Type t)
-            => ValueTypeFormatterResolver(t);
-
         protected virtual IAssemblyPartAppender<T> ResolvePartAppender<T>()
             where T : IAssemblyPart
             => PartAppenderResolver(typeof(T)) as IAssemblyPartAppender<T>;
+
+        protected virtual IValueTypeFormatter ResolveValueFormatter<T>()
+            where T : IComparable
+            => ValueTypeFormatterResolver(typeof(T)) as IValueTypeFormatter;
+
+        protected virtual IValueTypeFormatter ResolveValueFormatter(Type t)
+            => ValueTypeFormatterResolver(t);
 
         public string FormatValueType((Type, object) value)
         {
