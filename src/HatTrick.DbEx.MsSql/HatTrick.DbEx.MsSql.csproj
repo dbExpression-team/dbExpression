@@ -44,6 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assembler\SysUtcDateTimeFunctionAppender.cs" />
+    <Compile Include="Assembler\SysDateTimeOffsetFunctionAppender.cs" />
+    <Compile Include="Assembler\SysDateTimeFunctionAppender.cs" />
+    <Compile Include="Assembler\GetUtcDateFunctionAppender.cs" />
+    <Compile Include="Assembler\GetDateFunctionAppender.cs" />
+    <Compile Include="Assembler\DateAddFunctionAppender.cs" />
+    <Compile Include="Assembler\DateDiffFunctionAppender.cs" />
     <Compile Include="Assembler\DatePartFunctionAppender.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilder.cs" />
     <Compile Include="Assembler\MsSqlParameterBuilderFactory.cs" />
@@ -51,6 +58,13 @@
     <Compile Include="Assembler\v2012\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlExpressionSetAppender.cs" />
+    <Compile Include="Expression\_Function\DateAddFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\SysDateTimeOffsetFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\SysUtcDateTimeFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\SysDateTimeFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\GetUtcDateFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\GetDateFunctionExpression.cs" />
+    <Compile Include="Expression\_Function\DateDiffFunctionExpression.cs" />
     <Compile Include="Expression\_Function\DateParts.cs" />
     <Compile Include="Expression\_Function\DatePartFunctionExpression.cs" />
     <Compile Include="Extensions\Configuration\DatabaseConfigurationBuilderExtensions.cs" />

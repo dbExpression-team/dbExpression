@@ -12,7 +12,8 @@ namespace HatTrick.DbEx.MsSql.Expression
         ISupportedForFunctionExpression<IsNullFunctionExpression, int>,
         ISupportedForFunctionExpression<CastFunctionExpression, int>,
         ISupportedForFunctionExpression<CoalesceFunctionExpression, int>,
-        ISupportedForFunctionExpression<IDbNumericalFunctionExpression, int>,
+        ISupportedForExpression<GroupByExpression>,
+        ISupportedForFunctionExpression<IDbNumericFunctionExpression, int>,
         IEquatable<DatePartFunctionExpression>
     {
         #region internals
@@ -46,7 +47,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEPART({Expression})";
+        public override string ToString() => $"DATEPART({DatePart.ToString().ToLower()}, {Expression})";
         #endregion
 
         #region equals
@@ -58,6 +59,7 @@ namespace HatTrick.DbEx.MsSql.Expression
             if (obj.Expression == default && this.Expression != default) return false;
             if (this.Expression.Item1 != obj.Expression.Item1) return false;
             if (this.Expression.Item2 != obj.Expression.Item2) return false;
+            if (this.DatePart != obj.DatePart) return false;
 
             return true;
         }
@@ -71,6 +73,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         #region implicit select operators
         public static implicit operator SelectExpression(DatePartFunctionExpression a) => new SelectExpression(a);
+        public static implicit operator GroupByExpression(DatePartFunctionExpression a) => new GroupByExpression(a);
         #endregion
 
         #region DatePart to arithmetic operators

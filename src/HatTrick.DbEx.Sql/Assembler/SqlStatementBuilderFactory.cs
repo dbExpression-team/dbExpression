@@ -39,6 +39,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly PopulationStandardDeviationFunctionAppender _populationStandardDeviationFunctionAppender = new PopulationStandardDeviationFunctionAppender();
         private static readonly VarianceFunctionAppender _varianceFunctionAppender = new VarianceFunctionAppender();
         private static readonly PopulationVarianceFunctionAppender _populationVarianceFunctionAppender = new PopulationVarianceFunctionAppender();
+        private static readonly CurrentTimestampFunctionAppender _currentTimestampFunctionAppender = new CurrentTimestampFunctionAppender();
         private static readonly LiteralAppender _literalAppender = new LiteralAppender();
         private static readonly StringAppender _stringAppender = new StringAppender();
         private static readonly ByteAppender _byteAppender = new ByteAppender();
@@ -137,7 +138,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        public void RegisterPartAssembler<T, U>()
+        public void RegisterPartAppender<T, U>()
             where T : class, IAssemblyPart
             where U : class, IAssemblyPartAppender<T>, new()
         {
@@ -182,6 +183,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             PartAppenders.Add(typeof(PopulationStandardDeviationFunctionExpression), () => _populationStandardDeviationFunctionAppender);
             PartAppenders.Add(typeof(VarianceFunctionExpression), () => _varianceFunctionAppender);
             PartAppenders.Add(typeof(PopulationVarianceFunctionExpression), () => _populationVarianceFunctionAppender);
+            PartAppenders.Add(typeof(CurrentTimestampFunctionExpression), () => _currentTimestampFunctionAppender);
             PartAppenders.Add(typeof(LiteralExpression), () => _literalAppender);
             PartAppenders.Add(typeof(string), () => _stringAppender);
             PartAppenders.Add(typeof(byte), () => _byteAppender);

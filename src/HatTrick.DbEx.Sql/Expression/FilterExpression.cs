@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Expression
             ExpressionOperator = expressionOperator;
         }
 
-        public FilterExpression(IDbNumericalFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        public FilterExpression(IDbNumericFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
             if (rightArg != null)
             {

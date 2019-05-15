@@ -4,7 +4,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class StandardDeviationFunctionExpression :
-        IDbNumericalFunctionExpression,
+        IDbNumericFunctionExpression,
         IAssemblyPart,
         IDbExpressionIsDistinctProvider,
         IDbExpressionAliasProvider,
