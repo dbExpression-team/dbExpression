@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.Coalesce(dbo.Purchase.ShipDate, db.Literal(DateTime.Parse("1/1/2010")))).AsVarChar(50)
+                    db.fx.Cast(db.fx.Coalesce(dbo.Purchase.ShipDate, db.fx.Literal(DateTime.Parse("1/1/2010")))).AsVarChar(50)
                 ).From(dbo.Purchase);
 
             //when               
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Coalesce(db.Cast(dbo.Person.GenderType).AsInt(), dbo.Person.Id)
+                    db.fx.Coalesce(db.fx.Cast(dbo.Person.GenderType).AsInt(), dbo.Person.Id)
                 ).From(dbo.Person);
 
             //when               
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Concat(db.Literal("Shipped On: "), db.Cast(dbo.Purchase.ShipDate).AsVarChar(50))
+                    db.fx.Concat(db.fx.Literal("Shipped On: "), db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50))
                 ).From(dbo.Purchase);
 
             //when               
@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Concat(db.Literal("1"), db.Cast(dbo.Purchase.Id).AsVarChar(50))
+                    db.fx.Concat(db.fx.Literal("1"), db.fx.Cast(dbo.Purchase.Id).AsVarChar(50))
                 ).From(dbo.Purchase);
 
             //when               
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)).AsVarChar(50)
+                    db.fx.Cast(db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate)).AsVarChar(50)
                 ).From(dbo.Purchase);
 
             //when               
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.IsNull(dbo.Person.BirthDate, dbo.Person.DateCreated)).AsVarChar(50)
+                    db.fx.Cast(db.fx.IsNull(dbo.Person.BirthDate, dbo.Person.DateCreated)).AsVarChar(50)
                 ).From(dbo.Person);
 
             //when               
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.IsNull(dbo.Person.BirthDate, db.Literal(DateTime.Parse("1/1/2020")))).AsVarChar(50)
+                    db.fx.Cast(db.fx.IsNull(dbo.Person.BirthDate, db.fx.Literal(DateTime.Parse("1/1/2020")))).AsVarChar(50)
                 ).From(dbo.Person);
 
             //when               
@@ -161,7 +161,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.DatePart(DateParts.Year, dbo.Purchase.ShipDate)).AsVarChar(50)
+                    db.fx.Cast(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate)).AsVarChar(50)
                 ).From(dbo.Purchase);
 
             //when               
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<int>(
-                    db.DatePart(DateParts.Year, db.Cast(dbo.Person.Id).AsDateTime())
+                    db.fx.DatePart(DateParts.Year, db.fx.Cast(dbo.Person.Id).AsDateTime())
                 ).From(dbo.Person);
 
             //when               
@@ -202,7 +202,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.IsNull(db.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
+                    db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
                 ).From(dbo.Purchase);
 
             //when               
@@ -220,7 +220,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.IsNull(db.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.DatePart(DateParts.Day, dbo.Purchase.PurchaseDate))
+                    db.fx.IsNull(db.fx.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Day, dbo.Purchase.PurchaseDate))
                 ).From(dbo.Purchase);
 
             //when               
@@ -243,7 +243,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<int>(
-                    db.Coalesce(db.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate), db.Literal(1))
+                    db.fx.Coalesce(db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate), db.fx.Literal(1))
                 ).From(dbo.Purchase);
 
             //when               
@@ -261,7 +261,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<int>(
-                    db.Coalesce(db.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate), db.Literal(1))
+                    db.fx.Coalesce(db.fx.DatePart(DateParts.Day, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate), db.fx.Literal(1))
                 ).From(dbo.Purchase);
 
             //when               
@@ -284,7 +284,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)).AsVarChar(50)
+                    db.fx.Cast(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)).AsVarChar(50)
                 ).From(dbo.Purchase);
 
             //when               
@@ -302,7 +302,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<DateTime>(
-                    db.DateAdd(DateParts.Year, 1, db.Cast(dbo.Person.Id).AsDateTime())
+                    db.fx.DateAdd(DateParts.Year, 1, db.fx.Cast(dbo.Person.Id).AsDateTime())
                 ).From(dbo.Person);
 
             //when               
@@ -325,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.IsNull(db.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate), db.DateAdd(DateParts.Year,1,  dbo.Purchase.PurchaseDate))
+                    db.fx.IsNull(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate), db.fx.DateAdd(DateParts.Year,1,  dbo.Purchase.PurchaseDate))
                 ).From(dbo.Purchase);
 
             //when               
@@ -343,7 +343,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.IsNull(db.DateAdd(DateParts.Day, 1, dbo.Purchase.ShipDate), db.DateAdd(DateParts.Day, 1, dbo.Purchase.PurchaseDate))
+                    db.fx.IsNull(db.fx.DateAdd(DateParts.Day, 1, dbo.Purchase.ShipDate), db.fx.DateAdd(DateParts.Day, 1, dbo.Purchase.PurchaseDate))
                 ).From(dbo.Purchase);
 
             //when               
@@ -367,7 +367,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<DateTime>(
-                    db.Coalesce(db.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate), db.DateAdd(DateParts.Year, 1, dbo.Purchase.PurchaseDate), db.Current_Timestamp)
+                    db.fx.Coalesce(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate), db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.PurchaseDate), db.fx.Current_Timestamp)
                 ).From(dbo.Purchase);
 
             //when               
@@ -386,7 +386,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<DateTime>(
-                    db.Coalesce(db.DateAdd(DateParts.Day, 1, dbo.Purchase.ShipDate), db.DateAdd(DateParts.Day, 1, dbo.Purchase.PurchaseDate), db.GetUtcDate())
+                    db.fx.Coalesce(db.fx.DateAdd(DateParts.Day, 1, dbo.Purchase.ShipDate), db.fx.DateAdd(DateParts.Day, 1, dbo.Purchase.PurchaseDate), db.fx.GetUtcDate())
                 ).From(dbo.Purchase);
 
             //when               
@@ -409,7 +409,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.Cast(db.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)).AsVarChar(50)
+                    db.fx.Cast(db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)).AsVarChar(50)
                 ).From(dbo.Purchase);
 
             //when               
@@ -428,7 +428,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<int>(
-                    db.DateDiff(DateParts.Hour, db.GetDate(), db.Cast(dbo.Person.Id).AsDateTime())
+                    db.fx.DateDiff(DateParts.Hour, db.fx.GetDate(), db.fx.Cast(dbo.Person.Id).AsDateTime())
                 ).From(dbo.Person);
 
             //when               
@@ -451,7 +451,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.IsNull(db.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.DatePart(DateParts.Hour, dbo.Purchase.PurchaseDate))
+                    db.fx.IsNull(db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Hour, dbo.Purchase.PurchaseDate))
                 ).From(dbo.Purchase);
 
             //when               
@@ -469,7 +469,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany(
-                    db.IsNull(db.DatePart(DateParts.Hour, dbo.Purchase.ShipDate), db.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
+                    db.fx.IsNull(db.fx.DatePart(DateParts.Hour, dbo.Purchase.ShipDate), db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate))
                 ).From(dbo.Purchase);
 
             //when               
@@ -492,7 +492,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<int>(
-                    db.Coalesce(db.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.DatePart(DateParts.Hour, dbo.Purchase.PurchaseDate), db.Literal(1))
+                    db.fx.Coalesce(db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.fx.DatePart(DateParts.Hour, dbo.Purchase.PurchaseDate), db.fx.Literal(1))
                 ).From(dbo.Purchase);
 
             //when               
@@ -510,7 +510,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectMany<int>(
-                    db.Coalesce(db.DatePart(DateParts.Hour, dbo.Purchase.ShipDate), db.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.Literal(1))
+                    db.fx.Coalesce(db.fx.DatePart(DateParts.Hour, dbo.Purchase.ShipDate), db.fx.DateDiff(DateParts.Hour, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate), db.fx.Literal(1))
                 ).From(dbo.Purchase);
 
             //when               

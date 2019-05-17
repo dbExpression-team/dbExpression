@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
-                            db.Count(dbo.Address.Id).As("AddressCount")
+                            db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
@@ -53,13 +53,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
-                            db.Count(dbo.Address.Id).As("AddressCount")
+                            db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
-                        .Having(db.Count(dbo.Address.Id) > 1);
+                        .Having(db.fx.Count(dbo.Address.Id) > 1);
 
                     //when               
                     var persons = exp.Execute();
@@ -80,14 +80,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
-                            db.Count(dbo.Address.Id).As("AddressCount")
+                            db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         //basically equal to 2, testing composite having statement
-                        .Having(db.Count(dbo.Address.Id) > 1 & db.Count(dbo.Address.Id) < 3);
+                        .Having(db.fx.Count(dbo.Address.Id) > 1 & db.fx.Count(dbo.Address.Id) < 3);
 
                     //when               
                     var persons = exp.Execute();
@@ -108,14 +108,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
-                            db.Count(dbo.Address.Id).As("AddressCount")
+                            db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
                         .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
                         .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         //testing composite having statement with 3 parts
-                        .Having(db.Count(dbo.Address.Id) == 1 | db.Count(dbo.Address.Id) == 2 | db.Count(dbo.Address.Id) == 3);
+                        .Having(db.fx.Count(dbo.Address.Id) == 1 | db.fx.Count(dbo.Address.Id) == 2 | db.fx.Count(dbo.Address.Id) == 3);
 
                     //when               
                     var persons = exp.Execute();
@@ -137,19 +137,19 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
-                            db.Count(dbo.Purchase.ShipDate).As("ShippedCount"),
-                            db.DatePart(DateParts.Year, dbo.Purchase.ShipDate).As("ShippedDay")
+                            db.fx.Count(dbo.Purchase.ShipDate).As("ShippedCount"),
+                            db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate).As("ShippedDay")
                         )
                         .From(dbo.Purchase)
                         .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
                         .Where(dbo.Purchase.ShipDate != null)
                         .GroupBy(
                             dbo.Person.Id,
-                            db.DatePart(DateParts.Year, dbo.Purchase.ShipDate)
+                            db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate)
                         )
                         .Having(
-                            db.Count(dbo.Purchase.ShipDate) == 3 
-                            & db.DatePart(DateParts.Year, dbo.Purchase.ShipDate) == 2017
+                            db.fx.Count(dbo.Purchase.ShipDate) == 3 
+                            & db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) == 2017
                         );
 
                     //when               

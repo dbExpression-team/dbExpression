@@ -7,7 +7,6 @@ using HatTrick.DbEx.Sql.Extensions.Builder;
 using System;
 using System.Linq;
 using Xunit;
-using db = HatTrick.DbEx.MsSql.Builder.MsSqlExpressionBuilder;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
