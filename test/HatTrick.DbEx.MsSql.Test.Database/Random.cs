@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
                     dbo.Person.Id.As("foo"),
                     dbo.Person.FirstName,
                     dbo.Person.LastName,
-                    db.Count(dbo.Person_Address.Id).As("person_count")
+                    db.fx.Count(dbo.Person_Address.Id).As("person_count")
                 ).Distinct()
                 .From(dbo.Person)
                 .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
                     dbo.Person.LastName
                 )
                 .Having(
-                    db.Count(dbo.Person_Address.Id) > 1
+                    db.fx.Count(dbo.Person_Address.Id) > 1
                 )
                 .OrderBy(
                     dbo.Person.LastName,

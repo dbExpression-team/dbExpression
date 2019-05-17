@@ -117,6 +117,7 @@
     <Compile Include="Builder\SqlExpressionBuilder.cs" />
     <Compile Include="Builder\Syntax\_Function\ICastFunctionExpressionBuilder.cs" />
     <Compile Include="Builder\_Function\CastFunctionExpressionBuilder.cs" />
+    <Compile Include="Builder\_Function\SqlFunctionExpressionBuilder.cs" />
     <Compile Include="Configuration\DatabaseConfiguration.cs" />
     <Compile Include="Configuration\DatabaseConfigurationBuilder.cs" />
     <Compile Include="Configuration\DbExpressionConfigurationBuilder.cs" />

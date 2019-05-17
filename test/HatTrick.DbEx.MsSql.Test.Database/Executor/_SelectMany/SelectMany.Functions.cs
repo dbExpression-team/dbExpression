@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectMany<string>(
-                        db.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                        db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
                     ).From(dbo.Purchase);
 
                 //when               
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Purchase.Id,
-                        db.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                        db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
                     ).From(dbo.Purchase);
 
                 //when               
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectMany<DateTime>(
-                        db.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
+                        db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectMany<DateTime>(
-                        db.Coalesce(
+                        db.fx.Coalesce(
                             dbo.Purchase.ShipDate, 
                             dbo.Purchase.PurchaseDate,
                             dbo.Purchase.DateCreated,
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
-                        db.Coalesce(
+                        db.fx.Coalesce(
                             dbo.Purchase.ShipDate,
                             dbo.Purchase.PurchaseDate,
                             dbo.Purchase.DateCreated,
@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
-                        db.Coalesce(
+                        db.fx.Coalesce(
                             dbo.Purchase.ShipDate,
                             dbo.Purchase.PurchaseDate,
                             dbo.Purchase.DateCreated + DateTime.Now,
@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectMany<DateTime>(
-                        db.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
+                        db.fx.IsNull(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).As("relevant_date")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -177,7 +177,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectMany<DateTime>(
-                        db.IsNull(
+                        db.fx.IsNull(
                             dbo.Purchase.ShipDate,
                             DateTime.Now
                         ).As("relevant_date")
@@ -199,7 +199,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
-                        db.IsNull(
+                        db.fx.IsNull(
                             dbo.Purchase.ShipDate,
                             dbo.Purchase.PurchaseDate
                         ).As("relevant_date")
@@ -222,7 +222,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Purchase.TotalPurchaseAmount,
-                        db.IsNull(
+                        db.fx.IsNull(
                             dbo.Purchase.ShipDate,
                             dbo.Purchase.DateCreated + DateTime.Now
                         ).As("relevant_date")
@@ -244,7 +244,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Person.Id,
-                        db.IsNull(
+                        db.fx.IsNull(
                             dbo.Person.GenderType,
                             GenderType.Female
                         )
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany(
                         dbo.Address.Id,
-                        db.IsNull(
+                        db.fx.IsNull(
                             dbo.Address.AddressType,
                             AddressType.Billing
                         )
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Avg(dbo.Purchase.TotalPurchaseAmount).As("avg_amount")
+                        db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).As("avg_amount")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -309,7 +309,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Avg(dbo.Purchase.TotalPurchaseAmount, distinct:true).As("avg_amount")
+                        db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct:true).As("avg_amount")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Min(dbo.Purchase.TotalPurchaseAmount).As("min_amount")
+                        db.fx.Min(dbo.Purchase.TotalPurchaseAmount).As("min_amount")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -349,7 +349,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Min(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("min_amount")
+                        db.fx.Min(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("min_amount")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -371,7 +371,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Max(dbo.Purchase.TotalPurchaseAmount).As("max_amount")
+                        db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("max_amount")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -389,7 +389,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Max(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("max_amount")
+                        db.fx.Max(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("max_amount")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -411,7 +411,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<int>(
-                        db.Count(dbo.Purchase.PersonId).As("count")
+                        db.fx.Count(dbo.Purchase.PersonId).As("count")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -429,7 +429,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<int>(
-                        db.Count(dbo.Purchase.PersonId, distinct: true).As("count")
+                        db.fx.Count(dbo.Purchase.PersonId, distinct: true).As("count")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -447,7 +447,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<int>(
-                        db.Count()
+                        db.fx.Count()
                     ).From(dbo.Purchase);
 
                 //when               
@@ -469,7 +469,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Sum(dbo.Purchase.TotalPurchaseAmount).As("sum")
+                        db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).As("sum")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -487,7 +487,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Sum(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("sum")
+                        db.fx.Sum(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("sum")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -509,7 +509,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.StDev(dbo.Purchase.TotalPurchaseAmount).As("s")
+                        db.fx.StDev(dbo.Purchase.TotalPurchaseAmount).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -527,7 +527,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.StDev(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                        db.fx.StDev(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -549,7 +549,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.StDevP(dbo.Purchase.TotalPurchaseAmount).As("s")
+                        db.fx.StDevP(dbo.Purchase.TotalPurchaseAmount).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -567,7 +567,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.StDevP(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                        db.fx.StDevP(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -589,7 +589,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Var(dbo.Purchase.TotalPurchaseAmount).As("s")
+                        db.fx.Var(dbo.Purchase.TotalPurchaseAmount).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -607,7 +607,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.Var(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                        db.fx.Var(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -629,7 +629,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.VarP(dbo.Purchase.TotalPurchaseAmount).As("s")
+                        db.fx.VarP(dbo.Purchase.TotalPurchaseAmount).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -647,7 +647,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<decimal>(
-                        db.VarP(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                        db.fx.VarP(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
                     ).From(dbo.Purchase);
 
                 //when               
@@ -669,7 +669,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<int>(
-                        db.DatePart(DateParts.Year, dbo.Purchase.DateCreated).As("s")
+                        db.fx.DatePart(DateParts.Year, dbo.Purchase.DateCreated).As("s")
                     ).From(dbo.Purchase)
                     .Where(dbo.Purchase.ShipDate != null);
 
@@ -688,7 +688,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ConfigureForMsSqlVersion(version);
 
                 var exp = db.SelectOne<int>(
-                        db.DatePart(DateParts.Day, dbo.Purchase.DateCreated).As("s")
+                        db.fx.DatePart(DateParts.Day, dbo.Purchase.DateCreated).As("s")
                     ).From(dbo.Purchase)
                     .Where(dbo.Purchase.ShipDate != null);
 

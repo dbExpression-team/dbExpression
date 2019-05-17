@@ -57,6 +57,7 @@
     <Compile Include="Assembler\v2012\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\v2014\MsSqlExpressionSetAppender.cs" />
+    <Compile Include="Builder\MsSqlFunctionExpressionBuilder.cs" />
     <Compile Include="Expression\_Function\DateAddFunctionExpression.cs" />
     <Compile Include="Expression\_Function\SysDateTimeOffsetFunctionExpression.cs" />
     <Compile Include="Expression\_Function\SysUtcDateTimeFunctionExpression.cs" />

@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(t1)
                 .InnerJoin(
                     db.SelectMany<int>(
-                        db.Max(dbo.Address.Id).As("identity")
+                        db.fx.Max(dbo.Address.Id).As("identity")
                     )
                     .From(dbo.Address)
                 ).As("last_insert").On(t1.Id == dbo.Address.As("last_insert").Id.As("identity"))
