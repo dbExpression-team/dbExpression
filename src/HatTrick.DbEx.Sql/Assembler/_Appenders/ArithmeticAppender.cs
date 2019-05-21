@@ -16,7 +16,22 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart(ArithmeticExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendPart(expression.LeftPart, context);
+            if (typeof(IComparable).IsAssignableFrom(expression.LeftPart.Item1))
+            {
+                if (expression.RightPart.Item2 is FieldExpression field)
+                {
+                    builder.Appender.Write(builder.Parameters.Add(expression.LeftPart.Item2, field).Parameter.ParameterName);
+                }
+                else
+                {
+                    builder.Appender.Write(builder.Parameters.Add(expression.LeftPart.Item2, expression.LeftPart.Item1).ParameterName);
+                }
+            }
+            else
+            {
+                builder.AppendPart(expression.LeftPart, context);
+            }
+
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
 
             if (typeof(IComparable).IsAssignableFrom(expression.RightPart.Item1))

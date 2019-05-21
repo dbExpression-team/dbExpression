@@ -46,9 +46,11 @@
   <ItemGroup>
     <Compile Include="Assembler\Appender.cs" />
     <Compile Include="Assembler\AppenderFactory.cs" />
+    <Compile Include="Assembler\AppenderIndentation.cs" />
     <Compile Include="Assembler\AssemblyContext.cs" />
     <Compile Include="Assembler\EntityExpressionAppendStyle.cs" />
     <Compile Include="Assembler\FieldExpressionAppendStyle.cs" />
+    <Compile Include="Assembler\IAppender.cs" />
     <Compile Include="Assembler\IAppenderFactory.cs" />
     <Compile Include="Assembler\ISqlStatementAssemblerFactory.cs" />
     <Compile Include="Assembler\ISqlStatementBuilderFactory.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="Expression\_Function\CurrentTimestampFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbDateFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbNumericFunctionExpression.cs" />
+    <Compile Include="Pipeline\ExecutionPipeline.cs" />
     <Compile Include="Pipeline\SyncExecutionPipeline.cs" />
     <Compile Include="Pipeline\ExecutionPipelineFactory.cs" />
     <Compile Include="Pipeline\PipelinePair.cs" />
@@ -200,12 +203,10 @@
     <Compile Include="Pipeline\_EventPipelines\AfterAssemblyPipeline.cs" />
     <Compile Include="Pipeline\_EventPipelines\BeforeAssemblyPipeline.cs" />
     <Compile Include="Pipeline\_Context\AfterAssemblyContext.cs" />
-    <Compile Include="Pipeline\_Context\AssemblyContext.cs" />
     <Compile Include="Pipeline\_Context\BeforeAssemblyContext.cs" />
     <Compile Include="Pipeline\_Context\AfterInsertContext.cs" />
     <Compile Include="Pipeline\_EventPipelines\AfterInsertPipeline.cs" />
     <Compile Include="Pipeline\_EventPipelines\BeforeInsertPipeline.cs" />
-    <Compile Include="Pipeline\_Context\ExecutionPipelineContext.cs" />
     <Compile Include="Pipeline\AsyncExecutionPipeline.cs" />
     <Compile Include="Pipeline\AsyncPipeline.cs" />
     <Compile Include="Pipeline\_Context\IPipelineExecutionContext.cs" />
@@ -293,7 +294,6 @@
     <Compile Include="Extensions\Attribute\FilterExpressionOperatorAttributeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="IDbEntity.cs" />
-    <Compile Include="IIdentityDbEntity.cs" />
     <Compile Include="DbCommandType.cs" />
     <Compile Include="Expression\ArithmeticExpression.cs" />
     <Compile Include="Expression\ArithmeticExpressionOperator.cs" />
@@ -321,8 +321,6 @@
     <Compile Include="Expression\SelectExpression.cs" />
     <Compile Include="Expression\SelectExpressionSet.cs" />
     <Compile Include="Expression\IDbExpression.cs" />
-    <Compile Include="I64BitIdentityDbEntity.cs" />
-    <Compile Include="I32BitIdentityDbEntity.cs" />
     <Compile Include="Mapper\MapperFactory.cs" />
     <Compile Include="ObjectMap\SqlModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -10,67 +10,67 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class DatabaseConfigurationBuilder
     {
         #region internals
-        private DatabaseConfiguration _database;
+        private readonly DatabaseConfiguration Database;
         #endregion
 
         #region constructors
         public DatabaseConfigurationBuilder(DatabaseConfiguration database)
         {
-            _database = database;
+            Database = database;
         }
         #endregion
 
         #region methods
         public void ConfigureAssembler(Action<DbExpressionAssemblerConfiguration> config)
         {
-            config(_database.AssemblerConfiguration);
+            config(Database.AssemblerConfiguration);
         }
 
         #region sql statement builder factory
         public void UseStatementBuilderFactory(ISqlStatementBuilderFactory factory)
         {
-            _database.StatementBuilderFactory = factory;
+            Database.StatementBuilderFactory = factory;
         }
 
         public void UseStatementBuilderFactory<T>()
             where T : class, ISqlStatementBuilderFactory, new()
         {
             var factory = new T();
-            _database.StatementBuilderFactory = factory;
+            Database.StatementBuilderFactory = factory;
         }
         #endregion
 
         #region appender factory
         public void UseAppenderFactory(IAppenderFactory factory)
         {
-            _database.AppenderFactory = factory;
+            Database.AppenderFactory = factory;
         }
 
         public void UseAppenderFactory<T>()
             where T : class, IAppenderFactory, new()
         {
             var factory = new T();
-            _database.AppenderFactory = factory;
+            Database.AppenderFactory = factory;
         }
 
         public void UseDefaultAppenderFactory()
         {
             var factory = new AppenderFactory();
-            _database.AppenderFactory = factory;
+            Database.AppenderFactory = factory;
         }
         #endregion
 
         #region parameter builder factory
         public void UseParameterBuilderFactory(ISqlParameterBuilderFactory factory)
         {
-            _database.ParameterBuilderFactory = factory;
+            Database.ParameterBuilderFactory = factory;
         }
 
         public void UseParameterBuilderFactory<T>()
             where T : class, ISqlParameterBuilderFactory, new()
         {
             var factory = new T();
-            _database.ParameterBuilderFactory = factory;
+            Database.ParameterBuilderFactory = factory;
         }
         #endregion
 
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseExecutorFactory(ISqlStatementExecutorFactory factory, Action<SqlStatementExecutorFactoryConfigurationBuilder> configure)
         {
             configure?.Invoke(new SqlStatementExecutorFactoryConfigurationBuilder(factory));
-            _database.ExecutorFactory = factory;
+            Database.ExecutorFactory = factory;
         }
 
         public void UseExecutorFactory<T>()
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             var factory = new T();
             configure?.Invoke(new SqlStatementExecutorFactoryConfigurationBuilder(factory));
-            _database.ExecutorFactory = factory;
+            Database.ExecutorFactory = factory;
         }
 
         public void UseDefaultExecutorFactory()
@@ -110,20 +110,20 @@ namespace HatTrick.DbEx.Sql.Configuration
             var factory = new SqlStatementExecutorFactory();
             factory.RegisterDefaultExecutors();
             configure?.Invoke(new SqlStatementExecutorFactoryConfigurationBuilder(factory));
-            _database.ExecutorFactory = factory;
+            Database.ExecutorFactory = factory;
         }
         #endregion
 
         #region connection factory
         public void UseConnectionFactory(ISqlConnectionFactory factory)
         {
-            _database.ConnectionFactory = factory;
+            Database.ConnectionFactory = factory;
         }
 
         public void UseConnectionFactory<T>()
             where T : ISqlConnectionFactory, new()
         {
-            _database.ConnectionFactory = new T();
+            Database.ConnectionFactory = new T();
         }
         #endregion
 
@@ -136,7 +136,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseMapperFactory(IMapperFactory factory, Action<MapperFactoryConfigurationBuilder> configure)
         {
             configure?.Invoke(new MapperFactoryConfigurationBuilder(factory));
-            _database.MapperFactory = factory;
+            Database.MapperFactory = factory;
         }
 
         public void UseMapperFactory<T>()
@@ -150,7 +150,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             var factory = new T();
             configure?.Invoke(new MapperFactoryConfigurationBuilder(factory));
-            _database.MapperFactory = factory;
+            Database.MapperFactory = factory;
         }
 
         public void UseDefaultMapperFactory()
@@ -163,7 +163,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             var mapperFactory = new MapperFactory();
             mapperFactory.RegisterDefaultMappers();
             configure?.Invoke(new MapperFactoryConfigurationBuilder(mapperFactory));
-            _database.MapperFactory = mapperFactory;
+            Database.MapperFactory = mapperFactory;
         }
         #endregion
 
@@ -176,7 +176,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseEntityFactory(IEntityFactory factory, Action<EntityFactoryConfigurationBuilder> configure)
         {
             configure?.Invoke(new EntityFactoryConfigurationBuilder(factory));
-            _database.EntityFactory = factory;
+            Database.EntityFactory = factory;
         }
 
         public void UseEntityFactory<T>()
@@ -190,7 +190,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             var factory = new T();
             configure?.Invoke(new EntityFactoryConfigurationBuilder(factory));
-            _database.EntityFactory = factory;
+            Database.EntityFactory = factory;
         }
 
         public void UseDefaultEntityFactory()
@@ -203,29 +203,29 @@ namespace HatTrick.DbEx.Sql.Configuration
             var facgtory = new EntityFactory();
             facgtory.RegisterDefaultFactories();
             configure?.Invoke(new EntityFactoryConfigurationBuilder(facgtory));
-            _database.EntityFactory = facgtory;
+            Database.EntityFactory = facgtory;
         }
         #endregion
 
         #region hooks
         public void OnAssemblingSqlStatement(Action<BeforeAssemblyContext> action)
         {
-            _database.ExecutionPipelineFactory.BeforeAssembly.AddToEnd(action);
+            Database.ExecutionPipelineFactory.BeforeAssembly.AddToEnd(action);
         }
 
         public void OnAssembledSqlStatement(Action<AfterAssemblyContext> action)
         {
-            _database.ExecutionPipelineFactory.AfterAssembly.AddToEnd(action);
+            Database.ExecutionPipelineFactory.AfterAssembly.AddToEnd(action);
         }
 
         public void OnInsertingEntity(Action<BeforeInsertContext> action)
         {
-            _database.ExecutionPipelineFactory.BeforeInsert.AddToEnd(action);
+            Database.ExecutionPipelineFactory.BeforeInsert.AddToEnd(action);
         }
 
         public void OnInsertedEntity(Action<AfterInsertContext> action)
         {
-            _database.ExecutionPipelineFactory.AfterInsert.AddToEnd(action);
+            Database.ExecutionPipelineFactory.AfterInsert.AddToEnd(action);
         }
         #endregion
         #endregion

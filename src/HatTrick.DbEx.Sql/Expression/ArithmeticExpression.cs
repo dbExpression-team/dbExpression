@@ -7,7 +7,82 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpression, 
         IAssemblyPart,
         IDbExpressionAliasProvider,
-        ISupportedForSelectExpression
+        ISupportedForSelectExpression,
+        ISupportedForFunctionExpression<CastFunctionExpression, byte>,
+        ISupportedForFunctionExpression<CastFunctionExpression, short>,
+        ISupportedForFunctionExpression<CastFunctionExpression, int>,
+        ISupportedForFunctionExpression<CastFunctionExpression, long>,
+        ISupportedForFunctionExpression<CastFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<CastFunctionExpression, double>,
+        ISupportedForFunctionExpression<CastFunctionExpression, float>,
+        ISupportedForFunctionExpression<CastFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, byte>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, short>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, int>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, long>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, double>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, float>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, byte>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, short>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, int>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, long>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, double>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, float>,
+        ISupportedForFunctionExpression<IsNullFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, byte>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, short>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, int>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, long>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, double>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, float>,
+        ISupportedForFunctionExpression<MaximumFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, byte>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, short>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, int>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, long>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, double>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, float>,
+        ISupportedForFunctionExpression<MinimumFunctionExpression, DateTime>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, byte>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, short>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, int>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, long>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, double>,
+        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, float>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, byte>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, short>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, int>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, long>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, double>,
+        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, float>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, byte>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, short>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, int>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, long>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, double>,
+        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, float>,
+        ISupportedForFunctionExpression<SumFunctionExpression, byte>,
+        ISupportedForFunctionExpression<SumFunctionExpression, short>,
+        ISupportedForFunctionExpression<SumFunctionExpression, int>,
+        ISupportedForFunctionExpression<SumFunctionExpression, long>,
+        ISupportedForFunctionExpression<SumFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<SumFunctionExpression, double>,
+        ISupportedForFunctionExpression<SumFunctionExpression, float>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, byte>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, short>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, int>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, long>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, decimal>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, double>,
+        ISupportedForFunctionExpression<VarianceFunctionExpression, float>
     {
         #region internals
         protected string Alias { get; private set; }
@@ -101,6 +176,12 @@ namespace HatTrick.DbEx.Sql.Expression
             Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
             ExpressionOperator = arithmeticOperator;
         }
+
+        public ArithmeticExpression(IDbDateFunctionExpression leftArg, FieldExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
         #endregion
 
         #region to string
@@ -120,6 +201,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic expression to value operators arithmetic operators
+
         public static ArithmeticExpression operator +(ArithmeticExpression a, string b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
         public static ArithmeticExpression operator +(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
@@ -130,6 +212,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static ArithmeticExpression operator +(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
+         public static ArithmeticExpression operator +(ArithmeticExpression a, DateTime b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+
         public static ArithmeticExpression operator -(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
         public static ArithmeticExpression operator -(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
@@ -137,6 +221,8 @@ namespace HatTrick.DbEx.Sql.Expression
         public static ArithmeticExpression operator -(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
         public static ArithmeticExpression operator -(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression operator -(ArithmeticExpression a, DateTime b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
         public static ArithmeticExpression operator *(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
 

@@ -32,8 +32,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             Configuration = database;
             ExpressionSet = expressionSet;
-            appender = new Lazy<IAppender>(() => database.AppenderFactory.CreateAppender(database.AssemblerConfiguration));
-            //_statementBuilder = new Lazy<ISqlStatementBuilder>(() => config.StatementBuilderFactory.CreateSqlStatementBuilder(config.AssemblerConfiguration, ExpressionSet, appender.Value, config.ParameterBuilderFactory.CreateSqlParameterBuilder()));
+            appender = new Lazy<IAppender>(() => database.AppenderFactory.CreateAppender(database.AssemblerConfiguration.Minify));
+            _statementBuilder = new Lazy<ISqlStatementBuilder>(() => config.StatementBuilderFactory.CreateSqlStatementBuilder(config.AssemblerConfiguration, ExpressionSet, appender.Value, config.ParameterBuilderFactory.CreateSqlParameterBuilder()));
             _statementExecutor = new Lazy<ISqlStatementExecutor>(() => database.ExecutorFactory.CreateSqlStatementExecutor(ExpressionSet));
             _connection = new Lazy<SqlConnection>(() => connection ?? database.ConnectionFactory.CreateSqlConnection(config.ConnectionStringSettings[(ExpressionSet.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>).Metadata.Schema.Database.ConnectionName]));
         }

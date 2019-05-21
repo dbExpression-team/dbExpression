@@ -62,6 +62,9 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public static ArithmeticExpression operator -(GetDateFunctionExpression a, GetDateFunctionExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
         #endregion
+        public static ArithmeticExpression operator +(GetDateFunctionExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression operator -(GetDateFunctionExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
         #region GetDate to value relational operators
         public static FilterExpression operator ==(GetDateFunctionExpression a, DateTime b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);

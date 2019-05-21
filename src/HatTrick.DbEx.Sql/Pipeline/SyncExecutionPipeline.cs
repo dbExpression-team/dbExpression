@@ -11,15 +11,12 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class SyncExecutionPipeline
+    public class SyncExecutionPipeline : ExecutionPipeline
     {
-        private DbExpressionConfiguration _config;
-        private DatabaseConfiguration _database;
-
-        private SyncPipeline<BeforeAssemblyContext> _beforeAssembly { get; set; }
-        private SyncPipeline<AfterAssemblyContext> _afterAssembly { get; set; }
-        private SyncPipeline<BeforeInsertContext> _beforeInsert { get; set; }
-        private SyncPipeline<AfterInsertContext> _afterInsert { get; set; }
+        private SyncPipeline<BeforeAssemblyContext> BeforeAssembly { get; set; }
+        private SyncPipeline<AfterAssemblyContext> AfterAssembly { get; set; }
+        private SyncPipeline<BeforeInsertContext> BeforeInsert { get; set; }
+        private SyncPipeline<AfterInsertContext> AfterInsert { get; set; }
 
         public SyncExecutionPipeline(
             DbExpressionConfiguration config,
@@ -28,14 +25,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             SyncPipeline<AfterAssemblyContext> afterAssembly,
             SyncPipeline<BeforeInsertContext> beforeInsert,
             SyncPipeline<AfterInsertContext> afterInsert
-        )
+        ) : base(config, database)
         {
-            _config = config;
-            _database = database;
-            _beforeAssembly = beforeAssembly;
-            _afterAssembly = afterAssembly;
-            _beforeInsert = beforeInsert;
-            _afterInsert = afterInsert;
+            BeforeAssembly = beforeAssembly;
+            AfterAssembly = afterAssembly;
+            BeforeInsert = beforeInsert;
+            AfterInsert = afterInsert;
         }
 
         #region TerminationExpressionBuilder
@@ -47,8 +42,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateValueMapper<int>(),
-                (Func<ISqlRowReader, IValueMapper<int>, int>)null
+                (Func<ISqlRowReader, int>)null
             );
 
         }
@@ -63,9 +57,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateValueMapper<T>(),
-                (reader, mapper) =>
+                reader =>
                 {
+                    var mapper = Database.MapperFactory.CreateValueMapper<T>();
                     var field = reader.ReadRow()?.ReadField();
                     if (field == null)
                         return default;
@@ -84,9 +78,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateValueMapper<T>(),
-                (reader, mapper) =>
+                reader =>
                 {
+                    var mapper = Database.MapperFactory.CreateValueMapper<T>();
                     var values = new List<T>();
 
                     ISqlRow row;
@@ -114,8 +108,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateExpandoObjectMapper(),
-                (reader, mapper) =>
+                reader =>
                 {
                     var value = new ExpandoObject();
 
@@ -123,6 +116,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (row == null)
                         return value;
 
+                    var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
                     mapper.Map(value, row);
 
                     return (dynamic)value;
@@ -140,16 +134,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateExpandoObjectMapper(),
-                (reader, mapper) =>
+                reader =>
                 {
+                    var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
                     var values = new List<dynamic>();
 
                     ISqlRow row = null;
                     while ((row = reader.ReadRow()) != null)
                     {
-                        mapper = mapper ?? _database.MapperFactory.CreateExpandoObjectMapper();
-
                         var value = new ExpandoObject();
                         mapper.Map(value, row);
                         values.Add(value);
@@ -172,15 +164,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>),
-                (reader, mapper) =>
+                reader =>
                 {
                     var row = reader.ReadRow();
                     if (row == null)
                         return default;
 
-                    var valueMapper = _database.MapperFactory.CreateValueMapper();
-                    var entity = _database.EntityFactory.CreateEntity<T>();
+                    var mapper = Database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>);
+                    var valueMapper = Database.MapperFactory.CreateValueMapper();
+                    var entity = Database.EntityFactory.CreateEntity<T>();
 
                     mapper.Map(entity, row, valueMapper);
 
@@ -201,18 +193,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return Execute(
                 builder,
                 connection,
-                _database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>),
-                (reader, mapper) =>
+                reader =>
                 {
                     var values = new List<T>();
 
                     ISqlRow row;
-                    IValueMapper valueMapper = null;
+                    var mapper = Database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>);
+                    var valueMapper = Database.MapperFactory.CreateValueMapper();
                     while ((row = reader.ReadRow()) != null)
                     {
-                        valueMapper = valueMapper ?? _database.MapperFactory.CreateValueMapper();
-
-                        var entity = _database.EntityFactory.CreateEntity<T>();
+                        var entity = Database.EntityFactory.CreateEntity<T>();
                         mapper.Map(entity, row, valueMapper);
                         values.Add(entity);
                     }
@@ -223,34 +213,29 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
         #endregion
 
-        private T Execute<T, TMapper>(
+        private T Execute<T>(
             ITerminationExpressionBuilder builder,
             SqlConnection connection,
-            TMapper mapper,
-            Func<ISqlRowReader, TMapper, T> transform
+            Func<ISqlRowReader,T> transform
         )
-        where TMapper : class, IMapper
         {
-
             var expression = (builder as IDbExpressionSetProvider).Expression;
 
-            var executionContext = new ExecutionPipelineContext(_config, _database, expression, connection);
-
             //assembly
-            _beforeAssembly.Invoke(new Lazy<BeforeAssemblyContext>(() => new BeforeAssemblyContext(expression)));
+            BeforeAssembly.Invoke(new Lazy<BeforeAssemblyContext>(() => new BeforeAssemblyContext(expression)));
 
-            var appender = _database.AppenderFactory.CreateAppender(_database.AssemblerConfiguration);
-            var parameterBuilder = _database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = _database.StatementBuilderFactory.CreateSqlStatementBuilder(_database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var appender = Database.AppenderFactory.CreateAppender(Database.AssemblerConfiguration.Minify);
+            var parameterBuilder = Database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var statementBuilder = Database.StatementBuilderFactory.CreateSqlStatementBuilder(Database.AssemblerConfiguration, expression, appender, parameterBuilder);
 
-            _afterAssembly.Invoke(new Lazy<AfterAssemblyContext>(() => new AfterAssemblyContext(expression, statementBuilder)));
+            AfterAssembly.Invoke(new Lazy<AfterAssemblyContext>(() => new AfterAssemblyContext(expression, statementBuilder)));
 
             var statement = statementBuilder.CreateSqlStatement();
 
             switch (expression.StatementExecutionType)
             {
                 case SqlStatementExecutionType.Insert:
-                    _beforeInsert.Invoke(new Lazy<BeforeInsertContext>(() => new BeforeInsertContext(expression, appender, parameterBuilder)));
+                    BeforeInsert.Invoke(new Lazy<BeforeInsertContext>(() => new BeforeInsertContext(expression, appender, parameterBuilder)));
                     break;
                 case SqlStatementExecutionType.Update:
                 case SqlStatementExecutionType.Delete:
@@ -264,14 +249,19 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
             }
 
+            var executor = Database.ExecutorFactory.CreateSqlStatementExecutor(expression);
+
+            if (connection == null)
+                connection = Database.ConnectionFactory.CreateSqlConnection(Config.ConnectionStringSettings[(expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>).Metadata.Schema.Database.ConnectionName]);
+
             if (transform == null)
             {
-                executionContext.StatementExecutor.ExecuteNonQuery(statement, executionContext.Connection);
+                executor.ExecuteNonQuery(statement, connection);
 
                 switch (expression.StatementExecutionType)
                 {
                     case SqlStatementExecutionType.Insert:
-                        _afterInsert.Invoke(new Lazy<AfterInsertContext>(() => new AfterInsertContext(expression, parameterBuilder, _database.MapperFactory)));
+                        AfterInsert.Invoke(new Lazy<AfterInsertContext>(() => new AfterInsertContext(expression, parameterBuilder, Database.MapperFactory)));
                         break;
                     case SqlStatementExecutionType.Update:
                     case SqlStatementExecutionType.Delete:
@@ -288,12 +278,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 return default;
             }
 
-            using (var reader = executionContext.StatementExecutor.ExecuteQuery(statement, executionContext.Connection))
+            using (var reader = executor.ExecuteQuery(statement, connection))
             {
                 //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
                 if (reader == null)
                     return default;
-                return transform(reader, mapper);
+                return transform(reader);
             }
         }
     }

@@ -14,55 +14,46 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; }
         public ExpressionSet ExpressionSet { get; }
-        public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerResolver { get; }
-        public Func<Type, IAssemblyPartAppender> PartAppenderResolver { get; }
-        public Func<Type, IValueTypeFormatter> ValueTypeFormatterResolver { get; }
+        public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerFactory { get; }
+        public Func<Type, IAssemblyPartAppender> PartAppenderFactory { get; }
+        public Func<Type, IValueTypeFormatter> ValueTypeFormatterFactory { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
             ExpressionSet dbExpression,
-            Func<SqlStatementExecutionType, ISqlStatementAssembler> assemblerResolver,
-            Func<Type, IAssemblyPartAppender> partAppenderResolver,
-            Func<Type, IValueTypeFormatter> valueTypeFormatterResolver,
+            Func<SqlStatementExecutionType, ISqlStatementAssembler> assemblerFactory,
+            Func<Type, IAssemblyPartAppender> partAppenderFactory,
+            Func<Type, IValueTypeFormatter> valueTypeFormatterFactory,
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         )
         {
             AssemblerConfiguration = config;
             ExpressionSet = dbExpression;
-            AssemblerResolver = assemblerResolver;
-            PartAppenderResolver = partAppenderResolver;
-            ValueTypeFormatterResolver = valueTypeFormatterResolver;
+            AssemblerFactory = assemblerFactory;
+            PartAppenderFactory = partAppenderFactory;
+            ValueTypeFormatterFactory = valueTypeFormatterFactory;
             Appender = appender;
             Parameters = parameterBuilder;
         }
 
-        protected virtual IAssemblyPartAppender ResolvePartAppender(Type t)
-            => PartAppenderResolver(t);
-
-        protected virtual IAssemblyPartAppender<T> ResolvePartAppender<T>()
-            where T : IAssemblyPart
-            => PartAppenderResolver(typeof(T)) as IAssemblyPartAppender<T>;
-
-        protected virtual IValueTypeFormatter ResolveValueFormatter<T>()
-            where T : IComparable
-            => ValueTypeFormatterResolver(typeof(T)) as IValueTypeFormatter;
-
-        protected virtual IValueTypeFormatter ResolveValueFormatter(Type t)
-            => ValueTypeFormatterResolver(t);
-
         public string FormatValueType((Type, object) value)
         {
-            var formatter = ResolveValueFormatter(value.Item1);
+            var formatter = ValueTypeFormatterFactory(value.Item1);
+            if (formatter == null)
+                throw new DbExpressionConfigurationException($"Could not resolve a value formatter for type '{value.Item1}', please ensure an value formatter has been registered during startup initialization of DbExpression.");
+
             return formatter.Format(value.Item2);
         }
 
         public string FormatValueType<T>(object value)
             where T : IComparable
         {
-            var formatter = ResolveValueFormatter<T>();
+            if (!(ValueTypeFormatterFactory(typeof(T)) is IValueTypeFormatter formatter))
+                throw new DbExpressionConfigurationException($"Could not resolve a value formatter for type '{value.GetType()}', please ensure an value formatter has been registered during startup initialization of DbExpression.");
+
             return formatter.Format(value);
         }
 
@@ -76,26 +67,32 @@ namespace HatTrick.DbEx.Sql.Assembler
                 Configuration = AssemblerConfiguration,
             };
 
-            AssemblerResolver(ExpressionSet.StatementExecutionType).AssembleStatement(ExpressionSet, this, context);
-            _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
+            var assembler = AssemblerFactory(ExpressionSet.StatementExecutionType);
+            if (assembler == null)
+                throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{ExpressionSet.StatementExecutionType}', please ensure an assembler has been registered during startup initialization of DbExpression.");
 
-            return _sqlStatement;
+            assembler.AssembleStatement(ExpressionSet, this, context);
+
+            return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
         }
-
-        public void AppendPart<T>(object part)
-          where T : class, IAssemblyPart => AppendPart(part as T, new AssemblyContext());
 
         public void AppendPart((Type, object) part, AssemblyContext context)
         {
-            var assembler = ResolvePartAppender(part.Item1);
-            assembler.AppendPart(part.Item2, this, context);
+            var appender = PartAppenderFactory(part.Item1);
+            if (appender == null)
+                throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{part.Item1}', please ensure an appender has been registered during startup initialization of DbExpression.");
+
+            appender.AppendPart(part.Item2, this, context);
         }
 
         public void AppendPart<T>(T part, AssemblyContext context)
             where T : class, IAssemblyPart
         {
-            var assembler = ResolvePartAppender(typeof(T));
-            assembler.AppendPart(part, this, context);
+            var appender = PartAppenderFactory(typeof(T));
+            if (appender == null)
+                throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{typeof(T)}', please ensure an appender has been registered during startup initialization of DbExpression.");
+
+            PartAppenderFactory(typeof(T)).AppendPart(part, this, context);
         }
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";

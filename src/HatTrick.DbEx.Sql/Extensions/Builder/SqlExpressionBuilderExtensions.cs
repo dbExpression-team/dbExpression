@@ -13,7 +13,13 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
     {
         private static DatabaseConfiguration GetDatabaseConfiguration(this ITerminationExpressionBuilder builder)
         {
-            var dbName = ((builder as IDbExpressionSetProvider).Expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>).Metadata.Schema.Database.Name;
+            var entity = (builder as IDbExpressionSetProvider).Expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
+            var dbName = entity.Metadata?.Schema?.Database?.Name;
+            if (string.IsNullOrWhiteSpace(dbName))
+                throw new DbExpressionConfigurationException($"Could not resolve database configuration for entity '{entity}', please review and ensure the correct configuration and startup initialization for DbExpression.");
+            if (!DbExpression.Configuration.Databases.ContainsKey(dbName))
+                throw new DbExpressionConfigurationException($"Database configuration for entity '{entity}' was not found, please review and ensure the correct configuration and startup initialization for DbExpression.");
+
             return DbExpression.Configuration.Databases[dbName];
         }
 

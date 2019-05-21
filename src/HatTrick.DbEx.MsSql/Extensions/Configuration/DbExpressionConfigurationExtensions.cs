@@ -22,6 +22,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
         }
 
         //TO_DISCUSS: Should metadata include server info so we can infer compatibility version, or specifically specify based on method name (i.e. AddMsSql2014Database)
+        #pragma warning disable IDE0060
         private static void ConfigureMsSqlCommon<T>(this DbExpressionConfigurationBuilder builder, DatabaseConfigurationBuilder config)
             where T : class, IDatabaseMetadataProvider, new()
         {

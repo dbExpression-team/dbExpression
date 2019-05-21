@@ -82,6 +82,19 @@ namespace HatTrick.DbEx.Sql.Expression
             ExpressionOperator = expressionOperator;
         }
 
+        internal FilterExpression(LiteralExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        {
+            if (rightArg != null)
+            {
+                Expression = new DbExpressionPair((typeof(LiteralExpression), leftArg), (rightArg.GetType(), rightArg));
+            }
+            else
+            {
+                Expression = new DbExpressionPair((typeof(LiteralExpression), leftArg), (typeof(object), DBNull.Value));
+            }
+            ExpressionOperator = expressionOperator;
+        }
+
         public FilterExpression(IDbNumericFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
             if (rightArg != null)

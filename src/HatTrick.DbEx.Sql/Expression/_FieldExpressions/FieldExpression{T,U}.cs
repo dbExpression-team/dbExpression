@@ -103,6 +103,17 @@ namespace HatTrick.DbEx.Sql.Expression
         public static ArithmeticExpression<TValue> operator /(FieldExpression<TEntity, TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Divide);
 
         public static ArithmeticExpression<TValue> operator %(FieldExpression<TEntity, TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Modulo);
+
+        public static ArithmeticExpression<TValue> operator +(FieldExpression<TEntity, TValue> a, LiteralExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression<TValue> operator -(FieldExpression<TEntity, TValue> a, LiteralExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression<TValue> operator *(FieldExpression<TEntity, TValue> a, LiteralExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Multiply);
+
+        public static ArithmeticExpression<TValue> operator /(FieldExpression<TEntity, TValue> a, LiteralExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Divide);
+
+        public static ArithmeticExpression<TValue> operator %(FieldExpression<TEntity, TValue> a, LiteralExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Modulo);
+
         #endregion
 
         #region field to field arithmetic operators

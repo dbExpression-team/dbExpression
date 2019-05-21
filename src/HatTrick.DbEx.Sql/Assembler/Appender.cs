@@ -4,68 +4,39 @@ using System.Text;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class AppenderIndentation
-    {
-        private IAppender appender;
-        private Action increase;
-        private Action decrease;
-
-        public byte CurrentLevel { get; set; }
-
-        public AppenderIndentation(IAppender appender, Action increase, Action decrease)
-        {
-            this.appender = appender;
-            this.increase = increase;
-            this.decrease = decrease;
-        }
-
-        public static AppenderIndentation operator ++(AppenderIndentation a)
-        {
-            a.CurrentLevel++;
-            a.increase();
-            return a;
-        }
-
-        public static AppenderIndentation operator --(AppenderIndentation a)
-        {
-            if (a.CurrentLevel > 0)
-            {
-                a.CurrentLevel--;
-                a.decrease();
-            }
-            return a;
-        }
-
-        public IAppender Write(string value)
-            => appender.Write(value);
-
-        public IAppender If(bool append, params Action<Appender>[] values)
-            => appender.If(append, values);
-
-        public IAppender IfNotEmpty(string test, params Action<Appender>[] values)
-            => appender.IfNotEmpty(test, values);
-
-        public IAppender Indent()
-            => appender.Indent();
-
-        public IAppender LineBreak()
-            => appender.LineBreak();
-    }
-
     public class Appender : IAppender
     {
-        private readonly StringBuilder builder = new StringBuilder();
+        #region internals
+        private const string t1 = "\t";
+        private const string t2 = "\t\t";
+        private const string t3 = "\t\t\t";
+        private const string t4 = "\t\t\t\t";
+        private const string t5 = "\t\t\t\t\t";
+        private const string t6 = "\t\t\t\t\t\t";
+        private const string t7 = "\t\t\t\t\t\t\t";
+        private const string t8 = "\t\t\t\t\t\t\t\t";
+        private const string t9 = "\t\t\t\t\t\t\t\t\t";
+        private const string t10 = "\t\t\t\t\t\t\t\t\t\t";
+
+        private static readonly string[] tabs = new string[10] { t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 };
+
+        private readonly StringBuilder builder = new StringBuilder(512);
         private readonly bool minify;
-        private string _currentIndentationValue = string.Empty;
+        #endregion
 
+        #region interface
         public AppenderIndentation Indentation { get; set; }
+        #endregion
 
-        public Appender(DbExpressionAssemblerConfiguration config)
+        #region constructors
+        public Appender(bool minify)
         {
-            minify = config.Minify;
-            Indentation = new AppenderIndentation(this, () => IncreaseIndent(), () => DecreaseIndent());
+            this.minify = minify;
+            Indentation = new AppenderIndentation(this);
         }
+        #endregion
 
+        #region methods
         public IAppender LineBreak()
         {
             builder.Append(minify ? " " : Environment.NewLine);
@@ -94,8 +65,20 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Indent()
         {
-            if (!string.IsNullOrEmpty(_currentIndentationValue))
-                builder.Append(_currentIndentationValue);
+            if (minify || Indentation.CurrentLevel == 0)
+                return this;
+
+            if (Indentation.CurrentLevel < tabs.Length)
+            {
+                builder.Append(tabs[Indentation.CurrentLevel - 1]);
+            }
+            else
+            {
+                builder.Append(tabs[tabs.Length - 1]);
+                for (var i = tabs.Length; i < Indentation.CurrentLevel; i++)
+                    builder.Append("\t");
+            }
+
             return this;
         }
 
@@ -121,44 +104,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             return this;
         }
 
-        private Appender IncreaseIndent()
-        {
-            if (!minify)
-                _currentIndentationValue += "\t";
-
-            return this;
-        }
-
-        private Appender DecreaseIndent()
-        {
-            if (!minify)
-            {
-                _currentIndentationValue = string.Empty;
-                for (var i = 0; i < Indentation.CurrentLevel; i++)
-                    _currentIndentationValue += "\t";
-            }
-
-            return this;
-        }
-
         public override string ToString() => builder.ToString();
-    }
-
-    public interface IAppender
-    {
-        AppenderIndentation Indentation { get; set; }
-
-        IAppender LineBreak();
-
-        IAppender Write(string value);
-
-        IAppender Write(char value);
-        IAppender Indent();
-
-        IAppender If(bool append, params Action<Appender>[] values);
-
-        IAppender IfNotEmpty(string test, params Action<Appender>[] values);
-
-        string ToString();
+        #endregion
     }
 }

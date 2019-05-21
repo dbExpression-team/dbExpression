@@ -12,6 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
 {
     public abstract class ExecutorTestBase : TestBase
     {
+        private static readonly object _lock = new object();
         protected ExecutorTestBase()
         {
             ResetDatabase();
@@ -19,36 +20,39 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
 
         public override DatabaseConfiguration ConfigureForMsSqlVersion(int version)
         {
-            switch (version)
+            lock (_lock)
             {
-                case 2012:
-                    {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                switch (version)
+                {
+                    case 2012:
                         {
-                            c.UseConnectionStringsFromAppConfig();
-                            c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                db =>
-                                {
-                                    db.ConfigureAssembler(a => a.Minify = false);
-                                });
-                        });
-                        return DbExpression.Configuration.Databases["MsSqlDbExTest"];
-                    }
-                case 2014:
-                    {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.UseConnectionStringsFromAppConfig();
+                                c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    db =>
+                                    {
+                                        db.ConfigureAssembler(a => a.Minify = false);
+                                    });
+                            });
+                            return DbExpression.Configuration.Databases["MsSqlDbExTest"];
+                        }
+                    case 2014:
                         {
-                            c.UseConnectionStringsFromAppConfig();
-                            c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                db =>
-                                {
-                                    db.ConfigureAssembler(a => a.Minify = false);
-                                });
-                        });
-                        return DbExpression.Configuration.Databases["MsSqlDbExTest"];
-                    }
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.UseConnectionStringsFromAppConfig();
+                                c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    db =>
+                                    {
+                                        db.ConfigureAssembler(a => a.Minify = false);
+                                    });
+                            });
+                            return DbExpression.Configuration.Databases["MsSqlDbExTest"];
+                        }
+                }
+                throw new NotImplementedException($"MsSql version {version} has not been implemented");
             }
-            throw new NotImplementedException($"MsSql version {version} has not been implemented");
         }
 
         public void ResetDatabase()

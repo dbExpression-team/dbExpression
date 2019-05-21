@@ -135,7 +135,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         db.fx.Coalesce(
                             dbo.Purchase.ShipDate,
                             dbo.Purchase.PurchaseDate,
-                            dbo.Purchase.DateCreated + DateTime.Now,
+                            db.fx.GetDate() + dbo.Purchase.PurchaseDate,
+                            db.fx.Literal(DateTime.Now) + dbo.Purchase.DateCreated,
                             dbo.Purchase.DateUpdated + dbo.Purchase.DateCreated
                         ).As("relevant_date")
                     ).From(dbo.Purchase);
