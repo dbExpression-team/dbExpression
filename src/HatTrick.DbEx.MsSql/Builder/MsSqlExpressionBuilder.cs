@@ -14,6 +14,9 @@ namespace HatTrick.DbEx.MsSql.Builder
         #region constructors
         public MsSqlExpressionBuilder(ExpressionSet expression) : base(expression)
         { }
+
+        protected MsSqlExpressionBuilder()
+        { }
         #endregion
 
         #region select one

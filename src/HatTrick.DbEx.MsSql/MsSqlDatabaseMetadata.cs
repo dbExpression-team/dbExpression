@@ -9,7 +9,5 @@ namespace HatTrick.DbEx.MsSql
 {
     public class MsSqlDatabaseMetadata : SqlDatabaseMetadata
     {
-        public MsSqlDatabaseMetadata(string name, string connectionName) : base(name, connectionName)
-        { }
     }
 }

@@ -124,6 +124,7 @@
     <Compile Include="Configuration\DatabaseConfigurationBuilder.cs" />
     <Compile Include="Configuration\DbExpressionConfigurationBuilder.cs" />
     <Compile Include="Configuration\DbExpression.cs" />
+    <Compile Include="Configuration\RuntimeDatabaseMap.cs" />
     <Compile Include="Configuration\SqlStatementExecutorFactoryConfigurationBuilder.cs" />
     <Compile Include="Configuration\MapperFactoryConfigurationBuilder.cs" />
     <Compile Include="Configuration\EntityFactoryConfigurationBuilder.cs" />
@@ -252,14 +253,13 @@
     <Compile Include="Builder\Syntax\IUpdateInitiationExpressionBuilder.cs" />
     <Compile Include="Configuration\DbExpressionAssemblerConfiguration.cs" />
     <Compile Include="Connection\SqlConnection.cs" />
-    <Compile Include="Configuration\DbExpressionConfiguration.cs" />
+    <Compile Include="Configuration\DbExpressionRuntimeConfiguration.cs" />
     <Compile Include="SqlStatementExecutionType.cs" />
     <Compile Include="Connection\ISqlConnectionFactory.cs" />
     <Compile Include="Executor\ISqlStatementExecutor.cs" />
     <Compile Include="Executor\ISqlStatementExecutorFactory.cs" />
     <Compile Include="Connection\SqlConnectionFactory.cs" />
     <Compile Include="Executor\ISqlStatementExecutor{T}.cs" />
-    <Compile Include="Extensions\Configuration\DbExpressionConfigurationBuilderExtensions.cs" />
     <Compile Include="ISqlFieldMetadata.cs" />
     <Compile Include="Mapper\EntityFactory.cs" />
     <Compile Include="Mapper\EntityMapper{T}.cs" />
@@ -347,6 +347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="Extensions\Configuration\" />
     <Folder Include="Extensions\Expression\" />
   </ItemGroup>
   <ItemGroup>

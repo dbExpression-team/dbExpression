@@ -2,6 +2,6 @@
 {
     public static class DbExpression
     {
-        public static DbExpressionConfiguration Configuration { get; set; } = new DbExpressionConfiguration();
+        public static DbExpressionRuntimeConfiguration Configuration { get; set; } = new DbExpressionRuntimeConfiguration();
     }
 }

@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
             if (!DbExpression.Configuration.Databases.ContainsKey(dbName))
                 throw new DbExpressionConfigurationException($"Database configuration for entity '{entity}' was not found, please review and ensure the correct configuration and startup initialization for DbExpression.");
 
-            return DbExpression.Configuration.Databases[dbName];
+            return DbExpression.Configuration.Databases[dbName].DatabaseConfiguration;
         }
 
         private static SyncExecutionPipeline CreateSyncExecutionPipeline(this ITerminationExpressionBuilder builder)

@@ -14,11 +14,15 @@ namespace HatTrick.DbEx.Sql.Builder
         ITerminationExpressionBuilder,
         IDbExpressionSetProvider
     {
-        public ExpressionSet Expression { get; set; } = new ExpressionSet();
+        public ExpressionSet Expression { get; protected set; } = new ExpressionSet();
 
         protected SqlExpressionBuilder(ExpressionSet expression)
         {
             Expression = expression;
+        }
+
+        protected SqlExpressionBuilder()
+        {
         }
 
         ExpressionSet IDbExpressionSetProvider.Expression => Expression;
