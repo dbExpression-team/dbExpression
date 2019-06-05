@@ -189,7 +189,6 @@ GO
 
 CREATE TABLE [sec].[Person](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PersonId] [bigint] NOT NULL,
 	[SSN] [char](9) NOT NULL,
 	[DateCreated] [datetime] NOT NULL,
 	[DateUpdated] [datetime] NOT NULL,

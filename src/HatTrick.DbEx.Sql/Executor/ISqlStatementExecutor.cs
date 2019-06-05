@@ -1,12 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Data.Common;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
     public interface ISqlStatementExecutor
     {
-        int ExecuteNonQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null);
-        Task<int> ExecuteNonQueryAsync(SqlStatement statement, SqlConnection connection, int? commandTimeout = null);
-        ISqlRowReader ExecuteQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null);
-        Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, int? commandTimeout = null);
+        int ExecuteNonQuery(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand);
+        Task<int> ExecuteNonQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct);
+        ISqlRowReader ExecuteQuery(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand);
+        Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct);
     }
 }

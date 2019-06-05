@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
@@ -10,21 +11,29 @@ namespace HatTrick.DbEx.Sql.Executor
         private int currentRowIndex;
         protected SqlConnection SqlConnection { get; private set; }
         protected IDataReader DataReader { get; private set; }
+        protected CancellationToken CancellationToken { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(SqlConnection sqlConnection, IDataReader dataReader)
+        public DataReaderWrapper(SqlConnection sqlConnection, IDataReader dataReader) : this(sqlConnection, dataReader, CancellationToken.None) { }
+
+        public DataReaderWrapper(SqlConnection sqlConnection, IDataReader dataReader, CancellationToken ct)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
+            CancellationToken = ct == null ? CancellationToken.None : ct;
+            CancellationToken.Register(() => Dispose(true));
         }
         #endregion
 
         #region methods
         public ISqlRow ReadRow()
         {
+            CancellationToken.ThrowIfCancellationRequested();
+
             try
             {
+
                 if (DataReader.Read())
                 {
                     var row = new ISqlField[DataReader.FieldCount];
