@@ -22,7 +22,6 @@ namespace Data.dbo
         #region constructor
         public Address()
         {
-
         }
         #endregion
     }
@@ -35,7 +34,7 @@ namespace Data.dbo
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public GenderType GenderType { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
@@ -44,7 +43,6 @@ namespace Data.dbo
         #region constructor
         public Person()
         {
-
         }
         #endregion
     }
@@ -63,7 +61,6 @@ namespace Data.dbo
         #region constructor
         public Person_Address()
         {
-
         }
         #endregion
     }
@@ -77,8 +74,8 @@ namespace Data.dbo
         public ProductCategoryType ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Price { get; set; }
         public decimal ListPrice { get; set; }
+        public decimal Price { get; set; }
         public int Quantity { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
@@ -87,7 +84,6 @@ namespace Data.dbo
         #region constructor
         public Product()
         {
-
         }
         #endregion
     }
@@ -109,12 +105,11 @@ namespace Data.dbo
         #region constructor
         public Purchase()
         {
-
         }
         #endregion
     }
     #endregion
-    #region purchase
+    #region purchase line
     [Serializable]
     public partial class PurchaseLine : IDbEntity
     {
@@ -131,7 +126,6 @@ namespace Data.dbo
         #region constructor
         public PurchaseLine()
         {
-
         }
         #endregion
     }
@@ -153,7 +147,6 @@ namespace Data.sec
         #region constructor
         public Person()
         {
-
         }
         #endregion
     }

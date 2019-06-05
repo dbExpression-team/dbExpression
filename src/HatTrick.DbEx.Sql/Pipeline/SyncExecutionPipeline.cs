@@ -2,12 +2,10 @@
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Dynamic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
@@ -35,28 +33,46 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region TerminationExpressionBuilder
         public void Execute(ITerminationExpressionBuilder builder)
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public void Execute(ITerminationExpressionBuilder builder, Action<DbCommand> configureCommand)
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public void Execute(ITerminationExpressionBuilder builder, SqlConnection connection)
-        {
-            Execute(
-                builder,
-                connection,
-                (Func<ISqlRowReader, int>)null
-            );
+            => Execute(builder, connection, _ => { });
 
-        }
+        public void Execute(ITerminationExpressionBuilder builder, int commandTimeout)
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public void Execute(ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public void Execute(ITerminationExpressionBuilder builder, SqlConnection connection, Action<DbCommand> configureCommand)
+            => Execute(builder, connection, configureCommand, (Func<ISqlRowReader, int>)null);
         #endregion
 
         #region ValueTerminationExpressionBuilder
         public T Execute<T>(IValueTerminationExpressionBuilder<T> builder)
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public T Execute<T>(IValueTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public T Execute<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => Execute(builder, connection, _ => { });
+
+        public T Execute<T>(IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public T Execute<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public T Execute<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
         {
             return Execute(
                 builder,
                 connection,
+                configureCommand,
                 reader =>
                 {
                     var mapper = Database.MapperFactory.CreateValueMapper<T>();
@@ -71,13 +87,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region ValueListTerminationExpressionBuilder
         public IList<T> Execute<T>(IValueListTerminationExpressionBuilder<T> builder)
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public IList<T> Execute<T>(IValueListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public IList<T> Execute<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => Execute(builder, connection, _ => { });
+
+        public IList<T> Execute<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout)
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public IList<T> Execute<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public IList<T> Execute<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
         {
             return Execute(
                 builder,
                 connection,
+                configureCommand,
                 reader =>
                 {
                     var mapper = Database.MapperFactory.CreateValueMapper<T>();
@@ -101,13 +130,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region ValueTerminationExpressionBuilder
         public dynamic Execute(IValueTerminationExpressionBuilder<ExpandoObject> builder)
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public dynamic Execute(IValueTerminationExpressionBuilder<ExpandoObject> builder, Action<DbCommand> configureCommand)
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public dynamic Execute(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => Execute(builder, connection, _ => { });
+
+        public dynamic Execute(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public dynamic Execute(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public dynamic Execute(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand)
         {
             return Execute(
                 builder,
                 connection,
+                configureCommand,
                 reader =>
                 {
                     var value = new ExpandoObject();
@@ -127,13 +169,26 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region ValueListTerminationExpressionBuilder
         public IList<dynamic> Execute(IValueListTerminationExpressionBuilder<ExpandoObject> builder)
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public IList<dynamic> Execute(IValueListTerminationExpressionBuilder<ExpandoObject> builder, Action<DbCommand> configureCommand)
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public IList<dynamic> Execute(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => Execute(builder, connection, _ => { });
+
+        public IList<dynamic> Execute(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public IList<dynamic> Execute(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public IList<dynamic> Execute(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand)
         {
             return Execute(
                 builder,
                 connection,
+                configureCommand,
                 reader =>
                 {
                     var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
@@ -156,14 +211,31 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region TypeTerminationExpressionBuilder
         public T Execute<T>(ITypeTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public T Execute<T>(ITypeTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
+            where T : class, IDbEntity, new()
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public T Execute<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            where T : class, IDbEntity, new()
+            => Execute(builder, connection, _ => { });
+
+        public T Execute<T>(ITypeTerminationExpressionBuilder<T> builder, int commandTimeout)
+            where T : class, IDbEntity, new()
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public T Execute<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+            where T : class, IDbEntity, new()
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public T Execute<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
             where T : class, IDbEntity, new()
         {
             return Execute(
                 builder,
                 connection,
+                configureCommand,
                 reader =>
                 {
                     var row = reader.ReadRow();
@@ -185,14 +257,31 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region TypeListTerminationExpressionBuilder
         public IList<T> Execute<T>(ITypeListTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => Execute(builder, null);
+            => Execute(builder, (SqlConnection)null, _ => { });
+
+        public IList<T> Execute<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
+            where T : class, IDbEntity, new()
+            => Execute(builder, (SqlConnection)null, configureCommand);
 
         public IList<T> Execute<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            where T : class, IDbEntity, new()
+            => Execute(builder, connection, _ => { });
+
+        public IList<T> Execute<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout)
+            where T : class, IDbEntity, new()
+            => Execute(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
+
+        public IList<T> Execute<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+            where T : class, IDbEntity, new()
+            => Execute(builder, connection, c => c.CommandTimeout = commandTimeout);
+
+        public IList<T> Execute<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
             where T : class, IDbEntity, new()
         {
             return Execute(
                 builder,
                 connection,
+                configureCommand,
                 reader =>
                 {
                     var values = new List<T>();
@@ -216,6 +305,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         private T Execute<T>(
             ITerminationExpressionBuilder builder,
             SqlConnection connection,
+            Action<DbCommand> configureCommand,
             Func<ISqlRowReader,T> transform
         )
         {
@@ -256,7 +346,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (transform == null)
             {
-                executor.ExecuteNonQuery(statement, connection);
+                executor.ExecuteNonQuery(statement, connection, configureCommand);
 
                 switch (expression.StatementExecutionType)
                 {
@@ -278,7 +368,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 return default;
             }
 
-            using (var reader = executor.ExecuteQuery(statement, connection))
+            using (var reader = executor.ExecuteQuery(statement, connection, configureCommand))
             {
                 //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
                 if (reader == null)

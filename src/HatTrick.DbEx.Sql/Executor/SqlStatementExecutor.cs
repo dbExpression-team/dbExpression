@@ -1,13 +1,15 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor : ISqlStatementExecutor
     {
-        public virtual int ExecuteNonQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        public virtual int ExecuteNonQuery(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand)
         {
             int @return = 0;
 
@@ -16,11 +18,8 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (commandTimeout.HasValue)
-            {
-                cmd.CommandTimeout = commandTimeout.Value;
-            }
             if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            configureCommand?.Invoke(cmd);
             try
             {
                 connection.EnsureOpenConnection();
@@ -47,20 +46,19 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
             int @return = 0;
+
+            ct.ThrowIfCancellationRequested();
 
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (commandTimeout.HasValue)
-            {
-                cmd.CommandTimeout = commandTimeout.Value;
-            }
             if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            configureCommand?.Invoke(cmd);
             try
             {
                 await connection.EnsureOpenConnectionAsync().ConfigureAwait(false);
@@ -87,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand)
         {
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -96,11 +94,12 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters != null && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            configureCommand?.Invoke(cmd);
             connection.EnsureOpenConnection();
             return new DataReaderWrapper(connection, cmd.ExecuteReader());
         }
 
-        public virtual async Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, int? commandTimeout = null)
+        public virtual async Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -109,8 +108,9 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters != null && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            configureCommand?.Invoke(cmd);
             await connection.EnsureOpenConnectionAsync();
-            return new DataReaderWrapper(connection, await cmd.ExecuteReaderAsync().ConfigureAwait(false));
+            return new DataReaderWrapper(connection, await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false), ct);
         }
     }
 }
