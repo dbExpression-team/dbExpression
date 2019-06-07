@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
 
         //TO_DISCUSS: Should metadata include server info so we can infer compatibility version, or specifically specify based on method name (i.e. AddMsSql2014Database)
         #pragma warning disable IDE0060
-        private static void ConfigureMsSqlCommon(this DbExpressionConfigurationBuilder builder, DatabaseConfigurationBuilder config)
+        private static void ConfigureMsSqlCommon(this DbExpressionConfigurationBuilder builder, DatabaseConfigurationBuilder config, Func<ConnectionStringSettings> connectionStringSettingsFactory)
         {
             config.UseDefaultAppenderFactory();
             config.UseDefaultEntityFactory();
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
             config.UseParameterBuilderFactory<MsSqlParameterBuilderFactory>();
 
             //configure the connection factory
-            config.UseConnectionFactory<MsSqlConnectionFactory>();
+            config.UseConnectionFactory(new MsSqlConnectionFactory(connectionStringSettingsFactory));
 
             //use identity insert strategy for MsSql
             config.UseIdentityInsertStrategy();
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
         private static void ConfigureMsSql2014(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
         {
             var config = builder.CreateDatabaseConfigurationBuilder(metaProvider, connectionStringSettingsFactory, metadataKey);
-            builder.ConfigureMsSqlCommon(config);
+            builder.ConfigureMsSqlCommon(config, connectionStringSettingsFactory);
 
             //configure sql statement builder factory
             var factory = new Assembler.v2014.MsSqlStatementBuilderFactory();
@@ -128,7 +128,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
         private static void ConfigureMsSql2012(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
         {
             var config = builder.CreateDatabaseConfigurationBuilder(metaProvider, connectionStringSettingsFactory, metadataKey);
-            builder.ConfigureMsSqlCommon(config);
+            builder.ConfigureMsSqlCommon(config, connectionStringSettingsFactory);
 
             //configure sql statement builder factory
             var factory = new Assembler.v2012.MsSqlStatementBuilderFactory();

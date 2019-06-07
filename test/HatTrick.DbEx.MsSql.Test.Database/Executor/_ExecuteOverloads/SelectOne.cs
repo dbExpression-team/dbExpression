@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<int>(dbo.Person.Id)
                 .From(dbo.Person)
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<int>(dbo.Person.Id)
                 .From(dbo.Person)
@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -154,7 +154,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<int>(dbo.Person.Id)
                 .From(dbo.Person)
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<int>(dbo.Person.Id)
                 .From(dbo.Person)
@@ -272,7 +272,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person)
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
@@ -351,7 +351,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection(DbExpression.Configuration.Databases[config.Metadata.Name].ConnectionStringSettings());
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
             var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person)
