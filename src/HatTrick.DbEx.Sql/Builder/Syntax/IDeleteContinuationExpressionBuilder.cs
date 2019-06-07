@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
     public interface IDeleteContinuationExpressionBuilder :
         IExpressionBuilder,
         IContinuationExpressionBuilder, 
-        ITerminationExpressionBuilder
+        IDeleteTerminationExpressionBuilder
     {
         IDeleteContinuationExpressionBuilder Where(FilterExpression filter);
         IDeleteContinuationExpressionBuilder Where(FilterExpressionSet filter);

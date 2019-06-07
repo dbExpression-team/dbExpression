@@ -31,41 +31,117 @@ namespace HatTrick.DbEx.Sql.Extensions.Builder
         private static AsyncExecutionPipeline CreateAsyncExecutionPipeline(this ITerminationExpressionBuilder builder)
             => builder.GetDatabaseConfiguration().ExecutionPipelineFactory.CreateAsyncExecutionPipeline();
 
-        #region TerminationExpressionBuilder
-        public static void Execute(this ITerminationExpressionBuilder builder)
+        #region InsertTerminationExpressionBuilder
+        public static void Execute(this IInsertTerminationExpressionBuilder builder)
             => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder);
 
-        public static void Execute(this ITerminationExpressionBuilder builder, int commandTimeout)
+        public static void Execute(this IInsertTerminationExpressionBuilder builder, int commandTimeout)
             => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, commandTimeout);
 
-        public static void Execute(this ITerminationExpressionBuilder builder, SqlConnection connection)
+        public static void Execute(this IInsertTerminationExpressionBuilder builder, SqlConnection connection)
             => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, connection);
 
-        public static void Execute(this ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+        public static void Execute(this IInsertTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
             => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, connection, commandTimeout);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, SqlConnection connection)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, SqlConnection connection)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, CancellationToken ct)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, CancellationToken ct)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, ct).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, ct).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, int commandTimeout)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, int commandTimeout)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, commandTimeout).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, commandTimeout).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, int commandTimeout, CancellationToken ct)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, int commandTimeout, CancellationToken ct)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, commandTimeout, ct).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync(this ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+        public static async Task ExecuteAsync(this IInsertTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, commandTimeout, ct).ConfigureAwait(false);
+        #endregion
+
+        #region UpdateTerminationExpressionBuilder
+        public static void Execute(this IUpdateTerminationExpressionBuilder builder)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder);
+
+        public static void Execute(this IUpdateTerminationExpressionBuilder builder, int commandTimeout)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, commandTimeout);
+
+        public static void Execute(this IUpdateTerminationExpressionBuilder builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, connection);
+
+        public static void Execute(this IUpdateTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, connection, commandTimeout);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, SqlConnection connection)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, ct).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, ct).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, int commandTimeout)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, commandTimeout).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, commandTimeout).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, int commandTimeout, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, commandTimeout, ct).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IUpdateTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, commandTimeout, ct).ConfigureAwait(false);
+        #endregion
+
+        #region DeleteTerminationExpressionBuilder
+        public static void Execute(this IDeleteTerminationExpressionBuilder builder)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder);
+
+        public static void Execute(this IDeleteTerminationExpressionBuilder builder, int commandTimeout)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, commandTimeout);
+
+        public static void Execute(this IDeleteTerminationExpressionBuilder builder, SqlConnection connection)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, connection);
+
+        public static void Execute(this IDeleteTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+            => builder.CreateSyncExecutionPipeline().ExecuteVoid(builder, connection, commandTimeout);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, SqlConnection connection)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, ct).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, ct).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, int commandTimeout)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, commandTimeout).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, commandTimeout).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, int commandTimeout, CancellationToken ct)
+            => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, commandTimeout, ct).ConfigureAwait(false);
+
+        public static async Task ExecuteAsync(this IDeleteTerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
             => await builder.CreateAsyncExecutionPipeline().ExecuteVoidAsync(builder, connection, commandTimeout, ct).ConfigureAwait(false);
         #endregion
 
