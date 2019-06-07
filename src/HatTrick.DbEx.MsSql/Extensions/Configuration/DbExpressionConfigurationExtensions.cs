@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
 {
     public static class DbExpressionConfigurationExtensions
     {
-        private static DatabaseConfigurationBuilder CreateDatabaseConfigurationBuilder(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string logicalName)
+        private static DatabaseConfigurationBuilder CreateDatabaseConfigurationBuilder(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey)
         {
             if (connectionStringSettingsFactory == null)
                 throw new DbExpressionConfigurationException($"{nameof(connectionStringSettingsFactory)} cannot be null");
@@ -36,8 +36,8 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
             }
 
             var database = new DatabaseConfiguration(metaProvider);
-            database.Metadata.Name = logicalName ?? connBuilder.InitialCatalog;            
-            builder.AddDatabase(logicalName ?? database.Metadata.Name, database, connectionStringSettingsFactory);
+            database.Metadata.Name = metadataKey ?? connBuilder.InitialCatalog;            
+            builder.AddDatabase(metadataKey ?? database.Metadata.Name, database, connectionStringSettingsFactory);
 
             database.ExecutionPipelineFactory = new ExecutionPipelineFactory(builder.Configuration, database);
 
@@ -72,15 +72,15 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
             where T : class, IDatabaseMetadataProvider, new()
             => builder.ConfigureMsSql2014(new T(), () => connectionStringSettings, null, configure);
 
-        public static void AddMsSql2014Database<T>(this DbExpressionConfigurationBuilder builder, ConnectionStringSettings connectionStringSettings, string logicalName, Action<DatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2014Database<T>(this DbExpressionConfigurationBuilder builder, ConnectionStringSettings connectionStringSettings, string metadataKey, Action<DatabaseConfigurationBuilder> configure = null)
             where T : class, IDatabaseMetadataProvider, new()
-            => builder.ConfigureMsSql2014(new T(), () => connectionStringSettings, logicalName, configure);
+            => builder.ConfigureMsSql2014(new T(), () => connectionStringSettings, metadataKey, configure);
 
-        public static void AddMsSql2014Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, ConnectionStringSettings connectionStringSettings, string logicalName = null, Action<DatabaseConfigurationBuilder> configure = null)
-            => builder.ConfigureMsSql2014(databaseMetadataProvider, () => connectionStringSettings, logicalName, configure);
+        public static void AddMsSql2014Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, ConnectionStringSettings connectionStringSettings, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
+            => builder.ConfigureMsSql2014(databaseMetadataProvider, () => connectionStringSettings, metadataKey, configure);
 
-        public static void AddMsSql2014Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string logicalName = null, Action<DatabaseConfigurationBuilder> configure = null)
-            => builder.ConfigureMsSql2014(databaseMetadataProvider, connectionStringSettingsFactory, logicalName, configure);
+        public static void AddMsSql2014Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
+            => builder.ConfigureMsSql2014(databaseMetadataProvider, connectionStringSettingsFactory, metadataKey, configure);
 
         public static void AddMsSql2014Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, ConnectionStringSettings connectionStringSettings, Action<DatabaseConfigurationBuilder> configure = null)
             => builder.ConfigureMsSql2014(databaseMetadataProvider, () => connectionStringSettings, null, configure);
@@ -88,9 +88,9 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
         public static void AddMsSql2014Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, Action<DatabaseConfigurationBuilder> configure = null)
             => builder.ConfigureMsSql2014(databaseMetadataProvider, connectionStringSettingsFactory, null, configure);
 
-        private static void ConfigureMsSql2014(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string logicalName = null, Action<DatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2014(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
         {
-            var config = builder.CreateDatabaseConfigurationBuilder(metaProvider, connectionStringSettingsFactory, logicalName);
+            var config = builder.CreateDatabaseConfigurationBuilder(metaProvider, connectionStringSettingsFactory, metadataKey);
             builder.ConfigureMsSqlCommon(config);
 
             //configure sql statement builder factory
@@ -109,15 +109,15 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
             where T : class, IDatabaseMetadataProvider, new()
             => builder.ConfigureMsSql2012(new T(), () => connectionStringSettings, null, configure);
 
-        public static void AddMsSql2012Database<T>(this DbExpressionConfigurationBuilder builder, ConnectionStringSettings connectionStringSettings, string logicalName, Action<DatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2012Database<T>(this DbExpressionConfigurationBuilder builder, ConnectionStringSettings connectionStringSettings, string metadataKey, Action<DatabaseConfigurationBuilder> configure = null)
             where T : class, IDatabaseMetadataProvider, new()
-            => builder.ConfigureMsSql2012(new T(), () => connectionStringSettings, logicalName, configure);
+            => builder.ConfigureMsSql2012(new T(), () => connectionStringSettings, metadataKey, configure);
 
-        public static void AddMsSql2012Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, ConnectionStringSettings connectionStringSettings, string logicalName = null, Action<DatabaseConfigurationBuilder> configure = null)
-            => builder.ConfigureMsSql2012(databaseMetadataProvider, () => connectionStringSettings, logicalName, configure);
+        public static void AddMsSql2012Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, ConnectionStringSettings connectionStringSettings, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
+            => builder.ConfigureMsSql2012(databaseMetadataProvider, () => connectionStringSettings, metadataKey, configure);
 
-        public static void AddMsSql2012Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string logicalName = null, Action<DatabaseConfigurationBuilder> configure = null)
-            => builder.ConfigureMsSql2012(databaseMetadataProvider, connectionStringSettingsFactory, logicalName, configure);
+        public static void AddMsSql2012Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
+            => builder.ConfigureMsSql2012(databaseMetadataProvider, connectionStringSettingsFactory, metadataKey, configure);
 
         public static void AddMsSql2012Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, ConnectionStringSettings connectionStringSettings, Action<DatabaseConfigurationBuilder> configure = null)
             => builder.ConfigureMsSql2012(databaseMetadataProvider, () => connectionStringSettings, null, configure);
@@ -125,9 +125,9 @@ namespace HatTrick.DbEx.MsSql.Extensions.Configuration
         public static void AddMsSql2012Database(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider databaseMetadataProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, Action<DatabaseConfigurationBuilder> configure = null)
             => builder.ConfigureMsSql2012(databaseMetadataProvider, connectionStringSettingsFactory, null, configure);
 
-        private static void ConfigureMsSql2012(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string logicalName = null, Action<DatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2012(this DbExpressionConfigurationBuilder builder, IDatabaseMetadataProvider metaProvider, Func<ConnectionStringSettings> connectionStringSettingsFactory, string metadataKey = null, Action<DatabaseConfigurationBuilder> configure = null)
         {
-            var config = builder.CreateDatabaseConfigurationBuilder(metaProvider, connectionStringSettingsFactory, logicalName);
+            var config = builder.CreateDatabaseConfigurationBuilder(metaProvider, connectionStringSettingsFactory, metadataKey);
             builder.ConfigureMsSqlCommon(config);
 
             //configure sql statement builder factory

@@ -36,13 +36,6 @@ namespace DataService
             _schema = new dboSchema(schemaMetadata);
         }
         #endregion
-
-        internal static void Initialize(ISqlSchemaMetadata schemaMetadata)
-        {
-            if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
-            _schema = new dboSchema(schemaMetadata);
-        }
     }
     #endregion
 }
@@ -73,15 +66,6 @@ namespace DataService
             if (schema == null)
                 throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
             schema.TryGetValue(nameof(sec), out ISqlSchemaMetadata schemaMetadata);
-            if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
-            _schema = new secSchema(schemaMetadata);
-        }
-        #endregion
-
-        #region methods
-        public static void Initialize(ISqlSchemaMetadata schemaMetadata)
-        {
             if (schemaMetadata == null)
                 throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
             _schema = new secSchema(schemaMetadata);
