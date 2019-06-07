@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IContinuationExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        ITerminationExpressionBuilder Into<U>(U entity)
+        IInsertTerminationExpressionBuilder Into<U>(U entity)
             where U : EntityExpression<T>;
     }
 }
