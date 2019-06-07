@@ -25,11 +25,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         protected SqlConnection CreateConnection(ExpressionSet expression)
         {
-            var dbName = Database?.Metadata?.Name;
-
             try
             {
-                return Database.ConnectionFactory.CreateSqlConnection(Config.Databases[dbName].ConnectionStringSettings());
+                return Database.ConnectionFactory.CreateSqlConnection();
             }
             catch (Exception e)
             {
