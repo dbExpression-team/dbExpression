@@ -1,13 +1,11 @@
 ﻿namespace DataService
 {
-    using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.MsSql.Builder;
 
     #region db
     public class db : MsSqlExpressionBuilder
     {
-        public db(ExpressionSet expression) : base(expression)
-        { }
+
     }
     #endregion
 }

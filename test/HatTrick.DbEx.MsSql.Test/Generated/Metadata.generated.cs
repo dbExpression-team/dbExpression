@@ -12,7 +12,7 @@
         #region constructors
         public MsSqlDbExTestDatabaseMetadataProvider()
         {
-            Database = new MsSqlDatabaseMetadata("MsSqlDbExTest", "hattrick.dbex.mssql.test");
+            Database = new MsSqlDatabaseMetadata();
             Database.Schemas.Add("dbo", new dbo.SchemaMetadata(Database));
             Database.Schemas.Add("sec", new sec.SchemaMetadata(Database));
         }

@@ -7,37 +7,21 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class DbExpressionConfigurationBuilder
     {
-        public DbExpressionConfigurationBuilder(DbExpressionConfiguration config)
+        public DbExpressionConfigurationBuilder(DbExpressionRuntimeConfiguration config)
         {
             Configuration = config;
         }
 
-        public DbExpressionConfiguration Configuration { get; set; }
+        public DbExpressionRuntimeConfiguration Configuration { get; set; }
 
-        public void AddDatabase(string name, DatabaseConfiguration config)
+        public void AddDatabase(string name, DatabaseConfiguration config, Func<ConnectionStringSettings> connectionStringSettingsFactory)
         {
-            Configuration.Databases.Add(name, config);
-        }
-
-        public void AddConnectionString(string name, string connectionString)
-        {
-            Configuration.ConnectionStringSettings.Add(name, new ConnectionStringSettings(name, connectionString));
-        }
-
-        public void AddConnectionString(ConnectionStringSettings connectionString)
-        {
-            Configuration.ConnectionStringSettings.Add(connectionString.Name, connectionString);
-        }
-
-        public void AddConnectionString(ConnectionStringSettingsCollection connectionStrings)
-        {
-            foreach (ConnectionStringSettings connectionString in connectionStrings)
-                Configuration.ConnectionStringSettings.Add(connectionString.Name, connectionString);
+            Configuration.Databases.Add(name, new RuntimeDatabaseMap(config, connectionStringSettingsFactory));
         }
 
         public static void AddDbExpression(Action<DbExpressionConfigurationBuilder> configure)
         {
-            DbExpression.Configuration = new DbExpressionConfiguration();
+            DbExpression.Configuration = new DbExpressionRuntimeConfiguration();
             configure?.Invoke(new DbExpressionConfigurationBuilder(DbExpression.Configuration));
         }
     }

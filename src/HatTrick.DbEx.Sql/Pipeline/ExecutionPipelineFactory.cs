@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class ExecutionPipelineFactory
     {
         #region internals
-        private readonly DbExpressionConfiguration Config;
+        private readonly DbExpressionRuntimeConfiguration Config;
         private readonly DatabaseConfiguration Database;
         #endregion
 
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public ExecutionPipelineFactory(
-            DbExpressionConfiguration config,
+            DbExpressionRuntimeConfiguration config,
             DatabaseConfiguration database
         )
         {

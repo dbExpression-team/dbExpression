@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql
 
     public interface ISqlDatabaseMetadata : IDbExpressionMetadata
     {
-        string ConnectionName { get; }
+        new string Name { get; set; }
         IDictionary<string, ISqlSchemaMetadata> Schemas { get; }
     }
 }

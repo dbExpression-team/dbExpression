@@ -13,11 +13,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public abstract class ExecutionPipeline
     {
-        protected readonly DbExpressionConfiguration Config;
+        protected readonly DbExpressionRuntimeConfiguration Config;
         protected readonly DatabaseConfiguration Database;
 
         protected ExecutionPipeline(
-            DbExpressionConfiguration config,
+            DbExpressionRuntimeConfiguration config,
             DatabaseConfiguration database
         )
         {
@@ -27,11 +27,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         protected SqlConnection CreateConnection(ExpressionSet expression)
         {
-            var connectionName = Database?.Metadata?.ConnectionName;
+            var dbName = Database?.Metadata?.Name;
 
             try
             {
-                return Database.ConnectionFactory.CreateSqlConnection(Config.ConnectionStringSettings[connectionName]);
+                return Database.ConnectionFactory.CreateSqlConnection(Config.Databases[dbName].ConnectionStringSettings());
             }
             catch (Exception e)
             {

@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         private AsyncPipeline<AfterInsertContext> AfterInsert { get; set; }
 
         public AsyncExecutionPipeline(
-            DbExpressionConfiguration config,
+            DbExpressionRuntimeConfiguration config,
             DatabaseConfiguration database,
             AsyncPipeline<BeforeAssemblyContext> beforeAssembly,
             AsyncPipeline<AfterAssemblyContext> afterAssembly,
@@ -486,7 +486,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var executor = Database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
             if (connection == null)
-                connection = Database.ConnectionFactory.CreateSqlConnection(Config.ConnectionStringSettings[(expression.BaseEntity as IDbExpressionMetadataProvider<ISqlEntityMetadata>).Metadata.Schema.Database.ConnectionName]);
+                connection = CreateConnection(expression);
 
             if (transform == null)
             {
