@@ -34,417 +34,495 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         #region TerminationExpressionBuilder
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder)
+            => await DoExecuteVoidAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, SqlConnection connection)
+            => await DoExecuteVoidAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, Action<DbCommand> configureCommand, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, ct).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, int commandTimeout)
+            => await DoExecuteVoidAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, Action<DbCommand> configureCommand)
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, CancellationToken.None).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
+            => await DoExecuteVoidAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, SqlConnection connection)
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, CancellationToken ct)
+            => await DoExecuteVoidAsync(builder, null, _ => { }, ct);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, SqlConnection connection, Action<DbCommand> configureCommand)
-            => await ExecuteAsync(builder, connection, configureCommand, CancellationToken.None).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
+            => await DoExecuteVoidAsync(builder, connection, _ => { }, ct);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, SqlConnection connection, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, int commandTimeout, CancellationToken ct)
+            => await DoExecuteVoidAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await DoExecuteVoidAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, int commandTimeout)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task ExecuteVoidAsync(ITerminationExpressionBuilder builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+            => await DoExecuteVoidAsync(builder, connection, configureCommand, ct);
 
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task ExecuteAsync(ITerminationExpressionBuilder builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
-        {
-            await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                (Func<ISqlRowReader, int>)null,
-                ct
-            ).ConfigureAwait(false);
-            
-        }
+        private async Task DoExecuteVoidAsync(ITerminationExpressionBuilder builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, null, ct);
         #endregion
 
         #region ValueTerminationExpressionBuilder
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder)
+            => await DoExecuteValueAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, CancellationToken.None).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => await DoExecuteValueAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
+            => await DoExecuteValueAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, ct).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+            => await DoExecuteValueAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection)
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, CancellationToken ct)
+            => await DoExecuteValueAsync(builder, null, _ => { }, ct);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
-            => await ExecuteAsync(builder, connection, configureCommand, CancellationToken.None).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            => await DoExecuteValueAsync(builder, connection, _ => { }, ct);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
+            => await DoExecuteValueAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<T> ExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await DoExecuteValueAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
-
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<T> ExecuteAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        private async Task<T> DoExecuteValueAsync<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
-            return await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                reader =>
-                {
-                    var field = reader.ReadRow()?.ReadField();
-                    if (field == null)
-                        return default;
-
-                    var mapper = Database.MapperFactory.CreateValueMapper<T>();
-                    return mapper.Map(field.Value);
-                },
-                ct
-            ).ConfigureAwait(false);
+            T t = default;
+            await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageValueReaderWithActionAsync<T>(reader, v => t = v, ct), ct);
+            return t;
         }
         #endregion
 
         #region ValueListTerminationExpressionBuilder
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder)
+            => await DoExecuteValueListAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout)
+            => await DoExecuteValueListAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, ct).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+            => await DoExecuteValueListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection)
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, null, _ => { }, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
-            => await ExecuteAsync(builder, connection, configureCommand, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsyncExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<T>> ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<IList<T>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        private async Task<IList<T>> DoExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
-            return await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                reader =>
-                {
-                    var values = new List<T>();
-
-                    var mapper = Database.MapperFactory.CreateValueMapper<T>();
-                    ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
-                    {
-                        var field = row.ReadField();
-                        if (field != null)
-                        {
-                            values.Add(mapper.Map(field.Value));
-                        }
-                    }
-
-                    return values;
-                },
-                ct
-            ).ConfigureAwait(false);
+            var list = new List<T>();
+            await DoExecuteValueListAsync(builder, connection, configureCommand, t => { list.Add(t); return Task.CompletedTask; }, ct);
+            return list;
         }
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, Action<T> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, null, _ => { }, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<T> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, Action<T> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Action<T> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, Action<T> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, null, _ => { }, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<T> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, Action<T> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Action<T> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, Func<T, Task> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, null, _ => { }, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Func<T, Task> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, Func<T, Task> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Func<T, Task> onValueMaterialized)
+            => await DoExecuteValueListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onValueMaterialized, CancellationToken.None);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, Func<T, Task> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, null, _ => { }, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Func<T, Task> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, _ => { }, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, Func<T, Task> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onValueMaterialized, ct);
+
+        public async Task ExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Func<T, Task> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteValueListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onValueMaterialized, ct);
+
+        private async Task DoExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<T> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageValueListReaderWithActionAsync(reader, onValueMaterialized, ct), ct);
+
+        private async Task DoExecuteValueListAsync<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, Func<T, Task> onValueMaterialized, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageValueListReaderWithFuncAsync(reader, onValueMaterialized, ct), ct);
         #endregion
 
         #region ValueTerminationExpressionBuilder
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder)
+            => await DoExecuteDynamicAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => await DoExecuteDynamicAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
+            => await DoExecuteDynamicAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
+            => await DoExecuteDynamicAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, null, _ => { }, ct);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, connection, _ => { }, ct);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<dynamic> ExecuteAsync<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        public async Task<dynamic> ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<dynamic> ExecuteAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        private async Task<dynamic> DoExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
-            return await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                reader =>
-                {
-                    var value = default(ExpandoObject);
-
-                    var row = reader.ReadRow();
-                    if (row == null)
-                        return value;
-
-                    var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
-
-                    return (dynamic)value;
-                },
-                ct
-            ).ConfigureAwait(false);
+            dynamic t = default;
+            await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageDynamicReaderWithActionAsync(reader, v => t = v, ct), ct);
+            return t;
         }
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, null, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, connection, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, null, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, connection, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, null, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, connection, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, null, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, connection, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        private async Task DoExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<ExpandoObject>  onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageDynamicReaderWithActionAsync(reader, onDynamicMaterialized, ct), ct);
+
+        private async Task DoExecuteDynamicAsync(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageDynamicReaderWithFuncAsync(reader, onDynamicMaterialized, ct), ct);
         #endregion
 
         #region ValueListTerminationExpressionBuilder
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder)
+            => await DoExecuteDynamicListAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
+            => await DoExecuteDynamicListAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
+            => await DoExecuteDynamicListAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
+            => await DoExecuteDynamicListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, null, _ => { }, ct);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, connection, _ => { }, ct);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<IList<dynamic>> ExecuteAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        public async Task<IList<dynamic>> ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<IList<dynamic>> ExecuteAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        private async Task<IList<dynamic>> DoExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
-            return await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                reader =>
-                {
-                    var values = new List<dynamic>();
-
-                    var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
-                    ISqlRow row = null;
-                    while ((row = reader.ReadRow()) != null)
-                    {
-                        var value = new ExpandoObject();
-                        mapper.Map(value, row);
-                        values.Add(value);
-                    }
-
-                    return values;
-                },
-                ct
-            ).ConfigureAwait(false);
+            var list = new List<dynamic>();
+            await DoExecuteDynamicListAsync(builder, connection, configureCommand, t => { list.Add(t); return Task.CompletedTask; }, ct);
+            return list;
         }
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, null, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, connection, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, null, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, connection, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, null, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, connection, _ => { }, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized)
+            => await DoExecuteDynamicListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, CancellationToken.None);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, null, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, connection, _ => { }, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        public async Task ExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteDynamicListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized, ct);
+
+        private async Task DoExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<ExpandoObject> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageDynamicListReaderWithActionAsync(reader, onDynamicMaterialized, ct), ct);
+
+        private async Task DoExecuteDynamicListAsync(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, Func<ExpandoObject, Task> onDynamicMaterialized, CancellationToken ct)
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageDynamicListReaderWithFuncAsync(reader, onDynamicMaterialized, ct), ct);
         #endregion
 
         #region TypeTerminationExpressionBuilder
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, CancellationToken ct)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, ct).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, null, _ => { }, ct);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, configureCommand, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, connection, _ => { }, ct);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
-        
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, int commandTimeout)
+        public async Task<T> ExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
-            where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<T> ExecuteAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        private async Task<T> DoExecuteTypeAsync<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
-            return await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                reader =>
-                {
-                    var row = reader.ReadRow();
-                    if (row == null)
-                        return default;
-
-                    var mapper = Database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>);
-                    var valueMapper = Database.MapperFactory.CreateValueMapper();
-                    var entity = Database.EntityFactory.CreateEntity<T>();
-
-                    mapper.Map(entity, row, valueMapper);
-
-                    return entity;
-                },
-                ct
-            ).ConfigureAwait(false);
+            T t = default;
+            await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageTypeReaderWithActionAsync(reader, (builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>, v => t = v, ct), ct);
+            return t;
         }
         #endregion
 
         #region TypeListTerminationExpressionBuilder
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, null, _ => { }, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, connection, _ => { }, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, CancellationToken ct)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, _ => { }, ct).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, null, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, configureCommand, ct).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, _ => { }, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, null, _ => { }, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, configureCommand, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, connection, _ => { }, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, CancellationToken ct)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, _ => { }, ct).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, null, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
+        public async Task<IList<T>> ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+            => await DoExecuteTypeListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct);
 
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout)
-            where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
-
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
-            where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, CancellationToken ct)
-            where T : class, IDbEntity, new()
-            => await ExecuteAsync(builder, connection, c => c.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
-
-        public async Task<IList<T>> ExecuteAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        private async Task<IList<T>> DoExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
-            return await ExecuteAsync(
-                builder,
-                connection,
-                configureCommand,
-                reader =>
-                {
-                    var values = new List<T>();
-
-                    ISqlRow row;
-                    var mapper = Database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>);
-                    var valueMapper = Database.MapperFactory.CreateValueMapper();
-                    while ((row = reader.ReadRow()) != null)
-                    {
-                        var entity = Database.EntityFactory.CreateEntity<T>();
-                        mapper.Map(entity, row, valueMapper);
-                        values.Add(entity);
-                    }
-
-                    return values;
-                },
-                ct
-            ).ConfigureAwait(false);
+            var list = new List<T>();
+            await DoExecuteTypeListAsync(builder, connection, configureCommand, t => { list.Add(t); return Task.CompletedTask; }, ct);
+            return list;
         }
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<T> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, _ => { }, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, Action<T> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<T> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, _ => { }, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Action<T> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<T> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, _ => { }, onEntityMaterialized, ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<T> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, _ => { }, onEntityMaterialized, ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, Action<T> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Action<T> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, ct);
+
+        private async Task DoExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<T> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageTypeListReaderWithActionAsync(reader, (builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>, onEntityMaterialized, ct), ct);
+
+        private async Task DoExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, Func<T, Task> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteAsync(builder, connection, configureCommand, async reader => await ManageTypeListReaderWithFuncAsync(reader, (builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>, onEntityMaterialized, ct), ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, Func<T, Task> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, _ => { }, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Func<T, Task> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, _ => { }, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, Func<T, Task> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Func<T, Task> onEntityMaterialized)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, CancellationToken.None);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, Func<T, Task> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, _ => { }, onEntityMaterialized, ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Func<T, Task> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, _ => { }, onEntityMaterialized, ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, Func<T, Task> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, null, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, ct);
+
+        public async Task ExecuteTypeListAsync<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Func<T, Task> onEntityMaterialized, CancellationToken ct)
+            where T : class, IDbEntity, new()
+            => await DoExecuteTypeListAsync(builder, connection, c => c.CommandTimeout = commandTimeout, onEntityMaterialized, ct);
         #endregion
 
-        private async Task<T> ExecuteAsync<T>(
+        private async Task DoExecuteAsync(
             ITerminationExpressionBuilder builder,
             SqlConnection connection,
             Action<DbCommand> configureCommand,
-            Func<ISqlRowReader, T> transform,
+            Func<IAsyncSqlRowReader, Task> transform,
             CancellationToken ct
         )
         {
@@ -509,16 +587,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
                 }
 
-                return default;
+                return;
             }
 
-            using (var reader = await executor.ExecuteQueryAsync(statement, connection, configureCommand, ct))
-            {
-                //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
-                if (reader == null)
-                    return default;
-                return transform(reader);
-            }
+            var reader = await executor.ExecuteQueryAsync(statement, connection, configureCommand, ct);
+            //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
+            if (reader == null)
+                return;
+            await transform(reader);
         }
     }
 }

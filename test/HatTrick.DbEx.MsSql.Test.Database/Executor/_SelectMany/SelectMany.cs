@@ -6,6 +6,7 @@ using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Extensions.Builder;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -24,6 +25,23 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var persons = exp.Execute();
+
+            //then
+            persons.Should().HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Are_there_50_person_records_async(int version, int expectedCount = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expectedCount);

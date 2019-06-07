@@ -2,33 +2,41 @@
 using System.Data;
 using System.Data.Common;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class DataReaderWrapper : ISqlRowReader
+    public class AsyncDataReaderWrapper : IAsyncSqlRowReader
     {
         #region internals
         private bool disposed;
         private int currentRowIndex;
         protected SqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
+        protected CancellationToken CancellationToken { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(SqlConnection sqlConnection, DbDataReader dataReader)
+        public AsyncDataReaderWrapper(SqlConnection sqlConnection, DbDataReader dataReader) : this(sqlConnection, dataReader, CancellationToken.None) { }
+
+        public AsyncDataReaderWrapper(SqlConnection sqlConnection, DbDataReader dataReader, CancellationToken ct)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
+            CancellationToken = ct == null ? CancellationToken.None : ct;
+            CancellationToken.Register(() => Dispose(true));
         }
         #endregion
 
         #region methods
-        public ISqlRow ReadRow()
+        public async Task<ISqlRow> ReadRowAsync()
         {
+            CancellationToken.ThrowIfCancellationRequested();
+
             try
             {
 
-                if (DataReader.Read())
+                if (await DataReader.ReadAsync())
                 {
                     var row = new ISqlField[DataReader.FieldCount];
                     var values = new object[DataReader.FieldCount];
