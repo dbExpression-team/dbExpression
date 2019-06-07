@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return new DataReaderWrapper(connection, cmd.ExecuteReader());
         }
 
-        public virtual async Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.Sql.Executor
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
             configureCommand?.Invoke(cmd);
             await connection.EnsureOpenConnectionAsync();
-            return new DataReaderWrapper(connection, await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false), ct);
+            return new AsyncDataReaderWrapper(connection, await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false), ct);
         }
     }
 }

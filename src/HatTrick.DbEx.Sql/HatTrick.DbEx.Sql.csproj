@@ -128,6 +128,7 @@
     <Compile Include="Configuration\SqlStatementExecutorFactoryConfigurationBuilder.cs" />
     <Compile Include="Configuration\MapperFactoryConfigurationBuilder.cs" />
     <Compile Include="Configuration\EntityFactoryConfigurationBuilder.cs" />
+    <Compile Include="Executor\AsyncDataReaderWrapper.cs" />
     <Compile Include="Expression\ISupportedForFunctionExpression{T,U}.cs" />
     <Compile Include="Expression\ISupportedForFunctionExpression{T}.cs" />
     <Compile Include="Expression\ISupportedForExpression{T,U,V}.cs" />
@@ -169,6 +170,7 @@
     <Compile Include="Expression\_Function\CurrentTimestampFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbDateFunctionExpression.cs" />
     <Compile Include="Expression\_Function\IDbNumericFunctionExpression.cs" />
+    <Compile Include="IAsyncSqlRowReader.cs" />
     <Compile Include="Pipeline\ExecutionPipeline.cs" />
     <Compile Include="Pipeline\SyncExecutionPipeline.cs" />
     <Compile Include="Pipeline\ExecutionPipelineFactory.cs" />

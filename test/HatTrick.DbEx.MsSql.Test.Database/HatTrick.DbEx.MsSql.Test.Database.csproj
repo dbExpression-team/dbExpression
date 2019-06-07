@@ -168,6 +168,8 @@
   <ItemGroup>
     <Compile Include="Executor\ExecutorTestBase.cs" />
     <Compile Include="Executor\MsSqlVersions.cs" />
+    <Compile Include="Executor\_ExecuteOverloads\SelectMany.cs" />
+    <Compile Include="Executor\_ExecuteOverloads\SelectOne.cs" />
     <Compile Include="Executor\_Insert\Insert.cs" />
     <Compile Include="Executor\_SelectMany\SelectMany.MultiSchema.cs" />
     <Compile Include="Executor\_SelectMany\SelectMany.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.GroupBy.cs" />
     <Compile Include="Executor\_SelectMany\SelectMany.InnerJoin.Where.cs" />
     <Compile Include="Executor\_SelectMany\SelectMany.Where.cs" />
+    <Compile Include="Executor\_SelectOne\SelectOne.cs" />
     <Compile Include="Executor\_Update\Update.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Seeder.cs" />

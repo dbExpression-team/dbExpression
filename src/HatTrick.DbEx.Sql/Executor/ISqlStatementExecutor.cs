@@ -10,6 +10,6 @@ namespace HatTrick.DbEx.Sql.Executor
         int ExecuteNonQuery(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand);
         Task<int> ExecuteNonQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct);
         ISqlRowReader ExecuteQuery(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand);
-        Task<ISqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct);
+        Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, SqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct);
     }
 }
