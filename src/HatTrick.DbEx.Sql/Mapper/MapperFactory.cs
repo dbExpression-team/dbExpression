@@ -34,6 +34,8 @@ namespace HatTrick.DbEx.Sql.Mapper
         private static readonly PrimitiveMapper<Guid?> _nullableGuidMapper = new PrimitiveMapper<Guid?>((f) => f == null ? default(Guid?) : (Guid)new GuidConverter().ConvertFrom(f));
         private static readonly PrimitiveMapper<string> _stringMapper = new PrimitiveMapper<string>((f) => Convert.ToString(f));
         private static readonly ExpandoObjectMapper _expandoObjectMapper = new ExpandoObjectMapper();
+        //NOTE: JRod, byte[] is not a primitive, but is handled exactly the same ...
+        private static readonly PrimitiveMapper<byte[]> _byteArrayMapper = new PrimitiveMapper<byte[]>((f) => f == null ? default : (byte[])f);
 
         public void RegisterDefaultMappers()
         {
@@ -59,6 +61,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             maps.Add(typeof(Guid?), () => _nullableGuidMapper);
             maps.Add(typeof(string), () => _stringMapper);
             maps.Add(typeof(ExpandoObject), () => _expandoObjectMapper);
+            maps.Add(typeof(byte[]), () => _byteArrayMapper);
         }
 
         public void RegisterValueMapper<T>(IValueMapper<T> mapper)

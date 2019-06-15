@@ -103,6 +103,7 @@
     <Compile Include="Assembler\SelectSqlStatementAssembler.cs" />
     <Compile Include="Assembler\SqlStatementBuilderFactory.cs" />
     <Compile Include="Assembler\SqlParameterBuilder.cs" />
+    <Compile Include="Assembler\_Appenders\_ValueTypes\ByteArrayAppender.cs" />
     <Compile Include="Assembler\_Appenders\_ValueTypes\DateTimeAppender.cs" />
     <Compile Include="Assembler\_Appenders\_ValueTypes\EnumAppender.cs" />
     <Compile Include="Assembler\_Appenders\_ValueTypes\ByteAppender.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Expression\ISupportedForSelectFieldExpression{T}.cs" />
     <Compile Include="Expression\LiteralExpression.cs" />
     <Compile Include="Expression\LiteralExpression{T}.cs" />
+    <Compile Include="Expression\_FieldExpressions\ByteArrayFieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\FloatFieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\DateTimeOffsetFieldExpression{T}.cs" />
     <Compile Include="Expression\_FieldExpressions\DoubleFieldExpression{T}.cs" />
