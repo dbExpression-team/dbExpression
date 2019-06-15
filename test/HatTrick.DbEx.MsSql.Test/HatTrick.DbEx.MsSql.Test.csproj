@@ -67,13 +67,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Generated\DBEntityProvider.generated.cs" />
-    <Compile Include="Generated\Metadata.generated.cs" />
-    <Compile Include="Generated\SchemaExpression.generated.cs" />
-    <Compile Include="Generated\TableData.generated.cs" />
-    <Compile Include="Generated\EntityExpression.generated.cs" />
-    <Compile Include="Generated\ViewData.generated.cs" />
-    <Compile Include="Generated\ViewEntity.generated.cs" />
+    <Compile Include="Generated\DataPackage.cs" />
+    <Compile Include="Generated\EntityExpression.cs" />
+    <Compile Include="Generated\EntityProvider.cs" />
+    <Compile Include="Generated\Metadata.cs" />
+    <Compile Include="Generated\SchemaExpression.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="_TypeCode\ProductCategoryType.cs" />
     <Compile Include="_TypeCode\GenderType.cs" />

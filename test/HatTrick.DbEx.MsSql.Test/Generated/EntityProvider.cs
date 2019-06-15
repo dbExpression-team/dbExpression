@@ -19,27 +19,30 @@ namespace DataService
         public static ProductEntity Product { get { return _schema.Product; } }
         public static PurchaseEntity Purchase { get { return _schema.Purchase; } }
         public static PurchaseLineEntity PurchaseLine { get { return _schema.PurchaseLine; } }
+
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return _schema.PersonTotalPurchasesView; } }
         #endregion
 
-        #region constructors
+		#region constructors
         static dbo()
         {
             if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
-                throw new DbExpressionConfigurationException($"Metadata for database named 'MsSqlDbExTest' has not been provided.");
+                throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
+
             var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
             if (schema == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(dbo)}'");
-            schema.TryGetValue(nameof(dbo), out ISqlSchemaMetadata schemaMetadata);
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+
+            schema.TryGetValue("dbo", out ISqlSchemaMetadata schemaMetadata);
             if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(dbo)}'");
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+
             _schema = new dboSchema(schemaMetadata);
         }
         #endregion
     }
     #endregion
 }
-
 namespace DataService
 {
     using DataService.EntityExpression.sec;
@@ -55,19 +58,23 @@ namespace DataService
 
         #region interface
         public static PersonEntity Person { get { return _schema.Person; } }
+
         #endregion
 
-        #region constructors
+		#region constructors
         static sec()
         {
             if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
-                throw new DbExpressionConfigurationException($"Metadata for database named 'MsSqlDbExTest' has not been provided.");
+                throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
+
             var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
             if (schema == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
-            schema.TryGetValue(nameof(sec), out ISqlSchemaMetadata schemaMetadata);
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+
+            schema.TryGetValue("sec", out ISqlSchemaMetadata schemaMetadata);
             if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{nameof(sec)}'");
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+
             _schema = new secSchema(schemaMetadata);
         }
         #endregion

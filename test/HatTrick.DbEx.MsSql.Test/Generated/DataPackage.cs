@@ -71,7 +71,7 @@ namespace Data.dbo
     {
         #region interface
         public int Id { get; set; }
-        public ProductCategoryType ProductCategoryType { get; set; }
+        public int? ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal ListPrice { get; set; }
@@ -125,6 +125,22 @@ namespace Data.dbo
 
         #region constructor
         public PurchaseLine()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region person total purchases view
+    [Serializable]
+    public partial class PersonTotalPurchasesView : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public decimal? TotalPurchases { get; set; }
+        #endregion
+
+        #region constructor
+        public PersonTotalPurchasesView()
         {
         }
         #endregion
