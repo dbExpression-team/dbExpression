@@ -15,7 +15,7 @@ namespace DataService
         #region interface
         public static AddressEntity Address { get { return _schema.Address; } }
         public static PersonEntity Person { get { return _schema.Person; } }
-        public static Person_AddressEntity Person_Address { get { return _schema.Person_Address; } }
+        public static PersonAddressEntity PersonAddress { get { return _schema.PersonAddress; } }
         public static ProductEntity Product { get { return _schema.Product; } }
         public static PurchaseEntity Purchase { get { return _schema.Purchase; } }
         public static PurchaseLineEntity PurchaseLine { get { return _schema.PurchaseLine; } }

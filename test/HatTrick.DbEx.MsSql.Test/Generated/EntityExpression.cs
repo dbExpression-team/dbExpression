@@ -222,8 +222,8 @@ namespace DataService.EntityExpression.dbo
 		#endregion
     }
     #endregion
-    #region person_ address
-    public partial class Person_AddressEntity : EntityExpression<Person_Address>
+    #region person address
+    public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
         private const string _idFieldName = "Id";
@@ -233,30 +233,30 @@ namespace DataService.EntityExpression.dbo
         #endregion
 
         #region interface properties
-		public Int32FieldExpression<Person_Address> Id { get { return Fields[_idFieldName].Value as Int32FieldExpression<Person_Address>; } }
-		public Int32FieldExpression<Person_Address> PersonId { get { return Fields[_personIdFieldName].Value as Int32FieldExpression<Person_Address>; } }
-		public Int32FieldExpression<Person_Address> AddressId { get { return Fields[_addressIdFieldName].Value as Int32FieldExpression<Person_Address>; } }
-		public DateTimeFieldExpression<Person_Address> DateCreated { get { return Fields[_dateCreatedFieldName].Value as DateTimeFieldExpression<Person_Address>; } }
+		public Int32FieldExpression<PersonAddress> Id { get { return Fields[_idFieldName].Value as Int32FieldExpression<PersonAddress>; } }
+		public Int32FieldExpression<PersonAddress> PersonId { get { return Fields[_personIdFieldName].Value as Int32FieldExpression<PersonAddress>; } }
+		public Int32FieldExpression<PersonAddress> AddressId { get { return Fields[_addressIdFieldName].Value as Int32FieldExpression<PersonAddress>; } }
+		public DateTimeFieldExpression<PersonAddress> DateCreated { get { return Fields[_dateCreatedFieldName].Value as DateTimeFieldExpression<PersonAddress>; } }
         #endregion
 
         #region constructors
-		public Person_AddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata): this(schema, metadata, null)
+		public PersonAddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata): this(schema, metadata, null)
         {
         }
 
-        private Person_AddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
+        private PersonAddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person_Address>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_personIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person_Address>(this, metadata.Fields[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personIdFieldName}'"), x => x.PersonId)));
-			Fields.Add(_addressIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person_Address>(this, metadata.Fields[_addressIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_addressIdFieldName}'"), x => x.AddressId)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person_Address>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
+			Fields.Add(_personIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personIdFieldName}'"), x => x.PersonId)));
+			Fields.Add(_addressIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_addressIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_addressIdFieldName}'"), x => x.AddressId)));
+			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PersonAddress>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
         }
         #endregion
 
         #region methods
-        public Person_AddressEntity As(string name)
+        public PersonAddressEntity As(string name)
         {
-            return new Person_AddressEntity(this.Schema, this.Metadata, name);
+            return new PersonAddressEntity(this.Schema, this.Metadata, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -269,16 +269,16 @@ namespace DataService.EntityExpression.dbo
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(Person_Address person_Address)
+        protected override InsertExpressionSet GetInclusiveInsertExpression(PersonAddress personAddress)
         {
             return new InsertExpressionSet(
-				PersonId.Insert(person_Address.PersonId),
-				AddressId.Insert(person_Address.AddressId),
-				DateCreated.Insert(person_Address.DateCreated)
+				PersonId.Insert(personAddress.PersonId),
+				AddressId.Insert(personAddress.AddressId),
+				DateCreated.Insert(personAddress.DateCreated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person_Address from, Person_Address to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress from, PersonAddress to)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); }
@@ -288,12 +288,12 @@ namespace DataService.EntityExpression.dbo
             return expr;
         }
 
-        protected override void HydrateEntity(Person_Address person_Address, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(PersonAddress personAddress, ISqlFieldReader reader, IValueMapper mapper)
         {
-			person_Address.Id = mapper.Map<int>(Id, reader.ReadField());
-			person_Address.PersonId = mapper.Map<int>(PersonId, reader.ReadField());
-			person_Address.AddressId = mapper.Map<int>(AddressId, reader.ReadField());
-			person_Address.DateCreated = mapper.Map<DateTime>(DateCreated, reader.ReadField());
+			personAddress.Id = mapper.Map<int>(Id, reader.ReadField());
+			personAddress.PersonId = mapper.Map<int>(PersonId, reader.ReadField());
+			personAddress.AddressId = mapper.Map<int>(AddressId, reader.ReadField());
+			personAddress.DateCreated = mapper.Map<DateTime>(DateCreated, reader.ReadField());
         }
 		#endregion
     }

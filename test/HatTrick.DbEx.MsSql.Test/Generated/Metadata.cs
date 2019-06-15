@@ -42,7 +42,7 @@ namespace DataService.Metadata.dbo
             Database = database;
             Entities.Add("Address", new AddressEntityMetadata(this));
             Entities.Add("Person", new PersonEntityMetadata(this));
-            Entities.Add("Person_Address", new Person_AddressEntityMetadata(this));
+            Entities.Add("Person_Address", new PersonAddressEntityMetadata(this));
             Entities.Add("Product", new ProductEntityMetadata(this));
             Entities.Add("Purchase", new PurchaseEntityMetadata(this));
             Entities.Add("PurchaseLine", new PurchaseLineEntityMetadata(this));
@@ -100,7 +100,7 @@ namespace DataService.Metadata.dbo
         }
         #endregion
     }
-	public class Person_AddressEntityMetadata : ISqlEntityMetadata
+	public class PersonAddressEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
         public string Name => "Person_Address";
@@ -109,7 +109,7 @@ namespace DataService.Metadata.dbo
         #endregion
 		
         #region constructors
-        public Person_AddressEntityMetadata(ISqlSchemaMetadata schema)
+        public PersonAddressEntityMetadata(ISqlSchemaMetadata schema)
         {
             Schema = schema;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...

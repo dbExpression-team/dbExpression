@@ -28,8 +28,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id);
 
                     //when               
@@ -56,8 +56,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         .Having(db.fx.Count(dbo.Address.Id) > 1);
 
@@ -83,8 +83,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         //basically equal to 2, testing composite having statement
                         .Having(db.fx.Count(dbo.Address.Id) > 1 & db.fx.Count(dbo.Address.Id) < 3);
@@ -111,8 +111,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                             db.fx.Count(dbo.Address.Id).As("AddressCount")
                         )
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .GroupBy(dbo.Person.Id)
                         //testing composite having statement with 3 parts
                         .Having(db.fx.Count(dbo.Address.Id) == 1 | db.fx.Count(dbo.Address.Id) == 2 | db.fx.Count(dbo.Address.Id) == 3);

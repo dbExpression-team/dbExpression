@@ -47,9 +47,9 @@ namespace Data.dbo
         #endregion
     }
     #endregion
-    #region person_ address
+    #region person address
     [Serializable]
-    public partial class Person_Address : IDbEntity
+    public partial class PersonAddress : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -59,7 +59,7 @@ namespace Data.dbo
         #endregion
 
         #region constructor
-        public Person_Address()
+        public PersonAddress()
         {
         }
         #endregion

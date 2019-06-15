@@ -25,17 +25,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
-                            dbo.Person_Address.As("t1").PersonId,
-                            dbo.Person_Address.As("t1").AddressId
+                            dbo.PersonAddress.As("t1").PersonId,
+                            dbo.PersonAddress.As("t1").AddressId
                         )
                         .From(dbo.Person)
                         .InnerJoin(
                             db.SelectMany(
-                                dbo.Person_Address.PersonId,
-                                dbo.Person_Address.AddressId
+                                dbo.PersonAddress.PersonId,
+                                dbo.PersonAddress.AddressId
                             )
-                            .From(dbo.Person_Address)
-                        ).As("t1").On(dbo.Person.Id == dbo.Person_Address.As("t1").PersonId);
+                            .From(dbo.PersonAddress)
+                        ).As("t1").On(dbo.Person.Id == dbo.PersonAddress.As("t1").PersonId);
 
                     //when               
                     var persons = exp.Execute();
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     //given
                     ConfigureForMsSqlVersion(version);
 
-                    var t1 = dbo.Person_Address.As("t1");
+                    var t1 = dbo.PersonAddress.As("t1");
 
                     var exp = db.SelectMany(
                             dbo.Person.Id,
@@ -61,10 +61,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         .From(dbo.Person)
                         .InnerJoin(
                             db.SelectMany(
-                                dbo.Person_Address.PersonId,
-                                dbo.Person_Address.AddressId
+                                dbo.PersonAddress.PersonId,
+                                dbo.PersonAddress.AddressId
                             )
-                            .From(dbo.Person_Address)
+                            .From(dbo.PersonAddress)
                         ).As("t1").On(dbo.Person.Id == t1.PersonId);
 
                     //when               
