@@ -101,17 +101,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     dbo.Person.Id.As("foo"),
                     dbo.Person.FirstName,
                     dbo.Person.LastName,
-                    db.fx.Count(dbo.Person_Address.Id).As("person_count")
+                    db.fx.Count(dbo.PersonAddress.Id).As("person_count")
                 ).Distinct()
                 .From(dbo.Person)
-                .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
+                .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
                 .GroupBy(
                     dbo.Person.Id,
                     dbo.Person.FirstName,
                     dbo.Person.LastName
                 )
                 .Having(
-                    db.fx.Count(dbo.Person_Address.Id) > 1
+                    db.fx.Count(dbo.PersonAddress.Id) > 1
                 )
                 .OrderBy(
                     dbo.Person.LastName,

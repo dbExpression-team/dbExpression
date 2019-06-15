@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 var exp = db.SelectMany<int>(dbo.Person.Id)
                     .From(dbo.Person)
-                    .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId);
+                    .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId);
 
                 //when               
                 var persons = exp.Execute();

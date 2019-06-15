@@ -25,8 +25,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany<int>(dbo.Person.Id)
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .Where(dbo.Address.AddressType == AddressType.Billing);
 
                     //when               
@@ -45,8 +45,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany<int>(dbo.Person.Id)
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .Where(dbo.Address.Id == 1);
 
                     //when               
@@ -65,8 +65,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                     var exp = db.SelectMany<int>(dbo.Person.Id)
                         .From(dbo.Person)
-                        .InnerJoin(dbo.Person_Address).On(dbo.Person.Id == dbo.Person_Address.PersonId)
-                        .InnerJoin(dbo.Address).On(dbo.Person_Address.AddressId == dbo.Address.Id)
+                        .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                        .InnerJoin(dbo.Address).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                         .Where(dbo.Address.AddressType == AddressType.Billing & dbo.Address.Id != 1);
 
                     //when               
