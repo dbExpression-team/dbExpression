@@ -130,6 +130,22 @@ namespace Data.dbo
         #endregion
     }
     #endregion
+    #region person total purchases view
+    [Serializable]
+    public partial class PersonTotalPurchasesView : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public decimal? TotalPurchases { get; set; }
+        #endregion
+
+        #region constructor
+        public PersonTotalPurchasesView()
+        {
+        }
+        #endregion
+    }
+    #endregion
 }
 namespace Data.sec
 {
