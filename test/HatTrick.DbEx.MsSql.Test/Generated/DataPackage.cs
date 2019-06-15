@@ -71,7 +71,7 @@ namespace Data.dbo
     {
         #region interface
         public int Id { get; set; }
-        public int? ProductCategoryType { get; set; }
+        public ProductCategoryType ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal ListPrice { get; set; }

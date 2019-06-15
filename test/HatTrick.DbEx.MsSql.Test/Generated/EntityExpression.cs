@@ -315,7 +315,7 @@ namespace DataService.EntityExpression.dbo
 
         #region interface properties
 		public Int32FieldExpression<Product> Id { get { return Fields[_idFieldName].Value as Int32FieldExpression<Product>; } }
-		public NullableInt32FieldExpression<Product> ProductCategoryType { get { return Fields[_productCategoryTypeFieldName].Value as NullableInt32FieldExpression<Product>; } }
+		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get { return Fields[_productCategoryTypeFieldName].Value as NullableEnumFieldExpression<Product, ProductCategoryType>; } }
 		public StringFieldExpression<Product> Name { get { return Fields[_nameFieldName].Value as StringFieldExpression<Product>; } }
 		public StringFieldExpression<Product> Description { get { return Fields[_descriptionFieldName].Value as StringFieldExpression<Product>; } }
 		public DecimalFieldExpression<Product> ListPrice { get { return Fields[_listPriceFieldName].Value as DecimalFieldExpression<Product>; } }
@@ -333,7 +333,7 @@ namespace DataService.EntityExpression.dbo
         private ProductEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
 			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Product>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_productCategoryTypeFieldName, new Lazy<FieldExpression>(() => new NullableInt32FieldExpression<Product>(this, metadata.Fields[_productCategoryTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_productCategoryTypeFieldName}'"), x => x.ProductCategoryType)));
+			Fields.Add(_productCategoryTypeFieldName, new Lazy<FieldExpression>(() => new NullableEnumFieldExpression<Product, ProductCategoryType>(this, metadata.Fields[_productCategoryTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_productCategoryTypeFieldName}'"), x => x.ProductCategoryType)));
 			Fields.Add(_nameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Product>(this, metadata.Fields[_nameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_nameFieldName}'"), x => x.Name)));
 			Fields.Add(_descriptionFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Product>(this, metadata.Fields[_descriptionFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_descriptionFieldName}'"), x => x.Description)));
 			Fields.Add(_listPriceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Product>(this, metadata.Fields[_listPriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_listPriceFieldName}'"), x => x.ListPrice)));
@@ -397,7 +397,7 @@ namespace DataService.EntityExpression.dbo
         protected override void HydrateEntity(Product product, ISqlFieldReader reader, IValueMapper mapper)
         {
 			product.Id = mapper.Map<int>(Id, reader.ReadField());
-			product.ProductCategoryType = mapper.Map<int?>(ProductCategoryType, reader.ReadField());
+            product.ProductCategoryType = (ProductCategoryType)mapper.Map<int?>(ProductCategoryType, reader.ReadField());
 			product.Name = mapper.Map<string>(Name, reader.ReadField());
 			product.Description = mapper.Map<string>(Description, reader.ReadField());
 			product.ListPrice = mapper.Map<decimal>(ListPrice, reader.ReadField());
