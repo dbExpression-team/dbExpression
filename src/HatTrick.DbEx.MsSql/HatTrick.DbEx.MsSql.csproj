@@ -80,10 +80,6 @@
     <Compile Include="Builder\MsSqlExpressionBuilder.cs" />
     <Compile Include="Connection\MsSqlConnectionFactory.cs" />
     <Compile Include="Executor\MsSqlExecutorFactory.cs" />
-    <Compile Include="ObjectMap\MsSqlEntity.cs" />
-    <Compile Include="ObjectMap\MsSqlField.cs" />
-    <Compile Include="ObjectMap\MsSqlModel.cs" />
-    <Compile Include="ObjectMap\MsSqlParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\MsSqlTypeMap.cs" />
   </ItemGroup>

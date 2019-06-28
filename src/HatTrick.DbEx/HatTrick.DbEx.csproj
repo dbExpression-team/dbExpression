@@ -45,32 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ListExtensions.cs" />
-    <Compile Include="ObjectMap\Assembly\Attributes.cs" />
-    <Compile Include="ObjectMap\Entity.cs" />
-    <Compile Include="ObjectMap\Enumeration.cs" />
-    <Compile Include="ObjectMap\EnumerationItem.cs" />
-    <Compile Include="ObjectMap\Field.cs" />
-    <Compile Include="ObjectMap\Index.cs" />
-    <Compile Include="ObjectMap\IndexedField.cs" />
-    <Compile Include="ObjectMap\Model.cs" />
-    <Compile Include="ObjectMap\Relationship.cs" />
-    <Compile Include="ObjectMap\Assembly\AssemblyEntity.cs" />
-    <Compile Include="ObjectMap\Assembly\AssemblyEnumeration.cs" />
-    <Compile Include="ObjectMap\Assembly\AssemblyEnumerationItem.cs" />
-    <Compile Include="ObjectMap\Assembly\AssemblyField.cs" />
-    <Compile Include="ObjectMap\Assembly\AssemblyModel.cs" />
     <Compile Include="Configuration\ConfigurationSectionHandler.cs" />
     <Compile Include="Configuration\ConfigurationService.cs" />
     <Compile Include="Configuration\Sections\DatabaseConfigurationSection.cs" />
     <Compile Include="Configuration\Sections\MongoDBConfigurationSection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Clone.cs" />
-    <Compile Include="Utility\Reflection\Assembly.cs" />
-    <Compile Include="Utility\Reflection\Class.cs" />
-    <Compile Include="Utility\Reflection\Expression.cs" />
-    <Compile Include="Utility\StringInterpolation.cs" />
     <Compile Include="Utility\TypeUtility.cs" />
-    <Compile Include="Utility\Reflection\NoPropertyExistsException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
