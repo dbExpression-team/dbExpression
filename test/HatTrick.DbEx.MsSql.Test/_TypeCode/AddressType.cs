@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data
+namespace DbEx.Data
 {
 	#region AddressType
 	public enum AddressType : int
