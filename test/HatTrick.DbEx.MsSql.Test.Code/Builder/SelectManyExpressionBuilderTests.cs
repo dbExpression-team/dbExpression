@@ -1,5 +1,5 @@
-﻿using Data.sec;
-using DataService;
+﻿using DbEx.Data.sec;
+using DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder.Syntax;
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
-                .And.BeAssignableTo<EntityExpression<Data.sec.Person>>()
+                .And.BeAssignableTo<EntityExpression<Person>>()
                 .And.Equals(sec.Person);
         }
 

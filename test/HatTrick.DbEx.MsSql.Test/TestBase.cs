@@ -1,5 +1,4 @@
-﻿using DataService;
-using DataService.Metadata;
+﻿using DbEx.DataService;
 using HatTrick.DbEx.MsSql.Extensions.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using System;

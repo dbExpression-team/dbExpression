@@ -1,18 +1,14 @@
 using System;
 using System.Collections.Generic;
+using DbEx.Data;
 
-namespace DataService.EntityExpression.dbo
+namespace DbEx.dbo.DataService
 {
-    using Data;
-    using Data.dbo;
-    using HatTrick.DbEx.MsSql.Expression;
+    using DbEx.Data.dbo;
     using HatTrick.DbEx.Sql;
-    using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
-    using HatTrick.DbEx.Utility;
-    using System.Data;
 
     #region address
     public partial class AddressEntity : EntityExpression<Address>
@@ -668,18 +664,13 @@ namespace DataService.EntityExpression.dbo
     }
     #endregion
 }
-namespace DataService.EntityExpression.sec
+namespace DbEx.sec.DataService
 {
-    using Data;
-    using Data.sec;
-    using HatTrick.DbEx.MsSql.Expression;
+    using DbEx.Data.sec;
     using HatTrick.DbEx.Sql;
-    using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql.Mapper;
-    using HatTrick.DbEx.Utility;
-    using System.Data;
 
     #region person
     public partial class PersonEntity : EntityExpression<Person>

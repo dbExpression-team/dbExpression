@@ -1,5 +1,5 @@
-﻿using Data;
-using DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql.Extensions.Builder;
