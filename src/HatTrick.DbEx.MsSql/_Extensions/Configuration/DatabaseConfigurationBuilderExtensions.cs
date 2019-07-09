@@ -1,7 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using System.Linq;
 
-namespace HatTrick.DbEx.MsSql.Extensions.Configuration
+namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static class DatabaseConfigurationBuilderExtensions
     {

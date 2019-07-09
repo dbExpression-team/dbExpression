@@ -6,13 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="_Extensions\Configuration\**" />
+    <Compile Remove="_Extensions\Expression\**" />
+    <EmbeddedResource Remove="_Extensions\Configuration\**" />
+    <EmbeddedResource Remove="_Extensions\Expression\**" />
+    <None Remove="_Extensions\Configuration\**" />
+    <None Remove="_Extensions\Expression\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HatTrick.DbEx\HatTrick.DbEx.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="Extensions\Configuration\" />
-    <Folder Include="Extensions\Expression\" />
   </ItemGroup>
 
   <ItemGroup>

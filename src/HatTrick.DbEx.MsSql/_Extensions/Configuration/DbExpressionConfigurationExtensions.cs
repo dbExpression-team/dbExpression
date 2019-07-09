@@ -8,7 +8,7 @@ using System;
 using System.Configuration;
 using System.Data.SqlClient;
 
-namespace HatTrick.DbEx.MsSql.Extensions.Configuration
+namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static class DbExpressionConfigurationExtensions
     {

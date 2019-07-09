@@ -3,7 +3,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 
-namespace HatTrick.DbEx.Sql.Extensions.Attribute
+namespace HatTrick.DbEx.Sql.Attribute
 {
     public static class FilterExpressionOperatorAttributeExtensions
     {

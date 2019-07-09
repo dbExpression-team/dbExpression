@@ -1,5 +1,5 @@
 ﻿using DbEx.DataService;
-using HatTrick.DbEx.MsSql.Extensions.Configuration;
+using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using System;
 using System.Configuration;

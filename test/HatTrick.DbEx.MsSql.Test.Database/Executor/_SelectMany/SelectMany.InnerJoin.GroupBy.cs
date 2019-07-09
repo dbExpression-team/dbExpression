@@ -2,7 +2,7 @@
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql.Extensions.Builder;
+using HatTrick.DbEx.Sql.Builder;
 using System.Linq;
 using Xunit;
 

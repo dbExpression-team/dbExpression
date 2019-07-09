@@ -2,9 +2,7 @@
 using DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Extensions.Builder;
-using System.Configuration;
+using HatTrick.DbEx.Sql.Builder;
 using System.Threading.Tasks;
 using Xunit;
 

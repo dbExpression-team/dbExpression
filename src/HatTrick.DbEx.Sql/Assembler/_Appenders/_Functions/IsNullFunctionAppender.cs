@@ -1,7 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Extensions.Attribute;
-using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {

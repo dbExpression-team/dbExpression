@@ -1,5 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Extensions.Attribute;
+using HatTrick.DbEx.Sql.Attribute;
 using System;
 using System.Collections.Generic;
 

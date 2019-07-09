@@ -9,7 +9,7 @@ using System.Dynamic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.Sql.Extensions.Builder
+namespace HatTrick.DbEx.Sql.Builder
 {
     public static class SqlExpressionBuilderExtensions
     {

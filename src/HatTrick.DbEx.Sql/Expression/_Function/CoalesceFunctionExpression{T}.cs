@@ -1,5 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
