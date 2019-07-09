@@ -1,0 +1,16 @@
+{
+  "name": "hat-trick.db-ex.documentation",
+  "version": "0.0.0",
+  "description": "HatTrick.DbEx.Documentation",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "vuepress": "^1.0.2"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  }
+}
