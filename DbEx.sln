@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{787F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5FA90CD6-D49D-41B7-9C43-8F3EFBA3D1E7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatTrick.DbEx.Tools", "tools\HatTrick.DbEx.Tools\HatTrick.DbEx.Tools.csproj", "{D859B5CD-3DE0-4C6B-B12C-28C8B39C9FB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{9C727B28-D631-40F6-AD42-ECD1CC7EEAF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C727B28-D631-40F6-AD42-ECD1CC7EEAF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C727B28-D631-40F6-AD42-ECD1CC7EEAF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D859B5CD-3DE0-4C6B-B12C-28C8B39C9FB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D859B5CD-3DE0-4C6B-B12C-28C8B39C9FB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D859B5CD-3DE0-4C6B-B12C-28C8B39C9FB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D859B5CD-3DE0-4C6B-B12C-28C8B39C9FB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{42A7C509-96EE-475C-8000-A5700766F8A8} = {7FC9C3D5-22E3-40DD-B73D-FB60CF635B06}
 		{E7C8A378-630A-46C6-B2FF-7FF3D6DC059B} = {7FC9C3D5-22E3-40DD-B73D-FB60CF635B06}
 		{9C727B28-D631-40F6-AD42-ECD1CC7EEAF1} = {4E034148-C936-415D-BEF5-9E2104268A23}
+		{D859B5CD-3DE0-4C6B-B12C-28C8B39C9FB3} = {5FA90CD6-D49D-41B7-9C43-8F3EFBA3D1E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}

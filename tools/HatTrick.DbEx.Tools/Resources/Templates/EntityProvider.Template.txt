@@ -1,0 +1,45 @@
+{#each Schemas}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}DataService
+{{
+    using {() => ResolveRootNamespace}{($) => ResolveName}.DataService;
+    using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Configuration;
+
+    #region {($) => ResolveName}
+    public static partial class {($) => ResolveName}
+    {{
+        #region internals
+        private static volatile {($) => ResolveName}Schema _schema;
+        #endregion
+
+        #region interface
+		{#each ($) => ResolveConsolidatedTablesAndViews}
+		{#if !($) => IsIgnored}
+        public static {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return _schema.{($) => ResolveName}; }} }}
+		{/if}
+		{/each}
+        #endregion
+
+		#region constructors
+        static {($) => ResolveName}()
+        {{
+            if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
+                throw new DbExpressionConfigurationException($"Metadata for source reference key '{() => ResolveSourceReferenceKey}' has not been provided.");
+
+            var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+            if (schema == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
+
+            schema.TryGetValue("{$.Name}", out ISqlSchemaMetadata schemaMetadata);
+            if (schemaMetadata == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
+
+            _schema = new {($) => ResolveName}Schema(schemaMetadata);
+        }}
+        #endregion
+    }}
+    #endregion
+}}
+{/if}
+{/each}

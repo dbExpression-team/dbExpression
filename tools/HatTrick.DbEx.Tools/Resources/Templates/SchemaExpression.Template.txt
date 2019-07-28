@@ -1,0 +1,63 @@
+namespace {() => ResolveRootNamespace}DataService
+{{
+    using HatTrick.DbEx.MsSql.Builder;
+    using HatTrick.DbEx.Sql.Configuration;
+    using HatTrick.DbEx.Sql;
+
+    #region db
+    public class db : MsSqlExpressionBuilder
+    {{
+		public static SqlConnection GetConnection()
+        {{
+            if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
+                throw new DbExpressionConfigurationException($"Metadata for database named '{() => ResolveSourceReferenceKey}' has not been provided.");
+            return config.DatabaseConfiguration.ConnectionFactory.CreateSqlConnection();
+        }}
+    }}
+    #endregion
+}}
+
+{#each Schemas}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}DataService
+{{
+    using HatTrick.DbEx.Sql.Expression;
+    using {() => ResolveRootNamespace}{($) => ResolveName}.DataService;
+    using System;
+    using HatTrick.DbEx.Sql;
+
+    #region {$.Name}
+    [Serializable]
+    public class {($) => ResolveName}Schema : SchemaExpression
+    {{
+        #region internals
+		{#each ($) => ResolveConsolidatedTablesAndViews}
+		{#if !($) => IsIgnored}
+        private const string _{($) => ToCamelCase}EntityName = "{$.Name}";
+		{/if}
+		{/each}
+        #endregion
+
+        #region interface
+		{#each ($) => ResolveConsolidatedTablesAndViews}
+		{#if !($) => IsIgnored}
+        public {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return Entities[_{($) => ToCamelCase}EntityName].Value as {($) => ResolveName}Entity; }} }}
+		{/if}
+		{/each}
+        #endregion
+
+        #region constructors
+        public {($) => ResolveName}Schema(ISqlSchemaMetadata metadata) : base(metadata, null)
+        {{
+			{#each ($) => ResolveConsolidatedTablesAndViews}
+			{#if !($) => IsIgnored}
+            Entities.Add(_{($) => ToCamelCase}EntityName, new Lazy<EntityExpression>(() => new {($) => ResolveName}Entity(this, metadata.Entities[_{($) => ToCamelCase}EntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{{metadata.Name}}' does not contain entity metadata for '{{_{($) => ToCamelCase}EntityName}}'"))));
+			{/if}
+			{/each}
+        }}
+        #endregion
+    }}
+    #endregion
+}}
+{/if}
+{/each}

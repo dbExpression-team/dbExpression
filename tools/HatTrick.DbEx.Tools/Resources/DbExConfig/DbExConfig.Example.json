@@ -1,0 +1,32 @@
+﻿{
+    "source": {
+        "type": "MsSqlDb",
+        "referenceKey": "** runtime refernce key value **",
+        "connectionString": {
+            "value": "** connection string for target db **"
+        }
+    },
+    "outputDirectory": "** relative or absolute directory path for generated file output **",
+    "Meta": [ /* ** examples below **
+        {
+            
+            "path": "dbo.Person_Address",
+            "apply": { "nameOverride": "PersonAddress" }
+        },
+        {
+            
+            "path": "dbo.Address.AddressType",
+            "apply": { "typeOverride": "AddressTypeCode", "fieldTypeOverride": "Enum" }
+        },
+        {
+            
+            "path": "sec",
+            "apply": { "nameOverride": "secure" }
+        },
+        {
+            
+            "path": "sec.Credentials",
+            "apply": { "ignore": true }
+        }*/
+    ]
+}
