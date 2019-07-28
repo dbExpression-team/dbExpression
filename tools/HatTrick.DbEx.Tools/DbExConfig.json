@@ -1,0 +1,40 @@
+{
+	"source": {
+		"type": "MsSqlDb",
+		"referenceKey": "MsSqlDbExTest-design",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"outputDirectory": "../../test/HatTrick.DbEx.MsSql.Test/Generated",
+	"rootNamespaceOverride": "DbEx",
+	"Meta": [
+		{
+			"path": "dbo.Address.AddressType",
+			"apply": {
+				"dataTypeOverride": "AddressType",
+				"fieldTypeOverride": "Enum?"
+			}
+		},
+		{
+			"path": "dbo.Person.GenderType",
+			"apply": {
+				"dataTypeOverride": "GenderType",
+				"fieldTypeOverride": "Enum"
+			}
+		},
+		{
+			"path": "dbo.Product.ProductCategoryType",
+			"apply": {
+				"dataTypeOverride": "ProductCategoryType",
+				"fieldTypeOverride": "Enum?"
+			}
+		},
+		{
+			"path": "dbo.Person_Address",
+			"apply": {
+				"nameOverride": "PersonAddress"
+			}
+		}
+	]
+}

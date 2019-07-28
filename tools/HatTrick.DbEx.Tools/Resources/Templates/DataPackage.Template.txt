@@ -1,0 +1,34 @@
+﻿using System;
+using HatTrick.DbEx.Sql;
+using {() => ResolveRootNamespace}Data;
+
+{#each Schemas}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}Data.{($) => ResolveName}
+{{
+	{#each ($) => ResolveConsolidatedTablesAndViews}
+	{#if !($) => IsIgnored}
+    #region {($) => InsertSpaceOnCapitalizationAndToLower}
+    [Serializable]
+    public partial class {($) => ResolveName} : IDbEntity
+    {{
+        #region interface
+		{#each Columns}
+		{#if !($) => IsIgnored}
+        public {($) => ResolveAssemblyTypeName} {($) => ResolveName} {{ get; set; }}
+		{/if}
+		{/each}
+        #endregion
+
+        #region constructor
+        public {($) => ResolveName}()
+        {{
+        }}
+        #endregion
+    }}
+    #endregion
+	{/if}
+	{/each}
+}}
+{/if}
+{/each}

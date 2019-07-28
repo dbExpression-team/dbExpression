@@ -1,0 +1,89 @@
+namespace {() => ResolveRootNamespace}DataService
+{{
+    using HatTrick.DbEx.MsSql;
+    using HatTrick.DbEx.Sql;
+	{#each Schemas}
+	{#if !($) => IsIgnored}
+	using {() => ResolveRootNamespace}{($) => ResolveName}.DataService;
+	{/if}
+	{/each}
+
+    public class {($) => ResolveName}DatabaseMetadataProvider : IDatabaseMetadataProvider
+    {{
+        #region interface
+        public ISqlDatabaseMetadata Database {{ get; private set; }}
+        #endregion
+
+        #region constructors
+        public {($) => ResolveName}DatabaseMetadataProvider()
+        {{
+			Database = new MsSqlDatabaseMetadata();   
+
+			{#each Schemas}
+			{#if !($) => IsIgnored}
+            Database.Schemas.Add("{$.Name}", new {($) => ResolveName}SchemaMetadata(Database));
+			{/if}
+			{/each}
+        }}
+        #endregion
+    }}
+}}
+
+{#each Schemas}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
+{{
+	using HatTrick.DbEx.MsSql.Expression;
+    using HatTrick.DbEx.Sql;
+    using System.Collections.Generic;
+    using System.Data;
+
+	public class {($) => ResolveName}SchemaMetadata : ISqlSchemaMetadata
+    {{
+		#region interface
+        public string Name => "{$.Name}";
+        public ISqlDatabaseMetadata Database {{ get; }}
+        public IDictionary<string, ISqlEntityMetadata> Entities {{ get; }} = new Dictionary<string, ISqlEntityMetadata>();
+		#endregion
+
+        #region constructors
+        public {($) => ResolveName}SchemaMetadata(ISqlDatabaseMetadata database)
+        {{
+            Database = database;
+			{#each ($) => ResolveConsolidatedTablesAndViews}
+			{#if !($) => IsIgnored}
+            Entities.Add("{$.Name}", new {($) => ResolveName}EntityMetadata(this));
+			{/if}
+			{/each}
+        }}
+        #endregion
+    }}
+
+	{#each ($) => ResolveConsolidatedTablesAndViews}
+	{#if !($) => IsIgnored}
+	public class {($)  => ResolveName}EntityMetadata : ISqlEntityMetadata
+	{{
+        #region interface
+        public string Name => "{$.Name}";
+        public ISqlSchemaMetadata Schema {{ get; }}
+        public IDictionary<string, ISqlFieldMetadata> Fields {{ get; }} = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public {($) => ResolveName}EntityMetadata(ISqlSchemaMetadata schema)
+        {{
+            Schema = schema;
+			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			{#each Columns}
+			{#if !($) => IsIgnored}
+            Fields.Add("{$.Name}", new MsSqlFieldMetadata(this, "{$.Name}", SqlDbType.{$.SqlType}, {$.MaxLength}){#if $.IsIdentity} {{ IsIdentity = true }}{/if});
+			{/if}
+			{/each}
+        }}
+        #endregion
+    }}
+	{/if}
+	{/each}
+}}
+{/if}
+{/each}

@@ -1,0 +1,162 @@
+using System;
+using System.Collections.Generic;
+using {() => ResolveRootNamespace}Data;
+
+{#each Schemas}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
+{{
+    using {() => ResolveRootNamespace}Data.{($) => ResolveName};
+    using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Executor;
+    using HatTrick.DbEx.Sql.Expression;
+    using HatTrick.DbEx.Sql.Mapper;
+
+	{#each ($) => ResolveConsolidatedTablesAndViews}
+	{#if !($) => IsIgnored}
+    #region {($) => InsertSpaceOnCapitalizationAndToLower}
+    public partial class {($) => ResolveName}Entity : EntityExpression<{($) => ResolveName}>
+    {{
+        #region internals
+		{#each Columns}
+		{#if !($) => IsIgnored}
+        private const string _{($) => ToCamelCase}FieldName = "{$.Name}";
+		{/if}
+		{/each}
+        #endregion
+
+        #region interface properties
+		{#each Columns}
+		{#if !($) => IsIgnored}
+			{#if ($) => FieldRequiresTypedParameter}
+		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeName}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName].Value as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeName}>; }} }}
+			{/if}
+			{#if !($) => FieldRequiresTypedParameter}
+		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName].Value as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>; }} }}
+			{/if}
+		{/if}
+		{/each}
+        #endregion
+
+        #region constructors
+		public {($) => ResolveName}Entity(SchemaExpression schema, ISqlEntityMetadata metadata): this(schema, metadata, null)
+        {{
+        }}
+
+        private {($) => ResolveName}Entity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
+        {{
+			{#each Columns}
+			{#if !($) => IsIgnored}
+			{#if ($) => HasDataTypeOverride}
+				{#if ($) => HasFieldTypeOverride}{! **** Assume no cast necessary **** }
+					{#if ($) => FieldRequiresTypedParameter}
+			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => x.{($) => ResolveName})));
+					{/if}
+					{#if !($) => FieldRequiresTypedParameter}
+			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => x.{($) => ResolveName})));
+					{/if}
+				{/if}
+				{#if !($) => HasFieldTypeOverride}{! **** Assume we need a cast **** }
+			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => ({($) => ResolveStrictAssemblyTypeName})x.{($) => ResolveName})));
+				{/if}
+			{/if}
+			{#if !($) => HasDataTypeOverride}
+			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => x.{($) => ResolveName})));
+			{/if}
+			{/if}
+			{/each}
+        }}
+        #endregion
+
+        #region methods
+        public {($) => ResolveName}Entity As(string name)
+        {{
+            return new {($) => ResolveName}Entity(this.Schema, this.Metadata, name);
+        }}
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        {{
+            return new SelectExpressionSet(
+				{#each Columns}
+				{#if !($) => IsIgnored}
+                {($) => ResolveName}{#if !(..\$.Columns, $) => IsLast},{/if}
+				{/if}
+				{/each}
+            );
+        }}
+		
+        protected override InsertExpressionSet GetInclusiveInsertExpression({($) => ResolveName} {($) => ToCamelCase})
+        {{
+            return new InsertExpressionSet(
+				{#each Columns}
+				{#if !($) => IsIgnored}
+				{#if !$.IsIdentity}
+				{#if ($) => HasDataTypeOverride}
+					{#if ($) => HasFieldTypeOverride} {! **** Assume no cast necessary **** }
+				{($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
+					{/if}
+					{#if !($) => HasFieldTypeOverride} {! **** Assume we need a cast **** }
+				//if the column has a data type override but no field type override, cast the value to the underlying type...
+                {($) => ResolveName}.Insert(({($) => ResolveStrictAssemblyTypeName}){(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
+					{/if}
+				{/if}
+				{#if !($) => HasDataTypeOverride}
+				{($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
+				{/if}
+				{/if}
+				{/if}
+				{/each}
+            );
+        }}
+
+        protected override AssignmentExpressionSet GetAssignmentExpression({($) => ResolveName} from, {($) => ResolveName} to)
+        {{
+            AssignmentExpressionSet expr = new AssignmentExpressionSet();
+			{#each Columns}
+			{#if !($) => IsIgnored}
+			{#if !$.IsIdentity}
+			{#if ($.Name) => NameRepresentsLastTouchedTimestamp}
+            expr &= {($) => ResolveName}.Set(DateTime.UtcNow);
+			{/if}
+			{#if !($.Name) => NameRepresentsLastTouchedTimestamp}
+			{#if ($) => HasDataTypeOverride}
+				{#if ($) => HasFieldTypeOverride} {! **** Assume no cast necessary **** }
+			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}
+				{/if}
+				{#if !($) => HasFieldTypeOverride} {! **** Assume we need a cast **** }
+			//if the column has a data type override but no field type override, cast the value to the underlying type...
+			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(({($) => ResolveStrictAssemblyTypeName})to.{($) => ResolveName}); }}
+				{/if}
+			{/if}
+			{#if !($) => HasDataTypeOverride}
+			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}
+			{/if}
+			{/if}
+			{/if}
+			{/if}
+			{/each}
+			
+            return expr;
+        }}
+
+        protected override void HydrateEntity({($) => ResolveName} {($) => ToCamelCase}, ISqlFieldReader reader, IValueMapper mapper)
+        {{
+			{#each Columns}
+			{#if !($) => IsIgnored}
+			{#if ($) => HasDataTypeOverride}
+            {(..\$) => ToCamelCase}.{($) => ResolveName} = ({($) => ResolveAssemblyTypeName})mapper.Map<{($) => ResolveStrictAssemblyTypeName}>({($) => ResolveName}, reader.ReadField());
+			{/if}
+			{#if !($) => HasDataTypeOverride}
+			{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($) => ResolveAssemblyTypeName}>({($) => ResolveName}, reader.ReadField());
+			{/if}
+			{/if}
+			{/each}
+        }}
+		#endregion
+    }}
+    #endregion
+	{/if}
+    {/each}
+}}
+{/if}
+{/each}
