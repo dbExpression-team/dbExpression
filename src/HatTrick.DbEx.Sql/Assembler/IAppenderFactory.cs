@@ -2,6 +2,6 @@
 {
     public interface IAppenderFactory
     {
-        IAppender CreateAppender(bool minify);
+        IAppender CreateAppender();
     }
 }

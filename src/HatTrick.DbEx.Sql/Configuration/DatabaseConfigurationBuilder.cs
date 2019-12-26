@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
@@ -35,8 +36,25 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseStatementBuilderFactory<T>()
             where T : class, ISqlStatementBuilderFactory, new()
         {
+            UseStatementBuilderFactory((Action<T>)null);
+        }
+
+        public void UseStatementBuilderFactory<T>(Action<T> configure)
+            where T : class, ISqlStatementBuilderFactory, new()
+        {
             var factory = new T();
+            configure?.Invoke(factory);
             Database.StatementBuilderFactory = factory;
+        }
+
+        public void UseStatementBuilderFactory(Func<DbExpressionAssemblerConfiguration, ExpressionSet, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
+        {
+            Database.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
+        }
+
+        public void UseStatementBuilderFactory(Func<ISqlStatementBuilderFactory> factory)
+        {
+            Database.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
         }
         #endregion
 
@@ -49,14 +67,25 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseAppenderFactory<T>()
             where T : class, IAppenderFactory, new()
         {
+            UseAppenderFactory((Action<T>)null);
+        }
+
+        public void UseAppenderFactory<T>(Action<T> configure)
+            where T : class, IAppenderFactory, new()
+        {
             var factory = new T();
+            configure?.Invoke(factory);
             Database.AppenderFactory = factory;
         }
 
-        public void UseDefaultAppenderFactory()
+        public void UseAppenderFactory(Func<IAppender> factory)
         {
-            var factory = new AppenderFactory();
-            Database.AppenderFactory = factory;
+            Database.AppenderFactory = new DelegateAppenderFactory(factory);
+        }
+
+        public void UseAppenderFactory(Func<IAppenderFactory> factory)
+        {
+            Database.AppenderFactory = new DelegateAppenderFactory(factory);
         }
         #endregion
 
@@ -69,48 +98,48 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseParameterBuilderFactory<T>()
             where T : class, ISqlParameterBuilderFactory, new()
         {
-            var factory = new T();
-            Database.ParameterBuilderFactory = factory;
+            Database.ParameterBuilderFactory = new T();
+        }
+
+        public void UseParameterBuilderFactory(Func<ISqlParameterBuilder> factory)
+        {
+            Database.ParameterBuilderFactory = new DelegateSqlParameterBuilderFactory(factory);
+        }
+
+        public void UseParameterBuilderFactory(Func<ISqlParameterBuilderFactory> factory)
+        {
+            Database.ParameterBuilderFactory = new DelegateSqlParameterBuilderFactory(factory);
         }
         #endregion
 
         #region executor factory
         public void UseExecutorFactory(ISqlStatementExecutorFactory factory)
         {
-            UseExecutorFactory(factory, (Action<SqlStatementExecutorFactoryConfigurationBuilder>)null);
-        }
-
-        public void UseExecutorFactory(ISqlStatementExecutorFactory factory, Action<SqlStatementExecutorFactoryConfigurationBuilder> configure)
-        {
-            configure?.Invoke(new SqlStatementExecutorFactoryConfigurationBuilder(factory));
             Database.ExecutorFactory = factory;
         }
 
         public void UseExecutorFactory<T>()
             where T : class, ISqlStatementExecutorFactory, new()
         {
-            UseExecutorFactory<T>((Action<SqlStatementExecutorFactoryConfigurationBuilder>)null);
+            UseExecutorFactory((Action<T>)null);
         }
 
-        public void UseExecutorFactory<T>(Action<SqlStatementExecutorFactoryConfigurationBuilder> configure)
+        public void UseExecutorFactory<T>(Action<T> configure)
             where T : class, ISqlStatementExecutorFactory, new()
         {
             var factory = new T();
-            configure?.Invoke(new SqlStatementExecutorFactoryConfigurationBuilder(factory));
+            configure?.Invoke(factory);
             Database.ExecutorFactory = factory;
         }
 
-        public void UseDefaultExecutorFactory()
+        public void UseExecutorFactory(Func<ExpressionSet,ISqlStatementExecutor> factory)
         {
-            UseDefaultExecutorFactory((Action<SqlStatementExecutorFactoryConfigurationBuilder>)null);
+            Database.ExecutorFactory = new DelegateSqlStatementExecutorFactory(factory);
         }
 
-        public void UseDefaultExecutorFactory(Action<SqlStatementExecutorFactoryConfigurationBuilder> configure)
+        public void UseExecutorFactory(Func<ISqlStatementExecutorFactory> factory)
         {
-            var factory = new SqlStatementExecutorFactory();
-            factory.RegisterDefaultExecutors();
-            configure?.Invoke(new SqlStatementExecutorFactoryConfigurationBuilder(factory));
-            Database.ExecutorFactory = factory;
+            Database.ExecutorFactory = new DelegateSqlStatementExecutorFactory(factory);
         }
         #endregion
 
@@ -123,87 +152,79 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseConnectionFactory<T>()
             where T : ISqlConnectionFactory, new()
         {
-            Database.ConnectionFactory = new T();
+            UseConnectionFactory((Action<T>)null);
+        }
+
+        public void UseConnectionFactory<T>(Action<T> configure)
+            where T : ISqlConnectionFactory, new()
+        {
+            var factory = new T();
+            configure?.Invoke(factory);
+            Database.ConnectionFactory = factory;
+        }
+
+        public void UseConnectionFactory(Func<SqlConnection> factory)
+        {
+            Database.ConnectionFactory = new DelegateSqlConnectionFactory(factory);
+        }
+
+        public void UseConnectionFactory(Func<ISqlConnectionFactory> factory)
+        {
+            Database.ConnectionFactory = new DelegateSqlConnectionFactory(factory);
         }
         #endregion
 
         #region mapper factory
         public void UseMapperFactory(IMapperFactory factory)
         {
-            UseMapperFactory(factory, (Action<MapperFactoryConfigurationBuilder>)null);
-        }
-
-        public void UseMapperFactory(IMapperFactory factory, Action<MapperFactoryConfigurationBuilder> configure)
-        {
-            configure?.Invoke(new MapperFactoryConfigurationBuilder(factory));
             Database.MapperFactory = factory;
         }
 
         public void UseMapperFactory<T>()
             where T : class, IMapperFactory, new()
         {
-            UseMapperFactory<T>((Action<MapperFactoryConfigurationBuilder>)null);
+            var factory = new T();
+            if (factory is MapperFactory m)
+                m.RegisterDefaultMappers();
+            Database.MapperFactory = factory;
         }
 
         public void UseMapperFactory<T>(Action<MapperFactoryConfigurationBuilder> configure)
-            where T : class, IMapperFactory, new()
+            where T : MapperFactory, new()
         {
             var factory = new T();
+            factory.RegisterDefaultMappers();
             configure?.Invoke(new MapperFactoryConfigurationBuilder(factory));
             Database.MapperFactory = factory;
         }
 
-        public void UseDefaultMapperFactory()
+        public void UseEntityMapperFactory(Func<IMapperFactory> factory)
         {
-            UseDefaultMapperFactory((Action<MapperFactoryConfigurationBuilder>)null);
+            Database.MapperFactory = new DelegateMapperFactory(factory);
         }
 
-        public void UseDefaultMapperFactory(Action<MapperFactoryConfigurationBuilder> configure)
-        {
-            var mapperFactory = new MapperFactory();
-            mapperFactory.RegisterDefaultMappers();
-            configure?.Invoke(new MapperFactoryConfigurationBuilder(mapperFactory));
-            Database.MapperFactory = mapperFactory;
-        }
         #endregion
 
         #region entity factory
         public void UseEntityFactory(IEntityFactory factory)
         {
-            UseEntityFactory(factory, (Action<EntityFactoryConfigurationBuilder>)null);
-        }
-
-        public void UseEntityFactory(IEntityFactory factory, Action<EntityFactoryConfigurationBuilder> configure)
-        {
-            configure?.Invoke(new EntityFactoryConfigurationBuilder(factory));
             Database.EntityFactory = factory;
         }
 
         public void UseEntityFactory<T>()
             where T : class, IEntityFactory, new()
         {
-            UseEntityFactory<T>((Action<EntityFactoryConfigurationBuilder>)null);
-        }
-
-        public void UseEntityFactory<T>(Action<EntityFactoryConfigurationBuilder> configure)
-            where T : class, IEntityFactory, new()
-        {
             var factory = new T();
-            configure?.Invoke(new EntityFactoryConfigurationBuilder(factory));
+            if (factory is EntityFactory m)
+                m.RegisterDefaultFactories();
             Database.EntityFactory = factory;
+
         }
 
-        public void UseDefaultEntityFactory()
+        public void UseEntityFactory<T>(Func<IEntityFactory> factory)
+            where T : class, IDbEntity, new()
         {
-            UseDefaultEntityFactory(null);
-        }
-
-        public void UseDefaultEntityFactory(Action<EntityFactoryConfigurationBuilder> configure)
-        {
-            var facgtory = new EntityFactory();
-            facgtory.RegisterDefaultFactories();
-            configure?.Invoke(new EntityFactoryConfigurationBuilder(facgtory));
-            Database.EntityFactory = facgtory;
+            Database.EntityFactory = new DelegateEntityFactory(factory);
         }
         #endregion
 

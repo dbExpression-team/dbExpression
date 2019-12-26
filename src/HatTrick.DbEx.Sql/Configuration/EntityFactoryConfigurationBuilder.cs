@@ -5,17 +5,17 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class EntityFactoryConfigurationBuilder
     {
-        private IEntityFactory _factory;
+        private EntityFactory factory;
 
-        public EntityFactoryConfigurationBuilder(IEntityFactory factory)
+        public EntityFactoryConfigurationBuilder(EntityFactory factory)
         {
-            _factory = factory;
+            this.factory = factory;
         }
 
         public void RegisterFactory<T>(Func<T> factory)
             where T : class, IDbEntity
         {
-            _factory.RegisterFactory(factory);
+            this.factory.RegisterFactory(factory);
         }
     }
 }

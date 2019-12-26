@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Configuration;
 

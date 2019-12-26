@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Configuration;
-using System;
+﻿using System;
 using System.Text;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -21,7 +20,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly string[] tabs = new string[10] { t1, t2, t3, t4, t5, t6, t7, t8, t9, t10 };
 
         private readonly StringBuilder builder = new StringBuilder(512);
-        private readonly bool minify;
         #endregion
 
         #region interface
@@ -29,9 +27,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region constructors
-        public Appender(bool minify)
+        public Appender()
         {
-            this.minify = minify;
             Indentation = new AppenderIndentation(this);
         }
         #endregion
@@ -39,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public IAppender LineBreak()
         {
-            builder.Append(minify ? " " : Environment.NewLine);
+            builder.Append(Environment.NewLine);
             return this;
         }
 
@@ -65,7 +62,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Indent()
         {
-            if (minify || Indentation.CurrentLevel == 0)
+            if (Indentation.CurrentLevel == 0)
                 return this;
 
             if (Indentation.CurrentLevel < tabs.Length)

@@ -22,11 +22,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationManager.ConnectionStrings["hattrick.dbex.mssql.test"],
-                                    "MsSqlDbExTest-design",
-                                    db =>
-                                    {
-                                        db.ConfigureAssembler(a => a.Minify = false);
-                                    });
+                                    "MsSqlDbExTest-design"
+                                );
                             });
                             return DbExpression.Configuration.Databases["MsSqlDbExTest-design"].DatabaseConfiguration;
                         }
@@ -36,11 +33,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationManager.ConnectionStrings["hattrick.dbex.mssql.test"],
-                                    "MsSqlDbExTest-design",
-                                    db =>
-                                    {
-                                        db.ConfigureAssembler(a => a.Minify = false);
-                                    });
+                                    "MsSqlDbExTest-design"
+                                );
                             });
                             return DbExpression.Configuration.Databases["MsSqlDbExTest-design"].DatabaseConfiguration;
                         }

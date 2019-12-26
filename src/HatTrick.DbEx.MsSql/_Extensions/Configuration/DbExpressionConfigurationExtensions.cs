@@ -2,7 +2,9 @@
 using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Configuration;
@@ -48,9 +50,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #pragma warning disable IDE0060
         private static void ConfigureMsSqlCommon(this DbExpressionConfigurationBuilder builder, DatabaseConfigurationBuilder config, Func<ConnectionStringSettings> connectionStringSettingsFactory)
         {
-            config.UseDefaultAppenderFactory();
-            config.UseDefaultEntityFactory();
-            config.UseDefaultMapperFactory();
+            config.UseAppenderFactory<AppenderFactory>();
+            config.UseEntityFactory<EntityFactory>();
+            config.UseMapperFactory<MapperFactory>();
 
             //configure sql statement executor factory
             var executor = new MsSqlExecutorFactory();

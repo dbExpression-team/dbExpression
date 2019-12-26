@@ -1,4 +1,4 @@
-﻿using System.Configuration;
+﻿using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
