@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
                     .Where(sec.Person.Id > 0);
 
             ExpressionSet expressionSet = (exp as IDbExpressionSetProvider).Expression;
-            IAppender appender = database.AppenderFactory.CreateAppender(database.AssemblerConfiguration.Minify);
+            IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
             string whereClause;

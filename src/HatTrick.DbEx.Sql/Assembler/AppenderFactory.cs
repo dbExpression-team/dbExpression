@@ -2,6 +2,6 @@
 {
     public class AppenderFactory : IAppenderFactory
     {
-        public IAppender CreateAppender(bool minify) => new Appender(minify);
+        public IAppender CreateAppender() => new Appender();
     }
 }

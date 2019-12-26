@@ -4,7 +4,6 @@
     {
         public bool IncludeSchemaName { get; set; } = true;
         public bool PrependCommaOnSelectClauseParts { get; set; } = false;
-        public bool Minify { get; set; } = true;
         public Delimeters IdentifierDelimiter { get; set; } = new Delimeters('[', ']');
 
         public class Delimeters

@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using System;
 
@@ -6,23 +7,23 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class MapperFactoryConfigurationBuilder
     {
-        private IMapperFactory _factory;
+        private MapperFactory factory;
 
-        public MapperFactoryConfigurationBuilder(IMapperFactory factory)
+        public MapperFactoryConfigurationBuilder(MapperFactory factory)
         {
-            _factory = factory;
+            this.factory = factory;
         }
 
         public void RegisterEntityMapper<T>(Action<T, ISqlFieldReader, IValueMapper> mapper)
             where T : class, IDbEntity
         {
-            _factory.RegisterEntityMapper(mapper);
+            factory.RegisterEntityMapper(mapper);
         }
 
         public void RegisterValueMapper<T>(IValueMapper<T> mapper)
             where T : IComparable
         {
-            _factory.RegisterValueMapper(mapper);
+            factory.RegisterValueMapper(mapper);
         }
     }
 }

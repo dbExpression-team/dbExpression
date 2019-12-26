@@ -536,7 +536,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             //assembly
             await BeforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyContext>(() => new BeforeAssemblyContext(expression)), ct).ConfigureAwait(false);
 
-            var appender = Database.AppenderFactory.CreateAppender(Database.AssemblerConfiguration.Minify);
+            var appender = Database.AppenderFactory.CreateAppender();
             var parameterBuilder = Database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = Database.StatementBuilderFactory.CreateSqlStatementBuilder(Database.AssemblerConfiguration, expression, appender, parameterBuilder);
 
