@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class LiteralAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<LiteralExpression>
     {
         public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)

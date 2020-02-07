@@ -3,79 +3,40 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ArithmeticExpression<T> :
+    public class ArithmeticExpression<TValue> :
         ArithmeticExpression,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, T>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, T>,
-        ISupportedForExpression<SelectExpression>
+        ISupportedForFunctionExpression<IsNullFunctionExpression, TValue>,
+        ISupportedForFunctionExpression<CoalesceFunctionExpression, TValue>,
+        ISupportedForSelectFieldExpression<TValue>
     {
         #region constructors
-        internal ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        public ArithmeticExpression(IDbExpression leftArg, (Type, object) rightArg, ArithmeticExpressionOperator arithmeticOperator)
+            : base(leftArg, rightArg, arithmeticOperator)
+        {
+        }
+
+        public ArithmeticExpression(IDbExpression leftArg, IDbExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+            : base(leftArg, rightArg, arithmeticOperator)
+        {
+        }
+
+        public ArithmeticExpression((Type, object) leftArg, IDbExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+            : base(leftArg, rightArg, arithmeticOperator)
+        {
+        }
+
+        public ArithmeticExpression((Type,object) leftArg, (Type,object) rightArg, ArithmeticExpressionOperator arithmeticOperator)
             : base(leftArg, rightArg, arithmeticOperator)
         {
         }
         #endregion
 
-        #region implicit select expression operator
-        //public static implicit operator SelectExpression(ArithmeticExpression<T> a) => new SelectExpression(a);
-        #endregion
-
-        #region implicit group by expression operator
-        public static implicit operator GroupByExpression(ArithmeticExpression<T> a) => new GroupByExpression(a);
-        #endregion
-
-        #region arithmetic expression to value operators arithmetic operators
-        public static ArithmeticExpression<T> operator +(ArithmeticExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
-
-        public static ArithmeticExpression<T> operator -(ArithmeticExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Subtract);
-
-        public static ArithmeticExpression<T> operator *(ArithmeticExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Multiply);
-
-        public static ArithmeticExpression<T> operator /(ArithmeticExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Divide);
-
-        public static ArithmeticExpression<T> operator %(ArithmeticExpression<T> a, T b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Modulo);
-
-        #endregion
-
-        #region arithmetic expression to expression relational operators
-        public static FilterExpression operator ==(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
-
-        public static FilterExpression operator !=(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator <(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
-
-        public static FilterExpression operator <=(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
-
-        public static FilterExpression operator >(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
-
-        public static FilterExpression operator >=(ArithmeticExpression<T> a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        #endregion
-
-        #region arithmetic to value relational operators
-        public static FilterExpression operator ==(ArithmeticExpression<T> a, T b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
-
-        public static FilterExpression operator !=(ArithmeticExpression<T> a, T b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator <(ArithmeticExpression<T> a, T b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
-
-        public static FilterExpression operator <=(ArithmeticExpression<T> a, T b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
-
-        public static FilterExpression operator >(ArithmeticExpression<T> a, T b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
-
-        public static FilterExpression operator >=(ArithmeticExpression<T> a, T b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-
-        #endregion
-
-        #region arithmetic expression to arithmetic expression operators
-        public static ArithmeticExpression<T> operator +(ArithmeticExpression<T> a, ArithmeticExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Add);
-
-        public static ArithmeticExpression<T> operator -(ArithmeticExpression<T> a, ArithmeticExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Subtract);
-
-        public static ArithmeticExpression<T> operator *(ArithmeticExpression<T> a, ArithmeticExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Multiply);
-
-        public static ArithmeticExpression<T> operator /(ArithmeticExpression<T> a, ArithmeticExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Divide);
-
-        public static ArithmeticExpression<T> operator %(ArithmeticExpression<T> a, ArithmeticExpression<T> b) => new ArithmeticExpression<T>(a, b, ArithmeticExpressionOperator.Modulo);
+        #region as
+        public new ArithmeticExpression<TValue> As(string alias)
+        {
+            base.As(alias);
+            return this;
+        }
         #endregion
 
         #region equals
@@ -85,6 +46,73 @@ namespace HatTrick.DbEx.Sql.Expression
         #region override get hash code
         public override int GetHashCode() => base.GetHashCode();
         #endregion
+
+        #region implicit operators
+        public static implicit operator ExpressionMediator<TValue>(ArithmeticExpression<TValue> math) => new ExpressionMediator<TValue>((math.GetType(), math));
+        #endregion
+
+        #region arithmetic operators
+        #region operators
+        public static ArithmeticExpression<TValue> operator +(ArithmeticExpression<TValue> a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression<TValue> operator -(ArithmeticExpression<TValue> a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression<TValue> operator *(ArithmeticExpression<TValue> a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Multiply);
+
+        public static ArithmeticExpression<TValue> operator /(ArithmeticExpression<TValue> a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Divide);
+
+        public static ArithmeticExpression<TValue> operator %(ArithmeticExpression<TValue> a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(a, b, ArithmeticExpressionOperator.Modulo);
+        #endregion
+
+        #region literal
+        public static ArithmeticExpression<TValue> operator +(ArithmeticExpression<TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, new LiteralExpression<TValue>(b), ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression<TValue> operator -(ArithmeticExpression<TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, new LiteralExpression<TValue>(b), ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression<TValue> operator *(ArithmeticExpression<TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, new LiteralExpression<TValue>(b), ArithmeticExpressionOperator.Multiply);
+
+        public static ArithmeticExpression<TValue> operator /(ArithmeticExpression<TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, new LiteralExpression<TValue>(b), ArithmeticExpressionOperator.Divide);
+
+        public static ArithmeticExpression<TValue> operator %(ArithmeticExpression<TValue> a, TValue b) => new ArithmeticExpression<TValue>(a, new LiteralExpression<TValue>(b), ArithmeticExpressionOperator.Modulo);
+
+        public static ArithmeticExpression<TValue> operator +(TValue a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(new LiteralExpression<TValue>(a), b, ArithmeticExpressionOperator.Add);
+
+        public static ArithmeticExpression<TValue> operator -(TValue a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(new LiteralExpression<TValue>(a), b, ArithmeticExpressionOperator.Subtract);
+
+        public static ArithmeticExpression<TValue> operator *(TValue a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(new LiteralExpression<TValue>(a), b, ArithmeticExpressionOperator.Multiply);
+
+        public static ArithmeticExpression<TValue> operator /(TValue a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(new LiteralExpression<TValue>(a), b, ArithmeticExpressionOperator.Divide);
+
+        public static ArithmeticExpression<TValue> operator %(TValue a, ArithmeticExpression<TValue> b) => new ArithmeticExpression<TValue>(new LiteralExpression<TValue>(a), b, ArithmeticExpressionOperator.Modulo);
+        #endregion
+        #endregion
+
+        #region filter operators
+        public static FilterExpression operator ==(ArithmeticExpression<TValue> a, TValue b) => new FilterExpression<TValue>(a, new LiteralExpression<TValue>(b), FilterExpressionOperator.Equal);
+
+        public static FilterExpression operator !=(ArithmeticExpression<TValue> a, TValue b) => new FilterExpression<TValue>(a, new LiteralExpression<TValue>(b), FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression operator <(ArithmeticExpression<TValue> a, TValue b) => new FilterExpression<TValue>(a, new LiteralExpression<TValue>(b), FilterExpressionOperator.LessThan);
+
+        public static FilterExpression operator <=(ArithmeticExpression<TValue> a, TValue b) => new FilterExpression<TValue>(a, new LiteralExpression<TValue>(b), FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression operator >(ArithmeticExpression<TValue> a, TValue b) => new FilterExpression<TValue>(a, new LiteralExpression<TValue>(b), FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression operator >=(ArithmeticExpression<TValue> a, TValue b) => new FilterExpression<TValue>(a, new LiteralExpression<TValue>(b), FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression operator ==(TValue a, ArithmeticExpression<TValue> b) => new FilterExpression<TValue>(new LiteralExpression<TValue>(a),  b, FilterExpressionOperator.Equal);
+
+        public static FilterExpression operator !=(TValue a, ArithmeticExpression<TValue> b) => new FilterExpression<TValue>(new LiteralExpression<TValue>(a), b, FilterExpressionOperator.NotEqual);
+
+        public static FilterExpression operator <(TValue a, ArithmeticExpression<TValue> b) => new FilterExpression<TValue>(new LiteralExpression<TValue>(a), b, FilterExpressionOperator.LessThan);
+
+        public static FilterExpression operator <=(TValue a, ArithmeticExpression<TValue> b) => new FilterExpression<TValue>(new LiteralExpression<TValue>(a), b, FilterExpressionOperator.LessThanOrEqual);
+
+        public static FilterExpression operator >(TValue a, ArithmeticExpression<TValue> b) => new FilterExpression<TValue>(new LiteralExpression<TValue>(a), b, FilterExpressionOperator.GreaterThan);
+
+        public static FilterExpression operator >=(TValue a, ArithmeticExpression<TValue> b) => new FilterExpression<TValue>(new LiteralExpression<TValue>(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+
     }
 
 }

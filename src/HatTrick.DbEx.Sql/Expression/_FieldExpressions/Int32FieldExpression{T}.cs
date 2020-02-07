@@ -4,29 +4,16 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class Int32FieldExpression<TEntity> : FieldExpression<TEntity, int>,
+    public class Int32FieldExpression<TEntity> : Int32FieldExpression,
         ISupportedForSelectEntityExpression<TEntity, int>,
-        ISupportedForSelectFieldExpression<int>,
-        ISupportedForExpression<AssignmentExpression, TEntity, int>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, int>,
-        ISupportedForFunctionExpression<CastFunctionExpression, int>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, int>,
-        ISupportedForFunctionExpression<CountFunctionExpression, int>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, int>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, int>,
-        ISupportedForFunctionExpression<AverageFunctionExpression, int>,
-        ISupportedForFunctionExpression<SumFunctionExpression, int>,
-        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, int>,
-        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, int>,
-        ISupportedForFunctionExpression<VarianceFunctionExpression, int>,
-        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, int>
-        where TEntity : IDbEntity
+        ISupportedForExpression<AssignmentExpression, TEntity, int>
+        where TEntity : class, IDbEntity
     {
-        public Int32FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, int>> mapExpression) : base(entity, metadata, mapExpression)
+        public Int32FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, int>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected Int32FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, int>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected Int32FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, int>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }
@@ -36,3 +23,4 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
     }
 }
+

@@ -96,6 +96,8 @@ namespace DbEx.dbo.DataService
             Fields.Add("LastName", new MsSqlFieldMetadata(this, "LastName", SqlDbType.VarChar, 20));
             Fields.Add("BirthDate", new MsSqlFieldMetadata(this, "BirthDate", SqlDbType.DateTime, 8));
             Fields.Add("GenderType", new MsSqlFieldMetadata(this, "GenderType", SqlDbType.Int, 4));
+            Fields.Add("CreditLimit", new MsSqlFieldMetadata(this, "CreditLimit", SqlDbType.Int, 4));
+            Fields.Add("YearOfLastCreditLimitReview", new MsSqlFieldMetadata(this, "YearOfLastCreditLimitReview", SqlDbType.Int, 4));
             Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
             Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }
@@ -164,6 +166,8 @@ namespace DbEx.dbo.DataService
             Fields.Add("TotalPurchaseAmount", new MsSqlFieldMetadata(this, "TotalPurchaseAmount", SqlDbType.Decimal, 9));
             Fields.Add("PurchaseDate", new MsSqlFieldMetadata(this, "PurchaseDate", SqlDbType.DateTime, 8));
             Fields.Add("ShipDate", new MsSqlFieldMetadata(this, "ShipDate", SqlDbType.DateTime, 8));
+            Fields.Add("ExpectedDeliveryDate", new MsSqlFieldMetadata(this, "ExpectedDeliveryDate", SqlDbType.DateTime, 8));
+            Fields.Add("TrackingIdentifier", new MsSqlFieldMetadata(this, "TrackingIdentifier", SqlDbType.UniqueIdentifier, 16));
             Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
             Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }

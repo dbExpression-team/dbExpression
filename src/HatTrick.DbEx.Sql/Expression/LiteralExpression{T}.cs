@@ -9,23 +9,23 @@ namespace HatTrick.DbEx.Sql.Expression
         ISupportedForFunctionExpression<IsNullFunctionExpression, TValue>,
         ISupportedForExpression<SelectExpression>
     {
-        public LiteralExpression(TValue value) : base(value)
+        public LiteralExpression(TValue value) : base(value == null ? (typeof(TValue), value) : (value.GetType(), value))
         {
 
         }
 
         #region literal to field relational operators
-        public static FilterExpression operator ==(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression operator ==(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression<TValue>(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator !=(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression operator !=(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression<TValue>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator <(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression operator <(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression<TValue>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <=(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression operator <=(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression<TValue>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator >(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression operator >(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression<TValue>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >=(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression operator >=(LiteralExpression<TValue> a, FieldExpression b) => new FilterExpression<TValue>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
 
         #region literal to field arithmetic operators

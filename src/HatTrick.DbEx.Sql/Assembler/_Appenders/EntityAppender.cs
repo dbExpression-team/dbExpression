@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class EntityAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<EntityExpression>
     {
         public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -34,12 +35,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)
             {
-                var alias = (expression as IDbExpressionAliasProvider).Alias;
-                if (!string.IsNullOrWhiteSpace(alias))
-                    builder.Appender.Write(" AS ")
-                        .Write(context.Configuration.IdentifierDelimiter.Begin)
-                        .Write(alias)
-                        .Write(context.Configuration.IdentifierDelimiter.End);
+                AppendAlias(expression, builder, context);
             }
         }
     }

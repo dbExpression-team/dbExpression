@@ -11,6 +11,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2014
         private static readonly DatePartFunctionAppender _datePartFunctionAppender = new DatePartFunctionAppender();
         private static readonly GetDateFunctionAppender _getDateFunctionAppender = new GetDateFunctionAppender();
         private static readonly GetUtcDateFunctionAppender _getUtcDateFunctionAppender = new GetUtcDateFunctionAppender();
+        private static readonly NewIdFunctionAppender _newIdFunctionAppender = new NewIdFunctionAppender();
         private static readonly SysDateTimeFunctionAppender _sysDateTimeFunctionAppender = new SysDateTimeFunctionAppender();
         private static readonly SysDateTimeOffsetFunctionAppender _sysDateTimeOffsetFunctionAppender = new SysDateTimeOffsetFunctionAppender();
         private static readonly SysUtcDateTimeFunctionAppender _sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionAppender();
@@ -25,6 +26,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2014
             base.RegisterPartAppender(_datePartFunctionAppender);
             base.RegisterPartAppender(_getDateFunctionAppender);
             base.RegisterPartAppender(_getUtcDateFunctionAppender);
+            base.RegisterPartAppender(_newIdFunctionAppender);
             base.RegisterPartAppender(_sysDateTimeFunctionAppender);
             base.RegisterPartAppender(_sysDateTimeOffsetFunctionAppender);
             base.RegisterPartAppender(_sysUtcDateTimeFunctionAppender);

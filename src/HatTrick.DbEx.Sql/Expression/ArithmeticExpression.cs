@@ -98,89 +98,35 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected ArithmeticExpression((Type, object) expression, ArithmeticExpressionOperator arithmeticOperator, string alias)
+        protected ArithmeticExpression(IDbExpression leftArg, (Type, object) rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
-            Expression = expression;
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), rightArg));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        public ArithmeticExpression(IDbExpression leftArg, IDbExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        protected ArithmeticExpression((Type,object) leftArg, (Type,object) rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair(leftArg, rightArg));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        public ArithmeticExpression((Type, object) leftArg, IDbExpression righArg, ArithmeticExpressionOperator arithmeticOperator)
+        {
+            Expression = (typeof(DbExpressionPair), new DbExpressionPair(leftArg, (righArg.GetType(), righArg)));
+            ExpressionOperator = arithmeticOperator;
+        }
+
+        private ArithmeticExpression((Type, object) inner, ArithmeticExpressionOperator arithmeticOperator, string alias)
+        {
+            Expression = inner;
             ExpressionOperator = arithmeticOperator;
             Alias = alias;
-        }
-
-        protected ArithmeticExpression(object leftArg, object rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(ArithmeticExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (rightArg.GetType(), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(ArithmeticExpression leftArg, ArithmeticExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (typeof(ArithmeticExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(FieldExpression leftArg, ArithmeticExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), leftArg), (typeof(ArithmeticExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(FieldExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), leftArg), (rightArg.GetType(), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(FieldExpression leftArg, FieldExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(FieldExpression), leftArg), (typeof(FieldExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(CastFunctionExpression leftArg, CastFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (typeof(CastFunctionExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(CoalesceFunctionExpression leftArg, CoalesceFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (typeof(CoalesceFunctionExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        internal ArithmeticExpression(IsNullFunctionExpression leftArg, IsNullFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((typeof(IsNullFunctionExpression), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        public ArithmeticExpression(IDbNumericFunctionExpression leftArg, IComparable rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        public ArithmeticExpression(IDbNumericFunctionExpression leftArg, IDbNumericFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        public ArithmeticExpression(IDbDateFunctionExpression leftArg, IDbDateFunctionExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (typeof(IsNullFunctionExpression), rightArg)));
-            ExpressionOperator = arithmeticOperator;
-        }
-
-        public ArithmeticExpression(IDbDateFunctionExpression leftArg, FieldExpression rightArg, ArithmeticExpressionOperator arithmeticOperator)
-        {
-            Expression = (typeof(DbExpressionPair), new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg)));
-            ExpressionOperator = arithmeticOperator;
         }
         #endregion
 
@@ -192,142 +138,139 @@ namespace HatTrick.DbEx.Sql.Expression
         public ArithmeticExpression As(string alias) => new ArithmeticExpression(Expression, ExpressionOperator, alias);
         #endregion
 
-        #region implicit select expression operator
-        //public static implicit operator SelectExpression(ArithmeticExpression a) => new SelectExpression(a);
+        #region implicit expression operator
+        public static implicit operator OrderByExpression(ArithmeticExpression average) => new OrderByExpression((average.GetType(), average), OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(ArithmeticExpression average) => new GroupByExpression((average.GetType(), average));
         #endregion
 
-        #region implicit group by expression operator
-        public static implicit operator GroupByExpression(ArithmeticExpression a) => new GroupByExpression(a);
-        #endregion
+        //#region arithmetic expression to value operators arithmetic operators
 
-        #region arithmetic expression to value operators arithmetic operators
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, string b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator +(ArithmeticExpression a, string b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator +(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator +(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator +(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator +(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-        public static ArithmeticExpression operator +(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        // public static ArithmeticExpression operator +(ArithmeticExpression a, DateTime b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-         public static ArithmeticExpression operator +(ArithmeticExpression a, DateTime b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator -(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        //public static ArithmeticExpression operator -(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        //public static ArithmeticExpression operator -(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        //public static ArithmeticExpression operator -(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        //public static ArithmeticExpression operator -(ArithmeticExpression a, DateTime b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, DateTime b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        //public static ArithmeticExpression operator *(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator *(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        //public static ArithmeticExpression operator *(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator *(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        //public static ArithmeticExpression operator *(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator *(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        //public static ArithmeticExpression operator *(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator *(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        //public static ArithmeticExpression operator /(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator /(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
+        //public static ArithmeticExpression operator /(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator /(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
+        //public static ArithmeticExpression operator /(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator /(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
+        //public static ArithmeticExpression operator /(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator /(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
+        //public static ArithmeticExpression operator %(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
 
-        public static ArithmeticExpression operator %(ArithmeticExpression a, decimal b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        //public static ArithmeticExpression operator %(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
 
-        public static ArithmeticExpression operator %(ArithmeticExpression a, double b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        //public static ArithmeticExpression operator %(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
 
-        public static ArithmeticExpression operator %(ArithmeticExpression a, int b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        //public static ArithmeticExpression operator %(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        //#endregion
 
-        public static ArithmeticExpression operator %(ArithmeticExpression a, long b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
-        #endregion
+        //#region arithmetic expression to expression relational operators
+        //public static FilterExpression operator ==(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
 
-        #region arithmetic expression to expression relational operators
-        public static FilterExpression operator ==(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        //public static FilterExpression operator !=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        //public static FilterExpression operator <(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        //public static FilterExpression operator <=(ArithmeticExpression a, IDbExpression b)  => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, IDbExpression b)  => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        //public static FilterExpression operator >(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        //public static FilterExpression operator >=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        //#endregion
 
-        public static FilterExpression operator >=(ArithmeticExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        #endregion
+        //#region arithmetic to value relational operators
+        //public static FilterExpression operator ==(ArithmeticExpression a, string b) => new FilterExpression<string>(a, b, FilterExpressionOperator.Equal);
 
-        #region arithmetic to value relational operators
-        public static FilterExpression operator ==(ArithmeticExpression a, string b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        //public static FilterExpression operator ==(ArithmeticExpression a, decimal b) => new FilterExpression<decimal>(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator ==(ArithmeticExpression a, decimal b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        //public static FilterExpression operator ==(ArithmeticExpression a, double b) => new FilterExpression<double>(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator ==(ArithmeticExpression a, double b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        //public static FilterExpression operator ==(ArithmeticExpression a, int b) => new FilterExpression<int>(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator ==(ArithmeticExpression a, int b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        //public static FilterExpression operator ==(ArithmeticExpression a, long b) => new FilterExpression<long>(a, b, FilterExpressionOperator.Equal);
 
-        public static FilterExpression operator ==(ArithmeticExpression a, long b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
+        //public static FilterExpression operator !=(ArithmeticExpression a, string b) => new FilterExpression<string>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, string b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        //public static FilterExpression operator !=(ArithmeticExpression a, decimal b) => new FilterExpression<decimal>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, decimal b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        //public static FilterExpression operator !=(ArithmeticExpression a, double b) => new FilterExpression<double>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, double b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        //public static FilterExpression operator !=(ArithmeticExpression a, int b) => new FilterExpression<int>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, int b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        //public static FilterExpression operator !=(ArithmeticExpression a, long b) => new FilterExpression<long>(a, b, FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression operator !=(ArithmeticExpression a, long b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
+        //public static FilterExpression operator <(ArithmeticExpression a, decimal b) => new FilterExpression<decimal>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <(ArithmeticExpression a, decimal b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        //public static FilterExpression operator <(ArithmeticExpression a, double b) => new FilterExpression<double>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <(ArithmeticExpression a, double b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        //public static FilterExpression operator <(ArithmeticExpression a, int b) => new FilterExpression<int>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <(ArithmeticExpression a, int b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        //public static FilterExpression operator <(ArithmeticExpression a, long b) => new FilterExpression<long>(a, b, FilterExpressionOperator.LessThan);
 
-        public static FilterExpression operator <(ArithmeticExpression a, long b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
+        //public static FilterExpression operator <=(ArithmeticExpression a, decimal b) => new FilterExpression<decimal>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, decimal b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        //public static FilterExpression operator <=(ArithmeticExpression a, double b) => new FilterExpression<double>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, double b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        //public static FilterExpression operator <=(ArithmeticExpression a, int b) => new FilterExpression<int>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, int b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        //public static FilterExpression operator <=(ArithmeticExpression a, long b) => new FilterExpression<long>(a, b, FilterExpressionOperator.LessThanOrEqual);
 
-        public static FilterExpression operator <=(ArithmeticExpression a, long b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
+        //public static FilterExpression operator >(ArithmeticExpression a, decimal b) => new FilterExpression<decimal>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >(ArithmeticExpression a, decimal b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        //public static FilterExpression operator >(ArithmeticExpression a, double b) => new FilterExpression<double>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >(ArithmeticExpression a, double b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        //public static FilterExpression operator >(ArithmeticExpression a, int b) => new FilterExpression<int>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >(ArithmeticExpression a, int b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        //public static FilterExpression operator >(ArithmeticExpression a, long b) => new FilterExpression<long>(a, b, FilterExpressionOperator.GreaterThan);
 
-        public static FilterExpression operator >(ArithmeticExpression a, long b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
+        //public static FilterExpression operator >=(ArithmeticExpression a, decimal b) => new FilterExpression<decimal>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression operator >=(ArithmeticExpression a, decimal b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        //public static FilterExpression operator >=(ArithmeticExpression a, double b) => new FilterExpression<double>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression operator >=(ArithmeticExpression a, double b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        //public static FilterExpression operator >=(ArithmeticExpression a, int b) => new FilterExpression<int>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression operator >=(ArithmeticExpression a, int b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        //public static FilterExpression operator >=(ArithmeticExpression a, long b) => new FilterExpression<long>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        //#endregion
 
-        public static FilterExpression operator >=(ArithmeticExpression a, long b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        #endregion
+        //#region arithmetic expression to arithmetic expression operators
+        ////public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
 
-        #region arithmetic expression to arithmetic expression operators
-        //public static ArithmeticExpression operator +(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
+        //public static ArithmeticExpression operator -(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
 
-        public static ArithmeticExpression operator -(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
+        //public static ArithmeticExpression operator *(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
 
-        public static ArithmeticExpression operator *(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
+        //public static ArithmeticExpression operator /(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
 
-        public static ArithmeticExpression operator /(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
-
-        public static ArithmeticExpression operator %(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
-        #endregion
+        //public static ArithmeticExpression operator %(ArithmeticExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
+        //#endregion
 
         #region equals
         public override bool Equals(object obj) => base.Equals(obj);

@@ -7,18 +7,18 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class CastFunctionExpressionBuilder : ICastFunctionExpressionBuilder
     {
+        #region internals
         public (Type, object) Expression { get; private set; }
+        #endregion
 
-        public CastFunctionExpressionBuilder(FieldExpression field)
+        #region constructors
+        public CastFunctionExpressionBuilder((Type, object) expression)
         {
-            Expression = (field.GetType(), field);
+            Expression = expression;
         }
+        #endregion
 
-        public CastFunctionExpressionBuilder(ISupportedForFunctionExpression<CastFunctionExpression> function)
-        {
-            Expression = (function.GetType(), function);
-        }
-
+        #region methods
         CastFunctionExpression<bool> ICastFunctionExpressionBuilder.AsBit()
         {
             var exp = new CastFunctionExpression<bool>(Expression)
@@ -150,5 +150,6 @@ namespace HatTrick.DbEx.Sql.Builder
             };
             return exp;
         }
+        #endregion
     }
 }

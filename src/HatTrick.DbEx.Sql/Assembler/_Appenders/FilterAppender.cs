@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class FilterAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<FilterExpressionSet>,
         IAssemblyPartAppender<FilterExpression>
     {

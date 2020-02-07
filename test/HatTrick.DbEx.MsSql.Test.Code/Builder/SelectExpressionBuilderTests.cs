@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     public class SelectExpressionBuilderTests : TestBase
     {
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void Does_select_for_single_value_result_in_valid_expression(int version)
         {
             //given
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
         }
 
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void Does_select_for_multiple_values_result_in_valid_expression(int version)
         {
             //given

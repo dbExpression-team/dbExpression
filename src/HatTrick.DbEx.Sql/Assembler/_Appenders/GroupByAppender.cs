@@ -5,6 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class GroupByAppender : 
+        ExpressionAppender,
         IAssemblyPartAppender<GroupByExpressionSet>,
         IAssemblyPartAppender<GroupByExpression>
     {        

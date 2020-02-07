@@ -5,7 +5,7 @@ using HatTrick.DbEx.Sql.Expression;
 namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class DateAddFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<DateAddFunctionExpression>
     {
         #region methods
@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Write(expression.DatePart.Item2.ToString().ToLower())
                 .Write(", ");
 
-            builder.AppendPart(expression.Number, context);
+            builder.AppendPart(expression.Value, context);
             builder.Appender.Write(", ");
             builder.AppendPart(expression.Expression, context);
             builder.Appender.Write(")");

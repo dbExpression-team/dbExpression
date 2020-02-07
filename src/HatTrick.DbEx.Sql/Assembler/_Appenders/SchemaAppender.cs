@@ -4,6 +4,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class SchemaAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<SchemaExpression>
     {
         public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)

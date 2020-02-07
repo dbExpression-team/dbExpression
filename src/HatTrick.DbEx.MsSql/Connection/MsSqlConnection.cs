@@ -67,12 +67,5 @@ namespace HatTrick.DbEx.MsSql
 
         public override void FillDataTable(IDataAdapter da, DataTable dt) => (da as SqlDataAdapter).Fill(dt);
         #endregion
-
-        #region get expression builder
-        //public SqlExpressionBuilder GetSelectMsSqlBuilder<T>(DBExpressionEntity<T> entity) => new SelectMsSqlBuilder<T>(ConnectionSettings, entity).Enlist(this);
-        //public SqlExpressionBuilder GetInsertMsSqlBuilder<T>(DBExpressionEntity<T> entity, T record) => new InsertMsSqlBuilder<T>(ConnectionSettings, entity, record).Enlist(this);
-        //public SqlExpressionBuilder GetUpdateMsSqlBuilder<T>(DBExpressionEntity<T> entity) => new UpdateMsSqlBuilder<T>(ConnectionSettings, entity).Enlist(this);
-        //public SqlExpressionBuilder GetDeleteMsSqlBuilder<T>(DBExpressionEntity<T> entity) => new DeleteMsSqlBuilder<T>(ConnectionSettings, entity).Enlist(this);
-        #endregion
     }
 }

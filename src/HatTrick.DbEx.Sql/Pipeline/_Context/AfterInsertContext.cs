@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 field.Map(Instance, mapped);
             }
 
-            public void SetPropertyValue<TEntity, TValue>(FieldExpression<TEntity, TValue> field, object value)
+            public void SetPropertyValue<TEntity, TValue>(FieldExpression<TValue> field, object value)
                 where TEntity : IDbEntity
             {
                 var metadata = (field as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata;
@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 field.Map(Instance, mapped);
             }
 
-            public void SetPropertyValue<TEntity, TValue>(NullableFieldExpression<TEntity, TValue> field, object value)
+            public void SetPropertyValue<TEntity, TValue>(NullableFieldExpression<TValue> field, object value)
                 where TEntity : IDbEntity
                 where TValue : struct, IComparable
             {

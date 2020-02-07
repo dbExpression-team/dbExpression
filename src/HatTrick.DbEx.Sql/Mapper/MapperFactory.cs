@@ -9,7 +9,8 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class MapperFactory : IMapperFactory
     {
-        private IDictionary<Type, Func<IMapper>> maps = new Dictionary<Type, Func<IMapper>>();
+        private readonly IDictionary<Type, Func<IMapper>> maps = new Dictionary<Type, Func<IMapper>>();
+        private readonly IDictionary<Type, IMapper> discoveredEnumMaps = new Dictionary<Type, IMapper>();
         private IValueMapper _valueMapper;
 
         private static readonly PrimitiveMapper<bool> _boolMapper = new PrimitiveMapper<bool>((f) => Convert.ToBoolean(f));
@@ -30,9 +31,10 @@ namespace HatTrick.DbEx.Sql.Mapper
         private static readonly PrimitiveMapper<DateTime?> _nullableDateTimeMapper = new PrimitiveMapper<DateTime?>((f) => f == null ? default(DateTime?) : Convert.ToDateTime(f));
         private static readonly PrimitiveMapper<DateTimeOffset> _dateTimeOffsetMapper = new PrimitiveMapper<DateTimeOffset>((f) => new DateTimeOffset(Convert.ToDateTime(f)));
         private static readonly PrimitiveMapper<DateTimeOffset?> _nullableDateTimeOffsetMapper = new PrimitiveMapper<DateTimeOffset?>((f) => f == null ? default(DateTimeOffset?) : new DateTimeOffset(Convert.ToDateTime(f)));
-        private static readonly PrimitiveMapper<Guid> _guidMapper = new PrimitiveMapper<Guid>((f) => (Guid)new GuidConverter().ConvertFrom(f));
-        private static readonly PrimitiveMapper<Guid?> _nullableGuidMapper = new PrimitiveMapper<Guid?>((f) => f == null ? default(Guid?) : (Guid)new GuidConverter().ConvertFrom(f));
+        private static readonly PrimitiveMapper<Guid> _guidMapper = new PrimitiveMapper<Guid>((f) => (Guid)f);
+        private static readonly PrimitiveMapper<Guid?> _nullableGuidMapper = new PrimitiveMapper<Guid?>((f) => (Guid?)f);
         private static readonly PrimitiveMapper<string> _stringMapper = new PrimitiveMapper<string>((f) => Convert.ToString(f));
+        private static readonly PrimitiveMapper<Enum> _enumMapper = new PrimitiveMapper<Enum>((f) => (Enum)(f));
         private static readonly ExpandoObjectMapper _expandoObjectMapper = new ExpandoObjectMapper();
         //NOTE: JRod, byte[] is not a primitive, but is handled exactly the same ...
         private static readonly PrimitiveMapper<byte[]> _byteArrayMapper = new PrimitiveMapper<byte[]>((f) => f == null ? default : (byte[])f);
@@ -60,6 +62,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             maps.Add(typeof(Guid), () => _guidMapper);
             maps.Add(typeof(Guid?), () => _nullableGuidMapper);
             maps.Add(typeof(string), () => _stringMapper);
+            maps.Add(typeof(Enum), () => _enumMapper);
             maps.Add(typeof(ExpandoObject), () => _expandoObjectMapper);
             maps.Add(typeof(byte[]), () => _byteArrayMapper);
         }
@@ -86,7 +89,16 @@ namespace HatTrick.DbEx.Sql.Mapper
         }
 
         public IValueMapper<T> CreateValueMapper<T>()
-            => maps[typeof(T)]() as IValueMapper<T>;
+        {
+            if (typeof(T).IsEnum)
+            {
+                if (!discoveredEnumMaps.ContainsKey(typeof(T)))
+                    discoveredEnumMaps.Add(typeof(T), new PrimitiveMapper<T>(o => o is string ? (T)Enum.Parse(typeof(T), o as string) : (T)o) as IMapper);
+
+                return discoveredEnumMaps[typeof(T)] as IValueMapper<T>;
+            }
+            return maps[typeof(T)]() as IValueMapper<T>;
+        }
 
         public IExpandoObjectMapper CreateExpandoObjectMapper()
             => maps[typeof(ExpandoObject)]() as IExpandoObjectMapper;

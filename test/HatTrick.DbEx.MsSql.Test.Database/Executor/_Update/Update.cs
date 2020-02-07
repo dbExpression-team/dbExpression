@@ -11,12 +11,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public void Can_person_with_id_1_update_firstname(int version, string expectedFirstName = "Foo")
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.Update(dbo.Person.FirstName.Set("Foo"))
+            var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
                .From(dbo.Person)
                .Where(dbo.Person.Id == 1);
 
@@ -25,7 +26,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             var firstName = db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
-            firstName.Should().NotBeNullOrWhiteSpace();
             firstName.Should().Be(expectedFirstName);
         }
     }

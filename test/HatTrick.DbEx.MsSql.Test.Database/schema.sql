@@ -126,6 +126,8 @@ CREATE TABLE [dbo].[Person](
 	[LastName] [varchar](20) NOT NULL,
 	[BirthDate] [datetime] NULL,
 	[GenderType] [int] NOT NULL,
+	[CreditLimit] [int] NULL,
+	[YearOfLastCreditLimitReview] [int] NULL,
 	[DateCreated] [datetime] NOT NULL,
 	[DateUpdated] [datetime] NOT NULL,
 	CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([Id]) 
@@ -163,6 +165,8 @@ CREATE TABLE [dbo].[Purchase](
 	[TotalPurchaseAmount] [decimal](12, 2) NOT NULL,
 	[PurchaseDate] [datetime] NOT NULL,
 	[ShipDate] [datetime] NULL,
+	[ExpectedDeliveryDate] [datetime] NULL,
+	[TrackingIdentifier] [uniqueidentifier] NULL,
 	[DateCreated] [datetime] NOT NULL,
 	[DateUpdated] [datetime] NOT NULL,
 	CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED ([Id]),

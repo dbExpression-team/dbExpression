@@ -4,29 +4,16 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class Int16FieldExpression<TEntity> : FieldExpression<TEntity, short>,
+    public class Int16FieldExpression<TEntity> : Int16FieldExpression,
         ISupportedForSelectEntityExpression<TEntity, short>,
-        ISupportedForSelectFieldExpression<short>,
-        ISupportedForExpression<AssignmentExpression, TEntity, short>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, short>,
-        ISupportedForFunctionExpression<CastFunctionExpression, short>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, short>,
-        ISupportedForFunctionExpression<CountFunctionExpression, short>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, short>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, short>,
-        ISupportedForFunctionExpression<AverageFunctionExpression, short>,
-        ISupportedForFunctionExpression<SumFunctionExpression, short>,
-        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, short>,
-        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, short>,
-        ISupportedForFunctionExpression<VarianceFunctionExpression, short>,
-        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, short>
+        ISupportedForExpression<AssignmentExpression, TEntity, short>
         where TEntity : IDbEntity
     {
-        public Int16FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, short>> mapExpression) : base(entity, metadata, mapExpression)
+        public Int16FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, short>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected Int16FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, short>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected Int16FieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, short>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

@@ -5,6 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class OrderByAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<OrderByExpressionSet>,
         IAssemblyPartAppender<OrderByExpression>
     {

@@ -4,29 +4,16 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class DecimalFieldExpression<TEntity> : FieldExpression<TEntity, decimal>,
+    public class DecimalFieldExpression<TEntity> : DecimalFieldExpression,
         ISupportedForSelectEntityExpression<TEntity, decimal>,
-        ISupportedForSelectFieldExpression<decimal>,
-        ISupportedForExpression<AssignmentExpression, TEntity, decimal>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<CastFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<CountFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<AverageFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<SumFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<VarianceFunctionExpression, decimal>,
-        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, decimal>
+        ISupportedForExpression<AssignmentExpression, TEntity, decimal>
         where TEntity : IDbEntity
     {
-        public DecimalFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, decimal>> mapExpression) : base(entity, metadata, mapExpression)
+        public DecimalFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, decimal>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected DecimalFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, decimal>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected DecimalFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, decimal>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

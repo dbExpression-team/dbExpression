@@ -4,7 +4,7 @@ using HatTrick.DbEx.Sql.Assembler;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class CurrentTimestampFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<CurrentTimestampFunctionExpression>
     {
         #region methods

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class ArithmeticAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<ArithmeticExpression>
     {
         private static IDictionary<ArithmeticExpressionOperator, string> _arithmeticOperatorMap;
@@ -50,13 +51,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.AppendPart(expression.RightPart, context);
             }
 
-            if (expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
-            {
-                builder.Appender.Write(" AS ")
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(aliasable.Alias)
-                    .Write(context.Configuration.IdentifierDelimiter.End);
-            }
+            AppendAlias(expression, builder, context);
         }
     }
 }

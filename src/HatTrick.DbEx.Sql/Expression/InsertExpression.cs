@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public InsertExpression(FieldExpression field, object value, Type type)
         {
-            Expression = new DbExpressionPair((typeof(FieldExpression), field), (type, value));
+            Expression = new DbExpressionPair((field.GetType(), field), (type, value));
         }
         #endregion
 

@@ -4,24 +4,16 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class NullableDateTimeFieldExpression<TEntity> : NullableFieldExpression<TEntity, DateTime>,
-        ISupportedForSelectEntityExpression<TEntity, DateTime>,
-        ISupportedForSelectFieldExpression<DateTime>,
-        ISupportedForExpression<AssignmentExpression, TEntity, DateTime>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<CastFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<CountFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<IDbDateFunctionExpression, DateTime>
+    public class NullableDateTimeFieldExpression<TEntity> : NullableDateTimeFieldExpression,
+        ISupportedForSelectEntityExpression<TEntity, DateTime?>,
+        ISupportedForExpression<AssignmentExpression, TEntity, DateTime>
         where TEntity : IDbEntity
     {
-        public NullableDateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, DateTime?>> mapExpression) : base(entity, metadata, mapExpression)
+        public NullableDateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, DateTime?>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected NullableDateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, DateTime?>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected NullableDateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, DateTime?>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

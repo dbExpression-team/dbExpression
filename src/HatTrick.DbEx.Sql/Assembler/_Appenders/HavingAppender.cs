@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class HavingAppender : IAssemblyPartAppender<HavingExpression>
+    public class HavingAppender : 
+        ExpressionAppender,
+        IAssemblyPartAppender<HavingExpression>
     {
         public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
            => AppendPart(expression as HavingExpression, builder, context);

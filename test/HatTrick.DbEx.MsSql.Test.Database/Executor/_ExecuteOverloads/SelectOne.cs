@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectOne<int>(dbo.Person.Id)
+            var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == 1);
 
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectOne<int>(dbo.Person.Id)
+            var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == 1);
 
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectOne<int>(dbo.Person.Id)
+            var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == 1);
 
@@ -195,7 +195,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectOne<int>(dbo.Person.Id)
+            var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == 1);
 
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectOne<int>(dbo.Person.Id)
+            var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == 1);
 
@@ -233,7 +233,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectOne<int>(dbo.Person.Id)
+            var exp = db.SelectOne(dbo.Person.Id)
                 .From(dbo.Person)
                 .Where(dbo.Person.Id == 1);
 
