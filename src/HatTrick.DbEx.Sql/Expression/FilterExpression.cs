@@ -17,110 +17,23 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal FilterExpression(FieldExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        public FilterExpression(IDbExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
         {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((typeof(FieldExpression), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((typeof(FieldExpression), leftArg), (typeof(object), DBNull.Value));
-            }
+            Expression = new DbExpressionPair((leftArg.GetType(), leftArg), rightArg != default ? (rightArg.GetType(), rightArg) : (typeof(object), DBNull.Value));
             ExpressionOperator = expressionOperator;
         }
 
-        internal FilterExpression(ArithmeticExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        public FilterExpression(IDbExpression leftArg, IDbExpression rightArg, FilterExpressionOperator expressionOperator)
         {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((typeof(ArithmeticExpression), leftArg), (typeof(object), DBNull.Value));
-            }
+            Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
             ExpressionOperator = expressionOperator;
         }
 
-        internal FilterExpression(CastFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
+        public FilterExpression(object leftArg, IDbExpression rightArg, FilterExpressionOperator expressionOperator)
         {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((typeof(CastFunctionExpression), leftArg), (typeof(object), DBNull.Value));
-            }
+            Expression = new DbExpressionPair(leftArg != default ? (leftArg.GetType(), leftArg) : (typeof(object), DBNull.Value), (rightArg.GetType(), rightArg));
             ExpressionOperator = expressionOperator;
         }
-
-        internal FilterExpression(CoalesceFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
-        {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((typeof(CoalesceFunctionExpression), leftArg), (typeof(object), DBNull.Value));
-            }
-            ExpressionOperator = expressionOperator;
-        }
-
-        internal FilterExpression(IsNullFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
-        {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((typeof(IsNullFunctionExpression), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((typeof(IsNullFunctionExpression), leftArg), (typeof(object), DBNull.Value));
-            }
-            ExpressionOperator = expressionOperator;
-        }
-
-        internal FilterExpression(LiteralExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
-        {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((typeof(LiteralExpression), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((typeof(LiteralExpression), leftArg), (typeof(object), DBNull.Value));
-            }
-            ExpressionOperator = expressionOperator;
-        }
-
-        public FilterExpression(IDbNumericFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
-        {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((rightArg.GetType(), leftArg), (typeof(object), DBNull.Value));
-            }
-            ExpressionOperator = expressionOperator;
-        }
-
-        public FilterExpression(IDbDateFunctionExpression leftArg, object rightArg, FilterExpressionOperator expressionOperator)
-        {
-            if (rightArg != null)
-            {
-                Expression = new DbExpressionPair((leftArg.GetType(), leftArg), (rightArg.GetType(), rightArg));
-            }
-            else
-            {
-                Expression = new DbExpressionPair((rightArg.GetType(), leftArg), (typeof(object), DBNull.Value));
-            }
-            ExpressionOperator = expressionOperator;
-        }
-
         #endregion
 
         #region to string

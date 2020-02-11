@@ -4,21 +4,16 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class BooleanFieldExpression<TEntity> : FieldExpression<TEntity, bool>,
+    public class BooleanFieldExpression<TEntity> : BooleanFieldExpression,
         ISupportedForSelectEntityExpression<TEntity, bool>,
-        ISupportedForSelectFieldExpression<bool>,
-        ISupportedForExpression<AssignmentExpression, TEntity, bool>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, bool>,
-        ISupportedForFunctionExpression<CastFunctionExpression, bool>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, bool>,
-        ISupportedForFunctionExpression<CountFunctionExpression, bool>
+        ISupportedForExpression<AssignmentExpression, TEntity, bool>
         where TEntity : IDbEntity
     {
-        public BooleanFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, bool>> mapExpression) : base(entity, metadata, mapExpression)
+        public BooleanFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, bool>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected BooleanFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, bool>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected BooleanFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, bool>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

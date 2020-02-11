@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class StandardDeviationFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<StandardDeviationFunctionExpression>
     {
         #region methods

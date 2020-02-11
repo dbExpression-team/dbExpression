@@ -4,24 +4,17 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class EnumFieldExpression<TEntity, TEnum> : FieldExpression<TEntity, TEnum>,
+    public class EnumFieldExpression<TEntity, TEnum> : EnumFieldExpression<TEnum>,
         ISupportedForSelectEntityExpression<TEntity, TEnum>,
-        ISupportedForSelectFieldExpression<TEnum>,
-        ISupportedForExpression<AssignmentExpression, TEntity, TEnum>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<CastFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<CountFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, TEnum>
+        ISupportedForExpression<AssignmentExpression, TEntity, TEnum>
         where TEntity : IDbEntity
         where TEnum : Enum
     {
-        public EnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, TEnum>> mapExpression) : base(entity, metadata, mapExpression)
+        public EnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, TEnum>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected EnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, TEnum>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected EnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, TEnum>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

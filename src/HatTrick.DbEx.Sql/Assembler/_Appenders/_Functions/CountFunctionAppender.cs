@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class CountFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<CountFunctionExpression>
     {
         #region methods

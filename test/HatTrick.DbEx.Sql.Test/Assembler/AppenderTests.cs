@@ -46,8 +46,9 @@ namespace HatTrick.DbEx.Sql.Test.Assembler
             Assert.Equal(0, appender.Indentation.CurrentLevel);
         }
 
-        [Fact]
-        public void Does_indentation_level_of_1_result_in_empty_string()
+        [Theory]
+        [InlineData("\t")]
+        public void Does_indentation_level_of_1_result_in_tab(string expected)
         {
             //given
             var appender = new Appender();
@@ -57,11 +58,12 @@ namespace HatTrick.DbEx.Sql.Test.Assembler
             appender.Indent();
 
             //then
-            Assert.Empty(appender.ToString());
+            Assert.Equal(expected, appender.ToString());
         }
 
-        [Fact]
-        public void Does_line_break_result_in_empty_string()
+        [Theory]
+        [InlineData("\r\n")]
+        public void Does_line_break_result_in_new_line(string expected)
         {
             //given
             var appender = new Appender();
@@ -70,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Test.Assembler
             appender.LineBreak();
 
             //then
-            Assert.Equal(" ", appender.ToString());
+            Assert.Equal(expected, appender.ToString());
         }
 
         [Fact]

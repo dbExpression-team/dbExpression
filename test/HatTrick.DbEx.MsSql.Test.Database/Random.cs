@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
         [Trait("Operation", "ORDER BY")]
         [Trait("Operation", "DISTINCT")]
         [MsSqlVersions.AllVersions]
-        public void Does_select_many_result_in_valid_expression(int version, int expectedCount = 17)
+        public void Does_select_many_result_in_valid_expression(int version, int expected = 17)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
                 .Execute();
 
             //then
-            persons.Count().Should().Be(expectedCount);
+            persons.Count().Should().Be(expected);
         }
     }
 }

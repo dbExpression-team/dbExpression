@@ -4,29 +4,16 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class DoubleFieldExpression<TEntity> : FieldExpression<TEntity, double>,
+    public class DoubleFieldExpression<TEntity> : DoubleFieldExpression,
         ISupportedForSelectEntityExpression<TEntity, double>,
-        ISupportedForSelectFieldExpression<double>,
-        ISupportedForExpression<AssignmentExpression, TEntity, double>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, double>,
-        ISupportedForFunctionExpression<CastFunctionExpression, double>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, double>,
-        ISupportedForFunctionExpression<CountFunctionExpression, double>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, double>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, double>,
-        ISupportedForFunctionExpression<AverageFunctionExpression, double>,
-        ISupportedForFunctionExpression<SumFunctionExpression, double>,
-        ISupportedForFunctionExpression<StandardDeviationFunctionExpression, double>,
-        ISupportedForFunctionExpression<PopulationStandardDeviationFunctionExpression, double>,
-        ISupportedForFunctionExpression<VarianceFunctionExpression, double>,
-        ISupportedForFunctionExpression<PopulationVarianceFunctionExpression, double>
+        ISupportedForExpression<AssignmentExpression, TEntity, double>
         where TEntity : IDbEntity
     {
-        public DoubleFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, double>> mapExpression) : base(entity, metadata, mapExpression)
+        public DoubleFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, double>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected DoubleFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, double>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected DoubleFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, double>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

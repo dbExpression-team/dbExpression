@@ -8,6 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart,
         IDbExpressionMetadataProvider<ISqlFieldMetadata>,
         IDbExpressionProvider<EntityExpression>,
+        ISupportedForExpression<OrderByExpression>,
         IDbExpressionAliasProvider
     {
         #region internals
@@ -20,8 +21,8 @@ namespace HatTrick.DbEx.Sql.Expression
         EntityExpression IDbExpressionProvider<EntityExpression>.Expression => Entity;
         ISqlFieldMetadata IDbExpressionMetadataProvider<ISqlFieldMetadata>.Metadata => Metadata;
         string IDbExpressionAliasProvider.Alias => Alias;
-        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
+        public OrderByExpression Asc => new OrderByExpression((GetType(), this), OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new OrderByExpression((GetType(), this), OrderExpressionDirection.DESC);
         #endregion
 
         #region constructors
@@ -80,59 +81,13 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region like
-        public FilterExpression Like(string phrase) => new FilterExpression(this, phrase, FilterExpressionOperator.Like);
-        #endregion
-
         #region set field
         public AssignmentExpression Set(IDbExpression expression) => new AssignmentExpression(this, expression);
         #endregion
 
-        #region implicit select operator
-        public static implicit operator OrderByExpression(FieldExpression field) => new OrderByExpression(field, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(FieldExpression field) => new GroupByExpression(field);
-        #endregion
-
-        #region field to expression relational operators
-        public static FilterExpression operator ==(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.Equal);
-
-        public static FilterExpression operator !=(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.NotEqual);
-
-        public static FilterExpression operator <(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThan);
-
-        public static FilterExpression operator <=(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.LessThanOrEqual);
-
-        public static FilterExpression operator >(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThan);
-
-        public static FilterExpression operator >=(FieldExpression a, IDbExpression b) => new FilterExpression(a, b, FilterExpressionOperator.GreaterThanOrEqual);
-        #endregion
-
-        #region field to field arithmetic operators
-        public static ArithmeticExpression operator +(FieldExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
-
-        public static ArithmeticExpression operator -(FieldExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
-
-        public static ArithmeticExpression operator *(FieldExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
-
-        public static ArithmeticExpression operator /(FieldExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
-
-        public static ArithmeticExpression operator %(FieldExpression a, FieldExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
-        #endregion
-
-        #region field to arithmetic expression arithmetic operators
-        public static ArithmeticExpression operator +(FieldExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add);
-
-        public static ArithmeticExpression operator -(FieldExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract);
-
-        public static ArithmeticExpression operator *(FieldExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply);
-
-        public static ArithmeticExpression operator /(FieldExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide);
-
-        public static ArithmeticExpression operator %(FieldExpression a, ArithmeticExpression b) => new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo);
-        #endregion
-
-        #region conditional & operator
-        public static SelectExpressionSet operator &(FieldExpression a, FieldExpression b) => new SelectExpressionSet(a, b);
+        #region implicit operators
+        public static implicit operator OrderByExpression(FieldExpression field) => new OrderByExpression((field.GetType(), field), OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(FieldExpression field) => new GroupByExpression((field.GetType(), field));
         #endregion
 
         #region equals

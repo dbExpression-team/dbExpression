@@ -19,7 +19,6 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IAliasRequiredJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> LeftJoin(ISubqueryTerminationExpressionBuilder subquery);
         IAliasRequiredJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> RightJoin(ISubqueryTerminationExpressionBuilder subquery);
         IAliasRequiredJoinExpressionBuilder<T, IValueListContinuationExpressionBuilder<T, U>> FullJoin(ISubqueryTerminationExpressionBuilder subquery);
-        IValueListContinuationExpressionBuilder<T, U> OrderBy(OrderByExpressionSet orderBy);
         IValueListContinuationExpressionBuilder<T, U> OrderBy(params OrderByExpression[] orderBy);
         IValueListContinuationExpressionBuilder<T, U> GroupBy(params GroupByExpression[] groupBy);
         IValueListContinuationExpressionBuilder<T, U> Having(HavingExpression havingCondition);

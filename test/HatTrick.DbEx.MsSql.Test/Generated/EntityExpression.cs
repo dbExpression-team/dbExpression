@@ -44,15 +44,15 @@ namespace DbEx.dbo.DataService
 
         private AddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Address>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_addressTypeFieldName, new Lazy<FieldExpression>(() => new NullableEnumFieldExpression<Address, AddressType>(this, metadata.Fields[_addressTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_addressTypeFieldName}'"), x => x.AddressType)));
-			Fields.Add(_line1FieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_line1FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_line1FieldName}'"), x => x.Line1)));
-			Fields.Add(_line2FieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_line2FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_line2FieldName}'"), x => x.Line2)));
-			Fields.Add(_cityFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_cityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_cityFieldName}'"), x => x.City)));
-			Fields.Add(_stateFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_stateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_stateFieldName}'"), x => x.State)));
-			Fields.Add(_zipFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_zipFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_zipFieldName}'"), x => x.Zip)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Address>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
-			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Address>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => x.DateUpdated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Address>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as Address).Id)));
+			Fields.Add(_addressTypeFieldName, new Lazy<FieldExpression>(() => new NullableEnumFieldExpression<Address, AddressType>(this, metadata.Fields[_addressTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_addressTypeFieldName}'"), x => (x as Address).AddressType)));
+			Fields.Add(_line1FieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_line1FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_line1FieldName}'"), x => (x as Address).Line1)));
+			Fields.Add(_line2FieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_line2FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_line2FieldName}'"), x => (x as Address).Line2)));
+			Fields.Add(_cityFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_cityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_cityFieldName}'"), x => (x as Address).City)));
+			Fields.Add(_stateFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_stateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_stateFieldName}'"), x => (x as Address).State)));
+			Fields.Add(_zipFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Address>(this, metadata.Fields[_zipFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_zipFieldName}'"), x => (x as Address).Zip)));
+			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Address>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as Address).DateCreated)));
+			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Address>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => (x as Address).DateUpdated)));
         }
         #endregion
 
@@ -130,6 +130,8 @@ namespace DbEx.dbo.DataService
         private const string _lastNameFieldName = "LastName";
         private const string _birthDateFieldName = "BirthDate";
         private const string _genderTypeFieldName = "GenderType";
+        private const string _creditLimitFieldName = "CreditLimit";
+        private const string _yearOfLastCreditLimitReview = "YearOfLastCreditLimitReview";
         private const string _dateCreatedFieldName = "DateCreated";
         private const string _dateUpdatedFieldName = "DateUpdated";
         #endregion
@@ -140,7 +142,9 @@ namespace DbEx.dbo.DataService
 		public StringFieldExpression<Person> LastName { get { return Fields[_lastNameFieldName].Value as StringFieldExpression<Person>; } }
 		public NullableDateTimeFieldExpression<Person> BirthDate { get { return Fields[_birthDateFieldName].Value as NullableDateTimeFieldExpression<Person>; } }
 		public EnumFieldExpression<Person, GenderType> GenderType { get { return Fields[_genderTypeFieldName].Value as EnumFieldExpression<Person, GenderType>; } }
-		public DateTimeFieldExpression<Person> DateCreated { get { return Fields[_dateCreatedFieldName].Value as DateTimeFieldExpression<Person>; } }
+        public NullableInt32FieldExpression<Person> CreditLimit { get { return Fields[_creditLimitFieldName].Value as NullableInt32FieldExpression<Person>; } }
+        public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get { return Fields[_yearOfLastCreditLimitReview].Value as NullableInt32FieldExpression<Person>; } }
+        public DateTimeFieldExpression<Person> DateCreated { get { return Fields[_dateCreatedFieldName].Value as DateTimeFieldExpression<Person>; } }
 		public DateTimeFieldExpression<Person> DateUpdated { get { return Fields[_dateUpdatedFieldName].Value as DateTimeFieldExpression<Person>; } }
         #endregion
 
@@ -151,13 +155,15 @@ namespace DbEx.dbo.DataService
 
         private PersonEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_firstNameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Person>(this, metadata.Fields[_firstNameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_firstNameFieldName}'"), x => x.FirstName)));
-			Fields.Add(_lastNameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Person>(this, metadata.Fields[_lastNameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_lastNameFieldName}'"), x => x.LastName)));
-			Fields.Add(_birthDateFieldName, new Lazy<FieldExpression>(() => new NullableDateTimeFieldExpression<Person>(this, metadata.Fields[_birthDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_birthDateFieldName}'"), x => x.BirthDate)));
-			Fields.Add(_genderTypeFieldName, new Lazy<FieldExpression>(() => new EnumFieldExpression<Person, GenderType>(this, metadata.Fields[_genderTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_genderTypeFieldName}'"), x => x.GenderType)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
-			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => x.DateUpdated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as Person).Id)));
+			Fields.Add(_firstNameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Person>(this, metadata.Fields[_firstNameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_firstNameFieldName}'"), x => (x as Person).FirstName)));
+			Fields.Add(_lastNameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Person>(this, metadata.Fields[_lastNameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_lastNameFieldName}'"), x => (x as Person).LastName)));
+			Fields.Add(_birthDateFieldName, new Lazy<FieldExpression>(() => new NullableDateTimeFieldExpression<Person>(this, metadata.Fields[_birthDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_birthDateFieldName}'"), x => (x as Person).BirthDate)));
+			Fields.Add(_genderTypeFieldName, new Lazy<FieldExpression>(() => new EnumFieldExpression<Person, GenderType>(this, metadata.Fields[_genderTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_genderTypeFieldName}'"), x => (x as Person).GenderType)));
+            Fields.Add(_creditLimitFieldName, new Lazy<FieldExpression>(() => new NullableInt32FieldExpression<Person>(this, metadata.Fields[_creditLimitFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_creditLimitFieldName}'"), x => (x as Person).CreditLimit)));
+            Fields.Add(_yearOfLastCreditLimitReview, new Lazy<FieldExpression>(() => new NullableInt32FieldExpression<Person>(this, metadata.Fields[_yearOfLastCreditLimitReview] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_yearOfLastCreditLimitReview}'"), x => (x as Person).YearOfLastCreditLimitReview)));
+            Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as Person).DateCreated)));
+			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => (x as Person).DateUpdated)));
         }
         #endregion
 
@@ -242,10 +248,10 @@ namespace DbEx.dbo.DataService
 
         private PersonAddressEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_personIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personIdFieldName}'"), x => x.PersonId)));
-			Fields.Add(_addressIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_addressIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_addressIdFieldName}'"), x => x.AddressId)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PersonAddress>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as PersonAddress).Id)));
+			Fields.Add(_personIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personIdFieldName}'"), x => (x as PersonAddress).PersonId)));
+			Fields.Add(_addressIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonAddress>(this, metadata.Fields[_addressIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_addressIdFieldName}'"), x => (x as PersonAddress).AddressId)));
+			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PersonAddress>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as PersonAddress).DateCreated)));
         }
         #endregion
 
@@ -311,7 +317,7 @@ namespace DbEx.dbo.DataService
 
         #region interface properties
 		public Int32FieldExpression<Product> Id { get { return Fields[_idFieldName].Value as Int32FieldExpression<Product>; } }
-		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get { return Fields[_productCategoryTypeFieldName].Value as NullableEnumFieldExpression<Product, ProductCategoryType>; } }
+		public EnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get { return Fields[_productCategoryTypeFieldName].Value as EnumFieldExpression<Product, ProductCategoryType>; } }
 		public StringFieldExpression<Product> Name { get { return Fields[_nameFieldName].Value as StringFieldExpression<Product>; } }
 		public StringFieldExpression<Product> Description { get { return Fields[_descriptionFieldName].Value as StringFieldExpression<Product>; } }
 		public DecimalFieldExpression<Product> ListPrice { get { return Fields[_listPriceFieldName].Value as DecimalFieldExpression<Product>; } }
@@ -328,15 +334,15 @@ namespace DbEx.dbo.DataService
 
         private ProductEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Product>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_productCategoryTypeFieldName, new Lazy<FieldExpression>(() => new NullableEnumFieldExpression<Product, ProductCategoryType>(this, metadata.Fields[_productCategoryTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_productCategoryTypeFieldName}'"), x => x.ProductCategoryType)));
-			Fields.Add(_nameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Product>(this, metadata.Fields[_nameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_nameFieldName}'"), x => x.Name)));
-			Fields.Add(_descriptionFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Product>(this, metadata.Fields[_descriptionFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_descriptionFieldName}'"), x => x.Description)));
-			Fields.Add(_listPriceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Product>(this, metadata.Fields[_listPriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_listPriceFieldName}'"), x => x.ListPrice)));
-			Fields.Add(_priceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Product>(this, metadata.Fields[_priceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_priceFieldName}'"), x => x.Price)));
-			Fields.Add(_quantityFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Product>(this, metadata.Fields[_quantityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_quantityFieldName}'"), x => x.Quantity)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Product>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
-			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Product>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => x.DateUpdated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Product>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as Product).Id)));
+			Fields.Add(_productCategoryTypeFieldName, new Lazy<FieldExpression>(() => new EnumFieldExpression<Product, ProductCategoryType>(this, metadata.Fields[_productCategoryTypeFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_productCategoryTypeFieldName}'"), x => (x as Product).ProductCategoryType)));
+			Fields.Add(_nameFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Product>(this, metadata.Fields[_nameFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_nameFieldName}'"), x => (x as Product).Name)));
+			Fields.Add(_descriptionFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Product>(this, metadata.Fields[_descriptionFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_descriptionFieldName}'"), x => (x as Product).Description)));
+			Fields.Add(_listPriceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Product>(this, metadata.Fields[_listPriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_listPriceFieldName}'"), x => (x as Product).ListPrice)));
+			Fields.Add(_priceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Product>(this, metadata.Fields[_priceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_priceFieldName}'"), x => (x as Product).Price)));
+			Fields.Add(_quantityFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Product>(this, metadata.Fields[_quantityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_quantityFieldName}'"), x => (x as Product).Quantity)));
+			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Product>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as Product).DateCreated)));
+			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Product>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => (x as Product).DateUpdated)));
         }
         #endregion
 
@@ -414,6 +420,8 @@ namespace DbEx.dbo.DataService
         private const string _totalPurchaseAmountFieldName = "TotalPurchaseAmount";
         private const string _purchaseDateFieldName = "PurchaseDate";
         private const string _shipDateFieldName = "ShipDate";
+        private const string _expectedDeliveryDateFieldName = "ExpectedDeliveryDate";
+        private const string _trackingIdentifierFieldName = "TrackingIdentifier";
         private const string _dateCreatedFieldName = "DateCreated";
         private const string _dateUpdatedFieldName = "DateUpdated";
         #endregion
@@ -424,7 +432,9 @@ namespace DbEx.dbo.DataService
 		public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get { return Fields[_totalPurchaseAmountFieldName].Value as DecimalFieldExpression<Purchase>; } }
 		public DateTimeFieldExpression<Purchase> PurchaseDate { get { return Fields[_purchaseDateFieldName].Value as DateTimeFieldExpression<Purchase>; } }
 		public NullableDateTimeFieldExpression<Purchase> ShipDate { get { return Fields[_shipDateFieldName].Value as NullableDateTimeFieldExpression<Purchase>; } }
-		public DateTimeFieldExpression<Purchase> DateCreated { get { return Fields[_dateCreatedFieldName].Value as DateTimeFieldExpression<Purchase>; } }
+        public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get { return Fields[_expectedDeliveryDateFieldName].Value as NullableDateTimeFieldExpression<Purchase>; } }
+        public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get { return Fields[_trackingIdentifierFieldName].Value as NullableGuidFieldExpression<Purchase>; } }
+        public DateTimeFieldExpression<Purchase> DateCreated { get { return Fields[_dateCreatedFieldName].Value as DateTimeFieldExpression<Purchase>; } }
 		public DateTimeFieldExpression<Purchase> DateUpdated { get { return Fields[_dateUpdatedFieldName].Value as DateTimeFieldExpression<Purchase>; } }
         #endregion
 
@@ -435,13 +445,15 @@ namespace DbEx.dbo.DataService
 
         private PurchaseEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Purchase>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_personIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Purchase>(this, metadata.Fields[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personIdFieldName}'"), x => x.PersonId)));
-			Fields.Add(_totalPurchaseAmountFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Purchase>(this, metadata.Fields[_totalPurchaseAmountFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_totalPurchaseAmountFieldName}'"), x => x.TotalPurchaseAmount)));
-			Fields.Add(_purchaseDateFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Purchase>(this, metadata.Fields[_purchaseDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_purchaseDateFieldName}'"), x => x.PurchaseDate)));
-			Fields.Add(_shipDateFieldName, new Lazy<FieldExpression>(() => new NullableDateTimeFieldExpression<Purchase>(this, metadata.Fields[_shipDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_shipDateFieldName}'"), x => x.ShipDate)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Purchase>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
-			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Purchase>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => x.DateUpdated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Purchase>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as Purchase).Id)));
+			Fields.Add(_personIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Purchase>(this, metadata.Fields[_personIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_personIdFieldName}'"), x => (x as Purchase).PersonId)));
+			Fields.Add(_totalPurchaseAmountFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<Purchase>(this, metadata.Fields[_totalPurchaseAmountFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_totalPurchaseAmountFieldName}'"), x => (x as Purchase).TotalPurchaseAmount)));
+			Fields.Add(_purchaseDateFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Purchase>(this, metadata.Fields[_purchaseDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_purchaseDateFieldName}'"), x => (x as Purchase).PurchaseDate)));
+			Fields.Add(_shipDateFieldName, new Lazy<FieldExpression>(() => new NullableDateTimeFieldExpression<Purchase>(this, metadata.Fields[_shipDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_shipDateFieldName}'"), x => (x as Purchase).ShipDate)));
+            Fields.Add(_expectedDeliveryDateFieldName, new Lazy<FieldExpression>(() => new NullableDateTimeFieldExpression<Purchase>(this, metadata.Fields[_expectedDeliveryDateFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_expectedDeliveryDateFieldName}'"), x => (x as Purchase).ExpectedDeliveryDate)));
+            Fields.Add(_trackingIdentifierFieldName, new Lazy<FieldExpression>(() => new NullableGuidFieldExpression<Purchase>(this, metadata.Fields[_trackingIdentifierFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_trackingIdentifierFieldName}'"), x => (x as Purchase).TrackingIdentifier)));
+            Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Purchase>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as Purchase).DateCreated)));
+			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Purchase>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => (x as Purchase).DateUpdated)));
         }
         #endregion
 
@@ -459,6 +471,8 @@ namespace DbEx.dbo.DataService
                 TotalPurchaseAmount,
                 PurchaseDate,
                 ShipDate,
+                ExpectedDeliveryDate,
+                TrackingIdentifier,
                 DateCreated,
                 DateUpdated
             );
@@ -471,6 +485,8 @@ namespace DbEx.dbo.DataService
 				TotalPurchaseAmount.Insert(purchase.TotalPurchaseAmount),
 				PurchaseDate.Insert(purchase.PurchaseDate),
 				ShipDate.Insert(purchase.ShipDate),
+                ExpectedDeliveryDate.Insert(purchase.ExpectedDeliveryDate),
+                TrackingIdentifier.Insert(purchase.TrackingIdentifier),
 				DateCreated.Insert(purchase.DateCreated),
 				DateUpdated.Insert(purchase.DateUpdated)
             );
@@ -483,7 +499,9 @@ namespace DbEx.dbo.DataService
 			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount); }
 			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate); }
 			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate); }
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }
+            if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); }
+            if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); }
+            if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
@@ -496,7 +514,9 @@ namespace DbEx.dbo.DataService
 			purchase.TotalPurchaseAmount = mapper.Map<decimal>(TotalPurchaseAmount, reader.ReadField());
 			purchase.PurchaseDate = mapper.Map<DateTime>(PurchaseDate, reader.ReadField());
 			purchase.ShipDate = mapper.Map<DateTime?>(ShipDate, reader.ReadField());
-			purchase.DateCreated = mapper.Map<DateTime>(DateCreated, reader.ReadField());
+            purchase.ExpectedDeliveryDate = mapper.Map<DateTime?>(ExpectedDeliveryDate, reader.ReadField());
+            purchase.TrackingIdentifier = mapper.Map<Guid?>(TrackingIdentifier, reader.ReadField());
+            purchase.DateCreated = mapper.Map<DateTime>(DateCreated, reader.ReadField());
 			purchase.DateUpdated = mapper.Map<DateTime>(DateUpdated, reader.ReadField());
         }
 		#endregion
@@ -532,13 +552,13 @@ namespace DbEx.dbo.DataService
 
         private PurchaseLineEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_purchaseIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_purchaseIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_purchaseIdFieldName}'"), x => x.PurchaseId)));
-			Fields.Add(_productIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_productIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_productIdFieldName}'"), x => x.ProductId)));
-			Fields.Add(_purchasePriceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<PurchaseLine>(this, metadata.Fields[_purchasePriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_purchasePriceFieldName}'"), x => x.PurchasePrice)));
-			Fields.Add(_quantityFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_quantityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_quantityFieldName}'"), x => x.Quantity)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PurchaseLine>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
-			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PurchaseLine>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => x.DateUpdated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as PurchaseLine).Id)));
+			Fields.Add(_purchaseIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_purchaseIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_purchaseIdFieldName}'"), x => (x as PurchaseLine).PurchaseId)));
+			Fields.Add(_productIdFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_productIdFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_productIdFieldName}'"), x => (x as PurchaseLine).ProductId)));
+			Fields.Add(_purchasePriceFieldName, new Lazy<FieldExpression>(() => new DecimalFieldExpression<PurchaseLine>(this, metadata.Fields[_purchasePriceFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_purchasePriceFieldName}'"), x => (x as PurchaseLine).PurchasePrice)));
+			Fields.Add(_quantityFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PurchaseLine>(this, metadata.Fields[_quantityFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_quantityFieldName}'"), x => (x as PurchaseLine).Quantity)));
+			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PurchaseLine>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as PurchaseLine).DateCreated)));
+			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<PurchaseLine>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => (x as PurchaseLine).DateUpdated)));
         }
         #endregion
 
@@ -619,8 +639,8 @@ namespace DbEx.dbo.DataService
 
         private PersonTotalPurchasesViewEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonTotalPurchasesView>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_totalPurchasesFieldName, new Lazy<FieldExpression>(() => new NullableDecimalFieldExpression<PersonTotalPurchasesView>(this, metadata.Fields[_totalPurchasesFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_totalPurchasesFieldName}'"), x => x.TotalPurchases)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<PersonTotalPurchasesView>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as PersonTotalPurchasesView).Id)));
+			Fields.Add(_totalPurchasesFieldName, new Lazy<FieldExpression>(() => new NullableDecimalFieldExpression<PersonTotalPurchasesView>(this, metadata.Fields[_totalPurchasesFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_totalPurchasesFieldName}'"), x => (x as PersonTotalPurchasesView).TotalPurchases)));
         }
         #endregion
 
@@ -696,10 +716,10 @@ namespace DbEx.sec.DataService
 
         private PersonEntity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => x.Id)));
-			Fields.Add(_sSNFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Person>(this, metadata.Fields[_sSNFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_sSNFieldName}'"), x => x.SSN)));
-			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => x.DateCreated)));
-			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => x.DateUpdated)));
+			Fields.Add(_idFieldName, new Lazy<FieldExpression>(() => new Int32FieldExpression<Person>(this, metadata.Fields[_idFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_idFieldName}'"), x => (x as Person).Id)));
+			Fields.Add(_sSNFieldName, new Lazy<FieldExpression>(() => new StringFieldExpression<Person>(this, metadata.Fields[_sSNFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_sSNFieldName}'"), x => (x as Person).SSN)));
+			Fields.Add(_dateCreatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateCreatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateCreatedFieldName}'"), x => (x as Person).DateCreated)));
+			Fields.Add(_dateUpdatedFieldName, new Lazy<FieldExpression>(() => new DateTimeFieldExpression<Person>(this, metadata.Fields[_dateUpdatedFieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{metadata.Name}' does not contain field metadata for '{_dateUpdatedFieldName}'"), x => (x as Person).DateUpdated)));
         }
         #endregion
 

@@ -6,6 +6,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
             => AppendPart((int)expression, builder, context);
+
         public void AppendPart(int expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (context?.Field != null)

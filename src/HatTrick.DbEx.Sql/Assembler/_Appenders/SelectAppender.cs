@@ -5,6 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class SelectAppender : 
+        ExpressionAppender,
         IAssemblyPartAppender<SelectExpressionSet>,
         IAssemblyPartAppender<SelectExpression>
     {
@@ -20,12 +21,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.AppendPart(expression.Expression, context);
 
-            if (expression is IDbExpressionAliasProvider aliasable && !string.IsNullOrWhiteSpace(aliasable.Alias))
+            if (expression is IDbExpressionAliasProvider aliasable)
             {
-                builder.Appender.Write(" AS ")
-                    .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(aliasable.Alias)
-                    .Write(context.Configuration.IdentifierDelimiter.End);
+                AppendAlias(aliasable, builder, context);
             }
         }
     }

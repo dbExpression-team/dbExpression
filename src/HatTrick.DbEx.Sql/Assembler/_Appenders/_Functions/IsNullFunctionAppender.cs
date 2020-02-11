@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class IsNullFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<IsNullFunctionExpression>
     {
         #region methods

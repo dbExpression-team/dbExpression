@@ -5,7 +5,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpression : 
         IDbExpression, 
-        IAssemblyPart
+        IAssemblyPart,
+        ISupportedForExpression<OrderByExpression>
     {
         #region interface
         public (Type, object) Expression { get; private set; }
@@ -13,9 +14,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal OrderByExpression(FieldExpression field, OrderExpressionDirection direction)
+        public OrderByExpression((Type,object) expression, OrderExpressionDirection direction)
         {
-            Expression = (typeof(FieldExpression),field);
+            Expression = expression;
             Direction = direction;
         }
         #endregion

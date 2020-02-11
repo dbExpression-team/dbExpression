@@ -12,19 +12,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal GroupByExpression(FieldExpression field)
+        public GroupByExpression((Type,object) expression)
         {
-            Expression = (typeof(FieldExpression),field);
-        }
-
-        internal GroupByExpression(ArithmeticExpression expression)
-        {
-            Expression = (typeof(ArithmeticExpression), expression);
-        }
-
-        public GroupByExpression(IDbFunctionExpression expression)
-        {
-            Expression = (expression.GetType(), expression);
+            Expression = expression;
         }
         #endregion
 

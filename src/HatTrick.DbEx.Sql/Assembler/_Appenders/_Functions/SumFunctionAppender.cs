@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class SumFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<SumFunctionExpression>
     {
         #region methods

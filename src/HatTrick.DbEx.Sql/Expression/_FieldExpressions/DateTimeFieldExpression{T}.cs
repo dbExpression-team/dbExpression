@@ -3,25 +3,16 @@ using System.Linq.Expressions;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    [Serializable]
-    public class DateTimeFieldExpression<TEntity> : FieldExpression<TEntity, DateTime>,
+    public class DateTimeFieldExpression<TEntity> : DateTimeFieldExpression,
         ISupportedForSelectEntityExpression<TEntity, DateTime>,
-        ISupportedForSelectFieldExpression<DateTime>,
-        ISupportedForExpression<AssignmentExpression, TEntity, DateTime>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<CastFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<CountFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, DateTime>,
-        ISupportedForFunctionExpression<IDbDateFunctionExpression, DateTime>
+        ISupportedForExpression<AssignmentExpression, TEntity, DateTime>
         where TEntity : IDbEntity
     {
-        public DateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, DateTime>> mapExpression) : base(entity, metadata, mapExpression)
+        public DateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, DateTime>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected DateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, DateTime>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        private DateTimeFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, DateTime>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class CastFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<CastFunctionExpression>
     {
         #region methods

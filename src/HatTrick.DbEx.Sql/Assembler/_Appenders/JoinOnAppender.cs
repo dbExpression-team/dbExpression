@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class JoinOnAppender :
+        ExpressionAppender,
         IAssemblyPartAppender<JoinOnExpression>
     {
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;

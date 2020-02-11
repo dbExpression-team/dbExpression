@@ -4,7 +4,7 @@ using HatTrick.DbEx.Sql.Assembler;
 namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class SysDateTimeOffsetFunctionAppender :
-        FunctionAppender,
+        ExpressionAppender,
         IAssemblyPartAppender<SysDateTimeOffsetFunctionExpression>
     {
         #region methods

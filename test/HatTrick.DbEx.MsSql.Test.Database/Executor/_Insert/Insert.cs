@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var address = db.SelectOne<Address>()
                 .From(t1)
                 .InnerJoin(
-                    db.SelectMany<int>(
+                    db.SelectMany(
                         db.fx.Max(dbo.Address.Id).As("identity")
                     )
                     .From(dbo.Address)
@@ -50,6 +50,67 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             address.Should().NotBeNull();
             address.Line1.Should().Be("123 Main St");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_an_address_be_inserted_and_identity_id_set(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var address = new Address
+            {
+                Line1 = "123 Main St",
+                City = "Anywhere",
+                State = "TX",
+                Zip = "65432",
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            };
+
+            var exp = db.Insert(address)
+                .Into(dbo.Address);
+
+            //when               
+            exp.Execute();
+
+            //then
+            address.Id.Should().BeGreaterThan(0);
+            address.AddressType.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_an_person_be_inserted_and_identity_id_set(int version, string expected = "INSERT")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var person = new Person
+            {
+                FirstName = expected,
+                LastName = expected,
+                GenderType = GenderType.Female,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            };
+
+            var exp = db.Insert(person)
+                .Into(dbo.Person);
+
+            //when               
+            exp.Execute();
+
+            Person retrieved = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == person.Id).Execute();
+
+            //then
+            retrieved.Id.Should().BeGreaterThan(0);
+            retrieved.FirstName.Should().Be(expected);
+            retrieved.FirstName.Should().Be(expected);
+            retrieved.GenderType.Should().Be(GenderType.Female);
+            retrieved.CreditLimit.Should().BeNull();
+            retrieved.BirthDate.Should().BeNull();
         }
     }
 }

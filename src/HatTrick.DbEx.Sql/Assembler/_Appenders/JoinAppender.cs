@@ -4,6 +4,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public class JoinAppender : 
+        ExpressionAppender,
         IAssemblyPartAppender<JoinExpressionSet>,
         IAssemblyPartAppender<JoinExpression>
     {        

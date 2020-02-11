@@ -4,25 +4,17 @@ using System.Linq.Expressions;
 namespace HatTrick.DbEx.Sql.Expression
 {
     [Serializable]
-    public class NullableEnumFieldExpression<TEntity, TEnum> : NullableFieldExpression<TEntity, TEnum>,
-        ISupportedForSelectEntityExpression<TEntity, TEnum>,
-        ISupportedForSelectFieldExpression<TEnum>,
-        ISupportedForExpression<AssignmentExpression, TEntity, TEnum>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<CastFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<CountFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, TEnum>,
-        ISupportedForFunctionExpression<AverageFunctionExpression, TEnum>
+    public class NullableEnumFieldExpression<TEntity, TEnum> : NullableEnumFieldExpression<TEnum>,
+        ISupportedForSelectEntityExpression<TEntity, TEnum?>,
+        ISupportedForExpression<AssignmentExpression, TEntity, TEnum?>
         where TEntity : IDbEntity
         where TEnum : struct, Enum, IComparable
     {
-        public NullableEnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<TEntity, TEnum?>> mapExpression) : base(entity, metadata, mapExpression)
+        public NullableEnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Expression<Func<IDbEntity, TEnum?>> mapExpression) : base(entity, metadata, mapExpression)
         {
         }
 
-        protected NullableEnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<TEntity, TEnum?>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
+        protected NullableEnumFieldExpression(EntityExpression entity, ISqlFieldMetadata metadata, Lazy<Action<IDbEntity, TEnum?>> mapExpression, string alias) : base(entity, metadata, mapExpression, alias)
         {
 
         }

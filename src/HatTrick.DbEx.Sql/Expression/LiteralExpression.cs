@@ -6,9 +6,9 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         public (Type, object) Expression { get; private set; }
 
-        protected LiteralExpression(object value)
+        protected LiteralExpression((Type, object) expression)
         {
-            Expression = (value.GetType(), value);
+            Expression = expression;
         }
     }
 }
