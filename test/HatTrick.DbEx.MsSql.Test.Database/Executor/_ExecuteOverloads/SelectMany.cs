@@ -15,65 +15,65 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         #region value list
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_commandTimeout(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_commandTimeout(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
             var ids = exp.Execute(45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_connection(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
             var ids = exp.Execute(conn);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection_commandTimeout(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_connection_commandTimeout(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
             var ids = exp.Execute(conn, 45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -81,17 +81,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_commandTimeout_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_commandTimeout_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -99,18 +99,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(45, id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_connection_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -118,18 +118,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection_commandTimeout_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_value_list_overloads_connection_commandTimeout_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -137,14 +137,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, 45, id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
         #endregion
 
         #region type/entity list
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_commandTimeout(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_commandTimeout(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -156,12 +156,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = exp.Execute(45);
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_connection(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -174,12 +174,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = exp.Execute(conn);
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection_commandTimeout(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_connection_commandTimeout(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -192,12 +192,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = exp.Execute(conn, 45);
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_onEntityMaterialized(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -210,12 +210,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_commandTimeout_onEntityMaterialized(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_commandTimeout_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -228,12 +228,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection_onEntityMaterialized(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_connection_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -247,12 +247,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection_commandTimeout_onEntityMaterialized(int version, int expectedCount = 50)
+        public void Execute_type_list_overloads_connection_commandTimeout_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -266,14 +266,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, 45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
         #endregion
 
         #region dynamic list
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_commandTimeout(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_commandTimeout(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -285,12 +285,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = exp.Execute(45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_connection(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -303,12 +303,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = exp.Execute(conn);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection_commandTimeout(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_connection_commandTimeout(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -321,12 +321,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = exp.Execute(conn, 45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -339,12 +339,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(id => persons.Add(id));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_commandTimeout_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_commandTimeout_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -357,12 +357,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_connection_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -376,12 +376,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection_commandTimeout_onValueMaterialized(int version, int expectedCount = 50)
+        public void Execute_dynamic_list_overloads_connection_commandTimeout_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -395,72 +395,72 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             exp.Execute(conn, 45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
         #endregion
 
         #region value list async
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_commandTimeout(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_commandTimeout(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
             var ids = await exp.ExecuteAsync(45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_connection(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
             var ids = await exp.ExecuteAsync(conn);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
             var ids = await exp.ExecuteAsync(conn, 45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -468,17 +468,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -486,17 +486,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(async id => { ids.Add(id); await Task.CompletedTask; });
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_commandTimeout_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -504,17 +504,17 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_commandTimeout_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -522,18 +522,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, async id => { ids.Add(id); await Task.CompletedTask; });
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_connection_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -541,18 +541,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_connection_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -560,18 +560,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, async id => { ids.Add(id); await Task.CompletedTask; });
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -579,18 +579,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, id => ids.Add(id));
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany<int>(dbo.Person.Id)
+            var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
 
             //when               
@@ -598,14 +598,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, async id => { ids.Add(id); await Task.CompletedTask; });
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
         #endregion
 
         #region type/entity list async
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_commandTimeout(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_commandTimeout(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -617,12 +617,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = await exp.ExecuteAsync(45);
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_connection(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -635,12 +635,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = await exp.ExecuteAsync(conn);
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -653,12 +653,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = await exp.ExecuteAsync(conn, 45);
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_Action_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_Action_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -671,12 +671,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_Func_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_Func_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -689,12 +689,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_commandTimeout_Action_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_commandTimeout_Action_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -707,12 +707,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_commandTimeout_Func_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_commandTimeout_Func_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -725,12 +725,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_Action_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_connection_Action_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -744,12 +744,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_Func_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_connection_Func_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -763,12 +763,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout_Action_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout_Action_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -782,12 +782,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout_Func_onEntityMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout_Func_onEntityMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -801,14 +801,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
         #endregion
 
         #region dynamic list async
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -820,12 +820,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = await exp.ExecuteAsync(45);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_connection(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -838,12 +838,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = await exp.ExecuteAsync(conn);
 
             //then
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -857,12 +857,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             var ids = persons.Select(p => p.Id);
-            ids.Should().HaveCount(expectedCount);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -875,12 +875,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(id => persons.Add(id));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -893,12 +893,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(async id => { persons.Add(id); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -911,12 +911,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -929,12 +929,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(45, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_connection_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -948,12 +948,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_connection_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -967,12 +967,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout_Action_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -986,12 +986,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, person => persons.Add(person));
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout_Func_onValueMaterialized(int version, int expectedCount = 50)
+        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -1005,7 +1005,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await exp.ExecuteAsync(conn, 45, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
-            persons.Should().HaveCount(expectedCount);
+            persons.Should().HaveCount(expected);
         }
         #endregion
     }

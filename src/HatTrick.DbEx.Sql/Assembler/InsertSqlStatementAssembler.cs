@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender.Indent();
 
-                context.Field = expression.Insert.Expressions[i].Expression.LeftPart.Item2 as FieldExpression;
+                context.Field = expression.Insert.Expressions[i].Expression.LeftPart.Object as FieldExpression;
                 builder.AppendPart(expression.Insert.Expressions[i].Expression.RightPart, context);
                 context.Field = null;
 

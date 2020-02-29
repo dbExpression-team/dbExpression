@@ -17,17 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         internal GroupByExpressionSet()
         {
+
         }
 
-        internal GroupByExpressionSet(GroupByExpression a)
+        public GroupByExpressionSet(GroupByExpression groupByExpression)
         {
-            Expressions.Add(a);
+            Expressions.Add(groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required."));
         }
 
-        internal GroupByExpressionSet(GroupByExpression a, GroupByExpression b)
+        public GroupByExpressionSet(GroupByExpression aGroupByExpression, GroupByExpression bGroupByExpression)
         {
-            Expressions.Add(a);
-            Expressions.Add(b);
+            Expressions.Add(aGroupByExpression ?? throw new ArgumentNullException($"{nameof(aGroupByExpression)} is required."));
+            Expressions.Add(bGroupByExpression ?? throw new ArgumentNullException($"{nameof(bGroupByExpression)} is required."));
         }
         #endregion
 

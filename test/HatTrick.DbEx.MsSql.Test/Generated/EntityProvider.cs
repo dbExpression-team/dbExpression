@@ -1,3 +1,4 @@
+using System;
 
 namespace DbEx.DataService
 {
@@ -25,18 +26,21 @@ namespace DbEx.DataService
 		#region constructors
         static dbo()
         {
-            if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
-                throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
+            _schema = new dboSchema(new Lazy<ISqlSchemaMetadata>(() =>
+                {
+                    if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
+                        throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
 
-            var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
-            if (schema == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+                    if (schema == null)
+                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
 
-            schema.TryGetValue("dbo", out ISqlSchemaMetadata schemaMetadata);
-            if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+                    schema.TryGetValue("dbo", out ISqlSchemaMetadata schemaMetadata);
+                    if (schemaMetadata == null)
+                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
 
-            _schema = new dboSchema(schemaMetadata);
+                    return schemaMetadata;
+                }));
         }
         #endregion
     }
@@ -62,18 +66,21 @@ namespace DbEx.DataService
 		#region constructors
         static sec()
         {
-            if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
-                throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
+            _schema = new secSchema(new Lazy<ISqlSchemaMetadata>(() =>
+                {
+                    if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
+                        throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
 
-            var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
-            if (schema == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+                    if (schema == null)
+                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
 
-            schema.TryGetValue("sec", out ISqlSchemaMetadata schemaMetadata);
-            if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+                    schema.TryGetValue("sec", out ISqlSchemaMetadata schemaMetadata);
+                    if (schemaMetadata == null)
+                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
 
-            _schema = new secSchema(schemaMetadata);
+                    return schemaMetadata;
+                }));
         }
         #endregion
     }

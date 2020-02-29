@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     public class SelectManyExpressionBuilderTests : TestBase
     {
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void Does_select_many_for_single_field_result_in_valid_expression(int version)
         {
             //given
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             //when
-            exp = db.SelectMany<int>(sec.Person.Id)
+            exp = db.SelectMany(sec.Person.Id)
                .From(sec.Person);
 
             expressionSet = (exp as IDbExpressionSetProvider).Expression;
@@ -30,8 +30,8 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //then
             expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyValue);
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
-                .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
+                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()
@@ -59,11 +59,11 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
-                .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
+                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.DateCreated))
-                .Which.Item2.Should().BeOfType<DateTimeFieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.DateCreated))
+                .Which.Expression.Object.Should().BeOfType<DateTimeFieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()

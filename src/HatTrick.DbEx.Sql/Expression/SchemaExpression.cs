@@ -5,31 +5,31 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    [Serializable]
     public abstract class SchemaExpression : 
         IAssemblyPart, 
         IDbExpression,
-        IEquatable<SchemaExpression>,
         IDbExpressionMetadataProvider<ISqlSchemaMetadata>,
         IDbExpressionListProvider<EntityExpression>,
-        IDbExpressionAliasProvider
+        IDbExpressionAliasProvider,
+        IEquatable<SchemaExpression>
     {
         #region internals
-        protected ISqlSchemaMetadata Metadata { get; }
-        protected IDictionary<string, Lazy<EntityExpression>> Entities { get; } = new Dictionary<string, Lazy<EntityExpression>>();
+        private Lazy<ISqlSchemaMetadata> metadataResolver;
+        protected ISqlSchemaMetadata Metadata => metadataResolver.Value;
+        protected IDictionary<string, EntityExpression> Entities { get; } = new Dictionary<string, EntityExpression>();
         protected string Alias { get; }
         #endregion
 
         #region interface
         ISqlSchemaMetadata IDbExpressionMetadataProvider<ISqlSchemaMetadata>.Metadata => Metadata;
-        IList<EntityExpression> IDbExpressionListProvider<EntityExpression>.Expressions => Entities.Values.Select(v => v.Value).ToList();
+        IList<EntityExpression> IDbExpressionListProvider<EntityExpression>.Expressions => Entities.Values.ToList();
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public SchemaExpression(ISqlSchemaMetadata metadata, string alias)
+        protected SchemaExpression(Lazy<ISqlSchemaMetadata> metadata, string alias)
         {
-            Metadata = metadata ?? throw new DbExpressionConfigurationException($"Schema expression is invalid - required argument is null", new ArgumentNullException($"{nameof(metadata)} is required"));
+            this.metadataResolver = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required");
             Alias = alias;
         }
         #endregion
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public string ToString(string format)
         {
-            string val = null;
+            string val;
             switch (format)
             {
                 case "s":
@@ -54,44 +54,52 @@ namespace HatTrick.DbEx.Sql.Expression
 
             return val;
         }
+        #endregion
 
+        #region operators
+        public static bool operator ==(SchemaExpression obj1, SchemaExpression obj2)
+        {
+            if (obj1 is null && obj2 is object) return false;
+            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is null) return true;
+
+            return obj1.Equals(obj2);
+        }
+
+        public static bool operator !=(SchemaExpression obj1, SchemaExpression obj2)
+            => !(obj1 == obj2);
+        #endregion
+
+        #region equals
         public bool Equals(SchemaExpression obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.Alias != this.Alias) return false;
-            if (obj.Metadata != this.Metadata) return false;
+            if (obj is null) return false;
+
+            if (Metadata is null && obj.Metadata is object) return false;
+            if (Metadata is object && obj.Metadata is null) return false;
+            if (!Metadata.Equals(obj.Metadata)) return false;
+
+            if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
 
             return true;
         }
 
         public override bool Equals(object obj)
-        {
-            if (!(obj is SchemaExpression other)) return false;
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            if (other.Alias != this.Alias) return false;
-            if (other.Metadata != this.Metadata) return false;
-
-            return true;
-        }
+            => obj is SchemaExpression exp && Equals(exp);
 
         public override int GetHashCode()
-            => base.GetHashCode();
-
-        public static bool operator ==(SchemaExpression obj1, SchemaExpression obj2)
         {
-            if (ReferenceEquals(obj1, obj2)) return true;
-            if (ReferenceEquals(obj1, null)) return false;
-            if (ReferenceEquals(obj2, null)) return false;
-            if (obj1.Metadata != obj2.Metadata) return false;
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
 
-            return true;
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Metadata is object ? Metadata.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
+                return hash;
+            }
         }
-
-        public static bool operator !=(SchemaExpression obj1, SchemaExpression obj2)
-            => !(obj1 == obj2);
-
         #endregion
     }
 }

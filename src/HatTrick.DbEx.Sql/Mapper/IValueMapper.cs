@@ -3,8 +3,8 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public interface IValueMapper
+    public interface IValueMapper : IMapper
     {
-        T Map<T>(FieldExpression fieldExpression, ISqlField sqlField);
+        T Map<T>(object value);
     }
 }

@@ -8,20 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart
     {
         #region interface
-        public (Type, object) Expression { get; private set; }
+        public ExpressionContainer Expression { get; private set; }
         public OrderExpressionDirection Direction { get; private set; }
         #endregion
 
         #region constructors
-        internal OrderByExpression(FieldExpression field, OrderExpressionDirection direction)
+        public OrderByExpression(ExpressionContainer orderByContainer, OrderExpressionDirection direction)
         {
-            Expression = (typeof(FieldExpression),field);
+            Expression = orderByContainer ?? throw new ArgumentNullException($"{nameof(orderByContainer)} is required.");
             Direction = direction;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{Expression.Item2} {Direction}";
+        public override string ToString() => $"{Expression.Object} {Direction}";
         #endregion
 
         #region conditional & operator

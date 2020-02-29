@@ -2,6 +2,7 @@
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -10,243 +11,257 @@ namespace HatTrick.DbEx.Sql.Assembler
     public abstract class SqlStatementBuilderFactory : ISqlStatementBuilderFactory
     {
         #region internals
+        #region  expression appenders
         private static readonly SelectSqlStatementAssembler _selectSqlStatementAssembler = new SelectSqlStatementAssembler();
         private static readonly InsertSqlStatementAssembler _insertSqlStatementAssembler = new InsertSqlStatementAssembler();
         private static readonly UpdateSqlStatementAssembler _updateSqlStatementAssembler = new UpdateSqlStatementAssembler();
         private static readonly DeleteSqlStatementAssembler _deleteSqlStatementAssembler = new DeleteSqlStatementAssembler();
-        private static readonly ExpressionSetAppender _expressionSetAppender = new ExpressionSetAppender();
-        private static readonly SchemaAppender _schemaAppender = new SchemaAppender();
-        private static readonly EntityAppender _entityAppender = new EntityAppender();
-        private static readonly FieldAppender _fieldAppender = new FieldAppender();
-        private static readonly SelectAppender _selectClauseAppender = new SelectAppender();
-        private static readonly FilterAppender _whereClauseAppender = new FilterAppender();
-        private static readonly JoinAppender _joinClauseAppender = new JoinAppender();
-        private static readonly JoinOnAppender _joinOnClauseAppender = new JoinOnAppender();
-        private static readonly GroupByAppender _groupByClauseAppender = new GroupByAppender();
-        private static readonly HavingAppender _havingClauseAppender = new HavingAppender();
-        private static readonly OrderByAppender _orderByClauseAppender = new OrderByAppender();
-        private static readonly ArithmeticAppender _arithmeticAppender = new ArithmeticAppender();
-        private static readonly CastFunctionAppender _castFunctionAppender = new CastFunctionAppender();
-        private static readonly CoalesceFunctionAppender _coalesceFunctionAppender = new CoalesceFunctionAppender();
-        private static readonly ConcatFunctionAppender _concatFunctionAppender = new ConcatFunctionAppender();
-        private static readonly IsNullFunctionAppender _isNullFunctionAppender = new IsNullFunctionAppender();
-        private static readonly AverageFunctionAppender _averageFunctionAppender = new AverageFunctionAppender();
-        private static readonly MinimumFunctionAppender _minimumFunctionAppender = new MinimumFunctionAppender();
-        private static readonly MaximumFunctionAppender _maximumFunctionAppender = new MaximumFunctionAppender();
-        private static readonly CountFunctionAppender _countFunctionAppender = new CountFunctionAppender();
-        private static readonly SumFunctionAppender _sumFunctionAppender = new SumFunctionAppender();
-        private static readonly StandardDeviationFunctionAppender _standardDeviationFunctionAppender = new StandardDeviationFunctionAppender();
-        private static readonly PopulationStandardDeviationFunctionAppender _populationStandardDeviationFunctionAppender = new PopulationStandardDeviationFunctionAppender();
-        private static readonly VarianceFunctionAppender _varianceFunctionAppender = new VarianceFunctionAppender();
-        private static readonly PopulationVarianceFunctionAppender _populationVarianceFunctionAppender = new PopulationVarianceFunctionAppender();
-        private static readonly CurrentTimestampFunctionAppender _currentTimestampFunctionAppender = new CurrentTimestampFunctionAppender();
-        private static readonly LiteralAppender _literalAppender = new LiteralAppender();
-        private static readonly StringAppender _stringAppender = new StringAppender();
-        private static readonly ByteAppender _byteAppender = new ByteAppender();
-        private static readonly ByteArrayAppender _byteArrayAppender = new ByteArrayAppender();
-        private static readonly Int16Appender _int16Appender = new Int16Appender();
-        private static readonly Int32Appender _int32Appender = new Int32Appender();
-        private static readonly Int64Appender _int64Appender = new Int64Appender();
-        private static readonly BooleanAppender _booleanAppender = new BooleanAppender();
-        private static readonly DecimalAppender _decimalAppender = new DecimalAppender();
-        private static readonly DateTimeAppender _dateTimeAppender = new DateTimeAppender();
-        private static readonly GuidAppender _guidAppender = new GuidAppender();
-        private static readonly EnumAppender _enumAppender = new EnumAppender();
-        private static readonly ArrayAppender _arrayAppender = new ArrayAppender();
-        private static readonly ValueTypeFormatter _valueTypeFormatter = new ValueTypeFormatter();
-        private static readonly EnumValueTypeFormatter _enumValueTypeFormatter = new EnumValueTypeFormatter();
+        private static readonly SchemaExpressionPartAppender _schemaAppender = new SchemaExpressionPartAppender();
+        private static readonly EntityExpressionPartAppender _entityAppender = new EntityExpressionPartAppender();
+        private static readonly FieldExpressionPartAppender _fieldAppender = new FieldExpressionPartAppender();
+        private static readonly SelectExpressionPartAppender _selectAppender = new SelectExpressionPartAppender();
+        private static readonly SelectExpressionSetPartAppender _selectSetAppender = new SelectExpressionSetPartAppender();
+        private static readonly FilterExpressionPartAppender _filterAppender = new FilterExpressionPartAppender();
+        private static readonly FilterExpressionSetPartAppender _filterSetAppender = new FilterExpressionSetPartAppender();
+        private static readonly JoinExpressionPartAppender _joinAppender = new JoinExpressionPartAppender();
+        private static readonly JoinExpressionSetPartAppender _joinSetAppender = new JoinExpressionSetPartAppender();
+        private static readonly JoinOnExpressionPartAppender _joinOnClauseAppender = new JoinOnExpressionPartAppender();
+        private static readonly GroupByExpressionPartAppender _groupByAppender = new GroupByExpressionPartAppender();
+        private static readonly GroupByExpressionSetPartAppender _groupBySetAppender = new GroupByExpressionSetPartAppender();
+        private static readonly HavingExpressionPartAppender _havingClauseAppender = new HavingExpressionPartAppender();
+        private static readonly OrderByExpressionPartAppender _orderByAppender = new OrderByExpressionPartAppender();
+        private static readonly OrderByExpressionSetPartAppender _orderBySetAppender = new OrderByExpressionSetPartAppender();
+        private static readonly ArithmeticExpressionPartAppender _arithmeticAppender = new ArithmeticExpressionPartAppender();
+        private static readonly ExpressionMediatorPartAppender _expressionMediatorAppender = new ExpressionMediatorPartAppender();
+        private static readonly CastFunctionExpressionPartAppender _castFunctionAppender = new CastFunctionExpressionPartAppender();
+        private static readonly CoalesceFunctionExpressionPartAppender _coalesceFunctionAppender = new CoalesceFunctionExpressionPartAppender();
+        private static readonly ConcatFunctionExpressionPartAppender _concatFunctionAppender = new ConcatFunctionExpressionPartAppender();
+        private static readonly IsNullFunctionExpressionPartAppender _isNullFunctionAppender = new IsNullFunctionExpressionPartAppender();
+        private static readonly AverageFunctionExpressionPartAppender _averageFunctionAppender = new AverageFunctionExpressionPartAppender();
+        private static readonly MinimumFunctionExpressionPartAppender _minimumFunctionAppender = new MinimumFunctionExpressionPartAppender();
+        private static readonly MaximumFunctionExpressionPartAppender _maximumFunctionAppender = new MaximumFunctionExpressionPartAppender();
+        private static readonly CountFunctionExpressionPartAppender _countFunctionAppender = new CountFunctionExpressionPartAppender();
+        private static readonly SumFunctionExpressionPartAppender _sumFunctionAppender = new SumFunctionExpressionPartAppender();
+        private static readonly StandardDeviationFunctionExpressionPartAppender _standardDeviationFunctionAppender = new StandardDeviationFunctionExpressionPartAppender();
+        private static readonly PopulationStandardDeviationFunctionExpressionPartAppender _populationStandardDeviationFunctionAppender = new PopulationStandardDeviationFunctionExpressionPartAppender();
+        private static readonly VarianceFunctionExpressionPartAppender _varianceFunctionAppender = new VarianceFunctionExpressionPartAppender();
+        private static readonly PopulationVarianceFunctionExpressionPartAppender _populationVarianceFunctionAppender = new PopulationVarianceFunctionExpressionPartAppender();
+        private static readonly CurrentTimestampFunctionPartAppender _currentTimestampFunctionAppender = new CurrentTimestampFunctionPartAppender();
+        private static readonly LiteralExpressionPartAppender _literalAppender = new LiteralExpressionPartAppender();
+        #endregion
+
+        #region value type appenders 
+        private static readonly ValueTypePartAppender<bool> _booleanAppender = new ValueTypePartAppender<bool>();
+        private static readonly NullableValueTypePartAppender<bool?> _nullableBooleanAppender = new NullableValueTypePartAppender<bool?>();
+        private static readonly ValueTypePartAppender<byte> _byteAppender = new ValueTypePartAppender<byte>();
+        private static readonly NullableValueTypePartAppender<byte?> _nullableByteAppender = new NullableValueTypePartAppender<byte?>();
+        private static readonly ByteArrayPartAppender _byteArrayAppender = new ByteArrayPartAppender();
+        private static readonly ValueTypePartAppender<DateTime> _dateTimeAppender = new ValueTypePartAppender<DateTime>();
+        private static readonly NullableValueTypePartAppender<DateTime?> _nullableDateTimeAppender = new NullableValueTypePartAppender<DateTime?>();
+        private static readonly ValueTypePartAppender<DateTimeOffset> _dateTimeOffsetAppender = new ValueTypePartAppender<DateTimeOffset>();
+        private static readonly NullableValueTypePartAppender<DateTimeOffset?> _nullableDateTimeOffsetAppender = new NullableValueTypePartAppender<DateTimeOffset?>();
+        private static readonly ValueTypePartAppender<decimal> _decimalAppender = new ValueTypePartAppender<decimal>();
+        private static readonly NullableValueTypePartAppender<decimal?> _nullableDecimalAppender = new NullableValueTypePartAppender<decimal?>();
+        private static readonly ValueTypePartAppender<double> _doubleAppender = new ValueTypePartAppender<double>();
+        private static readonly NullableValueTypePartAppender<double?> _nullableDoubleAppender = new NullableValueTypePartAppender<double?>();
+        private static readonly ValueTypePartAppender<float> _floatAppender = new ValueTypePartAppender<float>();
+        private static readonly NullableValueTypePartAppender<float?> _nullableFloatAppender = new NullableValueTypePartAppender<float?>();
+        private static readonly ValueTypePartAppender<Guid> _guidAppender = new ValueTypePartAppender<Guid>();
+        private static readonly NullableValueTypePartAppender<Guid?> _nullableGuidAppender = new NullableValueTypePartAppender<Guid?>();
+        private static readonly ValueTypePartAppender<int> _int32Appender = new ValueTypePartAppender<int>();
+        private static readonly NullableValueTypePartAppender<int?> _nullableInt32Appender = new NullableValueTypePartAppender<int?>();
+        private static readonly ValueTypePartAppender<long> _int64Appender = new ValueTypePartAppender<long>();
+        private static readonly NullableValueTypePartAppender<long?> _nullableInt64Appender = new NullableValueTypePartAppender<long?>();
+        private static readonly ValueTypePartAppender<short> _int16Appender = new ValueTypePartAppender<short>();
+        private static readonly NullableValueTypePartAppender<short?> _nullableInt16Appender = new NullableValueTypePartAppender<short?>();
+        private static readonly EnumValueTypePartAppender _enumAppender = new EnumValueTypePartAppender();
+        private static readonly StringValueTypePartAppender _stringAppender = new StringValueTypePartAppender();
+        private static readonly DBNullValueTypePartAppender _dbNullAppender = new DBNullValueTypePartAppender();
+        #endregion
 
         private Func<SqlStatementExecutionType, ISqlStatementAssembler> _statementAssemblerFactory;
         private Func<Type, IAssemblyPartAppender> _partAppenderFactory;
         private Func<Type, IValueTypeFormatter> _valueTypeFormatterFactory;
 
-        private readonly IDictionary<Type, Func<IAssemblyPartAppender>> PartAppenders = new Dictionary<Type, Func<IAssemblyPartAppender>>();
-        private readonly IDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> StatementAssemblers = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
-        private readonly IDictionary<Type, Func<IValueTypeFormatter>> ValueTypeFormatters = new Dictionary<Type, Func<IValueTypeFormatter>>();
+        private readonly ConcurrentDictionary<Type, Func<IAssemblyPartAppender>> _partAppenders = new ConcurrentDictionary<Type, Func<IAssemblyPartAppender>>();
+        private readonly ConcurrentDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> _statementAssemblers = new ConcurrentDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
+        private readonly ConcurrentDictionary<Type, Func<IValueTypeFormatter>> _valueTypeFormatters = new ConcurrentDictionary<Type, Func<IValueTypeFormatter>>();
         #endregion
 
         #region interface
         public virtual Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerFactory
-        {
-            get
-            {
-                if (_statementAssemblerFactory != null)
-                    return _statementAssemblerFactory;
-
-                return _statementAssemblerFactory = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(sqlExecutionType =>
+            => _statementAssemblerFactory ?? (_statementAssemblerFactory = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(sqlExecutionType =>
                 {
-                    if (StatementAssemblers.TryGetValue(sqlExecutionType, out var assemblerFactory))
+                    if (_statementAssemblers.TryGetValue(sqlExecutionType, out var assemblerFactory))
                         return assemblerFactory();
 
                     throw new DbExpressionConfigurationException($"Could not resolve an assembler, please ensure an executor has been registered for sql statement execution type of '{sqlExecutionType}'");
-                });
-            }
-        }
+                }));
 
         public virtual Func<Type, IAssemblyPartAppender> PartAppenderFactory
-        {
-            get
-            {
-                if (_partAppenderFactory != null)
-                    return _partAppenderFactory;
-
-                return _partAppenderFactory = new Func<Type, IAssemblyPartAppender>(t => ResolvePartAppenderFactory(t, t));
-            }
-        }
+            => _partAppenderFactory ?? (_partAppenderFactory = new Func<Type, IAssemblyPartAppender>(t => ResolvePartAppender(t, t)));
 
         public virtual Func<Type, IValueTypeFormatter> ValueTypeFormatterFactory
-        {
-            get
-            {
-                if (_valueTypeFormatterFactory != null)
-                    return _valueTypeFormatterFactory;
-
-                return _valueTypeFormatterFactory = new Func<Type, IValueTypeFormatter>(t =>
+            =>  _valueTypeFormatterFactory ?? (_valueTypeFormatterFactory = new Func<Type, IValueTypeFormatter>(t =>
                 {
-                    if (ValueTypeFormatters.TryGetValue(t, out var formatterFactory))
+                    if (_valueTypeFormatters.TryGetValue(t, out var formatterFactory))
                         return formatterFactory();
 
                     throw new DbExpressionConfigurationException($"Could not resolve a formatter, please ensure a formatter has been registered for type '{t}'");
-                });
-            }
-        }
+                }));
         #endregion
 
         #region methods
         public void RegisterPartAppender<T, U>()
             where U : class, IAssemblyPartAppender<T>, new()
-        {
-            PartAppenders[typeof(T)] = () => new U();
-        }
+            => _partAppenders.AddOrUpdate(typeof(T), () => new U(), (t,f) => () => new U());
 
         public void RegisterPartAppender<T>(IAssemblyPartAppender<T> appender)
-        {
-            PartAppenders[typeof(T)] = () => appender;
-        }
+            => RegisterPartAppender(() => appender);
 
         public void RegisterPartAppender<T>(Func<IAssemblyPartAppender<T>> appenderFactory)
-        {
-            PartAppenders[typeof(T)] = appenderFactory;
-        }
+            => _partAppenders.AddOrUpdate(typeof(T), appenderFactory, (t,f) => appenderFactory);
 
         public virtual void RegisterDefaultPartAppenders()
         {
-            PartAppenders.Add(typeof(ExpressionSet), () => _expressionSetAppender);
-            PartAppenders.Add(typeof(SchemaExpression), () => _schemaAppender);
-            PartAppenders.Add(typeof(EntityExpression), () => _entityAppender);
-            PartAppenders.Add(typeof(FieldExpression), () => _fieldAppender);
-            PartAppenders.Add(typeof(SelectExpression), () => _selectClauseAppender);
-            PartAppenders.Add(typeof(SelectExpressionSet), () => _selectClauseAppender);
-            PartAppenders.Add(typeof(FilterExpression), () => _whereClauseAppender);
-            PartAppenders.Add(typeof(FilterExpressionSet), () => _whereClauseAppender);
-            PartAppenders.Add(typeof(JoinExpression), () => _joinClauseAppender);
-            PartAppenders.Add(typeof(JoinExpressionSet), () => _joinClauseAppender);
-            PartAppenders.Add(typeof(JoinOnExpression), () => _joinOnClauseAppender);
-            PartAppenders.Add(typeof(GroupByExpression), () => _groupByClauseAppender);
-            PartAppenders.Add(typeof(GroupByExpressionSet), () => _groupByClauseAppender);
-            PartAppenders.Add(typeof(HavingExpression), () => _havingClauseAppender);
-            PartAppenders.Add(typeof(OrderByExpression), () => _orderByClauseAppender);
-            PartAppenders.Add(typeof(OrderByExpressionSet), () => _orderByClauseAppender);
-            PartAppenders.Add(typeof(ArithmeticExpression), () => _arithmeticAppender);
-            PartAppenders.Add(typeof(CastFunctionExpression), () => _castFunctionAppender);
-            PartAppenders.Add(typeof(CoalesceFunctionExpression), () => _coalesceFunctionAppender);
-            PartAppenders.Add(typeof(ConcatFunctionExpression), () => _concatFunctionAppender);
-            PartAppenders.Add(typeof(IsNullFunctionExpression), () => _isNullFunctionAppender);
-            PartAppenders.Add(typeof(AverageFunctionExpression), () => _averageFunctionAppender);
-            PartAppenders.Add(typeof(MinimumFunctionExpression), () => _minimumFunctionAppender);
-            PartAppenders.Add(typeof(MaximumFunctionExpression), () => _maximumFunctionAppender);
-            PartAppenders.Add(typeof(CountFunctionExpression), () => _countFunctionAppender);
-            PartAppenders.Add(typeof(SumFunctionExpression), () => _sumFunctionAppender);
-            PartAppenders.Add(typeof(StandardDeviationFunctionExpression), () => _standardDeviationFunctionAppender);
-            PartAppenders.Add(typeof(PopulationStandardDeviationFunctionExpression), () => _populationStandardDeviationFunctionAppender);
-            PartAppenders.Add(typeof(VarianceFunctionExpression), () => _varianceFunctionAppender);
-            PartAppenders.Add(typeof(PopulationVarianceFunctionExpression), () => _populationVarianceFunctionAppender);
-            PartAppenders.Add(typeof(CurrentTimestampFunctionExpression), () => _currentTimestampFunctionAppender);
-            PartAppenders.Add(typeof(LiteralExpression), () => _literalAppender);
-            PartAppenders.Add(typeof(string), () => _stringAppender);
-            PartAppenders.Add(typeof(byte), () => _byteAppender);
-            PartAppenders.Add(typeof(byte[]), () => _byteArrayAppender);
-            PartAppenders.Add(typeof(short), () => _int16Appender);
-            PartAppenders.Add(typeof(int), () => _int32Appender);
-            PartAppenders.Add(typeof(long), () => _int64Appender);
-            PartAppenders.Add(typeof(bool), () => _booleanAppender);
-            PartAppenders.Add(typeof(decimal), () => _decimalAppender);
-            PartAppenders.Add(typeof(DateTime), () => _dateTimeAppender);
-            PartAppenders.Add(typeof(Guid), () => _guidAppender);
-            PartAppenders.Add(typeof(Enum), () => _enumAppender);
-            PartAppenders.Add(typeof(Array), () => _arrayAppender);
+            _partAppenders.TryAdd(typeof(SchemaExpression), () => _schemaAppender);
+            _partAppenders.TryAdd(typeof(EntityExpression), () => _entityAppender);
+            _partAppenders.TryAdd(typeof(FieldExpression), () => _fieldAppender);
+            _partAppenders.TryAdd(typeof(SelectExpression), () => _selectAppender);
+            _partAppenders.TryAdd(typeof(SelectExpressionSet), () => _selectSetAppender);
+            _partAppenders.TryAdd(typeof(FilterExpression), () => _filterAppender);
+            _partAppenders.TryAdd(typeof(FilterExpressionSet), () => _filterSetAppender);
+            _partAppenders.TryAdd(typeof(JoinExpression), () => _joinAppender);
+            _partAppenders.TryAdd(typeof(JoinExpressionSet), () => _joinSetAppender);
+            _partAppenders.TryAdd(typeof(JoinOnExpression), () => _joinOnClauseAppender);
+            _partAppenders.TryAdd(typeof(GroupByExpression), () => _groupByAppender);
+            _partAppenders.TryAdd(typeof(GroupByExpressionSet), () => _groupBySetAppender);
+            _partAppenders.TryAdd(typeof(HavingExpression), () => _havingClauseAppender);
+            _partAppenders.TryAdd(typeof(OrderByExpression), () => _orderByAppender);
+            _partAppenders.TryAdd(typeof(OrderByExpressionSet), () => _orderBySetAppender);
+            _partAppenders.TryAdd(typeof(ArithmeticExpression), () => _arithmeticAppender);
+            _partAppenders.TryAdd(typeof(ExpressionMediator), () => _expressionMediatorAppender);
+            _partAppenders.TryAdd(typeof(CastFunctionExpression), () => _castFunctionAppender);
+            _partAppenders.TryAdd(typeof(CoalesceFunctionExpression), () => _coalesceFunctionAppender);
+            _partAppenders.TryAdd(typeof(ConcatFunctionExpression), () => _concatFunctionAppender);
+            _partAppenders.TryAdd(typeof(IsNullFunctionExpression), () => _isNullFunctionAppender);
+            _partAppenders.TryAdd(typeof(AverageFunctionExpression), () => _averageFunctionAppender);
+            _partAppenders.TryAdd(typeof(MinimumFunctionExpression), () => _minimumFunctionAppender);
+            _partAppenders.TryAdd(typeof(MaximumFunctionExpression), () => _maximumFunctionAppender);
+            _partAppenders.TryAdd(typeof(CountFunctionExpression), () => _countFunctionAppender);
+            _partAppenders.TryAdd(typeof(SumFunctionExpression), () => _sumFunctionAppender);
+            _partAppenders.TryAdd(typeof(StandardDeviationFunctionExpression), () => _standardDeviationFunctionAppender);
+            _partAppenders.TryAdd(typeof(PopulationStandardDeviationFunctionExpression), () => _populationStandardDeviationFunctionAppender);
+            _partAppenders.TryAdd(typeof(VarianceFunctionExpression), () => _varianceFunctionAppender);
+            _partAppenders.TryAdd(typeof(PopulationVarianceFunctionExpression), () => _populationVarianceFunctionAppender);
+            _partAppenders.TryAdd(typeof(CurrentTimestampFunctionExpression), () => _currentTimestampFunctionAppender);
+            _partAppenders.TryAdd(typeof(LiteralExpression), () => _literalAppender);
+
+            _partAppenders.TryAdd(typeof(bool), () => _booleanAppender);
+            _partAppenders.TryAdd(typeof(bool?), () => _nullableBooleanAppender);
+            _partAppenders.TryAdd(typeof(byte), () => _byteAppender);
+            _partAppenders.TryAdd(typeof(byte?), () => _nullableByteAppender);
+            _partAppenders.TryAdd(typeof(byte[]), () => _byteArrayAppender);
+            _partAppenders.TryAdd(typeof(DateTime), () => _dateTimeAppender);
+            _partAppenders.TryAdd(typeof(DateTime?), () => _nullableDateTimeAppender);
+            _partAppenders.TryAdd(typeof(DateTimeOffset), () => _dateTimeOffsetAppender);
+            _partAppenders.TryAdd(typeof(DateTimeOffset?), () => _nullableDateTimeOffsetAppender);
+            _partAppenders.TryAdd(typeof(decimal), () => _decimalAppender);
+            _partAppenders.TryAdd(typeof(decimal?), () => _nullableDecimalAppender);
+            _partAppenders.TryAdd(typeof(double), () => _doubleAppender);
+            _partAppenders.TryAdd(typeof(double?), () => _nullableDoubleAppender);
+            _partAppenders.TryAdd(typeof(Enum), () => _enumAppender);
+            _partAppenders.TryAdd(typeof(float), () => _floatAppender);
+            _partAppenders.TryAdd(typeof(float?), () => _nullableFloatAppender);
+            _partAppenders.TryAdd(typeof(Guid), () => _guidAppender);
+            _partAppenders.TryAdd(typeof(Guid?), () => _nullableGuidAppender);
+            _partAppenders.TryAdd(typeof(int), () => _int32Appender);
+            _partAppenders.TryAdd(typeof(int?), () => _nullableInt32Appender);
+            _partAppenders.TryAdd(typeof(long), () => _int64Appender);
+            _partAppenders.TryAdd(typeof(long?), () => _nullableInt64Appender);
+            _partAppenders.TryAdd(typeof(short), () => _int16Appender);
+            _partAppenders.TryAdd(typeof(short?), () => _nullableInt16Appender);
+            _partAppenders.TryAdd(typeof(string), () => _stringAppender);
+
+            _partAppenders.TryAdd(typeof(DBNull), () => _dbNullAppender);
         }
 
         public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementAssembler, new()
-        {
-            StatementAssemblers[statementExecutionType] = () => new T();
-        }
+            => _statementAssemblers.AddOrUpdate(statementExecutionType, () => new T(), (t, f) => () => new T());
 
         public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
             where T : class, ISqlStatementAssembler
-        {
-            StatementAssemblers[statementExecutionType] = () => assembler;
-        }
+            => _statementAssemblers.AddOrUpdate(statementExecutionType, () => assembler, (t, f) => () => assembler);
+
+        public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, Func<T> assemblerFactory)
+            where T : class, ISqlStatementAssembler
+            => _statementAssemblers.AddOrUpdate(statementExecutionType, assemblerFactory, (t,f) => assemblerFactory);
 
         public virtual void RegisterDefaultAssemblers()
         {
-            StatementAssemblers.Add(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
-            StatementAssemblers.Add(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
+            _statementAssemblers.TryAdd(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
         }
 
-        public void RegisterValueFormatter<T, U>()
-           where T : IComparable
-           where U : class, IValueTypeFormatter<T>, new()
-        {
-            ValueTypeFormatters[typeof(T)] = () => new U();
-        }
+        public void RegisterValueFormatter<T, U>(IValueTypeFormatter<T, U> valueFormatter)
+            where T : IConvertible
+            where U : IComparable
+            => _valueTypeFormatters.AddOrUpdate(typeof(T), () => valueFormatter, (t, f) => () => valueFormatter);
 
-        public void RegisterValueFormatter<T>(IValueTypeFormatter<T> valueFormatter)
-            where T : IComparable, IValueTypeFormatter
-        {
-            ValueTypeFormatters[typeof(T)] = () => valueFormatter;
-        }
-
-        public void RegisterValueFormatter<T>(Func<IValueTypeFormatter<T>> valueFormatterFactory)
-            where T : IComparable, IValueTypeFormatter
-        {
-            ValueTypeFormatters[typeof(T)] = valueFormatterFactory;
-        }
+        public void RegisterValueFormatter<T,U>(Func<IValueTypeFormatter<T,U>> valueFormatterFactory)
+            where T : IConvertible
+            where U : IComparable
+            => _valueTypeFormatters.AddOrUpdate(typeof(T), valueFormatterFactory, (t, f) => valueFormatterFactory);
 
         public virtual void RegisterDefaultValueFormatters()
         {
-            ValueTypeFormatters.Add(typeof(string), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(bool), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(byte), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(short), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(int), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(long), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(decimal), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(DateTime), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(Guid), () => _valueTypeFormatter);
-            ValueTypeFormatters.Add(typeof(Enum), () => _enumValueTypeFormatter);
         }
 
         public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
             => new SqlStatementBuilder(config, expression, AssemblerFactory, PartAppenderFactory, ValueTypeFormatterFactory, appender, parameterBuilder);
 
-        private IAssemblyPartAppender ResolvePartAppenderFactory(Type current, Type original)
+        private IAssemblyPartAppender ResolvePartAppender(Type current, Type original)
         {
-            if (PartAppenders.TryGetValue(current, out Func<IAssemblyPartAppender> appenderFactory))
+            if (_partAppenders.TryGetValue(current, out Func<IAssemblyPartAppender> appenderFactory))
+            {
+                if (current != original)
+                {
+                    //reduce runtime recursion by "registering" the original with the found appender
+                    _partAppenders.TryAdd(original, appenderFactory);
+                }
                 return appenderFactory();
+            }
+            
+            if (current.BaseType == typeof(object)) //crawled up to Type=object and didn't find an appender, resolve if it is an Enum and the part appender for an Enum
+                return ResolveEnumPartAppender(original, original) ?? throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{original}', please ensure an appender has been registered for type '{original}'");
 
             if (current.BaseType == null)
                 throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{original}', please ensure an appender has been registered for type '{original}'");
 
-            return ResolvePartAppenderFactory(current.BaseType, original);
+            return ResolvePartAppender(current.BaseType, original);
+        }
+
+        private IAssemblyPartAppender ResolveEnumPartAppender(Type current, Type original)
+        {
+            if (!current.IsGenericType)
+                return null; 
+
+            var generic = current.GetGenericArguments();
+            if (generic[0].IsEnum)
+            {
+                _partAppenders.TryAdd(original, () => _enumAppender);
+                return ResolvePartAppender(original, original);
+            }
+
+            return ResolveEnumPartAppender(current.BaseType, original);
         }
         #endregion
     }

@@ -1,0 +1,63 @@
+﻿using System;
+
+namespace {Namespace}
+{{
+    public partial class Nullable{Type.Name}ExpressionMediator
+    {{
+        #region implicit operators
+        public static implicit operator SelectExpression<{Type.Alias}{#if Type.IsNullable}?{/if}>(Nullable{Type.Name}ExpressionMediator a) => new SelectExpression<{Type.Alias}{#if Type.IsNullable}?{/if}>(a.Expression);
+        {#if IsOrderBySupported}
+        public static implicit operator OrderByExpression(Nullable{Type.Name}ExpressionMediator a) => new OrderByExpression(a.Expression, OrderExpressionDirection.ASC);
+        {/if}
+        {#if IsGroupBySupported}
+        public static implicit operator GroupByExpression(Nullable{Type.Name}ExpressionMediator a) => new GroupByExpression(a.Expression);
+        {/if}
+        #endregion
+
+        #region arithmetic operators 
+        #region TValue 
+        {#each ArithmeticOperations}
+        {#if $.ReturnType.IsNullable}
+        #region {$.OperationType.Alias}
+        {#each Operations}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}(Nullable{..\..\$.Type.Name}ExpressionMediator a, {..\$.OperationType.Alias} b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(a.Expression, new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}>(b)), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#each Operations}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\$.OperationType.Alias} a, Nullable{..\..\$.Type.Name}ExpressionMediator b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}>(a)), b.Expression, ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#if OperationType.IsNullable}
+        {#each Operations}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}(Nullable{..\..\$.Type.Name}ExpressionMediator a, {..\$.OperationType.Alias}? b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(a.Expression, new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}?>(b)), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#each Operations}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\$.OperationType.Alias}? a, Nullable{..\..\$.Type.Name}ExpressionMediator b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}?>(a)), b.Expression, ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}    
+        {/if}
+        #endregion
+        {/if}
+
+        {/each}
+        #endregion
+
+        #region mediator
+        {#each ArithmeticOperations}
+        {#if $.ReturnType.IsNullable}
+        #region {$.OperationType.Alias}
+        {#each Operations}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}(Nullable{..\..\$.Type.Name}ExpressionMediator a, {..\$.OperationType.Name}ExpressionMediator b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(a.Expression, b.Expression, ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#each Operations}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}(Nullable{..\..\$.Type.Name}ExpressionMediator a, Nullable{..\$.OperationType.Name}ExpressionMediator b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(a.Expression, b.Expression, ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+        #endregion
+        {/if}
+
+        {/each}
+        #endregion
+        #endregion
+    }}
+}}

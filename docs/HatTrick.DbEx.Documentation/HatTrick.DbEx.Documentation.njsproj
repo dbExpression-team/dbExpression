@@ -32,6 +32,7 @@
     <Content Include="docs\.vuepress\config.js" />
     <Content Include="docs\about.md" />
     <Content Include="docs\guide\README.md" />
+    <Content Include="docs\Functions\Average.md" />
     <Content Include="docs\README.md" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -40,6 +41,7 @@
     <Folder Include="docs\" />
     <Folder Include="docs\.vuepress\" />
     <Folder Include="docs\guide\" />
+    <Folder Include="docs\Functions\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

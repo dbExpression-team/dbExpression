@@ -10,10 +10,12 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
+    [Trait("Statement", "SELECT")]
     public partial class SelectOne : ExecutorTestBase
     {
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public void Can_a_person_record_select_successfully(int version)
         {
             //given
@@ -32,6 +34,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public async Task Can_a_person_record_select_async_successfully(int version)
         {
             //given

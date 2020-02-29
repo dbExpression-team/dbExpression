@@ -42,39 +42,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 MapperFactory = mapperFactory;
             }
 
-            public void SetPropertyValue<TValue>(ISqlFieldMetadata metadata, object value)
-            {
-                var field = (ExpressionSet.BaseEntity as IDbExpressionListProvider<FieldExpression>).Expressions.FirstOrDefault(f => (f as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata == metadata);
-                var mapper = MapperFactory.CreateValueMapper();
-                TValue mapped = mapper.Map<TValue>(field, new Field(0, metadata.Name, value));
-                field.Map(Instance, mapped);
-            }
-
             public void SetPropertyValue<TValue>(FieldExpression field, object value)
             {
-                var metadata = (field as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata;
                 var mapper = MapperFactory.CreateValueMapper();
-                TValue mapped = mapper.Map<TValue>(field, new Field(0, metadata.Name, value));
-                field.Map(Instance, mapped);
-            }
-
-            public void SetPropertyValue<TEntity, TValue>(FieldExpression<TEntity, TValue> field, object value)
-                where TEntity : IDbEntity
-            {
-                var metadata = (field as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata;
-                var mapper = MapperFactory.CreateValueMapper();
-                TValue mapped = mapper.Map<TValue>(field, new Field(0, metadata.Name, value));
-                field.Map(Instance, mapped);
-            }
-
-            public void SetPropertyValue<TEntity, TValue>(NullableFieldExpression<TEntity, TValue> field, object value)
-                where TEntity : IDbEntity
-                where TValue : struct, IComparable
-            {
-                var metadata = (field as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata;
-                var mapper = MapperFactory.CreateValueMapper();
-                TValue mapped = mapper.Map<TValue>(field, new Field(0, metadata.Name, value));
-                field.Map(Instance, mapped);
+                var entity = (field as IDbExpressionProvider<EntityExpression>).Expression;
+                (entity as IFieldExpressionMapper).MapField(Instance, field, value, mapper);
             }
         }
     }

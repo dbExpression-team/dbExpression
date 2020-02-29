@@ -18,42 +18,39 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region order by
-        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.OrderBy(OrderByExpressionSet orderBy)
-        {
-            OrderBy(orderBy);
-            return this;
-        }
         IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.OrderBy(params OrderByExpression[] orderBy)
         {
             OrderBy(orderBy);
             return this;
         }
 
-        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.OrderBy(OrderByExpressionSet orderBy)
+        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.OrderBy(params OrderByExpression[] orderBy)
         {
             OrderBy(orderBy);
             return this;
         }
+
         ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.OrderBy(params OrderByExpression[] orderBy)
         {
             OrderBy(orderBy);
             return this;
         }
 
-        private void OrderBy(OrderByExpressionSet orderBy)
-        {
-            Expression.OrderBy &= orderBy;
-        }
-
         private void OrderBy(params OrderByExpression[] orderBy)
         {
             foreach (var o in orderBy)
-                Expression.OrderBy &= o;
+                Expression.OrderBy.Expressions.Add(o);
         }
         #endregion
 
         #region group by
         IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.GroupBy(params GroupByExpression[] groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.GroupBy(params GroupByExpression[] groupBy)
         {
             GroupBy(groupBy);
             return this;
@@ -68,12 +65,18 @@ namespace HatTrick.DbEx.Sql.Builder
         private void GroupBy(params GroupByExpression[] groupBy)
         {
             foreach (var grouping in groupBy)
-                Expression.GroupBy &= grouping;
+                Expression.GroupBy.Expressions.Add(grouping);
         }
         #endregion
 
         #region having
         IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.Having(HavingExpression having)
+        {
+            Having(having);
+            return this;
+        }
+
+        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.Having(HavingExpression having)
         {
             Having(having);
             return this;

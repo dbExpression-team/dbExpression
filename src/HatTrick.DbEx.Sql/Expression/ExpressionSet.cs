@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public GroupByExpressionSet GroupBy { get; set; } = new GroupByExpressionSet();
 
-        public HavingExpression Having { get; set; }
+        public HavingExpression Having { get; set; } = new HavingExpression();
         #endregion
 
         #region operators
@@ -172,13 +172,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 else { set.Having &= havingCondition; }
             }
             return set;
-        }
-        #endregion
-
-        #region clear selects
-        public void ClearSelect()
-        {
-            this.Select = null;
         }
         #endregion
     }

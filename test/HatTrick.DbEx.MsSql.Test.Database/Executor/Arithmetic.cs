@@ -1,0 +1,69 @@
+﻿using DbEx.DataService;
+using FluentAssertions;
+using HatTrick.DbEx.MsSql.Test.Executor;
+using HatTrick.DbEx.Sql.Builder;
+using Xunit;
+
+namespace HatTrick.DbEx.MsSql.Test.Database.Executor
+{
+    [Trait("Statement", "SELECT")]
+    public partial class Arithmetic : ExecutorTestBase
+    {
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_arithmetic_order_of_precedence_succeed(int version, decimal expected = 36m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    (dbo.Purchase.TotalPurchaseAmount + 2) * 3
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.TotalPurchaseAmount == 10m);
+
+            //when               
+            decimal result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_arithmetic_order_of_precedence_reversed_succeed(int version, decimal expected = 36m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    3 * (dbo.Purchase.TotalPurchaseAmount + 2)
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.TotalPurchaseAmount == 10m);
+
+            //when               
+            decimal result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_arithmetic_with_no_order_of_precedence_succeed(int version, decimal expected = 1002.00m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    dbo.Product.ListPrice * dbo.Product.Quantity + 3
+                ).From(dbo.Product)
+                .Where(dbo.Product.ListPrice == 9.99m);
+
+            //when               
+            decimal result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
+        }
+    }
+}

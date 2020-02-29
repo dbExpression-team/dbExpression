@@ -9,6 +9,6 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         where V : class, IContinuationExpressionBuilder<T, U>
     {
         V From<W>(EntityExpression<W> entity)
-            where W : IDbEntity;
+            where W : class, IDbEntity;
     }
 }

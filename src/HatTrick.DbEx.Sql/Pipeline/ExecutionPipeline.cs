@@ -11,15 +11,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public abstract class ExecutionPipeline
     {
-        protected readonly DbExpressionRuntimeConfiguration Config;
         protected readonly DatabaseConfiguration Database;
 
         protected ExecutionPipeline(
-            DbExpressionRuntimeConfiguration config,
             DatabaseConfiguration database
         )
         {
-            Config = config ?? throw new DbExpressionConfigurationException($"DbExpressionConfiguration is required, please review and ensure the correct configuration for DbExpression.");
             Database = database ?? throw new DbExpressionConfigurationException($"Database configuration is required, please review and ensure the correct configuration for DbExpression.");
         }
 

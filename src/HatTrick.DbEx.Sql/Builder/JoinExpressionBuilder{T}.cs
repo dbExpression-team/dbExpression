@@ -8,25 +8,25 @@ namespace HatTrick.DbEx.Sql.Builder
         where T : IExpressionBuilder
     {
         private ExpressionSet Expression { get; set; }
-        private (Type, object) JoinOn { get; set; }
+        private ExpressionContainer JoinOn { get; set; }
         private JoinOperationExpressionOperator JoinType { get; set; }
         private T Caller { get; set; }
         protected string Alias { get; set; }
 
-        internal JoinExpressionBuilder(ExpressionSet expression, EntityExpression joinOn, JoinOperationExpressionOperator joinType, T caller)
+        public JoinExpressionBuilder(ExpressionSet expression, EntityExpression joinOn, JoinOperationExpressionOperator joinType, T caller)
         {
-            Expression = expression;
-            JoinOn = (typeof(EntityExpression), joinOn);
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            JoinOn = new ExpressionContainer(joinOn ?? throw new ArgumentNullException($"{nameof(joinOn)} is required."));
             JoinType = joinType;
-            Caller = caller;
+            Caller = caller != null ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
         }
 
-        internal JoinExpressionBuilder(ExpressionSet expression, ExpressionSet subquery, JoinOperationExpressionOperator joinType, T caller)
+        public JoinExpressionBuilder(ExpressionSet expression, ExpressionSet subquery, JoinOperationExpressionOperator joinType, T caller)
         {
-            Expression = expression;
-            JoinOn = (typeof(ExpressionSet), subquery);
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            JoinOn = new ExpressionContainer(subquery ?? throw new ArgumentNullException($"{nameof(subquery)} is required."));
             JoinType = joinType;
-            Caller = caller;
+            Caller = caller != null ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
         }
 
         T IJoinExpressionBuilder<T>.On(JoinOnExpression expression)

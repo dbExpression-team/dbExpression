@@ -2,8 +2,10 @@
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public interface IValueTypeFormatter
+    public interface IValueTypeFormatter<TFrom, TTo> : IValueTypeFormatter
+        where TFrom : IConvertible
+        where TTo : IComparable
     {
-        string Format(object value);
+        TTo Format(TFrom value);
     }
 }

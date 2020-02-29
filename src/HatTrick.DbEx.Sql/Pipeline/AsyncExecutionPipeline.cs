@@ -19,13 +19,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
         private AsyncPipeline<AfterInsertContext> AfterInsert { get; set; }
 
         public AsyncExecutionPipeline(
-            DbExpressionRuntimeConfiguration config,
             DatabaseConfiguration database,
             AsyncPipeline<BeforeAssemblyContext> beforeAssembly,
             AsyncPipeline<AfterAssemblyContext> afterAssembly,
             AsyncPipeline<BeforeInsertContext> beforeInsert,
             AsyncPipeline<AfterInsertContext> afterInsert
-        ) : base(config, database)
+        ) : base(database)
         {
             BeforeAssembly = beforeAssembly;
             AfterAssembly = afterAssembly;

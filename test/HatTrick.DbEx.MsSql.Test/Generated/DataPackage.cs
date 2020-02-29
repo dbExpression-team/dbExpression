@@ -10,7 +10,7 @@ namespace DbEx.Data.dbo
     {
         #region interface
         public int Id { get; set; }
-        public AddressType AddressType { get; set; }
+        public AddressType? AddressType { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }
@@ -37,6 +37,8 @@ namespace DbEx.Data.dbo
         public string LastName { get; set; }
         public DateTime? BirthDate { get; set; }
         public GenderType GenderType { get; set; }
+        public int? CreditLimit { get; set; }
+        public int? YearOfLastCreditLimitReview { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
@@ -72,7 +74,7 @@ namespace DbEx.Data.dbo
     {
         #region interface
         public int Id { get; set; }
-        public ProductCategoryType ProductCategoryType { get; set; }
+        public ProductCategoryType? ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal ListPrice { get; set; }
@@ -99,6 +101,8 @@ namespace DbEx.Data.dbo
         public decimal TotalPurchaseAmount { get; set; }
         public DateTime PurchaseDate { get; set; }
         public DateTime? ShipDate { get; set; }
+        public DateTime? ExpectedDeliveryDate { get; set; }
+        public Guid? TrackingIdentifier { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion

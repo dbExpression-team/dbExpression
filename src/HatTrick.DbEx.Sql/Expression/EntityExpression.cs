@@ -1,40 +1,41 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Utility;
+using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    [Serializable]
-    public abstract class EntityExpression : 
+    public abstract class EntityExpression :
         IDbExpression, 
         IAssemblyPart, 
         IDbExpressionMetadataProvider<ISqlEntityMetadata>,
         IDbExpressionProvider<SchemaExpression>,
         IDbExpressionListProvider<FieldExpression>,
         IDbExpressionAliasProvider,
+        IFieldExpressionMapper,
         IEquatable<EntityExpression>
    {
         #region internals
+        protected Lazy<ISqlEntityMetadata> MetadataResolver { get; }
         protected SchemaExpression Schema { get; }
-        protected ISqlEntityMetadata Metadata { get; }
-        protected IDictionary<string, Lazy<FieldExpression>> Fields { get; } = new Dictionary<string, Lazy<FieldExpression>>();
+        protected ISqlEntityMetadata Metadata => MetadataResolver.Value;
+        protected IDictionary<string, FieldExpression> Fields { get; } = new Dictionary<string, FieldExpression>();
         protected string Alias { get; }
         #endregion
 
         #region interface
         SchemaExpression IDbExpressionProvider<SchemaExpression>.Expression => Schema;
-        IList<FieldExpression> IDbExpressionListProvider<FieldExpression>.Expressions => Fields.Values.Select(v => v.Value).ToList();
+        IList<FieldExpression> IDbExpressionListProvider<FieldExpression>.Expressions => Fields.Values.ToList();
         ISqlEntityMetadata IDbExpressionMetadataProvider<ISqlEntityMetadata>.Metadata => Metadata;
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, string alias)
+        protected EntityExpression(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias)
         {
-            Schema = schema;
-            Metadata = metadata;
+            Schema = schema ?? throw new ArgumentNullException($"{nameof(schema)} is required.");
+            MetadataResolver = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required.");
             Alias = alias;
         }
         #endregion
@@ -44,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public string ToString(string format, bool ignoreAlias = false)
         {
-            string val = null;
+            string val;
             switch (format)
             {
                 case "e":
@@ -75,36 +76,61 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        public bool Equals(EntityExpression obj)
-            => Equals(obj, false);
-
-        public bool Equals(EntityExpression obj, bool ignoreAlias)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.Metadata != this.Metadata) return false;
-            if (!ignoreAlias && obj.Alias != this.Alias) return false;
-
-            return true;
-        }
-
-        public override bool Equals(object obj)
-            => Equals(obj as EntityExpression);
-
-        public override int GetHashCode()
-            => base.GetHashCode();
-
+        #region operators
         public static bool operator ==(EntityExpression obj1, EntityExpression obj2)
         {
-            if (ReferenceEquals(obj1, obj2)) return true;
-            if (ReferenceEquals(obj1, null)) return false;
-            if (ReferenceEquals(obj2, null)) return false;
+            if (obj1 is null && obj2 is object) return false;
+            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is null) return true;
+
             return obj1.Equals(obj2);
         }
 
         public static bool operator !=(EntityExpression obj1, EntityExpression obj2)
             => !(obj1 == obj2);
+        #endregion
+
+        #region equals
+        public bool Equals(EntityExpression obj)
+        {
+            if (obj is null) return false;
+
+            if (Schema is null && obj.Schema is object) return false;
+            if (Schema is object && obj.Schema is null) return false;
+            if (!Schema.Equals(obj.Schema)) return false;
+
+            if (Metadata is null && obj.Metadata is object) return false;
+            if (Metadata is object && obj.Metadata is null) return false;
+            if (!Metadata.Equals(obj.Metadata)) return false;
+
+            if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+            => obj is EntityExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Metadata is object ? Metadata.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
+                return hash;
+            }
+        }
+        #endregion
 
         protected abstract SelectExpressionSet GetInclusiveSelectExpression();
+
+        void IFieldExpressionMapper.MapField(IDbEntity entity, FieldExpression field, object value, IValueMapper mapper)
+            => HydrateField(entity, field, value, mapper);
+
+        protected abstract void HydrateField(IDbEntity entity, FieldExpression field, object value, IValueMapper mapper);
     }
 }

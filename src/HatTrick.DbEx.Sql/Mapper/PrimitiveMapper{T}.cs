@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public class PrimitiveMapper<T> : IValueMapper<T>
+    public class PrimitiveMapper<T> : IValueMapProvider<T>
     {
         public Func<object, T> Map { get; }
 
