@@ -14,8 +14,9 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SchemaExpression>
     {
         #region internals
-        private Lazy<ISqlSchemaMetadata> metadataResolver;
-        protected ISqlSchemaMetadata Metadata => metadataResolver.Value;
+        protected object Identifier;
+        protected Lazy<ISqlSchemaMetadata> MetadataResolver;
+        protected ISqlSchemaMetadata Metadata => MetadataResolver.Value;
         protected IDictionary<string, EntityExpression> Entities { get; } = new Dictionary<string, EntityExpression>();
         protected string Alias { get; }
         #endregion
@@ -27,9 +28,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected SchemaExpression(Lazy<ISqlSchemaMetadata> metadata, string alias)
+        protected SchemaExpression(object identifier, Lazy<ISqlSchemaMetadata> metadata, string alias)
         {
-            this.metadataResolver = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required");
+            Identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
+            MetadataResolver = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required");
             Alias = alias;
         }
         #endregion
@@ -74,14 +76,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(SchemaExpression obj)
         {
             if (obj is null) return false;
-
-            if (Metadata is null && obj.Metadata is object) return false;
-            if (Metadata is object && obj.Metadata is null) return false;
-            if (!Metadata.Equals(obj.Metadata)) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
 
-            return true;
+            return Identifier.Equals(obj.Identifier);
         }
 
         public override bool Equals(object obj)
@@ -95,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Metadata is object ? Metadata.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Identifier is object ? Identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
                 return hash;
             }

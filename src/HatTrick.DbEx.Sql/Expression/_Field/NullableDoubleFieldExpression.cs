@@ -8,12 +8,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDoubleFieldExpression>
     {
         #region constructors
-        protected NullableDoubleFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(entity, metadata)
+        protected NullableDoubleFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
         {
 
         }
 
-        protected NullableDoubleFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(entity, metadata, alias)
+        protected NullableDoubleFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
         {
 
         }

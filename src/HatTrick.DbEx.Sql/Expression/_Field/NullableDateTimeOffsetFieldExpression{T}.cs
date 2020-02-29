@@ -9,12 +9,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : IDbEntity
     {
         #region constructors
-        public NullableDateTimeOffsetFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(entity, metadata)
+        public NullableDateTimeOffsetFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
         {
 
         }
 
-        private NullableDateTimeOffsetFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(entity, metadata, alias)
+        private NullableDateTimeOffsetFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
         {
 
         }
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #region as
         public new NullableDateTimeOffsetFieldExpression<TEntity> As(string alias)
-            => new NullableDateTimeOffsetFieldExpression<TEntity>(base.Entity, base.MetadataResolver, alias);
+            => new NullableDateTimeOffsetFieldExpression<TEntity>(base.Identifier, base.Entity, base.MetadataResolver, alias);
         #endregion
 
         #region equals

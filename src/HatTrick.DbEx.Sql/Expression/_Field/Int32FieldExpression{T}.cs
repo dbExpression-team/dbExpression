@@ -9,12 +9,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : IDbEntity
     {
         #region constructors
-        public Int32FieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(entity, metadata)
+        public Int32FieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
         {
 
         }
 
-        private Int32FieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(entity, metadata, alias)
+        private Int32FieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
         {
 
         }
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #region as
         public new Int32FieldExpression<TEntity> As(string alias)
-            => new Int32FieldExpression<TEntity>(base.Entity, base.MetadataResolver, alias);
+            => new Int32FieldExpression<TEntity>(base.Identifier, base.Entity, base.MetadataResolver, alias);
         #endregion
 
         #region equals

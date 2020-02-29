@@ -8,18 +8,18 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : IDbEntity
         where TEnum : struct, Enum, IComparable
     {
-        public NullableEnumFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(entity, metadata)
+        public NullableEnumFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
         {
         }
 
-        protected NullableEnumFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(entity, metadata, alias)
+        protected NullableEnumFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
         {
 
         }
 
         #region as
         public new NullableEnumFieldExpression<TEntity, TEnum> As(string alias) 
-            => new NullableEnumFieldExpression<TEntity, TEnum>(base.Entity, base.MetadataResolver, alias);
+            => new NullableEnumFieldExpression<TEntity, TEnum>(base.Identifier, base.Entity, base.MetadataResolver, alias);
         #endregion
 
         #region equals

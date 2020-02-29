@@ -1,25 +1,15 @@
 ﻿using DbEx.DataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Expression
 {
     public class AverageFunctionExpressionEqualityTests : TestBase
     {
-        [Theory]
-        [InlineData(2014)]
-        public void Average_functions_of_person_id_should_be_equal(int version)
+        [Fact]
+        public void Average_functions_of_person_id_should_be_equal()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
-            //when
             var exp1 = db.fx.Avg(dbo.Person.Id);
             var exp2 = db.fx.Avg(dbo.Person.Id);
 
@@ -27,14 +17,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             Assert.True(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [InlineData(2014)]
-        public void Average_functions_of_person_id_with_one_aliased_should_not_be_equal(int version)
+        [Fact]
+        public void Average_functions_of_person_id_with_one_aliased_should_not_be_equal()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
-            //when
             var exp1 = db.fx.Avg(dbo.Person.Id);
             var exp2 = db.fx.Avg(dbo.Person.Id).As("foo");
 
@@ -42,13 +28,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [InlineData(2014)]
-        public void Average_functions_of_person_id_should_have_same_hash_codes(int version)
+        [Fact]
+        public void Average_functions_of_person_id_should_have_same_hash_codes()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             var exp1 = db.fx.Avg(dbo.Person.Id);
             var exp2 = db.fx.Avg(dbo.Person.Id);
 
@@ -60,13 +43,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             hc1.Should().Be(hc2);
         }
 
-        [Theory]
-        [InlineData(2014)]
-        public void Average_functions_of_person_id_with_one_aliased_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Average_functions_of_person_id_with_one_aliased_should_have_different_hash_codes()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             var exp1 = db.fx.Avg(dbo.Person.Id);
             var exp2 = db.fx.Avg(dbo.Person.Id).As("foo");
 
@@ -78,13 +58,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             hc1.Should().NotBe(hc2);
         }
 
-        [Theory]
-        [InlineData(2014)]
-        public void Average_functions_of_person_id_with_one_distinct_should_have_different_hash_codes(int version)
+        [Fact]
+        public void Average_functions_of_person_id_with_one_distinct_should_have_different_hash_codes()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             var exp1 = db.fx.Avg(dbo.Person.Id);
             var exp2 = db.fx.Avg(dbo.Person.Id, true);
 

@@ -42,17 +42,17 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private AddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private AddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Address", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_addressTypeFieldName, new NullableEnumFieldExpression<Address, AddressType>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_addressTypeFieldName])));
-			Fields.Add(_line1FieldName, new StringFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_line1FieldName])));
-			Fields.Add(_line2FieldName, new StringFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_line2FieldName])));
-			Fields.Add(_cityFieldName, new StringFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_cityFieldName])));
-			Fields.Add(_stateFieldName, new StringFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_stateFieldName])));
-			Fields.Add(_zipFieldName, new StringFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_zipFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Address>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<Address>("dbo.Address.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_addressTypeFieldName, new NullableEnumFieldExpression<Address, AddressType>("dbo.Address.AddressType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_addressTypeFieldName])));
+			Fields.Add(_line1FieldName, new StringFieldExpression<Address>("dbo.Address.Line1", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_line1FieldName])));
+			Fields.Add(_line2FieldName, new StringFieldExpression<Address>("dbo.Address.Line2", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_line2FieldName])));
+			Fields.Add(_cityFieldName, new StringFieldExpression<Address>("dbo.Address.City", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_cityFieldName])));
+			Fields.Add(_stateFieldName, new StringFieldExpression<Address>("dbo.Address.State", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_stateFieldName])));
+			Fields.Add(_zipFieldName, new StringFieldExpression<Address>("dbo.Address.Zip", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_zipFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Address>("dbo.Address.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Address>("dbo.Address.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
         #endregion
 
@@ -202,17 +202,17 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Person", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_firstNameFieldName, new StringFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_firstNameFieldName])));
-			Fields.Add(_lastNameFieldName, new StringFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_lastNameFieldName])));
-			Fields.Add(_birthDateFieldName, new NullableDateTimeFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_birthDateFieldName])));
-			Fields.Add(_genderTypeFieldName, new EnumFieldExpression<Person, GenderType>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_genderTypeFieldName])));
-			Fields.Add(_creditLimitFieldName, new NullableInt32FieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_creditLimitFieldName])));
-			Fields.Add(_yearOfLastCreditLimitReviewFieldName, new NullableInt32FieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_yearOfLastCreditLimitReviewFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<Person>("dbo.Person.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_firstNameFieldName, new StringFieldExpression<Person>("dbo.Person.FirstName", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_firstNameFieldName])));
+			Fields.Add(_lastNameFieldName, new StringFieldExpression<Person>("dbo.Person.LastName", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_lastNameFieldName])));
+			Fields.Add(_birthDateFieldName, new NullableDateTimeFieldExpression<Person>("dbo.Person.BirthDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_birthDateFieldName])));
+			Fields.Add(_genderTypeFieldName, new EnumFieldExpression<Person, GenderType>("dbo.Person.GenderType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_genderTypeFieldName])));
+			Fields.Add(_creditLimitFieldName, new NullableInt32FieldExpression<Person>("dbo.Person.CreditLimit", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_creditLimitFieldName])));
+			Fields.Add(_yearOfLastCreditLimitReviewFieldName, new NullableInt32FieldExpression<Person>("dbo.Person.YearOfLastCreditLimitReview", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_yearOfLastCreditLimitReviewFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Person>("dbo.Person.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Person>("dbo.Person.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
         #endregion
 
@@ -352,12 +352,12 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private PersonAddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private PersonAddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.PersonAddress", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<PersonAddress>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_personIdFieldName, new Int32FieldExpression<PersonAddress>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_personIdFieldName])));
-			Fields.Add(_addressIdFieldName, new Int32FieldExpression<PersonAddress>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_addressIdFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<PersonAddress>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<PersonAddress>("dbo.PersonAddress.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_personIdFieldName, new Int32FieldExpression<PersonAddress>("dbo.PersonAddress.PersonId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_personIdFieldName])));
+			Fields.Add(_addressIdFieldName, new Int32FieldExpression<PersonAddress>("dbo.PersonAddress.AddressId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_addressIdFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<PersonAddress>("dbo.PersonAddress.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
         }
         #endregion
 
@@ -462,17 +462,17 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private ProductEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private ProductEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Product", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_productCategoryTypeFieldName, new NullableEnumFieldExpression<Product, ProductCategoryType>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_productCategoryTypeFieldName])));
-			Fields.Add(_nameFieldName, new StringFieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_nameFieldName])));
-			Fields.Add(_descriptionFieldName, new StringFieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_descriptionFieldName])));
-			Fields.Add(_listPriceFieldName, new DecimalFieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_listPriceFieldName])));
-			Fields.Add(_priceFieldName, new DecimalFieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_priceFieldName])));
-			Fields.Add(_quantityFieldName, new Int32FieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_quantityFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Product>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<Product>("dbo.Product.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_productCategoryTypeFieldName, new NullableEnumFieldExpression<Product, ProductCategoryType>("dbo.Product.ProductCategoryType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_productCategoryTypeFieldName])));
+			Fields.Add(_nameFieldName, new StringFieldExpression<Product>("dbo.Product.Name", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_nameFieldName])));
+			Fields.Add(_descriptionFieldName, new StringFieldExpression<Product>("dbo.Product.Description", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_descriptionFieldName])));
+			Fields.Add(_listPriceFieldName, new DecimalFieldExpression<Product>("dbo.Product.ListPrice", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_listPriceFieldName])));
+			Fields.Add(_priceFieldName, new DecimalFieldExpression<Product>("dbo.Product.Price", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_priceFieldName])));
+			Fields.Add(_quantityFieldName, new Int32FieldExpression<Product>("dbo.Product.Quantity", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_quantityFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Product>("dbo.Product.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Product>("dbo.Product.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
         #endregion
 
@@ -622,17 +622,17 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private PurchaseEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private PurchaseEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Purchase", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_personIdFieldName, new Int32FieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_personIdFieldName])));
-			Fields.Add(_totalPurchaseAmountFieldName, new DecimalFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_totalPurchaseAmountFieldName])));
-			Fields.Add(_purchaseDateFieldName, new DateTimeFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchaseDateFieldName])));
-			Fields.Add(_shipDateFieldName, new NullableDateTimeFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_shipDateFieldName])));
-			Fields.Add(_expectedDeliveryDateFieldName, new NullableDateTimeFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_expectedDeliveryDateFieldName])));
-			Fields.Add(_trackingIdentifierFieldName, new NullableGuidFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_trackingIdentifierFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Purchase>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<Purchase>("dbo.Purchase.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_personIdFieldName, new Int32FieldExpression<Purchase>("dbo.Purchase.PersonId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_personIdFieldName])));
+			Fields.Add(_totalPurchaseAmountFieldName, new DecimalFieldExpression<Purchase>("dbo.Purchase.TotalPurchaseAmount", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_totalPurchaseAmountFieldName])));
+			Fields.Add(_purchaseDateFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.PurchaseDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchaseDateFieldName])));
+			Fields.Add(_shipDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ShipDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_shipDateFieldName])));
+			Fields.Add(_expectedDeliveryDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ExpectedDeliveryDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_expectedDeliveryDateFieldName])));
+			Fields.Add(_trackingIdentifierFieldName, new NullableGuidFieldExpression<Purchase>("dbo.Purchase.TrackingIdentifier", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_trackingIdentifierFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
         #endregion
 
@@ -778,15 +778,15 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private PurchaseLineEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private PurchaseLineEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.PurchaseLine", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_purchaseIdFieldName, new Int32FieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchaseIdFieldName])));
-			Fields.Add(_productIdFieldName, new Int32FieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_productIdFieldName])));
-			Fields.Add(_purchasePriceFieldName, new DecimalFieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchasePriceFieldName])));
-			Fields.Add(_quantityFieldName, new Int32FieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_quantityFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<PurchaseLine>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_purchaseIdFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.PurchaseId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchaseIdFieldName])));
+			Fields.Add(_productIdFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.ProductId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_productIdFieldName])));
+			Fields.Add(_purchasePriceFieldName, new DecimalFieldExpression<PurchaseLine>("dbo.PurchaseLine.PurchasePrice", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchasePriceFieldName])));
+			Fields.Add(_quantityFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.Quantity", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_quantityFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<PurchaseLine>("dbo.PurchaseLine.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<PurchaseLine>("dbo.PurchaseLine.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
         #endregion
 
@@ -904,10 +904,10 @@ namespace DbEx.dbo.DataService
         {
         }
 
-        private PersonTotalPurchasesViewEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private PersonTotalPurchasesViewEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.PersonTotalPurchasesView", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<PersonTotalPurchasesView>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_totalPurchasesFieldName, new NullableDecimalFieldExpression<PersonTotalPurchasesView>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_totalPurchasesFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<PersonTotalPurchasesView>("dbo.PersonTotalPurchasesView.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_totalPurchasesFieldName, new NullableDecimalFieldExpression<PersonTotalPurchasesView>("dbo.PersonTotalPurchasesView.TotalPurchases", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_totalPurchasesFieldName])));
         }
         #endregion
 
@@ -995,12 +995,12 @@ namespace DbEx.sec.DataService
         {
         }
 
-        private PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base(schema, metadata, alias)
+        private PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("sec.Person", schema, metadata, alias)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_sSNFieldName, new StringFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_sSNFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Person>(this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+			Fields.Add(_idFieldName, new Int32FieldExpression<Person>("sec.Person.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
+			Fields.Add(_sSNFieldName, new StringFieldExpression<Person>("sec.Person.SSN", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_sSNFieldName])));
+			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Person>("sec.Person.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Person>("sec.Person.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
         #endregion
 

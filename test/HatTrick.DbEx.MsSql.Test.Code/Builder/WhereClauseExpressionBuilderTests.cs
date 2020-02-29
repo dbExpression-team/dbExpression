@@ -12,13 +12,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     [Trait("Clause", "WHERE")]
     public class WhereClauseExpressionBuilderTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_for_single_value_with_where_clause_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_for_single_value_with_where_clause_result_in_valid_expression()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             FilterExpression idFilter;
@@ -40,13 +37,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_for_single_value_with_multiple_where_clauses_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_for_single_value_with_multiple_where_clauses_result_in_valid_expression()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             FilterExpression idFilter;
@@ -79,13 +73,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_for_single_value_with_child_where_clauses_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_for_single_value_with_child_where_clauses_result_in_valid_expression()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             FilterExpression idFilter;

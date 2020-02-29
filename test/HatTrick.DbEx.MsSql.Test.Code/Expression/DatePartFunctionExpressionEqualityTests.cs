@@ -13,14 +13,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
 {
     public class DatePartFunctionExpressionEqaulityTests : TestBase
     {
-        [Theory]
-        [InlineData(2014)]
-        public void DatePart_functions_of_purchase_date_should_be_equal(int version)
+        [Fact]
+        public void DatePart_functions_of_purchase_date_should_be_equal()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
-            //when
             var exp1 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
             var exp2 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
 
@@ -28,14 +24,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             Assert.True(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [InlineData(2014)]
-        public void DatePart_functions_of_purchase_date_with_one_aliased_should_not_be_equal(int version)
+        [Fact]
+        public void DatePart_functions_of_purchase_date_with_one_aliased_should_not_be_equal()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
-            //when
             var exp1 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
             var exp2 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("foo");
 
@@ -43,13 +35,10 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Theory]
-        [InlineData(2014)]
-        public void DatePart_functions_of_purchase_date_should_have_same_hash_codes(int version)
+        [Fact]
+        public void DatePart_functions_of_purchase_date_should_have_same_hash_codes()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             var exp1 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
             var exp2 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
 

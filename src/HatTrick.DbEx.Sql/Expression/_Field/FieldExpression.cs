@@ -12,6 +12,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<FieldExpression>
     {
         #region internals
+        protected object Identifier;
+
         protected Lazy<ISqlFieldMetadata> MetadataResolver;
         protected EntityExpression Entity { get; }
         protected ISqlFieldMetadata Metadata => MetadataResolver.Value;
@@ -25,12 +27,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected FieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : this(entity, metadata, null)
+        protected FieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : this(identifier, entity, metadata, null)
         {
         }
 
-        protected FieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias)
+        protected FieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias)
         {
+            Identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
             Entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
             MetadataResolver = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required.");
             Alias = alias;
@@ -112,18 +115,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(FieldExpression obj)
         {
             if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
 
             if (Entity is null && obj.Entity is object) return false;
             if (Entity is object && obj.Entity is null) return false;
             if (!Entity.Equals(obj.Entity)) return false;
 
-            if (Metadata is null && obj.Metadata is object) return false;
-            if (Metadata is object && obj.Metadata is null) return false;
-            if (!Metadata.Equals(obj.Metadata)) return false;
-
             if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
 
-            return true;
+            return Identifier.Equals(obj.Identifier);
         }
 
         public override bool Equals(object obj)
@@ -137,8 +137,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
+                hash = (hash * multiplier) ^ (Identifier is object ? Identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Entity is object ? Entity.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Metadata is object ? Metadata.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
                 return hash;
             }

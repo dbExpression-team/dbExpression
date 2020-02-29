@@ -49,7 +49,7 @@ namespace DbEx.DataService
         #endregion
 
         #region constructors
-        public dboSchema(Lazy<ISqlSchemaMetadata> metadata) : base(metadata, null)
+        public dboSchema(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
         {
             Entities.Add(_addressEntityName, new AddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_addressEntityName])));
             Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
@@ -83,7 +83,7 @@ namespace DbEx.DataService
         #endregion
 
         #region constructors
-        public secSchema(Lazy<ISqlSchemaMetadata> metadata) : base(metadata, null)
+        public secSchema(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
         {
             Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
         }

@@ -8,18 +8,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ByteArrayFieldExpression<TEntity>>
     {
         #region constructors
-        public ByteArrayFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(entity, metadata)
+        public ByteArrayFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
         {
         }
 
-        protected ByteArrayFieldExpression(EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(entity, metadata, alias)
+        protected ByteArrayFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
         {
         }
         #endregion
 
         #region as
         public new ByteArrayFieldExpression<TEntity> As(string alias)
-            => new ByteArrayFieldExpression<TEntity>(base.Entity, base.MetadataResolver, alias);
+            => new ByteArrayFieldExpression<TEntity>(base.Identifier, base.Entity, base.MetadataResolver, alias);
         #endregion
 
         #region equals

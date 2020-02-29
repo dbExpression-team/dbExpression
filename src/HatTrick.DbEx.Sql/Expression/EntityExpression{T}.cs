@@ -10,8 +10,8 @@ namespace HatTrick.DbEx.Sql.Expression
         where T : class, IDbEntity
     {
         #region constructors
-        protected EntityExpression(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias)
-            : base(schema, metadata, alias)
+        protected EntityExpression(object identifier, SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias)
+            : base(identifier, schema, metadata, alias)
         {
 
         }
