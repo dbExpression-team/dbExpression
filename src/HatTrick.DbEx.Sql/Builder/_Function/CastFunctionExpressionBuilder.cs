@@ -8,144 +8,78 @@ namespace HatTrick.DbEx.Sql.Builder
     public class CastFunctionExpressionBuilder : ICastFunctionExpressionBuilder
     {
         #region internals
-        public (Type, object) Expression { get; private set; }
+        public ExpressionContainer Expression { get; private set; }
         #endregion
 
         #region constructors
-        public CastFunctionExpressionBuilder((Type, object) expression)
+        public CastFunctionExpressionBuilder(ExpressionContainer expression)
         {
             Expression = expression;
         }
         #endregion
 
         #region methods
-        CastFunctionExpression<bool> ICastFunctionExpressionBuilder.AsBit()
-        {
-            var exp = new CastFunctionExpression<bool>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Bit
-            };
-            return exp;
-        }
+        BooleanCastFunctionExpression ICastFunctionExpressionBuilder.AsBit()
+            => new BooleanCastFunctionExpression(Expression, new ExpressionContainer(DbType.Boolean));
 
-        CastFunctionExpression<byte> ICastFunctionExpressionBuilder.AsTinyInt()
-        {
-            var exp = new CastFunctionExpression<byte>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.TinyInt
-            };
-            return exp;
-        }
+        ByteCastFunctionExpression ICastFunctionExpressionBuilder.AsTinyInt()
+            => new ByteCastFunctionExpression(Expression, new ExpressionContainer(DbType.Byte));
 
-        CastFunctionExpression<DateTime> ICastFunctionExpressionBuilder.AsDateTime()
-        {
-            var exp = new CastFunctionExpression<DateTime>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.DateTime
-            };
-            return exp;
-        }
+        DateTimeCastFunctionExpression ICastFunctionExpressionBuilder.AsDateTime()
+            => new DateTimeCastFunctionExpression(Expression, new ExpressionContainer(DbType.DateTime));
 
-        CastFunctionExpression<DateTimeOffset> ICastFunctionExpressionBuilder.AsDateTimeOffset()
-        {
-            var exp = new CastFunctionExpression<DateTimeOffset>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.DateTimeOffset
-            };
-            return exp;
-        }
+        DateTimeOffsetCastFunctionExpression ICastFunctionExpressionBuilder.AsDateTimeOffset()
+            => new DateTimeOffsetCastFunctionExpression(Expression, new ExpressionContainer(DbType.DateTimeOffset));
 
-        CastFunctionExpression<decimal> ICastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
-        {
-            var exp = new CastFunctionExpression<decimal>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Decimal,
-                Precision = precision,
-                Scale = scale
-            };
-            return exp;
-        }
+        DecimalCastFunctionExpression ICastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
+            => new DecimalCastFunctionExpression(Expression, new ExpressionContainer(DbType.Decimal));
 
-        CastFunctionExpression<float> ICastFunctionExpressionBuilder.AsFloat()
-        {
-            var exp = new CastFunctionExpression<float>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Float
-            };
-            return exp;
-        }
+        SingleCastFunctionExpression ICastFunctionExpressionBuilder.AsFloat()
+            => new SingleCastFunctionExpression(Expression, new ExpressionContainer(DbType.Single));
 
-        CastFunctionExpression<Guid> ICastFunctionExpressionBuilder.AsUniqueIdentifier()
-        {
-            var exp = new CastFunctionExpression<Guid>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.UniqueIdentifier
-            };
-            return exp;
-        }
+        GuidCastFunctionExpression ICastFunctionExpressionBuilder.AsUniqueIdentifier()
+            => new GuidCastFunctionExpression(Expression, new ExpressionContainer(DbType.Guid));
 
-        CastFunctionExpression<short> ICastFunctionExpressionBuilder.AsSmallInt()
-        {
-            var exp = new CastFunctionExpression<short>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.SmallInt
-            };
-            return exp;
-        }
+        Int16CastFunctionExpression ICastFunctionExpressionBuilder.AsSmallInt()
+            => new Int16CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int16));
 
-        CastFunctionExpression<int> ICastFunctionExpressionBuilder.AsInt()
-        {
-            var exp = new CastFunctionExpression<int>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Int
-            };
-            return exp;
-        }
+        Int32CastFunctionExpression ICastFunctionExpressionBuilder.AsInt()
+            => new Int32CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int32));
 
-        CastFunctionExpression<long> ICastFunctionExpressionBuilder.AsBigInt()
-        {
-            var exp = new CastFunctionExpression<long>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.BigInt
-            };
-            return exp;
-        }
+        Int64CastFunctionExpression ICastFunctionExpressionBuilder.AsBigInt()
+            => new Int64CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int64));
 
-        CastFunctionExpression<string> ICastFunctionExpressionBuilder.AsVarChar(int size)
+        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsVarChar(int size)
         {
-            var exp = new CastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.String))
             {
-                ConvertToSqlDbType = SqlDbType.VarChar,
                 Size = size
             };
             return exp;
         }
 
-        CastFunctionExpression<string> ICastFunctionExpressionBuilder.AsChar(int size)
+        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsChar(int size)
         {
-            var exp = new CastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.String))
             {
-                ConvertToSqlDbType = SqlDbType.Char,
                 Size = size
             };
             return exp;
         }
 
-        CastFunctionExpression<string> ICastFunctionExpressionBuilder.AsNVarChar(int size)
+        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsNVarChar(int size)
         {
-            var exp = new CastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.AnsiString))
             {
-                ConvertToSqlDbType = SqlDbType.NVarChar,
                 Size = size
             };
             return exp;
         }
 
-        CastFunctionExpression<string> ICastFunctionExpressionBuilder.AsNChar(int size)
+        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsNChar(int size)
         {
-            var exp = new CastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.AnsiString))
             {
-                ConvertToSqlDbType = SqlDbType.NChar,
                 Size = size
             };
             return exp;

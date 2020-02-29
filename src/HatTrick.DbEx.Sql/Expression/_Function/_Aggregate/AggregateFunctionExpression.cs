@@ -8,10 +8,11 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region constructors
         protected AggregateFunctionExpression()
-        {
+        { 
+        
         }
 
-        protected AggregateFunctionExpression((Type, object) expression) : base(expression)
+        protected AggregateFunctionExpression(ExpressionContainer expression) : base(expression)
         {
         }
         #endregion

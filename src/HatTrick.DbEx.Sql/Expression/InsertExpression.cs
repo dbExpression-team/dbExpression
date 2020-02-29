@@ -6,13 +6,13 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpression
     {
         #region internals
-        public DbExpressionPair Expression { get; private set; }
+        public ExpressionContainerPair Expression { get; private set; }
         #endregion
 
         #region constructors
         public InsertExpression(FieldExpression field, object value, Type type)
         {
-            Expression = new DbExpressionPair((field.GetType(), field), (type, value));
+            Expression = new ExpressionContainerPair(new ExpressionContainer(field ?? throw new ArgumentNullException($"{nameof(field)} is required.")), new ExpressionContainer(value ?? DBNull.Value, value == null ? typeof(DBNull) : type));
         }
         #endregion
 

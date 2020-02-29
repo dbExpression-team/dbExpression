@@ -1,24 +1,17 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Mapper;
-using HatTrick.DbEx.Utility;
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    [Serializable]
     public abstract class EntityExpression<T> : 
         EntityExpression, 
-        IDbExpressionEntity<T>,
-        ISupportedForExpression<SelectExpression, T>
-        where T : IDbEntity
+        IDbExpressionEntity<T>
+        where T : class, IDbEntity
     {
-        #region interface
-        #endregion
-
         #region constructors
-        protected EntityExpression(SchemaExpression schema, ISqlEntityMetadata metadata, string alias)
-            : base(schema, metadata, alias)
+        protected EntityExpression(object identifier, SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias)
+            : base(identifier, schema, metadata, alias)
         {
 
         }
@@ -45,6 +38,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region fill object
         protected abstract void HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper mapper);
+
+        protected abstract void HydrateField(T entity, FieldExpression field, object value, IValueMapper mapper);
+
+        protected override void HydrateField(IDbEntity entity, FieldExpression field, object value, IValueMapper mapper)
+            => HydrateField(entity as T, field, value, mapper);
+
         #endregion
     }
 }

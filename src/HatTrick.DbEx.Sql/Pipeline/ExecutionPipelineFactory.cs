@@ -9,24 +9,21 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class ExecutionPipelineFactory
     {
         #region internals
-        private readonly DbExpressionRuntimeConfiguration Config;
         private readonly DatabaseConfiguration Database;
         #endregion
 
         #region interface
-        public PipelinePair<Func<BeforeAssemblyContext, CancellationToken, Task>, Action<BeforeAssemblyContext>> BeforeAssembly { get; set; } = new BeforeAssemblyPipeline();
-        public PipelinePair<Func<AfterAssemblyContext, CancellationToken, Task>, Action<AfterAssemblyContext>> AfterAssembly { get; set; } = new AfterAssemblyPipeline();
-        public PipelinePair<Func<BeforeInsertContext, CancellationToken, Task>, Action<BeforeInsertContext>> BeforeInsert { get; set; } = new BeforeInsertPipeline();
-        public PipelinePair<Func<AfterInsertContext, CancellationToken, Task>, Action<AfterInsertContext>> AfterInsert { get; set; } = new AfterInsertPipeline();
+        public PipelineEventActions<Func<BeforeAssemblyContext, CancellationToken, Task>, Action<BeforeAssemblyContext>> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEvent();
+        public PipelineEventActions<Func<AfterAssemblyContext, CancellationToken, Task>, Action<AfterAssemblyContext>> AfterAssembly { get; set; } = new AfterAssemblyPipelineEvent();
+        public PipelineEventActions<Func<BeforeInsertContext, CancellationToken, Task>, Action<BeforeInsertContext>> BeforeInsert { get; set; } = new BeforeInsertPipelineEvent();
+        public PipelineEventActions<Func<AfterInsertContext, CancellationToken, Task>, Action<AfterInsertContext>> AfterInsert { get; set; } = new AfterInsertPipelineEvent();
         #endregion
 
         #region constructors
         public ExecutionPipelineFactory(
-            DbExpressionRuntimeConfiguration config,
             DatabaseConfiguration database
         )
         {
-            Config = config;
             Database = database;
         }
         #endregion
@@ -35,7 +32,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public AsyncExecutionPipeline CreateAsyncExecutionPipeline()
         {
             return new AsyncExecutionPipeline(
-                Config,
                 Database,
                 new AsyncPipeline<BeforeAssemblyContext>(BeforeAssembly.AsyncActions),
                 new AsyncPipeline<AfterAssemblyContext>(AfterAssembly.AsyncActions),
@@ -47,7 +43,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public SyncExecutionPipeline CreateSyncExecutionPipeline()
         {
             return new SyncExecutionPipeline(
-                Config,
                 Database,
                 new SyncPipeline<BeforeAssemblyContext>(BeforeAssembly.SyncActions),
                 new SyncPipeline<AfterAssemblyContext>(AfterAssembly.SyncActions),

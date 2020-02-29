@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
 {
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
-        private static readonly ExpressionSetAppender _expressionSetAppender = new MsSqlExpressionSetAppender();
+        private static readonly MsSqlSelectSqlStatementAssembler _selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
         private static readonly DateAddFunctionAppender _dateAddFunctionAppender = new DateAddFunctionAppender();
         private static readonly DateDiffFunctionAppender _dateDiffFunctionAppender = new DateDiffFunctionAppender();
         private static readonly DatePartFunctionAppender _datePartFunctionAppender = new DatePartFunctionAppender();
@@ -17,10 +17,20 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
         private static readonly SysUtcDateTimeFunctionAppender _sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionAppender();
 
         #region methods
+        public override void RegisterDefaultAssemblers()
+        {
+            base.RegisterDefaultAssemblers();
+            RegisterAssembler(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
+            RegisterAssembler(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
+            RegisterAssembler(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
+            RegisterAssembler(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
+            RegisterAssembler(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
+            RegisterAssembler(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
+        }
+
         public override void RegisterDefaultPartAppenders()
         {
             base.RegisterDefaultPartAppenders();
-            base.RegisterPartAppender(_expressionSetAppender);
             base.RegisterPartAppender(_dateAddFunctionAppender);
             base.RegisterPartAppender(_dateDiffFunctionAppender);
             base.RegisterPartAppender(_datePartFunctionAppender);

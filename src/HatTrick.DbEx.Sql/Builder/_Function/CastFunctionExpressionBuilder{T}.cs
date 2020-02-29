@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Builder
     public class CastFunctionExpressionBuilder<TValue> : CastFunctionExpressionBuilder
     {
         #region constructors
-        public CastFunctionExpressionBuilder((Type, object) expression) : base(expression)
+        public CastFunctionExpressionBuilder(ExpressionContainer expression) : base(expression)
         {
         }
         #endregion

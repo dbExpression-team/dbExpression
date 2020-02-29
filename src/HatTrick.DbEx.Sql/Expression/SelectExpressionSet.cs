@@ -8,7 +8,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public class SelectExpressionSet : 
         IDbExpression,
         IDbExpressionIsDistinctProvider,
-        IDbExpressionIsTopProvider
+        IDbExpressionIsTopProvider,
+        IAssemblyPart
     {
         #region internals
         protected bool _isDistinct;
@@ -16,41 +17,41 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public IList<(Type, object)> Expressions { get; } = new List<(Type, object)>();
+        public IList<SelectExpression> Expressions { get; } = new List<SelectExpression>();
         bool IDbExpressionIsDistinctProvider.IsDistinct => _isDistinct;
         int? IDbExpressionIsTopProvider.Top => _top;
         #endregion
 
         #region constructor
-        public SelectExpressionSet(params FieldExpression[] fields)
-        {
-            Expressions = fields.Select(f => (f.GetType(), (object)f)).ToList();
-        }
-
         internal SelectExpressionSet()
         {
+
         }
 
-        internal SelectExpressionSet(SelectExpression a)
+        public SelectExpressionSet(params SelectExpression[] expressions)
         {
-            Expressions.Add((a.GetType(), a));
+            Expressions = expressions.Select(exp => new SelectExpression(new ExpressionContainer(exp))).ToList();
         }
 
-        internal SelectExpressionSet(SelectExpressionSet a)
+        public SelectExpressionSet(SelectExpression selectExpression)
         {
-            Expressions = a.Expressions;
+            Expressions.Add(selectExpression ?? throw new ArgumentNullException($"{nameof(selectExpression)} is required"));
         }
 
-        internal SelectExpressionSet(SelectExpression a, SelectExpression b)
+        public SelectExpressionSet(SelectExpressionSet selectExpressionSet)
         {
-            Expressions.Add((a.GetType(), a));
-            Expressions.Add((b.GetType(), b));
+            Expressions = selectExpressionSet?.Expressions;
         }
 
-        internal SelectExpressionSet(FieldExpression a, FieldExpression b)
+        public SelectExpressionSet(IList<SelectExpression> expressions)
         {
-            Expressions.Add((a.GetType(), a));
-            Expressions.Add((b.GetType(), b));
+            Expressions = expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required");
+        }
+
+        public SelectExpressionSet(SelectExpression aSelectExpression, SelectExpression bSelectExpression)
+        {
+            Expressions.Add(aSelectExpression ?? throw new ArgumentNullException($"{nameof(aSelectExpression)} is required"));
+            Expressions.Add(bSelectExpression ?? throw new ArgumentNullException($"{nameof(bSelectExpression)} is required"));
         }
         #endregion
 
@@ -83,7 +84,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else
             {
-                aSet.Expressions.Add((b.GetType(), b));
+                aSet.Expressions.Add(b);
             }
             return aSet;
         }
@@ -92,11 +93,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (aSet == null)
             {
-                aSet = new SelectExpressionSet();
+                aSet = new SelectExpressionSet(bSet.Expressions);
             }
-            foreach (var e in bSet.Expressions)
+            else
             {
-                aSet.Expressions.Add(e);
+                foreach (var e in bSet.Expressions)
+                {
+                    aSet.Expressions.Add(e);
+                }
             }
             return aSet;
         }

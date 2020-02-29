@@ -1,17 +1,10 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class PopulationStandardDeviationFunctionExpression : AggregateFunctionExpression,
-        IDbNumericFunctionExpression,
-        IAssemblyPart,
         IDbExpressionIsDistinctProvider,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
-        IEquatable<PopulationStandardDeviationFunctionExpression>,
-        ISupportedForSelectExpression
+        IEquatable<PopulationStandardDeviationFunctionExpression>
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -22,12 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected PopulationStandardDeviationFunctionExpression()
-        {
-        }
-
-        public PopulationStandardDeviationFunctionExpression((Type,object) expression, bool isDistinct)
-            : base(expression)
+        protected PopulationStandardDeviationFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
@@ -41,6 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(PopulationStandardDeviationFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
             if (this.IsDistinct != obj.IsDistinct) return false;
 
             return true;
@@ -50,7 +39,16 @@ namespace HatTrick.DbEx.Sql.Expression
             => obj is PopulationStandardDeviationFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
     }
 }

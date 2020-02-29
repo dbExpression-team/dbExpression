@@ -6,12 +6,8 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class MinimumFunctionExpression : AggregateFunctionExpression,
-        IDbNumericFunctionExpression,
-        IAssemblyPart,
         IDbExpressionIsDistinctProvider,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
-        IEquatable<MinimumFunctionExpression>,
-        ISupportedForSelectExpression
+        IEquatable<MinimumFunctionExpression>
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -22,12 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected MinimumFunctionExpression()
-        {
-        }
-
-        protected MinimumFunctionExpression((Type,object) expression, bool isDistinct)
-            : base(expression)
+        protected MinimumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
@@ -41,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(MinimumFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
             if (this.IsDistinct != obj.IsDistinct) return false;
 
             return true;
@@ -50,7 +42,16 @@ namespace HatTrick.DbEx.Sql.Expression
             => obj is MinimumFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
     }
 }

@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Mapper
        IEntityMapper<T> CreateEntityMapper<T>(EntityExpression<T> entity)
             where T : class, IDbEntity;
 
-        IValueMapper<T> CreateValueMapper<T>();
+        IValueMapProvider<T> CreateValueMapper<T>();
 
         IExpandoObjectMapper CreateExpandoObjectMapper();
 

@@ -1,0 +1,50 @@
+﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HatTrick.DbEx.MsSql.Assembler
+{
+<<<<<<< HEAD:src/HatTrick.DbEx.MsSql/Assembler/_Appenders/_Function/DateDiffFunctionAppender.cs
+    public class DateDiffFunctionAppender : PartAppender<DateDiffFunctionExpression>
+=======
+    class DateDiffFunctionAppender :
+        ExpressionAppender,
+        IAssemblyPartAppender<DateDiffFunctionExpression>
+>>>>>>> release/1.0:src/HatTrick.DbEx.MsSql/Assembler/DateDiffFunctionAppender.cs
+    {
+        #region methods
+        public override void AppendPart(DateDiffFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+<<<<<<< HEAD:src/HatTrick.DbEx.MsSql/Assembler/_Appenders/_Function/DateDiffFunctionAppender.cs
+            if (expression.DatePart.Type != typeof(DateParts))
+                throw new DbExpressionConfigurationException($"Expected {nameof(expression.DatePart)} property to have type {typeof(DateParts)}, but found type {nameof(expression.DatePart.Type)}");
+
+            builder.Appender
+                .Write("DATEDIFF(")
+                .Write(expression.DatePart.Object.ToString().ToLower())
+=======
+            if (expression.DatePart.Item1 != typeof(DateParts))
+                throw new DbExpressionConfigurationException($"Excpected {nameof(expression.DatePart)} property to have type {typeof(DateParts)}, but found type {nameof(expression.DatePart.Item1)}");
+
+            builder.Appender
+                .Write("DATEDIFF(")
+                .Write(expression.DatePart.Item2.ToString().ToLower())
+>>>>>>> release/1.0:src/HatTrick.DbEx.MsSql/Assembler/DateDiffFunctionAppender.cs
+                .Write(", ");
+
+            builder.AppendPart(expression.StartDate, context);
+            builder.Appender.Write(", ");
+            builder.AppendPart(expression.EndDate, context);
+            builder.Appender.Write(")");
+
+            AppendAlias(expression, builder, context);
+        }
+        #endregion
+    }
+}

@@ -1,79 +1,56 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DateDiffFunctionExpression : ConversionFunctionExpression,
         IDbDateFunctionExpression,
-        IAssemblyPart,
         IDbExpressionAliasProvider,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, int>,
-        ISupportedForFunctionExpression<CastFunctionExpression, int>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, int>,
-        ISupportedForFunctionExpression<AverageFunctionExpression, int>,
-        ISupportedForFunctionExpression<MaximumFunctionExpression, int>,
-        ISupportedForFunctionExpression<MinimumFunctionExpression, int>,
-        ISupportedForFunctionExpression<IDbDateFunctionExpression>,
         IEquatable<DateDiffFunctionExpression>
     {
-        #region internals
-        protected string Alias { get; private set; }
-        #endregion
-
         #region interface
-        public (Type, object) DatePart { get; private set; }
-        public (Type, object) StartDate { get; private set; }
-        public (Type, object) EndDate { get; private set; }
+        public ExpressionContainer DatePart { get; private set; }
+        public ExpressionContainer StartDate { get; private set; }
+        public ExpressionContainer EndDate { get; private set; }
         string IDbExpressionAliasProvider.Alias => Alias;
-        public OrderByExpression Asc => new OrderByExpression((GetType(), this), OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression((GetType(), this), OrderExpressionDirection.DESC);
         #endregion
 
         #region constructors
-        protected DateDiffFunctionExpression()
+        protected DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionContainer startDate, ExpressionContainer endDate)
         {
-        }
-
-        protected DateDiffFunctionExpression((Type, object) datePart, (Type, object) startDate, (Type, object) endDate)
-        {
-            DatePart = datePart;
-            StartDate = startDate;
-            EndDate = endDate;
+            DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
+            StartDate = startDate ?? throw new ArgumentNullException($"{nameof(startDate)} is required.");
+            EndDate = endDate ?? throw new ArgumentNullException($"{nameof(endDate)} is required.");
         }
         #endregion
 
         #region as
-        public DateDiffFunctionExpression As(string alias)
+        public new DateDiffFunctionExpression As(string alias)
         {
-            Alias = alias;
+            base.As(alias);
             return this;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEDIFF({DatePart.ToString().ToLower()}, {StartDate.Item2}, {EndDate.Item2})";
+        public override string ToString() => $"DATEDIFF({DatePart.ToString().ToLower()}, {StartDate.Object}, {EndDate.Object})";
         #endregion
 
         #region equals
         public bool Equals(DateDiffFunctionExpression obj)
         {
-            if (ReferenceEquals(this, obj)) return true;
-            if (ReferenceEquals(null, obj)) return false;
+            if (!base.Equals(obj)) return false;
 
-            if (this.StartDate == default && obj.StartDate != default) return false;
-            if (obj.StartDate == default && this.StartDate != default) return false;
-            if (this.StartDate.Item1 != obj.StartDate.Item1) return false;
-            if (this.StartDate.Item2 != obj.StartDate.Item2) return false;
+            if (StartDate is null && obj.StartDate is object) return false;
+            if (StartDate is object && obj.StartDate is null) return false;
+            if (!StartDate.Equals(obj.StartDate)) return false;
 
-            if (this.EndDate == default && obj.EndDate != default) return false;
-            if (obj.EndDate == default && this.EndDate != default) return false;
-            if (this.EndDate.Item1 != obj.EndDate.Item1) return false;
-            if (this.EndDate.Item2 != obj.EndDate.Item2) return false;
+            if (EndDate is null && obj.EndDate is object) return false;
+            if (EndDate is object && obj.EndDate is null) return false;
+            if (!EndDate.Equals(obj.EndDate)) return false;
 
-            if (this.DatePart != obj.DatePart) return false;
-
-            if (this.Alias != obj.Alias) return false;
+            if (DatePart is null && obj.DatePart is object) return false;
+            if (DatePart is object && obj.DatePart is null) return false;
+            if (!DatePart.Equals(obj.DatePart)) return false;
 
             return true;
         }
@@ -82,12 +59,18 @@ namespace HatTrick.DbEx.Sql.Expression
          => obj is DateDiffFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
-            => base.GetHashCode();
-        #endregion
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
 
-        #region implicit operators
-        public static implicit operator OrderByExpression(DateDiffFunctionExpression dateDiff) => new OrderByExpression((dateDiff.GetType(), dateDiff), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(DateDiffFunctionExpression dateDiff) => new GroupByExpression((dateDiff.GetType(), dateDiff));
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ (StartDate is object ? StartDate.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (EndDate is object ? EndDate.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (DatePart is object ? DatePart.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
     }
 }

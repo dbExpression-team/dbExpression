@@ -1,18 +1,9 @@
-﻿using System;
-
-namespace HatTrick.DbEx.Sql.Expression
+﻿namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class NullableDateAddFunctionExpression : DateAddFunctionExpression,
-        ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>>,
-        ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>>
+    public abstract class NullableDateAddFunctionExpression : DateAddFunctionExpression
     {
         #region constructors
-        protected NullableDateAddFunctionExpression()
-        {
-        }
-
-        protected NullableDateAddFunctionExpression((Type, object) datePart, (Type, object) value, (Type, object) expression)
-            : base(datePart, value, expression)
+        protected NullableDateAddFunctionExpression(ExpressionContainer datePart, ExpressionContainer value, ExpressionContainer expression) : base(datePart, value, expression)
         {
         }
         #endregion

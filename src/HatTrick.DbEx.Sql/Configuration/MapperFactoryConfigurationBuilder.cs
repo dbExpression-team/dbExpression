@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class MapperFactoryConfigurationBuilder
     {
-        private MapperFactory factory;
+        private readonly MapperFactory factory;
 
         public MapperFactoryConfigurationBuilder(MapperFactory factory)
         {
@@ -20,10 +20,10 @@ namespace HatTrick.DbEx.Sql.Configuration
             factory.RegisterEntityMapper(mapper);
         }
 
-        public void RegisterValueMapper<T>(IValueMapper<T> mapper)
+        public void RegisterValueMapProvider<T>(IValueMapProvider<T> mapper)
             where T : IComparable
         {
-            factory.RegisterValueMapper(mapper);
+            factory.RegisterValueMapProvider(mapper);
         }
     }
 }

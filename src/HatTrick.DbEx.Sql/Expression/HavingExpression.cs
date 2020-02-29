@@ -8,32 +8,28 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart
     {
         #region interface
-        public (Type, object) Expression { get; private set; }
+        public ExpressionContainer Expression { get; private set; }
         #endregion
 
         #region constructors
         internal HavingExpression()
-        {
+        { 
+        
         }
 
-        internal HavingExpression(FilterExpression havingCondition)
+        public HavingExpression(FilterExpression havingCondition)
         {
-            Expression = (typeof(FilterExpression), havingCondition);
+            Expression = new ExpressionContainer(havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required."));
         }
 
         public HavingExpression(FilterExpressionSet havingCondition)
         {
-            Expression = (typeof(FilterExpressionSet), havingCondition);
-        }
-
-        internal HavingExpression(IDbFunctionExpression function)
-        {
-            Expression = (function.GetType(), function);
+            Expression = new ExpressionContainer(havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required."));
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.Item2.ToString();
+        public override string ToString() => Expression.Object.ToString();
         #endregion
 
         #region conditional & operator
@@ -41,10 +37,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (a?.Expression == default)
             {
-                b.Expression = (typeof(FilterExpression), b.Expression.Item2);
+                b.Expression = new ExpressionContainer(b.Expression.Object, typeof(FilterExpression));
                 return b;
             }
-            a.Expression = (typeof(DbExpressionPair), new DbExpressionPair(a.Expression, (typeof(FilterExpression),b)));
+            a.Expression = new ExpressionContainer(new ExpressionContainerPair(a.Expression, b.Expression));
             return a;
         }
         #endregion

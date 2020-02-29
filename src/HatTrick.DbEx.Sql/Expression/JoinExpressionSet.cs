@@ -16,18 +16,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region constructors
         internal JoinExpressionSet()
-        {
+        { 
+        
         }
 
-        internal JoinExpressionSet(JoinExpression a)
+        public JoinExpressionSet(JoinExpression joinExpression)
         {
-            Expressions.Add(a);
+            Expressions.Add(joinExpression ?? throw new ArgumentNullException($"{nameof(joinExpression)} is required."));
         }
 
-        internal JoinExpressionSet(JoinExpression a, JoinExpression b)
+        public JoinExpressionSet(JoinExpression aJoinExpression, JoinExpression bJoinExpression)
         {
-            Expressions.Add(a);
-            Expressions.Add(b);
+            Expressions.Add(aJoinExpression ?? throw new ArgumentNullException($"{nameof(aJoinExpression)} is required."));
+            Expressions.Add(bJoinExpression ?? throw new ArgumentNullException($"{nameof(bJoinExpression)} is required."));
         }
         #endregion
 

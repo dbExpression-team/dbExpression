@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             return mapper.CreateExpandoObjectMapper();
         }
 
-        public IValueMapper<T> CreateValueMapper<T>()
+        public IValueMapProvider<T> CreateValueMapper<T>()
         {
             var mapper = factory();
             if (mapper == null)

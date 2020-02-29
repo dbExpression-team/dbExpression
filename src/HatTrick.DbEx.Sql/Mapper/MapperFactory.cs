@@ -1,16 +1,14 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.Concurrent;
 using System.Dynamic;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
     public class MapperFactory : IMapperFactory
     {
-        private readonly IDictionary<Type, Func<IMapper>> maps = new Dictionary<Type, Func<IMapper>>();
-        private readonly IDictionary<Type, IMapper> discoveredEnumMaps = new Dictionary<Type, IMapper>();
+        #region internals
         private IValueMapper _valueMapper;
 
         private static readonly PrimitiveMapper<bool> _boolMapper = new PrimitiveMapper<bool>((f) => Convert.ToBoolean(f));
@@ -36,73 +34,104 @@ namespace HatTrick.DbEx.Sql.Mapper
         private static readonly PrimitiveMapper<string> _stringMapper = new PrimitiveMapper<string>((f) => Convert.ToString(f));
         private static readonly PrimitiveMapper<Enum> _enumMapper = new PrimitiveMapper<Enum>((f) => (Enum)(f));
         private static readonly ExpandoObjectMapper _expandoObjectMapper = new ExpandoObjectMapper();
-        //NOTE: JRod, byte[] is not a primitive, but is handled exactly the same ...
         private static readonly PrimitiveMapper<byte[]> _byteArrayMapper = new PrimitiveMapper<byte[]>((f) => f == null ? default : (byte[])f);
 
+        private readonly ConcurrentDictionary<Type, Func<IMapper>> _valueMaps = new ConcurrentDictionary<Type, Func<IMapper>>();
+        private readonly ConcurrentDictionary<Type, Func<IMapper>> _entityMaps = new ConcurrentDictionary<Type, Func<IMapper>>();
+        #endregion
+
+        #region constructors
         public void RegisterDefaultMappers()
         {
-            maps.Add(typeof(bool), () => _boolMapper);
-            maps.Add(typeof(bool?), () => _nullableBoolMapper);
-            maps.Add(typeof(short), () => _shortMapper);
-            maps.Add(typeof(short?), () => _nullableShortMapper);
-            maps.Add(typeof(int), () => _intMapper);
-            maps.Add(typeof(int?), () => _nullableIntMapper);
-            maps.Add(typeof(long), () => _longMapper);
-            maps.Add(typeof(long?), () => _nullableLongMapper);
-            maps.Add(typeof(double), () => _doubleMapper);
-            maps.Add(typeof(double?), () => _nullableDoubleMapper);
-            maps.Add(typeof(decimal), () => _decimalMapper);
-            maps.Add(typeof(decimal?), () => _nullableDecimalMapper);
-            maps.Add(typeof(float), () => _floatMapper);
-            maps.Add(typeof(float?), () => _nullableFloatMapper);
-            maps.Add(typeof(DateTime), () => _dateTimeMapper);
-            maps.Add(typeof(DateTime?), () => _nullableDateTimeMapper);
-            maps.Add(typeof(DateTimeOffset), () => _dateTimeOffsetMapper);
-            maps.Add(typeof(DateTimeOffset?), () => _nullableDateTimeOffsetMapper);
-            maps.Add(typeof(Guid), () => _guidMapper);
-            maps.Add(typeof(Guid?), () => _nullableGuidMapper);
-            maps.Add(typeof(string), () => _stringMapper);
-            maps.Add(typeof(Enum), () => _enumMapper);
-            maps.Add(typeof(ExpandoObject), () => _expandoObjectMapper);
-            maps.Add(typeof(byte[]), () => _byteArrayMapper);
+            _valueMaps.TryAdd(typeof(bool), () => _boolMapper);
+            _valueMaps.TryAdd(typeof(bool?), () => _nullableBoolMapper);
+            _valueMaps.TryAdd(typeof(short), () => _shortMapper);
+            _valueMaps.TryAdd(typeof(short?), () => _nullableShortMapper);
+            _valueMaps.TryAdd(typeof(int), () => _intMapper);
+            _valueMaps.TryAdd(typeof(int?), () => _nullableIntMapper);
+            _valueMaps.TryAdd(typeof(long), () => _longMapper);
+            _valueMaps.TryAdd(typeof(long?), () => _nullableLongMapper);
+            _valueMaps.TryAdd(typeof(double), () => _doubleMapper);
+            _valueMaps.TryAdd(typeof(double?), () => _nullableDoubleMapper);
+            _valueMaps.TryAdd(typeof(decimal), () => _decimalMapper);
+            _valueMaps.TryAdd(typeof(decimal?), () => _nullableDecimalMapper);
+            _valueMaps.TryAdd(typeof(float), () => _floatMapper);
+            _valueMaps.TryAdd(typeof(float?), () => _nullableFloatMapper);
+            _valueMaps.TryAdd(typeof(DateTime), () => _dateTimeMapper);
+            _valueMaps.TryAdd(typeof(DateTime?), () => _nullableDateTimeMapper);
+            _valueMaps.TryAdd(typeof(DateTimeOffset), () => _dateTimeOffsetMapper);
+            _valueMaps.TryAdd(typeof(DateTimeOffset?), () => _nullableDateTimeOffsetMapper);
+            _valueMaps.TryAdd(typeof(Guid), () => _guidMapper);
+            _valueMaps.TryAdd(typeof(Guid?), () => _nullableGuidMapper);
+            _valueMaps.TryAdd(typeof(string), () => _stringMapper);
+            _valueMaps.TryAdd(typeof(Enum), () => _enumMapper);
+            _valueMaps.TryAdd(typeof(ExpandoObject), () => _expandoObjectMapper);
+            _valueMaps.TryAdd(typeof(byte[]), () => _byteArrayMapper);
         }
+        #endregion
 
-        public void RegisterValueMapper<T>(IValueMapper<T> mapper)
-            where T : IComparable => RegisterValueMapper(() => mapper);
-
-        public void RegisterValueMapper<T>(Func<IValueMapper<T>> mapper)
-            where T : IComparable => maps[typeof(T)] = mapper;
-
+        #region methods
+        #region entity
         public void RegisterEntityMapper<T>(Action<T, ISqlFieldReader, IValueMapper> mapFunction)
-            where T : class, IDbEntity => maps[typeof(T)] = () => new EntityMapper<T>(mapFunction);
+            where T : class, IDbEntity => _entityMaps.AddOrUpdate(typeof(T), () => new EntityMapper<T>(mapFunction), (t, f) => () => new EntityMapper<T>(mapFunction));
 
         public IEntityMapper<T> CreateEntityMapper<T>(EntityExpression<T> entity)
             where T : class, IDbEntity
         {
-            if (maps.TryGetValue(typeof(T), out Func<IMapper> map))
+            if (_entityMaps.TryGetValue(typeof(T), out Func<IMapper> map))
                 return map() as IEntityMapper<T>;
 
             var entityMap = new EntityMapper<T>((entity as IDbExpressionEntity<T>).HydrateEntity);
-            maps.Add(typeof(T), () => entityMap);
+            _entityMaps.TryAdd(typeof(T), () => entityMap);
 
             return entityMap;
         }
+        #endregion
 
-        public IValueMapper<T> CreateValueMapper<T>()
+        #region value
+        public void RegisterValueMapProvider<T>(IValueMapProvider<T> mapper)
+            where T : IComparable => RegisterValueMapProvider(() => mapper);
+
+        public void RegisterValueMapProvider<T>(Func<IValueMapProvider<T>> mapper)
+            where T : IComparable => _valueMaps.AddOrUpdate(typeof(T), mapper, (t,f) => mapper);
+
+        public IValueMapProvider<T> CreateValueMapper<T>()
         {
-            if (typeof(T).IsEnum)
-            {
-                if (!discoveredEnumMaps.ContainsKey(typeof(T)))
-                    discoveredEnumMaps.Add(typeof(T), new PrimitiveMapper<T>(o => o is string ? (T)Enum.Parse(typeof(T), o as string) : (T)o) as IMapper);
+            if (_valueMaps.TryGetValue(typeof(T), out Func<IMapper> mapper))
+                return mapper() as IValueMapProvider<T>;
 
-                return discoveredEnumMaps[typeof(T)] as IValueMapper<T>;
-            }
-            return maps[typeof(T)]() as IValueMapper<T>;
+            var enumMapper = CreateEnumMapper<T>() ?? throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{typeof(T)}', please ensure an appender has been registered for type '{typeof(T)}'");
+
+            _valueMaps.TryAdd(typeof(T), () => enumMapper);
+
+            return _valueMaps[typeof(T)]() as IValueMapProvider<T>;
         }
 
         public IExpandoObjectMapper CreateExpandoObjectMapper()
-            => maps[typeof(ExpandoObject)]() as IExpandoObjectMapper;
+        {
+            if (!_valueMaps.TryGetValue(typeof(ExpandoObject), out Func<IMapper> xpandoMapper))
+            {
+                throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{typeof(ExpandoObject)}', please ensure an appender has been registered for type '{typeof(ExpandoObject)}'");
+            }
+            return xpandoMapper() as IExpandoObjectMapper;
+        }
 
         public IValueMapper CreateValueMapper() => _valueMapper ?? (_valueMapper = new ValueMapper(this));
+
+        private IValueMapProvider<T> CreateEnumMapper<T>()
+        {
+            Type enumType = null;
+            if (typeof(T).IsEnum)
+            {
+                enumType = typeof(T);
+            }
+            else if (typeof(T).IsGenericType && typeof(T).GetGenericArguments().Length == 1 && typeof(T).GetGenericArguments()[0].IsEnum)
+            {
+                enumType = typeof(T).GetGenericArguments()[0];
+            }
+            return enumType == null ? null : new PrimitiveMapper<T>(value => value is null ? default : value is string ? (T)Enum.Parse(enumType, value as string) : (T)Enum.ToObject(enumType, value));
+        }
+        #endregion
+        #endregion
     }
 }

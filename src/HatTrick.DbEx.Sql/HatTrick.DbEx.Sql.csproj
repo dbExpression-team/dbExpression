@@ -15,6 +15,70 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Assembler\ISqlStatementAssemblerFactory.cs" />
+    <Compile Remove="Assembler\_Appenders\ExpressionSetAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\BooleanAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\ByteAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\DateTimeAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\DateTimeOffsetAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\DecimalAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\GuidAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\Int16Appender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\Int32Appender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\Int64Appender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableBooleanAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableByteAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableDateTimeAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableDateTimeOffsetAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableDecimalAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableGuidAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableInt16Appender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableInt32Appender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableInt64Appender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableSingleAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\SingleAppender.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\BooleanConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\BooleanConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\ByteConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\ByteConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DateTimeConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DateTimeConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DateTimeOffsetConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DateTimeOffsetConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DecimalConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DecimalConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DoubleConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\DoubleConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\GuidConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\GuidConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\Int16ConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\Int16ConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\Int32ConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\Int32ConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\Int64ConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\Int64ConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableBooleanConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableBooleanConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableByteConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableByteConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableDateTimeConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableDateTimeConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableDateTimeOffsetConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableDateTimeOffsetConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableDecimalConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableDoubleConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableGuidConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableInt16ConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableInt32ConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableInt64ConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableSingleConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\NullableStringConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\SingleConcatFunctionExpression.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\SingleConcatFunctionExpression.generated.cs" />
+    <Compile Remove="Expression\_Function\_DataType\_Concat\_BooleanConcatFunctionExpression.generated.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HatTrick.DbEx\HatTrick.DbEx.csproj" />
   </ItemGroup>
 

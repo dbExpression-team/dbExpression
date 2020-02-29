@@ -1,15 +1,10 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class SumFunctionExpression : AggregateFunctionExpression,
-        IDbNumericFunctionExpression,
-        IAssemblyPart,
         IDbExpressionIsDistinctProvider,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
-        IEquatable<SumFunctionExpression>,
-        ISupportedForSelectExpression
+        IEquatable<SumFunctionExpression>
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -20,12 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected SumFunctionExpression()
-        {
-        }
-
-        public SumFunctionExpression((Type, object) expression, bool isDistinct)
-            : base(expression)
+        protected SumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
@@ -39,6 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(SumFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
             if (this.IsDistinct != obj.IsDistinct) return false;
 
             return true;
@@ -48,7 +39,16 @@ namespace HatTrick.DbEx.Sql.Expression
             => obj is SumFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
     }
 }

@@ -1,0 +1,98 @@
+﻿using System;
+
+namespace {Namespace}
+{{
+    public partial class {Type.Name}FieldExpression
+    {{
+        #region implicit operators
+        public static implicit operator SelectExpression<{Type.Alias}>({Type.Name}FieldExpression a) => new SelectExpression<{Type.Alias}>(new ExpressionContainer(a));
+        public static implicit operator {Type.Name}ExpressionMediator({Type.Name}FieldExpression a) => new {Type.Name}ExpressionMediator(new ExpressionContainer(a));
+        {#if IsOrderBySupported}
+        public static implicit operator OrderByExpression({Type.Name}FieldExpression a) => new OrderByExpression(new ExpressionContainer(a), OrderExpressionDirection.ASC);
+        {/if}
+        {#if IsGroupBySupported}
+        public static implicit operator GroupByExpression({Type.Name}FieldExpression a) => new GroupByExpression(new ExpressionContainer(a));
+        {/if}
+        #endregion
+
+        #region arithmetic operators
+        #region TValue
+        {#each ArithmeticOperations}
+        #region {$.OperationType.Alias}
+        {#each Operations}
+        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\..\$.Type.Name}FieldExpression a, {..\$.OperationType.Alias} b) => new {..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}>(b)), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#each Operations}
+        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\$.OperationType.Alias} a, {..\..\$.Type.Name}FieldExpression b) => new {..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}>(a)), new ExpressionContainer(b), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#if $.OperationType.IsNullable}
+        {#each Operations}
+        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\..\$.Type.Name}FieldExpression a, {..\$.OperationType.Alias}? b) => new {..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}?>(b)), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#each Operations}
+        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\$.OperationType.Alias}? a, {..\..\$.Type.Name}FieldExpression b) => new {..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(new LiteralExpression<{..\$.OperationType.Alias}?>(a)), new ExpressionContainer(b), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+        {/if}
+        #endregion
+        
+        {/each}
+        #endregion
+
+        #region mediator
+        {#each ArithmeticOperations}
+        #region {$.OperationType.Alias}
+        {#each Operations}
+        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\..\$.Type.Name}FieldExpression a, {..\$.OperationType.Name}FieldExpression b) => new {..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(a), new ExpressionContainer(b), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/each}
+
+        {#if $.ReturnType.IsNullable}
+        {#each Operations}
+        {#if ..\$.OperationType.IsNullable}
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\..\$.Type.Name}FieldExpression a, Nullable{..\$.OperationType.Name}FieldExpression b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ExpressionContainer(new ArithmeticExpression(new ExpressionContainer(a), new ExpressionContainer(b), ArithmeticExpressionOperator.{$.ArithmeticOperatorName})));
+        {/if}
+        {/each}
+        {/if}
+        #endregion
+        
+        {/each}
+        #endregion
+        #endregion
+
+        #region filter operators
+        #region {Type.Alias}
+        {#each FilterOperations}
+        public static FilterExpression<{..\$.Type.Alias}> operator {$.FilterOperatorSymbol}({..\$.Type.Name}FieldExpression a, {..\$.Type.Alias} b) => new FilterExpression<{..\$.Type.Alias}>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<{..\$.Type.Alias}>(b)), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<{..\$.Type.Alias}> operator {$.FilterOperatorSymbol}({..\$.Type.Alias} a, {..\$.Type.Name}FieldExpression b) => new FilterExpression<{..\$.Type.Alias}>(new ExpressionContainer(new LiteralExpression<{..\$.Type.Alias}>(a)), new ExpressionContainer(b), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#if Type.IsNullable}
+        {#each FilterOperations}
+        public static FilterExpression<{..\$.Type.Alias}> operator {$.FilterOperatorSymbol}({..\$.Type.Name}FieldExpression a, {..\$.Type.Alias}? b) => new FilterExpression<{..\$.Type.Alias}>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<{..\$.Type.Alias}?>(b)), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<{..\$.Type.Alias}> operator {$.FilterOperatorSymbol}({..\$.Type.Alias}? a, {..\$.Type.Name}FieldExpression b) => new FilterExpression<{..\$.Type.Alias}>(new ExpressionContainer(new LiteralExpression<{..\$.Type.Alias}?>(a)), new ExpressionContainer(b), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+        {/if}
+        #endregion
+        
+        #region mediator
+        {#each FilterOperations}
+        public static FilterExpression<{..\$.Type.Alias}> operator {$.FilterOperatorSymbol}({..\$.Type.Name}FieldExpression a, {..\$.Type.Name}ExpressionMediator b) => new FilterExpression<{..\$.Type.Alias}>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#if Type.IsNullable}
+        {#each FilterOperations}
+        public static FilterExpression<{..\$.Type.Alias}?> operator {$.FilterOperatorSymbol}({..\$.Type.Name}FieldExpression a, Nullable{..\$.Type.Name}ExpressionMediator b) => new FilterExpression<{..\$.Type.Alias}?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+        {/if}
+        #endregion
+        #endregion
+    }}
+}}

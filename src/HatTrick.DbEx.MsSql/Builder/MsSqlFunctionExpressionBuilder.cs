@@ -11,318 +11,228 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         #region cast
         #region bool
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, bool> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(BooleanExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, bool?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableBooleanExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region byte
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, byte> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(ByteExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, byte?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableByteExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region DateTime
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, DateTime> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(DateTimeExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, DateTime?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableDateTimeExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region DateTimeOffset
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, DateTimeOffset> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(DateTimeOffsetExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, DateTimeOffset?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableDateTimeOffsetExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region decimal
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, decimal> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(DecimalExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, decimal?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableDecimalExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region enum
-        //public static ICastFunctionExpressionBuilder Cast<TEntity, TEnum>(EnumFieldExpression<TEntity, TEnum> field)
-        //    where TEntity : IDbEntity
-        //    where TEnum : struct, Enum, IComparable
-        //    => new CastFunctionExpressionBuilder((field.GetType(), field));
-
-        //public static INullableCastFunctionExpressionBuilder Cast<TEntity, TEnum>(NullableEnumFieldExpression<TEntity, TEnum> field)
-        //    where TEntity : IDbEntity
-        //    where TEnum : struct, Enum, IComparable
-        //    => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
-
-        public static ICastFunctionExpressionBuilder Cast<TEnum>(EnumFieldExpression<TEnum> field)
+        public static ICastFunctionExpressionBuilder Cast<TEnum>(IEnumExpressionMediator<TEnum> field)
             where TEnum : struct, Enum, IComparable
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+            => new MsSqlCastFunctionExpressionBuilder(new ExpressionContainer(field));
 
-        public static INullableCastFunctionExpressionBuilder Cast<TEnum>(NullableEnumFieldExpression<TEnum> field)
+        public static INullableCastFunctionExpressionBuilder Cast<TEnum>(INullableEnumExpressionMediator<TEnum> field)
             where TEnum : struct, Enum, IComparable
-            => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
-
-        //public static ICastFunctionExpressionBuilder Cast<TEnum>(ISupportedForFunctionExpression<CastFunctionExpression, TEnum> field)
-        //    where TEnum : struct, Enum, IComparable
-        //     => new CastFunctionExpressionBuilder((field.GetType(), field));
-
-        //public static INullableCastFunctionExpressionBuilder Cast<TEnum>(ISupportedForFunctionExpression<CastFunctionExpression, TEnum?> field)
-        //   where TEnum : struct, Enum, IComparable
-        //    => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+            => new MsSqlNullableCastFunctionExpressionBuilder(new ExpressionContainer(field));
         #endregion
 
         #region float
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, float> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(SingleExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, float?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableSingleExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region Guid
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, Guid> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(GuidExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, Guid?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableGuidExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region short
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, short> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(Int16ExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, short?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableInt16ExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region int
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, int> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(Int32ExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, int?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableInt32ExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region long
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, long> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(Int64ExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
 
-        public static INullableCastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, long?> field)
-           => new NullableCastFunctionExpressionBuilder((field.GetType(), field));
+        public static INullableCastFunctionExpressionBuilder Cast(NullableInt64ExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field.Expression);
         #endregion
 
         #region string
-        public static ICastFunctionExpressionBuilder Cast(ISupportedForFunctionExpression<CastFunctionExpression, string> field)
-            => new CastFunctionExpressionBuilder((field.GetType(), field));
+        public static ICastFunctionExpressionBuilder Cast(StringExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field.Expression);
         #endregion
         #endregion
 
         #region date add
-        public static DateAddFunctionExpression<DateTime> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> field)
-            => new DateAddFunctionExpression<DateTime>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
+        public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, DateTimeExpressionMediator field)
+            => new DateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<int>(value)), field.Expression);
 
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullableDateTimeExpressionMediator field)
+            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<int>(value)), field.Expression);
 
-        public static DateAddFunctionExpression<DateTimeOffset> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> field)
-            => new DateAddFunctionExpression<DateTimeOffset>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
+        public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, DateTimeOffsetExpressionMediator field)
+            => new DateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<int>(value)), field.Expression);
 
-        public static NullableDateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> field)
-            => new NullableDateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullableDateTimeOffsetExpressionMediator field)
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<int>(value)), field.Expression);
 
-        public static DateAddFunctionExpression<DateTime> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> field)
-            => new DateAddFunctionExpression<DateTime>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, DateTimeExpressionMediator field)
+            => new DateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullableDateTimeExpressionMediator field)
+            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static DateAddFunctionExpression<DateTimeOffset> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> field)
-            => new DateAddFunctionExpression<DateTimeOffset>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, DateTimeOffsetExpressionMediator field)
+            => new DateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static NullableDateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> field)
-            => new NullableDateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullableDateTimeOffsetExpressionMediator field)
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static DateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> field)
-            => new DateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, DateTimeExpressionMediator field)
+            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullableDateTimeExpressionMediator field)
+            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static DateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> field)
-            => new DateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, DateTimeOffsetExpressionMediator field)
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
 
-        public static NullableDateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> field)
-            => new NullableDateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-        
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-
-
-
-        public static DateAddFunctionExpression<DateTime> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, int> field)
-            => new DateAddFunctionExpression<DateTime>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
-
-        public static DateAddFunctionExpression<DateTimeOffset> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, int> field)
-            => new DateAddFunctionExpression<DateTimeOffset>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, int value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (typeof(int), value), (field.GetType(), field));
-
-        public static DateAddFunctionExpression<DateTime> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, int> field)
-            => new DateAddFunctionExpression<DateTime>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static DateAddFunctionExpression<DateTimeOffset> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, int> field)
-            => new DateAddFunctionExpression<DateTimeOffset>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int>, int> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static DateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, int> field)
-            => new DateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static DateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, int> field)
-            => new DateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTimeOffset?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<int?>, int?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTimeOffset?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, int> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> value, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, int> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
-
-        public static NullableDateAddFunctionExpression<DateTime?> DateAdd(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> value, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, int?> field)
-            => new NullableDateAddFunctionExpression<DateTime?>((typeof(DateParts), datePart), (value.GetType(), value), (field.GetType(), field));
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullableDateTimeOffsetExpressionMediator field)
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value.Expression, field.Expression);
         #endregion
 
         #region date part
-        public static DatePartFunctionExpression<int> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, int> field)
-            => new DatePartFunctionExpression<int>((datePart.GetType(), datePart), (field.GetType(), field));
+        public static Int32DatePartFunctionExpression DatePart(DateParts datePart, DateTimeExpressionMediator field)
+            => new Int32DatePartFunctionExpression(new ExpressionContainer(datePart), field.Expression);
 
-        public static DatePartFunctionExpression<int> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime?>, int?> field)
-            => new DatePartFunctionExpression<int>((datePart.GetType(), datePart), (field.GetType(), field));
+        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullableDateTimeExpressionMediator field)
+            => new NullableInt32DatePartFunctionExpression(new ExpressionContainer(datePart), field.Expression);
 
-        public static NullableDatePartFunctionExpression<int?> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, int?> field)
-            => new NullableDatePartFunctionExpression<int?>((datePart.GetType(), datePart), (field.GetType(), field));
+        public static Int32DatePartFunctionExpression DatePart(DateParts datePart, DateTimeOffsetExpressionMediator field)
+            => new Int32DatePartFunctionExpression(new ExpressionContainer(datePart), field.Expression);
 
-        public static DatePartFunctionExpression<int> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> field)
-            => new DatePartFunctionExpression<int>((datePart.GetType(), datePart), (field.GetType(), field));
-
-        public static NullableDatePartFunctionExpression<int?> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> field)
-            => new NullableDatePartFunctionExpression<int?>((datePart.GetType(), datePart), (field.GetType(), field));
-
-        public static DatePartFunctionExpression<int> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> field)
-            => new DatePartFunctionExpression<int>((datePart.GetType(), datePart), (field.GetType(), field));
-
-        public static NullableDatePartFunctionExpression<int?> DatePart(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> field)
-            => new NullableDatePartFunctionExpression<int?>((datePart.GetType(), datePart), (field.GetType(), field));
+        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullableDateTimeOffsetExpressionMediator field)
+            => new NullableInt32DatePartFunctionExpression(new ExpressionContainer(datePart), field.Expression);
         #endregion
 
         #region date diff
         #region DateTime
-        public static DateDiffFunctionExpression<int> DateDiff(DateParts datePart, DateTime startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> endDate)
-            => new DateDiffFunctionExpression<int>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, DateTimeExpressionMediator endDate)
+            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTime>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, DateTime startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, NullableDateTimeExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTime>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, DateTime? startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, DateTimeExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTime?>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, DateTime? startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, NullableDateTimeExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTime?>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> startDate, DateTime endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, DateTime endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTime>(endDate)));
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> startDate, DateTime? endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, DateTime? endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTime?>(endDate)));
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> startDate, DateTime endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, DateTime endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTime>(endDate)));
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> startDate, DateTime? endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, DateTime? endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTime?>(endDate)));
 
-        public static DateDiffFunctionExpression<int> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> endDate)
-            => new DateDiffFunctionExpression<int>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, DateTimeExpressionMediator endDate)
+            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, NullableDateTimeExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTime>, DateTime> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, DateTimeExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTime?>, DateTime?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, NullableDateTimeExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
         #endregion
 
         #region DateTimeOffset
-        public static DateDiffFunctionExpression<int> DateDiff(DateParts datePart, DateTimeOffset startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> endDate)
-            => new DateDiffFunctionExpression<int>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, DateTimeOffsetExpressionMediator endDate)
+            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTimeOffset>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, DateTimeOffset startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, NullableDateTimeOffsetExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTimeOffset>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, DateTimeOffset? startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, DateTimeOffsetExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTimeOffset?>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, DateTimeOffset? startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, NullableDateTimeOffsetExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new ExpressionContainer(new LiteralExpression<DateTimeOffset?>(startDate)), endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> startDate, DateTimeOffset endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, DateTimeOffset endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTimeOffset>(endDate)));
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> startDate, DateTimeOffset? endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, DateTimeOffset? endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTimeOffset?>(endDate)));
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> startDate, DateTimeOffset endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, DateTimeOffset endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTimeOffset>(endDate)));
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> startDate, DateTimeOffset? endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, DateTimeOffset? endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, new ExpressionContainer(new LiteralExpression<DateTimeOffset?>(endDate)));
 
-        public static DateDiffFunctionExpression<int> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> endDate)
-            => new DateDiffFunctionExpression<int>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, DateTimeOffsetExpressionMediator endDate)
+            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, NullableDateTimeOffsetExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> startDate, ISupportedForFunctionExpression<IDbDateFunctionExpression<DateTimeOffset>, DateTimeOffset> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, DateTimeOffsetExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
 
-        public static NullableDateDiffFunctionExpression<int?> DateDiff(DateParts datePart, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> startDate, ISupportedForFunctionExpression<IDbNullableDateFunctionExpression<DateTimeOffset?>, DateTimeOffset?> endDate)
-            => new NullableDateDiffFunctionExpression<int?>((datePart.GetType(), datePart), (startDate.GetType(), startDate), (endDate.GetType(), endDate));
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, NullableDateTimeOffsetExpressionMediator endDate)
+            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate.Expression, endDate.Expression);
         #endregion
         #endregion
 

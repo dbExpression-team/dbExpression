@@ -2,31 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CoalesceFunctionExpression : DataTypeFunctionExpression,
         IDbFunctionExpression,
         IAssemblyPart,
-        ISupportedForExpression<SelectExpression>,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
         IEquatable<CoalesceFunctionExpression>
     {
         #region constructors
-        protected CoalesceFunctionExpression()
-        {
-        }
-
-        protected CoalesceFunctionExpression(params (Type, object)[] expressions)
-            : base((typeof(CoalesceFunctionExpression), expressions.ToList()))
+        protected CoalesceFunctionExpression(Type @type, params ExpressionContainer[] expressions) : base(new ExpressionContainer(expressions?.ToList() ?? throw new ArgumentNullException($"{nameof(expressions)} is required."), @type))
         {
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"COALESCE({string.Join(", ", (Expression.Item2 as IList<(Type,object)>)?.Select(e => e.Item2))})";
+        public override string ToString() => $"COALESCE({string.Join(", ", (Expression.Object as IList<ExpressionContainer>)?.Select(e => e.Object))})";
         #endregion
 
         #region equals
@@ -34,8 +25,8 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            var lst1 = Expression.Item2 as IList<(Type, object)>;
-            var lst2 = obj.Expression.Item2 as IList<(Type, object)>;
+            var lst1 = Expression.Object as IList<ExpressionContainer>;
+            var lst2 = obj.Expression.Object as IList<ExpressionContainer>;
 
             if (lst1.Count != lst2.Count) return false;
 

@@ -1,9 +1,8 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public interface IValueMapper<T> : IMapper
+    public interface IValueMapProvider<T> : IMapper
     {
         Func<object, T> Map { get; }
     }
