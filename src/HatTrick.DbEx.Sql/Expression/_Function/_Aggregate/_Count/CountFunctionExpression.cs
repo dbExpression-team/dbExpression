@@ -4,16 +4,8 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CountFunctionExpression : AggregateFunctionExpression,
-        IDbNumericFunctionExpression,
-        IAssemblyPart,
         IDbExpressionIsDistinctProvider,
-        ISupportedForSelectFieldExpression<int>,
-        ISupportedForFunctionExpression<CastFunctionExpression, int>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression, int>,
-        ISupportedForFunctionExpression<ConcatFunctionExpression, int>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression, int>,
-        IEquatable<CountFunctionExpression>,
-        ISupportedForSelectExpression
+        IEquatable<CountFunctionExpression>
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -24,11 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected CountFunctionExpression()
-        {
-        }
-
-        protected CountFunctionExpression((Type,object) expression, bool isDistinct) : base(expression)
+        protected CountFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
@@ -42,6 +30,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(CountFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
             if (this.IsDistinct != obj.IsDistinct) return false;
 
             return true;
@@ -51,7 +40,16 @@ namespace HatTrick.DbEx.Sql.Expression
             => obj is CountFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
     }
 }

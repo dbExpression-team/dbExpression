@@ -6,10 +6,11 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region constructors
         protected ConversionFunctionExpression()
-        {
+        { 
+        
         }
 
-        public ConversionFunctionExpression((Type, object) expression) : base(expression)
+        protected ConversionFunctionExpression(ExpressionContainer expression) : base(expression)
         {
         }
         #endregion

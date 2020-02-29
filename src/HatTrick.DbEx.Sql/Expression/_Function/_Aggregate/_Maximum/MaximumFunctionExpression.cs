@@ -6,12 +6,8 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class MaximumFunctionExpression : AggregateFunctionExpression,
-        IDbNumericFunctionExpression,
-        IAssemblyPart,
         IDbExpressionIsDistinctProvider,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
-        IEquatable<MaximumFunctionExpression>,
-        ISupportedForSelectExpression
+        IEquatable<MaximumFunctionExpression>
     {
         #region internals
         protected bool IsDistinct { get; private set; }
@@ -22,12 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected MaximumFunctionExpression()
-        {
-        }
-
-        protected MaximumFunctionExpression((Type,object) expression, bool isDistinct)
-            : base(expression)
+        protected MaximumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
@@ -41,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Equals(MaximumFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
             if (this.IsDistinct != obj.IsDistinct) return false;
 
             return true;
@@ -50,7 +42,16 @@ namespace HatTrick.DbEx.Sql.Expression
             => obj is MaximumFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
     }
 }

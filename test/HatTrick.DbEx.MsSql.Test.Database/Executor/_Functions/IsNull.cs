@@ -76,28 +76,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             dates.Should().HaveCount(expected);
         }
 
-        //[Theory(Skip = "Need to remove/adapt interfaces"]
-        //[MsSqlVersions.AllVersions]
-        //[Trait("Expression", "Arithmetic")]
-        //public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expected = 15)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Expression", "Arithmetic")]
+        public void Does_isnull_all_product_dates_including_arithmetic_and_returning_total_purchase_amount_succeed(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    var exp = db.SelectMany(
-        //            dbo.Purchase.TotalPurchaseAmount,
-        //            db.fx.IsNull(
-        //                dbo.Purchase.ShipDate,
-        //                dbo.Purchase.DateCreated + DateTime.Now
-        //            ).As("relevant_date")
-        //        ).From(dbo.Purchase);
+            var exp = db.SelectMany(
+                    dbo.Purchase.TotalPurchaseAmount,
+                    db.fx.IsNull(
+                        dbo.Purchase.ShipDate,
+                        dbo.Purchase.DateCreated + DateTime.Now
+                    ).As("relevant_date")
+                ).From(dbo.Purchase);
 
-        //    //when               
-        //    IList<dynamic> dates = exp.Execute();
+            //when               
+            IList<dynamic> dates = exp.Execute();
 
-        //    //then
-        //    dates.Should().HaveCount(expected);
-        //}
+            //then
+            dates.Should().HaveCount(expected);
+        }
 
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -238,6 +238,25 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Year.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_arithmetic_order_of_precedence_succeed(int version, decimal expected = 36m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    (dbo.Purchase.TotalPurchaseAmount + 2) * 3
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.TotalPurchaseAmount == 10m);
+
+            //when               
+            decimal result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
         }
     }
 }

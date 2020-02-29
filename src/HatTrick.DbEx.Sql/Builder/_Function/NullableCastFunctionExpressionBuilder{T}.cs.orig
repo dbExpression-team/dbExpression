@@ -1,0 +1,22 @@
+<<<<<<< HEAD
+﻿using HatTrick.DbEx.Sql.Expression;
+using System;
+=======
+﻿using System;
+>>>>>>> release/1.0
+
+namespace HatTrick.DbEx.Sql.Builder
+{
+    public class NullableCastFunctionExpressionBuilder<TValue> : NullableCastFunctionExpressionBuilder
+    {
+        #region constructors
+<<<<<<< HEAD
+        public NullableCastFunctionExpressionBuilder(ExpressionContainer expression) : base(expression)
+=======
+        public NullableCastFunctionExpressionBuilder((Type, object) expression) : base(expression)
+>>>>>>> release/1.0
+        {
+        }
+        #endregion
+    }
+}

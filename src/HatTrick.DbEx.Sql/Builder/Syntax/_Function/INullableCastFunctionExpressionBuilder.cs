@@ -5,19 +5,19 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
     public interface INullableCastFunctionExpressionBuilder
     {
-        NullableCastFunctionExpression<bool?> AsBit();
-        NullableCastFunctionExpression<byte?> AsTinyInt();
-        NullableCastFunctionExpression<DateTime?> AsDateTime();
-        NullableCastFunctionExpression<DateTimeOffset?> AsDateTimeOffset();
-        NullableCastFunctionExpression<decimal?> AsDecimal(int precision, int scale);
-        NullableCastFunctionExpression<float?> AsFloat();
-        NullableCastFunctionExpression<Guid?> AsUniqueIdentifier();
-        NullableCastFunctionExpression<short?> AsSmallInt();
-        NullableCastFunctionExpression<int?> AsInt();
-        NullableCastFunctionExpression<long?> AsBigInt();
-        NullableCastFunctionExpression<string> AsVarChar(int size);
-        NullableCastFunctionExpression<string> AsChar(int size);
-        NullableCastFunctionExpression<string> AsNVarChar(int size);
-        NullableCastFunctionExpression<string> AsNChar(int size);
+        NullableBooleanCastFunctionExpression AsBit();
+        NullableByteCastFunctionExpression AsTinyInt();
+        NullableDateTimeCastFunctionExpression AsDateTime();
+        NullableDateTimeOffsetCastFunctionExpression AsDateTimeOffset();
+        NullableDecimalCastFunctionExpression AsDecimal(int precision, int scale);
+        NullableSingleCastFunctionExpression AsFloat();
+        NullableGuidCastFunctionExpression AsUniqueIdentifier();
+        NullableInt16CastFunctionExpression AsSmallInt();
+        NullableInt32CastFunctionExpression AsInt();
+        NullableInt64CastFunctionExpression AsBigInt();
+        StringCastFunctionExpression AsVarChar(int size);
+        StringCastFunctionExpression AsChar(int size);
+        StringCastFunctionExpression AsNVarChar(int size);
+        StringCastFunctionExpression AsNChar(int size);
     }
 }

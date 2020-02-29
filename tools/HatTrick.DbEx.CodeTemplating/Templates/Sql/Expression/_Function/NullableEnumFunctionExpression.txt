@@ -1,0 +1,50 @@
+﻿
+using System;
+{Usings => BuildUsings}
+
+namespace {Namespace}
+{{
+    public partial class NullableEnum{FunctionName}FunctionExpression<TEnum>
+    {{
+        #region implicit operators
+        public static implicit operator SelectExpression<TEnum?>(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new SelectExpression<TEnum?>(new ExpressionContainer(a));
+        public static implicit operator NullableEnumExpressionMediator<TEnum>(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new NullableEnumExpressionMediator<TEnum>(new ExpressionContainer(a));
+        public static implicit operator OrderByExpression(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new OrderByExpression(new ExpressionContainer(a), OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new GroupByExpression(new ExpressionContainer(a));
+        #endregion
+
+        #region filter operators
+        #region TValue
+        #region {Type.Alias}
+        {#each FilterOperations}
+        public static FilterExpression<TEnum?> operator {$.FilterOperatorSymbol}(NullableEnum{..\$.FunctionName}FunctionExpression<TEnum> a, TEnum b) => new FilterExpression<TEnum?>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<TEnum>(b)), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<TEnum?> operator {$.FilterOperatorSymbol}(TEnum a, NullableEnum{..\$.FunctionName}FunctionExpression<TEnum> b) => new FilterExpression<TEnum?>(new ExpressionContainer(new LiteralExpression<TEnum>(a)), new ExpressionContainer(b), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#if Type.IsNullable}
+        {#each FilterOperations}
+        public static FilterExpression<TEnum?> operator {$.FilterOperatorSymbol}(NullableEnum{..\$.FunctionName}FunctionExpression<TEnum> a, TEnum? b) => new FilterExpression<TEnum?>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<TEnum?>(b)), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<TEnum?> operator {$.FilterOperatorSymbol}(TEnum? a, NullableEnum{..\$.FunctionName}FunctionExpression<TEnum> b) => new FilterExpression<TEnum?>(new ExpressionContainer(new LiteralExpression<TEnum?>(a)), new ExpressionContainer(b), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+        {/if}
+        #endregion
+        #endregion
+
+        #region mediator
+        {#each FilterOperations}
+        public static FilterExpression<TEnum?> operator {$.FilterOperatorSymbol}(NullableEnum{..\$.FunctionName}FunctionExpression<TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpression<TEnum?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<TEnum?> operator {$.FilterOperatorSymbol}(NullableEnum{..\$.FunctionName}FunctionExpression<TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpression<TEnum?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+        #endregion
+        #endregion
+    }}
+}}

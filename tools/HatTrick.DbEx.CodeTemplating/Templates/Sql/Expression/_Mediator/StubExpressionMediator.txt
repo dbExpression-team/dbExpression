@@ -1,0 +1,38 @@
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Expression
+{{
+    public partial class {Type.Name}ExpressionMediator :
+        ExpressionMediator<{Type.Alias}>,
+        IEquatable<{Type.Name}ExpressionMediator>
+    {{
+        #region constructors
+        private {Type.Name}ExpressionMediator()
+        {{
+        }}
+
+        public {Type.Name}ExpressionMediator(ExpressionContainer expression) : base(expression)
+        {{
+        }}
+        #endregion
+
+        #region as
+        public new {Type.Name}ExpressionMediator As(string alias)
+        {{
+            base.As(alias);
+            return this;
+        }}
+        #endregion
+
+        #region equals
+        public bool Equals({Type.Name}ExpressionMediator obj)
+            => obj is {Type.Name}ExpressionMediator && base.Equals(obj);
+
+        public override bool Equals(object obj)
+            => obj is {Type.Name}ExpressionMediator exp && base.Equals(exp);
+
+        public override int GetHashCode()
+            => base.GetHashCode();
+        #endregion
+    }}
+}}

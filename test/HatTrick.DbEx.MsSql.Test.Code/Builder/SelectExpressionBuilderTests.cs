@@ -13,13 +13,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     [Trait("Statement", "SELECT")]
     public class SelectExpressionBuilderTests : TestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_for_single_value_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_for_single_value_result_in_valid_expression()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 
@@ -32,21 +29,18 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //then
             expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectOneValue);
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
-                .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
+                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()
                 .And.Equals(sec.Person);
         }
 
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_select_for_multiple_values_result_in_valid_expression(int version)
+        [Fact]
+        public void Does_select_for_multiple_values_result_in_valid_expression()
         {
             //given
-            ConfigureForMsSqlVersion(version);
-
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 
@@ -61,11 +55,11 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.Id))
-                .Which.Item2.Should().BeOfType<Int32FieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
+                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Item2.Equals(sec.Person.DateCreated))
-                .Which.Item2.Should().BeOfType<DateTimeFieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.DateCreated))
+                .Which.Expression.Object.Should().BeOfType<DateTimeFieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()

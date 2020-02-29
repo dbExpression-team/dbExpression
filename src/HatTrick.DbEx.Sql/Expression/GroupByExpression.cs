@@ -4,22 +4,22 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpression : 
-        IDbExpression, 
+        IDbExpression,
         IAssemblyPart
     {
         #region interface
-        public (Type, object) Expression { get; private set; }
+        public ExpressionContainer Expression { get; private set; }
         #endregion
 
         #region constructors
-        public GroupByExpression((Type,object) expression)
+        public GroupByExpression(ExpressionContainer expression)
         {
-            Expression = expression;
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.Item2.ToString();
+        public override string ToString() => Expression.Object.ToString();
         #endregion
 
         #region conditional & operator

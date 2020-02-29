@@ -13,14 +13,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        string FormatValueType((Type, object) value);
-
-        string FormatValueType<T>(object value)
-            where T : IComparable;
+        TTo FormatValueType<TFrom, TTo>(TFrom value)
+            where TFrom : IConvertible
+            where TTo : IComparable;
 
         SqlStatement CreateSqlStatement();
 
-        void AppendPart((Type, object) part, AssemblyContext context);
+        void AppendPart(ExpressionContainer part, AssemblyContext context);
 
         void AppendPart<T>(T part, AssemblyContext context)
             where T : class, IAssemblyPart;

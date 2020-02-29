@@ -1,0 +1,116 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace HatTrick.DbEx.Sql.Expression
+{
+    public abstract class FunctionExpression :
+        IDbExpressionAliasProvider,
+<<<<<<< HEAD
+=======
+        ISupportedForExpression<SelectExpression>,
+        ISupportedForFunctionExpression<CastFunctionExpression>,
+>>>>>>> release/1.0
+        IEquatable<FunctionExpression>
+    {
+        #region internals
+        protected string Alias { get; private set; }
+        #endregion
+
+        #region interface
+<<<<<<< HEAD
+        public ExpressionContainer Expression { get; }
+        string IDbExpressionAliasProvider.Alias => Alias;
+=======
+        public (Type, object) Expression { get; }
+        string IDbExpressionAliasProvider.Alias => Alias;
+        public OrderByExpression Asc => new OrderByExpression((GetType(), this), OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new OrderByExpression((GetType(), this), OrderExpressionDirection.DESC);
+>>>>>>> release/1.0
+        #endregion
+
+        #region constructors
+        protected FunctionExpression()
+        {
+        }
+
+<<<<<<< HEAD
+        protected FunctionExpression(ExpressionContainer expression)
+        {
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+        }
+        #endregion
+
+        #region order
+        public OrderByExpression Asc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.DESC);
+        #endregion
+
+=======
+        protected FunctionExpression((Type, object) expression)
+        {
+            Expression = expression;
+        }
+        #endregion
+
+>>>>>>> release/1.0
+        #region as
+        public FunctionExpression As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region equals
+        public bool Equals(FunctionExpression obj)
+        {
+<<<<<<< HEAD
+            if (Expression is null && obj.Expression is object) return false;
+            if (Expression is object && obj.Expression is null) return false;
+            if (!Expression.Equals(obj.Expression)) return false;
+
+            if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
+=======
+            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(null, obj)) return false;
+            if (this.Expression == default && obj.Expression != default) return false;
+            if (obj.Expression == default && this.Expression != default) return false;
+            if (this.Expression.Item1 != obj.Expression.Item1) return false;
+            if (this.Expression.Item2 != obj.Expression.Item2) return false;
+            if (this.Alias != obj.Alias) return false;
+>>>>>>> release/1.0
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+<<<<<<< HEAD
+            => obj is FunctionExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
+                return hash;
+            }
+        }
+=======
+         => obj is FunctionExpression exp && Equals(exp);
+
+        public override int GetHashCode()
+            => base.GetHashCode();
+        #endregion
+
+        #region implicit operators
+        public static implicit operator OrderByExpression(FunctionExpression func) => new OrderByExpression((func.GetType(), func), OrderExpressionDirection.ASC);
+>>>>>>> release/1.0
+        #endregion
+    }
+}

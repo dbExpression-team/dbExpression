@@ -1,0 +1,26 @@
+﻿using HatTrick.DbEx.Sql.Expression;
+
+namespace HatTrick.DbEx.Sql.Assembler
+{
+<<<<<<< HEAD:src/HatTrick.DbEx.Sql/Assembler/_Appenders/_Functions/IsNullFunctionExpressionPartAppender.cs
+    public class IsNullFunctionExpressionPartAppender : PartAppender<IsNullFunctionExpression>
+=======
+    public class IsNullFunctionAppender :
+        ExpressionAppender,
+        IAssemblyPartAppender<IsNullFunctionExpression>
+>>>>>>> release/1.0:src/HatTrick.DbEx.Sql/Assembler/_Appenders/_Functions/IsNullFunctionAppender.cs
+    {
+        #region methods
+        public override void AppendPart(IsNullFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            builder.Appender.Write("ISNULL(");
+            builder.AppendPart(expression.Expression, context);
+            builder.Appender.Write(", ");
+            builder.AppendPart(expression.Value, context);
+            builder.Appender.Write(")");
+
+            AppendAlias(expression, builder, context);
+        }
+        #endregion
+    }
+}

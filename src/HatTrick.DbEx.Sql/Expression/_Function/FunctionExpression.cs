@@ -6,8 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FunctionExpression :
         IDbExpressionAliasProvider,
-        ISupportedForExpression<SelectExpression>,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
         IEquatable<FunctionExpression>
     {
         #region internals
@@ -15,10 +13,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public (Type, object) Expression { get; }
+        public ExpressionContainer Expression { get; }
         string IDbExpressionAliasProvider.Alias => Alias;
-        public OrderByExpression Asc => new OrderByExpression((GetType(), this), OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression((GetType(), this), OrderExpressionDirection.DESC);
         #endregion
 
         #region constructors
@@ -26,10 +22,15 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected FunctionExpression((Type, object) expression)
+        protected FunctionExpression(ExpressionContainer expression)
         {
-            Expression = expression;
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
+        #endregion
+
+        #region order
+        public OrderByExpression Asc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.DESC);
         #endregion
 
         #region as
@@ -43,26 +44,31 @@ namespace HatTrick.DbEx.Sql.Expression
         #region equals
         public bool Equals(FunctionExpression obj)
         {
-            if (ReferenceEquals(this, obj)) return true;
-            if (ReferenceEquals(null, obj)) return false;
-            if (this.Expression == default && obj.Expression != default) return false;
-            if (obj.Expression == default && this.Expression != default) return false;
-            if (this.Expression.Item1 != obj.Expression.Item1) return false;
-            if (this.Expression.Item2 != obj.Expression.Item2) return false;
-            if (this.Alias != obj.Alias) return false;
+            if (Expression is null && obj.Expression is object) return false;
+            if (Expression is object && obj.Expression is null) return false;
+            if (!Expression.Equals(obj.Expression)) return false;
+
+            if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
 
             return true;
         }
 
         public override bool Equals(object obj)
-         => obj is FunctionExpression exp && Equals(exp);
+            => obj is FunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
-            => base.GetHashCode();
-        #endregion
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
 
-        #region implicit operators
-        public static implicit operator OrderByExpression(FunctionExpression func) => new OrderByExpression((func.GetType(), func), OrderExpressionDirection.ASC);
+                int hash = @base;
+                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
     }
 }

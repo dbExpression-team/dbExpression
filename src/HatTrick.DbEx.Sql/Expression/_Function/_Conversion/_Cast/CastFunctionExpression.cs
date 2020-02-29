@@ -1,39 +1,27 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
-using System.Data;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CastFunctionExpression : ConversionFunctionExpression,
         IDbFunctionExpression,
-        IAssemblyPart,
-        ISupportedForExpression<SelectExpression>,
-        ISupportedForFunctionExpression<CoalesceFunctionExpression>,
-        ISupportedForFunctionExpression<CountFunctionExpression>,
-        ISupportedForFunctionExpression<IsNullFunctionExpression>,
-        ISupportedForFunctionExpression<IDbDateFunctionExpression>,
         IEquatable<CastFunctionExpression>
     {
         #region interface
-        public SqlDbType ConvertToSqlDbType { get; set; }
+        public ExpressionContainer ConvertToDbType { get; set; }
         public int? Size { get; set; }
         public int? Precision { get; set; }
         public int? Scale { get; set; }
         #endregion
 
         #region constructors
-        protected CastFunctionExpression()
+        protected CastFunctionExpression(ExpressionContainer expression, ExpressionContainer convertToDbType) : base(expression)
         {
-        }
-
-        protected CastFunctionExpression((Type, object) expression)
-            : base(expression)
-        {
+            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"CAST({Expression.Item2} AS {ConvertToSqlDbType}{(Size.HasValue ? $"({Size})" : "")})";
+        public override string ToString() => $"CAST({Expression.Object} AS {ConvertToDbType}{(Size.HasValue ? $"({Size})" : "")})";
         #endregion
 
         #region equals
@@ -41,10 +29,17 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (!obj.ConvertToSqlDbType.Equals(this.ConvertToSqlDbType)) return false;
-            if (!obj.Size.Equals(this.Size)) return false;
-            if (!obj.Precision.Equals(this.Precision)) return false;
-            if (!obj.Scale.Equals(this.Scale)) return false;
+            if (this.ConvertToDbType is null && obj.ConvertToDbType is object) return false;
+            if (this.ConvertToDbType is object && obj.ConvertToDbType is null) return false;
+            if (!this.ConvertToDbType.Equals(obj.ConvertToDbType)) return false;
+
+            if (this.Size is null && obj.Size is object) return false;
+            if (this.Size is object && obj.Size is null) return false;
+            if (!this.Size.Equals(obj.Size)) return false;
+
+            if (this.Scale is null && obj.Scale is object) return false;
+            if (this.Scale is object && obj.Scale is null) return false;
+            if (!this.Scale.Equals(obj.Scale)) return false;
 
             return true;
         }
@@ -53,12 +48,19 @@ namespace HatTrick.DbEx.Sql.Expression
             => obj is CastFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
-        #endregion
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
 
-        #region implicit operators
-        public static implicit operator OrderByExpression(CastFunctionExpression cast) => new OrderByExpression(cast.Expression, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(CastFunctionExpression cast) => new GroupByExpression(cast.Expression);
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ (ConvertToDbType is object ? ConvertToDbType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Size is object ? Size?.GetHashCode() ?? 0 : 0);
+                hash = (hash * multiplier) ^ (Precision is object ? Precision?.GetHashCode() ?? 0 : 0);
+                hash = (hash * multiplier) ^ (Scale is object ? Scale?.GetHashCode() ?? 0 : 0);
+                return hash;
+            }
+        }
         #endregion
     }
 }

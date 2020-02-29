@@ -1,32 +1,23 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class IsNullFunctionExpression : DataTypeFunctionExpression,
-        IDbFunctionExpression,
-        IAssemblyPart,
-        ISupportedForExpression<SelectExpression>,
         IEquatable<IsNullFunctionExpression>
     {
         #region interface
-        public (Type, object) Value { get; }
+        public ExpressionContainer Value { get; }
         #endregion
 
         #region constructors
-        protected IsNullFunctionExpression()
+        protected IsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : base(expression)
         {
-        }
-
-        protected IsNullFunctionExpression((Type, object) expression, (Type, object) value)
-            : base(expression)
-        {
-            Value = value;
+            Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"ISNULL({Expression.Item2}, {Value.Item2})";
+        public override string ToString() => $"ISNULL({Expression.Object}, {Value.Object})";
         #endregion
 
         #region equals
@@ -34,7 +25,9 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (obj.Value != this.Value) return false;
+            if (this.Value is null && obj.Value is object) return false;
+            if (this.Value is object && obj.Value is null) return false;
+            if (!this.Value.Equals(obj.Value)) return false;
 
             return true;
         }
@@ -43,7 +36,16 @@ namespace HatTrick.DbEx.Sql.Expression
          => obj is IsNullFunctionExpression exp ? Equals(exp) : false;
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ (Value is object ? Value.GetHashCode() : 0);
+                return hash;
+            }
+        }
         #endregion
     }
 }

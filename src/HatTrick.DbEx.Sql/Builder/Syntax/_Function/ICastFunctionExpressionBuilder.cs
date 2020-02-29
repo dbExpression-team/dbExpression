@@ -5,19 +5,19 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
     public interface ICastFunctionExpressionBuilder
     {
-        CastFunctionExpression<bool> AsBit();
-        CastFunctionExpression<byte> AsTinyInt();
-        CastFunctionExpression<DateTime> AsDateTime();
-        CastFunctionExpression<DateTimeOffset> AsDateTimeOffset();
-        CastFunctionExpression<decimal> AsDecimal(int precision, int scale);
-        CastFunctionExpression<float> AsFloat();
-        CastFunctionExpression<Guid> AsUniqueIdentifier();
-        CastFunctionExpression<short> AsSmallInt();
-        CastFunctionExpression<int> AsInt();
-        CastFunctionExpression<long> AsBigInt();
-        CastFunctionExpression<string> AsVarChar(int size);
-        CastFunctionExpression<string> AsChar(int size);
-        CastFunctionExpression<string> AsNVarChar(int size);
-        CastFunctionExpression<string> AsNChar(int size);
+        BooleanCastFunctionExpression AsBit();
+        ByteCastFunctionExpression AsTinyInt();
+        DateTimeCastFunctionExpression AsDateTime();
+        DateTimeOffsetCastFunctionExpression AsDateTimeOffset();
+        DecimalCastFunctionExpression AsDecimal(int precision, int scale);
+        SingleCastFunctionExpression AsFloat();
+        GuidCastFunctionExpression AsUniqueIdentifier();
+        Int16CastFunctionExpression AsSmallInt();
+        Int32CastFunctionExpression AsInt();
+        Int64CastFunctionExpression AsBigInt();
+        StringCastFunctionExpression AsVarChar(int size);
+        StringCastFunctionExpression AsChar(int size);
+        StringCastFunctionExpression AsNVarChar(int size);
+        StringCastFunctionExpression AsNChar(int size);
     }
 }

@@ -1,0 +1,73 @@
+﻿using DbEx.Data.sec;
+using DbEx.DataService;
+using FluentAssertions;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using Xunit;
+
+namespace HatTrick.DbEx.MsSql.Test.Builder
+{
+    [Trait("Statement", "SELECT")]
+    public class SelectManyExpressionBuilderTests : TestBase
+    {
+<<<<<<< HEAD
+        [Fact]
+        public void Does_select_many_for_single_field_result_in_valid_expression()
+=======
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_select_many_for_single_field_result_in_valid_expression(int version)
+>>>>>>> release/1.0
+        {
+            //given
+            ITerminationExpressionBuilder exp;
+            ExpressionSet expressionSet;
+            //when
+            exp = db.SelectMany(sec.Person.Id)
+               .From(sec.Person);
+
+            expressionSet = (exp as IDbExpressionSetProvider).Expression;
+
+            //then
+            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyValue);
+
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
+                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
+
+            expressionSet.BaseEntity.Should().NotBeNull()
+                .And.BeAssignableTo<EntityExpression<Person>>()
+                .And.Equals(sec.Person);
+        }
+
+        [Fact]
+        public void Does_select_many_for_multiple_values_result_in_valid_expression()
+        {
+            //given
+            ITerminationExpressionBuilder exp;
+            ExpressionSet expressionSet;
+
+            //when
+            exp = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
+               .From(sec.Person);
+
+            expressionSet = (exp as IDbExpressionSetProvider).Expression;
+
+            //then
+            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyDynamic);
+
+            expressionSet.Select.Expressions.Should().HaveCount(2);
+
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
+                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
+
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.DateCreated))
+                .Which.Expression.Object.Should().BeOfType<DateTimeFieldExpression<Person>>();
+
+            expressionSet.BaseEntity.Should().NotBeNull()
+                .And.BeAssignableTo<EntityExpression<Person>>()
+                .And.Equals(sec.Person);
+        }
+    }
+}

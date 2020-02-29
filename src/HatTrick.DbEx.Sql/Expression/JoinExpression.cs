@@ -10,40 +10,24 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }
-        public (Type, object) JoinToo { get; private set; }
+        public ExpressionContainer JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string Alias { get; set; }
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public JoinExpression(EntityExpression entity, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
+        public JoinExpression(ExpressionContainer joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
         {
-            JoinToo = (typeof(EntityExpression), entity);
+            JoinToo = joinToo ?? throw new ArgumentNullException($"{nameof(joinToo)} is required.");
             JoinType = joinType;
-            JoinOnExpression = onCondition;
-            Alias = alias;
-        }
-
-        public JoinExpression(ExpressionSet subquery, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
-        {
-            JoinToo = (typeof(ExpressionSet), subquery);
-            JoinType = joinType;
-            JoinOnExpression = onCondition;
-            Alias = alias;
-        }
-
-        public JoinExpression((Type, object) joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
-        {
-            JoinToo = joinToo;
-            JoinType = joinType;
-            JoinOnExpression = onCondition;
+            JoinOnExpression = onCondition ?? throw new ArgumentNullException($"{nameof(onCondition)} is required.");
             Alias = alias;
         }
         #endregion
 
         #region to string
-        public override string ToString() => JoinType == JoinOperationExpressionOperator.CROSS ? $"{JoinType} JOIN {JoinToo.Item2}" : $"{JoinType} JOIN {JoinToo.Item2} ON {JoinOnExpression}";
+        public override string ToString() => JoinType == JoinOperationExpressionOperator.CROSS ? $"{JoinType} JOIN {JoinToo.Object}" : $"{JoinType} JOIN {JoinToo.Object} ON {JoinOnExpression}";
         #endregion
 
         #region logical & operator

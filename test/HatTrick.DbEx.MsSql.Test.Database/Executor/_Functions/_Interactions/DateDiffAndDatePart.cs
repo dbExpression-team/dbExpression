@@ -14,42 +14,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     [Trait("Function", "DATEPART")]
     public partial class DateDiffAndDatePart : ExecutorTestBase
     {
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_day_of_datediff_of_ship_date_and_purchase_date_succeed(int version, int expected = 15)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(
-                    db.fx.DatePart(DateParts.Day, db.fx.DateDiff(DateParts.Day, dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate))
-                ).From(dbo.Purchase);
-
-            //when               
-            IList<int?> results = exp.Execute();
-
-            //then
-            results.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_day_of_datediff_of_date_created_and_purchase_date_succeed(int version, int expected = 15)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(
-                    db.fx.DatePart(DateParts.Day, db.fx.DateDiff(DateParts.Day, dbo.Purchase.DateCreated, dbo.Purchase.PurchaseDate))
-                ).From(dbo.Purchase);
-
-            //when               
-            IList<int> results = exp.Execute();
-
-            //then
-            results.Should().HaveCount(expected);
-        }
-
         //MILESTONE: Function Arithmetic
         //[Theory]
         //[MsSqlVersions.AllVersions]

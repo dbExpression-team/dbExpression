@@ -5,24 +5,23 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpression : 
         IDbExpression, 
-        IAssemblyPart,
-        ISupportedForExpression<OrderByExpression>
+        IAssemblyPart
     {
         #region interface
-        public (Type, object) Expression { get; private set; }
+        public ExpressionContainer Expression { get; private set; }
         public OrderExpressionDirection Direction { get; private set; }
         #endregion
 
         #region constructors
-        public OrderByExpression((Type,object) expression, OrderExpressionDirection direction)
+        public OrderByExpression(ExpressionContainer orderByContainer, OrderExpressionDirection direction)
         {
-            Expression = expression;
+            Expression = orderByContainer ?? throw new ArgumentNullException($"{nameof(orderByContainer)} is required.");
             Direction = direction;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{Expression.Item2} {Direction}";
+        public override string ToString() => $"{Expression.Object} {Direction}";
         #endregion
 
         #region conditional & operator

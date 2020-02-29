@@ -127,198 +127,184 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
         }
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_total_purchase_amount_added_to_static_value_succeed(int version, decimal expected = 21.543m)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_total_purchase_amount_added_to_static_value_succeed(int version, decimal expected = 21.543m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    //var exp = db.SelectOne(
-        //    //        (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) + 1).As("avg_amount")
-        //    //    ).From(dbo.Purchase);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) + 1).As("avg_amount")
+                ).From(dbo.Purchase);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) + 1) + (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) + 2)
-        //        ).From(dbo.Purchase);
+            //when               
+            decimal average = exp.Execute();
 
-        //    //when               
-        //    decimal average = exp.Execute();
+            //then
+            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+        }
 
-        //    //then
-        //    average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_credit_limit_added_to_static_value_succeed(int version, int expected = 24635)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_credit_limit_added_to_static_value_succeed(int version, int expected = 24635)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Person.CreditLimit) + 1).As("avg_amount")
+                ).From(dbo.Person);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Person.CreditLimit) + 1).As("avg_amount")
-        //        ).From(dbo.Person);
+            //when               
+            int? average = exp.Execute();
 
-        //    //when               
-        //    int? average = exp.Execute();
+            //then
+            average.Should().Be(expected);
+        }
 
-        //    //then
-        //    average.Should().Be(expected);
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_total_purchase_amount_minus_static_value_succeed(int version, decimal expected = 19.543m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_total_purchase_amount_minus_static_value_succeed(int version, decimal expected = 19.543m)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) - 1).As("avg_amount")
+                ).From(dbo.Purchase);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) - 1).As("avg_amount")
-        //        ).From(dbo.Purchase);
+            //when               
+            decimal average = exp.Execute();
 
-        //    //when               
-        //    decimal average = exp.Execute();
+            //then
+            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+        }
 
-        //    //then
-        //    average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_credit_limit_added_minus_static_value_succeed(int version, int expected = 24633)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_credit_limit_added_minus_static_value_succeed(int version, int expected = 24633)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Person.CreditLimit) - 1).As("avg_amount")
+                ).From(dbo.Person);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Person.CreditLimit) - 1).As("avg_amount")
-        //        ).From(dbo.Person);
+            //when               
+            int? average = exp.Execute();
 
-        //    //when               
-        //    int? average = exp.Execute();
+            //then
+            average.Should().Be(expected);
+        }
 
-        //    //then
-        //    average.Should().Be(expected);
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_total_purchase_amount_multiplied_by_static_value_succeed(int version, decimal expected = 20.543333m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_total_purchase_amount_multiplied_by_static_value_succeed(int version, decimal expected = 20.543333m)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) * 1).As("avg_amount")
+                ).From(dbo.Purchase);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) * 1).As("avg_amount")
-        //        ).From(dbo.Purchase);
+            //when               
+            decimal average = exp.Execute();
 
-        //    //when               
-        //    decimal average = exp.Execute();
+            //then
+            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+        }
 
-        //    //then
-        //    average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_credit_limit_added_multiplied_by_static_value_succeed(int version, int expected = 24634)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_credit_limit_added_multiplied_by_static_value_succeed(int version, int expected = 24634)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Person.CreditLimit) * 1).As("avg_amount")
+                ).From(dbo.Person);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Person.CreditLimit) * 1).As("avg_amount")
-        //        ).From(dbo.Person);
+            //when               
+            int? average = exp.Execute();
 
-        //    //when               
-        //    int? average = exp.Execute();
+            //then
+            average.Should().Be(expected);
+        }
 
-        //    //then
-        //    average.Should().Be(expected);
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_total_purchase_amount_divided_by_static_value_succeed(int version, decimal expected = 20.543333m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_total_purchase_amount_divided_by_static_value_succeed(int version, decimal expected = 20.543333m)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) / 1).As("avg_amount")
+                ).From(dbo.Purchase);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) / 1).As("avg_amount")
-        //        ).From(dbo.Purchase);
+            //when               
+            decimal average = exp.Execute();
 
-        //    //when               
-        //    decimal average = exp.Execute();
+            //then
+            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+        }
 
-        //    //then
-        //    average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_credit_limit_added_divided_by_static_value_succeed(int version, int expected = 24634)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_credit_limit_added_divided_by_static_value_succeed(int version, int expected = 24634)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Person.CreditLimit) / 1).As("avg_amount")
+                ).From(dbo.Person);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Person.CreditLimit) / 1).As("avg_amount")
-        //        ).From(dbo.Person);
+            //when               
+            int? average = exp.Execute();
 
-        //    //when               
-        //    int? average = exp.Execute();
+            //then
+            average.Should().Be(expected);
+        }
 
-        //    //then
-        //    average.Should().Be(expected);
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_total_purchase_amount_modulus_of_static_value_succeed(int version, decimal expected = 0.543333m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_total_purchase_amount_modulus_of_static_value_succeed(int version, decimal expected = 0.543333m)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) % 1).As("avg_amount")
+                ).From(dbo.Purchase);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Purchase.TotalPurchaseAmount) % 1).As("avg_amount")
-        //        ).From(dbo.Purchase);
+            //when               
+            decimal average = exp.Execute();
 
-        //    //when               
-        //    decimal average = exp.Execute();
+            //then
+            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+        }
 
-        //    //then
-        //    average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
-        //}
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_credit_limit_added_modulus_of_static_value_succeed(int version, int expected = 0)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_average_of_credit_limit_added_modulus_of_static_value_succeed(int version, int expected = 0)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+            var exp = db.SelectOne(
+                    (db.fx.Avg(dbo.Person.CreditLimit) % 1).As("avg_amount")
+                ).From(dbo.Person);
 
-        //    var exp = db.SelectOne(
-        //            (db.fx.Avg(dbo.Person.CreditLimit) % 1).As("avg_amount")
-        //        ).From(dbo.Person);
+            //when               
+            int? average = exp.Execute();
 
-        //    //when               
-        //    int? average = exp.Execute();
-
-        //    //then
-        //    average.Should().Be(expected);
-        //}
+            //then
+            average.Should().Be(expected);
+        }
     }
 }

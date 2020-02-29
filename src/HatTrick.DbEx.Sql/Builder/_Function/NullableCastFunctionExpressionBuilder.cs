@@ -8,144 +8,78 @@ namespace HatTrick.DbEx.Sql.Builder
     public class NullableCastFunctionExpressionBuilder : INullableCastFunctionExpressionBuilder
     {
         #region internals
-        public (Type, object) Expression { get; private set; }
+        public ExpressionContainer Expression { get; private set; }
         #endregion
 
         #region constructors
-        public NullableCastFunctionExpressionBuilder((Type, object) expression)
+        public NullableCastFunctionExpressionBuilder(ExpressionContainer expression)
         {
             Expression = expression;
         }
         #endregion
 
         #region methods
-        NullableCastFunctionExpression<bool?> INullableCastFunctionExpressionBuilder.AsBit()
-        {
-            var exp = new NullableCastFunctionExpression<bool?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Bit
-            };
-            return exp;
-        }
+        NullableBooleanCastFunctionExpression INullableCastFunctionExpressionBuilder.AsBit()
+           => new NullableBooleanCastFunctionExpression(Expression, new ExpressionContainer(DbType.Boolean));
 
-        NullableCastFunctionExpression<byte?> INullableCastFunctionExpressionBuilder.AsTinyInt()
-        {
-            var exp = new NullableCastFunctionExpression<byte?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.TinyInt
-            };
-            return exp;
-        }
+        NullableByteCastFunctionExpression INullableCastFunctionExpressionBuilder.AsTinyInt()
+            => new NullableByteCastFunctionExpression(Expression, new ExpressionContainer(DbType.Byte));
 
-        NullableCastFunctionExpression<DateTime?> INullableCastFunctionExpressionBuilder.AsDateTime()
-        {
-            var exp = new NullableCastFunctionExpression<DateTime?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.DateTime
-            };
-            return exp;
-        }
+        NullableDateTimeCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDateTime()
+            => new NullableDateTimeCastFunctionExpression(Expression, new ExpressionContainer(DbType.DateTime));
 
-        NullableCastFunctionExpression<DateTimeOffset?> INullableCastFunctionExpressionBuilder.AsDateTimeOffset()
-        {
-            var exp = new NullableCastFunctionExpression<DateTimeOffset?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.DateTimeOffset
-            };
-            return exp;
-        }
+        NullableDateTimeOffsetCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDateTimeOffset()
+            => new NullableDateTimeOffsetCastFunctionExpression(Expression, new ExpressionContainer(DbType.DateTimeOffset));
 
-        NullableCastFunctionExpression<decimal?> INullableCastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
-        {
-            var exp = new NullableCastFunctionExpression<decimal?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Decimal,
-                Precision = precision,
-                Scale = scale
-            };
-            return exp;
-        }
+        NullableDecimalCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
+            => new NullableDecimalCastFunctionExpression(Expression, new ExpressionContainer(DbType.Decimal));
 
-        NullableCastFunctionExpression<float?> INullableCastFunctionExpressionBuilder.AsFloat()
-        {
-            var exp = new NullableCastFunctionExpression<float?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Float
-            };
-            return exp;
-        }
+        NullableSingleCastFunctionExpression INullableCastFunctionExpressionBuilder.AsFloat()
+            => new NullableSingleCastFunctionExpression(Expression, new ExpressionContainer(DbType.Single));
 
-        NullableCastFunctionExpression<Guid?> INullableCastFunctionExpressionBuilder.AsUniqueIdentifier()
-        {
-            var exp = new NullableCastFunctionExpression<Guid?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.UniqueIdentifier
-            };
-            return exp;
-        }
+        NullableGuidCastFunctionExpression INullableCastFunctionExpressionBuilder.AsUniqueIdentifier()
+            => new NullableGuidCastFunctionExpression(Expression, new ExpressionContainer(DbType.Guid));
 
-        NullableCastFunctionExpression<short?> INullableCastFunctionExpressionBuilder.AsSmallInt()
-        {
-            var exp = new NullableCastFunctionExpression<short?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.SmallInt
-            };
-            return exp;
-        }
+        NullableInt16CastFunctionExpression INullableCastFunctionExpressionBuilder.AsSmallInt()
+            => new NullableInt16CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int16));
 
-        NullableCastFunctionExpression<int?> INullableCastFunctionExpressionBuilder.AsInt()
-        {
-            var exp = new NullableCastFunctionExpression<int?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.Int
-            };
-            return exp;
-        }
+        NullableInt32CastFunctionExpression INullableCastFunctionExpressionBuilder.AsInt()
+            => new NullableInt32CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int32));
 
-        NullableCastFunctionExpression<long?> INullableCastFunctionExpressionBuilder.AsBigInt()
-        {
-            var exp = new NullableCastFunctionExpression<long?>(Expression)
-            {
-                ConvertToSqlDbType = SqlDbType.BigInt
-            };
-            return exp;
-        }
+        NullableInt64CastFunctionExpression INullableCastFunctionExpressionBuilder.AsBigInt()
+            => new NullableInt64CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int64));
 
-        NullableCastFunctionExpression<string> INullableCastFunctionExpressionBuilder.AsVarChar(int size)
+        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsVarChar(int size)
         {
-            var exp = new NullableCastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.String))
             {
-                ConvertToSqlDbType = SqlDbType.VarChar,
                 Size = size
             };
             return exp;
         }
 
-        NullableCastFunctionExpression<string> INullableCastFunctionExpressionBuilder.AsChar(int size)
+        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsChar(int size)
         {
-            var exp = new NullableCastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.String))
             {
-                ConvertToSqlDbType = SqlDbType.Char,
                 Size = size
             };
             return exp;
         }
 
-        NullableCastFunctionExpression<string> INullableCastFunctionExpressionBuilder.AsNVarChar(int size)
+        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsNVarChar(int size)
         {
-            var exp = new NullableCastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.AnsiString))
             {
-                ConvertToSqlDbType = SqlDbType.NVarChar,
                 Size = size
             };
             return exp;
         }
 
-        NullableCastFunctionExpression<string> INullableCastFunctionExpressionBuilder.AsNChar(int size)
+        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsNChar(int size)
         {
-            var exp = new NullableCastFunctionExpression<string>(Expression)
+            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.AnsiString))
             {
-                ConvertToSqlDbType = SqlDbType.NChar,
                 Size = size
             };
             return exp;

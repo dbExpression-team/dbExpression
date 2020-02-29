@@ -112,5 +112,33 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             retrieved.CreditLimit.Should().BeNull();
             retrieved.BirthDate.Should().BeNull();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_a_person_with_string_delimiter_in_last_name_be_inserted_successfully(int version, string expected = "O''Conner")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var person = new Person
+            {
+                FirstName = expected,
+                LastName = expected,
+                GenderType = GenderType.Female,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
+            };
+
+            var exp = db.Insert(person)
+                .Into(dbo.Person);
+
+            //when               
+            exp.Execute();
+
+            Person retrieved = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == person.Id).Execute();
+
+            //then
+            retrieved.LastName.Should().Be(expected);
+        }
     }
 }

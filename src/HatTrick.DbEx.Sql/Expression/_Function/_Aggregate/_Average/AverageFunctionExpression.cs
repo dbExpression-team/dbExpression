@@ -6,12 +6,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class AverageFunctionExpression : AggregateFunctionExpression,
-        IDbNumericFunctionExpression,
-        IAssemblyPart,
         IDbExpressionIsDistinctProvider,
-        ISupportedForExpression<SelectExpression>,
-        ISupportedForFunctionExpression<CastFunctionExpression>,
-        ISupportedForFunctionExpression<DateDiffFunctionExpression, int>,
         IEquatable<AverageFunctionExpression>
     {
         #region internals
@@ -23,24 +18,21 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected AverageFunctionExpression()
-        {
-        }
-
-        protected AverageFunctionExpression((Type,object) expression, bool isDistinct) : base(expression)
+        protected AverageFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"AVG({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression.Item2})";
+        public override string ToString() => $"AVG({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression.Object})";
         #endregion
 
         #region equals
         public bool Equals(AverageFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
             if (this.IsDistinct != obj.IsDistinct) return false;
 
             return true;
@@ -50,7 +42,16 @@ namespace HatTrick.DbEx.Sql.Expression
          => obj is AverageFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
-            => base.GetHashCode();
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
+                return hash;
+            }
+        }
         #endregion
     }
 }

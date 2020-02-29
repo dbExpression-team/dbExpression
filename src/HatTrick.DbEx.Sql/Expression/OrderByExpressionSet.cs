@@ -16,18 +16,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region constructors
         internal OrderByExpressionSet()
-        {
+        { 
+        
         }
 
-        internal OrderByExpressionSet(OrderByExpression a)
+        public OrderByExpressionSet(OrderByExpression orderByExpression)
         {
-            Expressions.Add(a);
+            Expressions.Add(orderByExpression ?? throw new ArgumentNullException($"{nameof(orderByExpression)} is required."));
         }
 
-        internal OrderByExpressionSet(OrderByExpression a, OrderByExpression b)
+        public OrderByExpressionSet(OrderByExpression aOrderByExpression, OrderByExpression bOrderByExpression)
         {
-            Expressions.Add(a);
-            Expressions.Add(b);
+            Expressions.Add(aOrderByExpression ?? throw new ArgumentNullException($"{nameof(aOrderByExpression)} is required."));
+            Expressions.Add(bOrderByExpression ?? throw new ArgumentNullException($"{nameof(bOrderByExpression)} is required."));
         }
         #endregion
 

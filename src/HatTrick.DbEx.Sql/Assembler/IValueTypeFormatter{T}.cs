@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public interface IValueTypeFormatter<T> : IValueTypeFormatter
-        where T : IComparable
+    public interface IValueTypeFormatter
     {
-        string Format(T value);
+        object Format(object value);
     }
 }

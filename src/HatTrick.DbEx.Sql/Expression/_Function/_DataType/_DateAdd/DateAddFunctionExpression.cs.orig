@@ -1,0 +1,111 @@
+<<<<<<< HEAD
+﻿using System;
+=======
+﻿using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+>>>>>>> release/1.0
+
+namespace HatTrick.DbEx.Sql.Expression
+{
+    public abstract class DateAddFunctionExpression : DataTypeFunctionExpression,
+        IDbDateFunctionExpression,
+<<<<<<< HEAD
+        IEquatable<DateAddFunctionExpression>
+    {
+        #region interface
+        public ExpressionContainer DatePart { get; private set; }
+        public ExpressionContainer Value { get; private set; }
+        #endregion
+
+        #region constructors
+        protected DateAddFunctionExpression(ExpressionContainer datePart, ExpressionContainer value, ExpressionContainer expression) : base(expression)
+        {
+            DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
+            Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");
+=======
+        IAssemblyPart,
+        ISupportedForSelectExpression,
+        IEquatable<DateAddFunctionExpression>
+    {
+        #region interface
+        public (Type, object) DatePart { get; private set; }
+        public (Type, object) Value { get; private set; }
+        #endregion
+
+        #region constructors
+        protected DateAddFunctionExpression()
+        {
+        }
+
+        protected DateAddFunctionExpression((Type, object) datePart, (Type, object) value, (Type, object) expression)
+            : base(expression)
+        {
+            DatePart = datePart;
+            Value = value;
+>>>>>>> release/1.0
+        }
+        #endregion
+
+        #region as
+        public new DateAddFunctionExpression As(string alias)
+        {
+            base.As(alias);
+            return this;
+        }
+        #endregion
+
+        #region to string
+        public override string ToString() => $"DateAdd({Expression})";
+        #endregion
+
+        #region equals
+        public bool Equals(DateAddFunctionExpression obj)
+        {
+            if (!base.Equals(obj)) return false;
+
+<<<<<<< HEAD
+            if (this.DatePart is null && obj.DatePart is object) return false;
+            if (this.DatePart is object && obj.DatePart is null) return false;
+            if (!this.DatePart.Equals(obj.DatePart)) return false;
+
+            if (this.Value is null && obj.Value is object) return false;
+            if (this.Value is object && obj.Value is null) return false;
+            if (!this.Value.Equals(obj.Value)) return false;
+=======
+            if (this.DatePart == default && obj.DatePart != default) return false;
+            if (obj.DatePart == default && this.DatePart != default) return false;
+            if (this.DatePart.Item1 != obj.DatePart.Item1) return false;
+            if (this.DatePart.Item2 != obj.DatePart.Item2) return false;
+
+            if (this.Value != obj.Value) return false;
+>>>>>>> release/1.0
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+<<<<<<< HEAD
+            => obj is DateAddFunctionExpression exp ? Equals(exp) : false;
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ (DatePart is object ? DatePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Value is object ? Value.GetHashCode() : 0);
+                return hash;
+            }
+        }
+=======
+         => obj is DateAddFunctionExpression exp ? Equals(exp) : false;
+
+        public override int GetHashCode()
+            => base.GetHashCode();
+>>>>>>> release/1.0
+        #endregion
+    }
+}

@@ -12,18 +12,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public (Type, object) Expression { get; }
+        public ExpressionContainer Expression { get; }
         #endregion
 
         #region constructors
-        public SelectExpression(ISupportedForExpression<SelectExpression> expression)
+        public SelectExpression(ExpressionContainer expression)
         {
-            Expression = (expression.GetType(), expression);
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.Item2.ToString();
+        public override string ToString() => Expression.Object.ToString();
         #endregion
 
         #region logical & operator
@@ -37,10 +37,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #region equals
         public bool Equals(SelectExpression obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (!ReferenceEquals(this.Expression.Item2, obj.Expression.Item2)) return false;
-            if (this.IsDistinct != obj.IsDistinct) return false;
+            if (obj is null) return false;
+
+            if (Expression is null && obj.Expression is object) return false;
+            if (Expression is object && obj.Expression is null) return false;
+            if (!Expression.Equals(obj.Expression)) return false;
+
+            if (IsDistinct != obj.IsDistinct) return false;
 
             return true;
         }

@@ -10,28 +10,23 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssemblyPart
     {
         #region interface
-        public IList<AssignmentExpression> Expressions { get; } = new List<AssignmentExpression>();
+        public IList<AssignmentExpression> Expressions { get; }
         #endregion
 
         #region constructors
-        public AssignmentExpressionSet(params AssignmentExpression[] fields)
+        public AssignmentExpressionSet()
         {
-            Expressions = fields.ToList();
+            Expressions = new List<AssignmentExpression>();
         }
 
-        internal AssignmentExpressionSet()
+        public AssignmentExpressionSet(IList<AssignmentExpression> assignments)
         {
+            Expressions = assignments?.ToList() ?? throw new ArgumentNullException($"{nameof(assignments)} is required.");
         }
 
-        internal AssignmentExpressionSet(AssignmentExpression a1)
+        public AssignmentExpressionSet(AssignmentExpression assignment)
         {
-            Expressions.Add(a1);
-        }
-
-        internal AssignmentExpressionSet(AssignmentExpression a1, AssignmentExpression a2)
-        {
-            Expressions.Add(a1);
-            Expressions.Add(a2);
+            Expressions.Add(assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required."));
         }
         #endregion
 

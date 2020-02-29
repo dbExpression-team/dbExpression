@@ -1,0 +1,21 @@
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Expression
+{
+    public abstract class NullableCoalesceFunctionExpression : CoalesceFunctionExpression
+    {
+        #region constructors
+<<<<<<< HEAD
+        protected NullableCoalesceFunctionExpression(Type @type, params ExpressionContainer[] expressions) : base(type, expressions)
+=======
+        protected NullableCoalesceFunctionExpression()
+        {
+        }
+
+        protected NullableCoalesceFunctionExpression(params (Type, object)[] expressions) : base(expressions)
+>>>>>>> release/1.0
+        {
+        }
+        #endregion    
+    }
+}

@@ -28,7 +28,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write(" = ");
                 builder.AppendPart(expression.Assign.Expressions[i].Expression.RightPart, context);
                 if (i < expression.Assign.Expressions.Count - 1)
+                {
                     builder.Appender.Write(",").LineBreak();
+                }
             }
 
             builder.Appender.LineBreak()
@@ -49,7 +51,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                     builder.Appender.Indent();
                     builder.AppendPart(expression.Joins.Expressions[i], context);
                     if (i < expression.Joins.Expressions.Count - 1)
+                    {
                         builder.Appender.LineBreak();
+                    }
                 }
                 builder.Appender.Indentation--;
             }
