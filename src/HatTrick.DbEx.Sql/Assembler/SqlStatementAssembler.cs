@@ -1,9 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
-using System.Text;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -23,6 +19,20 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.AppendPart(expression.Joins, context);
 
             builder.Appender
+                .Indentation--;
+        }
+
+        protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Where?.Expression == null || expression.Where.Expression == default)
+                return;
+
+            builder.Appender.Indent().Write("WHERE").LineBreak()
+                .Indentation++;
+
+            builder.AppendPart(expression.Where, context);
+
+            builder.Appender.LineBreak()
                 .Indentation--;
         }
         #endregion

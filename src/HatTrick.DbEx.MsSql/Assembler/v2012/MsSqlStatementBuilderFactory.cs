@@ -17,15 +17,15 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
         private static readonly SysUtcDateTimeFunctionAppender _sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionAppender();
 
         #region methods
-        public override void RegisterDefaultAssemblers()
+        public override void RegisterDefaultStatementAssemblers()
         {
-            base.RegisterDefaultAssemblers();
-            RegisterAssembler(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
-            RegisterAssembler(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
-            RegisterAssembler(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            RegisterAssembler(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
-            RegisterAssembler(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
-            RegisterAssembler(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
+            base.RegisterDefaultStatementAssemblers();
+            RegisterStatementAssembler(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
+            RegisterStatementAssembler(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
+            RegisterStatementAssembler(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
+            RegisterStatementAssembler(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
+            RegisterStatementAssembler(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
+            RegisterStatementAssembler(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
         }
 
         public override void RegisterDefaultPartAppenders()

@@ -1,7 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -11,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.AppendPart(expression.Expression.LeftPart, context);
             builder.Appender.Write(" = ");
-            builder.Appender.Write(builder.Parameters.Add(expression.Expression.RightPart, context.Field).Parameter.ParameterName);
+            builder.AppendPart(expression.Expression.RightPart, context);
         }
     }
 }

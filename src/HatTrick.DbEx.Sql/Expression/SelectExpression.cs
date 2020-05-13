@@ -1,11 +1,9 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
-        IDbExpression, 
-        IAssemblyPart
+        IDbExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }

@@ -1,13 +1,10 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AssignmentExpressionSet : 
-        IDbExpressionSet<AssignmentExpression>, 
-        IAssemblyPart
+    public class AssignmentExpressionSet : IDbExpressionSet<AssignmentExpression>
     {
         #region interface
         public IList<AssignmentExpression> Expressions { get; }

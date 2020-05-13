@@ -1,7 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
+﻿using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -13,16 +10,12 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        TTo FormatValueType<TFrom, TTo>(TFrom value)
-            where TFrom : IConvertible
-            where TTo : IComparable;
-
         SqlStatement CreateSqlStatement();
 
         void AppendPart(ExpressionContainer part, AssemblyContext context);
 
         void AppendPart<T>(T part, AssemblyContext context)
-            where T : class, IAssemblyPart;
+            where T : class, IDbExpression;
 
         string GenerateAlias();
         #endregion

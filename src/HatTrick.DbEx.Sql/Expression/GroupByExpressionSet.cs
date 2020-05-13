@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,8 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
         IDbExpression, 
-        IDbExpressionSet<GroupByExpression>, 
-        IAssemblyPart
+        IDbExpressionSet<GroupByExpression>
     {
         #region interface
         public IList<GroupByExpression> Expressions { get; } = new List<GroupByExpression>();

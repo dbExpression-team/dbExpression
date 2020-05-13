@@ -1,9 +1,6 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
-
-namespace HatTrick.DbEx.Sql.Expression
+﻿namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class ExpressionSet : IAssemblyPart
+    public partial class ExpressionSet : IDbExpression
     {
         #region interface
         public IDbEntity Instance { get; set; }

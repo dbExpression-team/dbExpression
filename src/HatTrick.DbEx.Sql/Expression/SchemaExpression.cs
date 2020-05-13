@@ -6,7 +6,6 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class SchemaExpression : 
-        IAssemblyPart, 
         IDbExpression,
         IDbExpressionMetadataProvider<ISqlSchemaMetadata>,
         IDbExpressionListProvider<EntityExpression>,

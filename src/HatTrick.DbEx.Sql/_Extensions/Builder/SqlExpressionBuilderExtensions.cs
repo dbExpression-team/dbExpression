@@ -147,7 +147,6 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region ValueTerminationExpressionBuilder
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder)
-            //where T : IComparable
             => builder.CreateSyncExecutionPipeline().ExecuteValue(builder);
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout)

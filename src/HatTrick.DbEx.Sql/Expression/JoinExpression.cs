@@ -1,11 +1,9 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpression : 
         IDbExpression, 
-        IAssemblyPart,
         IDbExpressionAliasProvider
     {
         #region interface

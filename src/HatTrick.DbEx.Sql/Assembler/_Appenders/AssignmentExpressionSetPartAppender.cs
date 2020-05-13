@@ -9,7 +9,18 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendPart(AssignmentExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            throw new NotImplementedException("Should be handled by outer builder.");
+            if (expression?.Expressions == null || !expression.Expressions.Any())
+                return;
+
+            for (var i = 0; i < expression.Expressions.Count; i++)
+            {
+                builder.Appender.Indent();
+                builder.AppendPart(expression.Expressions[i], context);
+                if (i < expression.Expressions.Count - 1)
+                {
+                    builder.Appender.Write(",").LineBreak();
+                }
+            }
         }
     }
 }

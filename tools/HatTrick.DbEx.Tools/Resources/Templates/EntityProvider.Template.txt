@@ -1,3 +1,5 @@
+using System;
+
 {#each Schemas}
 {#if !($) => IsIgnored}
 namespace {() => ResolveRootNamespace}DataService
@@ -24,18 +26,21 @@ namespace {() => ResolveRootNamespace}DataService
 		#region constructors
         static {($) => ResolveName}()
         {{
-            if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
-                throw new DbExpressionConfigurationException($"Metadata for source reference key '{() => ResolveSourceReferenceKey}' has not been provided.");
+            _schema = new {($) => ResolveName}Schema(new Lazy<ISqlSchemaMetadata>(() =>
+                {{
+                    if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
+                        throw new DbExpressionConfigurationException($"Metadata for source reference key '{() => ResolveSourceReferenceKey}' has not been provided.");
 
-            var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
-            if (schema == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
+                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+                    if (schema == null)
+                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
 
-            schema.TryGetValue("{$.Name}", out ISqlSchemaMetadata schemaMetadata);
-            if (schemaMetadata == null)
-                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
+                    schema.TryGetValue("{$.Name}", out ISqlSchemaMetadata schemaMetadata);
+                    if (schemaMetadata == null)
+                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
 
-            _schema = new {($) => ResolveName}Schema(schemaMetadata);
+                    return schemaMetadata;
+                }}));
         }}
         #endregion
     }}

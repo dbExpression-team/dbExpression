@@ -16,14 +16,10 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public void RegisterEntityMapper<T>(Action<T, ISqlFieldReader, IValueMapper> mapper)
             where T : class, IDbEntity
-        {
-            factory.RegisterEntityMapper(mapper);
-        }
+            => factory.RegisterEntityMapper(mapper);
 
         public void RegisterValueMapProvider<T>(IValueMapProvider<T> mapper)
             where T : IComparable
-        {
-            factory.RegisterValueMapProvider(mapper);
-        }
+            => factory.RegisterValueMapProvider(mapper);
     }
 }

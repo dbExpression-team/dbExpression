@@ -1,14 +1,12 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpressionSet : 
         IDbExpression, 
-        IDbExpressionSet<OrderByExpression>, IAssemblyPart
+        IDbExpressionSet<OrderByExpression>
     {
         #region interface
         public IList<OrderByExpression> Expressions { get; }  = new List<OrderByExpression>();

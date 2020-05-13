@@ -5,8 +5,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpressionSet : 
-        IDbExpression, IDbExpressionSet<InsertExpression>, IAssemblyPart
+    public class InsertExpressionSet : IDbExpression, IDbExpressionSet<InsertExpression>
     {
         #region interface
         public IList<InsertExpression> Expressions { get; } = new List<InsertExpression>();

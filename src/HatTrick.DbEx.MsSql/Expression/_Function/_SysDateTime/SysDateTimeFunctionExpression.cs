@@ -1,12 +1,10 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class SysDateTimeFunctionExpression : DataTypeFunctionExpression,
         IDbDateFunctionExpression,
-        IAssemblyPart,
         IDbExpressionAliasProvider,
         IEquatable<SysDateTimeFunctionExpression>
     {

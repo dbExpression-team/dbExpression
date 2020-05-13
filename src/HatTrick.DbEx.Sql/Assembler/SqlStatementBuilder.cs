@@ -16,7 +16,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ExpressionSet ExpressionSet { get; }
         public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerFactory { get; }
         public Func<Type, IAssemblyPartAppender> PartAppenderFactory { get; }
-        public Func<Type, IValueTypeFormatter> ValueTypeFormatterFactory { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
@@ -25,7 +24,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             ExpressionSet dbExpression,
             Func<SqlStatementExecutionType, ISqlStatementAssembler> assemblerFactory,
             Func<Type, IAssemblyPartAppender> partAppenderFactory,
-            Func<Type, IValueTypeFormatter> valueTypeFormatterFactory,
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         )
@@ -34,19 +32,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             ExpressionSet = dbExpression;
             AssemblerFactory = assemblerFactory;
             PartAppenderFactory = partAppenderFactory;
-            ValueTypeFormatterFactory = valueTypeFormatterFactory;
             Appender = appender;
             Parameters = parameterBuilder;
-        }
-
-        public U FormatValueType<T, U>(T value)
-            where T : IConvertible
-            where U : IComparable
-        {
-            if (!(ValueTypeFormatterFactory(typeof(U)) is IValueTypeFormatter formatter))
-                throw new DbExpressionConfigurationException($"Could not resolve a value formatter for type '{value.GetType()}', please ensure an value formatter has been registered during startup initialization of DbExpression.");
-
-            return (U)formatter.Format(value);
         }
 
         public SqlStatement CreateSqlStatement()
@@ -69,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public void AppendPart<T>(T part, AssemblyContext context)
-            where T : class, IAssemblyPart
+            where T : class, IDbExpression
             => AppendPart(new ExpressionContainer(part), context);
 
         public void AppendPart(ExpressionContainer part, AssemblyContext context)

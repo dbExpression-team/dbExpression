@@ -1,8 +1,7 @@
-using System;
 using HatTrick.DbEx.Sql;
-using DbEx.Data;
+using System;
 
-namespace DbEx.Data.dbo
+namespace Data.dbo
 {
     #region address
     [Serializable]
@@ -10,7 +9,7 @@ namespace DbEx.Data.dbo
     {
         #region interface
         public int Id { get; set; }
-        public AddressType? AddressType { get; set; }
+        public AddressType AddressType { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }
@@ -74,7 +73,7 @@ namespace DbEx.Data.dbo
     {
         #region interface
         public int Id { get; set; }
-        public ProductCategoryType? ProductCategoryType { get; set; }
+        public ProductCategoryType ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal ListPrice { get; set; }
@@ -152,7 +151,7 @@ namespace DbEx.Data.dbo
     }
     #endregion
 }
-namespace DbEx.Data.sec
+namespace Data.sec
 {
     #region person
     [Serializable]

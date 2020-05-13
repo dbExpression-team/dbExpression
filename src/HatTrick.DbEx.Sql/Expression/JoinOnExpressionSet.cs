@@ -1,15 +1,12 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpressionSet : 
         IDbExpression, 
-        IDbExpressionSet<JoinOnExpression>, 
-        IAssemblyPart
+        IDbExpressionSet<JoinOnExpression>
     {
         #region internals
         private readonly IList<object> expressions;

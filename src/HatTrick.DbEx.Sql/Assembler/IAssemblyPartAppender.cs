@@ -1,7 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using System;
-
-namespace HatTrick.DbEx.Sql.Assembler
+﻿namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface IAssemblyPartAppender
     {

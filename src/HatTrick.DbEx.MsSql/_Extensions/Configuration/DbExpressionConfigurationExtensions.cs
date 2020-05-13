@@ -97,9 +97,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             //configure sql statement builder factory
             var factory = new Assembler.v2014.MsSqlStatementBuilderFactory();
-            factory.RegisterDefaultAssemblers();
+            factory.RegisterDefaultStatementAssemblers();
             factory.RegisterDefaultPartAppenders();
-            factory.RegisterDefaultValueFormatters();
             config.UseStatementBuilderFactory(factory);
 
             configure?.Invoke(config);
@@ -134,9 +133,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             //configure sql statement builder factory
             var factory = new Assembler.v2012.MsSqlStatementBuilderFactory();
-            factory.RegisterDefaultAssemblers();
+            factory.RegisterDefaultStatementAssemblers();
             factory.RegisterDefaultPartAppenders();
-            factory.RegisterDefaultValueFormatters();
             config.UseStatementBuilderFactory(factory);
 
             configure?.Invoke(config);

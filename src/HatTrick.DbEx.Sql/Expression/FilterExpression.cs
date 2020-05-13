@@ -1,13 +1,9 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpression : 
         IDbExpression,
-        IAssemblyPart,
         IDbFunctionExpression
     {
         #region interface

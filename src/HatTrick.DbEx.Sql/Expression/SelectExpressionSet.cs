@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,8 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class SelectExpressionSet : 
         IDbExpression,
         IDbExpressionIsDistinctProvider,
-        IDbExpressionIsTopProvider,
-        IAssemblyPart
+        IDbExpressionIsTopProvider
     {
         #region internals
         protected bool _isDistinct;

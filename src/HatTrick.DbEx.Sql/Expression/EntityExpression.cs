@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Mapper;
+﻿using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class EntityExpression :
         IDbExpression, 
-        IAssemblyPart, 
         IDbExpressionMetadataProvider<ISqlEntityMetadata>,
         IDbExpressionProvider<SchemaExpression>,
         IDbExpressionListProvider<FieldExpression>,

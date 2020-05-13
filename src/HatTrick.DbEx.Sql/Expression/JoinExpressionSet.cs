@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,8 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpressionSet : 
         IDbExpression, 
-        IDbExpressionSet<JoinExpression>, 
-        IAssemblyPart
+        IDbExpressionSet<JoinExpression>
     {
         #region interface
         public IList<JoinExpression> Expressions { get; }  = new List<JoinExpression>();

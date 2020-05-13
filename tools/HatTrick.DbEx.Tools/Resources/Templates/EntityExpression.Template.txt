@@ -29,39 +29,39 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
 		{#each Columns}
 		{#if !($) => IsIgnored}
 			{#if ($) => FieldRequiresTypedParameter}
-		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeName}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName].Value as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeName}>; }} }}
+		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeNameNotNull}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName] as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeNameNotNull}>; }} }}
 			{/if}
 			{#if !($) => FieldRequiresTypedParameter}
-		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName].Value as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>; }} }}
+		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName] as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>; }} }}
 			{/if}
 		{/if}
 		{/each}
         #endregion
 
         #region constructors
-		public {($) => ResolveName}Entity(SchemaExpression schema, ISqlEntityMetadata metadata): this(schema, metadata, null)
+		public {($) => ResolveName}Entity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
         {{
         }}
 
-        private {($) => ResolveName}Entity(SchemaExpression schema, ISqlEntityMetadata metadata, string alias) : base(schema, metadata, alias)
+        private {($) => ResolveName}Entity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("{(..\$) => ResolveName}.{($) => ResolveName}", schema, metadata, alias)
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
 			{#if ($) => HasDataTypeOverride}
 				{#if ($) => HasFieldTypeOverride}{! **** Assume no cast necessary **** }
 					{#if ($) => FieldRequiresTypedParameter}
-			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => x.{($) => ResolveName})));
+			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeNameNotNull}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
 					{/if}
 					{#if !($) => FieldRequiresTypedParameter}
-			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => x.{($) => ResolveName})));
+			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
 					{/if}
 				{/if}
 				{#if !($) => HasFieldTypeOverride}{! **** Assume we need a cast **** }
-			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => ({($) => ResolveStrictAssemblyTypeName})x.{($) => ResolveName})));
+			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
 				{/if}
 			{/if}
 			{#if !($) => HasDataTypeOverride}
-			Fields.Add(_{($) => ToCamelCase}FieldName, new Lazy<FieldExpression>(() => new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>(this, metadata.Fields[_{($) => ToCamelCase}FieldName] ?? throw new DbExpressionConfigurationException($"Configuration for entity '{{metadata.Name}}' does not contain field metadata for '{{_{($) => ToCamelCase}FieldName}}'"), x => x.{($) => ResolveName})));
+			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
 			{/if}
 			{/if}
 			{/each}
@@ -71,7 +71,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
         #region methods
         public {($) => ResolveName}Entity As(string name)
         {{
-            return new {($) => ResolveName}Entity(this.Schema, this.Metadata, name);
+            return new {($) => ResolveName}Entity(this.Schema, this.MetadataResolver, name);
         }}
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -143,12 +143,20 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
-			{#if ($) => HasDataTypeOverride}
-            {(..\$) => ToCamelCase}.{($) => ResolveName} = ({($) => ResolveAssemblyTypeName})mapper.Map<{($) => ResolveStrictAssemblyTypeName}>({($) => ResolveName}, reader.ReadField());
+			{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($) => ResolveAssemblyTypeName}>(reader.ReadField().Value);
 			{/if}
-			{#if !($) => HasDataTypeOverride}
-			{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($) => ResolveAssemblyTypeName}>({($) => ResolveName}, reader.ReadField());
-			{/if}
+			{/each}
+        }}
+
+		protected override void HydrateField({($) => ResolveName} {($) => ToCamelCase}, FieldExpression field, object value, IValueMapper mapper)
+        {{
+			{#each Columns}
+			{#if !($) => IsIgnored}
+			if (field == {($) => ResolveName})
+			{{
+				{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($) => ResolveAssemblyTypeName}>(value);
+				return;
+			}}
 			{/if}
 			{/each}
         }}

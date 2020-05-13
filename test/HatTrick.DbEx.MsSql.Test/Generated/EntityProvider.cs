@@ -1,8 +1,7 @@
-using System;
 
-namespace DbEx.DataService
+namespace DataService
 {
-    using DbEx.dbo.DataService;
+    using DataService.EntityExpression.dbo;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -20,35 +19,33 @@ namespace DbEx.DataService
         public static ProductEntity Product { get { return _schema.Product; } }
         public static PurchaseEntity Purchase { get { return _schema.Purchase; } }
         public static PurchaseLineEntity PurchaseLine { get { return _schema.PurchaseLine; } }
+
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return _schema.PersonTotalPurchasesView; } }
         #endregion
 
 		#region constructors
         static dbo()
         {
-            _schema = new dboSchema(new Lazy<ISqlSchemaMetadata>(() =>
-                {
-                    if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
-                        throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
+            if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
+                throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
 
-                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
-                    if (schema == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+            var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+            if (schema == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
 
-                    schema.TryGetValue("dbo", out ISqlSchemaMetadata schemaMetadata);
-                    if (schemaMetadata == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+            schema.TryGetValue("dbo", out ISqlSchemaMetadata schemaMetadata);
+            if (schemaMetadata == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
 
-                    return schemaMetadata;
-                }));
+            _schema = new dboSchema(schemaMetadata);
         }
         #endregion
     }
     #endregion
 }
-namespace DbEx.DataService
+namespace DataService
 {
-    using DbEx.sec.DataService;
+    using DataService.EntityExpression.sec;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -61,26 +58,24 @@ namespace DbEx.DataService
 
         #region interface
         public static PersonEntity Person { get { return _schema.Person; } }
+
         #endregion
 
 		#region constructors
         static sec()
         {
-            _schema = new secSchema(new Lazy<ISqlSchemaMetadata>(() =>
-                {
-                    if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
-                        throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
+            if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
+                throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
 
-                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
-                    if (schema == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+            var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+            if (schema == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
 
-                    schema.TryGetValue("sec", out ISqlSchemaMetadata schemaMetadata);
-                    if (schemaMetadata == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+            schema.TryGetValue("sec", out ISqlSchemaMetadata schemaMetadata);
+            if (schemaMetadata == null)
+                throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
 
-                    return schemaMetadata;
-                }));
+            _schema = new secSchema(schemaMetadata);
         }
         #endregion
     }

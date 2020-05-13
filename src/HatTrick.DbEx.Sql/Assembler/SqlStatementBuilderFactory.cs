@@ -1,10 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Configuration;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -19,6 +16,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly SchemaExpressionPartAppender _schemaAppender = new SchemaExpressionPartAppender();
         private static readonly EntityExpressionPartAppender _entityAppender = new EntityExpressionPartAppender();
         private static readonly FieldExpressionPartAppender _fieldAppender = new FieldExpressionPartAppender();
+        private static readonly AssignmentExpressionPartAppender _assignmentAppender = new AssignmentExpressionPartAppender();
+        private static readonly AssignmentExpressionSetPartAppender _assignmentSetAppender = new AssignmentExpressionSetPartAppender();
         private static readonly SelectExpressionPartAppender _selectAppender = new SelectExpressionPartAppender();
         private static readonly SelectExpressionSetPartAppender _selectSetAppender = new SelectExpressionSetPartAppender();
         private static readonly FilterExpressionPartAppender _filterAppender = new FilterExpressionPartAppender();
@@ -81,11 +80,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private Func<SqlStatementExecutionType, ISqlStatementAssembler> _statementAssemblerFactory;
         private Func<Type, IAssemblyPartAppender> _partAppenderFactory;
-        private Func<Type, IValueTypeFormatter> _valueTypeFormatterFactory;
 
         private readonly ConcurrentDictionary<Type, Func<IAssemblyPartAppender>> _partAppenders = new ConcurrentDictionary<Type, Func<IAssemblyPartAppender>>();
         private readonly ConcurrentDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> _statementAssemblers = new ConcurrentDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
-        private readonly ConcurrentDictionary<Type, Func<IValueTypeFormatter>> _valueTypeFormatters = new ConcurrentDictionary<Type, Func<IValueTypeFormatter>>();
         #endregion
 
         #region interface
@@ -100,15 +97,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public virtual Func<Type, IAssemblyPartAppender> PartAppenderFactory
             => _partAppenderFactory ?? (_partAppenderFactory = new Func<Type, IAssemblyPartAppender>(t => ResolvePartAppender(t, t)));
-
-        public virtual Func<Type, IValueTypeFormatter> ValueTypeFormatterFactory
-            =>  _valueTypeFormatterFactory ?? (_valueTypeFormatterFactory = new Func<Type, IValueTypeFormatter>(t =>
-                {
-                    if (_valueTypeFormatters.TryGetValue(t, out var formatterFactory))
-                        return formatterFactory();
-
-                    throw new DbExpressionConfigurationException($"Could not resolve a formatter, please ensure a formatter has been registered for type '{t}'");
-                }));
         #endregion
 
         #region methods
@@ -127,6 +115,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(SchemaExpression), () => _schemaAppender);
             _partAppenders.TryAdd(typeof(EntityExpression), () => _entityAppender);
             _partAppenders.TryAdd(typeof(FieldExpression), () => _fieldAppender);
+            _partAppenders.TryAdd(typeof(AssignmentExpression), () => _assignmentAppender);
+            _partAppenders.TryAdd(typeof(AssignmentExpressionSet), () => _assignmentSetAppender);
             _partAppenders.TryAdd(typeof(SelectExpression), () => _selectAppender);
             _partAppenders.TryAdd(typeof(SelectExpressionSet), () => _selectSetAppender);
             _partAppenders.TryAdd(typeof(FilterExpression), () => _filterAppender);
@@ -186,19 +176,19 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(DBNull), () => _dbNullAppender);
         }
 
-        public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType)
+        public virtual void RegisterStatementAssembler<T>(SqlStatementExecutionType statementExecutionType)
             where T : class, ISqlStatementAssembler, new()
             => _statementAssemblers.AddOrUpdate(statementExecutionType, () => new T(), (t, f) => () => new T());
 
-        public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
+        public virtual void RegisterStatementAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
             where T : class, ISqlStatementAssembler
             => _statementAssemblers.AddOrUpdate(statementExecutionType, () => assembler, (t, f) => () => assembler);
 
-        public virtual void RegisterAssembler<T>(SqlStatementExecutionType statementExecutionType, Func<T> assemblerFactory)
+        public virtual void RegisterStatementAssembler<T>(SqlStatementExecutionType statementExecutionType, Func<T> assemblerFactory)
             where T : class, ISqlStatementAssembler
             => _statementAssemblers.AddOrUpdate(statementExecutionType, assemblerFactory, (t,f) => assemblerFactory);
 
-        public virtual void RegisterDefaultAssemblers()
+        public virtual void RegisterDefaultStatementAssemblers()
         {
             _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
             _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
@@ -211,22 +201,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             _statementAssemblers.TryAdd(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
         }
 
-        public void RegisterValueFormatter<T, U>(IValueTypeFormatter<T, U> valueFormatter)
-            where T : IConvertible
-            where U : IComparable
-            => _valueTypeFormatters.AddOrUpdate(typeof(T), () => valueFormatter, (t, f) => () => valueFormatter);
-
-        public void RegisterValueFormatter<T,U>(Func<IValueTypeFormatter<T,U>> valueFormatterFactory)
-            where T : IConvertible
-            where U : IComparable
-            => _valueTypeFormatters.AddOrUpdate(typeof(T), valueFormatterFactory, (t, f) => valueFormatterFactory);
-
-        public virtual void RegisterDefaultValueFormatters()
-        {
-        }
-
         public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
-            => new SqlStatementBuilder(config, expression, AssemblerFactory, PartAppenderFactory, ValueTypeFormatterFactory, appender, parameterBuilder);
+            => new SqlStatementBuilder(config, expression, AssemblerFactory, PartAppenderFactory, appender, parameterBuilder);
 
         private IAssemblyPartAppender ResolvePartAppender(Type current, Type original)
         {
