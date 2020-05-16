@@ -17,6 +17,7 @@ namespace HatTrick.DbEx.Tools.Service
         {
             "--help", "-?", //help
             "--path", "-p", //config file path
+            "--output", "-o" //command line override of output path
         };
         private readonly string DEFAULT_CONFIG_PATH = "./";
         private readonly string DEFAULT_CONFIG_NAME = "DbExConfig.json";
@@ -58,6 +59,8 @@ namespace HatTrick.DbEx.Tools.Service
 
                 DbExConfig config = this.GetConfig(configPath);
                 base.PushProgressFeedback("initialized DbEx config");
+
+                config.OutputDirectory = this.ResolveOutputDirectory(config);
 
                 this.EnsureOutputDirectory(config);
                 base.PushProgressFeedback("ensured output directory");
@@ -104,6 +107,24 @@ namespace HatTrick.DbEx.Tools.Service
             if (!svc.IO.FileExists(path))
             {
                 throw new CommandException($"Could not resolve DbExConfig.json file at path: {path}");
+            }
+
+            return path;
+        }
+        #endregion
+
+        #region resolve output path
+        protected string ResolveOutputDirectory(DbExConfig config)
+        {
+            string path = config.OutputDirectory;
+            string keyUsed = null;
+            if (base.TryGetOption(out path, out keyUsed, "--output", "-o"))
+            {
+                if (!svc.IO.DirectoryExists(path))
+                {
+                    //it's not a valid file or directory (absolute or relative)...
+                    throw new CommandException($"Command option '{keyUsed}' does not point to a valid file or directory. Value provided: {path}");
+                }
             }
 
             return path;
@@ -278,10 +299,10 @@ namespace HatTrick.DbEx.Tools.Service
         protected void RenderOutput(MsSqlModel sqlModel, DbExConfig config, Resource resource, CodeGenerationHelpers helpers)
         {
             TemplateEngine engine = new TemplateEngine(resource.Value);
-            //engine.ProgressListener += (i, s) =>
-            //{
-            //    svc.Feedback.Push(To.ConsoleOnly, $"{i} \t {s}");
-            //};
+            engine.ProgressListener += (i, s) =>
+            {
+                svc.Feedback.Push(To.ConsoleOnly, $"{i} \t {s}");
+            };
             engine.TrimWhitespace = true;
 
             LambdaRepository repo = engine.LambdaRepo;
@@ -291,11 +312,12 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string, string>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<INamedMeta, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
             repo.Register(nameof(helpers.HasDataTypeOverride), (Func<INamedMeta, bool>)helpers.HasDataTypeOverride);
-            repo.Register(nameof(helpers.HasFieldTypeOverride), (Func<INamedMeta, bool>)helpers.HasFieldTypeOverride);
-            repo.Register(nameof(helpers.ResolveAssemblyTypeName), (Func<MsSqlColumn, string>)helpers.ResolveAssemblyTypeName);
+            repo.Register(nameof(helpers.IsEnum), (Func<INamedMeta, bool>)helpers.IsEnum);
+            repo.Register(nameof(helpers.ResolveAssemblyTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveAssemblyTypeName);
             repo.Register(nameof(helpers.ResolveStrictAssemblyTypeName), (Func<MsSqlColumn, string>)helpers.ResolveStrictAssemblyTypeName);
-            repo.Register(nameof(helpers.ResolveFieldExpressionTypeName), (Func<MsSqlColumn, string>)helpers.ResolveFieldExpressionTypeName);
-            repo.Register(nameof(helpers.FieldRequiresTypedParameter), (Func<MsSqlColumn, bool>)helpers.FieldRequiresTypedParameter);
+            repo.Register(nameof(helpers.ResolveFieldExpressionTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveFieldExpressionTypeName);
+            repo.Register(nameof(helpers.BuildFieldExpressionInterfaceProperty), (Func<MsSqlColumn, INamedMeta, string>)helpers.BuildFieldExpressionInterfaceProperty);
+            repo.Register(nameof(helpers.BuildEntityExpressionConstructorForFieldExpression), (Func<MsSqlColumn, INamedMeta, INamedMeta, string>)helpers.BuildEntityExpressionConstructorForFieldExpression);
             repo.Register(nameof(helpers.NameRepresentsLastTouchedTimestamp), (Func<string, bool>)helpers.NameRepresentsLastTouchedTimestamp);
             repo.Register(nameof(helpers.IsLast), (Func<EnumerableNamedMetaSet<MsSqlColumn>, MsSqlColumn, bool>)helpers.IsLast);
             repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, EnumerableNamedMetaSet<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
@@ -304,7 +326,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register("ResolveSourceReferenceKey", (Func<string>)(() => { return config.Source.ReferenceKey; }));
             repo.Register("ResolveRootNamespace", (Func<string>)(() => 
             {
-                return string.IsNullOrEmpty(config.RootNamespaceOverride) ? "DbEx." : $"{config.RootNamespaceOverride.TrimEnd('.')}.";
+                return string.IsNullOrEmpty(config.RootNamespace) ? "DbEx." : $"{config.RootNamespace.TrimEnd('.')}.";
             }));
 
             string output = engine.Merge(sqlModel);

@@ -1,15 +1,15 @@
-using HatTrick.DbEx.Sql;
 using System;
+using HatTrick.DbEx.Sql;
+using DbEx.Data;
 
-namespace Data.dbo
+namespace DbEx.Data.dbo
 {
     #region address
-    [Serializable]
     public partial class Address : IDbEntity
     {
         #region interface
         public int Id { get; set; }
-        public AddressType AddressType { get; set; }
+        public AddressType? AddressType { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }
@@ -27,7 +27,6 @@ namespace Data.dbo
     }
     #endregion
     #region person
-    [Serializable]
     public partial class Person : IDbEntity
     {
         #region interface
@@ -50,7 +49,6 @@ namespace Data.dbo
     }
     #endregion
     #region person address
-    [Serializable]
     public partial class PersonAddress : IDbEntity
     {
         #region interface
@@ -68,12 +66,11 @@ namespace Data.dbo
     }
     #endregion
     #region product
-    [Serializable]
     public partial class Product : IDbEntity
     {
         #region interface
         public int Id { get; set; }
-        public ProductCategoryType ProductCategoryType { get; set; }
+        public ProductCategoryType? ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal ListPrice { get; set; }
@@ -91,7 +88,6 @@ namespace Data.dbo
     }
     #endregion
     #region purchase
-    [Serializable]
     public partial class Purchase : IDbEntity
     {
         #region interface
@@ -114,7 +110,6 @@ namespace Data.dbo
     }
     #endregion
     #region purchase line
-    [Serializable]
     public partial class PurchaseLine : IDbEntity
     {
         #region interface
@@ -135,7 +130,6 @@ namespace Data.dbo
     }
     #endregion
     #region person total purchases view
-    [Serializable]
     public partial class PersonTotalPurchasesView : IDbEntity
     {
         #region interface
@@ -151,10 +145,9 @@ namespace Data.dbo
     }
     #endregion
 }
-namespace Data.sec
+namespace DbEx.Data.sec
 {
     #region person
-    [Serializable]
     public partial class Person : IDbEntity
     {
         #region interface

@@ -28,12 +28,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
         #region interface properties
 		{#each Columns}
 		{#if !($) => IsIgnored}
-			{#if ($) => FieldRequiresTypedParameter}
-		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeNameNotNull}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName] as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeNameNotNull}>; }} }}
-			{/if}
-			{#if !($) => FieldRequiresTypedParameter}
-		public {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}> {($) => ResolveName} {{ get {{ return Fields[_{($) => ToCamelCase}FieldName] as {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>; }} }}
-			{/if}
+		{($, ..\$) => BuildFieldExpressionInterfaceProperty}
 		{/if}
 		{/each}
         #endregion
@@ -47,22 +42,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
-			{#if ($) => HasDataTypeOverride}
-				{#if ($) => HasFieldTypeOverride}{! **** Assume no cast necessary **** }
-					{#if ($) => FieldRequiresTypedParameter}
-			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}, {($) => ResolveAssemblyTypeNameNotNull}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
-					{/if}
-					{#if !($) => FieldRequiresTypedParameter}
-			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
-					{/if}
-				{/if}
-				{#if !($) => HasFieldTypeOverride}{! **** Assume we need a cast **** }
-			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
-				{/if}
-			{/if}
-			{#if !($) => HasDataTypeOverride}
-			Fields.Add(_{($) => ToCamelCase}FieldName, new {($) => ResolveFieldExpressionTypeName}<{(..\$) => ResolveName}>("{(..\..\$) => ResolveName}.{(..\$) => ResolveName}.{($) => ResolveName}", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{($) => ToCamelCase}FieldName])));
-			{/if}
+			{($, ..\$, ..\..\$) => BuildEntityExpressionConstructorForFieldExpression}
 			{/if}
 			{/each}
         }}
@@ -90,19 +70,8 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
             return new InsertExpressionSet(
 				{#each Columns}
 				{#if !($) => IsIgnored}
-				{#if !$.IsIdentity}
-				{#if ($) => HasDataTypeOverride}
-					{#if ($) => HasFieldTypeOverride} {! **** Assume no cast necessary **** }
-				{($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
-					{/if}
-					{#if !($) => HasFieldTypeOverride} {! **** Assume we need a cast **** }
-				//if the column has a data type override but no field type override, cast the value to the underlying type...
-                {($) => ResolveName}.Insert(({($) => ResolveStrictAssemblyTypeName}){(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
-					{/if}
-				{/if}
-				{#if !($) => HasDataTypeOverride}
-				{($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
-				{/if}
+				{#if !$.IsIdentity}				
+                {($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
 				{/if}
 				{/if}
 				{/each}
@@ -112,6 +81,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
         protected override AssignmentExpressionSet GetAssignmentExpression({($) => ResolveName} from, {($) => ResolveName} to)
         {{
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
+
 			{#each Columns}
 			{#if !($) => IsIgnored}
 			{#if !$.IsIdentity}
@@ -119,18 +89,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
             expr &= {($) => ResolveName}.Set(DateTime.UtcNow);
 			{/if}
 			{#if !($.Name) => NameRepresentsLastTouchedTimestamp}
-			{#if ($) => HasDataTypeOverride}
-				{#if ($) => HasFieldTypeOverride} {! **** Assume no cast necessary **** }
-			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}
-				{/if}
-				{#if !($) => HasFieldTypeOverride} {! **** Assume we need a cast **** }
-			//if the column has a data type override but no field type override, cast the value to the underlying type...
-			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(({($) => ResolveStrictAssemblyTypeName})to.{($) => ResolveName}); }}
-				{/if}
-			{/if}
-			{#if !($) => HasDataTypeOverride}
-			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}
-			{/if}
+			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}) }}; 
 			{/if}
 			{/if}
 			{/if}
@@ -143,7 +102,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
-			{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($) => ResolveAssemblyTypeName}>(reader.ReadField().Value);
+			{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($, $.IsNullable) => ResolveAssemblyTypeName}>(reader.ReadField().Value);
 			{/if}
 			{/each}
         }}
@@ -154,7 +113,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
 			{#if !($) => IsIgnored}
 			if (field == {($) => ResolveName})
 			{{
-				{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($) => ResolveAssemblyTypeName}>(value);
+				{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($, $.IsNullable) => ResolveAssemblyTypeName}>(value);
 				return;
 			}}
 			{/if}

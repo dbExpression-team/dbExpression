@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             var database = new DatabaseConfiguration(metaProvider);
             database.Metadata.Name = metadataKey ?? connBuilder.InitialCatalog;            
-            builder.AddDatabase(metadataKey ?? database.Metadata.Name, database, connectionStringSettingsFactory);
+            builder.AddDatabase(database.Metadata.Name, database, connectionStringSettingsFactory);
 
             database.ExecutionPipelineFactory = new ExecutionPipelineFactory(database);
 

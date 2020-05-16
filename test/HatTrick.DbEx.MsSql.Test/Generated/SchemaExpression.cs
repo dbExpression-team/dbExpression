@@ -1,6 +1,5 @@
-namespace DataService
+namespace DbEx.DataService
 {
-    using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql;
@@ -18,10 +17,10 @@ namespace DataService
     #endregion
 }
 
-namespace DataService
+namespace DbEx.DataService
 {
     using HatTrick.DbEx.Sql.Expression;
-    using DataService.EntityExpression.dbo;
+    using DbEx.dbo.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
@@ -36,41 +35,38 @@ namespace DataService
         private const string _productEntityName = "Product";
         private const string _purchaseEntityName = "Purchase";
         private const string _purchaseLineEntityName = "PurchaseLine";
-
-		private const string _personTotalPurchasesViewEntityName = "PersonTotalPurchasesView";
+        private const string _personTotalPurchasesViewEntityName = "PersonTotalPurchasesView";
         #endregion
 
         #region interface
-        public AddressEntity Address { get { return Entities[_addressEntityName].Value as AddressEntity; } }
-        public PersonEntity Person { get { return Entities[_personEntityName].Value as PersonEntity; } }
-        public PersonAddressEntity PersonAddress { get { return Entities[_personAddressEntityName].Value as PersonAddressEntity; } }
-        public ProductEntity Product { get { return Entities[_productEntityName].Value as ProductEntity; } }
-        public PurchaseEntity Purchase { get { return Entities[_purchaseEntityName].Value as PurchaseEntity; } }
-        public PurchaseLineEntity PurchaseLine { get { return Entities[_purchaseLineEntityName].Value as PurchaseLineEntity; } }
-
-        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return Entities[_personTotalPurchasesViewEntityName].Value as PersonTotalPurchasesViewEntity; } }
+        public AddressEntity Address { get { return Entities[_addressEntityName] as AddressEntity; } }
+        public PersonEntity Person { get { return Entities[_personEntityName] as PersonEntity; } }
+        public PersonAddressEntity PersonAddress { get { return Entities[_personAddressEntityName] as PersonAddressEntity; } }
+        public ProductEntity Product { get { return Entities[_productEntityName] as ProductEntity; } }
+        public PurchaseEntity Purchase { get { return Entities[_purchaseEntityName] as PurchaseEntity; } }
+        public PurchaseLineEntity PurchaseLine { get { return Entities[_purchaseLineEntityName] as PurchaseLineEntity; } }
+        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return Entities[_personTotalPurchasesViewEntityName] as PersonTotalPurchasesViewEntity; } }
         #endregion
 
         #region constructors
-        public dboSchema(ISqlSchemaMetadata metadata) : base(metadata, null)
+        public dboSchema(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
         {
-            Entities.Add(_addressEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new AddressEntity(this, metadata.Entities[_addressEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_addressEntityName}'"))));
-            Entities.Add(_personEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonEntity(this, metadata.Entities[_personEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_personEntityName}'"))));
-            Entities.Add(_personAddressEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonAddressEntity(this, metadata.Entities[_personAddressEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_personAddressEntityName}'"))));
-            Entities.Add(_productEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new ProductEntity(this, metadata.Entities[_productEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_productEntityName}'"))));
-            Entities.Add(_purchaseEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PurchaseEntity(this, metadata.Entities[_purchaseEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_purchaseEntityName}'"))));
-            Entities.Add(_purchaseLineEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PurchaseLineEntity(this, metadata.Entities[_purchaseLineEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_purchaseLineEntityName}'"))));
-
-			Entities.Add(_personTotalPurchasesViewEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonTotalPurchasesViewEntity(this, metadata.Entities[_personTotalPurchasesViewEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_personTotalPurchasesViewEntityName}'"))));
+            Entities.Add(_addressEntityName, new AddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_addressEntityName])));
+            Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
+            Entities.Add(_personAddressEntityName, new PersonAddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personAddressEntityName])));
+            Entities.Add(_productEntityName, new ProductEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_productEntityName])));
+            Entities.Add(_purchaseEntityName, new PurchaseEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_purchaseEntityName])));
+            Entities.Add(_purchaseLineEntityName, new PurchaseLineEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_purchaseLineEntityName])));
+            Entities.Add(_personTotalPurchasesViewEntityName, new PersonTotalPurchasesViewEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personTotalPurchasesViewEntityName])));
         }
         #endregion
     }
     #endregion
 }
-namespace DataService
+namespace DbEx.DataService
 {
     using HatTrick.DbEx.Sql.Expression;
-    using DataService.EntityExpression.sec;
+    using DbEx.sec.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
@@ -80,19 +76,16 @@ namespace DataService
     {
         #region internals
         private const string _personEntityName = "Person";
-
         #endregion
 
         #region interface
-        public PersonEntity Person { get { return Entities[_personEntityName].Value as PersonEntity; } }
-
+        public PersonEntity Person { get { return Entities[_personEntityName] as PersonEntity; } }
         #endregion
 
         #region constructors
-        public secSchema(ISqlSchemaMetadata metadata) : base(metadata, null)
+        public secSchema(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
         {
-            Entities.Add(_personEntityName, new Lazy<HatTrick.DbEx.Sql.Expression.EntityExpression>(() => new PersonEntity(this, metadata.Entities[_personEntityName] ?? throw new DbExpressionConfigurationException($"Configuration for schema '{metadata.Name}' does not contain entity metadata for '{_personEntityName}'"))));
-
+            Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
         }
         #endregion
     }

@@ -11,28 +11,28 @@ namespace HatTrick.DbEx.Sql.Mapper
         #region internals
         private IValueMapper _valueMapper;
 
-        private static readonly PrimitiveMapper<bool> _boolMapper = new PrimitiveMapper<bool>((f) => Convert.ToBoolean(f));
+        private static readonly PrimitiveMapper<bool> _boolMapper = new PrimitiveMapper<bool>(Convert.ToBoolean);
         private static readonly PrimitiveMapper<bool?> _nullableBoolMapper = new PrimitiveMapper<bool?>((f) => f == null ? default(bool?) : Convert.ToBoolean(f));
-        private static readonly PrimitiveMapper<short> _shortMapper = new PrimitiveMapper<short>((f) => Convert.ToInt16(f));
+        private static readonly PrimitiveMapper<short> _shortMapper = new PrimitiveMapper<short>(Convert.ToInt16);
         private static readonly PrimitiveMapper<short?> _nullableShortMapper = new PrimitiveMapper<short?>((f) => f == null ? default(short?) : Convert.ToInt16(f));
-        private static readonly PrimitiveMapper<int> _intMapper = new PrimitiveMapper<int>((f) => Convert.ToInt32(f));
+        private static readonly PrimitiveMapper<int> _intMapper = new PrimitiveMapper<int>(Convert.ToInt32);
         private static readonly PrimitiveMapper<int?> _nullableIntMapper = new PrimitiveMapper<int?>((f) => f == null ? default(int?) : Convert.ToInt32(f));
-        private static readonly PrimitiveMapper<long> _longMapper = new PrimitiveMapper<long>((f) => Convert.ToInt64(f));
+        private static readonly PrimitiveMapper<long> _longMapper = new PrimitiveMapper<long>(Convert.ToInt64);
         private static readonly PrimitiveMapper<long?> _nullableLongMapper = new PrimitiveMapper<long?>((f) => f == null ? default(long?) : Convert.ToInt64(f));
-        private static readonly PrimitiveMapper<double> _doubleMapper = new PrimitiveMapper<double>((f) => Convert.ToDouble(f));
+        private static readonly PrimitiveMapper<double> _doubleMapper = new PrimitiveMapper<double>(Convert.ToDouble);
         private static readonly PrimitiveMapper<double?> _nullableDoubleMapper = new PrimitiveMapper<double?>((f) => f == null ? default(double?) : Convert.ToDouble(f));
-        private static readonly PrimitiveMapper<decimal> _decimalMapper = new PrimitiveMapper<decimal>((f) => Convert.ToDecimal(f));
+        private static readonly PrimitiveMapper<decimal> _decimalMapper = new PrimitiveMapper<decimal>(Convert.ToDecimal);
         private static readonly PrimitiveMapper<decimal?> _nullableDecimalMapper = new PrimitiveMapper<decimal?>((f) => f == null ? default(decimal?) : Convert.ToDecimal(f));
-        private static readonly PrimitiveMapper<float> _floatMapper = new PrimitiveMapper<float>((f) => Convert.ToSingle(f));
+        private static readonly PrimitiveMapper<float> _floatMapper = new PrimitiveMapper<float>(Convert.ToSingle);
         private static readonly PrimitiveMapper<float?> _nullableFloatMapper = new PrimitiveMapper<float?>((f) => f == null ? default(float?) : Convert.ToSingle(f));
-        private static readonly PrimitiveMapper<DateTime> _dateTimeMapper = new PrimitiveMapper<DateTime>((f) => Convert.ToDateTime(f));
+        private static readonly PrimitiveMapper<DateTime> _dateTimeMapper = new PrimitiveMapper<DateTime>(Convert.ToDateTime);
         private static readonly PrimitiveMapper<DateTime?> _nullableDateTimeMapper = new PrimitiveMapper<DateTime?>((f) => f == null ? default(DateTime?) : Convert.ToDateTime(f));
         private static readonly PrimitiveMapper<DateTimeOffset> _dateTimeOffsetMapper = new PrimitiveMapper<DateTimeOffset>((f) => new DateTimeOffset(Convert.ToDateTime(f)));
         private static readonly PrimitiveMapper<DateTimeOffset?> _nullableDateTimeOffsetMapper = new PrimitiveMapper<DateTimeOffset?>((f) => f == null ? default(DateTimeOffset?) : new DateTimeOffset(Convert.ToDateTime(f)));
         private static readonly PrimitiveMapper<Guid> _guidMapper = new PrimitiveMapper<Guid>((f) => (Guid)f);
         private static readonly PrimitiveMapper<Guid?> _nullableGuidMapper = new PrimitiveMapper<Guid?>((f) => (Guid?)f);
-        private static readonly PrimitiveMapper<string> _stringMapper = new PrimitiveMapper<string>((f) => Convert.ToString(f));
-        private static readonly PrimitiveMapper<Enum> _enumMapper = new PrimitiveMapper<Enum>((f) => (Enum)(f));
+        private static readonly PrimitiveMapper<string> _stringMapper = new PrimitiveMapper<string>(Convert.ToString);
+        private static readonly PrimitiveMapper<Enum> _enumMapper = new PrimitiveMapper<Enum>((f) => (Enum)f);
         private static readonly ExpandoObjectMapper _expandoObjectMapper = new ExpandoObjectMapper();
         private static readonly PrimitiveMapper<byte[]> _byteArrayMapper = new PrimitiveMapper<byte[]>((f) => f == null ? default : (byte[])f);
 

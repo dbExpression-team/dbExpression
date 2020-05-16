@@ -1,7 +1,9 @@
-namespace DataService.Metadata
+namespace DbEx.DataService
 {
     using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
+	using DbEx.dbo.DataService;
+	using DbEx.sec.DataService;
 
     public class MsSqlDbExTestDatabaseMetadataProvider : IDatabaseMetadataProvider
     {
@@ -14,21 +16,21 @@ namespace DataService.Metadata
         {
 			Database = new MsSqlDatabaseMetadata();   
 
-            Database.Schemas.Add("dbo", new dbo.SchemaMetadata(Database));
-            Database.Schemas.Add("sec", new sec.SchemaMetadata(Database));
+            Database.Schemas.Add("dbo", new dboSchemaMetadata(Database));
+            Database.Schemas.Add("sec", new secSchemaMetadata(Database));
         }
         #endregion
     }
 }
 
-namespace DataService.Metadata.dbo
+namespace DbEx.dbo.DataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;
     using System.Collections.Generic;
     using System.Data;
 
-	public class SchemaMetadata : ISqlSchemaMetadata
+	public class dboSchemaMetadata : ISqlSchemaMetadata
     {
 		#region interface
         public string Name => "dbo";
@@ -37,7 +39,7 @@ namespace DataService.Metadata.dbo
 		#endregion
 
         #region constructors
-        public SchemaMetadata(ISqlDatabaseMetadata database)
+        public dboSchemaMetadata(ISqlDatabaseMetadata database)
         {
             Database = database;
             Entities.Add("Address", new AddressEntityMetadata(this));
@@ -46,7 +48,6 @@ namespace DataService.Metadata.dbo
             Entities.Add("Product", new ProductEntityMetadata(this));
             Entities.Add("Purchase", new PurchaseEntityMetadata(this));
             Entities.Add("PurchaseLine", new PurchaseLineEntityMetadata(this));
-
             Entities.Add("PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this));
         }
         #endregion
@@ -195,7 +196,6 @@ namespace DataService.Metadata.dbo
         }
         #endregion
     }
-
 	public class PersonTotalPurchasesViewEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
@@ -215,14 +215,14 @@ namespace DataService.Metadata.dbo
         #endregion
     }
 }
-namespace DataService.Metadata.sec
+namespace DbEx.sec.DataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;
     using System.Collections.Generic;
     using System.Data;
 
-	public class SchemaMetadata : ISqlSchemaMetadata
+	public class secSchemaMetadata : ISqlSchemaMetadata
     {
 		#region interface
         public string Name => "sec";
@@ -231,11 +231,10 @@ namespace DataService.Metadata.sec
 		#endregion
 
         #region constructors
-        public SchemaMetadata(ISqlDatabaseMetadata database)
+        public secSchemaMetadata(ISqlDatabaseMetadata database)
         {
             Database = database;
             Entities.Add("Person", new PersonEntityMetadata(this));
-
         }
         #endregion
     }
@@ -260,5 +259,4 @@ namespace DataService.Metadata.sec
         }
         #endregion
     }
-
 }

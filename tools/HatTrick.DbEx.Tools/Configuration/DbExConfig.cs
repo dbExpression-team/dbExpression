@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Tools.Service
     {
         public Source Source { get; set; }
 
-        public string RootNamespaceOverride { get; set; }
+        public string RootNamespace { get; set; }
 
         public string OutputDirectory { get; set; }
 
@@ -44,11 +44,11 @@ namespace HatTrick.DbEx.Tools.Service
     {
         public bool Ignore { get; set; }
 
-        public string DataTypeOverride { get; set; }
+        public string DataType { get; set; }
 
-        public string FieldTypeOverride { get; set; }
+        public bool IsEnum { get; set; }
 
-        public string NameOverride { get; set; }
+        public string Name { get; set; }
 
         public string AsString()
         {
@@ -57,17 +57,14 @@ namespace HatTrick.DbEx.Tools.Service
             {
                 vals.Add("ignore: true");
             }
-            if (this.DataTypeOverride != null)
+            if (this.DataType != null)
             {
-                vals.Add($"dataTypeOverride: {this.DataTypeOverride}");
+                vals.Add($"dataType: {this.DataType}");
             }
-            if (this.FieldTypeOverride != null)
+            vals.Add($"isEnum: {this.IsEnum}");
+            if (this.Name != null)
             {
-                vals.Add($"fieldTypeOverride: {this.FieldTypeOverride}");
-            }
-            if (this.NameOverride != null)
-            {
-                vals.Add($"nameOverride: {this.NameOverride}");
+                vals.Add($"name: {this.Name}");
             }
             string val = string.Join(", ", vals);
             return val;

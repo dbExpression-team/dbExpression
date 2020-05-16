@@ -7,21 +7,21 @@
         }
     },
     "outputDirectory": "** relative or absolute directory path for generated file output **",
-    "Meta": [ /* ** examples below **
+    "meta": [ /* ** examples below **
         {
             
             "path": "dbo.Person_Address",
-            "apply": { "nameOverride": "PersonAddress" }
+            "apply": { "name": "PersonAddress" }
         },
         {
             
             "path": "dbo.Address.AddressType",
-            "apply": { "typeOverride": "AddressTypeCode", "fieldTypeOverride": "Enum" }
+            "apply": { "dataType": "AddressTypeCode", "isEnum": true }
         },
         {
             
             "path": "sec",
-            "apply": { "nameOverride": "secure" }
+            "apply": { "name": "secure" }
         },
         {
             

@@ -90,16 +90,16 @@ namespace HatTrick.DbEx.Tools.Service
 
         #region resolve assembly type name
         //This method takes into account override via metadata
-        public string ResolveAssemblyTypeName(MsSqlColumn column)
+        public string ResolveAssemblyTypeName(MsSqlColumn column, bool allowNullableType)
         {
             string name = null;
             if (this.HasDataTypeOverride(column, out string dataTypeOverride))
             {
-                name = dataTypeOverride;
+                name = dataTypeOverride.EndsWith("?") && !allowNullableType ? dataTypeOverride.Substring(0, dataTypeOverride.Length - 1) : dataTypeOverride;
             }
             else
             {
-                name = svc.TypeMap.GetAssemblyTypeShortName(column.SqlType, column.IsNullable);
+                name = svc.TypeMap.GetAssemblyTypeShortName(column.SqlType, allowNullableType);
             }
             return name;
         }
@@ -116,19 +116,12 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region resolve field expression type name
-        public string ResolveFieldExpressionTypeName(MsSqlColumn column)
+        public string ResolveFieldExpressionTypeName(MsSqlColumn column, bool allowNullableType)
         {
-            string name = null;
-            if (this.HasFieldTypeOverride(column, out string fieldTypeOverride))
+            string name = this.ResolveAssemblyTypeName(column, allowNullableType);
+            if (this.IsEnum(column))
             {
-                bool isNullable = false;
-                if (fieldTypeOverride.EndsWith("?"))
-                {
-                    isNullable = true;
-                    fieldTypeOverride = fieldTypeOverride.TrimEnd('?');
-                }
-                string nullability = isNullable ? "Nullable" : string.Empty;
-                name = $"{nullability}{fieldTypeOverride}FieldExpression";
+                name = $"{(name.EndsWith("?") ? "Nullable" : string.Empty)}EnumFieldExpression";
             }
             else
             {
@@ -138,14 +131,25 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region field requires typed parameter
-        public bool FieldRequiresTypedParameter(MsSqlColumn column)
+        public string ResolveFieldExpressionGenericParameters(MsSqlColumn column, INamedMeta tableOrView)
         {
-            string fieldName = this.ResolveFieldExpressionTypeName(column);
-            bool isRequired = fieldName.Contains("Enum", StringComparison.CurrentCultureIgnoreCase);
-            return isRequired;
+            string name = this.ResolveName(tableOrView);
+            if (this.IsEnum(column))
+            {
+                name = $"{name}, {this.ResolveAssemblyTypeName(column, false)}";
+            }
+            return name;
         }
-        #endregion
+
+        public string BuildFieldExpressionInterfaceProperty(MsSqlColumn column, INamedMeta tableOrView)
+        {
+            return $"public {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}> {ResolveName(column)} {{ get {{ return Fields[_{ToCamelCase(column)}FieldName] as {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>; }} }}";
+        }
+
+        public string BuildEntityExpressionConstructorForFieldExpression(MsSqlColumn column, INamedMeta tableOrView, INamedMeta schema)
+        {
+            return $"Fields.Add(_{ToCamelCase(column)}FieldName, new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>(\"{ResolveName(schema)}.{ResolveName(tableOrView)}.{ResolveName(column)}\", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{ToCamelCase(column)}FieldName])));";
+        }
 
         #region name represents last touched timestamp
         public bool NameRepresentsLastTouchedTimestamp(string name)
@@ -170,7 +174,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region has name override
         public bool HasNameOverride(INamedMeta namedMeta, out string nameOverride)
         {
-            return this.TryResolveMeta(namedMeta, "nameOverride", out nameOverride);
+            return this.TryResolveMeta(namedMeta, "name", out nameOverride);
         }
         #endregion
 
@@ -182,19 +186,15 @@ namespace HatTrick.DbEx.Tools.Service
 
         public bool HasDataTypeOverride(INamedMeta namedMeta, out string dataTypeOverride)
         {
-            return this.TryResolveMeta(namedMeta, "dataTypeOverride", out dataTypeOverride);
+            return this.TryResolveMeta(namedMeta, "dataType", out dataTypeOverride);
         }
         #endregion
 
         #region has field type override
-        public bool HasFieldTypeOverride(INamedMeta namedMeta)
+        public bool IsEnum(INamedMeta namedMeta)
         {
-            return this.HasFieldTypeOverride(namedMeta, out string _);
-        }
-
-        public bool HasFieldTypeOverride(INamedMeta namedMeta, out string fieldTypeOverride)
-        {
-            return this.TryResolveMeta(namedMeta, "fieldTypeOverride", out fieldTypeOverride);
+            this.TryResolveMeta(namedMeta, "isEnum", out string meta);
+            return !string.IsNullOrWhiteSpace(meta) && bool.TryParse(meta, out bool isEnumValue) && isEnumValue;
         }
         #endregion
 

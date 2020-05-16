@@ -7,33 +7,33 @@
 		}
 	},
 	"outputDirectory": "Generated",
-	"rootNamespaceOverride": "FOO",
-	"Meta": [
+	"rootNamespace": "DbEx",
+	"meta": [
 		{
 			"path": "dbo.Address.AddressType",
 			"apply": {
-				"dataTypeOverride": "AddressType",
-				"fieldTypeOverride": "Enum?"
+				"dataType": "AddressType?",
+				"isEnum": true
 			}
 		},
 		{
 			"path": "dbo.Person.GenderType",
 			"apply": {
-				"dataTypeOverride": "GenderType",
-				"fieldTypeOverride": "Enum"
+				"dataType": "GenderType",
+				"isEnum": true
 			}
 		},
 		{
 			"path": "dbo.Product.ProductCategoryType",
 			"apply": {
-				"dataTypeOverride": "ProductCategoryType",
-				"fieldTypeOverride": "Enum?"
+				"dataType": "ProductCategoryType?",
+				"isEnum": true
 			}
 		},
 		{
 			"path": "dbo.Person_Address",
 			"apply": {
-				"nameOverride": "PersonAddress"
+				"name": "PersonAddress"
 			}
 		}
 	]
