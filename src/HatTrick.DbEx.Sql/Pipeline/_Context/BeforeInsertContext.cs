@@ -10,6 +10,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public FilteredFields InsertFields { get; private set; }
         public AllFields AllFields { get; private set; }
         public ISqlEntityMetadata BaseEntityMetadata => ExpressionSet.BaseEntity as ISqlEntityMetadata;
+        public IDbEntity InsertEntity => ExpressionSet.Instance;
 
         public IAppender CommandTextWriter { get; private set; }
 

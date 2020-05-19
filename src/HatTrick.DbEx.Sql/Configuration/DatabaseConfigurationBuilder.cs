@@ -5,6 +5,8 @@ using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
@@ -229,25 +231,17 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region hooks
-        public void OnAssemblingSqlStatement(Action<BeforeAssemblyContext> action)
-        {
-            Database.ExecutionPipelineFactory.BeforeAssembly.AddToEnd(action);
-        }
+        public IPipelineEventActionBuilder<BeforeAssemblyContext> OnAssemblingSqlStatement(Action<BeforeAssemblyContext> action)
+            => Database.ExecutionPipelineFactory.BeforeAssembly.AddToEnd(action);
 
-        public void OnAssembledSqlStatement(Action<AfterAssemblyContext> action)
-        {
-            Database.ExecutionPipelineFactory.AfterAssembly.AddToEnd(action);
-        }
+        public IPipelineEventActionBuilder<AfterAssemblyContext> OnAssembledSqlStatement(Action<AfterAssemblyContext> action)
+            => Database.ExecutionPipelineFactory.AfterAssembly.AddToEnd(action);
 
-        public void OnInsertingEntity(Action<BeforeInsertContext> action)
-        {
-            Database.ExecutionPipelineFactory.BeforeInsert.AddToEnd(action);
-        }
+        public IPipelineEventActionBuilder<BeforeInsertContext> OnInsertingEntity(Action<BeforeInsertContext> action)
+            => Database.ExecutionPipelineFactory.BeforeInsert.AddToEnd(action);
 
-        public void OnInsertedEntity(Action<AfterInsertContext> action)
-        {
-            Database.ExecutionPipelineFactory.AfterInsert.AddToEnd(action);
-        }
+        public IPipelineEventActionBuilder<AfterInsertContext> OnInsertedEntity(Action<AfterInsertContext> action)
+            => Database.ExecutionPipelineFactory.AfterInsert.AddToEnd(action);
         #endregion
         #endregion
     }

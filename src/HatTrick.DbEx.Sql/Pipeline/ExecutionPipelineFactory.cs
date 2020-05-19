@@ -13,10 +13,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region interface
-        public PipelineEventActions<Func<BeforeAssemblyContext, CancellationToken, Task>, Action<BeforeAssemblyContext>> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEvent();
-        public PipelineEventActions<Func<AfterAssemblyContext, CancellationToken, Task>, Action<AfterAssemblyContext>> AfterAssembly { get; set; } = new AfterAssemblyPipelineEvent();
-        public PipelineEventActions<Func<BeforeInsertContext, CancellationToken, Task>, Action<BeforeInsertContext>> BeforeInsert { get; set; } = new BeforeInsertPipelineEvent();
-        public PipelineEventActions<Func<AfterInsertContext, CancellationToken, Task>, Action<AfterInsertContext>> AfterInsert { get; set; } = new AfterInsertPipelineEvent();
+        public PipelineEventActions<Func<BeforeAssemblyContext, CancellationToken, Task>, Action<BeforeAssemblyContext>, BeforeAssemblyContext> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEventActions();
+        public PipelineEventActions<Func<AfterAssemblyContext, CancellationToken, Task>, Action<AfterAssemblyContext>, AfterAssemblyContext> AfterAssembly { get; set; } = new AfterAssemblyPipelineEventActions();
+        public PipelineEventActions<Func<BeforeInsertContext, CancellationToken, Task>, Action<BeforeInsertContext>, BeforeInsertContext> BeforeInsert { get; set; } = new BeforeInsertPipelineEventActions();
+        public PipelineEventActions<Func<AfterInsertContext, CancellationToken, Task>, Action<AfterInsertContext>, AfterInsertContext> AfterInsert { get; set; } = new AfterInsertPipelineEventActions();
         #endregion
 
         #region constructors
