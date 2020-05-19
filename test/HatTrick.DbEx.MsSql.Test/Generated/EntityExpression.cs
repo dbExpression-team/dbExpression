@@ -95,13 +95,13 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.AddressType != to.AddressType) { expr &= AddressType.Set(to.AddressType) };
-			if (from.Line1 != to.Line1) { expr &= Line1.Set(to.Line1) };
-			if (from.Line2 != to.Line2) { expr &= Line2.Set(to.Line2) };
-			if (from.City != to.City) { expr &= City.Set(to.City) };
-			if (from.State != to.State) { expr &= State.Set(to.State) };
-			if (from.Zip != to.Zip) { expr &= Zip.Set(to.Zip) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.AddressType != to.AddressType) { expr &= AddressType.Set(to.AddressType); };
+			if (from.Line1 != to.Line1) { expr &= Line1.Set(to.Line1); };
+			if (from.Line2 != to.Line2) { expr &= Line2.Set(to.Line2); };
+			if (from.City != to.City) { expr &= City.Set(to.City); };
+			if (from.State != to.State) { expr &= State.Set(to.State); };
+			if (from.Zip != to.Zip) { expr &= Zip.Set(to.Zip); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
@@ -256,13 +256,13 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.FirstName != to.FirstName) { expr &= FirstName.Set(to.FirstName) };
-			if (from.LastName != to.LastName) { expr &= LastName.Set(to.LastName) };
-			if (from.BirthDate != to.BirthDate) { expr &= BirthDate.Set(to.BirthDate) };
-			if (from.GenderType != to.GenderType) { expr &= GenderType.Set(to.GenderType) };
-			if (from.CreditLimit != to.CreditLimit) { expr &= CreditLimit.Set(to.CreditLimit) };
-			if (from.YearOfLastCreditLimitReview != to.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(to.YearOfLastCreditLimitReview) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.FirstName != to.FirstName) { expr &= FirstName.Set(to.FirstName); };
+			if (from.LastName != to.LastName) { expr &= LastName.Set(to.LastName); };
+			if (from.BirthDate != to.BirthDate) { expr &= BirthDate.Set(to.BirthDate); };
+			if (from.GenderType != to.GenderType) { expr &= GenderType.Set(to.GenderType); };
+			if (from.CreditLimit != to.CreditLimit) { expr &= CreditLimit.Set(to.CreditLimit); };
+			if (from.YearOfLastCreditLimitReview != to.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(to.YearOfLastCreditLimitReview); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
@@ -392,9 +392,9 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId) };
-			if (from.AddressId != to.AddressId) { expr &= AddressId.Set(to.AddressId) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); };
+			if (from.AddressId != to.AddressId) { expr &= AddressId.Set(to.AddressId); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
 			
             return expr;
         }
@@ -518,13 +518,13 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.ProductCategoryType != to.ProductCategoryType) { expr &= ProductCategoryType.Set(to.ProductCategoryType) };
-			if (from.Name != to.Name) { expr &= Name.Set(to.Name) };
-			if (from.Description != to.Description) { expr &= Description.Set(to.Description) };
-			if (from.ListPrice != to.ListPrice) { expr &= ListPrice.Set(to.ListPrice) };
-			if (from.Price != to.Price) { expr &= Price.Set(to.Price) };
-			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.ProductCategoryType != to.ProductCategoryType) { expr &= ProductCategoryType.Set(to.ProductCategoryType); };
+			if (from.Name != to.Name) { expr &= Name.Set(to.Name); };
+			if (from.Description != to.Description) { expr &= Description.Set(to.Description); };
+			if (from.ListPrice != to.ListPrice) { expr &= ListPrice.Set(to.ListPrice); };
+			if (from.Price != to.Price) { expr &= Price.Set(to.Price); };
+			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
@@ -679,13 +679,13 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId) };
-			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount) };
-			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate) };
-			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate) };
-			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate) };
-			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); };
+			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount); };
+			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate); };
+			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate); };
+			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); };
+			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
@@ -830,11 +830,11 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.PurchaseId != to.PurchaseId) { expr &= PurchaseId.Set(to.PurchaseId) };
-			if (from.ProductId != to.ProductId) { expr &= ProductId.Set(to.ProductId) };
-			if (from.PurchasePrice != to.PurchasePrice) { expr &= PurchasePrice.Set(to.PurchasePrice) };
-			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.PurchaseId != to.PurchaseId) { expr &= PurchaseId.Set(to.PurchaseId); };
+			if (from.ProductId != to.ProductId) { expr &= ProductId.Set(to.ProductId); };
+			if (from.PurchasePrice != to.PurchasePrice) { expr &= PurchasePrice.Set(to.PurchasePrice); };
+			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
@@ -943,8 +943,8 @@ namespace DbEx.dbo.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.Id != to.Id) { expr &= Id.Set(to.Id) };
-			if (from.TotalPurchases != to.TotalPurchases) { expr &= TotalPurchases.Set(to.TotalPurchases) };
+			if (from.Id != to.Id) { expr &= Id.Set(to.Id); };
+			if (from.TotalPurchases != to.TotalPurchases) { expr &= TotalPurchases.Set(to.TotalPurchases); };
 			
             return expr;
         }
@@ -1040,8 +1040,8 @@ namespace DbEx.sec.DataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.SSN != to.SSN) { expr &= SSN.Set(to.SSN) };
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated) };
+			if (from.SSN != to.SSN) { expr &= SSN.Set(to.SSN); };
+			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;

@@ -89,7 +89,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
             expr &= {($) => ResolveName}.Set(DateTime.UtcNow);
 			{/if}
 			{#if !($.Name) => NameRepresentsLastTouchedTimestamp}
-			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}) }}; 
+			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}; 
 			{/if}
 			{/if}
 			{/if}
