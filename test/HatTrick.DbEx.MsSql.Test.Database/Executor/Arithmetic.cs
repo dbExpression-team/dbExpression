@@ -65,5 +65,24 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             result.Should().Be(expected);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_arithmetic_of_person_firstname_a_space_and_person_lastname_succeed(int version, string expected = "Kenny McCormick")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    dbo.Person.FirstName + " " + dbo.Person.LastName
+                ).From(dbo.Person)
+                .Where(dbo.Person.Id == 1);
+
+            //when               
+            string result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
+        }
     }
 }
