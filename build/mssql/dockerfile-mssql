@@ -1,0 +1,12 @@
+ARG MsSqlVersion
+
+FROM mcr.microsoft.com/mssql/server:${MsSqlVersion}-latest AS mssql_build
+
+ARG CreateDbScriptPath
+ARG CreateDbScriptFileName
+ARG SA_PASSWORD
+
+COPY ${CreateDbScriptPath}/${CreateDbScriptFileName} .
+
+RUN /opt/mssql/bin/sqlservr --accept-eula & sleep 20 \
+	&& /opt/mssql-tools/bin/sqlcmd -S localhost -i ${CreateDbScriptFileName} -U SA -P "${SA_PASSWORD}" \

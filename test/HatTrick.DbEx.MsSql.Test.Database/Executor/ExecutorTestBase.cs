@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
 
         public void ResetDatabase()
         {
-            var seeder = new Seeder(ConnectionStringSettings);
+            var seeder = new Seeder(ConfigurationProvider.ConnectionStringSettings);
             seeder.RunScript("data.sql");
         }
     }

@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
     public class WhereClauseAssemblerTests : TestBase
     {
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void Does_a_single_where_predicate_result_in_valid_clause(int version)
         {
             //given
