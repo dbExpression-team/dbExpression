@@ -1,0 +1,23 @@
+parameters:
+- name: version
+- name: workingFolder
+- name: testOutputFilePath
+- name: testOutputFileName
+- name: codeCoverageOutputFilePath
+- name: codeCoverageOutputFileName
+
+steps:
+  - task: PowerShell@2
+    displayName: Create Docker Config Files
+    inputs:
+      filePath: ${{parameters.workingFolder}}/build/mssql/create-docker-config.ps1
+      arguments: '-MSSQL_VERSION ${{parameters.version}} -BUILD_CONFIGURATION $(buildConfiguration) -TEST_OUTPUT_FILE_PATH ${{parameters.testOutputFilePath}} -TEST_OUTPUT_FILE_NAME ${{parameters.testOutputFileName}} -CODE_COVERAGE_OUTPUT_FILE_PATH ${{parameters.codeCoverageOutputFilePath}} -CODE_COVERAGE_OUTPUT_FILE_NAME ${{parameters.codeCoverageOutputFileName}}'
+      workingDirectory: ${{parameters.workingFolder}}/build/mssql
+  - task: DockerCompose@0
+    displayName: 'Execute Tests'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerComposeFile: ${{parameters.workingFolder}}/docker-compose.yml
+      action: 'Run a Docker Compose command'
+      dockerComposeCommand: 'up --abort-on-container-exit'
+      currentWorkingDirectory: ${{parameters.workingFolder}}

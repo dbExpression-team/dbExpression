@@ -1,7 +1,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 
-namespace HatTrick.DbEx.MsSql.Assembler.v2012
+namespace HatTrick.DbEx.MsSql.Assembler.v2008
 {
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {

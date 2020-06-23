@@ -1,7 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Assembler.v2012
+namespace HatTrick.DbEx.MsSql.Assembler.v2016
 {
     public class MsSqlSelectSqlStatementAssembler : HatTrick.DbEx.MsSql.Assembler.MsSqlSelectSqlStatementAssembler
     {

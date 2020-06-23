@@ -1,34 +1,13 @@
 ﻿using DbEx.DataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
-using Microsoft.Extensions.Configuration;
 using System;
-using System.Configuration;
 
 namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
         private static readonly object @lock = new object();
-        private static readonly string ConnectionStringKey = "hattrick.dbex.mssql.test";
-        private static readonly string DatabaseMapName = "MsSqlDbExTest-design";
-        private static ConnectionStringSettings _connectionStringSettings;
-
-        protected ConnectionStringSettings ConnectionStringSettings
-        {
-            get
-            {
-                if (_connectionStringSettings != null)
-                    return _connectionStringSettings;
-
-                var connectionString = new ConfigurationBuilder()
-                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                        .Build()
-                        .GetConnectionString(ConnectionStringKey);
-
-                return _connectionStringSettings = new ConnectionStringSettings(ConnectionStringKey, connectionString);
-            }
-        }
 
         public virtual DatabaseConfiguration ConfigureForMsSqlVersion(int version)
         {
@@ -36,30 +15,87 @@ namespace HatTrick.DbEx.MsSql.Test
             {
                 switch (version)
                 {
+                    case 2005:
+                        {
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.AddMsSql2005Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
+                                );
+                            });
+                            break;
+                        }
+                    case 2008:
+                        {
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.AddMsSql2008Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
+                                );
+                            });
+                            break;
+                        }
                     case 2012:
                         {
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConnectionStringSettings,
-                                    "MsSqlDbExTest-design"
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
                                 );
                             });
-                            return DbExpression.Configuration.Databases[DatabaseMapName].DatabaseConfiguration;
+                            break;
                         }
                     case 2014:
                         {
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConnectionStringSettings,
-                                    "MsSqlDbExTest-design"
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
                                 );
                             });
-                            return DbExpression.Configuration.Databases[DatabaseMapName].DatabaseConfiguration;
+                            break;
                         }
+                    case 2016:
+                        {
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.AddMsSql2016Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
+                                );
+                            });
+                            break;
+                        }
+                    case 2017:
+                        {
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.AddMsSql2017Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
+                                );
+                            });
+                            break;
+                        }
+                    case 2019:
+                        {
+                            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                            {
+                                c.AddMsSql2019Database<MsSqlDbExTestDatabaseMetadataProvider>(
+                                    ConfigurationProvider.ConnectionStringSettings,
+                                    ConfigurationProvider.DatabaseMapName
+                                );
+                            });
+                            break;
+                        }
+                    default: throw new NotImplementedException($"MsSql version {version} has not been implemented");
                 }
-                throw new NotImplementedException($"MsSql version {version} has not been implemented");
+
+                return DbExpression.Configuration.Databases[ConfigurationProvider.DatabaseMapName].DatabaseConfiguration;
             }
         }
     }

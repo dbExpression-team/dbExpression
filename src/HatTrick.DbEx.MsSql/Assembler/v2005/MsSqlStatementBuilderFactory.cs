@@ -1,7 +1,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 
-namespace HatTrick.DbEx.MsSql.Assembler.v2012
+namespace HatTrick.DbEx.MsSql.Assembler.v2005
 {
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
@@ -15,10 +15,6 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
         private static readonly SysDateTimeFunctionAppender _sysDateTimeFunctionAppender = new SysDateTimeFunctionAppender();
         private static readonly SysDateTimeOffsetFunctionAppender _sysDateTimeOffsetFunctionAppender = new SysDateTimeOffsetFunctionAppender();
         private static readonly SysUtcDateTimeFunctionAppender _sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionAppender();
-        private static readonly DateTimeAppender _dateTimeAppender = new DateTimeAppender();
-        private static readonly NullableDateTimeAppender _nullableDateTimeAppender = new NullableDateTimeAppender();
-        private static readonly DateTimeOffsetAppender _dateTimeOffsetAppender = new DateTimeOffsetAppender();
-        private static readonly NullableDateTimeOffsetAppender _nullableDateTimeOffsetAppender = new NullableDateTimeOffsetAppender();
 
         #region methods
         public override void RegisterDefaultStatementAssemblers()
@@ -44,10 +40,6 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2012
             base.RegisterPartAppender(_sysDateTimeFunctionAppender);
             base.RegisterPartAppender(_sysDateTimeOffsetFunctionAppender);
             base.RegisterPartAppender(_sysUtcDateTimeFunctionAppender);
-            base.RegisterPartAppender(_nullableDateTimeAppender);
-            base.RegisterPartAppender(_dateTimeAppender);
-            base.RegisterPartAppender(_dateTimeOffsetAppender);
-            base.RegisterPartAppender(_nullableDateTimeOffsetAppender);
         }
         #endregion
     }

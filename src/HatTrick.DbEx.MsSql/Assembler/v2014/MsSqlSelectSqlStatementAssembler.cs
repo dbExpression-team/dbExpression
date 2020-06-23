@@ -7,18 +7,29 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2014
     {
         protected override void AssembleSelectStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!expression.SkipValue.HasValue && !expression.LimitValue.HasValue)
+            base.AssembleSelectStatement(expression, builder, context);
+            if (expression.SkipValue.HasValue)
             {
-                //no  paging, so no special handling required
-                base.AssembleSelectStatement(expression, builder, context);
+                builder.Appender
+                    .Indentation++
+                    .Indent()
+                    .Write("OFFSET ")
+                    .Write(builder.Parameters.Add<int>(expression.SkipValue).ParameterName)
+                    .Indent().Write(" ROWS")
+                    .LineBreak()
+                    .Indentation--;
             }
-            else if (!(expression.Select as IDbExpressionIsDistinctProvider).IsDistinct) //no distinct, return standard CTE for page
+            if (expression.LimitValue.HasValue)
             {
-                AssembleMsSqlCTESelectStatement(expression, builder, context);
-            }
-            else
-            {
-                AssembleMsSqlDistinctCTESelectStatement(expression, builder, context);
+                builder.Appender
+                    .Indentation++
+                    .Indent()
+                    .Write("FETCH NEXT ")
+                    .Write(builder.Parameters.Add<int>(expression.LimitValue).ParameterName)
+                    .Indent()
+                    .Write(" ROWS ONLY")
+                    .LineBreak()
+                    .Indentation--;
             }
         }
     }

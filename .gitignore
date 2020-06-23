@@ -291,3 +291,8 @@ __pycache__/
 
 # Parallels/Mac
 ._*
+
+# Custom Docker artifacts
+results
+.env
+docker*
