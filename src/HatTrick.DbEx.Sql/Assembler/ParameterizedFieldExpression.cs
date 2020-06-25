@@ -5,8 +5,8 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class ParameterizedFieldExpression
     {
-        public DbParameter Parameter { get; set; }
-        public FieldExpression Field { get; set; }
+        public DbParameter Parameter { get; private set; }
+        public FieldExpression Field { get; private set; }
 
         public ParameterizedFieldExpression(DbParameter parameter, FieldExpression expression)
         {

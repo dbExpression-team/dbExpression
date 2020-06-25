@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ArithmeticExpression : 
+        IDbExpression,
         IEquatable<ArithmeticExpression>
     {
         #region interface
