@@ -5,12 +5,16 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class LiteralExpression :
         IEquatable<LiteralExpression>
     {
+        #region interface
         public ExpressionContainer Expression { get; private set; }
+        #endregion
 
+        #region constructors
         protected LiteralExpression(ExpressionContainer expression)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
+        #endregion
 
         #region equals
         public bool Equals(LiteralExpression obj)

@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly ValueTypePartAppender<short> _int16Appender = new ValueTypePartAppender<short>();
         private static readonly NullableValueTypePartAppender<short?> _nullableInt16Appender = new NullableValueTypePartAppender<short?>();
         private static readonly EnumValueTypePartAppender _enumAppender = new EnumValueTypePartAppender();
-        private static readonly StringValueTypePartAppender _stringAppender = new StringValueTypePartAppender();
+        private static readonly ValueTypePartAppender<string> _stringAppender = new ValueTypePartAppender<string>();
         private static readonly DBNullValueTypePartAppender _dbNullAppender = new DBNullValueTypePartAppender();
         #endregion
 

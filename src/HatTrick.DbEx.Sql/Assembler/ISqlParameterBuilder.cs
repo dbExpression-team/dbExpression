@@ -11,7 +11,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         DbParameter Add<T>(object value);//where T : IComparable;
         DbParameter Add(object value, Type valueType);
         ParameterizedFieldExpression Add(object value, FieldExpression expression);
-
         ParameterizedFieldExpression AddOutput(FieldExpression field);
     }
 }

@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class InsertExpression :
         IDbExpression
     {
-        #region internals
+        #region interface
         public ExpressionContainerPair Expression { get; private set; }
         #endregion
 

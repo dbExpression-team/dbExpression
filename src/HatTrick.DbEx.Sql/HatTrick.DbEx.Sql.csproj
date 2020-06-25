@@ -6,10 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Common\**" />
     <Compile Remove="_Extensions\Configuration\**" />
     <Compile Remove="_Extensions\Expression\**" />
+    <EmbeddedResource Remove="Common\**" />
     <EmbeddedResource Remove="_Extensions\Configuration\**" />
     <EmbeddedResource Remove="_Extensions\Expression\**" />
+    <None Remove="Common\**" />
     <None Remove="_Extensions\Configuration\**" />
     <None Remove="_Extensions\Expression\**" />
   </ItemGroup>
@@ -37,6 +40,7 @@
     <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableInt64Appender.cs" />
     <Compile Remove="Assembler\_Appenders\_ValueTypes\NullableSingleAppender.cs" />
     <Compile Remove="Assembler\_Appenders\_ValueTypes\SingleAppender.cs" />
+    <Compile Remove="Assembler\_Appenders\_ValueTypes\StringValueTypePartAppender.cs" />
     <Compile Remove="Expression\_Function\_DataType\_Concat\BooleanConcatFunctionExpression.cs" />
     <Compile Remove="Expression\_Function\_DataType\_Concat\BooleanConcatFunctionExpression.generated.cs" />
     <Compile Remove="Expression\_Function\_DataType\_Concat\ByteConcatFunctionExpression.cs" />
@@ -80,10 +84,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HatTrick.DbEx\HatTrick.DbEx.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
   </ItemGroup>
 
   <ItemGroup>
