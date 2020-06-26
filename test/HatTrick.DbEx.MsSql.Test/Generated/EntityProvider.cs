@@ -31,7 +31,7 @@ namespace DbEx.DataService
                     if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
 
-                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+                    var schema = config?.Metadata?.Schemas;
                     if (schema == null)
                         throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
 
@@ -71,7 +71,7 @@ namespace DbEx.DataService
                     if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
 
-                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+                    var schema = config?.Metadata?.Schemas;
                     if (schema == null)
                         throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
 

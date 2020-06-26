@@ -1,7 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Pipeline;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
@@ -14,9 +11,9 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public DbExpressionRuntimeConfiguration Configuration { get; set; }
 
-        public void AddDatabase(string name, DatabaseConfiguration config, Func<ConnectionStringSettings> connectionStringSettingsFactory)
+        public void AddDatabase(string name, DatabaseConfiguration config)
         {
-            Configuration.Databases.Add(name, new RuntimeDatabaseMap(config, connectionStringSettingsFactory));
+            Configuration.Databases.Add(name, config);
         }
 
         public static void AddDbExpression(Action<DbExpressionConfigurationBuilder> configure)

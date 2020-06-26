@@ -1,0 +1,40 @@
+{
+	"source": {
+		"type": "MsSqlDb",
+		"referenceKey": "ServerSideBlazorApp",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"outputDirectory": "Data/_Generated",
+	"rootNamespace": "ServerSideBlazorApp",
+	"meta": [
+		{
+			"path": "dbo.Address.AddressType",
+			"apply": {
+				"dataType": "AddressType?",
+				"isEnum": true
+			}
+		},
+		{
+			"path": "dbo.Person.GenderType",
+			"apply": {
+				"dataType": "GenderType",
+				"isEnum": true
+			}
+		},
+		{
+			"path": "dbo.Product.ProductCategoryType",
+			"apply": {
+				"dataType": "ProductCategoryType?",
+				"isEnum": true
+			}
+		},
+		{
+			"path": "dbo.Person_Address",
+			"apply": {
+				"name": "PersonAddress"
+			}
+		}
+	]
+}

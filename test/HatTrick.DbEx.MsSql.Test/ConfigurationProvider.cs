@@ -7,9 +7,8 @@ namespace HatTrick.DbEx.MsSql.Test
     {
         private static readonly string ConnectionStringKey = "hattrick_dbex_mssql_test";
         private static IConfiguration _configuration;
-        private static ConnectionStringSettings _connectionStringSettings;
         private static int? _msSqlVersion;
-        private static string _databaseMapName;
+        private static string _metadataKey;
 
         public static IConfiguration Configuration
         {
@@ -25,18 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test
             }
         }
 
-        public static ConnectionStringSettings ConnectionStringSettings
-        {
-            get
-            {
-                if (_connectionStringSettings != null)
-                    return _connectionStringSettings;
-
-                var connectionString = Configuration.GetConnectionString(ConnectionStringKey);
-
-                return _connectionStringSettings = new ConnectionStringSettings(ConnectionStringKey, connectionString);
-            }
-        }
+        public static string ConnectionString =>  Configuration.GetConnectionString(ConnectionStringKey);
 
         public static int? MsSqlVersion
         {
@@ -49,14 +37,14 @@ namespace HatTrick.DbEx.MsSql.Test
             }
         }
 
-        public static string DatabaseMapName
+        public static string MetadataKey
         {
             get
             {
-                if (_databaseMapName != null)
-                    return _databaseMapName;
+                if (_metadataKey != null)
+                    return _metadataKey;
 
-                return _databaseMapName = Configuration.GetValue("DatabaseMapName", "MsSqlDbExTest-design");
+                return _metadataKey = Configuration.GetValue("MetadataKey", "MsSqlDbExTest-design");
             }
         }
     }

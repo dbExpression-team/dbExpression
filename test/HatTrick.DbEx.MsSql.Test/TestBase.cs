@@ -20,8 +20,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2005Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2008Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -42,8 +42,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -53,8 +53,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -64,8 +64,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2016Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -75,8 +75,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2017Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -86,8 +86,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             DbExpressionConfigurationBuilder.AddDbExpression(c =>
                             {
                                 c.AddMsSql2019Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                                    ConfigurationProvider.ConnectionStringSettings,
-                                    ConfigurationProvider.DatabaseMapName
+                                    ConfigurationProvider.ConnectionString,
+                                    ConfigurationProvider.MetadataKey
                                 );
                             });
                             break;
@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     default: throw new NotImplementedException($"MsSql version {version} has not been implemented");
                 }
 
-                return DbExpression.Configuration.Databases[ConfigurationProvider.DatabaseMapName].DatabaseConfiguration;
+                return DbExpression.Configuration.Databases[ConfigurationProvider.MetadataKey];
             }
         }
     }

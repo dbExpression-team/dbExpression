@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Data.Common;
 using System.Data.SqlClient;
 using ht = HatTrick.DbEx.Sql;
@@ -12,11 +13,7 @@ namespace HatTrick.DbEx.MsSql
         {
         }
 
-        public MsSqlConnection(string connectionStringName) : base(connectionStringName)
-        {
-        }
-
-        public MsSqlConnection(ConnectionStringSettings settings) : base(settings)
+        public MsSqlConnection(Func<string> connectionStringFactory) : base(connectionStringFactory)
         {
         }
         #endregion
@@ -26,7 +23,7 @@ namespace HatTrick.DbEx.MsSql
         {
             if (_dbConnection == null)
             {
-                _dbConnection = new SqlConnection(ConnectionSettings.ConnectionString);
+                _dbConnection = new SqlConnection(ConnectionStringFactory());
             }
         }
         #endregion

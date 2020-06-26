@@ -1,0 +1,185 @@
+using System;
+using HatTrick.DbEx.Sql;
+using ServerSideBlazorApp.Data;
+
+namespace ServerSideBlazorApp.Data.dbo
+{
+    #region address
+    public partial class Address : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public AddressType? AddressType { get; set; }
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public Address()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region person
+    public partial class Person : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public GenderType GenderType { get; set; }
+        public int? CreditLimit { get; set; }
+        public int? YearOfLastCreditLimitReview { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public Person()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region person address
+    public partial class PersonAddress : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public int PersonId { get; set; }
+        public int AddressId { get; set; }
+        public DateTime DateCreated { get; set; }
+        #endregion
+
+        #region constructor
+        public PersonAddress()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region product
+    public partial class Product : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public ProductCategoryType? ProductCategoryType { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal ListPrice { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public Product()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region purchase
+    public partial class Purchase : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public int PersonId { get; set; }
+        public decimal TotalPurchaseAmount { get; set; }
+        public DateTime PurchaseDate { get; set; }
+        public DateTime? ShipDate { get; set; }
+        public DateTime? ExpectedDeliveryDate { get; set; }
+        public Guid? TrackingIdentifier { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public Purchase()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region purchase line
+    public partial class PurchaseLine : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public int PurchaseId { get; set; }
+        public int ProductId { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public int Quantity { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public PurchaseLine()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region sysdiagrams
+    public partial class sysdiagrams : IDbEntity
+    {
+        #region interface
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public int? version { get; set; }
+        public byte[] definition { get; set; }
+        #endregion
+
+        #region constructor
+        public sysdiagrams()
+        {
+        }
+        #endregion
+    }
+    #endregion
+    #region person total purchases view
+    public partial class PersonTotalPurchasesView : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public decimal? TotalPurchases { get; set; }
+        #endregion
+
+        #region constructor
+        public PersonTotalPurchasesView()
+        {
+        }
+        #endregion
+    }
+    #endregion
+}
+namespace ServerSideBlazorApp.Data.sec
+{
+    #region person
+    public partial class Person : IDbEntity
+    {
+        #region interface
+        public int Id { get; set; }
+        public string SSN { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        #endregion
+
+        #region constructor
+        public Person()
+        {
+        }
+        #endregion
+    }
+    #endregion
+}

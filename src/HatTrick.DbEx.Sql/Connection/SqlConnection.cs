@@ -15,17 +15,11 @@ namespace HatTrick.DbEx.Sql
         #region internals
         private bool disposed;
         protected DbConnection _dbConnection;
-        protected ConnectionStringSettings ConnectionSettings { get; private set; }
+        protected Func<string> ConnectionStringFactory { get; private set; }
         public DbTransaction DbTransaction { get; private set; }
         #endregion
 
         #region interface properties
-        public string ConnectionString => ConnectionSettings.ConnectionString;
-
-        public string ConnectionName => ConnectionSettings.Name;
-
-        public string ProviderName => ConnectionSettings.ProviderName;
-
         public DbConnection DbConnection
         {
             get
@@ -54,13 +48,13 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentNullException(nameof(connectionStringName));
             }
 
-            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[connectionStringName];
-            ConnectionSettings = settings ?? throw new ArgumentException("no connection string found for provided name: " + connectionStringName, nameof(connectionStringName));
+            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[connectionStringName] ?? throw new ArgumentException("no connection string found for provided name: " + connectionStringName, nameof(connectionStringName)); ;
+            ConnectionStringFactory = () => settings.ConnectionString;
         }
 
-        protected SqlConnection(ConnectionStringSettings settings)
+        protected SqlConnection(Func<string> connectionStringFactory)
         {
-            ConnectionSettings = settings ?? throw new ArgumentNullException($"{nameof(settings)} is required.");
+            ConnectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException($"{nameof(connectionStringFactory)} is required.");
         }
         #endregion
 

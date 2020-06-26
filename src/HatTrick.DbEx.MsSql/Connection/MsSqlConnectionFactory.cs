@@ -7,13 +7,13 @@ namespace HatTrick.DbEx.MsSql.Connection
 {
     public class MsSqlConnectionFactory : SqlConnectionFactory
     {
-        private Func<ConnectionStringSettings> ConnectionStringSettingsFactory { get; set; }
+        private Func<string> connectionStringFactory;
 
-        public MsSqlConnectionFactory(Func<ConnectionStringSettings> factory)
+        public MsSqlConnectionFactory(Func<string> connectionStringFactory)
         {
-            ConnectionStringSettingsFactory = factory;
+            this.connectionStringFactory = connectionStringFactory;
         }
 
-        public override SqlConnection CreateSqlConnection() => new MsSqlConnection(ConnectionStringSettingsFactory());
+        public override SqlConnection CreateSqlConnection() => new MsSqlConnection(connectionStringFactory);
     }
 }

@@ -8,6 +8,10 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringFieldExpression<TEntity>>
         where TEntity : IDbEntity
     {
+        #region internals
+        public FilterExpression LikePhrase { get; set; }
+        #endregion
+
         #region constructors
         public StringFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
         {
@@ -23,6 +27,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #region as
         public new StringFieldExpression<TEntity> As(string alias)
             => new StringFieldExpression<TEntity>(base.Identifier, base.Entity, base.MetadataResolver, alias);
+        #endregion
+
+        #region like
+        public FilterExpression Like(string phrase) 
+            => new FilterExpression(new ExpressionContainer(this), new ExpressionContainer(new LiteralExpression<string>(phrase)), FilterExpressionOperator.Like);
         #endregion
 
         #region equals

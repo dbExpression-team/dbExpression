@@ -16,7 +16,9 @@ namespace HatTrick.DbEx.Sql.Executor
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
             configureCommand?.Invoke(cmd);
@@ -55,7 +57,9 @@ namespace HatTrick.DbEx.Sql.Executor
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
             configureCommand?.Invoke(cmd);
@@ -90,7 +94,9 @@ namespace HatTrick.DbEx.Sql.Executor
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters != null && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
@@ -104,7 +110,9 @@ namespace HatTrick.DbEx.Sql.Executor
             DbCommand cmd = connection.GetDbCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters != null && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
