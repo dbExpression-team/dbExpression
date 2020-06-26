@@ -4,6 +4,6 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class DbExpressionRuntimeConfiguration
     {
-        public IDictionary<string, RuntimeDatabaseMap> Databases { get; set; } = new Dictionary<string, RuntimeDatabaseMap>();
+        public IDictionary<string, DatabaseConfiguration> Databases { get; set; } = new Dictionary<string, DatabaseConfiguration>();
     }
 }

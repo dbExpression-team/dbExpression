@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using HatTrick.Model.MsSql;
 using HatTrick.Text.Templating;
 using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
+using HatTrick.DbEx.Tools.Configuration;
 
 namespace HatTrick.DbEx.Tools.Service
 {

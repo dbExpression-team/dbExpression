@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace HatTrick.DbEx.Tools.Service
+namespace HatTrick.DbEx.Tools.Configuration
 {
     public class DbExConfig
     {

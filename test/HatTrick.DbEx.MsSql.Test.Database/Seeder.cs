@@ -9,16 +9,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database
 {
     public class Seeder
     {
-        private ConnectionStringSettings connectionStringSettings;
+        private string connectionString;
 
-        public Seeder(string name, string connectionString)
+        public Seeder(string connectionString)
         {
-            connectionStringSettings = new ConnectionStringSettings(name, connectionString);
-        }
-
-        public Seeder(ConnectionStringSettings connectionStringSettings)
-        {
-            this.connectionStringSettings = connectionStringSettings;
+            this.connectionString = connectionString;
         }
 
         public void RunScript(string scriptName)
@@ -29,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
         public void RunScript(string scriptName, string scriptPath)
         {
             using var resetScriptReader = File.OpenText(Path.Combine(scriptPath, scriptName));
-            using var conn = new SqlConnection(connectionStringSettings.ConnectionString);
+            using var conn = new SqlConnection(connectionString);
             var serverConn = new ServerConnection(conn);
             var server = new Server(serverConn);
             server.ConnectionContext.ExecuteNonQuery(resetScriptReader.ReadToEnd());

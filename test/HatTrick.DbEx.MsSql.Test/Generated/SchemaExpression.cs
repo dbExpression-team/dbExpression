@@ -11,7 +11,7 @@ namespace DbEx.DataService
         {
             if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
                 throw new DbExpressionConfigurationException($"Metadata for database named 'MsSqlDbExTest-design' has not been provided.");
-            return config.DatabaseConfiguration.ConnectionFactory.CreateSqlConnection();
+            return config.ConnectionFactory.CreateSqlConnection();
         }
     }
     #endregion
