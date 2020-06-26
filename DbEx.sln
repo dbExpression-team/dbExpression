@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F642B40A
 		build\dockerfile = build\dockerfile
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{F1FF2A42-3E7E-4EDC-AFD5-9C632FD2B48D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerSideBlazorApp", "samples\mssql\ServerSideBlazorApp\ServerSideBlazorApp.csproj", "{C9270A54-1302-4504-9630-F4F156A946D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +81,10 @@ Global
 		{1073990F-F866-43D2-BF65-8B811885A4C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1073990F-F866-43D2-BF65-8B811885A4C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1073990F-F866-43D2-BF65-8B811885A4C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9270A54-1302-4504-9630-F4F156A946D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9270A54-1302-4504-9630-F4F156A946D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9270A54-1302-4504-9630-F4F156A946D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9270A54-1302-4504-9630-F4F156A946D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +99,8 @@ Global
 		{85EBBD1D-8B5B-41F5-8A15-D9F66529B95E} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
 		{9DB2D9D2-B927-47FE-9377-F28C14978144} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
 		{1073990F-F866-43D2-BF65-8B811885A4C7} = {E797F978-C42D-491C-B5A4-4DEADB7342A3}
+		{F1FF2A42-3E7E-4EDC-AFD5-9C632FD2B48D} = {787FE900-EDEB-44E6-80DD-C9ACE2A2C992}
+		{C9270A54-1302-4504-9630-F4F156A946D7} = {F1FF2A42-3E7E-4EDC-AFD5-9C632FD2B48D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}
