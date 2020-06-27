@@ -1,5 +1,7 @@
-﻿//using ServerSideBlazorApp.Data.dbo;
+﻿using HatTrick.DbEx.Sql.Builder;
+using ServerSideBlazorApp.dboData;
 using ServerSideBlazorApp.DataService;
+using ServerSideBlazorApp.dboDataService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,8 @@ namespace ServerSideBlazorApp.Service
         public IEnumerable<Person> GetPeople(int offset, int length, string nameStartsWith)
         {
             return db.SelectMany<Person>()
-                .From(DataService.dbo.Person)
-                .Where((dbo.Person.FirstName + " " + dbo.Person.LastName).Like(nameStartsWith + "%")
+                .From(dbo.Person)
+                .Where((dbo.Person.FirstName + " " + dbo.Person.LastName).Like(nameStartsWith + "%"))
                 .Execute();
         }
 

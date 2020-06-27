@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
+    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
+    <ProjectReference Include="..\..\..\src\HatTrick.DbEx\HatTrick.DbEx.csproj" />
   </ItemGroup>
 
   <ItemGroup>

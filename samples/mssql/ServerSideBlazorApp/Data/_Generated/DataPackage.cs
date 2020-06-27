@@ -1,8 +1,8 @@
 using System;
-using HatTrick.DbEx.Sql;
 using ServerSideBlazorApp.Data;
+using HatTrick.DbEx.Sql;
 
-namespace ServerSideBlazorApp.Data.dbo
+namespace ServerSideBlazorApp.dboData
 {
     #region address
     public partial class Address : IDbEntity
@@ -163,7 +163,7 @@ namespace ServerSideBlazorApp.Data.dbo
     }
     #endregion
 }
-namespace ServerSideBlazorApp.Data.sec
+namespace ServerSideBlazorApp.secData
 {
     #region person
     public partial class Person : IDbEntity

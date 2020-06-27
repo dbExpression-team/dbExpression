@@ -1,9 +1,9 @@
 namespace ServerSideBlazorApp.DataService
 {
+    using ServerSideBlazorApp.dboDataService;
+    using ServerSideBlazorApp.secDataService;
     using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
-	using ServerSideBlazorApp.dbo.DataService;
-	using ServerSideBlazorApp.sec.DataService;
 
     public class MsSqlDbExTestDatabaseMetadataProvider : IDatabaseMetadataProvider
     {
@@ -23,7 +23,7 @@ namespace ServerSideBlazorApp.DataService
     }
 }
 
-namespace ServerSideBlazorApp.dbo.DataService
+namespace ServerSideBlazorApp.dboDataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;
@@ -237,8 +237,9 @@ namespace ServerSideBlazorApp.dbo.DataService
         #endregion
     }
 }
-namespace ServerSideBlazorApp.sec.DataService
+namespace ServerSideBlazorApp.secDataService
 {
+    using ServerSideBlazorApp.secData;
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;
     using System.Collections.Generic;
