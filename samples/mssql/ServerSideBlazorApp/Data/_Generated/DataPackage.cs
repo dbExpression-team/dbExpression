@@ -1,6 +1,6 @@
 using System;
-using ServerSideBlazorApp.Data;
 using HatTrick.DbEx.Sql;
+using ServerSideBlazorApp.Data;
 
 namespace ServerSideBlazorApp.dboData
 {
@@ -124,24 +124,6 @@ namespace ServerSideBlazorApp.dboData
 
         #region constructor
         public PurchaseLine()
-        {
-        }
-        #endregion
-    }
-    #endregion
-    #region sysdiagrams
-    public partial class sysdiagrams : IDbEntity
-    {
-        #region interface
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public int? version { get; set; }
-        public byte[] definition { get; set; }
-        #endregion
-
-        #region constructor
-        public sysdiagrams()
         {
         }
         #endregion

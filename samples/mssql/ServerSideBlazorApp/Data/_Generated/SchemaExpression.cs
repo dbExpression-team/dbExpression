@@ -1,3 +1,5 @@
+using System;
+
 namespace ServerSideBlazorApp.DataService
 {
     using HatTrick.DbEx.MsSql.Builder;
@@ -34,7 +36,6 @@ namespace ServerSideBlazorApp.dboDataService
         private const string _productEntityName = "Product";
         private const string _purchaseEntityName = "Purchase";
         private const string _purchaseLineEntityName = "PurchaseLine";
-        private const string _sysdiagramsEntityName = "sysdiagrams";
         private const string _personTotalPurchasesViewEntityName = "PersonTotalPurchasesView";
         #endregion
 

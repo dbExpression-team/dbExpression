@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using ServerSideBlazorApp.Data;
 
 namespace ServerSideBlazorApp.dboDataService
 {
-	using ServerSideBlazorApp.dboData;
+    using ServerSideBlazorApp.dboData;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
@@ -974,7 +973,7 @@ namespace ServerSideBlazorApp.dboDataService
 }
 namespace ServerSideBlazorApp.secDataService
 {
-	using ServerSideBlazorApp.secData;
+    using ServerSideBlazorApp.secData;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
