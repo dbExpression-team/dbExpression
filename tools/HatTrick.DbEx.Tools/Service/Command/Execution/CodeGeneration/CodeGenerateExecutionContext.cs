@@ -118,14 +118,25 @@ namespace HatTrick.DbEx.Tools.Service
         protected string ResolveOutputDirectory(DbExConfig config)
         {
             string path = config.OutputDirectory;
-            string keyUsed = null;
-            if (base.TryGetOption(out path, out keyUsed, "--output", "-o"))
+            string keyUsed;
+            bool optionFound = base.TryGetOption(out string optionPath, out keyUsed, "--output", "-o");
+            if (optionFound)
             {
-                if (!svc.IO.DirectoryExists(path))
+                if (!string.IsNullOrEmpty(config.OutputDirectory))
                 {
-                    //it's not a valid file or directory (absolute or relative)...
-                    throw new CommandException($"Command option '{keyUsed}' does not point to a valid file or directory. Value provided: {path}");
+                    svc.Feedback.Push(To.Warn, $"Encountered --output command option and outputDirectory config setting, command option used");
                 }
+                path = optionPath;
+            }
+
+            if (!svc.IO.DirectoryExists(path))
+            {
+                //it's not a valid file or directory (absolute or relative)...
+                string msg = optionFound
+                    ? $"Command option '{keyUsed}' does not point to a valid file or directory. Value provided: {path}"
+                    : $"Config setting'{nameof(config.OutputDirectory)}' does not point to a valid file or directory. Value provided: {path}";
+
+                throw new CommandException(msg);
             }
 
             return path;
@@ -300,10 +311,10 @@ namespace HatTrick.DbEx.Tools.Service
         protected void RenderOutput(MsSqlModel sqlModel, DbExConfig config, Resource resource, CodeGenerationHelpers helpers)
         {
             TemplateEngine engine = new TemplateEngine(resource.Value);
-            engine.ProgressListener += (i, s) =>
-            {
-                svc.Feedback.Push(To.ConsoleOnly, $"{i} \t {s}");
-            };
+            //engine.ProgressListener += (i, s) =>
+            //{
+            //    svc.Feedback.Push(To.ConsoleOnly, $"{i} \t {s}");
+            //};
             engine.TrimWhitespace = true;
 
             LambdaRepository repo = engine.LambdaRepo;

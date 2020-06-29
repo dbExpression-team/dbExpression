@@ -2,7 +2,7 @@ using System;
 using HatTrick.DbEx.Sql;
 using ServerSideBlazorApp.Data;
 
-namespace ServerSideBlazorApp.Data.dbo
+namespace ServerSideBlazorApp.dboData
 {
     #region address
     public partial class Address : IDbEntity
@@ -129,24 +129,6 @@ namespace ServerSideBlazorApp.Data.dbo
         #endregion
     }
     #endregion
-    #region sysdiagrams
-    public partial class sysdiagrams : IDbEntity
-    {
-        #region interface
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public int? version { get; set; }
-        public byte[] definition { get; set; }
-        #endregion
-
-        #region constructor
-        public sysdiagrams()
-        {
-        }
-        #endregion
-    }
-    #endregion
     #region person total purchases view
     public partial class PersonTotalPurchasesView : IDbEntity
     {
@@ -163,7 +145,7 @@ namespace ServerSideBlazorApp.Data.dbo
     }
     #endregion
 }
-namespace ServerSideBlazorApp.Data.sec
+namespace ServerSideBlazorApp.secData
 {
     #region person
     public partial class Person : IDbEntity

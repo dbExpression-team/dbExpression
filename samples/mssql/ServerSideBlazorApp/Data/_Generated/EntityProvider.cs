@@ -1,8 +1,7 @@
 using System;
 
-namespace ServerSideBlazorApp.DataService
+namespace ServerSideBlazorApp.dboDataService
 {
-    using ServerSideBlazorApp.dbo.DataService;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -10,7 +9,7 @@ namespace ServerSideBlazorApp.DataService
     public static partial class dbo
     {
         #region internals
-        private static volatile dboSchema _schema;
+        private static volatile dboSchemaExpression _schema;
         #endregion
 
         #region interface
@@ -26,7 +25,7 @@ namespace ServerSideBlazorApp.DataService
 		#region constructors
         static dbo()
         {
-            _schema = new dboSchema(new Lazy<ISqlSchemaMetadata>(() =>
+            _schema = new dboSchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
                 {
                     if (!DbExpression.Configuration.Databases.TryGetValue("ServerSideBlazorApp", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key 'ServerSideBlazorApp' has not been provided.");
@@ -46,9 +45,8 @@ namespace ServerSideBlazorApp.DataService
     }
     #endregion
 }
-namespace ServerSideBlazorApp.DataService
+namespace ServerSideBlazorApp.secDataService
 {
-    using ServerSideBlazorApp.sec.DataService;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -56,7 +54,7 @@ namespace ServerSideBlazorApp.DataService
     public static partial class sec
     {
         #region internals
-        private static volatile secSchema _schema;
+        private static volatile secSchemaExpression _schema;
         #endregion
 
         #region interface
@@ -66,7 +64,7 @@ namespace ServerSideBlazorApp.DataService
 		#region constructors
         static sec()
         {
-            _schema = new secSchema(new Lazy<ISqlSchemaMetadata>(() =>
+            _schema = new secSchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
                 {
                     if (!DbExpression.Configuration.Databases.TryGetValue("ServerSideBlazorApp", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key 'ServerSideBlazorApp' has not been provided.");

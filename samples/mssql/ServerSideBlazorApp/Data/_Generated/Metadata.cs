@@ -1,9 +1,11 @@
+using System;
+
 namespace ServerSideBlazorApp.DataService
 {
     using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
-	using ServerSideBlazorApp.dbo.DataService;
-	using ServerSideBlazorApp.sec.DataService;
+	using ServerSideBlazorApp.dboDataService;
+	using ServerSideBlazorApp.secDataService;
 
     public class MsSqlDbExTestDatabaseMetadataProvider : IDatabaseMetadataProvider
     {
@@ -23,7 +25,7 @@ namespace ServerSideBlazorApp.DataService
     }
 }
 
-namespace ServerSideBlazorApp.dbo.DataService
+namespace ServerSideBlazorApp.dboDataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;
@@ -48,7 +50,6 @@ namespace ServerSideBlazorApp.dbo.DataService
             Entities.Add("Product", new ProductEntityMetadata(this));
             Entities.Add("Purchase", new PurchaseEntityMetadata(this));
             Entities.Add("PurchaseLine", new PurchaseLineEntityMetadata(this));
-            Entities.Add("sysdiagrams", new sysdiagramsEntityMetadata(this));
             Entities.Add("PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this));
         }
         #endregion
@@ -197,27 +198,6 @@ namespace ServerSideBlazorApp.dbo.DataService
         }
         #endregion
     }
-	public class sysdiagramsEntityMetadata : ISqlEntityMetadata
-	{
-        #region interface
-        public string Name => "sysdiagrams";
-        public ISqlSchemaMetadata Schema { get; }
-        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
-        #endregion
-		
-        #region constructors
-        public sysdiagramsEntityMetadata(ISqlSchemaMetadata schema)
-        {
-            Schema = schema;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("name", new MsSqlFieldMetadata(this, "name", SqlDbType.VarChar, 256));
-            Fields.Add("principal_id", new MsSqlFieldMetadata(this, "principal_id", SqlDbType.Int, 4));
-            Fields.Add("diagram_id", new MsSqlFieldMetadata(this, "diagram_id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("version", new MsSqlFieldMetadata(this, "version", SqlDbType.Int, 4));
-            Fields.Add("definition", new MsSqlFieldMetadata(this, "definition", SqlDbType.VarBinary, -1));
-        }
-        #endregion
-    }
 	public class PersonTotalPurchasesViewEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
@@ -237,7 +217,7 @@ namespace ServerSideBlazorApp.dbo.DataService
         #endregion
     }
 }
-namespace ServerSideBlazorApp.sec.DataService
+namespace ServerSideBlazorApp.secDataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;

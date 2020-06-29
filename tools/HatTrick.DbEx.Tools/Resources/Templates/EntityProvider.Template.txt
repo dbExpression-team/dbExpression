@@ -2,9 +2,8 @@ using System;
 
 {#each Schemas}
 {#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}DataService
+namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
-    using {() => ResolveRootNamespace}{($) => ResolveName}.DataService;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -12,7 +11,7 @@ namespace {() => ResolveRootNamespace}DataService
     public static partial class {($) => ResolveName}
     {{
         #region internals
-        private static volatile {($) => ResolveName}Schema _schema;
+        private static volatile {($) => ResolveName}SchemaExpression _schema;
         #endregion
 
         #region interface
@@ -26,12 +25,12 @@ namespace {() => ResolveRootNamespace}DataService
 		#region constructors
         static {($) => ResolveName}()
         {{
-            _schema = new {($) => ResolveName}Schema(new Lazy<ISqlSchemaMetadata>(() =>
+            _schema = new {($) => ResolveName}SchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
                 {{
                     if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key '{() => ResolveSourceReferenceKey}' has not been provided.");
 
-                    var schema = config?.DatabaseConfiguration?.Metadata?.Schemas;
+                    var schema = config?.Metadata?.Schemas;
                     if (schema == null)
                         throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
 

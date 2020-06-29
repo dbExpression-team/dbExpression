@@ -4,7 +4,7 @@ using {() => ResolveRootNamespace}Data;
 
 {#each Schemas}
 {#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}Data.{($) => ResolveName}
+namespace {() => ResolveRootNamespace}{($) => ResolveName}Data
 {{
 	{#each ($) => ResolveConsolidatedTablesAndViews}
 	{#if !($) => IsIgnored}

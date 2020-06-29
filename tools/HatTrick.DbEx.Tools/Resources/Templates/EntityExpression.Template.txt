@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using {() => ResolveRootNamespace}Data;
 
 {#each Schemas}
 {#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
+namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
-    using {() => ResolveRootNamespace}Data.{($) => ResolveName};
+    using {() => ResolveRootNamespace}{($) => ResolveName}Data;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;

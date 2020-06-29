@@ -1,10 +1,12 @@
+using System;
+
 namespace {() => ResolveRootNamespace}DataService
 {{
     using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
 	{#each Schemas}
 	{#if !($) => IsIgnored}
-	using {() => ResolveRootNamespace}{($) => ResolveName}.DataService;
+	using {() => ResolveRootNamespace}{($) => ResolveName}DataService;
 	{/if}
 	{/each}
 
@@ -31,7 +33,7 @@ namespace {() => ResolveRootNamespace}DataService
 
 {#each Schemas}
 {#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}{($) => ResolveName}.DataService
+namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;

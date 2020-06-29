@@ -1,3 +1,5 @@
+using System;
+
 namespace {() => ResolveRootNamespace}DataService
 {{
     using HatTrick.DbEx.MsSql.Builder;
@@ -11,7 +13,7 @@ namespace {() => ResolveRootNamespace}DataService
         {{
             if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
                 throw new DbExpressionConfigurationException($"Metadata for database named '{() => ResolveSourceReferenceKey}' has not been provided.");
-            return config.DatabaseConfiguration.ConnectionFactory.CreateSqlConnection();
+            return config.ConnectionFactory.CreateSqlConnection();
         }}
     }}
     #endregion
@@ -19,16 +21,15 @@ namespace {() => ResolveRootNamespace}DataService
 
 {#each Schemas}
 {#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}DataService
+namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
     using HatTrick.DbEx.Sql.Expression;
-    using {() => ResolveRootNamespace}{($) => ResolveName}.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
     #region {$.Name}
     [Serializable]
-    public class {($) => ResolveName}Schema : SchemaExpression
+    public class {($) => ResolveName}SchemaExpression : SchemaExpression
     {{
         #region internals
 		{#each ($) => ResolveConsolidatedTablesAndViews}
@@ -47,7 +48,7 @@ namespace {() => ResolveRootNamespace}DataService
         #endregion
 
         #region constructors
-        public {($) => ResolveName}Schema(Lazy<ISqlSchemaMetadata> metadata) : base("{($) => ResolveName}", metadata, null)
+        public {($) => ResolveName}SchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("{($) => ResolveName}", metadata, null)
         {{
 			{#each ($) => ResolveConsolidatedTablesAndViews}
 			{#if !($) => IsIgnored}

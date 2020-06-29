@@ -1,3 +1,5 @@
+using System;
+
 namespace ServerSideBlazorApp.DataService
 {
     using HatTrick.DbEx.MsSql.Builder;
@@ -17,16 +19,15 @@ namespace ServerSideBlazorApp.DataService
     #endregion
 }
 
-namespace ServerSideBlazorApp.DataService
+namespace ServerSideBlazorApp.dboDataService
 {
     using HatTrick.DbEx.Sql.Expression;
-    using ServerSideBlazorApp.dbo.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
     #region dbo
     [Serializable]
-    public class dboSchema : SchemaExpression
+    public class dboSchemaExpression : SchemaExpression
     {
         #region internals
         private const string _addressEntityName = "Address";
@@ -35,7 +36,6 @@ namespace ServerSideBlazorApp.DataService
         private const string _productEntityName = "Product";
         private const string _purchaseEntityName = "Purchase";
         private const string _purchaseLineEntityName = "PurchaseLine";
-        private const string _sysdiagramsEntityName = "sysdiagrams";
         private const string _personTotalPurchasesViewEntityName = "PersonTotalPurchasesView";
         #endregion
 
@@ -50,7 +50,7 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region constructors
-        public dboSchema(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
+        public dboSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
         {
             Entities.Add(_addressEntityName, new AddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_addressEntityName])));
             Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
@@ -64,16 +64,15 @@ namespace ServerSideBlazorApp.DataService
     }
     #endregion
 }
-namespace ServerSideBlazorApp.DataService
+namespace ServerSideBlazorApp.secDataService
 {
     using HatTrick.DbEx.Sql.Expression;
-    using ServerSideBlazorApp.sec.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
     #region sec
     [Serializable]
-    public class secSchema : SchemaExpression
+    public class secSchemaExpression : SchemaExpression
     {
         #region internals
         private const string _personEntityName = "Person";
@@ -84,7 +83,7 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region constructors
-        public secSchema(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
+        public secSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
         {
             Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
         }
