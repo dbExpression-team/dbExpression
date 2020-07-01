@@ -2,7 +2,7 @@
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql;
 using System;
 using Xunit;
 
@@ -131,47 +131,5 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             result.Value.Year.Should().Be(expected);
         }
-
-        //MILESTONE: Shared Parameters
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //[Trait("Operation", "GROUP BY")]
-        //public void Can_group_by_dateadd_of_year_to_null_ship_date_succeed(int version)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
-
-        //    var exp = db.SelectOne(
-        //            db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate)
-        //        ).From(dbo.Purchase)
-        //        .GroupBy(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate));
-
-        //    //when               
-        //    DateTime? result = exp.Execute();
-
-        //    //then
-        //    result.Should().BeNull();
-        //}
-
-        //MILESTONE: Shared Parameters
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //[Trait("Operation", "GROUP BY")]
-        //public void Can_group_by_dateadd_of_year_to_null_ship_date_and_aliasing_succeed(int version, int expected = 2018)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
-
-        //    var exp = db.SelectOne(
-        //            db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate).As("alias")
-        //        ).From(dbo.Purchase)
-        //        .GroupBy(db.fx.DateAdd(DateParts.Year, 1, dbo.Purchase.ShipDate));
-
-        //    //when               
-        //    DateTime? result = exp.Execute();
-
-        //    //then
-        //    result.Value.Year.Should().Be(expected);
-        //}
     }
 }

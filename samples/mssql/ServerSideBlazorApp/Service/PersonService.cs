@@ -1,4 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Builder;
+﻿using HatTrick.DbEx.Sql;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.dboData;
 using ServerSideBlazorApp.DataService;
@@ -55,7 +55,5 @@ namespace ServerSideBlazorApp.Service
 
             return creditLimit;
         }
-
-        //GWG to JROD: Here's what I put as "Application arguments" in HatTrick.DbEx.Tools to gen code in the ./Data/_Generated folder: "gen -p d:/src/db-ex/samples/mssql/ServerSideBlazorApp/DbExConfig.json -o d:/src/db-ex/samples/mssql/ServerSideBlazorApp/Data/_Generated"
     }
 }

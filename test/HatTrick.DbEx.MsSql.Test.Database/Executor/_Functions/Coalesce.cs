@@ -1,7 +1,7 @@
 ﻿using DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -51,29 +51,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             dates.Should().HaveCount(expected);
         }
 
-        //MEDIATOR
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //[Trait("Expression", "Arithmetic")]
-        //public void Does_coalesceing_ship_date_and_getdate_plus_purchase_date_succeed(int version, int expected = 15)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Expression", "Arithmetic")]
+        public void Does_coalesceing_ship_date_and_getdate_plus_purchase_date_succeed(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    var exp = db.SelectMany(
-        //            dbo.Purchase.TotalPurchaseAmount,
-        //            db.fx.Coalesce(
-        //                dbo.Purchase.ShipDate,
-        //                db.fx.GetDate() + dbo.Purchase.PurchaseDate
-        //            ).As("relevant_date")
-        //        ).From(dbo.Purchase);
+            var exp = db.SelectMany(
+                    dbo.Purchase.TotalPurchaseAmount,
+                    db.fx.Coalesce(
+                        dbo.Purchase.ShipDate,
+                        db.fx.GetDate() + dbo.Purchase.PurchaseDate
+                    ).As("relevant_date")
+                ).From(dbo.Purchase);
 
-        //    //when               
-        //    IList<dynamic> dates = exp.Execute();
+            //when               
+            IList<dynamic> dates = exp.Execute();
 
-        //    //then
-        //    dates.Should().HaveCount(expected);
-        //}
+            //then
+            dates.Should().HaveCount(expected);
+        }
 
         [Theory]
         [MsSqlVersions.AllVersions]
