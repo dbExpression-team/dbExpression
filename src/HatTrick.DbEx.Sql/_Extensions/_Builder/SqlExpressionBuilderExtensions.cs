@@ -4,12 +4,11 @@ using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Dynamic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.Sql.Builder
+namespace HatTrick.DbEx.Sql
 {
     public static class SqlExpressionBuilderExtensions
     {
