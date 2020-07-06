@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected ConcatFunctionExpression(params ExpressionContainer[] expressions) : base(expressions)
+        protected ConcatFunctionExpression(params ExpressionMediator<TValue>[] expressions) : base(expressions)
         {
         }
         #endregion

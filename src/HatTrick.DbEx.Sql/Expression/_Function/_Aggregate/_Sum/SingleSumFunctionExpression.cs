@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SingleSumFunctionExpression>
     {
         #region constructors
-        public SingleSumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleSumFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

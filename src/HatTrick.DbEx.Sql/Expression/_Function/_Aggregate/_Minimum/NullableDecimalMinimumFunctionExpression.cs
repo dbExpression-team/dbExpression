@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDecimalMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDecimalMinimumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableDecimalMinimumFunctionExpression(NullableExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

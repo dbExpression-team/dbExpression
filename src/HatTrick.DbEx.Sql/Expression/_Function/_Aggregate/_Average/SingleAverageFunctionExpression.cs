@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SingleAverageFunctionExpression>
     {
         #region constructors
-        public SingleAverageFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleAverageFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

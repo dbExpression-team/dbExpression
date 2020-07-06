@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public Int16ExpressionMediator(ExpressionContainer expression) : base(expression)
+        public Int16ExpressionMediator(IDbExpression expression) : base(expression)
         {
         }
         #endregion

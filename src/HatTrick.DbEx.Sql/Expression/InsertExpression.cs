@@ -3,16 +3,24 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class InsertExpression :
-        IDbExpression
+        IDbExpression,
+        IDbInsertExpressionProvider
     {
+        #region internals
+        public FieldExpression assignee;
+        public ExpressionMediator assignment;
+        #endregion
+
         #region interface
-        public ExpressionContainerPair Expression { get; private set; }
+        FieldExpression IDbInsertExpressionProvider.Assignee => assignee;
+        ExpressionMediator IDbInsertExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors
-        public InsertExpression(FieldExpression field, object value, Type type)
+        public InsertExpression(FieldExpression field, ExpressionMediator assignment)
         {
-            Expression = new ExpressionContainerPair(new ExpressionContainer(field ?? throw new ArgumentNullException($"{nameof(field)} is required.")), new ExpressionContainer(value ?? DBNull.Value, value == null ? typeof(DBNull) : type));
+            assignee = field ?? throw new ArgumentNullException($"{nameof(field)} is required.");
+            this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");
         }
         #endregion
 

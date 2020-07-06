@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableStandardDeviationFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected NullableStandardDeviationFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

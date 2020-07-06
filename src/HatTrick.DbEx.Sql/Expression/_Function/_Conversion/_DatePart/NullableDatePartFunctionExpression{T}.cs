@@ -6,8 +6,14 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableDatePartFunctionExpression(ExpressionContainer datePart, ExpressionContainer expression) : base(datePart, expression)
+        protected NullableDatePartFunctionExpression(ExpressionContainer datePart, NullableExpressionMediator<DateTime> expression) : base(datePart, expression)
         {
+
+        }
+            
+        protected NullableDatePartFunctionExpression(ExpressionContainer datePart, NullableExpressionMediator<DateTimeOffset> expression) : base(datePart, expression)
+        {
+
         }
         #endregion
     }

@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeOffsetCastFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetCastFunctionExpression(ExpressionContainer expression, ExpressionContainer convertToDbType) : base(expression, convertToDbType)
+        public DateTimeOffsetCastFunctionExpression(ExpressionMediator expression, ExpressionContainer convertToDbType) : base(expression, convertToDbType)
         {
         }
         #endregion

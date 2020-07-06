@@ -86,13 +86,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order
-        public OrderByExpression Asc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.DESC);
-        #endregion
-
-        #region implicit operators
-        public static implicit operator OrderByExpression(FieldExpression field) => new OrderByExpression(new ExpressionContainer(field), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(FieldExpression field) => new GroupByExpression(new ExpressionContainer(field));
+        public abstract OrderByExpression Asc { get; }
+        public abstract OrderByExpression Desc { get; }
         #endregion
 
         #region operators

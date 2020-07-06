@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumIsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : base(expression, value)
+        public EnumIsNullFunctionExpression(NullableEnumExpressionMediator<TEnum> expression, EnumExpressionMediator<TEnum> value) : base(expression, value)
         {
         }
         #endregion

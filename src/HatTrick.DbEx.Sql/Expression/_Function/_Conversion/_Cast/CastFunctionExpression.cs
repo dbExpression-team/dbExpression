@@ -14,14 +14,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected CastFunctionExpression(ExpressionContainer expression, ExpressionContainer convertToDbType) : base(expression)
+        protected CastFunctionExpression(ExpressionMediator expression, ExpressionContainer convertToDbType) : base(expression)
         {
             ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"CAST({Expression.Object} AS {ConvertToDbType}{(Size.HasValue ? $"({Size})" : "")})";
+        public override string ToString() => $"CAST({Expression} AS {ConvertToDbType}{(Size.HasValue ? $"({Size})" : "")})";
         #endregion
 
         #region equals

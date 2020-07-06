@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<BooleanIsNullFunctionExpression>
     {
         #region constructors
-        public BooleanIsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer notNull) : base(expression, notNull)
+        public BooleanIsNullFunctionExpression(NullableExpressionMediator<bool> expression, ExpressionMediator<bool> notNull) : base(expression, notNull)
         {
         }
         #endregion

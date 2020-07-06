@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int32MinimumFunctionExpression>
     {
         #region constructors
-        public Int32MinimumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32MinimumFunctionExpression(ExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

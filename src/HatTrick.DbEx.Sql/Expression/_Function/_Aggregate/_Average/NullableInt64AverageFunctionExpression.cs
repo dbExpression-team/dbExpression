@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableInt64AverageFunctionExpression>
     {
         #region constructors
-        public NullableInt64AverageFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt64AverageFunctionExpression(NullableExpressionMediator<long> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

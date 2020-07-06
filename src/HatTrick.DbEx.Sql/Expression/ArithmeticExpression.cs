@@ -7,22 +7,22 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ArithmeticExpression>
     {
         #region interface
-        public ExpressionContainer Expression { get; private set; }
-        public ExpressionContainer LeftPart => ((ExpressionContainerPair)Expression.Object).LeftPart;
-        public ExpressionContainer RightPart => ((ExpressionContainerPair)Expression.Object).RightPart;
+        public ExpressionMediator LeftArg { get; private set; }
+        public ExpressionMediator RightArg { get; private set; }
         public ArithmeticExpressionOperator ExpressionOperator { get; private set; }
         #endregion
 
         #region constructors
-        public ArithmeticExpression(ExpressionContainer leftArg, ExpressionContainer rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        public ArithmeticExpression(ExpressionMediator leftArg, ExpressionMediator rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
-            Expression = new ExpressionContainer(new ExpressionContainerPair(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."), rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")));
+            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
+            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ExpressionOperator = arithmeticOperator;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"({LeftPart.Object} {ExpressionOperator} {RightPart.Object})";
+        public override string ToString() => $"({LeftArg} {ExpressionOperator} {RightArg})";
         #endregion
 
         #region equals
@@ -30,11 +30,15 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (obj is null) return false;
 
-            if (Expression is null && obj.Expression is object) return false;
-            if (Expression is object && obj.Expression is null) return false;
-            if (!Expression.Equals(obj.Expression)) return false;
-
             if (!ExpressionOperator.Equals(obj.ExpressionOperator)) return false;
+
+            if (LeftArg is null && obj.LeftArg is object) return false;
+            if (LeftArg is object && obj.LeftArg is null) return false;
+            if (!LeftArg.Equals(obj.LeftArg)) return false;
+
+            if (RightArg is null && obj.RightArg is object) return false;
+            if (RightArg is object && obj.RightArg is null) return false;
+            if (!RightArg.Equals(obj.RightArg)) return false;
 
             return true;
         }
@@ -50,7 +54,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (LeftArg is object ? LeftArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (RightArg is object ? RightArg.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ ExpressionOperator.GetHashCode();
                 return hash;
             }

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Where?.Expression == null || expression.Where.Expression == default)
+            if (expression.Where?.LeftArg == null && expression.Where?.RightArg == default)
                 return;
 
             builder.Appender.Indent().Write("WHERE").LineBreak()

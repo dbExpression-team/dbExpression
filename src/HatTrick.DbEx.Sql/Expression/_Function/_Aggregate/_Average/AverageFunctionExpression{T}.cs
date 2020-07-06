@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
          where TValue : IComparable
     {
         #region constructors
-        protected AverageFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected AverageFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

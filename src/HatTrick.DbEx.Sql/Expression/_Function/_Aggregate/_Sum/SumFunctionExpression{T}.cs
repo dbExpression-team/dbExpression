@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected SumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected SumFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

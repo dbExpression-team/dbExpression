@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableMaximumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected NullableMaximumFunctionExpression(NullableExpressionMediator<TValue> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

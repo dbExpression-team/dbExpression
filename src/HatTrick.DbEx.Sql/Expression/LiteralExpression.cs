@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class LiteralExpression :
+        IDbExpression,
         IEquatable<LiteralExpression>
     {
         #region interface
@@ -14,6 +15,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
+        #endregion
+
+        #region tostring
+        public override string ToString() => Expression?.Object?.ToString() ?? "null";
         #endregion
 
         #region equals

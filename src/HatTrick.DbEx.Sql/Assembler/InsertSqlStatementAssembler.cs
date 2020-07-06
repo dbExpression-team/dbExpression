@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender.Indent();
                 builder.AppendPart(
-                    expression.Insert.Expressions[i].Expression.LeftPart, 
+                    (expression.Insert.Expressions[i] as IDbInsertExpressionProvider).Assignee, 
                     context
                 );
                 if (i < expression.Insert.Expressions.Count - 1)
@@ -34,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender.Indent();
 
-                context.Field = expression.Insert.Expressions[i].Expression.LeftPart.Object as FieldExpression;
-                builder.AppendPart(expression.Insert.Expressions[i].Expression.RightPart, context);
+                context.Field = (expression.Insert.Expressions[i] as IDbInsertExpressionProvider).Assignee;
+                builder.AppendPart((expression.Insert.Expressions[i] as IDbInsertExpressionProvider).Assignment, context);
                 context.Field = null;
 
                 if (i < expression.Insert.Expressions.Count - 1)

@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected CountFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
+        protected CountFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }

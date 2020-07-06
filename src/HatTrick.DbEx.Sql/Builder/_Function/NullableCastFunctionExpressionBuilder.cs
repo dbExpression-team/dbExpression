@@ -8,11 +8,11 @@ namespace HatTrick.DbEx.Sql.Builder
     public class NullableCastFunctionExpressionBuilder : INullableCastFunctionExpressionBuilder
     {
         #region internals
-        public ExpressionContainer Expression { get; private set; }
+        public ExpressionMediator Expression { get; private set; }
         #endregion
 
         #region constructors
-        public NullableCastFunctionExpressionBuilder(ExpressionContainer expression)
+        public NullableCastFunctionExpressionBuilder(ExpressionMediator expression)
         {
             Expression = expression;
         }

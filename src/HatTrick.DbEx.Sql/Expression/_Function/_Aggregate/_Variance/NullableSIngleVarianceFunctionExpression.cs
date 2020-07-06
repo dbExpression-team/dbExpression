@@ -7,7 +7,25 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableSingleVarianceFunctionExpression>
     {
         #region constructors
-        public NullableSingleVarianceFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<long> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<double> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+        public NullableSingleVarianceFunctionExpression(NullableExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

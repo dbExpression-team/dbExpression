@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private void AppendFilterExpressionThatMayContainDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //if either side of the filter expression is DBNull.Value, construct the side with an expression and append appropriate "IS NULL"
-            if (expression.Expression.LeftPart.Type == typeof(DBNull) || expression.Expression.RightPart.Type == typeof(DBNull))
+            if (expression.LeftArg.Expression is LiteralExpression left && left.Expression.Object is DBNull || expression.RightArg.Expression is LiteralExpression right && right.Expression.Object is DBNull)
             {
                 AppendFilterExpressionWithLeftOrRightEqualToDBNull(expression, builder, context);
             }
@@ -45,19 +45,19 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private void AppendFilterExpressionWithLeftOrRightEqualToDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Expression.LeftPart.Type == typeof(DBNull))
+            if (expression.LeftArg.Expression is LiteralExpression left && left.Expression.Object is DBNull)
             {
-                AppendFilterExpressionWithDBNull(expression, expression.Expression.RightPart, builder, context);
+                AppendFilterExpressionWithDBNull(expression, expression.RightArg, builder, context);
             }
             else
             {
-                AppendFilterExpressionWithDBNull(expression, expression.Expression.LeftPart, builder, context);
+                AppendFilterExpressionWithDBNull(expression, expression.LeftArg, builder, context);
             }
         }
 
-        private void AppendFilterExpressionWithDBNull(FilterExpression expression, ExpressionContainer nonDBNullContainer, ISqlStatementBuilder builder, AssemblyContext context)
+        private void AppendFilterExpressionWithDBNull(FilterExpression expression, ExpressionMediator nonDBNull, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendPart(nonDBNullContainer, context);
+            builder.AppendPart(nonDBNull, context);
             switch (expression.ExpressionOperator)
             {
                 case FilterExpressionOperator.Equal:
@@ -77,9 +77,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender.Write("NOT (");
             }
-            builder.AppendPart(expression.Expression.LeftPart, context);
+            builder.AppendPart(expression.LeftArg, context);
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-            if (expression.ExpressionOperator == FilterExpressionOperator.In && expression.Expression.RightPart.Object is Array arr)
+            if (expression.ExpressionOperator == FilterExpressionOperator.In && expression.RightArg.Expression is LiteralExpression right && right.Expression.Object is Array arr)
             {
                 builder.Appender.Write("(");
                 for (var i = 0; i < arr.Length; i++)
@@ -93,8 +93,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             else
             {
-                context.Field = expression.Expression.LeftPart.Object as FieldExpression;
-                builder.AppendPart(expression.Expression.RightPart, context);
+                context.Field = expression.LeftArg.Expression as FieldExpression;
+                builder.AppendPart(expression.RightArg, context);
                 context.Field = null;
             }
             if (expression.Negate)

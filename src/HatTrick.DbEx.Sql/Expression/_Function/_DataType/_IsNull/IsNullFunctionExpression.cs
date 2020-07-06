@@ -6,18 +6,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<IsNullFunctionExpression>
     {
         #region interface
-        public ExpressionContainer Value { get; }
+        public ExpressionMediator Value { get; }
         #endregion
 
         #region constructors
-        protected IsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : base(expression)
+        protected IsNullFunctionExpression(ExpressionMediator expression, ExpressionMediator value) : base(expression)
         {
             Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"ISNULL({Expression.Object}, {Value.Object})";
+        public override string ToString() => $"ISNULL({Expression}, {Value})";
         #endregion
 
         #region equals

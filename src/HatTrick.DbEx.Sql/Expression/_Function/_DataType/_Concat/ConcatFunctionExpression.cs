@@ -7,14 +7,19 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class ConcatFunctionExpression : DataTypeFunctionExpression,
         IEquatable<ConcatFunctionExpression>
     {
+        #region interface
+        public new IList<ExpressionMediator> Expression { get; private set; }
+        #endregion
+
         #region constructors
-        protected ConcatFunctionExpression(params ExpressionContainer[] expressions) : base(new ExpressionContainer(expressions?.ToList() ?? throw new ArgumentNullException($"{nameof(expressions)} is required."), typeof(ConcatFunctionExpression)))
+        protected ConcatFunctionExpression(params ExpressionMediator[] expressions) : base()
         {
+            Expression = expressions.ToList();
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"CONCAT({string.Join(", ", (Expression.Object as IList<ExpressionContainer>)?.Select(e => e.Object))})";
+        public override string ToString() => $"CONCAT({string.Join(", ", Expression)})";
         #endregion
 
         #region equals
@@ -22,13 +27,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            var lst1 = Expression.Object as IList<ExpressionContainer>;
-            var lst2 = obj.Expression.Object as IList<ExpressionContainer>;
+            if (Expression.Count != obj.Expression.Count) return false;
 
-            if (lst1.Count != lst2.Count) return false;
-
-            foreach (var exp in lst1)
-                if (!lst2.Any(e => e.Equals(exp))) return false;
+            foreach (var exp in Expression)
+                if (!obj.Expression.Any(e => e.Equals(exp))) return false;
 
             return true;
         }

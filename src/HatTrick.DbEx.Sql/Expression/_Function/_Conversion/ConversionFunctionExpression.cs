@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         }
 
-        protected ConversionFunctionExpression(ExpressionContainer expression) : base(expression)
+        protected ConversionFunctionExpression(ExpressionMediator expression) : base(expression)
         {
         }
         #endregion

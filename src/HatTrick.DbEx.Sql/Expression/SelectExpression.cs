@@ -10,18 +10,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public ExpressionContainer Expression { get; }
+        public ExpressionMediator Expression { get; }
         #endregion
 
         #region constructors
-        public SelectExpression(ExpressionContainer expression)
+        public SelectExpression(ExpressionMediator expression)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.Object.ToString();
+        public override string ToString() => Expression.ToString();
         #endregion
 
         #region logical & operator

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -9,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         { 
         }
 
-        public DataTypeFunctionExpression(ExpressionContainer expression) : base(expression)
+        public DataTypeFunctionExpression(ExpressionMediator expression) : base(expression)
         {
         }
         #endregion

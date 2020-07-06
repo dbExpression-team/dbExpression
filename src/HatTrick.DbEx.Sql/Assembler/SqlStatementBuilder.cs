@@ -57,24 +57,28 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart<T>(T part, AssemblyContext context)
             where T : class, IDbExpression
-            => AppendPart(new ExpressionContainer(part), context);
+            => DoAppendPart(new ExpressionContainer(part), context);
 
         public void AppendPart(ExpressionContainer part, AssemblyContext context)
+            => DoAppendPart(part, context);
+
+        private void DoAppendPart(object part, AssemblyContext context)
         {
-            if (part.Object is ExpressionSet set)
+            if (part is ExpressionSet set)
             {
                 AssembleStatement(set, context);
+                return;
             }
-            else
-            {
-                var appender = PartAppenderFactory(part.Type);
-                if (appender == null)
-                {
-                    throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{part.Type}', please ensure an appender has been registered during startup initialization of DbExpression.");
-                }
 
-                appender.AppendPart(part.Object, this, context);
+            if (part is ExpressionContainer container)
+            {
+                DoAppendPart(container.Object, context);
+                return;
             }
+
+            var appender = PartAppenderFactory(part.GetType()) ?? throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{part.GetType()}', please ensure an appender has been registered during startup initialization of DbExpression.");
+
+            appender.AppendPart(part, this, context);
         }
 
         public void AssembleStatement(ExpressionSet set, AssemblyContext context)

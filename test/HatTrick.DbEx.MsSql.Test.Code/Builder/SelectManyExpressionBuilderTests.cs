@@ -27,8 +27,9 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //then
             expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyValue);
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
-                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
+                .Which.Expression.Should().BeOfType<Int32ExpressionMediator>()
+                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()
@@ -53,11 +54,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.Id))
-                .Which.Expression.Object.Should().BeOfType<Int32FieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
+                .Which.Expression.Should().BeOfType<Int32ExpressionMediator>()
+                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Object.Equals(sec.Person.DateCreated))
-                .Which.Expression.Object.Should().BeOfType<DateTimeFieldExpression<Person>>();
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
+                .Which.Expression.Should().BeOfType<DateTimeExpressionMediator>()
+                .Which.Expression.Should().BeOfType<DateTimeFieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()

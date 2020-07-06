@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int16MaximumFunctionExpression>
     {
         #region constructors
-        public Int16MaximumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public Int16MaximumFunctionExpression(ExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

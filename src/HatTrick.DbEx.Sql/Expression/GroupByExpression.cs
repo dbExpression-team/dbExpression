@@ -6,18 +6,18 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpression
     {
         #region interface
-        public ExpressionContainer Expression { get; private set; }
+        public ExpressionMediator Expression { get; private set; }
         #endregion
 
         #region constructors
-        public GroupByExpression(ExpressionContainer expression)
+        public GroupByExpression(ExpressionMediator expression)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.Object.ToString();
+        public override string ToString() => Expression.ToString();
         #endregion
 
         #region conditional & operator

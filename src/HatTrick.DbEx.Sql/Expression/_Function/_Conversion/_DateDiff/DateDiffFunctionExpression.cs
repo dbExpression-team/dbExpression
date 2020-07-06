@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public ExpressionContainer DatePart { get; private set; }
-        public ExpressionContainer StartDate { get; private set; }
-        public ExpressionContainer EndDate { get; private set; }
+        public ExpressionMediator StartDate { get; private set; }
+        public ExpressionMediator EndDate { get; private set; }
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionContainer startDate, ExpressionContainer endDate)
+        protected DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator startDate, ExpressionMediator endDate)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
             StartDate = startDate ?? throw new ArgumentNullException($"{nameof(startDate)} is required.");
@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEDIFF({DatePart.ToString().ToLower()}, {StartDate.Object}, {EndDate.Object})";
+        public override string ToString() => $"DATEDIFF({DatePart.ToString().ToLower()}, {StartDate}, {EndDate})";
         #endregion
 
         #region equals

@@ -36,12 +36,12 @@ namespace HatTrick.DbEx.Sql.Builder
 
         IDeleteContinuationExpressionBuilder IDeleteContinuationExpressionBuilder.Where(FilterExpression filter)
         {
-            return Where<IDeleteContinuationExpressionBuilder>(filter) as IDeleteContinuationExpressionBuilder;
+            return Where<IDeleteContinuationExpressionBuilder>(filter);
         }
 
         IDeleteContinuationExpressionBuilder IDeleteContinuationExpressionBuilder.Where(FilterExpressionSet filter)
         {
-            return Where<IDeleteContinuationExpressionBuilder>(filter) as IDeleteContinuationExpressionBuilder;
+            return Where<IDeleteContinuationExpressionBuilder>(filter);
         }
 
         IJoinExpressionBuilder<IDeleteContinuationExpressionBuilder> IDeleteContinuationExpressionBuilder.InnerJoin(EntityExpression entity)
@@ -81,17 +81,17 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             foreach (var assignment in assignments)
                 Expression &= assignment;
-            return this as IUpdateContinuationExpressionBuilder;
+            return this;
         }
 
         IUpdateContinuationExpressionBuilder IUpdateContinuationExpressionBuilder.Where(FilterExpression filter)
         {
-            return Where<IUpdateContinuationExpressionBuilder>(filter) as IUpdateContinuationExpressionBuilder;
+            return Where<IUpdateContinuationExpressionBuilder>(filter);
         }
 
         IUpdateContinuationExpressionBuilder IUpdateContinuationExpressionBuilder.Where(FilterExpressionSet filter)
         {
-            return Where<IUpdateContinuationExpressionBuilder>(filter) as IUpdateContinuationExpressionBuilder;
+            return Where<IUpdateContinuationExpressionBuilder>(filter);
         }
 
         IJoinExpressionBuilder<IUpdateContinuationExpressionBuilder> IUpdateContinuationExpressionBuilder.InnerJoin(EntityExpression entity)
@@ -122,7 +122,10 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<U>(FilterExpressionSet expression) where U : class, IExpressionBuilder
         {
-            if (Expression.Where?.Expression == null)
+            if (expression == null)
+                return this as U;
+
+            if (Expression.Where?.LeftArg == null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;
@@ -131,7 +134,10 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<T, U>(FilterExpressionSet expression) where U : class, IExpressionBuilder<T>
         {
-            if (Expression.Where?.Expression == null)
+            if (expression == null)
+                return this as U;
+
+            if (Expression.Where?.LeftArg == null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;

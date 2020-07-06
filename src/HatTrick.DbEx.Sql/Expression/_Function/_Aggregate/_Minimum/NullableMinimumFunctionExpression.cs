@@ -3,7 +3,7 @@
     public abstract class NullableMinimumFunctionExpression : MinimumFunctionExpression
     {
         #region constructors
-        protected NullableMinimumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected NullableMinimumFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion    

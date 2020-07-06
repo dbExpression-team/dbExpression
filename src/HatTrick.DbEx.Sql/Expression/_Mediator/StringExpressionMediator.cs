@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public StringExpressionMediator(ExpressionContainer expression) : base(expression)
+        public StringExpressionMediator(IDbExpression expression) : base(expression)
         {
         }
         #endregion
@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpression Like(string phrase)
-            => new FilterExpression(new ExpressionContainer(this), new ExpressionContainer(new LiteralExpression<string>(phrase)), FilterExpressionOperator.Like);
+            => new FilterExpression(this, new StringExpressionMediator(new LiteralExpression<string>(phrase)), FilterExpressionOperator.Like);
         #endregion
 
         #region equals
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new StringExpressionMediator(new ExpressionContainer(new ArithmeticExpression(a.Expression, b.Expression, ArithmeticExpressionOperator.Add)));
+        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         #endregion
     }
 }

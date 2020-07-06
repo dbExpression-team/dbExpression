@@ -6,9 +6,9 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendPart(AssignmentExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendPart(expression.Expression.LeftPart, context);
+            builder.AppendPart((expression as IDbAssignmentExpressionProvider).Assignee, context);
             builder.Appender.Write(" = ");
-            builder.AppendPart(expression.Expression.RightPart, context);
+            builder.AppendPart((expression as IDbAssignmentExpressionProvider).Assignment, context);
         }
     }
 }

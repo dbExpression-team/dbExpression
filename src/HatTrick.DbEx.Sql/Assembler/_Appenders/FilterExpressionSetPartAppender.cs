@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (expression is FilterExpressionSet set)
             {
-                if (set.Expression == null)
+                if (set.LeftArg == null && set.RightArg == null)
                     return;
 
                 if (set.IsSingleFilter && set.SingleFilter.Object is FilterExpression singleFilter)
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public override void AppendPart(FilterExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression == null || expression.Expression == null)
+            if (expression == null || (expression.LeftArg == null && expression.RightArg == null))
                 return;
 
             builder.Appender.Write("(");
@@ -45,14 +45,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender.Write("NOT (");
             }
-            if (expression.Expression.LeftPart != null)
+            if (expression.LeftArg != null)
             {
-                builder.AppendPart(expression.Expression.LeftPart, context);
+                builder.AppendPart(expression.LeftArg, context);
             }
-            if (expression.Expression.RightPart != null)
+            if (expression.RightArg != null)
             {
                 builder.Appender.Write(ConditionalOperatorMap[expression.ConditionalOperator]);
-                builder.AppendPart(expression.Expression.RightPart, context);
+                builder.AppendPart(expression.RightArg, context);
             }
             if (expression.Negate)
             {

@@ -8,7 +8,11 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected CoalesceFunctionExpression(Type @type, IList<ExpressionContainer> expressions, ExpressionContainer notNull) : base(@type, expressions.Concat(new List<ExpressionContainer> { notNull }).ToArray())
+        protected CoalesceFunctionExpression(IList<NullableExpressionMediator<TValue>> expressions, ExpressionMediator<TValue> notNull) : base(expressions.Concat(new List<ExpressionMediator<TValue>> { notNull }).ToArray())
+        {
+        }
+
+        protected CoalesceFunctionExpression(IList<ExpressionMediator<string>> expressions, ExpressionMediator<string> notNull) : base(expressions.Concat(new List<ExpressionMediator<string>> { notNull }).ToArray())
         {
         }
         #endregion

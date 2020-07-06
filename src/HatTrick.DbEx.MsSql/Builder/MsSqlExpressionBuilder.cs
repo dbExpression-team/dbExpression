@@ -1,10 +1,8 @@
-﻿using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.Sql;
+﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
 using System.Dynamic;
 
 namespace HatTrick.DbEx.MsSql.Builder
@@ -23,16 +21,15 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
         {
-            return new MsSqlExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneType, Select = new SelectExpressionSet().Top(1) })
-                as IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>;
+            return new MsSqlExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneType, Select = new SelectExpressionSet().Top(1) });
         }
 
         public static IFromExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>> SelectOne<TEnum>(IEnumExpressionMediator<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
             var builder = new MsSqlExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneValue, Select = new SelectExpressionSet().Top(1) });
-            builder.Expression.Select.Expressions.Add(new SelectExpression(new ExpressionContainer(field)));
-            return builder as IFromExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>>;
+            builder.Expression.Select.Expressions.Add(new SelectExpression(new EnumExpressionMediator<TEnum>(field)));
+            return builder;
         }
         
         public static IFromExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>, IValueContinuationExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>>> SelectOne(SelectExpression<byte> field)
@@ -111,14 +108,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             builder.Expression.Select.Expressions.Add(field2);
             foreach (var field in fields)
                 builder.Expression.Select.Expressions.Add(field);
-            return builder as IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>>;
+            return builder;
         }
 
         private static IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>> CreateSelectOne<TValue>(SelectExpression<TValue> field)
         {
             var builder = new MsSqlExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectOneValue, Select = new SelectExpressionSet().Top(1) });
             builder.Expression.Select.Expressions.Add(field);
-            return builder as IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>;
+            return builder;
         }
         #endregion
 
@@ -126,16 +123,15 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static IListFromExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>> SelectMany<TEntity>()
             where TEntity : IDbEntity
         {
-            return new MsSqlExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyType })
-                as IListFromExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>>;
+            return new MsSqlExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyType });
         }
 
         public static IListFromExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>> SelectMany<TEnum>(IEnumExpressionMediator<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
             var builder = new MsSqlExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyValue });
-            builder.Expression.Select.Expressions.Add(new SelectExpression(new ExpressionContainer(field)));
-            return builder as IListFromExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>>;
+            builder.Expression.Select.Expressions.Add(new SelectExpression(new EnumExpressionMediator<TEnum>(field)));
+            return builder;
         }
 
         public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(SelectExpression<byte> field)
@@ -215,14 +211,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             builder.Expression.Select.Expressions.Add(field2);
             foreach (var field in fields)
                 builder.Expression.Select.Expressions.Add(field);
-            return builder as IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>;
+            return builder;
         }
 
         private static IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> CreateSelectMany<TValue>(SelectExpression<TValue> field)
         {
             var builder = new MsSqlExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.SelectManyValue });
             builder.Expression.Select.Expressions.Add(field);
-            return builder as IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>;
+            return builder;
         }
         #endregion
 
@@ -231,20 +227,18 @@ namespace HatTrick.DbEx.MsSql.Builder
             var builder = new MsSqlExpressionBuilder(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.Update });
             foreach (var field in fields)
                 builder.Expression.Assign.Expressions.Add(field);
-            return builder as IUpdateFromExpressionBuilder;
+            return builder;
         }
 
         public static IDeleteFromExpressionBuilder Delete()
         {
-            return new MsSqlExpressionBuilder(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.Delete })
-                as IDeleteFromExpressionBuilder;
+            return new MsSqlExpressionBuilder(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.Delete });
         }
 
         public static IInsertExpressionBuilder<T> Insert<T>(T instance)
             where T : class, IDbEntity
         {
-            return new MsSqlInsertBuilder<T>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.Insert, Instance = instance })
-                as IInsertExpressionBuilder<T>;
+            return new MsSqlInsertBuilder<T>(new ExpressionSet { StatementExecutionType = SqlStatementExecutionType.Insert, Instance = instance });
         }
 
 #pragma warning disable CA1034 // Nested types should not be visible

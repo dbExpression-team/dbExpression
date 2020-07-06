@@ -3,7 +3,7 @@
     public abstract class NullableIsNullFunctionExpression : IsNullFunctionExpression
     {
         #region constructors
-        protected NullableIsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : base(expression, value)
+        protected NullableIsNullFunctionExpression(ExpressionMediator expression, ExpressionMediator value) : base(expression, value)
         {
         }
         #endregion    

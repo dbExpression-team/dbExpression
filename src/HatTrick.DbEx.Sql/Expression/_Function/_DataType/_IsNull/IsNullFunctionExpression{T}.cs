@@ -6,7 +6,11 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected IsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : base(expression, value)
+        protected IsNullFunctionExpression(NullableExpressionMediator<TValue> expression, ExpressionMediator<TValue> value) : base(expression, value)
+        {
+        }
+
+        protected IsNullFunctionExpression(ExpressionMediator<string> expression, ExpressionMediator<string> value) : base(expression, value)
         {
         }
         #endregion

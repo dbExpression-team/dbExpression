@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableByteIsNullFunctionExpression>
     {
         #region constructors
-        public NullableByteIsNullFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : base(expression, value)
+        public NullableByteIsNullFunctionExpression(NullableExpressionMediator<byte> expression, ExpressionMediator<byte> value) : base(expression, value)
         {
         }
         #endregion

@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected MaximumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected MaximumFunctionExpression(ExpressionMediator<TValue> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

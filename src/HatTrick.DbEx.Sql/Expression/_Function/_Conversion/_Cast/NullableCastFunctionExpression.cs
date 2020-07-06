@@ -3,7 +3,7 @@
     public abstract class NullableCastFunctionExpression : CastFunctionExpression
     {
         #region constructors
-        protected NullableCastFunctionExpression(ExpressionContainer expression, ExpressionContainer convertToDbType) : base(expression, convertToDbType)
+        protected NullableCastFunctionExpression(ExpressionMediator expression, ExpressionContainer convertToDbType) : base(expression, convertToDbType)
         {
         }
         #endregion    
