@@ -15,44 +15,44 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("(");
 
             //left part of arithmetic operation
-            if (typeof(IComparable).IsAssignableFrom(expression.LeftPart.Type))
+            if (typeof(IComparable).IsAssignableFrom(expression.LeftArg.Expression.GetType()))
             {
                 //left part is primitive type, build a parameter for the primitive
-                if (expression.RightPart.Object is FieldExpression field)
+                if (expression.RightArg.Expression is FieldExpression field)
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.LeftPart.Object, field).Parameter.ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg.Expression, field).Parameter.ParameterName);
                 }
                 else
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.LeftPart.Object, expression.LeftPart.Type).ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg.Expression, expression.LeftArg.Expression.GetType()).ParameterName);
                 }
             }
             else
             {
                 //left part isn't a primitive type, append using builder
-                builder.AppendPart(expression.LeftPart, context);
+                builder.AppendPart(expression.LeftArg, context);
             }
 
             //append the operator
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
 
             //right part of arithmetic operation
-            if (typeof(IComparable).IsAssignableFrom(expression.RightPart.Type))
+            if (typeof(IComparable).IsAssignableFrom(expression.RightArg.Expression.GetType()))
             {
                 //right part is primitive type, build a parameter for the primitive
-                if (expression.LeftPart.Object is FieldExpression field)
+                if (expression.LeftArg.Expression is FieldExpression field)
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.RightPart.Object, field).Parameter.ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg.Expression, field).Parameter.ParameterName);
                 }
                 else
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.RightPart.Object, expression.RightPart.Type).ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg.Expression, expression.RightArg.Expression.GetType()).ParameterName);
                 }
             }
             else
             {
                 //right part isn't a primitive type, append using builder
-                builder.AppendPart(expression.RightPart, context);
+                builder.AppendPart(expression.RightArg, context);
             }
 
             builder.Appender.Write(")");

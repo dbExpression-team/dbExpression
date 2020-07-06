@@ -8,11 +8,11 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public ExpressionContainer DatePart { get; private set; }
-        public ExpressionContainer Value { get; private set; }
+        public ExpressionMediator Value { get; private set; }
         #endregion
 
         #region constructors
-        protected DateAddFunctionExpression(ExpressionContainer datePart, ExpressionContainer value, ExpressionContainer expression) : base(expression)
+        protected DateAddFunctionExpression(ExpressionContainer datePart, ExpressionMediator value, ExpressionMediator expression) : base(expression)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
             Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");

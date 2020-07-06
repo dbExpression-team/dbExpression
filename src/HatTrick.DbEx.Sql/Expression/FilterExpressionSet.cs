@@ -9,9 +9,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #region interface
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
-        public ExpressionContainerPair Expression { get; set; }
-        public bool IsSingleFilter => Expression?.RightPart == null;
-        public ExpressionContainer SingleFilter => Expression?.RightPart == null ? Expression.LeftPart : null;
+        public ExpressionContainer LeftArg { get; set; }
+        public ExpressionContainer RightArg { get; set; }
+        public bool IsSingleFilter => RightArg == null;
+        public ExpressionContainer SingleFilter => RightArg == null ? LeftArg : null;
         #endregion
 
         #region constructors
@@ -22,36 +23,33 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public FilterExpressionSet(FilterExpression singleFilter)
         {
-            Expression = new ExpressionContainerPair(new ExpressionContainer(singleFilter ?? throw new ArgumentNullException($"{nameof(singleFilter)} is required.")));
+            LeftArg = new ExpressionContainer(singleFilter ?? throw new ArgumentNullException($"{nameof(singleFilter)} is required."));
         }
 
         public FilterExpressionSet(FilterExpression leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            Expression = new ExpressionContainerPair(new ExpressionContainer(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.")), new ExpressionContainer(rightArg));
+            LeftArg = new ExpressionContainer(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."));
+            RightArg = new ExpressionContainer(rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required."));
             ConditionalOperator = conditionalOperator;
         }
 
         public FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            Expression = new ExpressionContainerPair(new ExpressionContainer(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.")), new ExpressionContainer(rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")));
+            LeftArg = new ExpressionContainer(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."));
+            RightArg = new ExpressionContainer(rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required."));
             ConditionalOperator = conditionalOperator;
         }
 
         public FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            Expression = new ExpressionContainerPair(new ExpressionContainer(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.")), new ExpressionContainer(rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")));
+            LeftArg = new ExpressionContainer(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."));
+            RightArg = new ExpressionContainer(rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required."));
             ConditionalOperator = conditionalOperator;
         }
         #endregion
 
         #region to string
-        public override string ToString()
-        {
-            string left = Expression.LeftPart.Object.ToString();
-            string right = Expression.RightPart == default ? string.Empty : Expression.RightPart.Object.ToString();
-            string expression = $"{left} {ConditionalOperator} {right}";
-            return (Negate) ? $"NOT ({expression})" : expression;
-        }
+        public override string ToString() => (Negate) ? $"NOT ({LeftArg.Object} {ConditionalOperator} {RightArg.Object})" : $"{LeftArg.Object} {ConditionalOperator} {RightArg.Object}";
         #endregion
 
         #region conditional &, | operators

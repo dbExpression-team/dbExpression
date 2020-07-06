@@ -6,7 +6,19 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableDateDiffFunctionExpression(ExpressionContainer datePart, ExpressionContainer startDate, ExpressionContainer endDate) : base(datePart, startDate, endDate)
+        public NullableDateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        {
+        }
+
+        public NullableDateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        {
+        }
+
+        public NullableDateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
+        {
+        }
+
+        public NullableDateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
         {
         }
         #endregion

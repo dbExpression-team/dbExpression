@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -12,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableEnumExpressionMediator(ExpressionContainer expression) : base(expression)
+        public NullableEnumExpressionMediator(IDbExpression expression) : base(expression)
         {
         }
         #endregion
@@ -23,6 +24,11 @@ namespace HatTrick.DbEx.Sql.Expression
             base.As(alias);
             return this;
         }
+        #endregion
+
+        #region order
+        public override OrderByExpression Asc => new OrderByExpression(new NullableEnumExpressionMediator<TEnum>(this), OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(new NullableEnumExpressionMediator<TEnum>(this), OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
@@ -37,9 +43,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<TEnum>(NullableEnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(new ExpressionContainer(a));
-        public static implicit operator OrderByExpression(NullableEnumExpressionMediator<TEnum> a) => new OrderByExpression(new ExpressionContainer(a), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableEnumExpressionMediator<TEnum> a) => new GroupByExpression(new ExpressionContainer(a));
+        public static implicit operator SelectExpression<TEnum>(NullableEnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a));
+        public static implicit operator OrderByExpression(NullableEnumExpressionMediator<TEnum> a) => new OrderByExpression(new NullableEnumExpressionMediator<TEnum>(a), OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(NullableEnumExpressionMediator<TEnum> a) => new GroupByExpression(new NullableEnumExpressionMediator<TEnum>(a));
         #endregion
     }
 }

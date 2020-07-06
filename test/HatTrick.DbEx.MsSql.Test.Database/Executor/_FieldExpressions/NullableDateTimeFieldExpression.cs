@@ -35,6 +35,66 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Statement", "SELECT")]
+        public void Are_there_3_purchase_records_with_null_ship_date_using_isnull_method(int version, int expected = 3)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(dbo.Purchase.ShipDate)
+                .From(dbo.Purchase)
+                .Where(dbo.Purchase.ShipDate.IsNull());
+
+            //when               
+            var shipDates = exp.Execute();
+
+            //then
+            shipDates.Should().HaveCount(expected);
+            shipDates.All(x => x == null).Should().BeTrue();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
+        public void Are_there_12_purchase_records_with_not_null_ship_date(int version, int expected = 12)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(dbo.Purchase.ShipDate)
+                .From(dbo.Purchase)
+                .Where(dbo.Purchase.ShipDate != DBNull.Value);
+
+            //when               
+            var shipDates = exp.Execute();
+
+            //then
+            shipDates.Should().HaveCount(expected);
+            shipDates.All(x => x == null).Should().BeFalse();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
+        public void Are_there_12_purchase_records_with_null_ship_date_using_isnotnull_method(int version, int expected = 12)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(dbo.Purchase.ShipDate)
+                .From(dbo.Purchase)
+                .Where(dbo.Purchase.ShipDate.IsNotNull());
+
+            //when               
+            var shipDates = exp.Execute();
+
+            //then
+            shipDates.Should().HaveCount(expected);
+            shipDates.All(x => x == null).Should().BeFalse();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
         public void Doas_a_purchase_record_with_null_ship_date_select_successfully(int version)
         {
             //given

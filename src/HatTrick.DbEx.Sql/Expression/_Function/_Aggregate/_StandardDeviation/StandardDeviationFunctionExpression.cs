@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected StandardDeviationFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
+        protected StandardDeviationFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }

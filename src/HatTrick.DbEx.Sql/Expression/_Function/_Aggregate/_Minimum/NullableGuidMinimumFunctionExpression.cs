@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableGuidMinimumFunctionExpression>
     {
         #region constructors
-        public NullableGuidMinimumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableGuidMinimumFunctionExpression(NullableExpressionMediator<Guid> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

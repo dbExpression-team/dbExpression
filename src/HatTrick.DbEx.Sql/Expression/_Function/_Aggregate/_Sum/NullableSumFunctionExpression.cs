@@ -3,7 +3,7 @@
     public abstract class NullableSumFunctionExpression : SumFunctionExpression
     {
         #region constructors
-        protected NullableSumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected NullableSumFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion    

@@ -15,14 +15,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected VarianceFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
+        protected VarianceFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"VAR({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression.Object})";
+        public override string ToString() => $"VAR({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression})";
         #endregion
 
         #region equals

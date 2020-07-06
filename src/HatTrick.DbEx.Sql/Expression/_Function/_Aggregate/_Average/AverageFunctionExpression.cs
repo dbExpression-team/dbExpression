@@ -1,7 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -18,14 +15,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected AverageFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
+        protected AverageFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"AVG({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression.Object})";
+        public override string ToString() => $"AVG({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression})";
         #endregion
 
         #region equals

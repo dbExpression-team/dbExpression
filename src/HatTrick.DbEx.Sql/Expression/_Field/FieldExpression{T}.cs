@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -18,17 +15,22 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region order
+        public override abstract OrderByExpression Asc { get; }
+        public override abstract OrderByExpression Desc { get; }
+        #endregion
+
         #region in value set
-        public FilterExpression In(params TValue[] value) => value != null ? new FilterExpression<TValue>(new ExpressionContainer(this), new ExpressionContainer(new LiteralExpression<TValue[]>(value)), FilterExpressionOperator.In) : null;
+        public abstract FilterExpression In(params TValue[] value);
         #endregion
 
         #region set
-        public AssignmentExpression Set(TValue value) => new AssignmentExpression(new ExpressionContainer(this), new ExpressionContainer(new LiteralExpression<TValue>(value)));
-        public AssignmentExpression Set(ExpressionMediator<TValue> value) => new AssignmentExpression(new ExpressionContainer(this), value.Expression);
+        public abstract AssignmentExpression Set(TValue value);
+        public abstract AssignmentExpression Set(ExpressionMediator<TValue> value);
         #endregion
 
         #region insert value
-        public InsertExpression Insert(TValue value) => new InsertExpression(this, value, typeof(TValue));
+        public abstract InsertExpression Insert(TValue value);
         #endregion
     }
 }

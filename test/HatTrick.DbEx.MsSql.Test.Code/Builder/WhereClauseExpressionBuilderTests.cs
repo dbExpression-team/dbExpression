@@ -26,14 +26,15 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .Where(sec.Person.Id > 0);
 
             expressionSet = (exp as IDbExpressionSetProvider).Expression;
-            idFilter = expressionSet.Where?.Expression?.LeftPart.Object as FilterExpression;
+            idFilter = (FilterExpression)expressionSet.Where.LeftArg.Object;
 
             //then
             idFilter.Should().NotBeNull();
-            idFilter.Expression.LeftPart.Type.Should().Be<Int32FieldExpression<Person>>();
-            idFilter.Expression.LeftPart.Object.Should().Be(sec.Person.Id);
-            idFilter.Expression.RightPart.Type.Should().Be<LiteralExpression<int>>();
-            idFilter.Expression.RightPart.Object.As<LiteralExpression<int>>().Expression.Object.Should().Be(0);
+            idFilter.LeftArg.Should().BeOfType<Int32ExpressionMediator>();
+            idFilter.LeftArg.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
+            idFilter.LeftArg.Expression.Should().Be(sec.Person.Id);
+            idFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<int>>();
+            idFilter.RightArg.Expression.As<LiteralExpression<int>>().Expression.Object.Should().Be(0);
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
         }
 
@@ -52,24 +53,25 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX");
 
             expressionSet = (exp as IDbExpressionSetProvider).Expression;
-            idFilter = (FilterExpression)(expressionSet.Where?.Expression as ExpressionContainerPair)?.LeftPart.Object;
-            ssnFilter = (FilterExpression)(expressionSet.Where?.Expression as ExpressionContainerPair)?.RightPart.Object;
+            idFilter = (FilterExpression)expressionSet.Where.LeftArg.Object;
+            ssnFilter = (FilterExpression)expressionSet.Where.RightArg.Object;
 
             //then
             expressionSet.Where.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
 
             idFilter.Should().NotBeNull();
-            idFilter.Expression.LeftPart.Type.Should().Be<Int32FieldExpression<Person>>();
-            idFilter.Expression.LeftPart.Object.Should().Be(sec.Person.Id);
-            idFilter.Expression.RightPart.Type.Should().Be<LiteralExpression<int>>();
-            idFilter.Expression.RightPart.Object.As<LiteralExpression<int>>().Expression.Object.Should().Be(0);
+            idFilter.LeftArg.Should().BeOfType<Int32ExpressionMediator>();
+            idFilter.LeftArg.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
+            idFilter.LeftArg.Expression.Should().Be(sec.Person.Id);
+            idFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<int>>();
+            idFilter.RightArg.Expression.As<LiteralExpression<int>>().Expression.Object.Should().Be(0);
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
 
             ssnFilter.Should().NotBeNull();
-            ssnFilter.Expression.LeftPart.Type.Should().Be<StringFieldExpression<Person>>();
-            ssnFilter.Expression.LeftPart.Object.Should().Be(sec.Person.SSN);
-            ssnFilter.Expression.RightPart.Type.Should().Be<LiteralExpression<string>>();
-            ssnFilter.Expression.RightPart.Object.As<LiteralExpression<string>>().Expression.Object.Should().Be("XXX");
+            ssnFilter.LeftArg.Expression.Should().BeOfType<StringFieldExpression<Person>>();
+            ssnFilter.LeftArg.Expression.Should().Be(sec.Person.SSN);
+            ssnFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<string>>();
+            ssnFilter.RightArg.Expression.As<LiteralExpression<string>>().Expression.Object.Should().Be("XXX");
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
         }
 
@@ -78,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
         {
             //given
             ITerminationExpressionBuilder exp;
-            ExpressionSet expressionSet;
+            FilterExpressionSet filterSet;
             FilterExpression idFilter;
             FilterExpression ssnFilter;
             FilterExpression dateCreatedFilter;
@@ -88,35 +90,35 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != new DateTime(2000,1,1));
 
-            expressionSet = (exp as IDbExpressionSetProvider).Expression;
-            var where = expressionSet.Where.Expression as ExpressionContainerPair;
+            filterSet = (exp as IDbExpressionSetProvider).Expression.Where;
 
-            idFilter = (FilterExpression)((FilterExpressionSet)where?.LeftPart.Object).Expression.LeftPart.Object;
-            ssnFilter = (FilterExpression)((FilterExpressionSet)where?.LeftPart.Object).Expression.RightPart.Object;
-            dateCreatedFilter = (FilterExpression)where?.RightPart.Object;
+            idFilter = (filterSet.LeftArg.Object as FilterExpressionSet).LeftArg.Object as FilterExpression;
+            ssnFilter = (filterSet.LeftArg.Object as FilterExpressionSet).RightArg.Object as FilterExpression;
+            dateCreatedFilter = filterSet.RightArg.Object as FilterExpression;
 
             //then
-            expressionSet.Where.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
+            filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
 
             idFilter.Should().NotBeNull();
-            idFilter.Expression.LeftPart.Type.Should().Be<Int32FieldExpression<Person>>();
-            idFilter.Expression.LeftPart.Object.Should().Be(sec.Person.Id);
-            idFilter.Expression.RightPart.Type.Should().Be<LiteralExpression<int>>();
-            idFilter.Expression.RightPart.Object.As<LiteralExpression<int>>().Expression.Object.Should().Be(0);
+            idFilter.LeftArg.Should().BeOfType<Int32ExpressionMediator>();
+            idFilter.LeftArg.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
+            idFilter.LeftArg.Expression.Should().Be(sec.Person.Id);
+            idFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<int>>();
+            idFilter.RightArg.Expression.As<LiteralExpression<int>>().Expression.Object.Should().Be(0);
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
 
             ssnFilter.Should().NotBeNull();
-            ssnFilter.Expression.LeftPart.Type.Should().Be<StringFieldExpression<Person>>();
-            ssnFilter.Expression.LeftPart.Object.Should().Be(sec.Person.SSN);
-            ssnFilter.Expression.RightPart.Type.Should().Be<LiteralExpression<string>>();
-            ssnFilter.Expression.RightPart.Object.As<LiteralExpression<string>>().Expression.Object.Should().Be("XXX");
+            ssnFilter.LeftArg.Expression.Should().BeOfType<StringFieldExpression<Person>>();
+            ssnFilter.LeftArg.Expression.Should().Be(sec.Person.SSN);
+            ssnFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<string>>();
+            ssnFilter.RightArg.Expression.As<LiteralExpression<string>>().Expression.Object.Should().Be("XXX");
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
 
             dateCreatedFilter.Should().NotBeNull();
-            dateCreatedFilter.Expression.LeftPart.Type.Should().Be<DateTimeFieldExpression<Person>>();
-            dateCreatedFilter.Expression.LeftPart.Object.Should().Be(sec.Person.DateCreated);
-            dateCreatedFilter.Expression.RightPart.Type.Should().Be<LiteralExpression<DateTime>>();
-            dateCreatedFilter.Expression.RightPart.Object.As<LiteralExpression<DateTime>>().Expression.Object.Should().Be(new DateTime(2000, 1, 1));
+            dateCreatedFilter.LeftArg.Expression.Should().BeOfType<DateTimeFieldExpression<Person>>();
+            dateCreatedFilter.LeftArg.Expression.Should().Be(sec.Person.DateCreated);
+            dateCreatedFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<DateTime>>();
+            dateCreatedFilter.RightArg.Expression.As<LiteralExpression<DateTime>>().Expression.Object.Should().Be(new DateTime(2000, 1, 1));
             dateCreatedFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
         }
     }

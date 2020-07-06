@@ -3,7 +3,7 @@
     public abstract class NullableVarianceFunctionExpression : VarianceFunctionExpression
     {
         #region constructors
-        protected NullableVarianceFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected NullableVarianceFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion    

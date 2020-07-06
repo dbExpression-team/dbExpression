@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HatTrick.DbEx.Sql.Expression
+﻿namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class NullableExpressionMediator<TValue> : ExpressionMediator<TValue>
     {
@@ -10,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
         protected NullableExpressionMediator()
         { }
 
-        protected NullableExpressionMediator(ExpressionContainer expression)
+        protected NullableExpressionMediator(IDbExpression expression)
             : base(expression)
         {
         }

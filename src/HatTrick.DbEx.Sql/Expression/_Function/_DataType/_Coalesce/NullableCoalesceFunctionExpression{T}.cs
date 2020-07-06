@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableCoalesceFunctionExpression(Type @type, params ExpressionContainer[] expressions) : base(type, expressions)
+        protected NullableCoalesceFunctionExpression(params NullableExpressionMediator<TValue>[] expressions) : base(expressions)
         {
         }
         #endregion

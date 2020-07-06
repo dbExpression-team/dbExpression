@@ -209,6 +209,38 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     persons.Should().HaveCount(expected);
                     persons.Where(p => p.Id == 6).Should().ContainSingle();
                }
+
+
+                [Theory]
+                [MsSqlVersions.AllVersions]
+                [Trait("Operation", "WHERE")]
+                public void Does_persons_with_purchases_using_aliased_inner_join_with_like_where_clause_have_3_records(int version, int expected = 3)
+                {
+                    //given
+                    ConfigureForMsSqlVersion(version);
+
+                    var exp = db.SelectMany(
+                            dbo.Purchase.Id.As("PurchaseId"),
+                            dbo.Person.As("foo").Id.As("PersonId"),
+                            (dbo.Person.As("foo").FirstName + " " + dbo.Person.As("foo").LastName).As("Name")
+                        )
+                        .From(dbo.Purchase)
+                        .InnerJoin(
+                            db.SelectMany(
+                                dbo.Person.Id,
+                                dbo.Person.FirstName,
+                                dbo.Person.LastName
+                            )
+                            .From(dbo.Person)
+                            .Where((dbo.Person.FirstName + " " + dbo.Person.LastName).Like("Butters S%"))
+                        ).As("foo").On(dbo.Purchase.PersonId == dbo.Person.As("foo").Id);
+
+                    //when               
+                    var purchases = exp.Execute();
+
+                    //then
+                    purchases.Should().HaveCount(expected);
+                }
             }
         }
     }

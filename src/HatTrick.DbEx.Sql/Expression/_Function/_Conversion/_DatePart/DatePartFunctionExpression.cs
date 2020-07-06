@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -11,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected DatePartFunctionExpression(ExpressionContainer datePart, ExpressionContainer expression) : base(expression)
+        protected DatePartFunctionExpression(ExpressionContainer datePart, ExpressionMediator expression) : base(expression)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
         }
@@ -58,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator GroupByExpression(DatePartFunctionExpression datePart) => new GroupByExpression(datePart.Expression);
+        public static implicit operator GroupByExpression(DatePartFunctionExpression datePart) => new GroupByExpression(new Int32ExpressionMediator(datePart));
         #endregion
     }
 }

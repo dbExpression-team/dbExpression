@@ -7,15 +7,17 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbFunctionExpression
     {
         #region interface
-        public ExpressionContainerPair Expression { get; set; }
+        public ExpressionMediator LeftArg { get; set; }
+        public ExpressionMediator RightArg { get; set; }
         public readonly FilterExpressionOperator ExpressionOperator;
         public bool Negate { get; set; }
         #endregion
 
         #region constructors
-        public FilterExpression(ExpressionContainer leftArg, ExpressionContainer rightArg, FilterExpressionOperator filterExpressionOperator)
+        public FilterExpression(ExpressionMediator leftArg, ExpressionMediator rightArg, FilterExpressionOperator filterExpressionOperator)
         {
-            Expression = new ExpressionContainerPair(leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."), rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required."));
+            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
+            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ExpressionOperator = filterExpressionOperator;
         }
         #endregion
@@ -23,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region to string
         public override string ToString()
         {
-            string expression = $"{Expression.LeftPart.Object} {ExpressionOperator} {Expression.RightPart.Object}";
+            string expression = $"{LeftArg} {ExpressionOperator} {RightArg}";
             return (Negate) ? $" NOT ({expression})" : expression;
         }
         #endregion
@@ -49,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit filter expression set operator
-        public static implicit operator FilterExpressionSet(FilterExpression a) => new FilterExpressionSet(a);
+        public static implicit operator FilterExpressionSet(FilterExpression a) => a is null ? null : new FilterExpressionSet(a);
         #endregion
 
         #region implicit having expression set operator

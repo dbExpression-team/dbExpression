@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -9,11 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public NullableEnumCoalesceFunctionExpression(params ExpressionContainer[] expressions) : base(typeof(NullableEnumCoalesceFunctionExpression<TEnum>), expressions)
-        {
-        }
-
-        public NullableEnumCoalesceFunctionExpression(Type typeOverride, params ExpressionContainer[] expressions) : base(typeOverride, expressions)
+        public NullableEnumCoalesceFunctionExpression(params NullableEnumExpressionMediator<TEnum>[] expressions) : base(expressions)
         {
         }
         #endregion

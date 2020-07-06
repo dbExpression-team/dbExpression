@@ -8,14 +8,14 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public JoinOnExpression JoinOnExpression { get; private set; }
-        public ExpressionContainer JoinToo { get; private set; }
+        public IDbExpression JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string Alias { get; set; }
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public JoinExpression(ExpressionContainer joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
+        public JoinExpression(IDbExpression joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
         {
             JoinToo = joinToo ?? throw new ArgumentNullException($"{nameof(joinToo)} is required.");
             JoinType = joinType;
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => JoinType == JoinOperationExpressionOperator.CROSS ? $"{JoinType} JOIN {JoinToo.Object}" : $"{JoinType} JOIN {JoinToo.Object} ON {JoinOnExpression}";
+        public override string ToString() => JoinType == JoinOperationExpressionOperator.CROSS ? $"{JoinType} JOIN {JoinToo}" : $"{JoinType} JOIN {JoinToo} ON {JoinOnExpression}";
         #endregion
 
         #region logical & operator

@@ -3,21 +3,29 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class AssignmentExpression : 
-        IDbExpression
+        IDbExpression,
+        IDbAssignmentExpressionProvider
     {
+        #region internals
+        private ExpressionMediator assignee;
+        private ExpressionMediator assignment;
+        #endregion
+
         #region interface
-        public ExpressionContainerPair Expression { get; private set; }
+        ExpressionMediator IDbAssignmentExpressionProvider.Assignee => assignee;
+        ExpressionMediator IDbAssignmentExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors
-        internal AssignmentExpression(ExpressionContainer assignee, ExpressionContainer assignment)
+        public AssignmentExpression(ExpressionMediator assignee, ExpressionMediator assignment)
         {
-            Expression = new ExpressionContainerPair(assignee ?? throw new ArgumentNullException($"{nameof(assignee)} is required."), assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required."));
+            this.assignee = assignee ?? throw new ArgumentNullException($"{nameof(assignee)} is required.");
+            this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"{Expression.LeftPart} = {Expression.RightPart}";
+        public override string ToString() => $"{assignee} = {assignment}";
         #endregion
 
         #region implicit assignment expression set operator

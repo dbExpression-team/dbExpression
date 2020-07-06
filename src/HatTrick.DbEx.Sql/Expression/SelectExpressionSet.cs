@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public SelectExpressionSet(params SelectExpression[] expressions)
         {
-            Expressions = expressions.Select(exp => new SelectExpression(new ExpressionContainer(exp))).ToList();
+            Expressions = expressions.ToList();
         }
 
         public SelectExpressionSet(SelectExpression selectExpression)

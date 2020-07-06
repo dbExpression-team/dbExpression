@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected SumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression)
+        protected SumFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
         {
             IsDistinct = isDistinct;
         }

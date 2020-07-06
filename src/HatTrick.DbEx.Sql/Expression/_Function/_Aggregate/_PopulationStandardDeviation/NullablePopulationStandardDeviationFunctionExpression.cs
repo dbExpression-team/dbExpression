@@ -3,7 +3,7 @@
     public abstract class NullablePopulationStandardDeviationFunctionExpression : PopulationStandardDeviationFunctionExpression
     {
         #region constructors
-        protected NullablePopulationStandardDeviationFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected NullablePopulationStandardDeviationFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion    

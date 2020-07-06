@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -19,16 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        public FilterExpression<TValue?> IsNull() => new FilterExpression<TValue?>(new ExpressionContainer(this), new ExpressionContainer(DBNull.Value), FilterExpressionOperator.Equal);
-        public FilterExpression<TValue> IsNotNull() => new FilterExpression<TValue>(new ExpressionContainer(this), new ExpressionContainer(DBNull.Value), FilterExpressionOperator.NotEqual);
+        #region isnull
+        public abstract FilterExpression<bool> IsNull();
+        public abstract FilterExpression<bool> IsNotNull();
+        #endregion
 
         #region set
-        public AssignmentExpression Set(TValue? value) => new AssignmentExpression(new ExpressionContainer(this), new ExpressionContainer(new LiteralExpression<TValue?>(value)));
-        public AssignmentExpression Set(NullableExpressionMediator<TValue?> value) => new AssignmentExpression(new ExpressionContainer(this), value.Expression);
+        public abstract AssignmentExpression Set(TValue? value);
+        public abstract AssignmentExpression Set(NullableExpressionMediator<TValue> value);
         #endregion
 
         #region insert value
-        public InsertExpression Insert(TValue? value) => new InsertExpression(this, value, typeof(TValue?));
+        public abstract InsertExpression Insert(TValue? value);
         #endregion
     }
 }

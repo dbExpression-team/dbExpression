@@ -35,8 +35,8 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (a?.Expression == default)
             {
-                b.Expression = new ExpressionContainer(b.Expression.Object, typeof(FilterExpression));
-                return b;
+                a.Expression = b.Expression;
+                return a;
             }
             a.Expression = new ExpressionContainer(new ExpressionContainerPair(a.Expression, b.Expression));
             return a;

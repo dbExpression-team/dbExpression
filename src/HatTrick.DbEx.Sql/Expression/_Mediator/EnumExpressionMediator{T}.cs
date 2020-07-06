@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public EnumExpressionMediator(ExpressionContainer expression) : base(expression)
+        public EnumExpressionMediator(IDbExpression expression) : base(expression)
         {
         }
         #endregion
@@ -23,6 +23,11 @@ namespace HatTrick.DbEx.Sql.Expression
             base.As(alias);
             return this;
         }
+        #endregion
+
+        #region order
+        public override OrderByExpression Asc => new OrderByExpression(new EnumExpressionMediator<TEnum>(this), OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(new EnumExpressionMediator<TEnum>(this), OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
@@ -37,9 +42,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<TEnum>(EnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(new ExpressionContainer(a));
-        public static implicit operator OrderByExpression(EnumExpressionMediator<TEnum> a) => new OrderByExpression(new ExpressionContainer(a), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(EnumExpressionMediator<TEnum> a) => new GroupByExpression(new ExpressionContainer(a));
+        public static implicit operator SelectExpression<TEnum>(EnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(a);
+        public static implicit operator OrderByExpression(EnumExpressionMediator<TEnum> a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(EnumExpressionMediator<TEnum> a) => new GroupByExpression(a);
         #endregion
     }
 }

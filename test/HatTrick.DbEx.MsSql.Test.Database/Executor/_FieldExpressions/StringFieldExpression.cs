@@ -10,6 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public class StringFieldExpression : ExecutorTestBase
     {
         [Theory]
+        [Trait("Operation", "LIKE")]
         [MsSqlVersions.AllVersions]
         public void Does_selecting_like_firstname_succeed(int version, int expected = 3)
         {
@@ -29,6 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
+        [Trait("Operation", "LIKE")]
         [MsSqlVersions.AllVersions]
         public void Does_selecting_like_firstname_concatenated_with_lastname_succeed(int version, int expected = 1)
         {

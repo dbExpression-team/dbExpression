@@ -10,11 +10,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected CountFunctionExpression(bool isDistinct) : base(new ExpressionContainer(new LiteralExpression<string>("*")), isDistinct)
+        protected CountFunctionExpression(bool isDistinct) : base(new StringExpressionMediator(new LiteralExpression<string>("*")), isDistinct)
         {
         }
 
-        protected CountFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        protected CountFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

@@ -22,6 +22,24 @@ namespace HatTrick.DbEx.Sql.Expression
             => new ByteArrayFieldExpression<TEntity>(base.Identifier, base.Entity, base.MetadataResolver, alias);
         #endregion
 
+        #region in value set
+        public override FilterExpression In(params byte[][] value) => value != null ? new FilterExpression<short>(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.In) : null;
+        #endregion
+
+        #region set
+        public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
+        public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(new ByteExpressionMediator(this), value);
+        #endregion
+
+        #region insert
+        public override InsertExpression Insert(byte[] value) => new InsertExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
+        #endregion
+
+        #region order
+        public override OrderByExpression Asc => new OrderByExpression(new ByteExpressionMediator(this), OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(new ByteExpressionMediator(this), OrderExpressionDirection.DESC);
+        #endregion
+
         #region equals
         public bool Equals(ByteArrayFieldExpression<TEntity> obj)
             => obj is ByteArrayFieldExpression<TEntity> && base.Equals(obj);

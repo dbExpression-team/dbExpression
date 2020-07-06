@@ -7,11 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDecimalCoalesceFunctionExpression>
     {
         #region constructors
-        public NullableDecimalCoalesceFunctionExpression(params ExpressionContainer[] expressions) : base(typeof(NullableDecimalCoalesceFunctionExpression), expressions)
-        {
-        }
-
-        public NullableDecimalCoalesceFunctionExpression(Type typeOverride, params ExpressionContainer[] expressions) : base(typeOverride, expressions)
+        public NullableDecimalCoalesceFunctionExpression(params NullableExpressionMediator<decimal>[] expressions) : base(expressions)
         {
         }
         #endregion

@@ -5,6 +5,7 @@ using System.Text;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FunctionExpression :
+        IDbExpression,
         IDbExpressionAliasProvider,
         IEquatable<FunctionExpression>
     {
@@ -13,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public ExpressionContainer Expression { get; }
+        public ExpressionMediator Expression { get; }
         string IDbExpressionAliasProvider.Alias => Alias;
         #endregion
 
@@ -22,15 +23,15 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected FunctionExpression(ExpressionContainer expression)
+        protected FunctionExpression(ExpressionMediator expression)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
         #endregion
 
         #region order
-        public OrderByExpression Asc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.ASC);
-        public OrderByExpression Desc => new OrderByExpression(new ExpressionContainer(this), OrderExpressionDirection.DESC);
+        public abstract OrderByExpression Asc { get; }
+        public abstract OrderByExpression Desc { get; }
         #endregion
 
         #region as

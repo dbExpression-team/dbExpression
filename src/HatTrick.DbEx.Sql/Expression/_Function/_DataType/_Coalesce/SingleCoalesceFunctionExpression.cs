@@ -8,11 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SingleCoalesceFunctionExpression>
     {
         #region constructors
-        public SingleCoalesceFunctionExpression(IList<ExpressionContainer> expressions, ExpressionContainer notNull) : base(typeof(SingleCoalesceFunctionExpression), expressions, notNull)
-        {
-        }
-
-        public SingleCoalesceFunctionExpression(Type typeOverride, IList<ExpressionContainer> expressions, ExpressionContainer notNull) : base(typeOverride, expressions, notNull)
+        public SingleCoalesceFunctionExpression(IList<NullableExpressionMediator<float>> expressions, ExpressionMediator<float> notNull) : base(expressions, notNull)
         {
         }
         #endregion

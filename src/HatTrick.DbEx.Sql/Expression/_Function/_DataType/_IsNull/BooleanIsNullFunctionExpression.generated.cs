@@ -7,10 +7,15 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class BooleanIsNullFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<bool>(BooleanIsNullFunctionExpression a) => new SelectExpression<bool>(new ExpressionContainer(a));
-        public static implicit operator BooleanExpressionMediator(BooleanIsNullFunctionExpression a) => new BooleanExpressionMediator(new ExpressionContainer(a));
-        public static implicit operator OrderByExpression(BooleanIsNullFunctionExpression a) => new OrderByExpression(new ExpressionContainer(a), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(BooleanIsNullFunctionExpression a) => new GroupByExpression(new ExpressionContainer(a));
+        public static implicit operator SelectExpression<bool>(BooleanIsNullFunctionExpression a) => new SelectExpression<bool>(new BooleanExpressionMediator(a));
+        public static implicit operator BooleanExpressionMediator(BooleanIsNullFunctionExpression a) => new BooleanExpressionMediator(a);
+        public static implicit operator OrderByExpression(BooleanIsNullFunctionExpression a) => new OrderByExpression(new BooleanExpressionMediator(a), OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(BooleanIsNullFunctionExpression a) => new GroupByExpression(new BooleanExpressionMediator(a));
+        #endregion
+
+        #region order
+        public override OrderByExpression Asc => new OrderByExpression(new BooleanExpressionMediator(this), OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(new BooleanExpressionMediator(this), OrderExpressionDirection.DESC);
         #endregion
 
         #region arithmetic operators
@@ -144,50 +149,50 @@ namespace HatTrick.DbEx.Sql.Expression
         #region filter operators
         #region TValue
         #region bool
-        public static FilterExpression<bool> operator ==(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(BooleanIsNullFunctionExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool> operator ==(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new ExpressionContainer(new LiteralExpression<bool>(a)), new ExpressionContainer(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new ExpressionContainer(new LiteralExpression<bool>(a)), new ExpressionContainer(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new ExpressionContainer(new LiteralExpression<bool>(a)), new ExpressionContainer(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new ExpressionContainer(new LiteralExpression<bool>(a)), new ExpressionContainer(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new ExpressionContainer(new LiteralExpression<bool>(a)), new ExpressionContainer(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new ExpressionContainer(new LiteralExpression<bool>(a)), new ExpressionContainer(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(bool a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool> operator ==(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new ExpressionContainer(a), new ExpressionContainer(new LiteralExpression<bool?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool?>(b)), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool?>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool?>(b)), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool?>(b)), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool?>(b)), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(BooleanIsNullFunctionExpression a, bool? b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool> operator ==(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<Boolean>(new ExpressionContainer(new LiteralExpression<bool?>(a)), new ExpressionContainer(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<Boolean>(new ExpressionContainer(new LiteralExpression<bool?>(a)), new ExpressionContainer(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<Boolean>(new ExpressionContainer(new LiteralExpression<bool?>(a)), new ExpressionContainer(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<Boolean>(new ExpressionContainer(new LiteralExpression<bool?>(a)), new ExpressionContainer(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<Boolean>(new ExpressionContainer(new LiteralExpression<bool?>(a)), new ExpressionContainer(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<Boolean>(new ExpressionContainer(new LiteralExpression<bool?>(a)), new ExpressionContainer(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool?>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool?>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool?>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool?>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool?>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(bool? a, BooleanIsNullFunctionExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(new LiteralExpression<bool?>(a)), new BooleanExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
 
         #region mediator
-        public static FilterExpression<bool> operator ==(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool> operator ==(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(BooleanIsNullFunctionExpression a, BooleanExpressionMediator b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool?> operator ==(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new ExpressionContainer(a), b.Expression, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(BooleanIsNullFunctionExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
     }

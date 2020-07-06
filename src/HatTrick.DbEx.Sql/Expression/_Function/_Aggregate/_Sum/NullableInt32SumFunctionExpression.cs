@@ -7,7 +7,15 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableInt32SumFunctionExpression>
     {
         #region constructors
-        public NullableInt32SumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32SumFunctionExpression(NullableExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+
+        public NullableInt32SumFunctionExpression(NullableExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+        {
+        }
+
+        public NullableInt32SumFunctionExpression(NullableExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

@@ -6,7 +6,11 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected DatePartFunctionExpression(ExpressionContainer datePart, ExpressionContainer startDate) : base(datePart, startDate)
+        protected DatePartFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTime> startDate) : base(datePart, startDate)
+        {
+        }
+
+        protected DatePartFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTimeOffset> startDate) : base(datePart, startDate)
         {
         }
         #endregion

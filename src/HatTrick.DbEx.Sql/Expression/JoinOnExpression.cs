@@ -6,8 +6,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbExpression
     {
         #region interface
-        public ExpressionContainer LeftPart { get; set; }
-        public ExpressionContainer RightPart { get; set; }
+        public ExpressionMediator LeftArg { get; set; }
+        public ExpressionMediator RightArg { get; set; }
         public readonly FilterExpressionOperator ExpressionOperator;
         public bool Negate { get; set; }
         #endregion
@@ -15,8 +15,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public JoinOnExpression(FilterExpression expression)
         {
-            LeftPart = expression.Expression?.LeftPart ?? throw new ArgumentNullException($"{nameof(expression)} and the {nameof(expression.Expression.LeftPart)} of {nameof(expression)} is required.");
-            RightPart = expression.Expression?.RightPart ?? throw new ArgumentNullException($"{nameof(expression)} and the {nameof(expression.Expression.LeftPart)} of {nameof(expression)} is required.");
+            LeftArg = expression.LeftArg ?? throw new ArgumentNullException($"{nameof(expression)} and the {nameof(expression.LeftArg)} of {nameof(expression)} is required.");
+            RightArg = expression.RightArg ?? throw new ArgumentNullException($"{nameof(expression)} and the {nameof(expression.RightArg)} of {nameof(expression)} is required.");
             ExpressionOperator = expression.ExpressionOperator;
             Negate = expression.Negate;
         }
@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region to string
         public override string ToString()
         {
-            string expression = $"{LeftPart.Object} {ExpressionOperator} {RightPart.Object}";
+            string expression = $"{LeftArg} {ExpressionOperator} {RightArg}";
             return (Negate) ? $" NOT ({expression})" : expression;
         }
         #endregion

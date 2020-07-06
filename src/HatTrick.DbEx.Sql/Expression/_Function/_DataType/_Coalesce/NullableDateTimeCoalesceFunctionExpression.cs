@@ -7,11 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeCoalesceFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeCoalesceFunctionExpression(params ExpressionContainer[] expressions) : base(typeof(NullableDateTimeCoalesceFunctionExpression), expressions)
-        {
-        }
-
-        public NullableDateTimeCoalesceFunctionExpression(Type typeOverride, params ExpressionContainer[] expressions) : base(typeOverride, expressions)
+        public NullableDateTimeCoalesceFunctionExpression(params NullableExpressionMediator<DateTime>[] expressions) : base(expressions)
         {
         }
         #endregion

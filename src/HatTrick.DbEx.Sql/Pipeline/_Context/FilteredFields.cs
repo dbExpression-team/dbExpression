@@ -20,9 +20,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 switch (ExecutionType)
                 {
                     case SqlStatementExecutionType.Insert:
-                        return ExpressionSet.Insert.Expressions.Select(e => e.Expression.LeftPart.Object as FieldExpression).ToList().AsReadOnly();
+                        return ExpressionSet.Insert.Expressions.Select(e => (e as IDbInsertExpressionProvider).Assignee).ToList().AsReadOnly();
                     case SqlStatementExecutionType.Update:
-                        return ExpressionSet.Assign.Expressions.Select(e => e.Expression.LeftPart.Object as FieldExpression).ToList().AsReadOnly();
+                        return ExpressionSet.Assign.Expressions.Select(e => ((e as IDbAssignmentExpressionProvider).Assignee).Expression as FieldExpression).ToList().AsReadOnly();
                     default:
                         throw new NotImplementedException($"'{ExecutionType}' has not been implemented.");
                 }

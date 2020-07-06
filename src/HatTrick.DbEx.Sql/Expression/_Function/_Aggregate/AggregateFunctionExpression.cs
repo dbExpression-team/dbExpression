@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HatTrick.DbEx.Sql.Expression
+﻿namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class AggregateFunctionExpression : FunctionExpression
     {
@@ -12,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         
         }
 
-        protected AggregateFunctionExpression(ExpressionContainer expression) : base(expression)
+        protected AggregateFunctionExpression(ExpressionMediator expression) : base(expression)
         {
         }
         #endregion

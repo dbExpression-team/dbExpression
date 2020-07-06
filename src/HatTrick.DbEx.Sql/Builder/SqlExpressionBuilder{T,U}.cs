@@ -90,6 +90,9 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private void Having(HavingExpression having)
         {
+            if (having == null)
+                return;
+
             if (Expression.Having?.Expression == null || Expression.Having.Expression == default)
             {
                 Expression.Having = having;
@@ -326,13 +329,13 @@ namespace HatTrick.DbEx.Sql.Builder
         IValueListSkipContinuationExpressionBuilder<T,U> IValueListContinuationExpressionBuilder<T, U>.Skip(int skipValue)
         {
             Skip(skipValue);
-            return this as IValueListSkipContinuationExpressionBuilder<T, U>;
+            return this;
         }
 
         ITypeListSkipContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.Skip(int skipValue)
         {
             Skip(skipValue);
-            return this as ITypeListSkipContinuationExpressionBuilder<T, U>;
+            return this;
         }
 
         private void Skip(int skipValue)
@@ -343,13 +346,13 @@ namespace HatTrick.DbEx.Sql.Builder
         IValueListContinuationExpressionBuilder<T, U> IValueListSkipContinuationExpressionBuilder<T, U>.Limit(int limitValue)
         {
             Limit(limitValue);
-            return this as IValueListContinuationExpressionBuilder<T, U>;
+            return this;
         }
 
         ITypeListContinuationExpressionBuilder<T, U> ITypeListSkipContinuationExpressionBuilder<T, U>.Limit(int limitValue)
         {
             Limit(limitValue);
-            return this as ITypeListContinuationExpressionBuilder<T, U>;
+            return this;
         }
 
         private void Limit(int limitValue)

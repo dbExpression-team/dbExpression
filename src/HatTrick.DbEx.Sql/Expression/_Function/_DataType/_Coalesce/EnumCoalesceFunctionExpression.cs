@@ -10,15 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumCoalesceFunctionExpression(ExpressionContainer expression, ExpressionContainer value) : this(new List<ExpressionContainer> { expression }, value)
-        {
-        }
-
-        public EnumCoalesceFunctionExpression(IList<ExpressionContainer> expressions, ExpressionContainer notNull) : base(typeof(EnumCoalesceFunctionExpression<TEnum>), expressions, notNull)
-        {
-        }
-
-        public EnumCoalesceFunctionExpression(Type typeOverride, IList<ExpressionContainer> expressions, ExpressionContainer notNull) : base(typeOverride, expressions, notNull)
+        public EnumCoalesceFunctionExpression(IList<NullableExpressionMediator<TEnum>> expressions, ExpressionMediator<TEnum> notNull) : base(expressions, notNull)
         {
         }
         #endregion

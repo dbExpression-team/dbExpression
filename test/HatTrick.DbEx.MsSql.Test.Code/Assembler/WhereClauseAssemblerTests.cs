@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
             string whereClause;
 
             //when
-            builder.AppendPart(expressionSet.Where.Expression.LeftPart, new AssemblyContext());
+            builder.AppendPart(expressionSet.Where.LeftArg, new AssemblyContext());
             whereClause = builder.Appender.ToString();
 
             //then

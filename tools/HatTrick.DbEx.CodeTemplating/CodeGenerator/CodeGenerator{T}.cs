@@ -17,10 +17,10 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
             TemplateEngine ngin = new TemplateEngine(template)
             {
-                TrimWhitespace = true //global flag for whitespace control...
+                TrimWhitespace = false //global flag for whitespace control...                
             };
             ngin.LambdaRepo.Register("BuildUsings", new Func<IList<string>, string>(usings => usings.Aggregate(string.Empty, (a,b) => $"using {b};{Environment.NewLine}", a => a)));
-            ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
+            //ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
             var output = ngin.Merge(data);
             fileService.WriteFile(fileService.GetOutputPath(fileName), output);
         }

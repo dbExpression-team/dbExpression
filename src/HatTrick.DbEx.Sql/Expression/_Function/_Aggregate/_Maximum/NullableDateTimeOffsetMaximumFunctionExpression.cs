@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeOffsetMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetMaximumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableDateTimeOffsetMaximumFunctionExpression(NullableExpressionMediator<DateTimeOffset> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

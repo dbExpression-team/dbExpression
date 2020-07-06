@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeMinimumFunctionExpression>
     {
         #region constructors
-        public DateTimeMinimumFunctionExpression(ExpressionContainer expression, bool isDistinct) : base(expression, isDistinct)
+        public DateTimeMinimumFunctionExpression(ExpressionMediator<DateTime> expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
         #endregion

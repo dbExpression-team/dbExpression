@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Builder
     public class NullableCastFunctionExpressionBuilder<TValue> : NullableCastFunctionExpressionBuilder
     {
         #region constructors
-        public NullableCastFunctionExpressionBuilder(ExpressionContainer expression) : base(expression)
+        public NullableCastFunctionExpressionBuilder(ExpressionMediator<TValue> expression) : base(expression)
         {
         }
         #endregion
