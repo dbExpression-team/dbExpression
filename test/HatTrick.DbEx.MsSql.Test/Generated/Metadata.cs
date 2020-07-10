@@ -1,9 +1,11 @@
+using System;
+
 namespace DbEx.DataService
 {
     using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
-	using DbEx.dbo.DataService;
-	using DbEx.sec.DataService;
+	using DbEx.dboDataService;
+	using DbEx.secDataService;
 
     public class MsSqlDbExTestDatabaseMetadataProvider : IDatabaseMetadataProvider
     {
@@ -23,7 +25,7 @@ namespace DbEx.DataService
     }
 }
 
-namespace DbEx.dbo.DataService
+namespace DbEx.dboDataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;
@@ -215,7 +217,7 @@ namespace DbEx.dbo.DataService
         #endregion
     }
 }
-namespace DbEx.sec.DataService
+namespace DbEx.secDataService
 {
 	using HatTrick.DbEx.MsSql.Expression;
     using HatTrick.DbEx.Sql;

@@ -1,257 +1,262 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Dynamic;
+using System.Linq;
 using System.Threading;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class SyncExecutionPipeline : ExecutionPipeline
     {
-        private SyncPipeline<BeforeAssemblyContext> BeforeAssembly { get; set; }
-        private SyncPipeline<AfterAssemblyContext> AfterAssembly { get; set; }
-        private SyncPipeline<BeforeInsertContext> BeforeInsert { get; set; }
-        private SyncPipeline<AfterInsertContext> AfterInsert { get; set; }
+        private SyncPipeline<BeforeAssemblyPipelineExecutionContext> BeforeAssembly { get; set; }
+        private SyncPipeline<AfterAssemblyPipelineExecutionContext> AfterAssembly { get; set; }
+        private SyncPipeline<BeforeInsertPipelineExecutionContext> BeforeInsert { get; set; }
+        private SyncPipeline<AfterInsertPipelineExecutionContext> AfterInsert { get; set; }
+        private SyncPipeline<BeforeExecutionPipelineExecutionContext> BeforeExecution { get; set; }
 
         public SyncExecutionPipeline(
             DatabaseConfiguration database,
-            SyncPipeline<BeforeAssemblyContext> beforeAssembly,
-            SyncPipeline<AfterAssemblyContext> afterAssembly,
-            SyncPipeline<BeforeInsertContext> beforeInsert,
-            SyncPipeline<AfterInsertContext> afterInsert
+            SyncPipeline<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
+            SyncPipeline<AfterAssemblyPipelineExecutionContext> afterAssembly,
+            SyncPipeline<BeforeInsertPipelineExecutionContext> beforeInsert,
+            SyncPipeline<AfterInsertPipelineExecutionContext> afterInsert,
+            SyncPipeline<BeforeExecutionPipelineExecutionContext> beforeExecution
         ) : base(database)
         {
             BeforeAssembly = beforeAssembly;
             AfterAssembly = afterAssembly;
             BeforeInsert = beforeInsert;
             AfterInsert = afterInsert;
+            BeforeExecution = beforeExecution;
         }
 
         #region TerminationExpressionBuilder
-        public void ExecuteVoid(ITerminationExpressionBuilder builder)
-            => DoExecuteVoid(builder, null, _ => { });
-
-        public void ExecuteVoid(ITerminationExpressionBuilder builder, SqlConnection connection)
-            => DoExecuteVoid(builder, connection, _ => { });
-
-        public void ExecuteVoid(ITerminationExpressionBuilder builder, int commandTimeout)
-            => DoExecuteVoid(builder, null, c => c.CommandTimeout = commandTimeout);
-
-        public void ExecuteVoid(ITerminationExpressionBuilder builder, SqlConnection connection, int commandTimeout)
-            => DoExecuteVoid(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        private void DoExecuteVoid(ITerminationExpressionBuilder builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        public void ExecuteVoid(ITerminationExpressionBuilder builder, ISqlConnection connection, Action<DbCommand> configureCommand)
             => DoExecute(builder, connection, configureCommand, null);
         #endregion
 
-        #region ValueTerminationExpressionBuilder
-        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder)
-            => DoExecuteValue(builder, (SqlConnection)null, _ => { });
-
-        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
-            => DoExecuteValue(builder, (SqlConnection)null, configureCommand);
-
-        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection)
-            => DoExecuteValue(builder, connection, _ => { });
-
-        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
-            => DoExecuteValue(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
-
-        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            => DoExecuteValue(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        private T DoExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        #region ValueTerminationExpressionBuilder<T>
+        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
-            T t = default;
-            DoExecute(builder, connection, configureCommand, reader => ManageValueReader<T>(reader, v => t = v));
-            return t;
+            T value = default;
+            var mapper = Database.MapperFactory.CreateValueMapper<T>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    var field = reader.ReadRow()?.ReadField();
+                    if (field == null)
+                        return;
+
+                    value = mapper.Map(field.Value);
+                }
+            );
+            return value;
+        }
+
+        public T ExecuteValue<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlField, T> map)
+        {
+            T value = default;
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    var field = reader.ReadRow()?.ReadField();
+                    if (field == null)
+                        return;
+
+                    value = map(field);
+                }
+            );
+            return value;
         }
         #endregion
 
-        #region ValueListTerminationExpressionBuilder
-        public IList<T> ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder)
-            => DoExecuteValueList(builder, null, _ => { });
-
-        public IList<T> ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection)
-            => DoExecuteValueList(builder, connection, _ => { });
-
-        public IList<T> ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            => DoExecuteValueList(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        public IList<T> ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout)
-            => DoExecuteValueList(builder, null, c => c.CommandTimeout = commandTimeout);
-
-        private IList<T> DoExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        #region ValueListTerminationExpressionBuilder<T>
+        public IList<T> ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
-            var list = new List<T>();
-            DoExecuteValueList(builder, connection, configureCommand, t => list.Add(t));
-            return list;
+            var mapper = Database.MapperFactory.CreateValueMapper<T>();
+            var values = new List<T>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    ISqlRow row;
+                    while ((row = reader.ReadRow()) != null)
+                    {
+                        var field = row.ReadField();
+                        if (field != null)
+                        {
+                            values.Add(mapper.Map(field.Value));
+                        }
+                    }
+                }
+            );
+            return values;
         }
 
-        public void ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, Action<T> onValueMaterialized)
-            => DoExecuteValueList(builder, null, _ => { }, onValueMaterialized);
-
-        public void ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<T> onValueMaterialized)
-            => DoExecuteValueList(builder, connection, _ => { }, onValueMaterialized);
-
-        public void ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Action<T> onValueMaterialized)
-            => DoExecuteValueList(builder, connection, c => c.CommandTimeout = commandTimeout, onValueMaterialized);
-
-        public void ExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, Action<T> onValueMaterialized)
-            => DoExecuteValueList(builder, null, c => c.CommandTimeout = commandTimeout, onValueMaterialized);
-
-        private void DoExecuteValueList<T>(IValueListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<T> onValueMaterialized)
-            => DoExecute(builder, connection, configureCommand, reader => ManageValueListReader(reader, onValueMaterialized));
-        #endregion
-
-        #region ValueTerminationExpressionBuilder-dynamic
-        public dynamic ExecuteDynamic(IValueTerminationExpressionBuilder<ExpandoObject> builder)
-            => DoExecuteDynamic(builder, (SqlConnection)null, _ => { });
-
-        public dynamic ExecuteDynamic(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
-            => DoExecuteDynamic(builder, connection, _ => { });
-
-        public dynamic ExecuteDynamic(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
-            => DoExecuteDynamic(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        public dynamic ExecuteDynamic(IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => DoExecuteDynamic(builder, (SqlConnection)null, c => c.CommandTimeout = commandTimeout);
-
-        private dynamic DoExecuteDynamic(IValueTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        public IList<T> ExecuteValueList<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<object, T> map)
         {
-            ExpandoObject t = default;
-            DoExecute(builder, connection, configureCommand, reader => ManageDynamicReader(reader, v => t = v));
-            return t;
+            var mapper = Database.MapperFactory.CreateValueMapper<T>();
+            var values = new List<T>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    ISqlRow row;
+                    while ((row = reader.ReadRow()) != null)
+                    {
+                        var field = row.ReadField();
+                        if (field != null)
+                        {
+                            values.Add(map(field.Value));
+                        }
+                    }
+                }
+            );
+            return values;
         }
         #endregion
 
-        #region ValueListTerminationExpressionBuilder
-        public IList<dynamic> ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder)
-            => DoExecuteDynamicList(builder, null, _ => { });
-
-        public IList<dynamic> ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection)
-            => DoExecuteDynamicList(builder, connection, _ => { });
-
-        public IList<dynamic> ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout)
-           => DoExecuteDynamicList(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        public IList<dynamic> ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => DoExecuteDynamicList(builder, null, c => c.CommandTimeout = commandTimeout);
-
-        private IList<dynamic> DoExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand)
+        #region ValueTerminationExpressionBuilder<ExpandoObject>
+        public dynamic ExecuteDynamic(IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
-            var list = new List<dynamic>();
-            DoExecuteDynamicList(builder, connection, configureCommand, t => list.Add(t));
-            return list;
+            dynamic value = default;
+            var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    var row = reader.ReadRow();
+                    if (row == default)
+                        return;
+
+                    value = new ExpandoObject();
+                    mapper.Map(value, row);
+                }
+            );
+            return value;
         }
 
-        public void ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, Action<ExpandoObject> onDynamicMaterialized)
-            => DoExecuteDynamicList(builder, null, _ => { }, onDynamicMaterialized);
+        public T ExecuteDynamic<T>(IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map)
+        {
+            T value = default;
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    var row = reader.ReadRow();
+                    if (row == default)
+                        return;
 
-        public void ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<ExpandoObject> onDynamicMaterialized)
-            => DoExecuteDynamicList(builder, connection, _ => { }, onDynamicMaterialized);
-
-        public void ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized)
-            => DoExecuteDynamicList(builder, connection, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized);
-
-        public void ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Action<ExpandoObject> onDynamicMaterialized)
-            => DoExecuteDynamicList(builder, null, c => c.CommandTimeout = commandTimeout, onDynamicMaterialized);
-
-        private void DoExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<ExpandoObject> onDynamicMaterialized)
-            => DoExecute(builder, connection, configureCommand, reader => ManageDynamicListReader(reader, onDynamicMaterialized));
+                    value = map(row);
+                }
+            );
+            return value;
+        }
         #endregion
 
-        #region TypeTerminationExpressionBuilder
-        public T ExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder)
-            where T : class, IDbEntity, new()
-            => DoExecuteType(builder, null, _ => { });
-
-        public T ExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
-            where T : class, IDbEntity, new()
-            => DoExecuteType(builder, null, configureCommand);
-
-        public T ExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection)
-            where T : class, IDbEntity, new()
-            => DoExecuteType(builder, connection, _ => { });
-
-        public T ExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            where T : class, IDbEntity, new()
-            => DoExecuteType(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        public T ExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder, int commandTimeout)
-            where T : class, IDbEntity, new()
-            => DoExecuteType(builder, null, c => c.CommandTimeout = commandTimeout);
-
-        private T DoExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
-            where T : class, IDbEntity, new()
+        #region ValueListTerminationExpressionBuilder<ExpandoObject>
+        public IList<dynamic> ExecuteDynamicList(IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
-            T t = default;
-            DoExecute(builder, connection, configureCommand, reader => ManageTypeReader(reader, v => t = v, (builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>));
-            return t;
-        } 
-        #endregion
-
-        #region TypeListTerminationExpressionBuilder
-        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, null, _ => { });
-
-        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, null, configureCommand);
-
-        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, connection, _ => { });
-
-        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, null, c => c.CommandTimeout = commandTimeout);
-
-        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, connection, c => c.CommandTimeout = commandTimeout);
-
-        private IList<T> DoExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand)
-            where T : class, IDbEntity, new()
-        {
-            var list = new List<T>();
-            DoExecuteTypeList(builder, connection, configureCommand, t => list.Add(t));
-            return list;
+            var mapper = Database.MapperFactory.CreateExpandoObjectMapper();
+            var values = new List<dynamic>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    ISqlRow row;
+                    while ((row = reader.ReadRow()) != null)
+                    {
+                        dynamic value = new ExpandoObject();
+                        mapper.Map(value, row);
+                        values.Add(value);
+                    }
+                }
+            );
+            return values == default ? new List<dynamic>() : values;
         }
 
-        public void ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<T> onEntityMaterialized)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, null, _ => { }, onEntityMaterialized);
+        public IList<T> ExecuteDynamicList<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map)
+        {
+            var values = new List<T>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    ISqlRow row;
+                    while ((row = reader.ReadRow()) != null)
+                    {
+                        values.Add(map(row));
+                    }
+                }
+            );
+            return values;
+        }
+        #endregion
 
-        public void ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, Action<DbCommand> configureCommand, Action<T> onEntityMaterialized)
+        #region TypeTerminationExpressionBuilder<T>
+        public T ExecuteType<T>(ITypeTerminationExpressionBuilder<T> builder, ISqlConnection connection, Action<DbCommand> configureCommand)
             where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, null, configureCommand, onEntityMaterialized);
+        {
+            T value = default;
+            var mapper = Database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>);
+            var valueMapper = Database.MapperFactory.CreateValueMapper();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    var row = reader.ReadRow();
+                    if (row == default)
+                        return;
 
-        public void ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<T> onEntityMaterialized)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, connection, _ => { }, onEntityMaterialized);
+                    value = Database.EntityFactory.CreateEntity<T>();
+                    mapper.Map(value, row, valueMapper);
+                }
+            );
+            return value;
+        }
+        #endregion
 
-        public void ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, Action<T> onEntityMaterialized)
+        #region TypeListTerminationExpressionBuilder<T>
+        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, ISqlConnection connection, Action<DbCommand> configureCommand)
             where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, null, c => c.CommandTimeout = commandTimeout, onEntityMaterialized);
+        {
+            var mapper = Database.MapperFactory.CreateEntityMapper((builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>);
+            var valueMapper = Database.MapperFactory.CreateValueMapper();
+            var values = new List<T>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    ISqlRow row;
+                    while ((row = reader.ReadRow()) != null)
+                    {
+                        var entity = Database.EntityFactory.CreateEntity<T>();
+                        mapper.Map(entity, row, valueMapper);
+                        values.Add(entity);
+                    }
+                }
+            );
+            return values;
+        }
 
-        public void ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, int commandTimeout, Action<T> onEntityMaterialized)
-            where T : class, IDbEntity, new()
-            => DoExecuteTypeList(builder, connection, c => c.CommandTimeout = commandTimeout, onEntityMaterialized);
-
-        private void DoExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, SqlConnection connection, Action<DbCommand> configureCommand, Action<T> onEntityMaterialized)
-            where T : class, IDbEntity, new()
-            => DoExecute(builder, connection, configureCommand, reader => ManageTypeListReader((ISqlRowReader)reader, onEntityMaterialized, (builder as IDbExpressionSetProvider).Expression.BaseEntity as EntityExpression<T>));
+        public IList<T> ExecuteTypeList<T>(ITypeListTerminationExpressionBuilder<T> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map)
+        {
+            var values = new List<T>();
+            DoExecute(builder, connection, configureCommand,
+                reader =>
+                {
+                    ISqlRow row;
+                    while ((row = reader.ReadRow()) != null)
+                    {
+                        values.Add(map(row));
+                    }
+                }
+            );
+            return values;
+        }
         #endregion
 
         private void DoExecute(
             ITerminationExpressionBuilder builder,
-            SqlConnection connection,
+            ISqlConnection connection,
             Action<DbCommand> configureCommand,
             Action<ISqlRowReader> transform
         )
@@ -259,20 +264,20 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var expression = (builder as IDbExpressionSetProvider).Expression;
 
             //assembly
-            BeforeAssembly.Invoke(new Lazy<BeforeAssemblyContext>(() => new BeforeAssemblyContext(expression)));
+            BeforeAssembly.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(expression)));
 
             var appender = Database.AppenderFactory.CreateAppender();
             var parameterBuilder = Database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = Database.StatementBuilderFactory.CreateSqlStatementBuilder(Database.AssemblerConfiguration, expression, appender, parameterBuilder);
 
-            AfterAssembly.Invoke(new Lazy<AfterAssemblyContext>(() => new AfterAssemblyContext(expression, statementBuilder)));
+            AfterAssembly.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(expression, statementBuilder)));
 
             var statement = statementBuilder.CreateSqlStatement();
 
             switch (expression.StatementExecutionType)
             {
                 case SqlStatementExecutionType.Insert:
-                    BeforeInsert.Invoke(new Lazy<BeforeInsertContext>(() => new BeforeInsertContext(expression, appender, parameterBuilder)));
+                    BeforeInsert.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(expression, appender, parameterBuilder)));
                     break;
                 case SqlStatementExecutionType.Update:
                 case SqlStatementExecutionType.Delete:
@@ -293,12 +298,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (transform == null)
             {
-                executor.ExecuteNonQuery(statement, connection, configureCommand);
+                executor.ExecuteNonQuery(statement, connection, configureCommand, cmd => BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd))));
 
                 switch (expression.StatementExecutionType)
                 {
                     case SqlStatementExecutionType.Insert:
-                        AfterInsert.Invoke(new Lazy<AfterInsertContext>(() => new AfterInsertContext(expression, parameterBuilder, Database.MapperFactory)));
+                        AfterInsert.Invoke(new Lazy<AfterInsertPipelineExecutionContext>(() => new AfterInsertPipelineExecutionContext(expression, parameterBuilder, Database.MapperFactory)));
                         break;
                     case SqlStatementExecutionType.Update:
                     case SqlStatementExecutionType.Delete:
@@ -315,7 +320,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 return;
             }
 
-            var reader = executor.ExecuteQuery(statement, connection, configureCommand);
+            var reader = executor.ExecuteQuery(statement, connection, configureCommand, Database.MapperFactory.CreateValueMapper(), cmd => BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd))));
             //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
             if (reader == null)
                 return;

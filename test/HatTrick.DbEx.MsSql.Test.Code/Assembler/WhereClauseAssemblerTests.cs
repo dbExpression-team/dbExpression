@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder.Syntax;

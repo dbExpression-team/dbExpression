@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Connection
     public class DelegateSqlConnectionFactory : ISqlConnectionFactory
     {
         #region internals
-        private readonly Func<SqlConnection> factory;
+        private readonly Func<ISqlConnection> factory;
         #endregion
 
         #region constructors
@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Connection
             if (factory == null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection.");
 
-            this.factory = new Func<SqlConnection>(() =>
+            this.factory = new Func<ISqlConnection>(() =>
             {
                 var f = factory().CreateSqlConnection();
                 if (f == null)
@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Connection
         #endregion
 
         #region methods
-        public SqlConnection CreateSqlConnection()
+        public ISqlConnection CreateSqlConnection()
             => factory();
         #endregion
     }

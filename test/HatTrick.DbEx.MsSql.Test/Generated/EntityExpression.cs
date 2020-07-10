@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using DbEx.Data;
 
-namespace DbEx.dbo.DataService
+namespace DbEx.dboDataService
 {
-    using DbEx.Data.dbo;
+    using DbEx.dboData;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
@@ -972,9 +971,9 @@ namespace DbEx.dbo.DataService
     }
     #endregion
 }
-namespace DbEx.sec.DataService
+namespace DbEx.secDataService
 {
-    using DbEx.Data.sec;
+    using DbEx.secData;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;

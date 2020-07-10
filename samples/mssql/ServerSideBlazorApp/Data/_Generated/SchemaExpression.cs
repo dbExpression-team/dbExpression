@@ -5,11 +5,12 @@ namespace ServerSideBlazorApp.DataService
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Connection;
 
     #region db
     public class db : MsSqlExpressionBuilder
     {
-		public static SqlConnection GetConnection()
+		public static ISqlConnection GetConnection()
         {
             if (!DbExpression.Configuration.Databases.TryGetValue("ServerSideBlazorApp", out var config))
                 throw new DbExpressionConfigurationException($"Metadata for database named 'ServerSideBlazorApp' has not been provided.");

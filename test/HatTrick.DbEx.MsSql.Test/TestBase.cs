@@ -2,6 +2,7 @@
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using System;
+using System.Security.Policy;
 
 namespace HatTrick.DbEx.MsSql.Test
 {
@@ -9,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Test
     {
         private static readonly object @lock = new object();
 
-        public virtual DatabaseConfiguration ConfigureForMsSqlVersion(int version)
+        public virtual DatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<DatabaseConfigurationBuilder> postConfigure = null)
         {
             lock (@lock)
             {
@@ -21,7 +22,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2005Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey, 
+                                    postConfigure
                                 );
                             });
                             break;
@@ -32,7 +34,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2008Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey,
+                                    postConfigure
                                 );
                             });
                             break;
@@ -43,7 +46,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2012Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey,
+                                    postConfigure
                                 );
                             });
                             break;
@@ -54,7 +58,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2014Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey,
+                                    postConfigure
                                 );
                             });
                             break;
@@ -65,7 +70,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2016Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey,
+                                    postConfigure
                                 );
                             });
                             break;
@@ -76,7 +82,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2017Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey,
+                                    postConfigure
                                 );
                             });
                             break;
@@ -87,7 +94,8 @@ namespace HatTrick.DbEx.MsSql.Test
                             {
                                 c.AddMsSql2019Database<MsSqlDbExTestDatabaseMetadataProvider>(
                                     ConfigurationProvider.ConnectionString,
-                                    ConfigurationProvider.MetadataKey
+                                    ConfigurationProvider.MetadataKey,
+                                    postConfigure
                                 );
                             });
                             break;

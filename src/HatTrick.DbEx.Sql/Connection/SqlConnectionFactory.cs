@@ -2,6 +2,6 @@
 {
     public abstract class SqlConnectionFactory : ISqlConnectionFactory
     {
-        public abstract SqlConnection CreateSqlConnection();
+        public abstract ISqlConnection CreateSqlConnection();
     }
 }

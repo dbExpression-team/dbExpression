@@ -231,17 +231,20 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region hooks
-        public IPipelineEventActionBuilder<BeforeAssemblyContext> OnAssemblingSqlStatement(Action<BeforeAssemblyContext> action)
+        public IPipelineEventActionBuilder<BeforeAssemblyPipelineExecutionContext> BeforeAssemblingSqlStatement(Action<BeforeAssemblyPipelineExecutionContext> action)
             => Database.ExecutionPipelineFactory.BeforeAssembly.AddToEnd(action);
 
-        public IPipelineEventActionBuilder<AfterAssemblyContext> OnAssembledSqlStatement(Action<AfterAssemblyContext> action)
+        public IPipelineEventActionBuilder<AfterAssemblyPipelineExecutionContext> AfterAssemblingSqlStatement(Action<AfterAssemblyPipelineExecutionContext> action)
             => Database.ExecutionPipelineFactory.AfterAssembly.AddToEnd(action);
 
-        public IPipelineEventActionBuilder<BeforeInsertContext> OnInsertingEntity(Action<BeforeInsertContext> action)
+        public IPipelineEventActionBuilder<BeforeInsertPipelineExecutionContext> BeforeInsertingEntity(Action<BeforeInsertPipelineExecutionContext> action)
             => Database.ExecutionPipelineFactory.BeforeInsert.AddToEnd(action);
 
-        public IPipelineEventActionBuilder<AfterInsertContext> OnInsertedEntity(Action<AfterInsertContext> action)
+        public IPipelineEventActionBuilder<AfterInsertPipelineExecutionContext> AfterInsertingEntity(Action<AfterInsertPipelineExecutionContext> action)
             => Database.ExecutionPipelineFactory.AfterInsert.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<BeforeExecutionPipelineExecutionContext> BeforeExecutingCommand(Action<BeforeExecutionPipelineExecutionContext> action)
+             => Database.ExecutionPipelineFactory.BeforeExecution.AddToEnd(action);
         #endregion
         #endregion
     }

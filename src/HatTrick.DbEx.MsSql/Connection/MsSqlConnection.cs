@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.Data.Common;
 using System.Data.SqlClient;
-using ht = HatTrick.DbEx.Sql;
+using ht = HatTrick.DbEx.Sql.Connection;
 
 namespace HatTrick.DbEx.MsSql
 {
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql
         #endregion
 
         #region helper methods
-        public override DbCommand GetDbCommand() => new SqlCommand();
+        public override DbCommand CreateDbCommand() => new SqlCommand();
         #endregion
     }
 }

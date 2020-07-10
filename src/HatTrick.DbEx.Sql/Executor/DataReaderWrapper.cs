@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Mapper;
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
@@ -10,15 +12,17 @@ namespace HatTrick.DbEx.Sql.Executor
         #region internals
         private bool disposed;
         private int currentRowIndex;
-        protected SqlConnection SqlConnection { get; private set; }
+        protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
+        protected IValueMapper Mapper { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(SqlConnection sqlConnection, DbDataReader dataReader)
+        public DataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueMapper mapper)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
+            Mapper = mapper;
         }
         #endregion
 
@@ -35,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i]);
+                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i], Mapper);
                     }
                     return new Row(currentRowIndex++, row);
                 }

@@ -1,12 +1,13 @@
-﻿using DbEx.Data.dbo;
+﻿using DbEx.dboDataService;
 using DbEx.DataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Xunit;
+using DbEx.dboData;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -15,7 +16,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         #region value list
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_commandTimeout(int version, int expected = 50)
+        public void Does_execute_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(expected);
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+        
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -24,15 +45,36 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var ids = exp.Execute(45);
+            var values = exp.Execute(45);
 
             //then
-            ids.Should().HaveCount(expected);
+            values.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection(int version, int expected = 50)
+        public void Does_execute_value_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn);
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_value_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -42,15 +84,42 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var ids = exp.Execute(conn);
+            var values = exp.Execute(conn);
 
             //then
-            ids.Should().HaveCount(expected);
+            values.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection_commandTimeout(int version, int expected = 50)
+        public void Does_execute_value_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(expected);
+
+            //then
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_value_list_with_connection_and_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -60,91 +129,38 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var ids = exp.Execute(conn, 45);
+            var values = exp.Execute(conn, 45);
 
             //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            exp.Execute(id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_commandTimeout_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            exp.Execute(45, id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            exp.Execute(conn, id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_value_list_overloads_connection_commandTimeout_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            exp.Execute(conn, 45, id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
+            values.Should().HaveCount(expected);
         }
         #endregion
 
         #region type/entity list
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_commandTimeout(int version, int expected = 50)
+        public void Does_execute_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+
+            //given
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(expected);
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -161,7 +177,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection(int version, int expected = 50)
+        public void Does_execute_type_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn);
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+        
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -179,7 +216,34 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection_commandTimeout(int version, int expected = 50)
+        public void Does_execute_type_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(expected);
+
+            //then
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -194,215 +258,331 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Should().HaveCount(expected);
         }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            exp.Execute(person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_commandTimeout_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            exp.Execute(45, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            exp.Execute(conn, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Execute_type_list_overloads_connection_commandTimeout_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            exp.Execute(conn, 45, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
         #endregion
 
         #region dynamic list
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_commandTimeout(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+
+            //given
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(expected);
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var ids = exp.Execute(45);
+            var dynamics = exp.Execute(45);
 
             //then
-            ids.Should().HaveCount(expected);
+            dynamics.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn);
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var ids = exp.Execute(conn);
+            var dynamics = exp.Execute(conn);
 
             //then
-            ids.Should().HaveCount(expected);
+            dynamics.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection_commandTimeout(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(expected);
+
+            //then
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var ids = exp.Execute(conn, 45);
+            var dynamics = exp.Execute(conn, 45);
 
             //then
-            ids.Should().HaveCount(expected);
+            dynamics.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_onValueMaterialized(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_map_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id, 
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var persons = new List<dynamic>();
-            exp.Execute(id => persons.Add(id));
+            var ids = new List<int>();
+            var @returned = exp.Execute(row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
-            persons.Should().HaveCount(expected);
+            ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_commandTimeout_onValueMaterialized(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int version, int expectedCommandTimeout = 45, int expectedCount = 50)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var persons = new List<dynamic>();
-            exp.Execute(45, person => persons.Add(person));
+            var ids = new List<int>();
+            var @returned = exp.Execute(expectedCommandTimeout, row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
-            persons.Should().HaveCount(expected);
+            usedCommandTimeout.Should().Be(expectedCommandTimeout);
+            ids.Should().HaveCount(expectedCount);
+            @returned.Should().HaveCount(expectedCount);
+            ids.Should().Equal(@returned);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection_onValueMaterialized(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_connection_and_map_overrides_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn, row => row.ReadField().GetValue<int>());
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var persons = new List<dynamic>();
-            exp.Execute(conn, person => persons.Add(person));
+            var ids = new List<int>();
+            var @returned = exp.Execute(45, row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
-            persons.Should().HaveCount(expected);
+            ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Execute_dynamic_list_overloads_connection_commandTimeout_onValueMaterialized(int version, int expected = 50)
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn, expected, row => row.ReadField().GetValue<int>());
+
+            //then
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var persons = new List<dynamic>();
-            exp.Execute(conn, 45, person => persons.Add(person));
+            var ids = new List<int>();
+            var @returned = exp.Execute(conn, 45, row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
-            persons.Should().HaveCount(expected);
+            ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
         #endregion
 
         #region value list async
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_commandTimeout(int version, int expected = 50)
+        public async Task Does_execute_async_value_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(expected);
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_value_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -411,15 +591,36 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var ids = await exp.ExecuteAsync(45);
+            var values = await exp.ExecuteAsync(45);
 
             //then
-            ids.Should().HaveCount(expected);
+            values.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection(int version, int expected = 50)
+        public async Task Does_execute_async_value_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn);
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_value_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -429,15 +630,42 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var ids = await exp.ExecuteAsync(conn);
+            var values = await exp.ExecuteAsync(conn);
 
             //then
-            ids.Should().HaveCount(expected);
+            values.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout(int version, int expected = 50)
+        public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(dbo.Person.Id)
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(expected);
+
+            //then
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -447,165 +675,37 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var ids = await exp.ExecuteAsync(conn, 45);
+            var values = await exp.ExecuteAsync(conn, 45);
 
             //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_Action_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(async id => { ids.Add(id); await Task.CompletedTask; });
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(45, id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(45, async id => { ids.Add(id); await Task.CompletedTask; });
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_Action_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(conn, id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(conn, async id => { ids.Add(id); await Task.CompletedTask; });
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(conn, 45, id => ids.Add(id));
-
-            //then
-            ids.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_value_list_overloads_connection_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id)
-                .From(dbo.Person);
-
-            //when               
-            var ids = new List<int>();
-            await exp.ExecuteAsync(conn, 45, async id => { ids.Add(id); await Task.CompletedTask; });
-
-            //then
-            ids.Should().HaveCount(expected);
+            values.Should().HaveCount(expected);
         }
         #endregion
 
         #region type/entity list async
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_commandTimeout(int version, int expected = 50)
+        public async Task Does_execute_async_type_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(expected);
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -622,7 +722,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection(int version, int expected = 50)
+        public async Task Does_execute_async_type_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn);
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_override_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -640,7 +761,34 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout(int version, int expected = 50)
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(expected);
+
+            //then
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -651,154 +799,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var persons = await exp.ExecuteAsync(conn, 45);
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_Action_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_Func_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(async person => { persons.Add(person); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_commandTimeout_Action_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(45, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_commandTimeout_Func_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(45, async person => { persons.Add(person); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_Action_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(conn, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_Func_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(conn, async person => { persons.Add(person); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout_Action_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(conn, 45, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_type_list_overloads_connection_commandTimeout_Func_onEntityMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany<Person>()
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<Person>();
-            await exp.ExecuteAsync(conn, 45, async person => { persons.Add(person); await Task.CompletedTask; });
 
             //then
             persons.Should().HaveCount(expected);
@@ -808,133 +808,244 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         #region dynamic list async
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout(int version, int expected = 50)
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_have_correct_commandTimeout_on_execution(int version, int expected = 50)
+        {
+
+            //given
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(expected);
+
+            //then
+            usedCommandTimeout.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_override_succeed(int version, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id, 
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var ids = await exp.ExecuteAsync(45);
+            var dynamics = await exp.ExecuteAsync(45);
+
+            //then
+            dynamics.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
+        {
+            //given
+            DbConnection usedConnection = null;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn);
+
+            //then
+            usedConnection.Should().Equals(conn);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_dynamic_list_with_connection_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var dynamics = await exp.ExecuteAsync(conn);
+
+            //then
+            dynamics.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = config.ConnectionFactory.CreateSqlConnection();
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var dynamics = await exp.ExecuteAsync(conn, 45);
+
+            //then
+            dynamics.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_dynamic_list_with_map_override_succeed(int version, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            var @returned = await exp.ExecuteAsync(row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
             ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection(int version, int expected = 50)
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_have_correct_commandTimeout_on_execution(int version, int expectedCommandTimeout = 45, int expectedCount = 50)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+            );
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var ids = await exp.ExecuteAsync(conn);
+            var ids = new List<int>();
+            var @returned = await exp.ExecuteAsync(expectedCommandTimeout, row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
+
+            //then
+            usedCommandTimeout.Should().Be(expectedCommandTimeout);
+            ids.Should().HaveCount(expectedCount);
+            @returned.Should().HaveCount(expectedCount);
+            ids.Should().Equal(@returned);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_dynamic_list_with_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
+                .From(dbo.Person);
+
+            //when               
+            var ids = new List<int>();
+            var @returned = await exp.ExecuteAsync(row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
             ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout(int version, int expected = 50)
+        public async Task Does_execute_async_dynamic_list_with_connection_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
             var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var persons = await exp.ExecuteAsync(conn, 45);
+            var ids = new List<int>();
+            var @returned = await exp.ExecuteAsync(conn, row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
-            var ids = persons.Select(p => p.Id);
             ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_Action_onValueMaterialized(int version, int expected = 50)
+        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
         {
             //given
-            ConfigureForMsSqlVersion(version);
+            DbConnection usedConnection = null;
+            var usedCommandTimeout = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                c => c.BeforeExecutingCommand(e =>
+                {
+                    usedConnection = e.DbCommand.Connection;
+                    usedCommandTimeout = e.DbCommand.CommandTimeout;
+                })
+            );
+            var conn = config.ConnectionFactory.CreateSqlConnection();
 
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
+            var exp = db.SelectMany(
+                    dbo.Person.Id,
+                    dbo.Person.FirstName
+                )
                 .From(dbo.Person);
 
             //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(id => persons.Add(id));
+            await exp.ExecuteAsync(conn, expected, row => row.ReadField().GetValue<int>());
 
             //then
-            persons.Should().HaveCount(expected);
+            usedConnection.Should().Equals(conn);
+            usedCommandTimeout.Should().Be(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(async id => { persons.Add(id); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(45, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(45, async person => { persons.Add(person); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_Action_onValueMaterialized(int version, int expected = 50)
+        public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_succeed(int version, int expected = 50)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -944,68 +1055,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Person);
 
             //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(conn, person => persons.Add(person));
+            var ids = new List<int>();
+            var @returned = await exp.ExecuteAsync(conn, 45, row => { var id = row.ReadField().GetValue<int>(); ids.Add(id); return id; });
 
             //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(conn, async person => { persons.Add(person); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout_Action_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(conn, 45, person => persons.Add(person));
-
-            //then
-            persons.Should().HaveCount(expected);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task ExecuteAsync_dynamic_list_overloads_connection_commandTimeout_Func_onValueMaterialized(int version, int expected = 50)
-        {
-            //given
-            var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
-
-            var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
-                .From(dbo.Person);
-
-            //when               
-            var persons = new List<dynamic>();
-            await exp.ExecuteAsync(conn, 45, async person => { persons.Add(person); await Task.CompletedTask; });
-
-            //then
-            persons.Should().HaveCount(expected);
+            ids.Should().HaveCount(expected);
+            @returned.Should().HaveCount(expected);
+            ids.Should().Equal(@returned);
         }
         #endregion
     }

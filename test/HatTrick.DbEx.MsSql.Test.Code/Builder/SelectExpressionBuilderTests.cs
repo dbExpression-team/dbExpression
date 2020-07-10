@@ -6,7 +6,8 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Linq;
 using Xunit;
-using DbEx.Data.sec;
+using DbEx.secDataService;
+using DbEx.secData;
 
 namespace HatTrick.DbEx.MsSql.Test.Builder
 {

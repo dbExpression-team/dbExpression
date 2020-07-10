@@ -10,6 +10,18 @@
 	"rootNamespace": "DbEx",
 	"meta": [
 		{
+			"path": "dbo.sysdiagrams",
+			"apply": {
+				"ignore": true
+			}
+		},
+		{
+			"path": "sec.sysdiagrams",
+			"apply": {
+				"ignore": true
+			}
+		},
+		{
 			"path": "dbo.Address.AddressType",
 			"apply": {
 				"dataType": "AddressType?",

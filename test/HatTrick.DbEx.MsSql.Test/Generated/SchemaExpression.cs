@@ -1,13 +1,16 @@
+using System;
+
 namespace DbEx.DataService
 {
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql;
+    using HatTrick.DbEx.Sql.Connection;
 
     #region db
     public class db : MsSqlExpressionBuilder
     {
-		public static SqlConnection GetConnection()
+		public static ISqlConnection GetConnection()
         {
             if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
                 throw new DbExpressionConfigurationException($"Metadata for database named 'MsSqlDbExTest-design' has not been provided.");
@@ -17,16 +20,15 @@ namespace DbEx.DataService
     #endregion
 }
 
-namespace DbEx.DataService
+namespace DbEx.dboDataService
 {
     using HatTrick.DbEx.Sql.Expression;
-    using DbEx.dbo.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
     #region dbo
     [Serializable]
-    public class dboSchema : SchemaExpression
+    public class dboSchemaExpression : SchemaExpression
     {
         #region internals
         private const string _addressEntityName = "Address";
@@ -49,7 +51,7 @@ namespace DbEx.DataService
         #endregion
 
         #region constructors
-        public dboSchema(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
+        public dboSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
         {
             Entities.Add(_addressEntityName, new AddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_addressEntityName])));
             Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
@@ -63,16 +65,15 @@ namespace DbEx.DataService
     }
     #endregion
 }
-namespace DbEx.DataService
+namespace DbEx.secDataService
 {
     using HatTrick.DbEx.Sql.Expression;
-    using DbEx.sec.DataService;
     using System;
     using HatTrick.DbEx.Sql;
 
     #region sec
     [Serializable]
-    public class secSchema : SchemaExpression
+    public class secSchemaExpression : SchemaExpression
     {
         #region internals
         private const string _personEntityName = "Person";
@@ -83,7 +84,7 @@ namespace DbEx.DataService
         #endregion
 
         #region constructors
-        public secSchema(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
+        public secSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
         {
             Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
         }

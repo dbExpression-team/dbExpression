@@ -2,7 +2,7 @@ using System;
 using HatTrick.DbEx.Sql;
 using DbEx.Data;
 
-namespace DbEx.Data.dbo
+namespace DbEx.dboData
 {
     #region address
     public partial class Address : IDbEntity
@@ -145,7 +145,7 @@ namespace DbEx.Data.dbo
     }
     #endregion
 }
-namespace DbEx.Data.sec
+namespace DbEx.secData
 {
     #region person
     public partial class Person : IDbEntity

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HatTrick.DbEx.Configuration;
+using System;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
-using System.Reflection;
-using System.Configuration;
-using System.Dynamic;
-using HatTrick.DbEx.Configuration;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Connection
 {
-    public abstract class SqlConnection : IDisposable
+    public abstract class SqlConnection : ISqlConnection, IDisposable
     {
         #region internals
         private bool disposed;
@@ -32,6 +29,8 @@ namespace HatTrick.DbEx.Sql
                 _dbConnection = value;
             }
         }
+
+        public abstract DbCommand CreateDbCommand();
 
         public bool IsTransactional => DbTransaction != null;
         #endregion
@@ -98,14 +97,14 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region transaction methods
-        public SqlConnection BeginTransaction()
+        public ISqlConnection BeginTransaction()
         {
             this.EnsureOpenConnection();
             DbTransaction = DbConnection.BeginTransaction();
             return this;
         }
 
-        public SqlConnection BeginTransaction(IsolationLevel iso)
+        public ISqlConnection BeginTransaction(IsolationLevel iso)
         {
             this.EnsureOpenConnection();
             DbTransaction = DbConnection.BeginTransaction(iso);
@@ -134,7 +133,6 @@ namespace HatTrick.DbEx.Sql
 
         #region abstract methods
         protected abstract void EnsureConnection();
-        public abstract DbCommand GetDbCommand();
         #endregion
 
         protected virtual void Dispose(bool disposing)
