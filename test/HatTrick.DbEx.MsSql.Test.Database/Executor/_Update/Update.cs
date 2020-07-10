@@ -1,9 +1,10 @@
 ﻿using DbEx.DataService;
-using HatTrick.DbEx.Sql;
-using Xunit;
+using DbEx.dboData;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
-using DbEx.Data.dbo;
+using HatTrick.DbEx.Sql;
+using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {

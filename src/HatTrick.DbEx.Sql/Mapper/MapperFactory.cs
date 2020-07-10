@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             if (_valueMaps.TryGetValue(typeof(T), out Func<IMapper> mapper))
                 return mapper() as IValueMapProvider<T>;
 
-            var enumMapper = CreateEnumMapper<T>() ?? throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{typeof(T)}', please ensure an appender has been registered for type '{typeof(T)}'");
+            var enumMapper = CreateEnumMapper<T>() ?? throw new DbExpressionConfigurationException($"Could not resolve a mapper for type '{typeof(T)}', please ensure a mapper has been registered for type '{typeof(T)}'");
 
             _valueMaps.TryAdd(typeof(T), () => enumMapper);
 
@@ -111,7 +111,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         {
             if (!_valueMaps.TryGetValue(typeof(ExpandoObject), out Func<IMapper> xpandoMapper))
             {
-                throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{typeof(ExpandoObject)}', please ensure an appender has been registered for type '{typeof(ExpandoObject)}'");
+                throw new DbExpressionConfigurationException($"Could not resolve a mapper for type '{typeof(ExpandoObject)}', please ensure a mapper has been registered for type '{typeof(ExpandoObject)}'");
             }
             return xpandoMapper() as IExpandoObjectMapper;
         }

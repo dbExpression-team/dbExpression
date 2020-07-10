@@ -1,4 +1,6 @@
 ﻿using DbEx.DataService;
+using DbEx.dboDataService;
+using DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;

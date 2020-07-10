@@ -1,8 +1,10 @@
-﻿using DbEx.Data.dbo;
-using DbEx.DataService;
+﻿using DbEx.DataService;
+using DbEx.dboData;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -120,6 +122,46 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Count().Should().Be(expected);
             persons.Count(p => p.person_count == 2).Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_multiple_fields_and_mapping_to_dynamic_fail_when_alias_is_not_provided(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            static void _() => db.SelectMany(
+                    dbo.Purchase.Id,
+                    db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                ).From(dbo.Purchase)
+                .Execute();
+
+            //when               
+            var result = Assert.ThrowsAny<Exception>(_);
+
+            //then
+            result.Should().BeOfType<DbExpressionException>();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_selecting_multiple_fields_and_mapping_to_dynamic_fail_when_alias_is_not_provided_using_async(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            static async Task _() => await db.SelectMany(
+                    dbo.Purchase.Id,
+                    db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                ).From(dbo.Purchase)
+                .ExecuteAsync();
+
+            //when               
+            var result = await Assert.ThrowsAnyAsync<Exception>(_);
+
+            //then
+            result.Should().BeOfType<DbExpressionException>();
         }
     }
 }

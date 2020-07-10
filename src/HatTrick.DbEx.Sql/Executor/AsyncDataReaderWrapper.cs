@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Mapper;
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
@@ -11,19 +13,21 @@ namespace HatTrick.DbEx.Sql.Executor
         #region internals
         private bool disposed;
         private int currentRowIndex;
-        protected SqlConnection SqlConnection { get; private set; }
+        protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
+        protected IValueMapper Mapper { get; private set; }
         #endregion
 
         #region constructors
-        public AsyncDataReaderWrapper(SqlConnection sqlConnection, DbDataReader dataReader) : this(sqlConnection, dataReader, CancellationToken.None) { }
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueMapper mapper) : this(sqlConnection, dataReader, mapper, CancellationToken.None) { }
 
-        public AsyncDataReaderWrapper(SqlConnection sqlConnection, DbDataReader dataReader, CancellationToken ct)
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueMapper mapper, CancellationToken ct)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
             CancellationToken = ct == null ? CancellationToken.None : ct;
+            Mapper = mapper;
             CancellationToken.Register(() => Dispose(true));
         }
         #endregion
@@ -43,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i]);
+                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i], Mapper);
                     }
                     return new Row(currentRowIndex++, row);
                 }

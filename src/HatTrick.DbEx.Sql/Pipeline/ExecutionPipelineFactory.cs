@@ -1,6 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,10 +12,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region interface
-        public PipelineEventActions<Func<BeforeAssemblyContext, CancellationToken, Task>, Action<BeforeAssemblyContext>, BeforeAssemblyContext> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEventActions();
-        public PipelineEventActions<Func<AfterAssemblyContext, CancellationToken, Task>, Action<AfterAssemblyContext>, AfterAssemblyContext> AfterAssembly { get; set; } = new AfterAssemblyPipelineEventActions();
-        public PipelineEventActions<Func<BeforeInsertContext, CancellationToken, Task>, Action<BeforeInsertContext>, BeforeInsertContext> BeforeInsert { get; set; } = new BeforeInsertPipelineEventActions();
-        public PipelineEventActions<Func<AfterInsertContext, CancellationToken, Task>, Action<AfterInsertContext>, AfterInsertContext> AfterInsert { get; set; } = new AfterInsertPipelineEventActions();
+        public PipelineEventActions<Func<BeforeAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<BeforeAssemblyPipelineExecutionContext>, BeforeAssemblyPipelineExecutionContext> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEventActions();
+        public PipelineEventActions<Func<AfterAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<AfterAssemblyPipelineExecutionContext>, AfterAssemblyPipelineExecutionContext> AfterAssembly { get; set; } = new AfterAssemblyPipelineEventActions();
+        public PipelineEventActions<Func<BeforeInsertPipelineExecutionContext, CancellationToken, Task>, Action<BeforeInsertPipelineExecutionContext>, BeforeInsertPipelineExecutionContext> BeforeInsert { get; set; } = new BeforeInsertPipelineEventActions();
+        public PipelineEventActions<Func<AfterInsertPipelineExecutionContext, CancellationToken, Task>, Action<AfterInsertPipelineExecutionContext>, AfterInsertPipelineExecutionContext> AfterInsert { get; set; } = new AfterInsertPipelineEventActions();
+        public PipelineEventActions<Func<BeforeExecutionPipelineExecutionContext, CancellationToken, Task>, Action<BeforeExecutionPipelineExecutionContext>, BeforeExecutionPipelineExecutionContext> BeforeExecution { get; set; } = new BeforeExecutionPipelineEventActions();
         #endregion
 
         #region constructors
@@ -33,21 +33,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             return new AsyncExecutionPipeline(
                 Database,
-                new AsyncPipeline<BeforeAssemblyContext>(BeforeAssembly.AsyncActions),
-                new AsyncPipeline<AfterAssemblyContext>(AfterAssembly.AsyncActions),
-                new AsyncPipeline<BeforeInsertContext>(BeforeInsert.AsyncActions),
-                new AsyncPipeline<AfterInsertContext>(AfterInsert.AsyncActions)
-            );
+                new AsyncPipeline<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.AsyncActions),
+                new AsyncPipeline<AfterAssemblyPipelineExecutionContext>(AfterAssembly.AsyncActions),
+                new AsyncPipeline<BeforeInsertPipelineExecutionContext>(BeforeInsert.AsyncActions),
+                new AsyncPipeline<AfterInsertPipelineExecutionContext>(AfterInsert.AsyncActions),
+                new AsyncPipeline<BeforeExecutionPipelineExecutionContext>(BeforeExecution.AsyncActions)
+           );
         }
 
         public SyncExecutionPipeline CreateSyncExecutionPipeline()
         {
             return new SyncExecutionPipeline(
                 Database,
-                new SyncPipeline<BeforeAssemblyContext>(BeforeAssembly.SyncActions),
-                new SyncPipeline<AfterAssemblyContext>(AfterAssembly.SyncActions),
-                new SyncPipeline<BeforeInsertContext>(BeforeInsert.SyncActions),
-                new SyncPipeline<AfterInsertContext>(AfterInsert.SyncActions)
+                new SyncPipeline<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions),
+                new SyncPipeline<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions),
+                new SyncPipeline<BeforeInsertPipelineExecutionContext>(BeforeInsert.SyncActions),
+                new SyncPipeline<AfterInsertPipelineExecutionContext>(AfterInsert.SyncActions),
+                new SyncPipeline<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions)
             );
         }
         #endregion

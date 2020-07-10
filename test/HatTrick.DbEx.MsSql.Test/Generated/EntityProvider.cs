@@ -1,8 +1,7 @@
 using System;
 
-namespace DbEx.DataService
+namespace DbEx.dboDataService
 {
-    using DbEx.dbo.DataService;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -10,7 +9,7 @@ namespace DbEx.DataService
     public static partial class dbo
     {
         #region internals
-        private static volatile dboSchema _schema;
+        private static volatile dboSchemaExpression _schema;
         #endregion
 
         #region interface
@@ -26,7 +25,7 @@ namespace DbEx.DataService
 		#region constructors
         static dbo()
         {
-            _schema = new dboSchema(new Lazy<ISqlSchemaMetadata>(() =>
+            _schema = new dboSchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
                 {
                     if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");
@@ -46,9 +45,8 @@ namespace DbEx.DataService
     }
     #endregion
 }
-namespace DbEx.DataService
+namespace DbEx.secDataService
 {
-    using DbEx.sec.DataService;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Configuration;
 
@@ -56,7 +54,7 @@ namespace DbEx.DataService
     public static partial class sec
     {
         #region internals
-        private static volatile secSchema _schema;
+        private static volatile secSchemaExpression _schema;
         #endregion
 
         #region interface
@@ -66,7 +64,7 @@ namespace DbEx.DataService
 		#region constructors
         static sec()
         {
-            _schema = new secSchema(new Lazy<ISqlSchemaMetadata>(() =>
+            _schema = new secSchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
                 {
                     if (!DbExpression.Configuration.Databases.TryGetValue("MsSqlDbExTest-design", out var config))
                         throw new DbExpressionConfigurationException($"Metadata for source reference key 'MsSqlDbExTest-design' has not been provided.");

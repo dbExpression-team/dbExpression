@@ -14,6 +14,6 @@ namespace HatTrick.DbEx.MsSql.Connection
             this.connectionStringFactory = connectionStringFactory;
         }
 
-        public override SqlConnection CreateSqlConnection() => new MsSqlConnection(connectionStringFactory);
+        public override ISqlConnection CreateSqlConnection() => new MsSqlConnection(connectionStringFactory);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -38,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var exp = db.SelectMany(
                     dbo.Purchase.Id,
-                    db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
+                    db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50).As("ship_date")
                 ).From(dbo.Purchase);
 
             //when               

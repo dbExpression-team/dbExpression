@@ -9,8 +9,8 @@
     @if (CurrentPage != null && CurrentPage.Page.Any())
     {
         <MatCard>
-            <MatCardContent>
-                <MatBody1 Style="padding:4px">
+            <MatCardContent Class="m-4">
+                <MatBody1>
                     <MatTextField @bind-Value="@SearchPhrase" Label="Search by Name"></MatTextField>
                     <MatButton OnClick="@(e => OnPage(0))" Class="ml-2">
                         <MatIcon Icon="filter_list"></MatIcon>Apply
@@ -19,12 +19,14 @@
                 <MatBody1>
                     <MatTable Items="@CurrentPage.Page" PageSize="@PageSize" ShowPaging="false" Striped="true" Style="display:inline-table" Class="mat-elevation-z5 align-items-center">
                         <MatTableHeader>
-                            <th>Name</th>
-                            <th>Lifetime Value</th>
+                            <th style="width:50%">Name</th>
+                            <th style="width:35%">Lifetime Value</th>
+                            <th>Current Age</th>
                         </MatTableHeader>
                         <MatTableRow @onclick="@{SelectedId = @context.Id}">
                             <td><a href="/customers/@context.Id">@context.Name</a></td>
-                            <td>@context.LifetimeValue</td>
+                            <td class="text-right">@context.LifetimeValue.ToString("C")</td>
+                            <td class="text-right">@context.CurrentAge</td>
                         </MatTableRow>
                     </MatTable>
                     <MatPaginator Length="@(CurrentPage?.TotalCount ?? 0)" PageSize="@PageSize" PageIndexChanged="@OnPage" Page="@OnPage"></MatPaginator>
@@ -39,7 +41,7 @@
     private int PageIndex { get; set; } = 0;
     private int PageSize { get; set; } = 5;
     private string SearchPhrase { get; set; }
-    private PageResponseModel<CustomerSummaryModel> CurrentPage { get; set; }
+    private PageResponseModel<dynamic> CurrentPage { get; set; }
 
     protected override async Task OnInitializedAsync() => await FetchCurrentPage();
 

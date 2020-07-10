@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class AfterInsertPipelineEventActions : PipelineEventActions<Func<AfterInsertContext, CancellationToken, Task>, Action<AfterInsertContext>, AfterInsertContext>
+    public class AfterInsertPipelineEventActions : PipelineEventActions<Func<AfterInsertPipelineExecutionContext, CancellationToken, Task>, Action<AfterInsertPipelineExecutionContext>, AfterInsertPipelineExecutionContext>
     {
-        protected override Func<AfterInsertContext, CancellationToken, Task> MakeAsync(Action<AfterInsertContext> action)
-            => new Func<AfterInsertContext, CancellationToken, Task>((ctx, ct) =>
+        protected override Func<AfterInsertPipelineExecutionContext, CancellationToken, Task> MakeAsync(Action<AfterInsertPipelineExecutionContext> action)
+            => new Func<AfterInsertPipelineExecutionContext, CancellationToken, Task>((ctx, ct) =>
             {
                 action.Invoke(ctx);
                 return Task.FromResult<object>(null);
             });
 
-        protected override Action<AfterInsertContext> MakeSync(Func<AfterInsertContext, CancellationToken, Task> action)
-           => new Action<AfterInsertContext>(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
+        protected override Action<AfterInsertPipelineExecutionContext> MakeSync(Func<AfterInsertPipelineExecutionContext, CancellationToken, Task> action)
+           => new Action<AfterInsertPipelineExecutionContext>(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
     }
 }

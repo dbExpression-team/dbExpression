@@ -9,6 +9,7 @@ using ServerSideBlazorApp.Models;
 using ServerSideBlazorApp.secDataService;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,14 +36,14 @@ namespace ServerSideBlazorApp.Service
             return metrics.Select(x => ((int,decimal))(x.Year, x.TotalPurchaseAmount));
         }
 
-        public async Task<PageResponseModel<CustomerSummaryModel>> GetSummaryPageAsync(PageModel model)
+        public async Task<PageResponseModel<dynamic>> GetSummaryPageAsync(PageModel model)
         {
             var queryPredicate = !string.IsNullOrWhiteSpace(model.SearchPhrase) ? (dbo.Person.FirstName + " " + dbo.Person.LastName).Like(model.SearchPhrase + "%") : null;
 
             static short? calculateAge(DateTime? dob) {
                 if (!dob.HasValue)
                     return null;
-                return Convert.ToInt16(DateTime.UtcNow.Year - dob.Value.Year);
+                return Convert.ToInt16((DateTime.UtcNow - dob.Value).TotalDays / 365);
             };
 
             //var customers = await db.SelectMany(
@@ -53,13 +54,13 @@ namespace ServerSideBlazorApp.Service
             //    )
             //    .From(dbo.Person)
             //    .Where(queryPredicate)
-            //    .InnerJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
+            //    .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
             //    .OrderBy(
             //        dbo.Person.FirstName,
             //        dbo.Person.LastName
             //    )
             //    .Skip(model.Offset).Limit(model.Limit)
-            //    .ExecuteAsync<CustomerSummaryModel>(row =>
+            //    .ExecuteAsync(row =>
             //        new CustomerSummaryModel
             //        {
             //            Id = row.ReadField().GetValue<int>(),
@@ -69,24 +70,34 @@ namespace ServerSideBlazorApp.Service
             //        }
             //    );
 
+            IList<dynamic> customers = null;
 
-            var customers = await
+            try
+            {
+                customers = await
 
-                db.SelectMany(
-                    dbo.Person.Id,
-                    (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
-                    dbo.PersonTotalPurchasesView.TotalPurchases
-                )
-                .From(dbo.Person)
-                .Where(queryPredicate)
-                .InnerJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
-                .OrderBy(
-                    dbo.Person.FirstName,
-                    dbo.Person.LastName
-                )
-                .Skip(model.Offset).Limit(model.Limit)
+                    db.SelectMany(
+                        dbo.Person.Id,
+                        (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
+                        db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m).As("LifetimeValue"),
+                        //BAD: db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases.As("LifetimeValue"), 0m),
+                        (db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate()))).As("CurrentAge")
+                    )
+                    .From(dbo.Person)
+                    .Where(queryPredicate)
+                    .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
+                    .OrderBy(
+                        dbo.Person.FirstName,
+                        dbo.Person.LastName
+                    )
+                    .Skip(model.Offset).Limit(model.Limit)
 
-                .ExecuteAsync();
+                    .ExecuteAsync();
+            }
+            catch (DbException e)
+            {
+                var x = e;
+            }
 
             var countOfCustomers = await 
 
@@ -94,16 +105,16 @@ namespace ServerSideBlazorApp.Service
                     db.fx.Count()
                 )
                 .From(dbo.Person)
-                .InnerJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
+                .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
                 .Where(queryPredicate)
 
                 .ExecuteAsync();
 
-            return new PageResponseModel<CustomerSummaryModel>(
+            return new PageResponseModel<dynamic>(
                 model.Offset, 
                 model.Limit, 
                 model.SearchPhrase, 
-                customers.Select(x => new CustomerSummaryModel { Id = x.Id, Name = x.Name, LifetimeValue = x.TotalPurchases }),
+                customers, //.Select(x => new CustomerSummaryModel { Id = x.Id, Name = x.Name, LifetimeValue = x.TotalPurchases }),
                 countOfCustomers
             );
         }

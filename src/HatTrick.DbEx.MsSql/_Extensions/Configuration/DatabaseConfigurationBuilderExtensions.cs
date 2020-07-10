@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
     {
         public static void UseIdentityInsertStrategy(this DatabaseConfigurationBuilder config)
         {
-            config.OnInsertingEntity(inserting =>
+            config.BeforeInsertingEntity(inserting =>
             {
                 var identity = inserting.AllFields.Fields.SingleOrDefault(e => e.Metadata.IsIdentity);
                 if (identity == null)
@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .Write(" = SCOPE_IDENTITY()");
             });
 
-            config.OnInsertedEntity(inserted =>
+            config.AfterInsertingEntity(inserted =>
             {
                 var identity = inserted.AllFields.Fields.SingleOrDefault(e => e.Metadata.IsIdentity);
                 if (identity == null)

@@ -1,16 +1,12 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
-        private static readonly SqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
+        private static readonly ISqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
         private IDictionary<SqlStatementExecutionType, Func<ISqlStatementExecutor>> Executors { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementExecutor>>();
 
         public virtual void RegisterDefaultExecutors()
