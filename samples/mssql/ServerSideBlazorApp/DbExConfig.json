@@ -1,13 +1,13 @@
 {
 	"source": {
 		"type": "MsSqlDb",
-		"referenceKey": "ServerSideBlazorApp",
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
 	},
 	"outputDirectory": "Data/_Generated",
 	"rootNamespace": "ServerSideBlazorApp",
+	"typeName":  "CRMDatabase",
 	"meta": [
 		{
 			"path": "dbo.sysdiagrams",

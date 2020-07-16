@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where U : class, IContinuationExpressionBuilder<T>
         where V : class, IContinuationExpressionBuilder<T, U>
     {
-        public SqlExpressionBuilder(ExpressionSet expression) : base(expression)
+        public SqlExpressionBuilder(DatabaseConfiguration configuration, ExpressionSet expression) : base(configuration, expression)
         {
 
         }

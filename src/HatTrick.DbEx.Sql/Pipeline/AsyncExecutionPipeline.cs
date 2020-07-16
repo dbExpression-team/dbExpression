@@ -159,7 +159,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (row == default)
                         return;
 
-                    value = map(row);
+                    try
+                    {
+                        value = map(row);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionException($"Error mapping value of data reader.", e);
+                    }
                 }, ct
             );
             return value;
@@ -186,7 +193,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IEnumerable<T>> ExecuteDynamicListAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map, CancellationToken ct)
+        public async Task<IList<T>> ExecuteDynamicListAsync<T>(IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map, CancellationToken ct)
         {
             var values = new List<T>();
             await DoExecuteAsync(builder, connection, configureCommand,
@@ -195,7 +202,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlRow row;
                     while ((row = await reader.ReadRowAsync()) != null)
                     {
-                        values.Add(map(row));
+                        try
+                        {
+                            values.Add(map(row));
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DbExpressionException($"Error mapping value in row {row.Index} of data reader.", e);
+                        }
                     }
                 }, ct
             ); 

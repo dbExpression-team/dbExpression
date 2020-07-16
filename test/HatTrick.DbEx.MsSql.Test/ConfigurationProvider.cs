@@ -8,7 +8,6 @@ namespace HatTrick.DbEx.MsSql.Test
         private static readonly string ConnectionStringKey = "hattrick_dbex_mssql_test";
         private static IConfiguration _configuration;
         private static int? _msSqlVersion;
-        private static string _metadataKey;
 
         public static IConfiguration Configuration
         {
@@ -34,17 +33,6 @@ namespace HatTrick.DbEx.MsSql.Test
                     return _msSqlVersion;
 
                 return _msSqlVersion = Configuration.GetValue("MsSqlVersion", (int?)null);
-            }
-        }
-
-        public static string MetadataKey
-        {
-            get
-            {
-                if (_metadataKey != null)
-                    return _metadataKey;
-
-                return _metadataKey = Configuration.GetValue("MetadataKey", "MsSqlDbExTest-design");
             }
         }
     }

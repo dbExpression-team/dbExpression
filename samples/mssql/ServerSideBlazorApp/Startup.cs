@@ -33,11 +33,9 @@ namespace ServerSideBlazorApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddDbExpression(c =>
-                c.AddMsSql2019Database<MsSqlDbExTestDatabaseMetadataProvider>(
-                    Configuration.GetConnectionString("Default"),
-                    "ServerSideBlazorApp" //this links generated metadata to the runtime database, it must match source.referenceKey in the DbExConfig.json,
-                )
+
+            services.AddDbExpression(
+                dbex => dbex.AddMsSql2019Database<CRMDatabase>(Configuration.GetConnectionString("Default"))
             );
 
             services.AddSingleton<CustomerService>();

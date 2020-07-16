@@ -171,14 +171,6 @@ namespace HatTrick.DbEx.Tools.Service
                 throw new CommandException(msg);
             }
 
-            if (config.Source?.ReferenceKey == null)
-            {
-                string key1 = nameof(config.Source);
-                string key2 = nameof(config.Source.ReferenceKey);
-                string msg = $"DbEx configuration file missing required key: {key1}.{key2}";
-                throw new CommandException(msg);
-            }
-
             if (config.Source?.ConnectionString == null)
             {
                 string key1 = nameof(config.Source);
@@ -320,7 +312,8 @@ namespace HatTrick.DbEx.Tools.Service
             LambdaRepository repo = engine.LambdaRepo;
             repo.Register(nameof(helpers.IsIgnored), (Func<INamedMeta, bool>)helpers.IsIgnored);
             repo.Register(nameof(helpers.ToCamelCase), (Func<INamedMeta, string>)helpers.ToCamelCase);
-            repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)helpers.ResolveName);
+            repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)(meta => meta is MsSqlModel m && !string.IsNullOrWhiteSpace(config.TypeName) ? config.TypeName : helpers.ResolveName(meta)));
+            //repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)helpers.ResolveName);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string, string>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<INamedMeta, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
             repo.Register(nameof(helpers.HasDataTypeOverride), (Func<INamedMeta, bool>)helpers.HasDataTypeOverride);
@@ -335,13 +328,21 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, EnumerableNamedMetaSet<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
             repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
             repo.Register(nameof(helpers.IsMsSqlView), (Func<INamedMeta, bool>)helpers.IsMsSqlView);
-            repo.Register("ResolveSourceReferenceKey", (Func<string>)(() => { return config.Source.ReferenceKey; }));
             repo.Register("ResolveRootNamespace", (Func<string>)(() => 
             {
                 return string.IsNullOrEmpty(config.RootNamespace) ? "DbEx." : $"{config.RootNamespace.TrimEnd('.')}.";
             }));
 
-            string output = engine.Merge(sqlModel);
+            string output = null;
+            try
+            {
+                output = engine.Merge(sqlModel);
+            }
+            catch (Exception e)
+            {
+                svc.Feedback.Push(To.Error, $"Error generating template {resource.Name}: {e.Message}");
+                throw;
+            }
 
             string outputDir = config.OutputDirectory;
             string fileName = $"{resource.Name.Replace(".Template", string.Empty)}.cs";

@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class ExecutionPipelineFactory
     {
         #region internals
-        private readonly DatabaseConfiguration Database;
+        private readonly DatabaseConfiguration configuration;
         #endregion
 
         #region interface
@@ -20,11 +20,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region constructors
-        public ExecutionPipelineFactory(
-            DatabaseConfiguration database
-        )
+        public ExecutionPipelineFactory(DatabaseConfiguration configuration)
         {
-            Database = database;
+            this.configuration = configuration;
         }
         #endregion
 
@@ -32,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public AsyncExecutionPipeline CreateAsyncExecutionPipeline()
         {
             return new AsyncExecutionPipeline(
-                Database,
+                configuration,
                 new AsyncPipeline<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.AsyncActions),
                 new AsyncPipeline<AfterAssemblyPipelineExecutionContext>(AfterAssembly.AsyncActions),
                 new AsyncPipeline<BeforeInsertPipelineExecutionContext>(BeforeInsert.AsyncActions),
@@ -44,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public SyncExecutionPipeline CreateSyncExecutionPipeline()
         {
             return new SyncExecutionPipeline(
-                Database,
+                configuration,
                 new SyncPipeline<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions),
                 new SyncPipeline<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions),
                 new SyncPipeline<BeforeInsertPipelineExecutionContext>(BeforeInsert.SyncActions),

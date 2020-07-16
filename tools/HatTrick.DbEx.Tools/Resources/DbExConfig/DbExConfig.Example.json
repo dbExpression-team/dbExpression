@@ -1,7 +1,6 @@
 ﻿{
     "source": {
         "type": "MsSqlDb",
-        "referenceKey": "** runtime refernce key value **",
         "connectionString": {
             "value": "** connection string for target db **"
         }

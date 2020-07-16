@@ -1,5 +1,5 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+﻿using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IInsertTerminationExpressionBuilder
         where T : class, IDbEntity
     {
-        public SqlInsertExpressionBuilder(ExpressionSet expression) : base(expression)
+        public SqlInsertExpressionBuilder(DatabaseConfiguration configuration, ExpressionSet expression) : base(configuration, expression)
         {
         }
 

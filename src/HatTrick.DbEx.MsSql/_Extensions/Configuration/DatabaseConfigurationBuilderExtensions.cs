@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Configuration
 {
-    public static class DatabaseConfigurationBuilderExtensions
+    public static partial class DatabaseConfigurationBuilderExtensions
     {
-        public static void UseIdentityInsertStrategy(this DatabaseConfigurationBuilder config)
+        public static void UseIdentityInsertStrategy(this RuntimeDatabaseConfigurationBuilder config)
         {
             config.BeforeInsertingEntity(inserting =>
             {

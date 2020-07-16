@@ -1,23 +1,24 @@
-﻿using FluentAssertions;
-using DbEx.DataService;
+﻿using DbEx.DataService;
+using DbEx.secData;
+using DbEx.secDataService;
+using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Linq;
 using Xunit;
-using DbEx.secDataService;
-using DbEx.secData;
 
 namespace HatTrick.DbEx.MsSql.Test.Builder
 {
     [Trait("Statement", "SELECT")]
     public class SelectExpressionBuilderTests : TestBase
     {
-        [Fact]
-        public void Does_select_for_single_value_result_in_valid_expression()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_select_for_single_value_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 
@@ -39,10 +40,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .And.Equals(sec.Person);
         }
 
-        [Fact]
-        public void Does_select_for_multiple_values_result_in_valid_expression()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_select_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 

@@ -1,7 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Configuration;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -14,15 +14,13 @@ namespace HatTrick.DbEx.Sql.Builder
         ITerminationExpressionBuilder,
         IDbExpressionSetProvider
     {
+        public DatabaseConfiguration Configuration { get; private set; }
         public ExpressionSet Expression { get; protected set; } = new ExpressionSet();
 
-        protected SqlExpressionBuilder(ExpressionSet expression)
+        public SqlExpressionBuilder(DatabaseConfiguration configuration, ExpressionSet expression)
         {
-            Expression = expression;
-        }
-
-        protected SqlExpressionBuilder()
-        {
+            Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
 
         ExpressionSet IDbExpressionSetProvider.Expression => Expression;

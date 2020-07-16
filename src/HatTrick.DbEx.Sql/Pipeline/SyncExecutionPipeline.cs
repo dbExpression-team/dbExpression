@@ -149,7 +149,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (row == default)
                         return;
 
-                    value = map(row);
+                    try
+                    {
+                        value = map(row);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionException($"Error mapping value of data reader.", e);
+                    }
                 }
             );
             return value;
@@ -185,7 +192,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlRow row;
                     while ((row = reader.ReadRow()) != null)
                     {
-                        values.Add(map(row));
+                        try
+                        {
+                            values.Add(map(row));
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DbExpressionException($"Error mapping value in row {row.Index} of data reader.", e);
+                        }
                     }
                 }
             );
