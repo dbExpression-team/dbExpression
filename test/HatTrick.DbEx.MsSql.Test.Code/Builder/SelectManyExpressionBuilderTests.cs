@@ -12,10 +12,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
     [Trait("Statement", "SELECT")]
     public class SelectManyExpressionBuilderTests : TestBase
     {
-        [Fact]
-        public void Does_select_many_for_single_field_result_in_valid_expression()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_select_many_for_single_field_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
             //when
@@ -36,10 +39,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .And.Equals(sec.Person);
         }
 
-        [Fact]
-        public void Does_select_many_for_multiple_values_result_in_valid_expression()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_select_many_for_multiple_values_result_in_valid_expression(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             ITerminationExpressionBuilder exp;
             ExpressionSet expressionSet;
 

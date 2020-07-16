@@ -1,9 +1,7 @@
-using System;
-
 namespace {() => ResolveRootNamespace}DataService
 {{
-    using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
+    using System.Collections.Generic;
 	{#each Schemas}
 	{#if !($) => IsIgnored}
 	using {() => ResolveRootNamespace}{($) => ResolveName}DataService;
@@ -19,13 +17,27 @@ namespace {() => ResolveRootNamespace}DataService
         #region constructors
         public {($) => ResolveName}DatabaseMetadataProvider()
         {{
-			Database = new MsSqlDatabaseMetadata();   
-
+            Database = new {($) => ResolveName}SqlDatabaseMetadata("{($) => ResolveName}");
 			{#each Schemas}
 			{#if !($) => IsIgnored}
             Database.Schemas.Add("{$.Name}", new {($) => ResolveName}SchemaMetadata(Database));
 			{/if}
 			{/each}
+        }}
+        #endregion
+    }}
+
+    public class {($) => ResolveName}SqlDatabaseMetadata : ISqlDatabaseMetadata
+    {{
+        #region interface
+        public string Name {{ get; set; }}
+        public IDictionary<string, ISqlSchemaMetadata> Schemas {{ get; }} = new Dictionary<string, ISqlSchemaMetadata>();
+        #endregion
+
+        #region constructors
+        public {($) => ResolveName}SqlDatabaseMetadata(string databaseName)
+        {{
+            Name = databaseName;
         }}
         #endregion
     }}

@@ -3,13 +3,12 @@ using System;
 namespace ServerSideBlazorApp.dboDataService
 {
     using HatTrick.DbEx.Sql;
-    using HatTrick.DbEx.Sql.Configuration;
 
     #region dbo
-    public static partial class dbo
+    public partial class dbo
     {
         #region internals
-        private static volatile dboSchemaExpression _schema;
+        private static dboSchemaExpression _schema;
         #endregion
 
         #region interface
@@ -22,24 +21,17 @@ namespace ServerSideBlazorApp.dboDataService
         public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return _schema.PersonTotalPurchasesView; } }
         #endregion
 
-		#region constructors
-        static dbo()
+        #region constructors
+        private dbo()
         {
-            _schema = new dboSchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
-                {
-                    if (!DbExpression.Configuration.Databases.TryGetValue("ServerSideBlazorApp", out var config))
-                        throw new DbExpressionConfigurationException($"Metadata for source reference key 'ServerSideBlazorApp' has not been provided.");
 
-                    var schema = config?.Metadata?.Schemas;
-                    if (schema == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
+        }
+        #endregion
 
-                    schema.TryGetValue("dbo", out ISqlSchemaMetadata schemaMetadata);
-                    if (schemaMetadata == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'dbo'");
-
-                    return schemaMetadata;
-                }));
+		#region methods
+        public static void Initialize(ISqlSchemaMetadata metadata)
+        {
+            _schema = new dboSchemaExpression(new Lazy<ISqlSchemaMetadata>(() => metadata));
         }
         #endregion
     }
@@ -48,37 +40,29 @@ namespace ServerSideBlazorApp.dboDataService
 namespace ServerSideBlazorApp.secDataService
 {
     using HatTrick.DbEx.Sql;
-    using HatTrick.DbEx.Sql.Configuration;
 
     #region sec
-    public static partial class sec
+    public partial class sec
     {
         #region internals
-        private static volatile secSchemaExpression _schema;
+        private static secSchemaExpression _schema;
         #endregion
 
         #region interface
         public static PersonEntity Person { get { return _schema.Person; } }
         #endregion
 
-		#region constructors
-        static sec()
+        #region constructors
+        private sec()
         {
-            _schema = new secSchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
-                {
-                    if (!DbExpression.Configuration.Databases.TryGetValue("ServerSideBlazorApp", out var config))
-                        throw new DbExpressionConfigurationException($"Metadata for source reference key 'ServerSideBlazorApp' has not been provided.");
 
-                    var schema = config?.Metadata?.Schemas;
-                    if (schema == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
+        }
+        #endregion
 
-                    schema.TryGetValue("sec", out ISqlSchemaMetadata schemaMetadata);
-                    if (schemaMetadata == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for 'sec'");
-
-                    return schemaMetadata;
-                }));
+		#region methods
+        public static void Initialize(ISqlSchemaMetadata metadata)
+        {
+            _schema = new secSchemaExpression(new Lazy<ISqlSchemaMetadata>(() => metadata));
         }
         #endregion
     }

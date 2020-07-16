@@ -50,7 +50,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             result.Should().Be(expected);
         }
 
-        //MILESTONE: Function Arithmetic
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]

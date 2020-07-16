@@ -3,15 +3,13 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Sql.Pipeline;
-using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
     public class DatabaseConfiguration
     {
         #region interface
-        public ISqlDatabaseMetadata Metadata { get; }
-        public ExecutionPipelineFactory ExecutionPipelineFactory { get; set; }
+        public ExecutionPipelineFactory ExecutionPipelineFactory { get; }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
         public IAppenderFactory AppenderFactory { get; set; }
         public ISqlParameterBuilderFactory ParameterBuilderFactory { get; set; }
@@ -23,9 +21,9 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region constructors
-        public DatabaseConfiguration(IDatabaseMetadataProvider provider)
+        public DatabaseConfiguration()
         {
-            Metadata = provider.Database;
+            ExecutionPipelineFactory = new ExecutionPipelineFactory(this);
         }
         #endregion
     }

@@ -14,6 +14,8 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string RootNamespace { get; set; }
 
+        public string TypeName { get; set; }
+
         public string OutputDirectory { get; set; }
 
         public Meta[] Meta { get; set; }
@@ -22,8 +24,6 @@ namespace HatTrick.DbEx.Tools.Configuration
     public class Source
     {
         public string Type { get; set; }
-
-        public string ReferenceKey { get; set; }
 
         public ConnectionString ConnectionString { get; set; }
     }

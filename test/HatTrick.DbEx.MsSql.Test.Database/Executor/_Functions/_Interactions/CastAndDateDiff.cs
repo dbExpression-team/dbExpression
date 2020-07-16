@@ -4,6 +4,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -161,46 +162,44 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             results.Should().HaveCount(expected);
         }
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_selecting_datediff_of_purchase_date_and_ship_date_added_to_cast_of_personId_succeed(int version, int expectedValue = 1)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_datediff_of_purchase_date_and_ship_date_added_to_cast_of_personId_succeed(int version, int expectedValue = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    var exp = db.SelectOne(
-        //            db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate) + db.fx.Cast(dbo.Purchase.Id).AsInt()
-        //        ).From(dbo.Purchase)
-        //        .Where(dbo.Purchase.ShipDate != DBNull.Value);
+            var exp = db.SelectOne(
+                    db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate) + db.fx.Cast(dbo.Purchase.Id).AsInt()
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.ShipDate != DBNull.Value);
 
-        //    //when               
-        //    int? result = exp.Execute();
+            //when               
+            int? result = exp.Execute();
 
-        //    //then
-        //    result.Should().NotBeNull();
-        //    result.Value.Should().Be(expectedValue);
-        //}
+            //then
+            result.Should().NotBeNull();
+            result.Value.Should().Be(expectedValue);
+        }
 
-        //MILESTONE: Function Arithmetic
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void Does_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expectedValue = 2017)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expectedValue = 2017)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
 
-        //    var exp = db.SelectOne(
-        //            db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
-        //        ).From(dbo.Purchase)
-        //        .Where(dbo.Purchase.ShipDate != DBNull.Value);
+            var exp = db.SelectOne(
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) + db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
+                ).From(dbo.Purchase)
+                .Where(dbo.Purchase.ShipDate != DBNull.Value);
 
-        //    //when               
-        //    int? result = exp.Execute();
+            //when               
+            int? result = exp.Execute();
 
-        //    //then
-        //    result.Should().NotBeNull();
-        //    result.Value.Should().Be(expectedValue);
-        //}
+            //then
+            result.Should().NotBeNull();
+            result.Value.Should().Be(expectedValue);
+        }
     }
 }

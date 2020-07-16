@@ -1,25 +1,37 @@
-using System;
-
 namespace ServerSideBlazorApp.DataService
 {
-    using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
+    using System.Collections.Generic;
 	using ServerSideBlazorApp.dboDataService;
 	using ServerSideBlazorApp.secDataService;
 
-    public class MsSqlDbExTestDatabaseMetadataProvider : IDatabaseMetadataProvider
+    public class CRMDatabaseDatabaseMetadataProvider : IDatabaseMetadataProvider
     {
         #region interface
         public ISqlDatabaseMetadata Database { get; private set; }
         #endregion
 
         #region constructors
-        public MsSqlDbExTestDatabaseMetadataProvider()
+        public CRMDatabaseDatabaseMetadataProvider()
         {
-			Database = new MsSqlDatabaseMetadata();   
-
+            Database = new CRMDatabaseSqlDatabaseMetadata("CRMDatabase");
             Database.Schemas.Add("dbo", new dboSchemaMetadata(Database));
             Database.Schemas.Add("sec", new secSchemaMetadata(Database));
+        }
+        #endregion
+    }
+
+    public class CRMDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
+    {
+        #region interface
+        public string Name { get; set; }
+        public IDictionary<string, ISqlSchemaMetadata> Schemas { get; } = new Dictionary<string, ISqlSchemaMetadata>();
+        #endregion
+
+        #region constructors
+        public CRMDatabaseSqlDatabaseMetadata(string databaseName)
+        {
+            Name = databaseName;
         }
         #endregion
     }

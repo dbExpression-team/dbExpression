@@ -1,11 +1,13 @@
 ﻿using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.dboData;
 using ServerSideBlazorApp.dboDataService;
 using ServerSideBlazorApp.Models;
+using ServerSideBlazorApp.Pages;
 using ServerSideBlazorApp.secDataService;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,20 @@ namespace ServerSideBlazorApp.Service
 {
     public class CustomerService
     {
+        private static readonly IDictionary<string, OrderByExpression> orderByFields = new Dictionary<string, OrderByExpression>()
+        {
+            { nameof(CustomerSummaryModel.Name), dbo.Person.FirstName + " " + dbo.Person.LastName },
+            { nameof(CustomerSummaryModel.LifetimeValue), db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m) },
+            { nameof(CustomerSummaryModel.CurrentAge), db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate())) }
+        };
+
+        private static readonly IDictionary<string, SelectExpression> selectFields = new Dictionary<string, SelectExpression>()
+        {
+            { nameof(CustomerSummaryModel.Name), dbo.Person.FirstName + " " + dbo.Person.LastName },
+            { nameof(CustomerSummaryModel.LifetimeValue), db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m) },
+            { nameof(CustomerSummaryModel.CurrentAge), db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate())) }
+        };
+
         public async Task<IEnumerable<(int,decimal)>> GetPurchaseValueByYear(int customerId)
         {
             IEnumerable<dynamic> metrics = await
@@ -40,64 +56,31 @@ namespace ServerSideBlazorApp.Service
         {
             var queryPredicate = !string.IsNullOrWhiteSpace(model.SearchPhrase) ? (dbo.Person.FirstName + " " + dbo.Person.LastName).Like(model.SearchPhrase + "%") : null;
 
-            static short? calculateAge(DateTime? dob) {
-                if (!dob.HasValue)
-                    return null;
-                return Convert.ToInt16((DateTime.UtcNow - dob.Value).TotalDays / 365);
-            };
+            var customers = await
 
-            //var customers = await db.SelectMany(
-            //        dbo.Person.Id,
-            //        (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
-            //        dbo.PersonTotalPurchasesView.TotalPurchases,
-            //        dbo.Person.BirthDate
-            //    )
-            //    .From(dbo.Person)
-            //    .Where(queryPredicate)
-            //    .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
-            //    .OrderBy(
-            //        dbo.Person.FirstName,
-            //        dbo.Person.LastName
-            //    )
-            //    .Skip(model.Offset).Limit(model.Limit)
-            //    .ExecuteAsync(row =>
-            //        new CustomerSummaryModel
-            //        {
-            //            Id = row.ReadField().GetValue<int>(),
-            //            Name = row.ReadField().GetValue<string>(),
-            //            LifetimeValue = row.ReadField().GetValue<decimal?>() ?? 0,
-            //            CurrentAge = calculateAge(row.ReadField().GetValue<DateTime?>())
-            //        }
-            //    );
-
-            IList<dynamic> customers = null;
-
-            try
-            {
-                customers = await
-
-                    db.SelectMany(
-                        dbo.Person.Id,
-                        (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
-                        db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m).As("LifetimeValue"),
-                        //BAD: db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases.As("LifetimeValue"), 0m),
-                        (db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate()))).As("CurrentAge")
-                    )
-                    .From(dbo.Person)
-                    .Where(queryPredicate)
-                    .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
-                    .OrderBy(
-                        dbo.Person.FirstName,
-                        dbo.Person.LastName
-                    )
-                    .Skip(model.Offset).Limit(model.Limit)
-
-                    .ExecuteAsync();
-            }
-            catch (DbException e)
-            {
-                var x = e;
-            }
+                db.SelectMany(
+                    dbo.Person.Id,
+                    (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
+                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m).As("LifetimeValue"),
+                    (db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate()))).As("CurrentAge")
+                )
+                .From(dbo.Person)
+                .Where(queryPredicate)
+                .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
+                .OrderBy(
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .Skip(model.Offset).Limit(model.Limit)
+                .ExecuteAsync(row =>
+                    new CustomerSummaryModel
+                    {
+                        Id = row.ReadField().GetValue<int>(),
+                        Name = row.ReadField().GetValue<string>(),
+                        LifetimeValue = row.ReadField().GetValue<decimal?>() ?? 0,
+                        CurrentAge = row.ReadField().GetValue<short?>()
+                    }
+                );
 
             var countOfCustomers = await 
 
@@ -114,7 +97,7 @@ namespace ServerSideBlazorApp.Service
                 model.Offset, 
                 model.Limit, 
                 model.SearchPhrase, 
-                customers, //.Select(x => new CustomerSummaryModel { Id = x.Id, Name = x.Name, LifetimeValue = x.TotalPurchases }),
+                customers,
                 countOfCustomers
             );
         }

@@ -5,13 +5,12 @@ using System;
 namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
     using HatTrick.DbEx.Sql;
-    using HatTrick.DbEx.Sql.Configuration;
 
     #region {($) => ResolveName}
-    public static partial class {($) => ResolveName}
+    public partial class {($) => ResolveName}
     {{
         #region internals
-        private static volatile {($) => ResolveName}SchemaExpression _schema;
+        private static {($) => ResolveName}SchemaExpression _schema;
         #endregion
 
         #region interface
@@ -22,24 +21,17 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 		{/each}
         #endregion
 
-		#region constructors
-        static {($) => ResolveName}()
+        #region constructors
+        private {($) => ResolveName}()
         {{
-            _schema = new {($) => ResolveName}SchemaExpression(new Lazy<ISqlSchemaMetadata>(() =>
-                {{
-                    if (!DbExpression.Configuration.Databases.TryGetValue("{() => ResolveSourceReferenceKey}", out var config))
-                        throw new DbExpressionConfigurationException($"Metadata for source reference key '{() => ResolveSourceReferenceKey}' has not been provided.");
 
-                    var schema = config?.Metadata?.Schemas;
-                    if (schema == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
+        }}
+        #endregion
 
-                    schema.TryGetValue("{$.Name}", out ISqlSchemaMetadata schemaMetadata);
-                    if (schemaMetadata == null)
-                        throw new DbExpressionConfigurationException($"Configured metadata does not contain schema for '{$.Name}'");
-
-                    return schemaMetadata;
-                }}));
+		#region methods
+        public static void Initialize(ISqlSchemaMetadata metadata)
+        {{
+            _schema = new {($) => ResolveName}SchemaExpression(new Lazy<ISqlSchemaMetadata>(() => metadata));
         }}
         #endregion
     }}

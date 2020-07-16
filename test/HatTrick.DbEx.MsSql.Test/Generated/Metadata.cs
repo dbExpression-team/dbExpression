@@ -1,9 +1,7 @@
-using System;
-
 namespace DbEx.DataService
 {
-    using HatTrick.DbEx.MsSql;
     using HatTrick.DbEx.Sql;
+    using System.Collections.Generic;
 	using DbEx.dboDataService;
 	using DbEx.secDataService;
 
@@ -16,10 +14,24 @@ namespace DbEx.DataService
         #region constructors
         public MsSqlDbExTestDatabaseMetadataProvider()
         {
-			Database = new MsSqlDatabaseMetadata();   
-
+            Database = new MsSqlDbExTestSqlDatabaseMetadata("MsSqlDbExTest");
             Database.Schemas.Add("dbo", new dboSchemaMetadata(Database));
             Database.Schemas.Add("sec", new secSchemaMetadata(Database));
+        }
+        #endregion
+    }
+
+    public class MsSqlDbExTestSqlDatabaseMetadata : ISqlDatabaseMetadata
+    {
+        #region interface
+        public string Name { get; set; }
+        public IDictionary<string, ISqlSchemaMetadata> Schemas { get; } = new Dictionary<string, ISqlSchemaMetadata>();
+        #endregion
+
+        #region constructors
+        public MsSqlDbExTestSqlDatabaseMetadata(string databaseName)
+        {
+            Name = databaseName;
         }
         #endregion
     }

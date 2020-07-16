@@ -1,7 +1,6 @@
 {
 	"source": {
 		"type": "MsSqlDb",
-		"referenceKey": "MsSqlDbExTest-design",
 		"connectionString": {
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
