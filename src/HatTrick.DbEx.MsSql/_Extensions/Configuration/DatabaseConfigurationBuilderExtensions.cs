@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             config.BeforeInsertingEntity(inserting =>
             {
                 var identity = inserting.AllFields.Fields.SingleOrDefault(e => e.Metadata.IsIdentity);
-                if (identity == null)
+                if (identity is null)
                     return;
 
                 inserting.CommandTextWriter
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             config.AfterInsertingEntity(inserted =>
             {
                 var identity = inserted.AllFields.Fields.SingleOrDefault(e => e.Metadata.IsIdentity);
-                if (identity == null)
+                if (identity is null)
                     return;
 
                 inserted.Entity.SetPropertyValue<int>(identity.Field, inserted.Parameters.Single(p => p.Field == identity.Field).Parameter.Value);

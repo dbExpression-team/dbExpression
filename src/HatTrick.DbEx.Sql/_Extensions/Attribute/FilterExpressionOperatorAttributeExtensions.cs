@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Attribute
                     continue;
 
                 var attrs = fi[i + 1].GetCustomAttributes(typeof(ExpressionOperatorAttribute), false);
-                if (attrs == null || attrs.Length == 0)
+                if (attrs is null || attrs.Length == 0)
                     continue;
 
                 return ((ExpressionOperatorAttribute)attrs[0]).Operator;
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Attribute
             for (int i = 0; i < values.Length; i++)
             {
                 var attrs = fi[i + 1].GetCustomAttributes(typeof(ExpressionOperatorAttribute), false);
-                if (attrs == null || attrs.Length == 0)
+                if (attrs is null || attrs.Length == 0)
                     continue;
 
                 if (((ExpressionOperatorAttribute)attrs[0]).Operator.Equals(value, StringComparison.InvariantCultureIgnoreCase))

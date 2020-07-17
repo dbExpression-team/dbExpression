@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region condition & operators
         public static OrderByExpressionSet operator &(OrderByExpressionSet aSet, OrderByExpression b)
         {
-            if (aSet == null)
+            if (aSet is null)
             {
                 aSet = b;
             }
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             foreach (var b in bSet.Expressions)
             {
-                if (aSet == null)
+                if (aSet is null)
                 {
                     aSet = b;
                 }

@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             where T : class, IDbEntity
         {
             var mapper = factory();
-            if (mapper == null)
+            if (mapper is null)
                 throw new DbExpressionConfigurationException($"The factory returned a null Mapper for entity type {typeof(T)}.");
             return mapper.CreateEntityMapper(entity);
         }
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         public IExpandoObjectMapper CreateExpandoObjectMapper()
         {
             var mapper = factory();
-            if (mapper == null)
+            if (mapper is null)
                 throw new DbExpressionConfigurationException($"The factory returned a null Mapper for an Expando Object.");
             return mapper.CreateExpandoObjectMapper();
         }
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         public IValueMapProvider<T> CreateValueMapper<T>()
         {
             var mapper = factory();
-            if (mapper == null)
+            if (mapper is null)
                 throw new DbExpressionConfigurationException($"The factory returned a null Mapper for value type {typeof(T)}.");
             return mapper.CreateValueMapper<T>();
         }
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         public IValueMapper CreateValueMapper()
         {
             var mapper = factory();
-            if (mapper == null)
+            if (mapper is null)
                 throw new DbExpressionConfigurationException($"The factory returned a null Mapper for Value Types.");
             return mapper.CreateValueMapper();
         }

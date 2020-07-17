@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params float[] value) => value != null ? new FilterExpression<float>(new NullableSingleExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<float[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params float[] value) => value is object ? new FilterExpression<float>(new NullableSingleExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<float[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull

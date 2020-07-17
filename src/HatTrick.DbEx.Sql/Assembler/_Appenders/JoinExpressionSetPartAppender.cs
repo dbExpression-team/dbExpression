@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {        
         public override void AppendPart(JoinExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression?.Expressions == null || !expression.Expressions.Any())
+            if (expression?.Expressions is null || !expression.Expressions.Any())
                 return;
 
             foreach (var join in expression.Expressions)

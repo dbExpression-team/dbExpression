@@ -28,8 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var purchases = exp.Execute();
 
             //then
-            purchases.Should().HaveCount(expected);
-            purchases.All( x => x == null).Should().BeTrue();
+            purchases.Should().HaveCount(expected).And.OnlyContain(x => x == null);
         }
 
         [Theory]

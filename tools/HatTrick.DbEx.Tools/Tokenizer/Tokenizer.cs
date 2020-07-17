@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Tools
                 _expression = expression;
                 _length = expression.Length;
                 string token;
-                while ((token = this.Walk()) != null)
+                while ((token = this.Walk()) is object)
                 {
                     this.Emit(token);
                 }
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Tools
             char c;
             int len = 0;
             bool inQuotes = false;
-            while (_index < _length && token == null)
+            while (_index < _length && token is null)
             {
                 c = _expression[_index];
                 if (c == _delimEscape && !inQuotes)

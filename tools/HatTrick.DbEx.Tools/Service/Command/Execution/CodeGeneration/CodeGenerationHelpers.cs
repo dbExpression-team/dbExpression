@@ -19,14 +19,14 @@ namespace HatTrick.DbEx.Tools.Service
         #region to lower
         public string ToLower(string value)
         {
-            return value != null ? value.ToLower() : value;
+            return value is object ? value.ToLower() : value;
         }
         #endregion
 
         #region to camel case
         public string ToCamelCase(string val)
         {
-            return val != null && val.Length > 0
+            return val is object && val.Length > 0
                 ? (val.Trim().Substring(0, 1).ToLower() + val.Substring(1))
                 : val;
         }
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region insert space on capitalization
         public string InsertSpaceOnCapitalization(string value)
         {
-            if (value != null)
+            if (value is object)
             {
                 value = value.Trim();
                 MatchCollection matches = Regex.Matches(value, "[A-Z]");
@@ -216,7 +216,7 @@ namespace HatTrick.DbEx.Tools.Service
         {
             value = null;
             string json = namedMeta.Meta;
-            if (json == null)
+            if (json is null)
             {
                 return false;
             }
@@ -259,7 +259,7 @@ namespace HatTrick.DbEx.Tools.Service
         public bool IsLast(EnumerableNamedMetaSet<MsSqlColumn> columnSet, MsSqlColumn column)
         {
             bool isLast = false;
-            if (columnSet != null)
+            if (columnSet is object)
             {
                 int idxLast = columnSet.Count - 1;
                 isLast = columnSet[idxLast] == column;

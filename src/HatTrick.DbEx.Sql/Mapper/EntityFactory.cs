@@ -33,8 +33,8 @@ namespace HatTrick.DbEx.Sql.Mapper
                 return factory.Invoke() as T;
 
             var entity = GlobalFactory?.CreateEntity<T>();
-            if (entity != null)
-                return entity as T;
+            if (entity is object)
+                return entity;
 
             return new T();
         }

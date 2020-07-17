@@ -131,17 +131,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectMany(
+            Action execute = () => db.SelectMany(
                     dbo.Purchase.Id,
                     db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
                 ).From(dbo.Purchase)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<DbExpressionException>();
+            //when & then
+            execute.Should().Throw<DbExpressionException>();
         }
 
         [Theory]
@@ -151,17 +148,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static async Task _() => await db.SelectMany(
+            Func<Task> execute = () => db.SelectMany(
                     dbo.Purchase.Id,
                     db.fx.Cast(dbo.Purchase.ShipDate).AsVarChar(50)
                 ).From(dbo.Purchase)
                 .ExecuteAsync();
 
-            //when               
-            var result = await Assert.ThrowsAnyAsync<Exception>(_);
-
-            //then
-            result.Should().BeOfType<DbExpressionException>();
+            //when & then
+            await execute.Should().ThrowAsync<DbExpressionException>();
         }
     }
 }

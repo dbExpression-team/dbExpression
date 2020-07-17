@@ -91,10 +91,10 @@ namespace HatTrick.DbEx.Sql.Builder
 
         private void Having(HavingExpression having)
         {
-            if (having == null)
+            if (having is null)
                 return;
 
-            if (Expression.Having?.Expression == null || Expression.Having.Expression == default)
+            if (Expression.Having?.Expression is null || Expression.Having.Expression == default)
             {
                 Expression.Having = having;
                 return;

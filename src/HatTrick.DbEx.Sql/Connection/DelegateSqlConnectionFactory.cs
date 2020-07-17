@@ -17,13 +17,13 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public DelegateSqlConnectionFactory(Func<ISqlConnectionFactory> factory)
         {
-            if (factory == null)
+            if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection.");
 
             this.factory = new Func<ISqlConnection>(() =>
             {
                 var f = factory().CreateSqlConnection();
-                if (f == null)
+                if (f is null)
                     throw new DbExpressionException("Cannot create a Sql Connection: The factory returned a null value.");
                 return f;
             });

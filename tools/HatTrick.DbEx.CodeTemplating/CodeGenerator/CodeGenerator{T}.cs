@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.IsOrderBySupported = true;
             model.IsGroupBySupported = true;
 
-            if (typeModel == null || typeModel == TypeBuilder.Get<Guid>() || typeModel == TypeBuilder.Get<bool>()) //Guid and Boolean don't support arithmetic
+            if (typeModel is null || typeModel == TypeBuilder.Get<Guid>() || typeModel == TypeBuilder.Get<bool>()) //Guid and Boolean don't support arithmetic
             {
 
             }

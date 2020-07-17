@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Expression.BaseEntity = entity;
             SelectExpressionSet select = Expression.Select;
-            if (select == null || !select.Expressions.Any())
+            if (select is null || !select.Expressions.Any())
             {
                 Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression())
                     .Distinct((select as IDbExpressionIsDistinctProvider).IsDistinct)
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             Expression.BaseEntity = entity;
             SelectExpressionSet select = Expression.Select;
-            if (select == null || !select.Expressions.Any())
+            if (select is null || !select.Expressions.Any())
             {
                 Expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression())
                     .Distinct((select as IDbExpressionIsDistinctProvider).IsDistinct)

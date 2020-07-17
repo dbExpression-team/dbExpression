@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendJoinClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Joins?.Expressions == null || !expression.Joins.Expressions.Any())
+            if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
                 return;
 
             builder.Appender
@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Where?.LeftArg == null && expression.Where?.RightArg == default)
+            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
                 return;
 
             builder.Appender.Indent().Write("WHERE").LineBreak()

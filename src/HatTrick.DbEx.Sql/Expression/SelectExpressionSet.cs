@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region logical & operator
         public static SelectExpressionSet operator &(SelectExpressionSet aSet, SelectExpression b)
         {
-            if (aSet == null)
+            if (aSet is null)
             {
                 aSet = new SelectExpressionSet(b);
             }
@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static SelectExpressionSet operator &(SelectExpressionSet aSet, SelectExpressionSet bSet)
         {
-            if (aSet == null)
+            if (aSet is null)
             {
                 aSet = new SelectExpressionSet(bSet.Expressions);
             }

@@ -16,13 +16,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public DelegateAppenderFactory(Func<IAppenderFactory> factory)
         {
-            if (factory == null)
+            if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize an Appender Factory.");
 
             this.factory = new Func<IAppender>(() =>
             {
                 var f = factory().CreateAppender();
-                if (f == null)
+                if (f is null)
                     throw new DbExpressionException("Cannot create an Appender: The factory returned a null value.");
                 return f;
             });

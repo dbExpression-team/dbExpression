@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region logical & operator
         public static AssignmentExpressionSet operator &(AssignmentExpressionSet aSet, AssignmentExpression b)
         {
-            if (aSet == null)
+            if (aSet is null)
             {
                 aSet = new AssignmentExpressionSet(b);
             }
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static AssignmentExpressionSet operator &(AssignmentExpressionSet aSet, AssignmentExpressionSet bSet)
         {
-            if (aSet == null)
+            if (aSet is null)
             {
                 aSet = new AssignmentExpressionSet();
             }

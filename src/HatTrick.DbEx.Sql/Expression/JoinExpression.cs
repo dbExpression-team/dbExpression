@@ -31,9 +31,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #region logical & operator
         public static JoinExpressionSet operator &(JoinExpression a, JoinExpression b)
         {
-            if (a == null && b != null) { return new JoinExpressionSet(b); }
-            if (a != null && b == null) { return new JoinExpressionSet(a); }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return new JoinExpressionSet(b); }
+            if (a is object && b is null) { return new JoinExpressionSet(a); }
+            if (a is null && b is null) { return null; }
 
             return new JoinExpressionSet(a, b);
         }

@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test
         {
             get
             {
-                if (_configuration != null)
+                if (_configuration is object)
                     return _configuration;
 
                 return _configuration = new ConfigurationBuilder()
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test
         {
             get
             {
-                if (_msSqlVersion != null)
+                if (_msSqlVersion is object)
                     return _msSqlVersion;
 
                 return _msSqlVersion = Configuration.GetValue("MsSqlVersion", (int?)null);

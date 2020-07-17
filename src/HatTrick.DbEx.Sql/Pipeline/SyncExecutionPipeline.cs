@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var field = reader.ReadRow()?.ReadField();
-                    if (field == null)
+                    if (field is null)
                         return;
 
                     value = mapper.Map(field.Value);
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var field = reader.ReadRow()?.ReadField();
-                    if (field == null)
+                    if (field is null)
                         return;
 
                     value = map(field);
@@ -85,10 +85,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
+                    while ((row = reader.ReadRow()) is object)
                     {
                         var field = row.ReadField();
-                        if (field != null)
+                        if (field is object)
                         {
                             values.Add(mapper.Map(field.Value));
                         }
@@ -106,10 +106,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
+                    while ((row = reader.ReadRow()) is object)
                     {
                         var field = row.ReadField();
-                        if (field != null)
+                        if (field is object)
                         {
                             values.Add(map(field.Value));
                         }
@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
+                    while ((row = reader.ReadRow()) is object)
                     {
                         dynamic value = new ExpandoObject();
                         mapper.Map(value, row);
@@ -190,7 +190,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
+                    while ((row = reader.ReadRow()) is object)
                     {
                         try
                         {
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
+                    while ((row = reader.ReadRow()) is object)
                     {
                         var entity = Database.EntityFactory.CreateEntity<T>();
                         mapper.Map(entity, row, valueMapper);
@@ -258,7 +258,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     ISqlRow row;
-                    while ((row = reader.ReadRow()) != null)
+                    while ((row = reader.ReadRow()) is object)
                     {
                         values.Add(map(row));
                     }
@@ -307,10 +307,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var executor = Database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
-            if (connection == null)
+            if (connection is null)
                 connection = CreateConnection(expression);
 
-            if (transform == null)
+            if (transform is null)
             {
                 executor.ExecuteNonQuery(statement, connection, configureCommand, cmd => BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd))));
 
@@ -336,7 +336,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var reader = executor.ExecuteQuery(statement, connection, configureCommand, Database.MapperFactory.CreateValueMapper(), cmd => BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd))));
             //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
-            if (reader == null)
+            if (reader is null)
                 return;
             transform(reader);
         }

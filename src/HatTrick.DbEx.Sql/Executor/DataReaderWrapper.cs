@@ -73,13 +73,13 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 if (disposing)
                 {
-                    if (DataReader != null)
+                    if (DataReader is object)
                     {
                         if (!DataReader.IsClosed)
                             DataReader.Close();
                         DataReader.Dispose();
                     }
-                    if (SqlConnection != null)
+                    if (SqlConnection is object)
                     {
                         if (!SqlConnection.IsTransactional)
                             SqlConnection.Disconnect();

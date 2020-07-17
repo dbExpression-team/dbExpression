@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public override FilterExpression In(params TEnum[] value) => value != null ? new FilterExpression<TEnum>(new EnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params TEnum[] value) => value is object ? new FilterExpression<TEnum>(new EnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

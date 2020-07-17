@@ -20,13 +20,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public DelegateSqlStatementBuilderFactory(Func<ISqlStatementBuilderFactory> factory)
         {
-            if (factory == null)
+            if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Builder.");
 
             this.factory = new Func<DbExpressionAssemblerConfiguration, ExpressionSet, IAppender, ISqlParameterBuilder, ISqlStatementBuilder>((c, s, a, p) =>
             {
                 var f = factory().CreateSqlStatementBuilder(c, s, a, p);
-                if (f == null)
+                if (f is null)
                     throw new DbExpressionException("Cannot create a Sql Statement Builder: The factory returned a null value.");
                 return f;
             });

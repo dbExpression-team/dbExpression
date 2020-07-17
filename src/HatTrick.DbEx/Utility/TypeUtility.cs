@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Utility
             string txt = (typeText.Contains(".")) ? TypeUtility.ResolveAssemblyTypeShorthand(typeText) : typeText;
             string knownShortHand = TypeUtility.ResolveAssemblyTypeFullName(txt);
 
-            if (knownShortHand != null)
+            if (knownShortHand is object)
             {
                 switch (txt)
                 {

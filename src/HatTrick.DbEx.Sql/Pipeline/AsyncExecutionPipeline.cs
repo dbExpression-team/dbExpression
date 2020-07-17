@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     ISqlRow row;
-                    while ((row = await reader.ReadRowAsync()) != null)
+                    while ((row = await reader.ReadRowAsync()) is object)
                     {
                         var field = row.ReadField();
                         if (field != null)
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     ISqlRow row;
-                    while ((row = await reader.ReadRowAsync()) != null)
+                    while ((row = await reader.ReadRowAsync()) is object)
                     {
                         var field = row.ReadField();
                         if (field != null)
@@ -182,7 +182,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     ISqlRow row;
-                    while ((row = await reader.ReadRowAsync()) != null)
+                    while ((row = await reader.ReadRowAsync()) is object)
                     {
                         dynamic value = new ExpandoObject();
                         mapper.Map(value, row);
@@ -200,7 +200,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     ISqlRow row;
-                    while ((row = await reader.ReadRowAsync()) != null)
+                    while ((row = await reader.ReadRowAsync()) is object)
                     {
                         try
                         {
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     ISqlRow row;
-                    while ((row = await reader.ReadRowAsync()) != null)
+                    while ((row = await reader.ReadRowAsync()) is object)
                     {
                         var entity = Database.EntityFactory.CreateEntity<T>();
                         mapper.Map(entity, row, valueMapper);
@@ -268,7 +268,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     ISqlRow row;
-                    while ((row = await reader.ReadRowAsync()) != null)
+                    while ((row = await reader.ReadRowAsync()) is object)
                     {
                         values.Add(map(row));
                     }
@@ -323,10 +323,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var executor = Database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
-            if (connection == null)
+            if (connection is null)
                 connection = CreateConnection(expression);
 
-            if (transform == null)
+            if (transform is null)
             {
                 await executor.ExecuteNonQueryAsync(statement, connection, configureCommand, cmd => BeforeExecution?.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd)), ct), ct);
 
@@ -352,7 +352,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var reader = await executor.ExecuteQueryAsync(statement, connection, configureCommand, Database.MapperFactory.CreateValueMapper(), cmd => BeforeExecution?.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd)), ct), ct);
             //run post-execute pipeline, need switch on type to build up correct wrapper; i.e. (new AfterInsertExecutionContext(executionContext, statement)
-            if (reader == null)
+            if (reader is null)
                 return;
             await transform(reader);
         }

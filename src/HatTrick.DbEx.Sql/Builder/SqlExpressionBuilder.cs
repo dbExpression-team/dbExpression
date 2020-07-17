@@ -120,10 +120,10 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<U>(FilterExpressionSet expression) where U : class, IExpressionBuilder
         {
-            if (expression == null)
+            if (expression is null)
                 return this as U;
 
-            if (Expression.Where?.LeftArg == null)
+            if (Expression.Where?.LeftArg is null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;
@@ -132,10 +132,10 @@ namespace HatTrick.DbEx.Sql.Builder
 
         protected U Where<T, U>(FilterExpressionSet expression) where U : class, IExpressionBuilder<T>
         {
-            if (expression == null)
+            if (expression is null)
                 return this as U;
 
-            if (Expression.Where?.LeftArg == null)
+            if (Expression.Where?.LeftArg is null)
                 Expression.Where = expression;
             else
                 Expression.Where &= expression;

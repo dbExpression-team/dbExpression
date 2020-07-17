@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         public void SetPropertyValue<TValue>(FieldExpression field, object value)
         {
-            if (field == null)
+            if (field is null)
                 throw new ArgumentNullException($"An instance of {nameof(field)} is required to set a property value.");
             var mapper = MapperFactory.CreateValueMapper();
             var entity = (field as IDbExpressionProvider<EntityExpression>).Expression;
