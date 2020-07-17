@@ -33,9 +33,9 @@
         #region operators
         public static ExpressionSet operator &(ExpressionSet set, SelectExpression selectExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Select == null) { set.Select = new SelectExpressionSet(selectExpression); }
+                if (set.Select is null) { set.Select = new SelectExpressionSet(selectExpression); }
                 else { set.Select &= selectExpression; }
             }
             return set;
@@ -43,9 +43,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, SelectExpressionSet selectExpressionSet)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Select == null) { set.Select = selectExpressionSet; }
+                if (set.Select is null) { set.Select = selectExpressionSet; }
                 else { set.Select &= selectExpressionSet; }
             }
             return set;
@@ -53,9 +53,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, InsertExpression insertExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Insert == null) { set.Insert = new InsertExpressionSet(insertExpression); }
+                if (set.Insert is null) { set.Insert = new InsertExpressionSet(insertExpression); }
                 else { set.Insert &= insertExpression; }
             }
             return set;
@@ -63,9 +63,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, InsertExpressionSet insertExpressionSet)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Insert == null) { set.Insert = insertExpressionSet; }
+                if (set.Insert is null) { set.Insert = insertExpressionSet; }
                 else { set.Insert &= insertExpressionSet; }
             }
             return set;
@@ -73,9 +73,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, AssignmentExpression assignmentExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Assign == null) { set.Assign = new AssignmentExpressionSet(assignmentExpression); }
+                if (set.Assign is null) { set.Assign = new AssignmentExpressionSet(assignmentExpression); }
                 else { set.Assign &= assignmentExpression; }
             }
             return set;
@@ -83,9 +83,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, AssignmentExpressionSet assignmentExpressionSet)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Assign == null) { set.Assign = assignmentExpressionSet; }
+                if (set.Assign is null) { set.Assign = assignmentExpressionSet; }
                 else { set.Assign &= assignmentExpressionSet; }
             }
             return set;
@@ -93,9 +93,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, JoinExpression joinExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Joins == null) { set.Joins = new JoinExpressionSet(joinExpression); }
+                if (set.Joins is null) { set.Joins = new JoinExpressionSet(joinExpression); }
                 else { set.Joins &= joinExpression; }
             }
             return set;
@@ -103,9 +103,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, FilterExpression filterExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Where == null) { set.Where = new FilterExpressionSet(filterExpression); }
+                if (set.Where is null) { set.Where = new FilterExpressionSet(filterExpression); }
                 else { set.Where &= filterExpression; }
             }
             return set;
@@ -113,9 +113,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, FilterExpressionSet filterExpressionSet)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Where == null) { set.Where = filterExpressionSet; }
+                if (set.Where is null) { set.Where = filterExpressionSet; }
                 else { set.Where &= filterExpressionSet; }
             }
             return set;
@@ -123,9 +123,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, OrderByExpression orderByExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.OrderBy == null) { set.OrderBy = new OrderByExpressionSet(orderByExpression); }
+                if (set.OrderBy is null) { set.OrderBy = new OrderByExpressionSet(orderByExpression); }
                 else { set.OrderBy &= orderByExpression; }
             }
             return set;
@@ -133,9 +133,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, OrderByExpressionSet orderByExpressionSet)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.OrderBy == null) { set.OrderBy = orderByExpressionSet; }
+                if (set.OrderBy is null) { set.OrderBy = orderByExpressionSet; }
                 else { set.OrderBy &= orderByExpressionSet; }
             }
             return set;
@@ -143,9 +143,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, GroupByExpression groupByExpression)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.GroupBy == null) { set.GroupBy = new GroupByExpressionSet(groupByExpression); }
+                if (set.GroupBy is null) { set.GroupBy = new GroupByExpressionSet(groupByExpression); }
                 else { set.GroupBy &= groupByExpression; }
             }
             return set;
@@ -153,9 +153,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, GroupByExpressionSet groupByExpressionSet)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.GroupBy == null) { set.GroupBy = groupByExpressionSet; }
+                if (set.GroupBy is null) { set.GroupBy = groupByExpressionSet; }
                 else { set.GroupBy &= groupByExpressionSet; }
             }
             return set;
@@ -163,9 +163,9 @@
 
         public static ExpressionSet operator &(ExpressionSet set, HavingExpression havingCondition)
         {
-            if (set != null)
+            if (set is object)
             {
-                if (set.Having == null) { set.Having = havingCondition; }
+                if (set.Having is null) { set.Having = havingCondition; }
                 else { set.Having &= havingCondition; }
             }
             return set;

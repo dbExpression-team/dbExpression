@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         {
             var expando = e as IDictionary<string, object>;
             ISqlField field = null;
-            while ((field = o.ReadField()) != null)
+            while ((field = o.ReadField()) is object)
             {
                 if (string.IsNullOrWhiteSpace(field.Name))
                 {

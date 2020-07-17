@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendGroupByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.GroupBy?.Expressions == null || !expression.GroupBy.Expressions.Any())
+            if (expression.GroupBy?.Expressions is null || !expression.GroupBy.Expressions.Any())
                 return;
 
             builder.Appender.Indent().Write("GROUP BY").LineBreak()
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendHavingClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.Having?.Expression == null || expression.Having.Expression == default)
+            if (expression.Having?.Expression is null || expression.Having.Expression is null)
                 return;
 
             builder.Appender.Indent().Write("HAVING").LineBreak()
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AppendOrderByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.OrderBy?.Expressions == null || !expression.OrderBy.Expressions.Any())
+            if (expression.OrderBy?.Expressions is null || !expression.OrderBy.Expressions.Any())
                 return;
 
             builder.Appender.Indent().Write("ORDER BY").LineBreak()

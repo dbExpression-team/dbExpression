@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            if (statement.Parameters is object && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
             configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
             try
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Executor
             }
             finally
             {
-                if (cmd != null) { cmd.Dispose(); }
+                if (cmd is object) { cmd.Dispose(); }
             }
 
             return @return;
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (statement.Parameters != null && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            if (statement.Parameters is object && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
             configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
             try
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Executor
             }
             finally
             {
-                if (cmd != null) { cmd.Dispose(); }
+                if (cmd is object) { cmd.Dispose(); }
             }
 
             return @return;
@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (statement.Parameters != null && statement.Parameters.Any())
+            if (statement.Parameters is object && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
             configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
@@ -120,7 +120,7 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (statement.Parameters != null && statement.Parameters.Any())
+            if (statement.Parameters is object && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
             configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);

@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
     {
         private static void EnsureValidConnectionString(Func<string> connectionStringFactory)
         {
-            if (connectionStringFactory == null)
+            if (connectionStringFactory is null)
                 throw new DbExpressionConfigurationException($"{nameof(connectionStringFactory)} cannot be null");
 
             var connectionString = connectionStringFactory();

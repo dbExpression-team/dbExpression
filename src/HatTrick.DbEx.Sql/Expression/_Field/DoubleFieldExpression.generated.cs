@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params double[] value) => value != null ? new FilterExpression<double>(new DoubleExpressionMediator(this), new DoubleExpressionMediator(new LiteralExpression<double[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params double[] value) => value is object ? new FilterExpression<double>(new DoubleExpressionMediator(this), new DoubleExpressionMediator(new LiteralExpression<double[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

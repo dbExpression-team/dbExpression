@@ -6,7 +6,7 @@
 
 <div>
     <GridLoading RecordCount="@(CurrentPage?.TotalCount)"></GridLoading>
-    @if (CurrentPage != null && CurrentPage.Page.Any())
+    @if (CurrentPage is object && CurrentPage.Page.Any())
     {
         <MatCard>
             <MatCardContent Class="m-4">

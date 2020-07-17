@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public abstract DbCommand CreateDbCommand();
 
-        public bool IsTransactional => DbTransaction != null;
+        public bool IsTransactional => DbTransaction is object;
         #endregion
 
         #region constructors
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public void Disconnect()
         {
-            if (DbConnection != null)
+            if (DbConnection is object)
             {
                 if (DbConnection.State != ConnectionState.Closed)
                 {
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Connection
                 DbConnection = null;
             }
 
-            if (DbTransaction != null)
+            if (DbTransaction is object)
             {
                 DbTransaction.Dispose();
                 DbTransaction = null;
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public void CommitTransaction()
         {
-            if (DbTransaction == null)
+            if (DbTransaction is null)
             {
                 throw new InvalidOperationException("'CommitTransaction' failed.  A transaction was not started.");
             }
@@ -141,11 +141,11 @@ namespace HatTrick.DbEx.Sql.Connection
             {
                 if (disposing)
                 {
-                    if (DbTransaction != null)
+                    if (DbTransaction is object)
                     {
                         DbTransaction.Dispose();
                     }
-                    if (_dbConnection != null)
+                    if (_dbConnection is object)
                     {
                         if (_dbConnection.State == ConnectionState.Open)
                             _dbConnection.Close();

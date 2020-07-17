@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableByteFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params byte[] value) => value != null ? new FilterExpression<byte>(new NullableByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params byte[] value) => value is object ? new FilterExpression<byte>(new NullableByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull

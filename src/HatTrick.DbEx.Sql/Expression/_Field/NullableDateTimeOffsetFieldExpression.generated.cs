@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params DateTimeOffset[] value) => value != null ? new FilterExpression<DateTimeOffset>(new NullableDateTimeOffsetExpressionMediator(this), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params DateTimeOffset[] value) => value is object ? new FilterExpression<DateTimeOffset>(new NullableDateTimeOffsetExpressionMediator(this), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull

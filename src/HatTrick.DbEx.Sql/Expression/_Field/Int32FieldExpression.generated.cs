@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32FieldExpression
     {
         #region in value set
-        public override FilterExpression In(params int[] value) => value != null ? new FilterExpression<int>(new Int32ExpressionMediator(this), new Int32ExpressionMediator(new LiteralExpression<int[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params int[] value) => value is object ? new FilterExpression<int>(new Int32ExpressionMediator(this), new Int32ExpressionMediator(new LiteralExpression<int[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

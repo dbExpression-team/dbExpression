@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region conditional & operator
         public static GroupByExpressionSet operator &(GroupByExpressionSet aSet, GroupByExpression b)
         {
-            if (aSet == null)
+            if (aSet is null)
             {
                 aSet = new GroupByExpressionSet(b);
             }

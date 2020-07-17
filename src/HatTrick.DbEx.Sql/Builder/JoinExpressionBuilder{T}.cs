@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
             JoinOn = joinOn ?? throw new ArgumentNullException($"{nameof(joinOn)} is required.");
             JoinType = joinType;
-            Caller = caller != null ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
+            Caller = caller is object ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
         }
 
         public JoinExpressionBuilder(ExpressionSet expression, ExpressionSet subquery, JoinOperationExpressionOperator joinType, T caller)
@@ -26,12 +26,12 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
             JoinOn = subquery ?? throw new ArgumentNullException($"{nameof(subquery)} is required.");
             JoinType = joinType;
-            Caller = caller != null ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
+            Caller = caller is object ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
         }
 
         T IJoinExpressionBuilder<T>.On(JoinOnExpression expression)
         {
-            if (Expression.Joins == null)
+            if (Expression.Joins is null)
                 Expression.Joins = new JoinExpressionSet(new JoinExpression(JoinOn, JoinType, expression, Alias));
             else
                 Expression.Joins.Expressions.Add(new JoinExpression(JoinOn, JoinType, expression, Alias));

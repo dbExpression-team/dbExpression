@@ -11,8 +11,8 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Negate { get; set; }
         public ExpressionContainer LeftArg { get; set; }
         public ExpressionContainer RightArg { get; set; }
-        public bool IsSingleFilter => RightArg == null;
-        public ExpressionContainer SingleFilter => RightArg == null ? LeftArg : null;
+        public bool IsSingleFilter => RightArg is null;
+        public ExpressionContainer SingleFilter => RightArg is null ? LeftArg : null;
         #endregion
 
         #region constructors
@@ -55,36 +55,36 @@ namespace HatTrick.DbEx.Sql.Expression
         #region conditional &, | operators
         public static FilterExpressionSet operator &(FilterExpressionSet a, FilterExpression b)
         {
-            if (a == null && b != null) { return new FilterExpressionSet(b); }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return new FilterExpressionSet(b); }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.And);
         }
 
         public static FilterExpressionSet operator &(FilterExpressionSet a, FilterExpressionSet b)
         {
-            if (a == null && b != null) { return b; }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return b; }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.And);
         }
 
         public static FilterExpressionSet operator |(FilterExpressionSet a, FilterExpression b)
         {
-            if (a == null && b != null) { return new FilterExpressionSet(b); }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return new FilterExpressionSet(b); }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }
 
         public static FilterExpressionSet operator |(FilterExpressionSet a, FilterExpressionSet b)
         {
-            if (a == null && b != null) { return b; }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return b; }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region negation operator
         public static FilterExpressionSet operator !(FilterExpressionSet filter)
         {
-            if (filter != null) filter.Negate = !filter.Negate;
+            if (filter is object) filter.Negate = !filter.Negate;
             return filter;
         }
         #endregion

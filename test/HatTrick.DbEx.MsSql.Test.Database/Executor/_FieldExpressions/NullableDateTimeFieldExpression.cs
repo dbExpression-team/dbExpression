@@ -28,8 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var shipDates = exp.Execute();
 
             //then
-            shipDates.Should().HaveCount(expected);
-            shipDates.All( x => x == null).Should().BeTrue();
+            shipDates.Should().HaveCount(expected).And.OnlyContain(x => x == null);
         }
 
         [Theory]
@@ -48,8 +47,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var shipDates = exp.Execute();
 
             //then
-            shipDates.Should().HaveCount(expected);
-            shipDates.All(x => x == null).Should().BeTrue();
+            shipDates.Should().HaveCount(expected).And.OnlyContain(x => x == null);
         }
 
         [Theory]
@@ -68,8 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var shipDates = exp.Execute();
 
             //then
-            shipDates.Should().HaveCount(expected);
-            shipDates.All(x => x == null).Should().BeFalse();
+            shipDates.Should().HaveCount(expected).And.NotContainNulls();
         }
 
         [Theory]
@@ -88,8 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var shipDates = exp.Execute();
 
             //then
-            shipDates.Should().HaveCount(expected);
-            shipDates.All(x => x == null).Should().BeFalse();
+            shipDates.Should().HaveCount(expected).And.NotContainNulls();
         }
 
         [Theory]

@@ -77,36 +77,36 @@ namespace HatTrick.DbEx.Sql.Expression
         #region conditional &, | operators
         public static JoinOnExpressionSet operator &(JoinOnExpressionSet a, JoinOnExpression b)
         {
-            if (a == null && b != null) { return new JoinOnExpressionSet(b); }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return new JoinOnExpressionSet(b); }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.And);
         }
 
         public static JoinOnExpressionSet operator &(JoinOnExpressionSet a, JoinOnExpressionSet b)
         {
-            if (a == null && b != null) { return b; }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return b; }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.And);
         }
 
         public static JoinOnExpressionSet operator |(JoinOnExpressionSet a, JoinOnExpression b)
         {
-            if (a == null && b != null) { return new JoinOnExpressionSet(b); }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return new JoinOnExpressionSet(b); }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }
 
         public static JoinOnExpressionSet operator |(JoinOnExpressionSet a, JoinOnExpressionSet b)
         {
-            if (a == null && b != null) { return b; }
-            if (a != null && b == null) { return a; }
-            if (a == null && b == null) { return null; }
+            if (a is null && b is object) { return b; }
+            if (a is object && b is null) { return a; }
+            if (a is null && b is null) { return null; }
 
             return new JoinOnExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region negation operator
         public static JoinOnExpressionSet operator !(JoinOnExpressionSet filter)
         {
-            if (filter != null) filter.Negate = !filter.Negate;
+            if (filter is object) filter.Negate = !filter.Negate;
             return filter;
         }
         #endregion

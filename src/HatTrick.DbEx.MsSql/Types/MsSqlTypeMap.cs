@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.MsSql.Types
         #region get sql type
         public static SqlDbType GetSqlType(Type t)
         {
-            if (t == null) { throw new ArgumentNullException("t", "Cannot resolve type 'null'"); }
+            if (t is null) { throw new ArgumentNullException("t", "Cannot resolve type 'null'"); }
             Dictionary<Type, SqlDbType> typeDict = GetSqlTypeDictionary();
 
             Type underlyingType;
@@ -223,7 +223,7 @@ namespace HatTrick.DbEx.MsSql.Types
 
             SqlDbType? sqlT = MsSqlTypeMap.GetSqlDBTypeFromDeclaration(sqlTypeText);
 
-            if (sqlT != null && MsSqlTypeMap.SqlTypeAllowsPrecisionAndScale(sqlT.Value))
+            if (sqlT is object && MsSqlTypeMap.SqlTypeAllowsPrecisionAndScale(sqlT.Value))
             {
                 sqlTypeText = sqlTypeText.Replace(" ", string.Empty);
                 int openIdx = sqlTypeText.IndexOf('(');
@@ -293,7 +293,7 @@ namespace HatTrick.DbEx.MsSql.Types
         #region is compatible type
         public static bool IsCompatibleType(string sqlTypeDeclaration, Type assemblyType)
         {
-            if (sqlTypeDeclaration == null)
+            if (sqlTypeDeclaration is null)
             {
                 throw new ArgumentNullException("sqlTypeDeclaration");
             }
@@ -337,7 +337,7 @@ namespace HatTrick.DbEx.MsSql.Types
         #region is sql type known
         public static bool IsSqlTypeKnown(Type t)
         {
-            if (t == null) { return false; }
+            if (t is null) { return false; }
             Type underlyingType;
             if (t.IsEnum)
             {
@@ -380,7 +380,7 @@ namespace HatTrick.DbEx.MsSql.Types
         {
             lock (_sqlTypeDictLock)
             {
-                if (_sqlTypeDict == null)
+                if (_sqlTypeDict is null)
                 {
                     _sqlTypeDict = new Dictionary<Type, SqlDbType>();
 

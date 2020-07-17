@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql
         #region concrete connection provider 
         protected override void EnsureConnection()
         {
-            if (_dbConnection == null)
+            if (_dbConnection is null)
             {
                 _dbConnection = new SqlConnection(ConnectionStringFactory());
             }

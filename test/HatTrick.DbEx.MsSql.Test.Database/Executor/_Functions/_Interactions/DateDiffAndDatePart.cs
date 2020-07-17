@@ -274,18 +274,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectOne(
+            Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
                 .Where(dbo.Purchase.ShipDate != DBNull.Value)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<SqlException>();
-            result.As<SqlException>().Message.Should().Be("Divide by zero error encountered.");
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
         [Theory]
@@ -295,18 +291,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectOne(
+            Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
                 .Where(dbo.Purchase.ShipDate != DBNull.Value)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<SqlException>();
-            result.As<SqlException>().Message.Should().Be("Divide by zero error encountered.");
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
         [Theory]
@@ -316,18 +308,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectOne(
+            Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) / db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
                 .Where(dbo.Purchase.ShipDate != DBNull.Value)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<SqlException>();
-            result.As<SqlException>().Message.Should().Be("Divide by zero error encountered.");
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
         [Theory]
@@ -356,18 +344,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectOne(
+            Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.ShipDate)
                 ).From(dbo.Purchase)
                 .Where(dbo.Purchase.ShipDate != DBNull.Value)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<SqlException>();
-            result.As<SqlException>().Message.Should().Be("Divide by zero error encountered.");
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
         [Theory]
@@ -377,18 +361,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectOne(
+            Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.ShipDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
                 .Where(dbo.Purchase.ShipDate != DBNull.Value)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<SqlException>();
-            result.As<SqlException>().Message.Should().Be("Divide by zero error encountered.");
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
 
         [Theory]
@@ -398,18 +378,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            static void _() => db.SelectOne(
+            Action execute = () => db.SelectOne(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) % db.fx.DateDiff(DateParts.Year, dbo.Purchase.PurchaseDate, dbo.Purchase.DateCreated)
                 ).From(dbo.Purchase)
                 .Where(dbo.Purchase.ShipDate != DBNull.Value)
                 .Execute();
 
-            //when               
-            var result = Assert.ThrowsAny<Exception>(_);
-
-            //then
-            result.Should().BeOfType<SqlException>();
-            result.As<SqlException>().Message.Should().Be("Divide by zero error encountered.");
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().Be("Divide by zero error encountered.");
         }
     }
 }

@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Executor
             }
             catch
             {
-                if (DataReader != null && !DataReader.IsClosed)
+                if (DataReader is object && !DataReader.IsClosed)
                     DataReader.Close(); //redundant, but required for sqlCe before rollback...
 
                 if (SqlConnection.IsTransactional)
@@ -81,13 +81,13 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 if (disposing)
                 {
-                    if (DataReader != null)
+                    if (DataReader is object)
                     {
                         if (!DataReader.IsClosed)
                             DataReader.Close();
                         DataReader.Dispose();
                     }
-                    if (SqlConnection != null)
+                    if (SqlConnection is object)
                     {
                         if (!SqlConnection.IsTransactional)
                             SqlConnection.Disconnect();

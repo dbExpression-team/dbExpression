@@ -57,12 +57,12 @@ namespace HatTrick.DbEx.Tools.Configuration
             {
                 vals.Add("ignore: true");
             }
-            if (this.DataType != null)
+            if (this.DataType is object)
             {
                 vals.Add($"dataType: {this.DataType}");
             }
             vals.Add($"isEnum: {this.IsEnum}");
-            if (this.Name != null)
+            if (this.Name is object)
             {
                 vals.Add($"name: {this.Name}");
             }

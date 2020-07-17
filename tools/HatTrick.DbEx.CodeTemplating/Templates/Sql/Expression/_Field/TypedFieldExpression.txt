@@ -5,7 +5,7 @@ namespace {Namespace}
     public partial class {Type.Name}FieldExpression
     {{
         #region in value set
-        public override FilterExpression In(params {Type.Alias}[] value) => value != null ? new FilterExpression<{Type.Alias}>(new {Type.Name}ExpressionMediator(this), new {Type.Name}ExpressionMediator(new LiteralExpression<{Type.Alias}[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params {Type.Alias}[] value) => value is object ? new FilterExpression<{Type.Alias}>(new {Type.Name}ExpressionMediator(this), new {Type.Name}ExpressionMediator(new LiteralExpression<{Type.Alias}[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

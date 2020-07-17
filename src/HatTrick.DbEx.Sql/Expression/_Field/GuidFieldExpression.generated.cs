@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params Guid[] value) => value != null ? new FilterExpression<Guid>(new GuidExpressionMediator(this), new GuidExpressionMediator(new LiteralExpression<Guid[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params Guid[] value) => value is object ? new FilterExpression<Guid>(new GuidExpressionMediator(this), new GuidExpressionMediator(new LiteralExpression<Guid[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

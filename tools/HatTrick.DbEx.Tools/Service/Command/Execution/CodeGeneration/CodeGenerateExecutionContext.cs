@@ -156,14 +156,14 @@ namespace HatTrick.DbEx.Tools.Service
         #region ensure config
         protected void EnsureConfig(DbExConfig config)
         {
-            if (config.Source == null)
+            if (config.Source is null)
             {
                 string key1 = nameof(config.Source);
                 string msg = $"DbEx configuration file missing required key: {key1}";
                 throw new CommandException(msg);
             }
 
-            if (config.Source?.Type == null)
+            if (config.Source?.Type is null)
             {
                 string key1 = nameof(config.Source);
                 string key2 = nameof(config.Source.Type);
@@ -171,7 +171,7 @@ namespace HatTrick.DbEx.Tools.Service
                 throw new CommandException(msg);
             }
 
-            if (config.Source?.ConnectionString == null)
+            if (config.Source?.ConnectionString is null)
             {
                 string key1 = nameof(config.Source);
                 string key2 = nameof(config.Source.ConnectionString);
@@ -252,31 +252,31 @@ namespace HatTrick.DbEx.Tools.Service
         #region apply sql model overrides
         protected void ApplySqlModelOverrides(DbExConfig config, MsSqlModel sqlModel)
         {
-            if (config != null && config.Meta != null)
+            if (config is object && config.Meta is object)
             {
                 Meta m = null;
                 for (int i = 0; i < config.Meta.Length; i++)
                 {
                     m = config.Meta[i];
 
-                    if (m.Path == null)
+                    if (m.Path is null)
                     {
                         svc.Feedback.Push(To.Warn, $"encountered null meta.path value at meta[{i}]");
                         continue;
                     }
-                    if (m.Apply == null)
+                    if (m.Apply is null)
                     {
                         svc.Feedback.Push(To.Warn, $"encountered null meta.apply value at meta[{i}]");
                         continue;
                     }
                     INamedMeta nm = sqlModel.ResolveItem(m.Path);
-                    if (nm == null)
+                    if (nm is null)
                     {
                         svc.Feedback.Push(To.Warn, $"meta.path: '{(m.Path == string.Empty ? "string.Empty" : m.Path)}' at meta[{i}] could not be resolved.");
                     }
                     else
                     {
-                        nm.Meta = (nm.Meta == null) ? m.Apply.AsString() : (", " + m.Apply.AsString());
+                        nm.Meta = (nm.Meta is null) ? m.Apply.AsString() : (", " + m.Apply.AsString());
                     }
                 }
             }

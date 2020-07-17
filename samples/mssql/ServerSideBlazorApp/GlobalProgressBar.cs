@@ -7,7 +7,7 @@ namespace ServerSideBlazorApp
     {
         public async Task Show()
         {
-            if (ShowProgress != null)
+            if (ShowProgress is object)
             {
                 await ShowProgress.Invoke();
             }
@@ -15,7 +15,7 @@ namespace ServerSideBlazorApp
 
         public async Task Hide()
         {
-            if (HideProgress != null)
+            if (HideProgress is object)
             {
                 await HideProgress.Invoke();
             }

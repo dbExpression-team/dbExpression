@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public SqlStatement CreateSqlStatement()
         {
-            if (_sqlStatement != null)
+            if (_sqlStatement is object)
                 return _sqlStatement;
 
             var context = new AssemblyContext
@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             };
 
             var assembler = AssemblerFactory(ExpressionSet.StatementExecutionType);
-            if (assembler == null)
+            if (assembler is null)
                 throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{ExpressionSet.StatementExecutionType}', please ensure an assembler has been registered during startup initialization of DbExpression.");
 
             assembler.AssembleStatement(ExpressionSet, this, context);
@@ -84,7 +84,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AssembleStatement(ExpressionSet set, AssemblyContext context)
         {
             var assembler = AssemblerFactory(set.StatementExecutionType);
-            if (assembler == null)
+            if (assembler is null)
             {
                 throw new DbExpressionConfigurationException($"Could not resolve an assembler for type '{nameof(ExpressionSet)}', please ensure an assembler has been registered during startup initialization of DbExpression.");
             }

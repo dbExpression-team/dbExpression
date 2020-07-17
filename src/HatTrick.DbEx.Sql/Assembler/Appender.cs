@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public IAppender Write(string value)
         {
-            if (value == null)
+            if (value is null)
                 return this;
 
             builder.Append(value);

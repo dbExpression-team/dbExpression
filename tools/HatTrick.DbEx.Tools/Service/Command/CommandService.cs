@@ -104,12 +104,12 @@ namespace HatTrick.DbEx.Tools.Service
                 string val = null;
                 tokenizer.Emit += (token) =>
                 {
-                    if (key == null)
+                    if (key is null)
                         key = token;
                     else
                         val = token;
 
-                    if (!(key == null || val == null))
+                    if (!(key is null || val is null))
                     {
                         options.Add(key, val);
                         key = null;

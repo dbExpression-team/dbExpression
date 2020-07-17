@@ -219,7 +219,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (current.BaseType == typeof(object)) //crawled up to Type=object and didn't find an appender, resolve if it is an Enum and the part appender for an Enum
                 return ResolveEnumPartAppender(original, original) ?? throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{original}', please ensure an appender has been registered for type '{original}'");
 
-            if (current.BaseType == null)
+            if (current.BaseType is null)
                 throw new DbExpressionConfigurationException($"Could not resolve a part appender for type '{original}', please ensure an appender has been registered for type '{original}'");
 
             return ResolvePartAppender(current.BaseType, original);

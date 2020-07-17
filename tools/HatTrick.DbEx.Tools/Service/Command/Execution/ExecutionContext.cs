@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region ensure options
         protected void EnsureOptions(params string[] validOptions)
         {
-            if (_options != null)
+            if (_options is object)
             {
                 List<string> options = new List<string>();
                 Tokenizer tokenizer = new Tokenizer(new char[] { ' ' });
@@ -99,7 +99,7 @@ namespace HatTrick.DbEx.Tools.Service
             value = null;
             keyUsed = null;
             bool found = false;
-            if (this.Options != null)
+            if (this.Options is object)
             {
                 for (int i = 0; i < key.Length; i++)
                 {

@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public override FilterExpression In(params byte[][] value) => value != null ? new FilterExpression<short>(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params byte[][] value) => value is object ? new FilterExpression<short>(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

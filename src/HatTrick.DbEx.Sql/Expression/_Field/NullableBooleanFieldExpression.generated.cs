@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableBooleanFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params bool[] value) => value != null ? new FilterExpression<bool>(new NullableBooleanExpressionMediator(this), new BooleanExpressionMediator(new LiteralExpression<bool[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params bool[] value) => value is object ? new FilterExpression<bool>(new NullableBooleanExpressionMediator(this), new BooleanExpressionMediator(new LiteralExpression<bool[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull

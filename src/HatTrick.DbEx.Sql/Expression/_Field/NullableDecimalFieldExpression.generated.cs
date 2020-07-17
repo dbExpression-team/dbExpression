@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params decimal[] value) => value != null ? new FilterExpression<decimal>(new NullableDecimalExpressionMediator(this), new DecimalExpressionMediator(new LiteralExpression<decimal[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression In(params decimal[] value) => value is object ? new FilterExpression<decimal>(new NullableDecimalExpressionMediator(this), new DecimalExpressionMediator(new LiteralExpression<decimal[]>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull

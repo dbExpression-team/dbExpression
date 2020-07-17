@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             get
             {
-                if (_fields != null)
+                if (_fields is object)
                     return _fields;
 
                 switch (ExecutionType)
