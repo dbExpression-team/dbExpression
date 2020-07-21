@@ -1480,5 +1480,93 @@ namespace HatTrick.DbEx.Sql.Builder
         public static CurrentTimestampFunctionExpression Current_Timestamp
             => new CurrentTimestampFunctionExpression();
         #endregion
+
+        #region floor
+        public static ByteFloorFunctionExpression Floor(ByteExpressionMediator field)
+            => new ByteFloorFunctionExpression(field);
+
+        public static NullableByteFloorFunctionExpression Floor(NullableByteExpressionMediator field)
+            => new NullableByteFloorFunctionExpression(field);
+
+        public static Int16FloorFunctionExpression Floor(Int16ExpressionMediator field)
+            => new Int16FloorFunctionExpression(field);
+
+        public static NullableInt16FloorFunctionExpression Floor(NullableInt16ExpressionMediator field)
+            => new NullableInt16FloorFunctionExpression(field);
+
+        public static Int32FloorFunctionExpression Floor(Int32ExpressionMediator field)
+            => new Int32FloorFunctionExpression(field);
+
+        public static NullableInt32FloorFunctionExpression Floor(NullableInt32ExpressionMediator field)
+            => new NullableInt32FloorFunctionExpression(field);
+
+        public static Int64FloorFunctionExpression Floor(Int64ExpressionMediator field)
+            => new Int64FloorFunctionExpression(field);
+
+        public static NullableInt64FloorFunctionExpression Floor(NullableInt64ExpressionMediator field)
+            => new NullableInt64FloorFunctionExpression(field);
+
+        public static SingleFloorFunctionExpression Floor(SingleExpressionMediator field)
+            => new SingleFloorFunctionExpression(field);
+
+        public static NullableSingleFloorFunctionExpression Floor(NullableSingleExpressionMediator field)
+            => new NullableSingleFloorFunctionExpression(field);
+
+        public static DoubleFloorFunctionExpression Floor(DoubleExpressionMediator field)
+            => new DoubleFloorFunctionExpression(field);
+
+        public static NullableDoubleFloorFunctionExpression Floor(NullableDoubleExpressionMediator field)
+            => new NullableDoubleFloorFunctionExpression(field);
+
+        public static DecimalFloorFunctionExpression Floor(DecimalExpressionMediator field)
+            => new DecimalFloorFunctionExpression(field);
+
+        public static NullableDecimalFloorFunctionExpression Floor(NullableDecimalExpressionMediator field)
+            => new NullableDecimalFloorFunctionExpression(field);
+        #endregion
+
+        #region ceiling
+        public static ByteCeilingFunctionExpression Ceiling(ByteExpressionMediator field)
+            => new ByteCeilingFunctionExpression(field);
+
+        public static NullableByteCeilingFunctionExpression Ceiling(NullableByteExpressionMediator field)
+            => new NullableByteCeilingFunctionExpression(field);
+
+        public static Int16CeilingFunctionExpression Ceiling(Int16ExpressionMediator field)
+            => new Int16CeilingFunctionExpression(field);
+
+        public static NullableInt16CeilingFunctionExpression Ceiling(NullableInt16ExpressionMediator field)
+            => new NullableInt16CeilingFunctionExpression(field);
+
+        public static Int32CeilingFunctionExpression Ceiling(Int32ExpressionMediator field)
+            => new Int32CeilingFunctionExpression(field);
+
+        public static NullableInt32CeilingFunctionExpression Ceiling(NullableInt32ExpressionMediator field)
+            => new NullableInt32CeilingFunctionExpression(field);
+
+        public static Int64CeilingFunctionExpression Ceiling(Int64ExpressionMediator field)
+            => new Int64CeilingFunctionExpression(field);
+
+        public static NullableInt64CeilingFunctionExpression Ceiling(NullableInt64ExpressionMediator field)
+            => new NullableInt64CeilingFunctionExpression(field);
+
+        public static SingleCeilingFunctionExpression Ceiling(SingleExpressionMediator field)
+            => new SingleCeilingFunctionExpression(field);
+
+        public static NullableSingleCeilingFunctionExpression Ceiling(NullableSingleExpressionMediator field)
+            => new NullableSingleCeilingFunctionExpression(field);
+
+        public static DoubleCeilingFunctionExpression Ceiling(DoubleExpressionMediator field)
+            => new DoubleCeilingFunctionExpression(field);
+
+        public static NullableDoubleCeilingFunctionExpression Ceiling(NullableDoubleExpressionMediator field)
+            => new NullableDoubleCeilingFunctionExpression(field);
+
+        public static DecimalCeilingFunctionExpression Ceiling(DecimalExpressionMediator field)
+            => new DecimalCeilingFunctionExpression(field);
+
+        public static NullableDecimalCeilingFunctionExpression Ceiling(NullableDecimalExpressionMediator field)
+            => new NullableDecimalCeilingFunctionExpression(field);
+        #endregion
     }
 }

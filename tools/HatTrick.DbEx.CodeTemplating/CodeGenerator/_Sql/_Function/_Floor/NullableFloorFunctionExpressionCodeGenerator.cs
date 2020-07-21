@@ -1,0 +1,30 @@
+﻿using HatTrick.DbEx.CodeTemplating.Builder;
+using HatTrick.DbEx.CodeTemplating.Model;
+using System.Linq;
+
+namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
+{
+    public class NullableFloorFunctionExpressionCodeGenerator : CodeGenerator<FunctionTemplateModel>
+    {
+        private const string functionName = "Floor";
+
+        protected override void PopulateModel(FunctionTemplateModel model, string @namespace, TypeModel typeModel)
+        {
+            base.PopulateModel(model, @namespace, typeModel);
+            model.FunctionName = functionName;
+            model.IsGroupBySupported = false;
+            model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddNumericTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
+            {
+                OperationType = @type,
+                ReturnType = TypeBuilder.Get<int>(),
+                Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(typeModel, @type).ToList()
+            }).ToList();
+        }
+
+        public override void Generate(string templatePath, string outputSubdirectory)
+        {
+            foreach (var @type in TypeBuilder.CreateBuilder().AddNumericTypes().ToList())
+                Generate(templatePath, outputSubdirectory, $"Nullable{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
+        }
+    }
+}
