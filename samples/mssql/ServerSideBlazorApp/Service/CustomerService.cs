@@ -1,17 +1,14 @@
 ﻿using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.dboData;
 using ServerSideBlazorApp.dboDataService;
 using ServerSideBlazorApp.Models;
-using ServerSideBlazorApp.Pages;
 using ServerSideBlazorApp.secDataService;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +27,7 @@ namespace ServerSideBlazorApp.Service
         {
             { nameof(CustomerSummaryModel.Name), dbo.Person.FirstName + " " + dbo.Person.LastName },
             { nameof(CustomerSummaryModel.LifetimeValue), db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m) },
-            { nameof(CustomerSummaryModel.CurrentAge), db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate())) }
+            { nameof(CustomerSummaryModel.CurrentAge), db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Person.BirthDate, db.fx.GetUtcDate()) / 365.25) }
         };
 
         public async Task<IEnumerable<(int,decimal)>> GetPurchaseValueByYear(int customerId)
@@ -62,14 +59,13 @@ namespace ServerSideBlazorApp.Service
                     dbo.Person.Id,
                     (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
                     db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m).As("LifetimeValue"),
-                    (db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate()))).As("CurrentAge")
+                    db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Person.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge")
                 )
                 .From(dbo.Person)
                 .Where(queryPredicate)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(
-                    dbo.Person.FirstName,
-                    dbo.Person.LastName
+                    dbo.Person.FirstName + " " + dbo.Person.LastName
                 )
                 .Skip(model.Offset).Limit(model.Limit)
                 .ExecuteAsync(row =>

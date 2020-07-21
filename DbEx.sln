@@ -39,6 +39,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{F1FF2A42
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerSideBlazorApp", "samples\mssql\ServerSideBlazorApp\ServerSideBlazorApp.csproj", "{C9270A54-1302-4504-9630-F4F156A946D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C24A0631-051F-4A49-87CD-005B71CD9223}"
+	ProjectSection(SolutionItems) = preProject
+		docs\add-database-function.md = docs\add-database-function.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

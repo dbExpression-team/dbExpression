@@ -45,7 +45,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly PopulationStandardDeviationFunctionExpressionPartAppender _populationStandardDeviationFunctionAppender = new PopulationStandardDeviationFunctionExpressionPartAppender();
         private static readonly VarianceFunctionExpressionPartAppender _varianceFunctionAppender = new VarianceFunctionExpressionPartAppender();
         private static readonly PopulationVarianceFunctionExpressionPartAppender _populationVarianceFunctionAppender = new PopulationVarianceFunctionExpressionPartAppender();
-        private static readonly CurrentTimestampFunctionPartAppender _currentTimestampFunctionAppender = new CurrentTimestampFunctionPartAppender();
+        private static readonly CurrentTimestampFunctionExpressionPartAppender _currentTimestampFunctionAppender = new CurrentTimestampFunctionExpressionPartAppender();
+        private static readonly FloorFunctionExpressionPartAppender _floorFunctionAppender = new FloorFunctionExpressionPartAppender();
+        private static readonly CeilingFunctionExpressionPartAppender _ceilingFunctionAppender = new CeilingFunctionExpressionPartAppender();
         private static readonly LiteralExpressionPartAppender _literalAppender = new LiteralExpressionPartAppender();
         #endregion
 
@@ -145,6 +147,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(VarianceFunctionExpression), () => _varianceFunctionAppender);
             _partAppenders.TryAdd(typeof(PopulationVarianceFunctionExpression), () => _populationVarianceFunctionAppender);
             _partAppenders.TryAdd(typeof(CurrentTimestampFunctionExpression), () => _currentTimestampFunctionAppender);
+            _partAppenders.TryAdd(typeof(FloorFunctionExpression), () => _floorFunctionAppender);
+            _partAppenders.TryAdd(typeof(CeilingFunctionExpression), () => _ceilingFunctionAppender);
             _partAppenders.TryAdd(typeof(LiteralExpression), () => _literalAppender);
 
             _partAppenders.TryAdd(typeof(bool), () => _booleanAppender);
