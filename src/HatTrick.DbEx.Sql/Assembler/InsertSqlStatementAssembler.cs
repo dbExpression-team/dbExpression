@@ -5,7 +5,15 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class InsertSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (!(expression is InsertQueryExpression insert))
+                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(InsertQueryExpression)}, but is actually type {expression.GetType()}");
+
+            AssembleStatement(insert, builder, context);
+        }
+
+        private void AssembleStatement(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("INSERT INTO ");
             builder.AppendPart<EntityExpression>(expression.BaseEntity, context);

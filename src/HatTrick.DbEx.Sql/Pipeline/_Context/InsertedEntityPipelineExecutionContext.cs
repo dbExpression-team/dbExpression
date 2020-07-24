@@ -8,11 +8,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         private IMapperFactory MapperFactory { get; set; }
 
+        protected new InsertQueryExpression Expression { get; private set; }
         public IDbEntity InsertedEntity => Expression.Instance;
 
-        public InsertedEntityPipelineExecutionContext(ExpressionSet expression, IMapperFactory mapperFactory)
+        public InsertedEntityPipelineExecutionContext(InsertQueryExpression expression, IMapperFactory mapperFactory)
             : base(expression)
         {
+            Expression = expression;
             MapperFactory = mapperFactory ?? throw new ArgumentNullException($"{nameof(mapperFactory)} is required.");
         }
 

@@ -6,9 +6,9 @@ namespace HatTrick.DbEx.Sql.Assembler
     public abstract class SqlStatementAssembler : ISqlStatementAssembler
     {
         #region methods
-        public abstract void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context);
+        public abstract void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
 
-        protected virtual void AppendJoinClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendJoinClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
                 return;
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendWhereClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendWhereClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
                 return;

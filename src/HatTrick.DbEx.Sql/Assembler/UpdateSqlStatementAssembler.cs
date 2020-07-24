@@ -5,7 +5,15 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class UpdateSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (!(expression is UpdateQueryExpression update))
+                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(UpdateQueryExpression)}, but is actually type {expression.GetType()}");
+
+            AssembleStatement(update, builder, context);
+        }
+        
+        private void AssembleStatement(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {            
             builder.Appender
                 .Indent().Write("UPDATE").LineBreak()

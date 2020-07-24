@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
         {
             config.BeforeInsertingEntity(inserting =>
             {
-                var identity = inserting.AllFields.Fields.SingleOrDefault(e => e.Metadata.IsIdentity);
+                var identity = inserting.AllFields.SingleOrDefault(e => e.Metadata.IsIdentity);
                 if (identity is null)
                     return;
 
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             config.AfterInsertingEntity(inserted =>
             {
-                var identity = inserted.AllFields.Fields.SingleOrDefault(e => e.Metadata.IsIdentity);
+                var identity = inserted.AllFields.SingleOrDefault(e => e.Metadata.IsIdentity);
                 if (identity is null)
                     return;
 

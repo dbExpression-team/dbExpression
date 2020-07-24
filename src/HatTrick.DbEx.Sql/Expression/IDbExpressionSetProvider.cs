@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public interface IDbExpressionSetProvider
     {
-        ExpressionSet Expression { get; }
+        QueryExpression Expression { get; }
 
         #region hide object properties
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -17,5 +17,11 @@ namespace HatTrick.DbEx.Sql.Expression
         [EditorBrowsable(EditorBrowsableState.Never)]
         string ToString();
         #endregion
+    }
+
+    public interface IDbExpressionSetProvider<T> : IDbExpressionSetProvider
+        where T : QueryExpression
+    { 
+        new T Expression { get; }
     }
 }

@@ -15,15 +15,14 @@ namespace HatTrick.DbEx.Sql.Builder
         IDbExpressionSetProvider
     {
         public DatabaseConfiguration Configuration { get; private set; }
-        public ExpressionSet Expression { get; protected set; } = new ExpressionSet();
+        public virtual QueryExpression Expression { get; private set; }
+        QueryExpression IDbExpressionSetProvider.Expression => Expression;
 
-        public SqlExpressionBuilder(DatabaseConfiguration configuration, ExpressionSet expression)
+        protected SqlExpressionBuilder(DatabaseConfiguration configuration, QueryExpression expression)
         {
             Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
-
-        ExpressionSet IDbExpressionSetProvider.Expression => Expression;
 
         #region Delete
         IDeleteContinuationExpressionBuilder IDeleteFromExpressionBuilder.From(EntityExpression entity)
@@ -72,13 +71,15 @@ namespace HatTrick.DbEx.Sql.Builder
         IUpdateContinuationExpressionBuilder IUpdateFromExpressionBuilder.From(EntityExpression entity)
         {
             Expression.BaseEntity = entity;
-            return this as IUpdateContinuationExpressionBuilder;
+            return this;
         }
 
         IUpdateContinuationExpressionBuilder IUpdateInitiationExpressionBuilder.Update(AssignmentExpression[] assignments)
         {
+            if (!(Expression is UpdateQueryExpression update))
+                throw new DbExpressionException($"Expected {nameof(Expression)} to be of type {nameof(InsertQueryExpression)}, but is actually type {Expression.GetType()}");
             foreach (var assignment in assignments)
-                Expression &= assignment;
+                update.Assign &= assignment;
             return this;
         }
 

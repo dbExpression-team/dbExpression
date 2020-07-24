@@ -5,6 +5,6 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public interface ISqlStatementExecutorFactory
     {
-        ISqlStatementExecutor CreateSqlStatementExecutor(ExpressionSet expression);
+        ISqlStatementExecutor CreateSqlStatementExecutor(QueryExpression expression);
     }
 }

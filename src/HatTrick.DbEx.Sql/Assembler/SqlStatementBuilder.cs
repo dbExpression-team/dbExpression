@@ -13,23 +13,23 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; }
-        public ExpressionSet ExpressionSet { get; }
-        public Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerFactory { get; }
+        public QueryExpression Query { get; }
+        public Func<QueryExpression, ISqlStatementAssembler> AssemblerFactory { get; }
         public Func<Type, IAssemblyPartAppender> PartAppenderFactory { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
-            ExpressionSet dbExpression,
-            Func<SqlStatementExecutionType, ISqlStatementAssembler> assemblerFactory,
+            QueryExpression query,
+            Func<QueryExpression, ISqlStatementAssembler> assemblerFactory,
             Func<Type, IAssemblyPartAppender> partAppenderFactory,
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         )
         {
             AssemblerConfiguration = config;
-            ExpressionSet = dbExpression;
+            Query = query;
             AssemblerFactory = assemblerFactory;
             PartAppenderFactory = partAppenderFactory;
             Appender = appender;
@@ -46,11 +46,11 @@ namespace HatTrick.DbEx.Sql.Assembler
                 Configuration = AssemblerConfiguration,
             };
 
-            var assembler = AssemblerFactory(ExpressionSet.StatementExecutionType);
+            var assembler = AssemblerFactory(Query);
             if (assembler is null)
-                throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{ExpressionSet.StatementExecutionType}', please ensure an assembler has been registered during startup initialization of DbExpression.");
+                throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{Query}', please ensure an assembler has been registered during startup initialization of DbExpression.");
 
-            assembler.AssembleStatement(ExpressionSet, this, context);
+            assembler.AssembleStatement(Query, this, context);
 
             return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
         }
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private void DoAppendPart(object part, AssemblyContext context)
         {
-            if (part is ExpressionSet set)
+            if (part is QueryExpression set)
             {
                 AssembleStatement(set, context);
                 return;
@@ -81,12 +81,12 @@ namespace HatTrick.DbEx.Sql.Assembler
             appender.AppendPart(part, this, context);
         }
 
-        public void AssembleStatement(ExpressionSet set, AssemblyContext context)
+        public void AssembleStatement(QueryExpression set, AssemblyContext context)
         {
-            var assembler = AssemblerFactory(set.StatementExecutionType);
+            var assembler = AssemblerFactory(set);
             if (assembler is null)
             {
-                throw new DbExpressionConfigurationException($"Could not resolve an assembler for type '{nameof(ExpressionSet)}', please ensure an assembler has been registered during startup initialization of DbExpression.");
+                throw new DbExpressionConfigurationException($"Could not resolve an assembler for type '{nameof(Query)}', please ensure an assembler has been registered during startup initialization of DbExpression.");
             }
             assembler.AssembleStatement(set, this, context);
         }

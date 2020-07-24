@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using HatTrick.DbEx.Sql.Pipeline;
 
@@ -9,6 +10,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class DatabaseConfiguration
     {
         #region interface
+        public IQueryExpressionFactory QueryExpressionFactory { get; set; }
         public ExecutionPipelineFactory ExecutionPipelineFactory { get; }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
         public IAppenderFactory AppenderFactory { get; set; }

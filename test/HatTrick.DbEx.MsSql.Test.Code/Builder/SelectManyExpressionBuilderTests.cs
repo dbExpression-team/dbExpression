@@ -20,16 +20,14 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp;
-            ExpressionSet expressionSet;
+            SelectQueryExpression expressionSet;
             //when
             exp = db.SelectMany(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
 
             //then
-            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyValue);
-
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
                 .Which.Expression.Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
@@ -47,17 +45,15 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp;
-            ExpressionSet expressionSet;
+            SelectQueryExpression expressionSet;
 
             //when
             exp = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
 
             //then
-            expressionSet.StatementExecutionType.Should().Be(SqlStatementExecutionType.SelectManyDynamic);
-
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))

@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class DeleteSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("DELETE").LineBreak();
 
