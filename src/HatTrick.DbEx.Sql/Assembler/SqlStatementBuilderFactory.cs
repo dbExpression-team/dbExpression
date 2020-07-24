@@ -80,16 +80,16 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly DBNullValueTypePartAppender _dbNullAppender = new DBNullValueTypePartAppender();
         #endregion
 
-        private Func<SqlStatementExecutionType, ISqlStatementAssembler> _statementAssemblerFactory;
+        private Func<Type, ISqlStatementAssembler> _statementAssemblerFactory;
         private Func<Type, IAssemblyPartAppender> _partAppenderFactory;
 
         private readonly ConcurrentDictionary<Type, Func<IAssemblyPartAppender>> _partAppenders = new ConcurrentDictionary<Type, Func<IAssemblyPartAppender>>();
-        private readonly ConcurrentDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>> _statementAssemblers = new ConcurrentDictionary<SqlStatementExecutionType, Func<ISqlStatementAssembler>>();
+        private readonly ConcurrentDictionary<Type, Func<ISqlStatementAssembler>> _statementAssemblers = new ConcurrentDictionary<Type, Func<ISqlStatementAssembler>>();
         #endregion
 
         #region interface
-        public virtual Func<SqlStatementExecutionType, ISqlStatementAssembler> AssemblerFactory
-            => _statementAssemblerFactory ?? (_statementAssemblerFactory = new Func<SqlStatementExecutionType, ISqlStatementAssembler>(sqlExecutionType =>
+        public virtual Func<Type, ISqlStatementAssembler> AssemblerFactory
+            => _statementAssemblerFactory ?? (_statementAssemblerFactory = new Func<Type, ISqlStatementAssembler>(sqlExecutionType =>
                 {
                     if (_statementAssemblers.TryGetValue(sqlExecutionType, out var assemblerFactory))
                         return assemblerFactory();
@@ -180,33 +180,31 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(DBNull), () => _dbNullAppender);
         }
 
-        public virtual void RegisterStatementAssembler<T>(SqlStatementExecutionType statementExecutionType)
-            where T : class, ISqlStatementAssembler, new()
-            => _statementAssemblers.AddOrUpdate(statementExecutionType, () => new T(), (t, f) => () => new T());
+        public virtual void RegisterStatementAssembler<T, U>()
+            where T : QueryExpression
+            where U : class, ISqlStatementAssembler, new()
+            => _statementAssemblers.AddOrUpdate(typeof(T), () => new U(), (t, f) => () => new U());
 
-        public virtual void RegisterStatementAssembler<T>(SqlStatementExecutionType statementExecutionType, T assembler)
-            where T : class, ISqlStatementAssembler
-            => _statementAssemblers.AddOrUpdate(statementExecutionType, () => assembler, (t, f) => () => assembler);
+        public virtual void RegisterStatementAssembler<T, U>(U assembler)
+            where T : QueryExpression
+            where U : class, ISqlStatementAssembler
+            => _statementAssemblers.AddOrUpdate(typeof(T), () => assembler, (t, f) => () => assembler);
 
-        public virtual void RegisterStatementAssembler<T>(SqlStatementExecutionType statementExecutionType, Func<T> assemblerFactory)
-            where T : class, ISqlStatementAssembler
-            => _statementAssemblers.AddOrUpdate(statementExecutionType, assemblerFactory, (t,f) => assemblerFactory);
+        public virtual void RegisterStatementAssembler<T, U>(Func<U> assemblerFactory)
+            where T : QueryExpression
+            where U : class, ISqlStatementAssembler
+            => _statementAssemblers.AddOrUpdate(typeof(T), assemblerFactory, (t,f) => assemblerFactory);
 
         public virtual void RegisterDefaultStatementAssemblers()
         {
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.Insert, () => _insertSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.Update, () => _updateSqlStatementAssembler);
-            _statementAssemblers.TryAdd(SqlStatementExecutionType.Delete, () => _deleteSqlStatementAssembler);
+            _statementAssemblers.TryAdd(typeof(SelectQueryExpression), () => _selectSqlStatementAssembler);
+            _statementAssemblers.TryAdd(typeof(InsertQueryExpression), () => _insertSqlStatementAssembler);
+            _statementAssemblers.TryAdd(typeof(UpdateQueryExpression), () => _updateSqlStatementAssembler);
+            _statementAssemblers.TryAdd(typeof(DeleteQueryExpression), () => _deleteSqlStatementAssembler);
         }
 
-        public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, ExpressionSet expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
-            => new SqlStatementBuilder(config, expression, AssemblerFactory, PartAppenderFactory, appender, parameterBuilder);
+        public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+            => new SqlStatementBuilder(config, expression, e => AssemblerFactory(e.GetType()), PartAppenderFactory, appender, parameterBuilder);
 
         private IAssemblyPartAppender ResolvePartAppender(Type current, Type original)
         {

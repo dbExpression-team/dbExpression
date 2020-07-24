@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2008
 {
@@ -24,12 +25,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2008
         public override void RegisterDefaultStatementAssemblers()
         {
             base.RegisterDefaultStatementAssemblers();
-            RegisterStatementAssembler(SqlStatementExecutionType.SelectOneType, () => _selectSqlStatementAssembler);
-            RegisterStatementAssembler(SqlStatementExecutionType.SelectOneDynamic, () => _selectSqlStatementAssembler);
-            RegisterStatementAssembler(SqlStatementExecutionType.SelectOneValue, () => _selectSqlStatementAssembler);
-            RegisterStatementAssembler(SqlStatementExecutionType.SelectManyType, () => _selectSqlStatementAssembler);
-            RegisterStatementAssembler(SqlStatementExecutionType.SelectManyDynamic, () => _selectSqlStatementAssembler);
-            RegisterStatementAssembler(SqlStatementExecutionType.SelectManyValue, () => _selectSqlStatementAssembler);
+            RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(() => _selectSqlStatementAssembler);
         }
 
         public override void RegisterDefaultPartAppenders()

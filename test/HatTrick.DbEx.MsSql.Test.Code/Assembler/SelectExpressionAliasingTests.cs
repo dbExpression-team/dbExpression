@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            ExpressionSet expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            SelectQueryExpression expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            ExpressionSet expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            SelectQueryExpression expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
 
-            ExpressionSet expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            SelectQueryExpression expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);

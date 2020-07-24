@@ -7,42 +7,40 @@ namespace HatTrick.DbEx.Sql.Executor
     public class SqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
         private static readonly ISqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
-        private IDictionary<SqlStatementExecutionType, Func<ISqlStatementExecutor>> Executors { get; } = new Dictionary<SqlStatementExecutionType, Func<ISqlStatementExecutor>>();
+        private IDictionary<Type, Func<ISqlStatementExecutor>> Executors { get; } = new Dictionary<Type, Func<ISqlStatementExecutor>>();
 
         public virtual void RegisterDefaultExecutors()
         {
-            Executors.Add(SqlStatementExecutionType.SelectOneType, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.SelectOneDynamic, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.SelectOneValue, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.SelectManyType, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.SelectManyDynamic, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.SelectManyValue, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.Insert, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.Update, () => sqlStatementExecutor);
-            Executors.Add(SqlStatementExecutionType.Delete, () => sqlStatementExecutor);
+            Executors.Add(typeof(SelectQueryExpression), () => sqlStatementExecutor);
+            Executors.Add(typeof(InsertQueryExpression), () => sqlStatementExecutor);
+            Executors.Add(typeof(UpdateQueryExpression), () => sqlStatementExecutor);
+            Executors.Add(typeof(DeleteQueryExpression), () => sqlStatementExecutor);
         }
 
-        public void RegisterExecutor<T>(SqlStatementExecutionType statementExecutionType)
-            where T : class, ISqlStatementExecutor, new()
+        public void RegisterExecutor<T, U>()
+            where T : QueryExpression
+            where U : class, ISqlStatementExecutor, new()
         {
-            Executors[statementExecutionType] = () => new T();
+            Executors[typeof(T)] = () => new U();
         }
 
-        public void RegisterExecutor(SqlStatementExecutionType statementExecutionType, ISqlStatementExecutor executor)
+        public void RegisterExecutor<T>(ISqlStatementExecutor executor)
+            where T : QueryExpression
         {
-            Executors[statementExecutionType] = () => executor;
+            Executors[typeof(T)] = () => executor;
         }
 
-        public void RegisterExecutor(SqlStatementExecutionType statementExecutionType, Func<ISqlStatementExecutor> executorFactory)
+        public void RegisterExecutor<T>(Func<ISqlStatementExecutor> executorFactory)
+            where T : QueryExpression
         {
-            Executors[statementExecutionType] = executorFactory;
+            Executors[typeof(T)] = executorFactory;
         }
 
-        public ISqlStatementExecutor CreateSqlStatementExecutor(ExpressionSet expression)
+        public ISqlStatementExecutor CreateSqlStatementExecutor(QueryExpression expression)
         {
-            if (Executors.TryGetValue(expression.StatementExecutionType, out var executor))
+            if (Executors.TryGetValue(expression.GetType(), out var executor))
                 return executor();
-            throw new DbExpressionConfigurationException($"Could not resolve a sql statement executor, please ensure an executor has been registered for sql statement execution type of '{expression.StatementExecutionType}'");
+            throw new DbExpressionConfigurationException($"Could not resolve a sql statement executor, please ensure an executor has been registered for expression type '{expression.GetType()}'");
         }
     }
 }

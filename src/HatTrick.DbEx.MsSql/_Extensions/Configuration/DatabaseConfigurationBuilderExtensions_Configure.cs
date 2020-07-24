@@ -4,6 +4,7 @@ using HatTrick.DbEx.MsSql.Executor;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Data.SqlClient;
@@ -41,6 +42,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static void ConfigureMsSqlCommon<T>(this RuntimeDatabaseConfigurationBuilder builder, Func<string> connectionStringFactory)
             where T : class, IRuntimeSqlDatabase, new()
         {
+            builder.UseQueryExpressionFactory<ExpressionSetFactory>();
             builder.UseAppenderFactory<AppenderFactory>();
             builder.UseEntityFactory<EntityFactory>();
             builder.UseMapperFactory<MapperFactory>();

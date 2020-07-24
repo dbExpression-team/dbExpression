@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         ISqlStatementBuilder CreateSqlStatementBuilder(
             DbExpressionAssemblerConfiguration config,
-            ExpressionSet expression, 
+            QueryExpression expression, 
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         );

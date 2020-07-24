@@ -8,11 +8,11 @@ namespace HatTrick.DbEx.Sql.Executor
     public class DelegateSqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
         #region internals
-        private readonly Func<ExpressionSet, ISqlStatementExecutor> factory;
+        private readonly Func<QueryExpression, ISqlStatementExecutor> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlStatementExecutorFactory(Func<ExpressionSet, ISqlStatementExecutor> factory)
+        public DelegateSqlStatementExecutorFactory(Func<QueryExpression, ISqlStatementExecutor> factory)
         {
             this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Executor."); ;
         }
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Executor
             if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Executor.");
 
-            this.factory = new Func<ExpressionSet, ISqlStatementExecutor>(ex =>
+            this.factory = new Func<QueryExpression, ISqlStatementExecutor>(ex =>
             {
                 var f = factory().CreateSqlStatementExecutor(ex);
                 if (f is null)
@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-       public ISqlStatementExecutor CreateSqlStatementExecutor(ExpressionSet set)
+       public ISqlStatementExecutor CreateSqlStatementExecutor(QueryExpression set)
             => factory(set);
         #endregion
     }

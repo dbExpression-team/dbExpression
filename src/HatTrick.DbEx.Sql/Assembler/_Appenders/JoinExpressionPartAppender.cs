@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Write(expression.JoinType.ToString())
                 .Write(" JOIN ");
 
-            if (expression.JoinToo is ExpressionSet joinExpression)
+            if (expression.JoinToo is QueryExpression joinExpression)
             {
                 builder.Appender.Write(" (").LineBreak()
                     .Indentation++;

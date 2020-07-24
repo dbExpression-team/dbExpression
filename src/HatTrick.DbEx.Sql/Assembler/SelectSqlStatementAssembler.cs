@@ -6,12 +6,14 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class SelectSqlStatementAssembler : SqlStatementAssembler
     {
-        public override void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            AssembleSelectStatement(expression, builder, context);
+            if (!(expression is SelectQueryExpression a))
+                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(SelectQueryExpression)}, but is actually type {expression.GetType()}");
+            AssembleSelectStatement(a, builder, context);
         }
 
-        protected virtual void AssembleSelectStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AssembleSelectStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             AppendSelectClause(expression, builder, context);
             AppendFromClause(expression, builder, context);
@@ -22,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             AppendOrderByClause(expression, builder, context);
         }
 
-        protected virtual void AppendSelectClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender
                 .Indent().Write("SELECT");
@@ -47,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indentation--;
         }
 
-        protected virtual void AppendFromClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendFromClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Indent().Write("FROM").LineBreak();
 
@@ -64,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .LineBreak();
         }
 
-        protected virtual void AppendGroupByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendGroupByClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.GroupBy?.Expressions is null || !expression.GroupBy.Expressions.Any())
                 return;
@@ -78,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendHavingClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendHavingClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Having?.Expression is null || expression.Having.Expression is null)
                 return;
@@ -92,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendOrderByClause(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendOrderByClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.OrderBy?.Expressions is null || !expression.OrderBy.Expressions.Any())
                 return;

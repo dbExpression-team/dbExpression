@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp;
-            ExpressionSet expressionSet;
+            QueryExpression expressionSet;
             FilterExpression idFilter;
 
             //when
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp;
-            ExpressionSet expressionSet;
+            QueryExpression expressionSet;
             FilterExpression idFilter;
             FilterExpression ssnFilter;
 

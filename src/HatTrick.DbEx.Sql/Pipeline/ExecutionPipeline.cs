@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             Database = database ?? throw new DbExpressionConfigurationException($"Database configuration is required, please review and ensure the correct configuration for DbExpression.");
         }
 
-        protected ISqlConnection CreateConnection(ExpressionSet expression)
+        protected ISqlConnection CreateConnection(QueryExpression expression)
         {
             try
             {

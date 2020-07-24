@@ -288,22 +288,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var statement = statementBuilder.CreateSqlStatement();
 
-            switch (expression.StatementExecutionType)
-            {
-                case SqlStatementExecutionType.Insert:
-                    BeforeInsert.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(expression, appender, parameterBuilder)));
-                    break;
-                case SqlStatementExecutionType.Update:
-                case SqlStatementExecutionType.Delete:
-                case SqlStatementExecutionType.SelectOneValue:
-                case SqlStatementExecutionType.SelectOneType:
-                case SqlStatementExecutionType.SelectOneDynamic:
-                case SqlStatementExecutionType.SelectManyValue:
-                case SqlStatementExecutionType.SelectManyType:
-                case SqlStatementExecutionType.SelectManyDynamic:
-                    break;
-                default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
-            }
+            if (expression is InsertQueryExpression beforeInsert)
+                BeforeInsert.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(beforeInsert, appender, parameterBuilder)));
+
+            //switch (expression.StatementExecutionType)
+            //{
+            //    case SqlStatementExecutionType.Insert:
+            //        BeforeInsert.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(expression, appender, parameterBuilder)));
+            //        break;
+            //    case SqlStatementExecutionType.Update:
+            //    case SqlStatementExecutionType.Delete:
+            //    case SqlStatementExecutionType.SelectOneValue:
+            //    case SqlStatementExecutionType.SelectOneType:
+            //    case SqlStatementExecutionType.SelectOneDynamic:
+            //    case SqlStatementExecutionType.SelectManyValue:
+            //    case SqlStatementExecutionType.SelectManyType:
+            //    case SqlStatementExecutionType.SelectManyDynamic:
+            //        break;
+            //    default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
+            //}
 
             var executor = Database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
@@ -314,22 +317,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 executor.ExecuteNonQuery(statement, connection, configureCommand, cmd => BeforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(expression, statement, cmd))));
 
-                switch (expression.StatementExecutionType)
-                {
-                    case SqlStatementExecutionType.Insert:
-                        AfterInsert.Invoke(new Lazy<AfterInsertPipelineExecutionContext>(() => new AfterInsertPipelineExecutionContext(expression, parameterBuilder, Database.MapperFactory)));
-                        break;
-                    case SqlStatementExecutionType.Update:
-                    case SqlStatementExecutionType.Delete:
-                    case SqlStatementExecutionType.SelectOneValue:
-                    case SqlStatementExecutionType.SelectOneType:
-                    case SqlStatementExecutionType.SelectOneDynamic:
-                    case SqlStatementExecutionType.SelectManyValue:
-                    case SqlStatementExecutionType.SelectManyType:
-                    case SqlStatementExecutionType.SelectManyDynamic:
-                        break;
-                    default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
-                }
+                if (expression is InsertQueryExpression afterInsert)
+                    AfterInsert.Invoke(new Lazy<AfterInsertPipelineExecutionContext>(() => new AfterInsertPipelineExecutionContext(afterInsert, parameterBuilder, Database.MapperFactory)));
+
+                //switch (expression.StatementExecutionType)
+                //{
+                //    case SqlStatementExecutionType.Insert:
+                //        AfterInsert.Invoke(new Lazy<AfterInsertPipelineExecutionContext>(() => new AfterInsertPipelineExecutionContext(expression, parameterBuilder, Database.MapperFactory)));
+                //        break;
+                //    case SqlStatementExecutionType.Update:
+                //    case SqlStatementExecutionType.Delete:
+                //    case SqlStatementExecutionType.SelectOneValue:
+                //    case SqlStatementExecutionType.SelectOneType:
+                //    case SqlStatementExecutionType.SelectOneDynamic:
+                //    case SqlStatementExecutionType.SelectManyValue:
+                //    case SqlStatementExecutionType.SelectManyType:
+                //    case SqlStatementExecutionType.SelectManyDynamic:
+                //        break;
+                //    default: throw new NotImplementedException($"'{expression.StatementExecutionType}' statement execution type has not been implemented.");
+                //}
 
                 return;
             }

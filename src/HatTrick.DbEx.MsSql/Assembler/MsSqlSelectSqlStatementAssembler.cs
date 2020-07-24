@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlSelectSqlStatementAssembler : SelectSqlStatementAssembler
     {
-        protected virtual void AssembleMsSqlCTESelectStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AssembleMsSqlCTESelectStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //start CTE
             builder.Appender.Indent().Write("SELECT").LineBreak()
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return;
         }
 
-        protected virtual void AssembleMsSqlDistinctCTESelectStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AssembleMsSqlDistinctCTESelectStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //expression is marked as DISTINCT and uses paging, must perform a subselect with the distinct prior
             //to using ROW_NUMBER as inclusion of ROW_NUMBER with DISTINCT uses the generated index of the row

@@ -31,6 +31,25 @@ namespace HatTrick.DbEx.Sql.Configuration
             config(configuration.AssemblerConfiguration);
         }
 
+        #region expression set factory
+        public void UseQueryExpresionFactory(IQueryExpressionFactory factory)
+        {
+            configuration.QueryExpressionFactory = factory;
+        }
+
+        public void UseQueryExpressionFactory<T>()
+            where T : class, IQueryExpressionFactory, new()
+        {
+            configuration.QueryExpressionFactory = new T();
+        }
+
+        public void UseQueryExpressionFactory<T>(Func<T> factory)
+            where T : QueryExpression, new()
+        {
+            configuration.QueryExpressionFactory = new DelegateQueryExpressionFactory(new Func<Type,QueryExpression>(t => factory()));
+        }
+        #endregion
+
         #region sql statement builder factory
         public void UseStatementBuilderFactory(ISqlStatementBuilderFactory factory)
         {
@@ -51,7 +70,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.StatementBuilderFactory = factory;
         }
 
-        public void UseStatementBuilderFactory(Func<DbExpressionAssemblerConfiguration, ExpressionSet, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
+        public void UseStatementBuilderFactory(Func<DbExpressionAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
         {
             configuration.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
         }
@@ -136,7 +155,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.ExecutorFactory = factory;
         }
 
-        public void UseExecutorFactory(Func<ExpressionSet,ISqlStatementExecutor> factory)
+        public void UseExecutorFactory(Func<QueryExpression,ISqlStatementExecutor> factory)
         {
             configuration.ExecutorFactory = new DelegateSqlStatementExecutorFactory(factory);
         }

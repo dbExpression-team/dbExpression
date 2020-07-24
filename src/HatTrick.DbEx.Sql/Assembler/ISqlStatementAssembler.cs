@@ -7,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface ISqlStatementAssembler
     {
-        void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context);
+        void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
     }
 
     public interface ISqlStatementAssembler<T> : ISqlStatementAssembler
         where T : AssemblyContext
     {
-        void AssembleStatement(ExpressionSet expression, ISqlStatementBuilder builder, T context);
+        void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, T context);
     }
 }
