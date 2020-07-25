@@ -1,6 +1,6 @@
 ﻿namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ExpressionSetFactory : IQueryExpressionFactory
+    public class QueryExpressionFactory : IQueryExpressionFactory
     {
         public T CreateQueryExpression<T>() where T : QueryExpression, new() => new T();
     }

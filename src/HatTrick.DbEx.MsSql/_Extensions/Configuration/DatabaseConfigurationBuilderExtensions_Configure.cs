@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             {
                 connBuilder = new SqlConnectionStringBuilder(connectionString);
             }
-            catch (FormatException e)
+            catch (FormatException e) 
             {
                 throw new DbExpressionConfigurationException($"The connection string is not in a valid format", e);
             }
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
         private static void ConfigureMsSqlCommon<T>(this RuntimeDatabaseConfigurationBuilder builder, Func<string> connectionStringFactory)
             where T : class, IRuntimeSqlDatabase, new()
         {
-            builder.UseQueryExpressionFactory<ExpressionSetFactory>();
+            builder.UseQueryExpressionFactory<QueryExpressionFactory>();
             builder.UseAppenderFactory<AppenderFactory>();
             builder.UseEntityFactory<EntityFactory>();
             builder.UseMapperFactory<MapperFactory>();
