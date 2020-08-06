@@ -35,9 +35,9 @@ namespace HatTrick.DbEx.Sql.Builder
             SelectExpressionSet select = expression.Select;
             if (select is null || !select.Expressions.Any())
             {
-                expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression())
-                    .Distinct((select as IDbExpressionIsDistinctProvider).IsDistinct)
-                    .Top((select as IDbExpressionIsTopProvider).Top);
+                expression.Select = new SelectExpressionSet((entity as IExpressionEntity<T>).BuildInclusiveSelectExpression())
+                    .Distinct((select as IExpressionIsDistinctProvider).IsDistinct)
+                    .Top((select as IExpressionTopProvider).Top);
             }
             return this as V;
         }
@@ -48,9 +48,9 @@ namespace HatTrick.DbEx.Sql.Builder
             SelectExpressionSet select = expression.Select;
             if (select is null || !select.Expressions.Any())
             {
-                expression.Select = new SelectExpressionSet((entity as IDbExpressionEntity<T>).BuildInclusiveSelectExpression())
-                    .Distinct((select as IDbExpressionIsDistinctProvider).IsDistinct)
-                    .Top((select as IDbExpressionIsTopProvider).Top);
+                expression.Select = new SelectExpressionSet((entity as IExpressionEntity<T>).BuildInclusiveSelectExpression())
+                    .Distinct((select as IExpressionIsDistinctProvider).IsDistinct)
+                    .Top((select as IExpressionTopProvider).Top);
             }
             return this as V;
         }

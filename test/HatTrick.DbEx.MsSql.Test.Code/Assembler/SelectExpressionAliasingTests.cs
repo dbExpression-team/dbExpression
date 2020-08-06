@@ -23,14 +23,14 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
             var context = new AssemblyContext();
 
             //when
-            builder.AppendPart(expressionSet.Select, context);
+            builder.AppendPart(queryExpression.Select, context);
             var select = builder.Appender.ToString();
 
             //then
@@ -49,15 +49,15 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
             var context = new AssemblyContext();
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
-            builder.AppendPart(expressionSet.Select, context);
+            builder.AppendPart(queryExpression.Select, context);
             var select = builder.Appender.ToString();
 
             //then
@@ -76,15 +76,15 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
             var context = new AssemblyContext();
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
-            builder.AppendPart(expressionSet.Select, context);
+            builder.AppendPart(queryExpression.Select, context);
             var select = builder.Appender.ToString();
 
             //then

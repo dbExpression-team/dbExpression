@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DateAddFunctionExpression : DataTypeFunctionExpression,
-        IDbDateFunctionExpression,
+        IDateFunctionExpression,
         IEquatable<DateAddFunctionExpression>
     {
         #region interface

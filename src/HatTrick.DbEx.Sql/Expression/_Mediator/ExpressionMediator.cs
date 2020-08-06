@@ -3,8 +3,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ExpressionMediator : 
-        IDbExpression,
-        IDbExpressionAliasProvider,
+        IExpression,
+        IExpressionAliasProvider,
         IEquatable<ExpressionMediator>
     {
         #region internals
@@ -12,8 +12,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public IDbExpression Expression { get; set; }
-        string IDbExpressionAliasProvider.Alias => Alias;
+        public IExpression Expression { get; set; }
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public ExpressionMediator(IDbExpression expression)
+        public ExpressionMediator(IExpression expression)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }

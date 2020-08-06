@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlEntityMetadata : IDbExpressionMetadata
+    public interface ISqlEntityMetadata : ISqlMetadata
     {
         ISqlSchemaMetadata Schema { get; }
         IDictionary<string, ISqlFieldMetadata> Fields { get; }

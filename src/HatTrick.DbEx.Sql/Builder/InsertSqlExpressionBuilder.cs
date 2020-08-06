@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var i = 0;
             insert.BaseEntity = entity;
-            insert.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (entity as IDbExpressionEntity<T>).BuildInclusiveInsertExpression(x).Expressions));
+            insert.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (entity as IExpressionEntity<T>).BuildInclusiveInsertExpression(x).Expressions));
             return this;
         }
     }

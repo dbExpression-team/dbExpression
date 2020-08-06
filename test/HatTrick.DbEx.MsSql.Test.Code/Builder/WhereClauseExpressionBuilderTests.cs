@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0);
 
-            expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            expressionSet = (exp as IQueryExpressionProvider).Expression;
             idFilter = (FilterExpression)expressionSet.Where.LeftArg.Object;
 
             //then
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX");
 
-            expressionSet = (exp as IDbExpressionSetProvider).Expression;
+            expressionSet = (exp as IQueryExpressionProvider).Expression;
             idFilter = (FilterExpression)expressionSet.Where.LeftArg.Object;
             ssnFilter = (FilterExpression)expressionSet.Where.RightArg.Object;
 
@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != new DateTime(2000,1,1));
 
-            filterSet = (exp as IDbExpressionSetProvider).Expression.Where;
+            filterSet = (exp as IQueryExpressionProvider).Expression.Where;
 
             idFilter = (filterSet.LeftArg.Object as FilterExpressionSet).LeftArg.Object as FilterExpression;
             ssnFilter = (filterSet.LeftArg.Object as FilterExpressionSet).RightArg.Object as FilterExpression;

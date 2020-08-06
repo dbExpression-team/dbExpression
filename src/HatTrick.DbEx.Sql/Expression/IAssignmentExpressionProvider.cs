@@ -1,6 +1,6 @@
 ﻿namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IDbAssignmentExpressionProvider
+    public interface IAssignmentExpressionProvider
     {
         FieldExpression Assignee { get; }
         ExpressionMediator Assignment { get; }

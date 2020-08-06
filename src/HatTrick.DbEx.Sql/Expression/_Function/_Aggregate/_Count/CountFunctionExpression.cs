@@ -4,7 +4,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CountFunctionExpression : AggregateFunctionExpression,
-        IDbExpressionIsDistinctProvider,
+        IExpressionIsDistinctProvider,
         IEquatable<CountFunctionExpression>
     {
         #region internals
@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        bool IDbExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors

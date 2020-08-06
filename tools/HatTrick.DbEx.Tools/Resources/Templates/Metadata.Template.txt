@@ -8,14 +8,14 @@ namespace {() => ResolveRootNamespace}DataService
 	{/if}
 	{/each}
 
-    public class {($) => ResolveName}DatabaseMetadataProvider : IDatabaseMetadataProvider
+    public class {($) => ResolveName}SqlDatabaseMetadataProvider : ISqlDatabaseMetadataProvider
     {{
         #region interface
         public ISqlDatabaseMetadata Database {{ get; private set; }}
         #endregion
 
         #region constructors
-        public {($) => ResolveName}DatabaseMetadataProvider()
+        public {($) => ResolveName}SqlDatabaseMetadataProvider()
         {{
             Database = new {($) => ResolveName}SqlDatabaseMetadata("{($) => ResolveName}");
 			{#each Schemas}

@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Alias)
             {
-                var alias = (expression as IDbExpressionAliasProvider).Alias;
+                var alias = (expression as IExpressionAliasProvider).Alias;
                 if (!string.IsNullOrWhiteSpace(alias))
                 {
                     builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
@@ -18,10 +18,10 @@ namespace HatTrick.DbEx.Sql.Assembler
                 }
             }
 
-            var provider = expression as IDbExpressionMetadataProvider<ISqlEntityMetadata>;
+            var provider = expression as ISqlMetadataProvider<ISqlEntityMetadata>;
             if (context.Configuration.IncludeSchemaName)
             {
-                builder.AppendPart((expression as IDbExpressionProvider<SchemaExpression>).Expression, context);
+                builder.AppendPart((expression as IExpressionProvider<SchemaExpression>).Expression, context);
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);

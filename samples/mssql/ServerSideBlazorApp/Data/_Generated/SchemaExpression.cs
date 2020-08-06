@@ -30,7 +30,7 @@ namespace ServerSideBlazorApp.DataService
         #region constructors
         public CRMDatabase()
         {
-            metadata = new CRMDatabaseDatabaseMetadataProvider().Database;
+            metadata = new CRMDatabaseSqlDatabaseMetadataProvider().Database;
         }
 
         public CRMDatabase(ISqlDatabaseMetadata metadata)

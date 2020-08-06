@@ -5,14 +5,14 @@ namespace DbEx.DataService
 	using DbEx.dboDataService;
 	using DbEx.secDataService;
 
-    public class MsSqlDbExTestDatabaseMetadataProvider : IDatabaseMetadataProvider
+    public class MsSqlDbExTestSqlDatabaseMetadataProvider : ISqlDatabaseMetadataProvider
     {
         #region interface
         public ISqlDatabaseMetadata Database { get; private set; }
         #endregion
 
         #region constructors
-        public MsSqlDbExTestDatabaseMetadataProvider()
+        public MsSqlDbExTestSqlDatabaseMetadataProvider()
         {
             Database = new MsSqlDbExTestSqlDatabaseMetadata("MsSqlDbExTest");
             Database.Schemas.Add("dbo", new dboSchemaMetadata(Database));

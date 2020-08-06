@@ -29,12 +29,12 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender
                 .Indent().Write("SELECT");
 
-            if (expression.Select is IDbExpressionIsTopProvider t && t.Top.HasValue)
+            if (expression.Select is IExpressionTopProvider t && t.Top.HasValue)
             {
                 builder.Appender.Write(" TOP(").Write(t.Top.ToString()).Write(")");
             }
 
-            if (expression.Select is IDbExpressionIsDistinctProvider d && d.IsDistinct)
+            if (expression.Select is IExpressionIsDistinctProvider d && d.IsDistinct)
             {
                 builder.Appender.Write(" DISTINCT");
             }

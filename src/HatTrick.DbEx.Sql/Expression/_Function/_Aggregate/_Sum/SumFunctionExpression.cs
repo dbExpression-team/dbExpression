@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class SumFunctionExpression : AggregateFunctionExpression,
-        IDbExpressionIsDistinctProvider,
+        IExpressionIsDistinctProvider,
         IEquatable<SumFunctionExpression>
     {
         #region internals
@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        bool IDbExpressionIsDistinctProvider.IsDistinct => IsDistinct;
+        bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors

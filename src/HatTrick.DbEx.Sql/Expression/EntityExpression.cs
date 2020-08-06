@@ -6,11 +6,11 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class EntityExpression :
-        IDbExpression, 
-        IDbExpressionMetadataProvider<ISqlEntityMetadata>,
-        IDbExpressionProvider<SchemaExpression>,
-        IDbExpressionListProvider<FieldExpression>,
-        IDbExpressionAliasProvider,
+        IExpression, 
+        ISqlMetadataProvider<ISqlEntityMetadata>,
+        IExpressionProvider<SchemaExpression>,
+        IExpressionListProvider<FieldExpression>,
+        IExpressionAliasProvider,
         IFieldExpressionMapper,
         IEquatable<EntityExpression>
    {
@@ -24,10 +24,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        SchemaExpression IDbExpressionProvider<SchemaExpression>.Expression => Schema;
-        IList<FieldExpression> IDbExpressionListProvider<FieldExpression>.Expressions => Fields.Values.ToList();
-        ISqlEntityMetadata IDbExpressionMetadataProvider<ISqlEntityMetadata>.Metadata => Metadata;
-        string IDbExpressionAliasProvider.Alias => Alias;
+        SchemaExpression IExpressionProvider<SchemaExpression>.Expression => Schema;
+        IList<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values.ToList();
+        ISqlEntityMetadata ISqlMetadataProvider<ISqlEntityMetadata>.Metadata => Metadata;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors

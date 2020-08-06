@@ -619,7 +619,7 @@ namespace HatTrick.DbEx.Sql
         private static T GetQueryExpression<T>(this ITerminationExpressionBuilder builder)
             where T : QueryExpression
         {
-            var provider = builder as IDbExpressionSetProvider ?? throw new DbExpressionConfigurationException($"The parameter '{nameof(builder)}' must be assignable to type '{typeof(IDbExpressionSetProvider)}'.");
+            var provider = builder as IQueryExpressionProvider ?? throw new DbExpressionConfigurationException($"The parameter '{nameof(builder)}' must be assignable to type '{typeof(IQueryExpressionProvider)}'.");
             return provider.Expression as T ?? throw new DbExpressionConfigurationException($"Query expression is type '{provider.Expression}', the type was expected to be the requested type of '{typeof(T)}'.");
         }
     }

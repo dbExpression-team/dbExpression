@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where T : IExpressionBuilder
     {
         private QueryExpression Expression { get; set; }
-        private IDbExpression JoinOn { get; set; }
+        private IExpression JoinOn { get; set; }
         private JoinOperationExpressionOperator JoinType { get; set; }
         private T Caller { get; set; }
         protected string Alias { get; set; }

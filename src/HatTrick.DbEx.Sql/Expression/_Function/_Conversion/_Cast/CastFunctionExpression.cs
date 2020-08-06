@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CastFunctionExpression : ConversionFunctionExpression,
-        IDbFunctionExpression,
+        IFunctionExpression,
         IEquatable<CastFunctionExpression>
     {
         #region interface

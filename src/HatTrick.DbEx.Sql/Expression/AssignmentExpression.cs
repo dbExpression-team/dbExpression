@@ -3,8 +3,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class AssignmentExpression : 
-        IDbExpression,
-        IDbAssignmentExpressionProvider
+        IExpression,
+        IAssignmentExpressionProvider
     {
         #region internals
         private FieldExpression assignee;
@@ -12,8 +12,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        FieldExpression IDbAssignmentExpressionProvider.Assignee => assignee;
-        ExpressionMediator IDbAssignmentExpressionProvider.Assignment => assignment;
+        FieldExpression IAssignmentExpressionProvider.Assignee => assignee;
+        ExpressionMediator IAssignmentExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors

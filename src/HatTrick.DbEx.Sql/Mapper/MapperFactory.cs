@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             if (_entityMaps.TryGetValue(typeof(T), out Func<IMapper> map))
                 return map() as IEntityMapper<T>;
 
-            var entityMap = new EntityMapper<T>((entity as IDbExpressionEntity<T>).HydrateEntity);
+            var entityMap = new EntityMapper<T>((entity as IExpressionEntity<T>).HydrateEntity);
             _entityMaps.TryAdd(typeof(T), () => entityMap);
 
             return entityMap;

@@ -33,7 +33,7 @@ namespace {() => ResolveRootNamespace}DataService
         #region constructors
         public {($) => ResolveName}()
         {{
-            metadata = new {($) => ResolveName}DatabaseMetadataProvider().Database;
+            metadata = new {($) => ResolveName}SqlDatabaseMetadataProvider().Database;
         }}
 
         public {($) => ResolveName}(ISqlDatabaseMetadata metadata)

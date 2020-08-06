@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class CurrentTimestampFunctionExpression : DataTypeFunctionExpression,
-        IDbDateFunctionExpression,
+        IDateFunctionExpression,
         IEquatable<CurrentTimestampFunctionExpression>
     {
         #region as

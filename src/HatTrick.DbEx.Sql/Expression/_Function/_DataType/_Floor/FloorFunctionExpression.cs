@@ -3,12 +3,12 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FloorFunctionExpression : DataTypeFunctionExpression,
-        IDbFunctionExpression,
-        IDbExpressionAliasProvider,
+        IFunctionExpression,
+        IExpressionAliasProvider,
         IEquatable<FloorFunctionExpression>
     {
         #region interface        
-        string IDbExpressionAliasProvider.Alias => Alias;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors

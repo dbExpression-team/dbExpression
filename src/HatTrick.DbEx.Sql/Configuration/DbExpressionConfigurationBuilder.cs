@@ -4,11 +4,11 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class DbExpressionConfigurationBuilder
     {
-        public static void AddDbExpression(params Action<DbExpressionRuntimeEnvironmentBuilder>[] databases)
+        public static void AddDbExpression(params Action<RuntimeEnvironmentBuilder>[] databases)
         {
             foreach (var database in databases)
             {
-                database?.Invoke(new DbExpressionRuntimeEnvironmentBuilder());
+                database?.Invoke(new RuntimeEnvironmentBuilder());
             }
         }
     }

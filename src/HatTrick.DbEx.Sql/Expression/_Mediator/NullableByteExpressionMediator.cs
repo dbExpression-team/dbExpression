@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableByteExpressionMediator(IDbExpression expression) : base(expression)
+        public NullableByteExpressionMediator(IExpression expression) : base(expression)
         {
         }
         #endregion

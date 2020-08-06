@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public void AppendPart<T>(T part, AssemblyContext context)
-            where T : class, IDbExpression
+            where T : class, IExpression
             => DoAppendPart(part, context);
 
         public void AppendPart(ExpressionContainer part, AssemblyContext context)

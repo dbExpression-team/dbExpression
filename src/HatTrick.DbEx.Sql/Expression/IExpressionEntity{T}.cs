@@ -3,12 +3,7 @@ using HatTrick.DbEx.Sql.Mapper;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IDbExpressionEntity
-    {
-        SelectExpressionSet BuildInclusiveSelectExpression();
-
-    }
-    public interface IDbExpressionEntity<T> : IDbExpressionEntity
+    public interface IExpressionEntity<T> : IExpressionEntity
     {
 
         InsertExpressionSet<T> BuildInclusiveInsertExpression(T entity);

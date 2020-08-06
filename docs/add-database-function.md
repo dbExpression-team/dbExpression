@@ -94,7 +94,7 @@ numeeric data type, so we will need the following concrete classes (under Expres
 - NullableSingleFloorFunctionExpression.cs
 
 Add FloorFunctionExpression.cs, which is an abstract class extending DataTypeFunctionExpression and implmenting the IDbFunctionExpresion, 
-IDbExpressionAliasProvider, and IEquatable<FloorFunctionExpression> interfaces.  Provide a protected constructor that accepts a non-generic 
+IExpressionAliasProvider, and IEquatable<FloorFunctionExpression> interfaces.  Provide a protected constructor that accepts a non-generic 
 ExpressionMediator as a constructor arg (concrete implementation classes that extend the FloorFunctionExpression
 can define more concrete argument types).  Implement the interfaces similar to other database function classes.  Note that the As method
 is a "new" implementation to change the return type to FloorFunctionExpression.  The end result of FloorFunctionExpression.cs:
@@ -105,11 +105,11 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FloorFunctionExpression : DataTypeFunctionExpression,
         IDbFunctionExpression,
-        IDbExpressionAliasProvider,
+        IExpressionAliasProvider,
         IEquatable<FloorFunctionExpression>
     {
         #region interface        
-        string IDbExpressionAliasProvider.Alias => Alias;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors

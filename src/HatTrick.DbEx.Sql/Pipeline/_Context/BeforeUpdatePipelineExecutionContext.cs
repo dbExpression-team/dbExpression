@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             CommandTextWriter = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
-            Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IDbAssignmentExpressionProvider).Assignee, (x as IDbAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
+            Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
         }
     }
 }

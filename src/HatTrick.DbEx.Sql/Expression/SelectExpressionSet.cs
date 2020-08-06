@@ -5,9 +5,9 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpressionSet : 
-        IDbExpression,
-        IDbExpressionIsDistinctProvider,
-        IDbExpressionIsTopProvider
+        IExpression,
+        IExpressionIsDistinctProvider,
+        IExpressionTopProvider
     {
         #region internals
         protected bool _isDistinct;
@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region interface
         public IList<SelectExpression> Expressions { get; } = new List<SelectExpression>();
-        bool IDbExpressionIsDistinctProvider.IsDistinct => _isDistinct;
-        int? IDbExpressionIsTopProvider.Top => _top;
+        bool IExpressionIsDistinctProvider.IsDistinct => _isDistinct;
+        int? IExpressionTopProvider.Top => _top;
         #endregion
 
         #region constructor

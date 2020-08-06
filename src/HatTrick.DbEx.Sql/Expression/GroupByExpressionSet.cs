@@ -5,8 +5,8 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
-        IDbExpression, 
-        IDbExpressionSet<GroupByExpression>
+        IExpression, 
+        IExpressionSet<GroupByExpression>
     {
         #region interface
         public IList<GroupByExpression> Expressions { get; } = new List<GroupByExpression>();
