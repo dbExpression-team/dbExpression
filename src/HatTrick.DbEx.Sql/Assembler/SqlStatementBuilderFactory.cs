@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         }
 
-        public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        public ISqlStatementBuilder CreateSqlStatementBuilder(SqlStatementAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
             => new SqlStatementBuilder(config, expression, e => AssemblerFactory(e.GetType()), PartAppenderFactory, appender, parameterBuilder);
 
         private IAssemblyPartAppender ResolvePartAppender(Type current, Type original)

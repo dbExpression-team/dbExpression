@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlConnectionFactory ConnectionFactory { get; set; }
         public IMapperFactory MapperFactory { get; set; }
         public IEntityFactory EntityFactory { get; set; }
-        public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; set; } = new DbExpressionAssemblerConfiguration();
+        public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; set; } = new SqlStatementAssemblerConfiguration();
         #endregion
     }
 }

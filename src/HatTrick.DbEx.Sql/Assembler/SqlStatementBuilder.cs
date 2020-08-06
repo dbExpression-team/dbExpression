@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private SqlStatement _sqlStatement;
         #endregion
 
-        public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; }
+        public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; }
         public QueryExpression Query { get; }
         public Func<QueryExpression, ISqlStatementAssembler> AssemblerFactory { get; }
         public Func<Type, IAssemblyPartAppender> PartAppenderFactory { get; }
@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
-            DbExpressionAssemblerConfiguration config,
+            SqlStatementAssemblerConfiguration config,
             QueryExpression query,
             Func<QueryExpression, ISqlStatementAssembler> assemblerFactory,
             Func<Type, IAssemblyPartAppender> partAppenderFactory,
