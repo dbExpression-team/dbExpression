@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor : ISqlStatementExecutor
     {
-        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, Action<DbCommand> beforeExecution)
+        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
         {
             int @return = 0;
 
@@ -24,12 +24,12 @@ namespace HatTrick.DbEx.Sql.Executor
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
-            configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
             try
             {
                 connection.EnsureOpenConnection();
                 @return = cmd.ExecuteNonQuery();
+                afterExecution?.Invoke(cmd);
                 if (!connection.IsTransactional) { connection.Disconnect(); }
             }
             catch
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, Action<DbCommand> beforeExecution, CancellationToken ct)
+        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
         {
             int @return = 0;
 
@@ -66,12 +66,12 @@ namespace HatTrick.DbEx.Sql.Executor
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
-            configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
             try
             {
-                await connection.EnsureOpenConnectionAsync().ConfigureAwait(false);
-                @return = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                await connection.EnsureOpenConnectionAsync(ct).ConfigureAwait(false);
+                @return = await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
+                afterExecution?.Invoke(cmd);
                 if (!connection.IsTransactional) { connection.Disconnect(); }
             }
             catch
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, IValueMapper mapper, Action<DbCommand> beforeExecution)
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
         {
             DbCommand cmd = connection.CreateDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -105,13 +105,14 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
-            configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
             connection.EnsureOpenConnection();
-            return new DataReaderWrapper(connection, cmd.ExecuteReader(), mapper);
+            var reader = cmd.ExecuteReader();
+            afterExecution?.Invoke(cmd);
+            return new DataReaderWrapper(connection, reader, mapper);
         }
 
-        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, IValueMapper mapper, Action<DbCommand> beforeExecution, CancellationToken ct)
+        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
         {
             DbCommand cmd = connection.CreateDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -122,10 +123,47 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any())
                 cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
-            configureCommand?.Invoke(cmd);
             beforeExecution?.Invoke(cmd);
-            await connection.EnsureOpenConnectionAsync();
-            return new AsyncDataReaderWrapper(connection, await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false), mapper, ct);
+            await connection.EnsureOpenConnectionAsync(ct);
+            var reader = await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false);
+            afterExecution?.Invoke(cmd);
+            return new AsyncDataReaderWrapper(connection, reader, mapper, ct);
+        }
+
+        public virtual T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        {
+            DbCommand cmd = connection.CreateDbCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+            cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+            if (statement.Parameters is object && statement.Parameters.Any())
+                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            beforeExecution?.Invoke(cmd);
+            connection.EnsureOpenConnection();
+            var output = cmd.ExecuteScalar();
+            afterExecution?.Invoke(cmd);
+            return mapper.Map<T>(output);
+        }
+
+        public virtual async Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        {
+            DbCommand cmd = connection.CreateDbCommand();
+            cmd.Connection = connection.DbConnection;
+            cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+            cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+            if (statement.Parameters is object && statement.Parameters.Any())
+                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            beforeExecution?.Invoke(cmd);
+            connection.EnsureOpenConnection();
+            var output = await cmd.ExecuteScalarAsync(ct).ConfigureAwait(false);
+            afterExecution?.Invoke(cmd);
+            return mapper.Map<T>(output);
         }
     }
 }

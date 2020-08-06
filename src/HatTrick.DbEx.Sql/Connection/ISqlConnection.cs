@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Connection
@@ -11,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Connection
         bool IsTransactional { get; }
         DbCommand CreateDbCommand();
         void EnsureOpenConnection();
-        Task EnsureOpenConnectionAsync();
+        Task EnsureOpenConnectionAsync(CancellationToken ct);
         ISqlConnection BeginTransaction();
         ISqlConnection BeginTransaction(IsolationLevel iso);
         void CommitTransaction();

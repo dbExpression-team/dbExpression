@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Pipeline
@@ -7,8 +8,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public ISqlStatementBuilder SqlStatementBuilder { get; private set; }
 
-        public AfterAssemblyPipelineExecutionContext(QueryExpression expression, ISqlStatementBuilder builder)
-            : base(expression)
+        public AfterAssemblyPipelineExecutionContext(DatabaseConfiguration database, QueryExpression expression, ISqlStatementBuilder builder)
+            : base(database, expression)
         {
             SqlStatementBuilder = builder;
         }

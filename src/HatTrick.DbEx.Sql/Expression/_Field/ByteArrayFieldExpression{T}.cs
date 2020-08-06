@@ -27,8 +27,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set
-        public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(new ByteExpressionMediator(this), value);
+        public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
+        public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

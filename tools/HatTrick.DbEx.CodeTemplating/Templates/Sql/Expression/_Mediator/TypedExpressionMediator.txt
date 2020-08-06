@@ -12,11 +12,6 @@ namespace {Namespace}
         {/if}
         #endregion
 
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
-        #endregion
-
         #region arithmetic operators
         #region TValue
         {#each ArithmeticOperations}

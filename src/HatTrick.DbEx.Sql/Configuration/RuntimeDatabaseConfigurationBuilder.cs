@@ -26,13 +26,15 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region methods
+        #region assembler
         public void ConfigureAssembler(Action<DbExpressionAssemblerConfiguration> config)
         {
             config(configuration.AssemblerConfiguration);
         }
+        #endregion
 
-        #region expression set factory
-        public void UseQueryExpresionFactory(IQueryExpressionFactory factory)
+        #region query expression factory
+        public void UseQueryExpressionFactory(IQueryExpressionFactory factory)
         {
             configuration.QueryExpressionFactory = factory;
         }
@@ -47,6 +49,27 @@ namespace HatTrick.DbEx.Sql.Configuration
             where T : QueryExpression, new()
         {
             configuration.QueryExpressionFactory = new DelegateQueryExpressionFactory(new Func<Type,QueryExpression>(t => factory()));
+        }
+        #endregion
+
+        #region execution pipeline factory
+        public void UseExecutionPipelineFactory(IExecutionPipelineFactory factory)
+        {
+            configuration.ExecutionPipelineFactory = factory;
+        }
+
+        public void UseExecutionPipelineFactory<T>()
+            where T : class, IExecutionPipelineFactory, new()
+        {
+            UseExecutionPipelineFactory((Action<T>)null);
+        }
+
+        public void UseExecutionPipelineFactory<T>(Action<T> configure)
+            where T : class, IExecutionPipelineFactory, new()
+        {
+            var factory = new T();
+            configure?.Invoke(factory);
+            configuration.ExecutionPipelineFactory = factory;
         }
         #endregion
 
@@ -136,18 +159,18 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region executor factory
-        public void UseExecutorFactory(ISqlStatementExecutorFactory factory)
+        public void UseSqlStatementExecutorFactory(ISqlStatementExecutorFactory factory)
         {
             configuration.ExecutorFactory = factory;
         }
 
-        public void UseExecutorFactory<T>()
+        public void UseSqlStatementExecutorFactory<T>()
             where T : class, ISqlStatementExecutorFactory, new()
         {
-            UseExecutorFactory((Action<T>)null);
+            UseSqlStatementExecutorFactory((Action<T>)null);
         }
 
-        public void UseExecutorFactory<T>(Action<T> configure)
+        public void UseSqlStatementExecutorFactory<T>(Action<T> configure)
             where T : class, ISqlStatementExecutorFactory, new()
         {
             var factory = new T();
@@ -155,12 +178,12 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.ExecutorFactory = factory;
         }
 
-        public void UseExecutorFactory(Func<QueryExpression,ISqlStatementExecutor> factory)
+        public void UseSqlStatementExecutorFactory(Func<QueryExpression,ISqlStatementExecutor> factory)
         {
             configuration.ExecutorFactory = new DelegateSqlStatementExecutorFactory(factory);
         }
 
-        public void UseExecutorFactory(Func<ISqlStatementExecutorFactory> factory)
+        public void UseSqlStatementExecutorFactory(Func<ISqlStatementExecutorFactory> factory)
         {
             configuration.ExecutorFactory = new DelegateSqlStatementExecutorFactory(factory);
         }
@@ -264,8 +287,29 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IPipelineEventActionBuilder<AfterInsertPipelineExecutionContext> AfterInsertingEntity(Action<AfterInsertPipelineExecutionContext> action)
             => configuration.ExecutionPipelineFactory.AfterInsert.AddToEnd(action);
 
+        public IPipelineEventActionBuilder<BeforeUpdatePipelineExecutionContext> BeforeUpdatingEntity(Action<BeforeUpdatePipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.BeforeUpdate.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<AfterUpdatePipelineExecutionContext> AfterUpdatingEntity(Action<AfterUpdatePipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.AfterUpdate.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<BeforeDeletePipelineExecutionContext> BeforeDeletingEntity(Action<BeforeDeletePipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.BeforeDelete.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<AfterDeletePipelineExecutionContext> AfterDeletingEntity(Action<AfterDeletePipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.AfterDelete.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<BeforeSelectPipelineExecutionContext> BeforeSelectingEntity(Action<BeforeSelectPipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.BeforeSelect.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<AfterSelectPipelineExecutionContext> AfterSelectingEntity(Action<AfterSelectPipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.AfterSelect.AddToEnd(action);
+
         public IPipelineEventActionBuilder<BeforeExecutionPipelineExecutionContext> BeforeExecutingCommand(Action<BeforeExecutionPipelineExecutionContext> action)
              => configuration.ExecutionPipelineFactory.BeforeExecution.AddToEnd(action);
+
+        public IPipelineEventActionBuilder<AfterExecutionPipelineExecutionContext> AfterExecutingCommand(Action<AfterExecutionPipelineExecutionContext> action)
+            => configuration.ExecutionPipelineFactory.AfterExecution.AddToEnd(action);
         #endregion
         #endregion
     }

@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class SelectSqlStatementAssembler : SqlStatementAssembler
+    public abstract class SelectSqlStatementAssembler : SqlStatementAssembler
     {
         public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!(expression is SelectQueryExpression a))
+            if (!(expression is SelectQueryExpression select))
                 throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(SelectQueryExpression)}, but is actually type {expression.GetType()}");
-            AssembleSelectStatement(a, builder, context);
+            AssembleStatement(select, builder, context);
         }
 
-        protected virtual void AssembleSelectStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             AppendSelectClause(expression, builder, context);
             AppendFromClause(expression, builder, context);

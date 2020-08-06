@@ -7,7 +7,8 @@ namespace HatTrick.DbEx.Sql.Executor
     public class SqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
         private static readonly ISqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
-        private IDictionary<Type, Func<ISqlStatementExecutor>> Executors { get; } = new Dictionary<Type, Func<ISqlStatementExecutor>>();
+
+        protected IDictionary<Type, Func<ISqlStatementExecutor>> Executors { get; } = new Dictionary<Type, Func<ISqlStatementExecutor>>();
 
         public virtual void RegisterDefaultExecutors()
         {
@@ -15,6 +16,12 @@ namespace HatTrick.DbEx.Sql.Executor
             Executors.Add(typeof(InsertQueryExpression), () => sqlStatementExecutor);
             Executors.Add(typeof(UpdateQueryExpression), () => sqlStatementExecutor);
             Executors.Add(typeof(DeleteQueryExpression), () => sqlStatementExecutor);
+        }
+
+        protected void RegisterQueryExpressionWithDefaultExecutor<T>()
+            where T : QueryExpression
+        {
+            Executors[typeof(T)] = () => sqlStatementExecutor;
         }
 
         public void RegisterExecutor<T, U>()

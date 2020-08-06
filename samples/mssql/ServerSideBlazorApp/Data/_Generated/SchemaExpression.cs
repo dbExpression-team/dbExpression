@@ -2,6 +2,7 @@ using System;
 
 namespace ServerSideBlazorApp.DataService
 {
+    using System.Collections.Generic;
     using System.Dynamic;
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Builder.Syntax;
@@ -221,6 +222,14 @@ namespace ServerSideBlazorApp.DataService
         public static IInsertExpressionBuilder<T> Insert<T>(T instance)
             where T : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instance);
+
+        public static IInsertExpressionBuilder<T> InsertMany<T>(IList<T> instances)
+            where T : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
+
+        public static IInsertExpressionBuilder<T> InsertMany<T>(params T[] instances)
+            where T : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
 
         public static ISqlConnection GetConnection()
         {

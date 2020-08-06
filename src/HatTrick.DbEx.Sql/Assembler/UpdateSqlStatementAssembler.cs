@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class UpdateSqlStatementAssembler : SqlStatementAssembler
+    public abstract class UpdateSqlStatementAssembler : SqlStatementAssembler
     {
         #region methods
         public override void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             AssembleStatement(update, builder, context);
         }
         
-        private void AssembleStatement(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AssembleStatement(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {            
             builder.Appender
                 .Indent().Write("UPDATE").LineBreak()

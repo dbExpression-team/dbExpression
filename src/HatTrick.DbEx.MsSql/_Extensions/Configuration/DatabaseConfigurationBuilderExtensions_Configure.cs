@@ -1,11 +1,12 @@
 ﻿using HatTrick.DbEx.MsSql.Assembler;
 using HatTrick.DbEx.MsSql.Connection;
-using HatTrick.DbEx.MsSql.Executor;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
+using HatTrick.DbEx.Sql.Pipeline;
 using System;
 using System.Data.SqlClient;
 
@@ -48,9 +49,9 @@ namespace HatTrick.DbEx.MsSql.Configuration
             builder.UseMapperFactory<MapperFactory>();
 
             //configure sql statement executor factory
-            var executor = new MsSqlExecutorFactory();
+            var executor = new SqlStatementExecutorFactory();
             executor.RegisterDefaultExecutors();
-            builder.UseExecutorFactory(executor);
+            builder.UseSqlStatementExecutorFactory(executor);
 
             //configure the parameter builder factory
             builder.UseParameterBuilderFactory<MsSqlParameterBuilderFactory>();
@@ -58,8 +59,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
             //configure the connection factory
             builder.UseConnectionFactory(new MsSqlConnectionFactory(connectionStringFactory));
 
-            //use identity insert strategy for MsSql
-            builder.UseIdentityInsertStrategy();
+            //configure the execution pipeline factory
+            builder.UseExecutionPipelineFactory<ExecutionPipelineFactory>();
         }
 
         #region 2005

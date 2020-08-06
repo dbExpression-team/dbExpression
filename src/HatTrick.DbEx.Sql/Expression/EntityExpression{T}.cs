@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region IDbExpressionEntity implementation
-        SelectExpressionSet IDbExpressionEntity<T>.BuildInclusiveSelectExpression()
+        SelectExpressionSet IDbExpressionEntity.BuildInclusiveSelectExpression()
             => GetInclusiveSelectExpression();
-        InsertExpressionSet IDbExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
+        InsertExpressionSet<T> IDbExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
             => GetInclusiveInsertExpression(entity);
         AssignmentExpressionSet IDbExpressionEntity<T>.BuildAssignmentExpression(T from, T to)
             => GetAssignmentExpression(from, to);
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region get inclusive insert expression
-        protected abstract InsertExpressionSet GetInclusiveInsertExpression(T entity);
+        protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
         #endregion
 
         #region get inclusive assignment expression

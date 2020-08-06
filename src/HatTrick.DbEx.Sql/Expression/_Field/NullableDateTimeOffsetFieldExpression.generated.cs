@@ -14,10 +14,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set
-        public override AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(new NullableDateTimeOffsetExpressionMediator(this), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<DateTimeOffset> value) => new AssignmentExpression(new NullableDateTimeOffsetExpressionMediator(this), value);
-        public override AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(new NullableDateTimeOffsetExpressionMediator(this), new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<DateTimeOffset> value) => new AssignmentExpression(new NullableDateTimeOffsetExpressionMediator(this), value);
+        public override AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)));
+        public override AssignmentExpression Set(ExpressionMediator<DateTimeOffset> value) => new AssignmentExpression(this, value);
+        public override AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(value)));
+        public override AssignmentExpression Set(NullableExpressionMediator<DateTimeOffset> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

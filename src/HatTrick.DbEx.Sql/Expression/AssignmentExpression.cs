@@ -7,17 +7,17 @@ namespace HatTrick.DbEx.Sql.Expression
         IDbAssignmentExpressionProvider
     {
         #region internals
-        private ExpressionMediator assignee;
+        private FieldExpression assignee;
         private ExpressionMediator assignment;
         #endregion
 
         #region interface
-        ExpressionMediator IDbAssignmentExpressionProvider.Assignee => assignee;
+        FieldExpression IDbAssignmentExpressionProvider.Assignee => assignee;
         ExpressionMediator IDbAssignmentExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors
-        public AssignmentExpression(ExpressionMediator assignee, ExpressionMediator assignment)
+        public AssignmentExpression(FieldExpression assignee, ExpressionMediator assignment)
         {
             this.assignee = assignee ?? throw new ArgumentNullException($"{nameof(assignee)} is required.");
             this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");

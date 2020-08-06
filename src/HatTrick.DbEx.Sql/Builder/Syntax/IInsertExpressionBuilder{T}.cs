@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
@@ -8,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IContinuationExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        IInsertTerminationExpressionBuilder Into<U>(U entity)
+        IInsertTerminationExpressionBuilder<T> Into<U>(U entity)
             where U : EntityExpression<T>;
     }
 }

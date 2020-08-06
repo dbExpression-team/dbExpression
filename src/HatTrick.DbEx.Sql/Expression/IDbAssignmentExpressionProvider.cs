@@ -2,7 +2,7 @@
 {
     public interface IDbAssignmentExpressionProvider
     {
-        ExpressionMediator Assignee { get; }
+        FieldExpression Assignee { get; }
         ExpressionMediator Assignment { get; }
     }
 }

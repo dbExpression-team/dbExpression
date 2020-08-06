@@ -9,9 +9,11 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public interface ISqlStatementExecutor
     {
-        int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, Action<DbCommand> beforeExecution);
-        Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, Action<DbCommand> beforeExecution, CancellationToken ct);
-        ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, IValueMapper mapper, Action<DbCommand> beforeExecution);
-        Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> configureCommand, IValueMapper mapper, Action<DbCommand> beforeExecution, CancellationToken ct);
+        int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution);
+        Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct);
+        ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution);
+        Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct);
+        T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution);
+        Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct);
     }
 }

@@ -14,10 +14,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set
-        public override AssignmentExpression Set(decimal value) => new AssignmentExpression(new NullableDecimalExpressionMediator(this), new DecimalExpressionMediator(new LiteralExpression<decimal>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<decimal> value) => new AssignmentExpression(new NullableDecimalExpressionMediator(this), value);
-        public override AssignmentExpression Set(decimal? value) => new AssignmentExpression(new NullableDecimalExpressionMediator(this), new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<decimal> value) => new AssignmentExpression(new NullableDecimalExpressionMediator(this), value);
+        public override AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)));
+        public override AssignmentExpression Set(ExpressionMediator<decimal> value) => new AssignmentExpression(this, value);
+        public override AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(value)));
+        public override AssignmentExpression Set(NullableExpressionMediator<decimal> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

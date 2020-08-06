@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region interface
         public IQueryExpressionFactory QueryExpressionFactory { get; set; }
-        public ExecutionPipelineFactory ExecutionPipelineFactory { get; }
+        public IExecutionPipelineFactory ExecutionPipelineFactory { get; set;  }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
         public IAppenderFactory AppenderFactory { get; set; }
         public ISqlParameterBuilderFactory ParameterBuilderFactory { get; set; }
@@ -20,13 +20,6 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IMapperFactory MapperFactory { get; set; }
         public IEntityFactory EntityFactory { get; set; }
         public DbExpressionAssemblerConfiguration AssemblerConfiguration { get; set; } = new DbExpressionAssemblerConfiguration();
-        #endregion
-
-        #region constructors
-        public DatabaseConfiguration()
-        {
-            ExecutionPipelineFactory = new ExecutionPipelineFactory(this);
-        }
         #endregion
     }
 }

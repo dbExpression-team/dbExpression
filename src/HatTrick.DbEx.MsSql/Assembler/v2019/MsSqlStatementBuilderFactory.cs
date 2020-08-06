@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Assembler;
+﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2019
@@ -7,6 +6,9 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2019
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
         private static readonly MsSqlSelectSqlStatementAssembler _selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
+        private static readonly MsSqlInsertSqlStatementAssembler _insertManySqlStatementAssembler = new MsSqlInsertSqlStatementAssembler();
+        private static readonly MsSqlDeleteSqlStatementAssembler _deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
+        private static readonly MsSqlUpdateSqlStatementAssembler _updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
         private static readonly DateAddFunctionAppender _dateAddFunctionAppender = new DateAddFunctionAppender();
         private static readonly DateDiffFunctionAppender _dateDiffFunctionAppender = new DateDiffFunctionAppender();
         private static readonly DatePartFunctionAppender _datePartFunctionAppender = new DatePartFunctionAppender();
@@ -26,6 +28,9 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2019
         {
             base.RegisterDefaultStatementAssemblers();
             RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(() => _selectSqlStatementAssembler);
+            RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(() => _insertManySqlStatementAssembler);
+            RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(() => _deleteSqlStatementAssembler);
+            RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(() => _updateSqlStatementAssembler);
         }
 
         public override void RegisterDefaultPartAppenders()

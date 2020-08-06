@@ -9,10 +9,6 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region internals
         #region  expression appenders
-        private static readonly SelectSqlStatementAssembler _selectSqlStatementAssembler = new SelectSqlStatementAssembler();
-        private static readonly InsertSqlStatementAssembler _insertSqlStatementAssembler = new InsertSqlStatementAssembler();
-        private static readonly UpdateSqlStatementAssembler _updateSqlStatementAssembler = new UpdateSqlStatementAssembler();
-        private static readonly DeleteSqlStatementAssembler _deleteSqlStatementAssembler = new DeleteSqlStatementAssembler();
         private static readonly SchemaExpressionPartAppender _schemaAppender = new SchemaExpressionPartAppender();
         private static readonly EntityExpressionPartAppender _entityAppender = new EntityExpressionPartAppender();
         private static readonly FieldExpressionPartAppender _fieldAppender = new FieldExpressionPartAppender();
@@ -49,6 +45,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly FloorFunctionExpressionPartAppender _floorFunctionAppender = new FloorFunctionExpressionPartAppender();
         private static readonly CeilingFunctionExpressionPartAppender _ceilingFunctionAppender = new CeilingFunctionExpressionPartAppender();
         private static readonly LiteralExpressionPartAppender _literalAppender = new LiteralExpressionPartAppender();
+        private static readonly RawExpressionPartAppender _rawAppender = new RawExpressionPartAppender();
         #endregion
 
         #region value type appenders 
@@ -150,6 +147,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(FloorFunctionExpression), () => _floorFunctionAppender);
             _partAppenders.TryAdd(typeof(CeilingFunctionExpression), () => _ceilingFunctionAppender);
             _partAppenders.TryAdd(typeof(LiteralExpression), () => _literalAppender);
+            _partAppenders.TryAdd(typeof(RawExpression), () => _rawAppender);
 
             _partAppenders.TryAdd(typeof(bool), () => _booleanAppender);
             _partAppenders.TryAdd(typeof(bool?), () => _nullableBooleanAppender);
@@ -197,10 +195,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public virtual void RegisterDefaultStatementAssemblers()
         {
-            _statementAssemblers.TryAdd(typeof(SelectQueryExpression), () => _selectSqlStatementAssembler);
-            _statementAssemblers.TryAdd(typeof(InsertQueryExpression), () => _insertSqlStatementAssembler);
-            _statementAssemblers.TryAdd(typeof(UpdateQueryExpression), () => _updateSqlStatementAssembler);
-            _statementAssemblers.TryAdd(typeof(DeleteQueryExpression), () => _deleteSqlStatementAssembler);
+
         }
 
         public ISqlStatementBuilder CreateSqlStatementBuilder(DbExpressionAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)

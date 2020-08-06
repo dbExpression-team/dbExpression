@@ -4,16 +4,16 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class InsertExpression :
         IDbExpression,
-        IDbInsertExpressionProvider
+        IDbAssignmentExpressionProvider
     {
         #region internals
-        public FieldExpression assignee;
-        public ExpressionMediator assignment;
+        private readonly FieldExpression assignee;
+        private readonly ExpressionMediator assignment;
         #endregion
 
         #region interface
-        FieldExpression IDbInsertExpressionProvider.Assignee => assignee;
-        ExpressionMediator IDbInsertExpressionProvider.Assignment => assignment;
+        FieldExpression IDbAssignmentExpressionProvider.Assignee => assignee;
+        ExpressionMediator IDbAssignmentExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors
@@ -22,14 +22,6 @@ namespace HatTrick.DbEx.Sql.Expression
             assignee = field ?? throw new ArgumentNullException($"{nameof(field)} is required.");
             this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");
         }
-        #endregion
-
-        #region logical & operator
-        public static InsertExpressionSet operator &(InsertExpression a, InsertExpression b) => new InsertExpressionSet(a, b);
-        #endregion
-
-        #region implicit insert expression set operator
-        public static implicit operator InsertExpressionSet(InsertExpression a) => new InsertExpressionSet(a);
         #endregion
     }    
 }

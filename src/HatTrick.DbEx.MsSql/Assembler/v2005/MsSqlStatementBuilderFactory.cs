@@ -7,6 +7,8 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
         private static readonly MsSqlSelectSqlStatementAssembler _selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
+        private static readonly MsSqlDeleteSqlStatementAssembler _deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
+        private static readonly MsSqlUpdateSqlStatementAssembler _updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
         private static readonly DateAddFunctionAppender _dateAddFunctionAppender = new DateAddFunctionAppender();
         private static readonly DateDiffFunctionAppender _dateDiffFunctionAppender = new DateDiffFunctionAppender();
         private static readonly DatePartFunctionAppender _datePartFunctionAppender = new DatePartFunctionAppender();
@@ -22,6 +24,9 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
         {
             base.RegisterDefaultStatementAssemblers();
             RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(() => _selectSqlStatementAssembler);
+            RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(() => throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement."));
+            RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(() => _deleteSqlStatementAssembler);
+            RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(() => _updateSqlStatementAssembler);
         }
 
         public override void RegisterDefaultPartAppenders()

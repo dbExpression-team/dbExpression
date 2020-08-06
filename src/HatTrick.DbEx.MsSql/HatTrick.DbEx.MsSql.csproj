@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Builder\MsSqlInsertExpressionBuilder{T}.cs" />
+    <Compile Remove="Builder\MsSqlSqlStatementBuilderFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 
