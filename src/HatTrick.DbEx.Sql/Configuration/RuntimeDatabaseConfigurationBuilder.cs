@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         #region assembler
-        public void ConfigureAssembler(Action<DbExpressionAssemblerConfiguration> config)
+        public void ConfigureAssembler(Action<SqlStatementAssemblerConfiguration> config)
         {
             config(configuration.AssemblerConfiguration);
         }
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.StatementBuilderFactory = factory;
         }
 
-        public void UseStatementBuilderFactory(Func<DbExpressionAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
+        public void UseStatementBuilderFactory(Func<SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
         {
             configuration.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
         }

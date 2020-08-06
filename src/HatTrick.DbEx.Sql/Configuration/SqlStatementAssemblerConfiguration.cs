@@ -1,6 +1,6 @@
 ﻿namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class DbExpressionAssemblerConfiguration
+    public class SqlStatementAssemblerConfiguration
     {
         public bool IncludeSchemaName { get; set; } = true;
         public bool PrependCommaOnSelectClauseParts { get; set; } = false;

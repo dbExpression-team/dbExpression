@@ -7,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class AssemblyContext
     {
         #region internals
-        private Stack<FieldExpressionAppendStyle> fieldStyles = new Stack<FieldExpressionAppendStyle>();
-        private Stack<EntityExpressionAppendStyle> entityStyles = new Stack<EntityExpressionAppendStyle>();
+        private readonly Stack<FieldExpressionAppendStyle> fieldStyles = new Stack<FieldExpressionAppendStyle>();
+        private readonly Stack<EntityExpressionAppendStyle> entityStyles = new Stack<EntityExpressionAppendStyle>();
         #endregion
 
         #region interface
-        public DbExpressionAssemblerConfiguration Configuration { get; set; } = new DbExpressionAssemblerConfiguration();
+        public SqlStatementAssemblerConfiguration Configuration { get; set; } = new SqlStatementAssemblerConfiguration();
         public FieldExpression Field { get; set; }
         public FieldExpressionAppendStyle FieldExpressionAppendStyle { get; private set; }
         public EntityExpressionAppendStyle EntityExpressionAppendStyle { get; private set; }
