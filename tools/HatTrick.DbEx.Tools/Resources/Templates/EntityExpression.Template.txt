@@ -64,14 +64,13 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
             );
         }}
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression({($) => ResolveName} {($) => ToCamelCase})
+        protected override InsertExpressionSet<{($) => ResolveName}> GetInclusiveInsertExpression({($) => ResolveName} {($) => ToCamelCase})
         {{
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<{($) => ResolveName}>(
+				{($) => ToCamelCase},
 				{#each Columns}
 				{#if !($) => IsIgnored}
-				{#if !$.IsIdentity}				
                 {($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
-				{/if}
 				{/if}
 				{/each}
             );

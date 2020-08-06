@@ -2,7 +2,7 @@
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
-using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
@@ -11,9 +11,8 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         public new InsertQueryExpression Expression => base.Expression as InsertQueryExpression;
 
-        public MsSqlInsertSqlExpressionBuilder(DatabaseConfiguration configuration, T instance) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<InsertQueryExpression>())
+        public MsSqlInsertSqlExpressionBuilder(DatabaseConfiguration configuration, IEnumerable<T> instances) : base(configuration, instances, configuration.QueryExpressionFactory.CreateQueryExpression<InsertQueryExpression>())
         {
-            Expression.Instance = instance ?? throw new ArgumentNullException($"{nameof(instance)} is required.");
         }
     }
 }

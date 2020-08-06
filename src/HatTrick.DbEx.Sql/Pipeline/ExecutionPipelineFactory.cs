@@ -1,53 +1,81 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class ExecutionPipelineFactory
+    public class ExecutionPipelineFactory : IExecutionPipelineFactory
     {
-        #region internals
-        private readonly DatabaseConfiguration configuration;
-        #endregion
-
         #region interface
         public PipelineEventActions<Func<BeforeAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<BeforeAssemblyPipelineExecutionContext>, BeforeAssemblyPipelineExecutionContext> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEventActions();
         public PipelineEventActions<Func<AfterAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<AfterAssemblyPipelineExecutionContext>, AfterAssemblyPipelineExecutionContext> AfterAssembly { get; set; } = new AfterAssemblyPipelineEventActions();
         public PipelineEventActions<Func<BeforeInsertPipelineExecutionContext, CancellationToken, Task>, Action<BeforeInsertPipelineExecutionContext>, BeforeInsertPipelineExecutionContext> BeforeInsert { get; set; } = new BeforeInsertPipelineEventActions();
         public PipelineEventActions<Func<AfterInsertPipelineExecutionContext, CancellationToken, Task>, Action<AfterInsertPipelineExecutionContext>, AfterInsertPipelineExecutionContext> AfterInsert { get; set; } = new AfterInsertPipelineEventActions();
+        public PipelineEventActions<Func<BeforeDeletePipelineExecutionContext, CancellationToken, Task>, Action<BeforeDeletePipelineExecutionContext>, BeforeDeletePipelineExecutionContext> BeforeDelete { get; set; } = new BeforeDeletePipelineEventActions();
+        public PipelineEventActions<Func<AfterDeletePipelineExecutionContext, CancellationToken, Task>, Action<AfterDeletePipelineExecutionContext>, AfterDeletePipelineExecutionContext> AfterDelete { get; set; } = new AfterDeletePipelineEventActions();
+        public PipelineEventActions<Func<BeforeUpdatePipelineExecutionContext, CancellationToken, Task>, Action<BeforeUpdatePipelineExecutionContext>, BeforeUpdatePipelineExecutionContext> BeforeUpdate { get; set; } = new BeforeUpdatePipelineEventActions();
+        public PipelineEventActions<Func<AfterUpdatePipelineExecutionContext, CancellationToken, Task>, Action<AfterUpdatePipelineExecutionContext>, AfterUpdatePipelineExecutionContext> AfterUpdate { get; set; } = new AfterUpdatePipelineEventActions();
+        public PipelineEventActions<Func<BeforeSelectPipelineExecutionContext, CancellationToken, Task>, Action<BeforeSelectPipelineExecutionContext>, BeforeSelectPipelineExecutionContext> BeforeSelect { get; set; } = new BeforeSelectPipelineEventActions();
+        public PipelineEventActions<Func<AfterSelectPipelineExecutionContext, CancellationToken, Task>, Action<AfterSelectPipelineExecutionContext>, AfterSelectPipelineExecutionContext> AfterSelect { get; set; } = new AfterSelectPipelineEventActions();
         public PipelineEventActions<Func<BeforeExecutionPipelineExecutionContext, CancellationToken, Task>, Action<BeforeExecutionPipelineExecutionContext>, BeforeExecutionPipelineExecutionContext> BeforeExecution { get; set; } = new BeforeExecutionPipelineEventActions();
-        #endregion
-
-        #region constructors
-        public ExecutionPipelineFactory(DatabaseConfiguration configuration)
-        {
-            this.configuration = configuration;
-        }
+        public PipelineEventActions<Func<AfterExecutionPipelineExecutionContext, CancellationToken, Task>, Action<AfterExecutionPipelineExecutionContext>, AfterExecutionPipelineExecutionContext> AfterExecution { get; set; } = new AfterExecutionPipelineEventActions();
         #endregion
 
         #region methods
-        public AsyncExecutionPipeline CreateAsyncExecutionPipeline()
+        public virtual IInsertQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(DatabaseConfiguration database, InsertQueryExpression expression)
+            where T : class, IDbEntity
         {
-            return new AsyncExecutionPipeline(
-                configuration,
-                new AsyncPipeline<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.AsyncActions),
-                new AsyncPipeline<AfterAssemblyPipelineExecutionContext>(AfterAssembly.AsyncActions),
-                new AsyncPipeline<BeforeInsertPipelineExecutionContext>(BeforeInsert.AsyncActions),
-                new AsyncPipeline<AfterInsertPipelineExecutionContext>(AfterInsert.AsyncActions),
-                new AsyncPipeline<BeforeExecutionPipelineExecutionContext>(BeforeExecution.AsyncActions)
-           );
+            return new InsertQueryExpressionExecutionPipeline<T>(
+                database,
+                new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions, BeforeAssembly.AsyncActions),
+                new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions, AfterAssembly.AsyncActions),
+                new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions),
+                new PipelineEventHook<AfterExecutionPipelineExecutionContext>(AfterExecution.SyncActions, AfterExecution.AsyncActions),
+                new PipelineEventHook<BeforeInsertPipelineExecutionContext>(BeforeInsert.SyncActions, BeforeInsert.AsyncActions),
+                new PipelineEventHook<AfterInsertPipelineExecutionContext>(AfterInsert.SyncActions, AfterInsert.AsyncActions)
+            );
         }
 
-        public SyncExecutionPipeline CreateSyncExecutionPipeline()
+        public virtual IUpdateQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(DatabaseConfiguration database, UpdateQueryExpression expression)
+            where T : class, IDbEntity
         {
-            return new SyncExecutionPipeline(
-                configuration,
-                new SyncPipeline<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions),
-                new SyncPipeline<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions),
-                new SyncPipeline<BeforeInsertPipelineExecutionContext>(BeforeInsert.SyncActions),
-                new SyncPipeline<AfterInsertPipelineExecutionContext>(AfterInsert.SyncActions),
-                new SyncPipeline<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions)
+            return new UpdateQueryExpressionExecutionPipeline<T>(
+                database,
+                new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions, BeforeAssembly.AsyncActions),
+                new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions, AfterAssembly.AsyncActions),
+                new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions) ,
+                new PipelineEventHook<AfterExecutionPipelineExecutionContext>(AfterExecution.SyncActions, AfterExecution.AsyncActions),
+                new PipelineEventHook<BeforeUpdatePipelineExecutionContext>(BeforeUpdate.SyncActions, BeforeUpdate.AsyncActions),
+                new PipelineEventHook<AfterUpdatePipelineExecutionContext>(AfterUpdate.SyncActions, AfterUpdate.AsyncActions)
+            );
+        }
+
+        public virtual IDeleteQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(DatabaseConfiguration database, DeleteQueryExpression expression)
+            where T : class, IDbEntity
+        {
+            return new DeleteQueryExpressionExecutionPipeline<T>(
+                database,
+                new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions, BeforeAssembly.AsyncActions),
+                new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions, AfterAssembly.AsyncActions),
+                new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions),
+                new PipelineEventHook<AfterExecutionPipelineExecutionContext>(AfterExecution.SyncActions, AfterExecution.AsyncActions),
+                new PipelineEventHook<BeforeDeletePipelineExecutionContext>(BeforeDelete.SyncActions, BeforeDelete.AsyncActions),
+                new PipelineEventHook<AfterDeletePipelineExecutionContext>(AfterDelete.SyncActions, AfterDelete.AsyncActions)
+            );
+        }
+
+        public virtual ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline(DatabaseConfiguration database, SelectQueryExpression expression)
+        {
+            return new SelectQueryExpressionExecutionPipeline(
+                database,
+                new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions, BeforeAssembly.AsyncActions),
+                new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions, AfterAssembly.AsyncActions),
+                new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions),
+                new PipelineEventHook<AfterExecutionPipelineExecutionContext>(AfterExecution.SyncActions, AfterExecution.AsyncActions),
+                new PipelineEventHook<BeforeSelectPipelineExecutionContext>(BeforeSelect.SyncActions, BeforeSelect.AsyncActions),
+                new PipelineEventHook<AfterSelectPipelineExecutionContext>(AfterSelect.SyncActions, AfterSelect.AsyncActions)
             );
         }
         #endregion

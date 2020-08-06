@@ -6,6 +6,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IExpressionBuilder,
         IContinuationExpressionBuilder
     {
-        IUpdateContinuationExpressionBuilder From(EntityExpression entity);
+        IUpdateContinuationExpressionBuilder<T> From<T>(EntityExpression<T> entity)
+            where T: class, IDbEntity;
     }
 }

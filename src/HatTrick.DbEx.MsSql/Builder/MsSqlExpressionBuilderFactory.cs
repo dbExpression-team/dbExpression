@@ -3,6 +3,7 @@ using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 using System.Dynamic;
 
 namespace HatTrick.DbEx.MsSql.Builder
@@ -95,7 +96,13 @@ namespace HatTrick.DbEx.MsSql.Builder
         public IInsertExpressionBuilder<T> CreateInsertExpressionBuilder<T>(DatabaseConfiguration configuration, T instance)
             where T : class, IDbEntity
         {
-            return new MsSqlInsertSqlExpressionBuilder<T>(configuration, instance);
+            return new MsSqlInsertSqlExpressionBuilder<T>(configuration, new List<T> { instance });
+        }
+
+        public IInsertExpressionBuilder<T> CreateInsertExpressionBuilder<T>(DatabaseConfiguration configuration, IList<T> instances)
+            where T : class, IDbEntity
+        {
+            return new MsSqlInsertSqlExpressionBuilder<T>(configuration, instances);
         }
     }
 }

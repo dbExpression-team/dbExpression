@@ -9,8 +9,8 @@ namespace {Namespace}
         #endregion
 
         #region set
-        public override AssignmentExpression Set({Type.Alias} value) => new AssignmentExpression(new {Type.Name}ExpressionMediator(this), new {Type.Name}ExpressionMediator(new LiteralExpression<{Type.Alias}>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<{Type.Alias}> value) => new AssignmentExpression(new {Type.Name}ExpressionMediator(this), value);
+        public override AssignmentExpression Set({Type.Alias} value) => new AssignmentExpression(this, new {Type.Name}ExpressionMediator(new LiteralExpression<{Type.Alias}>(value)));
+        public override AssignmentExpression Set(ExpressionMediator<{Type.Alias}> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

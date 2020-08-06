@@ -11,6 +11,5 @@
 
         public T Map<T>(object value)
             => Factory.CreateValueMapper<T>().Map(value);
-
     }
 }

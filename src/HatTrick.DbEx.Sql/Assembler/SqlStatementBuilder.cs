@@ -57,16 +57,16 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public void AppendPart<T>(T part, AssemblyContext context)
             where T : class, IDbExpression
-            => DoAppendPart(new ExpressionContainer(part), context);
+            => DoAppendPart(part, context);
 
         public void AppendPart(ExpressionContainer part, AssemblyContext context)
             => DoAppendPart(part, context);
 
         private void DoAppendPart(object part, AssemblyContext context)
         {
-            if (part is QueryExpression set)
+            if (part is QueryExpression query)
             {
-                AssembleStatement(set, context);
+                AssembleStatement(query, context);
                 return;
             }
 

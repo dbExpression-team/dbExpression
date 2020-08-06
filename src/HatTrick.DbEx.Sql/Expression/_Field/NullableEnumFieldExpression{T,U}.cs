@@ -28,10 +28,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set
-        public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
-        public override AssignmentExpression Set(TEnum? value) => new AssignmentExpression(new NullableEnumExpressionMediator<TEnum>(this), new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<TEnum> value) => new AssignmentExpression(new NullableEnumExpressionMediator<TEnum>(this), value);
-        public override AssignmentExpression Set(NullableExpressionMediator<TEnum> value) => new AssignmentExpression(new NullableEnumExpressionMediator<TEnum>(this), value);
+        public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(this, new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
+        public override AssignmentExpression Set(TEnum? value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(value)));
+        public override AssignmentExpression Set(ExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
+        public override AssignmentExpression Set(NullableExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

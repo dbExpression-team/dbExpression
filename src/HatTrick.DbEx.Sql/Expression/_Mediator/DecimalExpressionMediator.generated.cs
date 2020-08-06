@@ -10,11 +10,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public static implicit operator GroupByExpression(DecimalExpressionMediator a) => new GroupByExpression(a);
         #endregion
 
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
-        #endregion
-
         #region arithmetic operators
         #region TValue
         #region byte

@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Connection
@@ -67,12 +68,12 @@ namespace HatTrick.DbEx.Sql.Connection
             }
         }
 
-        public async Task EnsureOpenConnectionAsync()
+        public async Task EnsureOpenConnectionAsync(CancellationToken ct)
         {
             this.EnsureConnection();
             if (_dbConnection.State != ConnectionState.Open)
             {
-                await _dbConnection.OpenAsync().ConfigureAwait(false);
+                await _dbConnection.OpenAsync(ct).ConfigureAwait(false);
             }
         }
 

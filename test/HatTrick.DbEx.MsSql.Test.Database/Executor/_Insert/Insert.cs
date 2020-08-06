@@ -7,6 +7,7 @@ using HatTrick.DbEx.Sql;
 using System;
 using Xunit;
 using DbEx.dboData;
+using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -140,6 +141,38 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             retrieved.LastName.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_many_persons_be_inserted_successfully(int version, int expected = 10)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var firstNames = Enumerable.Range(0, expected).Select(x => $"FirstName_{x}");
+            var lastNames = Enumerable.Range(0, expected).Select(x => $"LastName_{x}");
+            var persons = Enumerable.Range(0, expected).Select(x =>
+                new Person
+                {
+                    FirstName = firstNames.ElementAt(x),
+                    LastName = lastNames.ElementAt(x),
+                    GenderType = x % 2 == 0 ? GenderType.Female : GenderType.Male,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
+                }
+            ).ToList();
+
+            var exp = db.InsertMany(persons)
+                .Into(dbo.Person);
+
+            //when               
+            exp.Execute();
+
+            var retrieved = db.SelectMany<Person>().From(dbo.Person).Where(dbo.Person.FirstName.Like("FirstName_%")).Execute();
+
+            //then
+            retrieved.Should().HaveCount(expected);
         }
     }
 }

@@ -76,9 +76,11 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(Address address)
+        protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address address)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<Address>(
+				address,
+                Id.Insert(address.Id),
                 AddressType.Insert(address.AddressType),
                 Line1.Insert(address.Line1),
                 Line2.Insert(address.Line2),
@@ -237,9 +239,11 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(Person person)
+        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<Person>(
+				person,
+                Id.Insert(person.Id),
                 FirstName.Insert(person.FirstName),
                 LastName.Insert(person.LastName),
                 BirthDate.Insert(person.BirthDate),
@@ -378,9 +382,11 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(PersonAddress personAddress)
+        protected override InsertExpressionSet<PersonAddress> GetInclusiveInsertExpression(PersonAddress personAddress)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<PersonAddress>(
+				personAddress,
+                Id.Insert(personAddress.Id),
                 PersonId.Insert(personAddress.PersonId),
                 AddressId.Insert(personAddress.AddressId),
                 DateCreated.Insert(personAddress.DateCreated)
@@ -499,9 +505,11 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(Product product)
+        protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product product)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<Product>(
+				product,
+                Id.Insert(product.Id),
                 ProductCategoryType.Insert(product.ProductCategoryType),
                 Name.Insert(product.Name),
                 Description.Insert(product.Description),
@@ -660,9 +668,11 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(Purchase purchase)
+        protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<Purchase>(
+				purchase,
+                Id.Insert(purchase.Id),
                 PersonId.Insert(purchase.PersonId),
                 TotalPurchaseAmount.Insert(purchase.TotalPurchaseAmount),
                 PurchaseDate.Insert(purchase.PurchaseDate),
@@ -813,9 +823,11 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(PurchaseLine purchaseLine)
+        protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine purchaseLine)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<PurchaseLine>(
+				purchaseLine,
+                Id.Insert(purchaseLine.Id),
                 PurchaseId.Insert(purchaseLine.PurchaseId),
                 ProductId.Insert(purchaseLine.ProductId),
                 PurchasePrice.Insert(purchaseLine.PurchasePrice),
@@ -930,9 +942,10 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(PersonTotalPurchasesView personTotalPurchasesView)
+        protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView personTotalPurchasesView)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<PersonTotalPurchasesView>(
+				personTotalPurchasesView,
                 Id.Insert(personTotalPurchasesView.Id),
                 TotalPurchases.Insert(personTotalPurchasesView.TotalPurchases)
             );
@@ -1026,9 +1039,11 @@ namespace ServerSideBlazorApp.secDataService
             );
         }
 		
-        protected override InsertExpressionSet GetInclusiveInsertExpression(Person person)
+        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
         {
-            return new InsertExpressionSet(
+            return new InsertExpressionSet<Person>(
+				person,
+                Id.Insert(person.Id),
                 SSN.Insert(person.SSN),
                 DateCreated.Insert(person.DateCreated),
                 DateUpdated.Insert(person.DateUpdated)

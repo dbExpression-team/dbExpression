@@ -5,9 +5,9 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2017
 {
     public class MsSqlSelectSqlStatementAssembler : HatTrick.DbEx.MsSql.Assembler.MsSqlSelectSqlStatementAssembler
     {
-        protected override void AssembleSelectStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            base.AssembleSelectStatement(expression, builder, context);
+            base.AssembleStatement(expression, builder, context);
             if (expression.SkipValue.HasValue)
             {
                 builder.Appender

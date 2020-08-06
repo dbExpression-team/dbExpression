@@ -1,11 +1,12 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class BeforeAssemblyPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public BeforeAssemblyPipelineExecutionContext(QueryExpression expression)
-            : base(expression)
+        public BeforeAssemblyPipelineExecutionContext(DatabaseConfiguration database, QueryExpression expression)
+            : base(database, expression)
         {
         }
     }
