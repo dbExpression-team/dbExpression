@@ -5,14 +5,14 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlDeleteSqlExpressionBuilder : DeleteSqlExpressionBuilder
+    public class MsSqlDeleteQueryExpressionBuilder : DeleteQueryExpressionBuilder
     {
-        public MsSqlDeleteSqlExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<DeleteQueryExpression>())
+        public MsSqlDeleteQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<DeleteQueryExpression>())
         { }
 
         protected override IDeleteContinuationExpressionBuilder<T> CreateTypedBuilder<T>(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
         {
-            return new MsSqlDeleteExpressionBuilder<T>(Configuration, expression, entity);
+            return new MsSqlDeleteQueryExpressionBuilder<T>(Configuration, expression, entity);
         }
     }
 }

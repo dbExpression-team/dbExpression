@@ -6,11 +6,11 @@ using HatTrick.DbEx.Sql.Expression;
 namespace HatTrick.DbEx.MsSql.Builder
 {
 
-    public class MsSqlSelectSqlExpressionBuilder<T> : SelectSqlExpressionBuilder<T>,
+    public class MsSqlSelectQueryExpressionBuilder<T> : SelectQueryExpressionBuilder<T>,
         IValueContinuationExpressionBuilder<T>,
         IValueListContinuationExpressionBuilder<T>
     {
-        public MsSqlSelectSqlExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
+        public MsSqlSelectQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
         { }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SelectSqlExpressionBuilder<T, U, V> : SelectSqlExpressionBuilder<T, U>,
+    public abstract class SelectQueryExpressionBuilder<T, U, V> : SelectQueryExpressionBuilder<T, U>,
         IFromExpressionBuilder<T, U, V>,
         IListFromExpressionBuilder<T, U, V>
         where U : class, IContinuationExpressionBuilder<T>
@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Builder
     {
         private SelectQueryExpression expression => Expression as SelectQueryExpression;
 
-        public SelectSqlExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
+        public SelectQueryExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         {
         }
 

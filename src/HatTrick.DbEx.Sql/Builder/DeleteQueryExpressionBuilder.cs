@@ -4,15 +4,15 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class DeleteSqlExpressionBuilder : SqlExpressionBuilder,
+    public abstract class DeleteQueryExpressionBuilder : QueryExpressionBuilder,
         IDeleteFromExpressionBuilder
     {
         #region constructors
-        protected DeleteSqlExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression) : base(configuration, expression)
+        protected DeleteQueryExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression) : base(configuration, expression)
         {
         }
 
-        protected DeleteSqlExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression entity) : base(configuration, expression)
+        protected DeleteQueryExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression entity) : base(configuration, expression)
         {
             Expression.BaseEntity = entity;
         }

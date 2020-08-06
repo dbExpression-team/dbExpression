@@ -6,10 +6,10 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlDeleteExpressionBuilder<T> : DeleteSqlExpressionBuilder<T>
+    public class MsSqlDeleteQueryExpressionBuilder<T> : DeleteQueryExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        public MsSqlDeleteExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
+        public MsSqlDeleteQueryExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 
@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         protected override IDeleteContinuationExpressionBuilder<U> CreateTypedBuilder<U>(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<U> entity)
         {
-            return new MsSqlDeleteExpressionBuilder<U>(configuration, expression, entity);
+            return new MsSqlDeleteQueryExpressionBuilder<U>(configuration, expression, entity);
         }
     }
 }

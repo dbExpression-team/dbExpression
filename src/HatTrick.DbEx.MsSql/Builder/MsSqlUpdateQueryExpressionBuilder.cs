@@ -5,18 +5,18 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlUpdateSqlExpressionBuilder : UpdateSqlExpressionBuilder
+    public class MsSqlUpdateQueryExpressionBuilder : UpdateQueryExpressionBuilder
     {
         public new UpdateQueryExpression Expression => base.Expression as UpdateQueryExpression;
 
-        public MsSqlUpdateSqlExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>())
+        public MsSqlUpdateQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>())
         { 
         
         }
 
         protected override IUpdateContinuationExpressionBuilder<U> CreateTypedBuilder<U>(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<U> entity)
         {
-            return new MsSqlUpdateSqlExpressionBuilder<U>(configuration, expression, entity);
+            return new MsSqlUpdateQueryExpressionBuilder<U>(configuration, expression, entity);
         }
     }
 }
