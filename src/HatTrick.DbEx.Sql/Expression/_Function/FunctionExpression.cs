@@ -5,8 +5,8 @@ using System.Text;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FunctionExpression :
-        IDbExpression,
-        IDbExpressionAliasProvider,
+        IExpression,
+        IExpressionAliasProvider,
         IEquatable<FunctionExpression>
     {
         #region internals
@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region interface
         public ExpressionMediator Expression { get; }
-        string IDbExpressionAliasProvider.Alias => Alias;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors

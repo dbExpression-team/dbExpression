@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         void AppendPart(ExpressionContainer part, AssemblyContext context);
 
         void AppendPart<T>(T part, AssemblyContext context)
-            where T : class, IDbExpression;
+            where T : class, IExpression;
 
         string GenerateAlias();
         #endregion

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlFieldMetadata : IDbExpressionMetadata
+    public interface ISqlFieldMetadata : ISqlMetadata
     {
         ISqlEntityMetadata Entity { get; }
         bool IsIdentity { get; }

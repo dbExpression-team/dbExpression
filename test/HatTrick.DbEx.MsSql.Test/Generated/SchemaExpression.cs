@@ -30,7 +30,7 @@ namespace DbEx.DataService
         #region constructors
         public MsSqlDbExTest()
         {
-            metadata = new MsSqlDbExTestDatabaseMetadataProvider().Database;
+            metadata = new MsSqlDbExTestSqlDatabaseMetadataProvider().Database;
         }
 
         public MsSqlDbExTest(ISqlDatabaseMetadata metadata)

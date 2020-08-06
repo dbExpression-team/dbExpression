@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class EntityExpression<T> : 
         EntityExpression, 
-        IDbExpressionEntity<T>
+        IExpressionEntity<T>
         where T : class, IDbEntity
     {
         #region constructors
@@ -17,14 +17,14 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region IDbExpressionEntity implementation
-        SelectExpressionSet IDbExpressionEntity.BuildInclusiveSelectExpression()
+        #region IExpressionEntity implementation
+        SelectExpressionSet IExpressionEntity.BuildInclusiveSelectExpression()
             => GetInclusiveSelectExpression();
-        InsertExpressionSet<T> IDbExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
+        InsertExpressionSet<T> IExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
             => GetInclusiveInsertExpression(entity);
-        AssignmentExpressionSet IDbExpressionEntity<T>.BuildAssignmentExpression(T from, T to)
+        AssignmentExpressionSet IExpressionEntity<T>.BuildAssignmentExpression(T from, T to)
             => GetAssignmentExpression(from, to);
-        void IDbExpressionEntity<T>.HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper valueMapper)
+        void IExpressionEntity<T>.HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper valueMapper)
             => HydrateEntity(entity, reader, valueMapper);
         #endregion
 

@@ -19,8 +19,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
-            var identity = (expression.BaseEntity as IDbExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => (x as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity);
-            var identityName = (identity as IDbExpressionMetadataProvider<ISqlFieldMetadata>)?.Metadata?.Name;
+            var identity = (expression.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => (x as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity);
+            var identityName = (identity as ISqlMetadataProvider<ISqlFieldMetadata>)?.Metadata?.Name;
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");
@@ -38,11 +38,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
                 for (var j = 0; j < insert.Value.Expressions.Count; j++)
                 {
-                    if (((insert.Value.Expressions[j] as IDbAssignmentExpressionProvider).Assignee as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
+                    if (((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                    context.Field = (insert.Value.Expressions[j] as IDbAssignmentExpressionProvider).Assignee;
-                    builder.AppendPart((insert.Value.Expressions[j] as IDbAssignmentExpressionProvider).Assignment, context);
+                    context.Field = (insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee;
+                    builder.AppendPart((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignment, context);
                     context.Field = null;
                     builder.Appender.Write(", ");
                     if (j == insert.Value.Expressions.Count - 1)
@@ -66,12 +66,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
             //write out the table structure of the  {insertValueNames} table
             for (var i = 0; i < template.Expressions.Count; i++)
             {
-                if (((template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
+                if (((template.Expressions[i] as IAssignmentExpressionProvider).Assignee as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();
                 builder.AppendPart(
-                    (template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee,
+                    (template.Expressions[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
                 builder.Appender.Write(", ").LineBreak();
@@ -90,12 +90,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             for (var i = 0; i < template.Expressions.Count; i++)
             {
-                if (((template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
+                if (((template.Expressions[i] as IAssignmentExpressionProvider).Assignee as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
                     continue; //don't emit identity columns with the values; they can't be inserte into the table
 
                 builder.Appender.Indent();
                 builder.AppendPart(
-                    (template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee,
+                    (template.Expressions[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
                 if (i < template.Expressions.Count - 1)
@@ -109,14 +109,14 @@ namespace HatTrick.DbEx.MsSql.Assembler
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.None);
             for (var i = 0; i < template.Expressions.Count; i++)
             {
-                if (((template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
+                if (((template.Expressions[i] as IAssignmentExpressionProvider).Assignee as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata.IsIdentity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
                     .Write(insertValuesName)
                     .Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(".");
-                builder.AppendPart((template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee, context);
+                builder.AppendPart((template.Expressions[i] as IAssignmentExpressionProvider).Assignee, context);
                 context.Field = null;
                 if (i < template.Expressions.Count - 1)
                     builder.Appender.Write(", ");
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Appender.Indent();
                 builder.Appender.Write("INSERTED.");
                 builder.AppendPart(
-                    (template.Expressions[i] as IDbAssignmentExpressionProvider).Assignee,
+                    (template.Expressions[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
                 if (i < template.Expressions.Count - 1)

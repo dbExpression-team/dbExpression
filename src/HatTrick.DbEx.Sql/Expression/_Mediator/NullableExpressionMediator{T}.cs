@@ -6,7 +6,7 @@
         protected NullableExpressionMediator()
         { }
 
-        protected NullableExpressionMediator(IDbExpression expression)
+        protected NullableExpressionMediator(IExpression expression)
             : base(expression)
         {
         }

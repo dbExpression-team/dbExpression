@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         public override ParameterizedFieldExpression Add(object value, FieldExpression field)
         {
-            var metadata = (field as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata;
+            var metadata = (field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
             var parameter = Create(value, (SqlDbType)metadata.DbType, metadata.Size, metadata.Precision, metadata.Scale);
             var parameterized = new ParameterizedFieldExpression(parameter, field);
             Parameters.Add(parameterized);
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         public override ParameterizedFieldExpression AddOutput(FieldExpression field)
         {
-            var metadata = (field as IDbExpressionMetadataProvider<ISqlFieldMetadata>).Metadata;
+            var metadata = (field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
             var parameter = new SqlParameter($"@P{(Parameters.Count + 1)}", (SqlDbType)metadata.DbType) { Direction = ParameterDirection.Output };
             var parameterized = new ParameterizedFieldExpression(parameter, field);
             Parameters.Add(parameterized);

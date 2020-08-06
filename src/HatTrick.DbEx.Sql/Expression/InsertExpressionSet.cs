@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpressionSet : IDbExpression
+    public class InsertExpressionSet : IExpression
     {
         #region interface
         public IDbEntity Entity { get; }

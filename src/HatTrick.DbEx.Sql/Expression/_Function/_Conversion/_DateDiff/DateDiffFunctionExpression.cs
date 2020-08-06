@@ -3,15 +3,15 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DateDiffFunctionExpression : ConversionFunctionExpression,
-        IDbDateFunctionExpression,
-        IDbExpressionAliasProvider,
+        IDateFunctionExpression,
+        IExpressionAliasProvider,
         IEquatable<DateDiffFunctionExpression>
     {
         #region interface
         public ExpressionContainer DatePart { get; private set; }
         public ExpressionMediator StartDate { get; private set; }
         public ExpressionMediator EndDate { get; private set; }
-        string IDbExpressionAliasProvider.Alias => Alias;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors

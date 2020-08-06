@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
-        IDbExpression
+        IExpression
     {
         #region internals
         protected bool IsDistinct { get; private set; }

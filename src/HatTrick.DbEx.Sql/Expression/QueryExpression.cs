@@ -1,6 +1,6 @@
 ﻿namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class QueryExpression : IDbExpression
+    public abstract class QueryExpression : IExpression
     {
         #region interface
         public EntityExpression BaseEntity { get; set; }

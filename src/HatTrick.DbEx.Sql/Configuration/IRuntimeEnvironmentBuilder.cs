@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface IDbExpressionRuntimeEnvironmentBuilder
+    public interface IRuntimeEnvironmentBuilder
     {
         RuntimeDatabaseConfigurationBuilder ConfigureSqlDatabase(IRuntimeSqlDatabase database, Action<RuntimeDatabaseConfigurationBuilder> configure);
     }

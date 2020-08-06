@@ -3,10 +3,10 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression : 
-        IDbExpression,
-        IDbExpressionMetadataProvider<ISqlFieldMetadata>,
-        IDbExpressionProvider<EntityExpression>,
-        IDbExpressionAliasProvider,
+        IExpression,
+        ISqlMetadataProvider<ISqlFieldMetadata>,
+        IExpressionProvider<EntityExpression>,
+        IExpressionAliasProvider,
         IEquatable<FieldExpression>
     {
         #region internals
@@ -19,9 +19,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        EntityExpression IDbExpressionProvider<EntityExpression>.Expression => Entity;
-        ISqlFieldMetadata IDbExpressionMetadataProvider<ISqlFieldMetadata>.Metadata => Metadata;
-        string IDbExpressionAliasProvider.Alias => Alias;
+        EntityExpression IExpressionProvider<EntityExpression>.Expression => Entity;
+        ISqlFieldMetadata ISqlMetadataProvider<ISqlFieldMetadata>.Metadata => Metadata;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors

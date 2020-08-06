@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class HavingExpression :
-        IDbExpression
+        IExpression
     {
         #region interface
         public ExpressionContainer Expression { get; private set; }

@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             : base(database, expression)
         {
             Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
-            Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IDbAssignmentExpressionProvider).Assignee, (x as IDbAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
+            Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             exp = db.SelectMany(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
+            expressionSet = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
 
             //then
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             exp = db.SelectMany(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = (exp as IDbExpressionSetProvider<SelectQueryExpression>).Expression;
+            expressionSet = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
 
             //then
             expressionSet.Select.Expressions.Should().HaveCount(2);

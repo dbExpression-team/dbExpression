@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DatePartFunctionExpression : ConversionFunctionExpression,
-        IDbDateFunctionExpression,
+        IDateFunctionExpression,
         IEquatable<DatePartFunctionExpression>
     {
         #region interface

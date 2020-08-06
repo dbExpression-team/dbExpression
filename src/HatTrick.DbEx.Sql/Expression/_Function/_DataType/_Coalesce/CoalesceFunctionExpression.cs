@@ -5,7 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CoalesceFunctionExpression : DataTypeFunctionExpression,
-        IDbFunctionExpression,
+        IFunctionExpression,
         IEquatable<CoalesceFunctionExpression>
     {
         #region interface

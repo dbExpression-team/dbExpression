@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //append the subquery alias
                 builder.Appender.Indentation--.Indent().Write(") AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write((expression as IDbExpressionAliasProvider).Alias)
+                    .Write((expression as IExpressionAliasProvider).Alias)
                     .Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(" ON ");
 

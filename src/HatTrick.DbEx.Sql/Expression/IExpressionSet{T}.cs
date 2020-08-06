@@ -2,8 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IDbExpressionListProvider<T>
-        where T : IDbExpression
+    public interface IExpressionSet<T> : IExpressionSet
+        where T : class, IExpression
     {
         IList<T> Expressions { get; }
     }

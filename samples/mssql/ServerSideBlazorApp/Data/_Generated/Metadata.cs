@@ -5,14 +5,14 @@ namespace ServerSideBlazorApp.DataService
 	using ServerSideBlazorApp.dboDataService;
 	using ServerSideBlazorApp.secDataService;
 
-    public class CRMDatabaseDatabaseMetadataProvider : IDatabaseMetadataProvider
+    public class CRMDatabaseSqlDatabaseMetadataProvider : ISqlDatabaseMetadataProvider
     {
         #region interface
         public ISqlDatabaseMetadata Database { get; private set; }
         #endregion
 
         #region constructors
-        public CRMDatabaseDatabaseMetadataProvider()
+        public CRMDatabaseSqlDatabaseMetadataProvider()
         {
             Database = new CRMDatabaseSqlDatabaseMetadata("CRMDatabase");
             Database.Schemas.Add("dbo", new dboSchemaMetadata(Database));

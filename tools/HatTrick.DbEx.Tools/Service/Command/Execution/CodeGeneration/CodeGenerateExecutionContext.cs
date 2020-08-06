@@ -188,13 +188,6 @@ namespace HatTrick.DbEx.Tools.Service
                 throw new CommandException(msg);
             }
 
-            //if (string.IsNullOrWhiteSpace(config.RuntimeConnectionStringName))
-            //{
-            //    string key1 = nameof(config.RuntimeConnectionStringName);
-            //    string msg = $"DbExConfig file missing required key: {key1}";
-            //    throw new CommandException(msg);
-            //}
-
             if (!string.IsNullOrWhiteSpace(config.OutputDirectory))
             {
                 if (svc.IO.FileExists(config.OutputDirectory))

@@ -64,19 +64,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         }
 
         #region 2005
-        public static void AddMsSql2005Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2005Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2005<T>(() => connectionString, null, configure);
 
-        public static void AddMsSql2005Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2005Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2005<T>(connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2005<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2005<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 
@@ -92,19 +92,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region 2008
-        public static void AddMsSql2008Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2008Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2008<T>(() => connectionString, null, configure);
 
-        public static void AddMsSql2008Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2008Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2008<T>(connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2008<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2008<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 
@@ -120,19 +120,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region 2012
-        public static void AddMsSql2012Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2012Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2012<T>(() => connectionString, null, configure);
 
-        public static void AddMsSql2012Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2012Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2012<T>(connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2012<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2012<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 
@@ -148,19 +148,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region 2014
-        public static void AddMsSql2014Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2014Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2014<T>(() => connectionString, null, configure);
 
-        public static void AddMsSql2014Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2014Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2014<T>(connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2014<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2014<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 
@@ -176,19 +176,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region 2016
-        public static void AddMsSql2016Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2016<T>(() => connectionString, null, configure);
 
-        public static void AddMsSql2016Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2016<T>(connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2016<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2016<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 
@@ -204,19 +204,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region 2017
-        public static void AddMsSql2017Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2017Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2017<T>(new T(), () => connectionString, null, configure);
 
-        public static void AddMsSql2017Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2017Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2017<T>(new T(), connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2017<T>(this DbExpressionRuntimeEnvironmentBuilder builder, IRuntimeSqlDatabase database, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2017<T>(this RuntimeEnvironmentBuilder builder, IRuntimeSqlDatabase database, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 
@@ -232,19 +232,19 @@ namespace HatTrick.DbEx.MsSql.Configuration
         #endregion
 
         #region 2019
-        public static void AddMsSql2019Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2019Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2019<T>(() => connectionString, null, configure);
 
-        public static void AddMsSql2019Database<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        public static void AddMsSql2019Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
             => builder.ConfigureMsSql2019<T>(connectionStringFactory, null, configure);
 
-        private static void ConfigureMsSql2019<T>(this DbExpressionRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
+        private static void ConfigureMsSql2019<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeDatabaseConfigurationBuilder> configure = null)
             where T : class, IRuntimeSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
-            (builder as IDbExpressionRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
+            (builder as IRuntimeEnvironmentBuilder).ConfigureSqlDatabase(new T(), init =>
             {
                 init.ConfigureMsSqlCommon<T>(connectionStringFactory);
 

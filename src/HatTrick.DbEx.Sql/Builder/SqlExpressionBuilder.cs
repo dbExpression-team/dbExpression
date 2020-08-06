@@ -7,11 +7,11 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public abstract class SqlExpressionBuilder :
         ITerminationExpressionBuilder,
-        IDbExpressionSetProvider
+        IQueryExpressionProvider
     {
         public DatabaseConfiguration Configuration { get; private set; }
         public virtual QueryExpression Expression { get; private set; }
-        QueryExpression IDbExpressionSetProvider.Expression => Expression;
+        QueryExpression IQueryExpressionProvider.Expression => Expression;
 
         protected SqlExpressionBuilder(DatabaseConfiguration configuration, QueryExpression expression)
         {
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Builder
         protected IAliasRequiredJoinExpressionBuilder<T, TBuilder> Join<T, TBuilder>(ISubqueryTerminationExpressionBuilder subquery, JoinOperationExpressionOperator joinType)
             where TBuilder : class, IExpressionBuilder<T>
         {
-            return new JoinExpressionBuilder<T, TBuilder>(Expression, (subquery as IDbExpressionSetProvider).Expression, joinType, this as TBuilder);
+            return new JoinExpressionBuilder<T, TBuilder>(Expression, (subquery as IQueryExpressionProvider).Expression, joinType, this as TBuilder);
         }
         #endregion
     }

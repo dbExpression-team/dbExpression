@@ -4,8 +4,8 @@ using System;
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class GetDateFunctionExpression : DataTypeFunctionExpression,
-        IDbDateFunctionExpression,
-        IDbExpressionAliasProvider,
+        IDateFunctionExpression,
+        IExpressionAliasProvider,
         IEquatable<GetDateFunctionExpression>
     {
         #region as

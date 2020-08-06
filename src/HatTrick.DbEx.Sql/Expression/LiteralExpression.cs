@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class LiteralExpression :
-        IDbExpression,
+        IExpression,
         IEquatable<LiteralExpression>
     {
         #region interface

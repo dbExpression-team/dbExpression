@@ -3,9 +3,9 @@ using System.ComponentModel;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class DbExpressionRuntimeEnvironmentBuilder : IDbExpressionRuntimeEnvironmentBuilder
+    public class RuntimeEnvironmentBuilder : IRuntimeEnvironmentBuilder
     {
-        RuntimeDatabaseConfigurationBuilder IDbExpressionRuntimeEnvironmentBuilder.ConfigureSqlDatabase(IRuntimeSqlDatabase database, Action<RuntimeDatabaseConfigurationBuilder> configure)
+        RuntimeDatabaseConfigurationBuilder IRuntimeEnvironmentBuilder.ConfigureSqlDatabase(IRuntimeSqlDatabase database, Action<RuntimeDatabaseConfigurationBuilder> configure)
         {
             var configuration = new DatabaseConfiguration();
             var builder = new RuntimeDatabaseConfigurationBuilder(configuration);

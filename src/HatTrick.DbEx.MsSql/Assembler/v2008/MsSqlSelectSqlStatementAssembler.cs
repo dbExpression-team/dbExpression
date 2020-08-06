@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2008
                 //no  paging, so no special handling required
                 base.AssembleStatement(expression, builder, context);
             }
-            else if (!(expression.Select as IDbExpressionIsDistinctProvider).IsDistinct) //no distinct, return standard CTE for page
+            else if (!(expression.Select as IExpressionIsDistinctProvider).IsDistinct) //no distinct, return standard CTE for page
             {
                 AssembleMsSqlCTESelectStatement(expression, builder, context);
             }

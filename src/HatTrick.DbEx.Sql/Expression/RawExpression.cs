@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class RawExpression :
-        IDbExpression,
+        IExpression,
         IEquatable<RawExpression>
     {
         #region interface

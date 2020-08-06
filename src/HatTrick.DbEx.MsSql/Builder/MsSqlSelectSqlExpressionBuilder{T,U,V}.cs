@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Builder;
+﻿using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
@@ -7,7 +6,7 @@ using HatTrick.DbEx.Sql.Expression;
 namespace HatTrick.DbEx.MsSql.Builder
 {
     public class MsSqlSelectSqlExpressionBuilder<T, U, V> : SelectSqlExpressionBuilder<T, U, V>,
-        IDbExpressionSetProvider<SelectQueryExpression>
+        IQueryExpressionProvider<SelectQueryExpression>
         where U : class, IContinuationExpressionBuilder<T>
         where V : class, IContinuationExpressionBuilder<T, U>
     {
