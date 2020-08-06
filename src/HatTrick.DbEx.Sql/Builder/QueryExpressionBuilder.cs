@@ -5,7 +5,7 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SqlExpressionBuilder :
+    public abstract class QueryExpressionBuilder :
         ITerminationExpressionBuilder,
         IQueryExpressionProvider
     {
@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Builder
         public virtual QueryExpression Expression { get; private set; }
         QueryExpression IQueryExpressionProvider.Expression => Expression;
 
-        protected SqlExpressionBuilder(DatabaseConfiguration configuration, QueryExpression expression)
+        protected QueryExpressionBuilder(DatabaseConfiguration configuration, QueryExpression expression)
         {
             Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");

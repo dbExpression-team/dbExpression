@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class InsertSqlExpressionBuilder<T> : SqlExpressionBuilder<T>,
+    public abstract class InsertQueryExpressionBuilder<T> : QueryExpressionBuilder<T>,
         IInsertExpressionBuilder<T>,
         IInsertTerminationExpressionBuilder<T>
         where T : class, IDbEntity
@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Builder
         private readonly IEnumerable<T> instances;
         private InsertQueryExpression insert => Expression as InsertQueryExpression;
 
-        protected InsertSqlExpressionBuilder(DatabaseConfiguration configuration, IEnumerable<T> instances, InsertQueryExpression expression) : base(configuration, expression)
+        protected InsertQueryExpressionBuilder(DatabaseConfiguration configuration, IEnumerable<T> instances, InsertQueryExpression expression) : base(configuration, expression)
         {
             this.instances = instances;
         }

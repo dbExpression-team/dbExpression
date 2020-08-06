@@ -19,7 +19,7 @@ namespace ServerSideBlazorApp.DataService
         #region internals
         private readonly ISqlDatabaseMetadata metadata;
         protected static DatabaseConfiguration config;
-        protected static MsSqlExpressionBuilderFactory expressionBuilderFactory;
+        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory;
         #endregion
 
         #region interface
@@ -45,7 +45,7 @@ namespace ServerSideBlazorApp.DataService
             config = configuration;
             dbo.Initialize(metadata.Schemas[nameof(dbo)]);
             sec.Initialize(metadata.Schemas[nameof(sec)]);
-            expressionBuilderFactory = new MsSqlExpressionBuilderFactory();
+            expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         }
 
         #region select one

@@ -8,13 +8,13 @@ using System.Dynamic;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlExpressionBuilderFactory
+    public class MsSqlQueryExpressionBuilderFactory
     {
         #region select one
         public IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> CreateSelectOneExpressionBuilder<TEntity>(DatabaseConfiguration configuration)
             where TEntity : class, IDbEntity
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(configuration);
             builder.Expression.Select.Top(1);
             return builder;
         }
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         public IFromExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>> CreateSelectOneExpressionBuilder<TEnum>(DatabaseConfiguration configuration, IEnumExpressionMediator<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>>(configuration);
             builder.Expression.Select.Top(1);
             builder.Expression.Select.Expressions.Add(new SelectExpression(new EnumExpressionMediator<TEnum>(field)));
             return builder;
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> CreateSelectOneExpressionBuilder(DatabaseConfiguration configuration, SelectExpression field1, SelectExpression field2, params SelectExpression[] fields)
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>>(configuration);
             builder.Expression.Select.Top(1);
             builder.Expression.Select.Expressions.Add(field1);
             builder.Expression.Select.Expressions.Add(field2);
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>> CreateSelectOneExpressionBuilder<TValue>(DatabaseConfiguration configuration, SelectExpression<TValue> field)
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(configuration);
             builder.Expression.Select.Top(1);
             builder.Expression.Select.Expressions.Add(field);
             return builder;
@@ -52,19 +52,19 @@ namespace HatTrick.DbEx.MsSql.Builder
         public IListFromExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>> CreateSelectManyExpressionBuilder<TEntity>(DatabaseConfiguration configuration)
             where TEntity : IDbEntity
         {
-            return new MsSqlSelectSqlExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>>(configuration);
+            return new MsSqlSelectQueryExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>>(configuration);
         }
 
         public IListFromExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>> CreateSelectManyExpressionBuilder<TEnum>(DatabaseConfiguration configuration, IEnumExpressionMediator<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>>(configuration);
             builder.Expression.Select.Expressions.Add(new SelectExpression(new EnumExpressionMediator<TEnum>(field)));
             return builder;
         }
         public IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> CreateSelectManyExpressionBuilder(DatabaseConfiguration configuration, SelectExpression field1, SelectExpression field2, params SelectExpression[] fields)
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(configuration);
             builder.Expression.Select.Expressions.Add(field1);
             builder.Expression.Select.Expressions.Add(field2);
             foreach (var field in fields)
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> CreateSelectManyExpressionBuilder<TValue>(DatabaseConfiguration configuration, SelectExpression<TValue> field)
         {
-            var builder = new MsSqlSelectSqlExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(configuration);
+            var builder = new MsSqlSelectQueryExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(configuration);
             builder.Expression.Select.Expressions.Add(field);
             return builder;
         }
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public IUpdateFromExpressionBuilder CreateUpdateExpressionBuilder(DatabaseConfiguration configuration, params AssignmentExpression[] fields)
         {
-            var builder = new MsSqlUpdateSqlExpressionBuilder(configuration);
+            var builder = new MsSqlUpdateQueryExpressionBuilder(configuration);
             foreach (var field in fields)
                 builder.Expression.Assign.Expressions.Add(field);
             return builder;
@@ -90,19 +90,19 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public IDeleteFromExpressionBuilder CreateDeleteExpressionBulder(DatabaseConfiguration configuration)
         {
-            return new MsSqlDeleteSqlExpressionBuilder(configuration);
+            return new MsSqlDeleteQueryExpressionBuilder(configuration);
         }
 
         public IInsertExpressionBuilder<T> CreateInsertExpressionBuilder<T>(DatabaseConfiguration configuration, T instance)
             where T : class, IDbEntity
         {
-            return new MsSqlInsertSqlExpressionBuilder<T>(configuration, new List<T> { instance });
+            return new MsSqlInsertQueryExpressionBuilder<T>(configuration, new List<T> { instance });
         }
 
         public IInsertExpressionBuilder<T> CreateInsertExpressionBuilder<T>(DatabaseConfiguration configuration, IList<T> instances)
             where T : class, IDbEntity
         {
-            return new MsSqlInsertSqlExpressionBuilder<T>(configuration, instances);
+            return new MsSqlInsertQueryExpressionBuilder<T>(configuration, instances);
         }
     }
 }

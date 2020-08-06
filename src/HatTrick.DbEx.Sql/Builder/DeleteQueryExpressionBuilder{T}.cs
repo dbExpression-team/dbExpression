@@ -4,11 +4,11 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class DeleteSqlExpressionBuilder<T> : DeleteSqlExpressionBuilder,
+    public abstract class DeleteQueryExpressionBuilder<T> : DeleteQueryExpressionBuilder,
             IDeleteContinuationExpressionBuilder<T>
             where T : class, IDbEntity
     {
-        protected DeleteSqlExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
+        protected DeleteQueryExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 

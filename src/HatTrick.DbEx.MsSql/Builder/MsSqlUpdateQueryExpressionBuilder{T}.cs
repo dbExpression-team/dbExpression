@@ -6,10 +6,10 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlUpdateSqlExpressionBuilder<T> : UpdateSqlExpressionBuilder<T>
+    public class MsSqlUpdateQueryExpressionBuilder<T> : UpdateQueryExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        public MsSqlUpdateSqlExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
+        public MsSqlUpdateQueryExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 
@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         protected override IUpdateContinuationExpressionBuilder<U> CreateTypedBuilder<U>(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<U> entity)
         {
-            return new MsSqlUpdateSqlExpressionBuilder<U>(configuration, expression, entity);
+            return new MsSqlUpdateQueryExpressionBuilder<U>(configuration, expression, entity);
         }
     }
 }

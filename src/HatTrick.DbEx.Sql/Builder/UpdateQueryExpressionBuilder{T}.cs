@@ -4,35 +4,12 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class UpdateSqlExpressionBuilder : SqlExpressionBuilder,
-        IUpdateFromExpressionBuilder
-    {
-        #region constructors
-        protected UpdateSqlExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression) : base(configuration, expression)
-        {
-
-        }
-
-        protected UpdateSqlExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression entity) : base(configuration, expression)
-        {
-            Expression.BaseEntity = entity;
-        }
-        #endregion
-
-        IUpdateContinuationExpressionBuilder<T> IUpdateFromExpressionBuilder.From<T>(EntityExpression<T> entity)
-        {
-            return CreateTypedBuilder(Configuration, Expression as UpdateQueryExpression, entity);
-        }
-
-        protected abstract IUpdateContinuationExpressionBuilder<T> CreateTypedBuilder<T>(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity) where T : class, IDbEntity;
-    }
-
-    public abstract class UpdateSqlExpressionBuilder<T> : UpdateSqlExpressionBuilder,
+    public abstract class UpdateQueryExpressionBuilder<T> : UpdateQueryExpressionBuilder,
         IUpdateInitiationExpressionBuilder,
         IUpdateContinuationExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        protected UpdateSqlExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
+        protected UpdateQueryExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 

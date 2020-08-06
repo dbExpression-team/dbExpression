@@ -4,7 +4,7 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SelectSqlExpressionBuilder<T, U> : SelectSqlExpressionBuilder<T>,
+    public abstract class SelectQueryExpressionBuilder<T, U> : SelectQueryExpressionBuilder<T>,
         IValueContinuationExpressionBuilder<T, U>,
         IValueListContinuationExpressionBuilder<T, U>,
         ITypeContinuationBuilder<T, U>,
@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where U : class, IContinuationExpressionBuilder<T>
     {
         #region constructors
-        protected SelectSqlExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
+        protected SelectQueryExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         { }
         #endregion
 

@@ -612,7 +612,7 @@ namespace HatTrick.DbEx.Sql
 
         private static DatabaseConfiguration GetDatabaseConfiguration(this ITerminationExpressionBuilder builder)
         {
-            var concrete = builder as SqlExpressionBuilder ?? throw new DbExpressionConfigurationException($"The parameter '{nameof(builder)}' has type '{builder}', the type must be assignable to type '{typeof(SqlExpressionBuilder)}'.");
+            var concrete = builder as QueryExpressionBuilder ?? throw new DbExpressionConfigurationException($"The parameter '{nameof(builder)}' has type '{builder}', the type must be assignable to type '{typeof(QueryExpressionBuilder)}'.");
             return concrete.Configuration ?? throw new DbExpressionConfigurationException($"Database configuration is required, please review and ensure the correct configuration for DbExpression.");
         }
 

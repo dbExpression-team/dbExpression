@@ -4,12 +4,12 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SelectSqlExpressionBuilder<T> : SqlExpressionBuilder<T>,
+    public abstract class SelectQueryExpressionBuilder<T> : QueryExpressionBuilder<T>,
        IValueContinuationExpressionBuilder<T>,
        IValueListContinuationExpressionBuilder<T>
     {
         #region constructors
-        protected SelectSqlExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
+        protected SelectQueryExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         { }
         #endregion
     }
