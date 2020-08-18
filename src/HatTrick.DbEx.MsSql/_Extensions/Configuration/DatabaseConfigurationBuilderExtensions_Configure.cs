@@ -50,6 +50,10 @@ namespace HatTrick.DbEx.MsSql.Configuration
             builder.UseValueConverterFactory<ValueConverterFactory>();
             builder.UseMapperFactory<MapperFactory>();
 
+            var appenderFactory = new MsSqlAssemblyPartAppenderFactory();
+            appenderFactory.RegisterDefaultPartAppenders();
+            builder.UseAssemblyPartAppenderFactory(appenderFactory);
+
             //configure sql statement executor factory
             var executor = new SqlStatementExecutorFactory();
             executor.RegisterDefaultExecutors();
@@ -85,7 +89,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2005.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
@@ -115,7 +118,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2008.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
@@ -145,7 +147,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2012.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
@@ -175,7 +176,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2014.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
@@ -205,7 +205,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2016.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
@@ -235,7 +234,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2017.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
@@ -265,7 +263,6 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 //configure sql statement builder factory
                 var factory = new Assembler.v2019.MsSqlStatementBuilderFactory();
                 factory.RegisterDefaultStatementAssemblers();
-                factory.RegisterDefaultPartAppenders();
                 init.UseStatementBuilderFactory(factory);
 
                 runtimeConfiguration?.Invoke(init);
