@@ -182,7 +182,7 @@ namespace DbEx.dboDataService
             Fields.Add("ShipDate", new MsSqlFieldMetadata(this, "ShipDate", SqlDbType.DateTime, 8));
             Fields.Add("ExpectedDeliveryDate", new MsSqlFieldMetadata(this, "ExpectedDeliveryDate", SqlDbType.DateTime, 8));
             Fields.Add("TrackingIdentifier", new MsSqlFieldMetadata(this, "TrackingIdentifier", SqlDbType.UniqueIdentifier, 16));
-            Fields.Add("PaymentMethod", new MsSqlFieldMetadata(this, "PaymentMethod", SqlDbType.VarChar, 20));
+            Fields.Add("PaymentMethodType", new MsSqlFieldMetadata(this, "PaymentMethodType", SqlDbType.VarChar, 20));
             Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
             Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
         }

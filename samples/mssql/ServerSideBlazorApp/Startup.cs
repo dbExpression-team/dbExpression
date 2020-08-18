@@ -37,7 +37,7 @@ namespace ServerSideBlazorApp
                 dbex => dbex.AddMsSql2019Database<CRMDatabase>(
                     Configuration.GetConnectionString("Default"), 
                     null, 
-                    fields => fields.For(dbo.Purchase.PaymentMethod).UseConverter<StringEnumValueConverter<PaymentMethodType>>())
+                    fields => fields.For(dbo.Purchase.PaymentMethodType).UseConverter<StringEnumValueConverter<PaymentMethodType>>())
             );
 
             services.AddSingleton<CustomerService>();
