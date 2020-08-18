@@ -1,5 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Executor;
-using HatTrick.DbEx.Sql.Mapper;
 using System;
 
 namespace HatTrick.DbEx.Sql.Expression
@@ -24,8 +23,8 @@ namespace HatTrick.DbEx.Sql.Expression
             => GetInclusiveInsertExpression(entity);
         AssignmentExpressionSet IExpressionEntity<T>.BuildAssignmentExpression(T from, T to)
             => GetAssignmentExpression(from, to);
-        void IExpressionEntity<T>.HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper valueMapper)
-            => HydrateEntity(entity, reader, valueMapper);
+        void IExpressionEntity<T>.HydrateEntity(T entity, ISqlFieldReader reader)
+            => HydrateEntity(entity, reader);
         #endregion
 
         #region get inclusive insert expression
@@ -37,13 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region fill object
-        protected abstract void HydrateEntity(T entity, ISqlFieldReader reader, IValueMapper mapper);
-
-        protected abstract void HydrateField(T entity, FieldExpression field, object value, IValueMapper mapper);
-
-        protected override void HydrateField(IDbEntity entity, FieldExpression field, object value, IValueMapper mapper)
-            => HydrateField(entity as T, field, value, mapper);
-
+        protected abstract void HydrateEntity(T entity, ISqlFieldReader reader);
         #endregion
     }
 }

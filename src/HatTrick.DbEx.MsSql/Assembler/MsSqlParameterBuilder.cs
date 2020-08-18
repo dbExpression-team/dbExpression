@@ -1,25 +1,17 @@
-﻿using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.MsSql.Types;
+﻿using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlParameterBuilder : SqlParameterBuilder
     {
-        public MsSqlParameterBuilder()
-        {
-
-        }
-
-        public override DbParameter Add<T>(object value)
+        public override DbParameter Add<T>(T value)
         {
             var parameter = Create(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
             var parameterized = new ParameterizedFieldExpression(parameter, null);
@@ -35,10 +27,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return parameter;
         }
 
-        public override ParameterizedFieldExpression Add(object value, FieldExpression field)
+        public override ParameterizedFieldExpression Add<T>(T value, FieldExpression field)
         {
-            var metadata = (field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
-            var parameter = Create(value, (SqlDbType)metadata.DbType, metadata.Size, metadata.Precision, metadata.Scale);
+            DbParameter parameter;
+            if (field is object)
+            {
+                var metadata = (field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
+                parameter = Create(value, (SqlDbType)metadata.DbType, metadata.Size, metadata.Precision, metadata.Scale);
+            }
+            else
+            {
+                parameter = Create(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
+            }
             var parameterized = new ParameterizedFieldExpression(parameter, field);
             Parameters.Add(parameterized);
             return parameterized;
@@ -53,10 +53,10 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return parameterized;
         }
 
-        private DbParameter Create(object value, SqlDbType dbType, int? size, byte? precision, byte? scale)
+        private DbParameter Create<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)
         {
-            object val = value ?? DBNull.Value;
-            var parameter = new SqlParameter($"@P{(Parameters.Count + 1)}", dbType) { Value = val };
+            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
+
             if (size.HasValue)
                 parameter.Size = size.Value;
             if (precision.HasValue)

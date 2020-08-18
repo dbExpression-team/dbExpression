@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2019
                     .Indentation++
                     .Indent()
                     .Write("OFFSET ")
-                    .Write(builder.Parameters.Add<int>(expression.SkipValue).ParameterName)
+                    .Write(builder.Parameters.Add(expression.SkipValue.Value).ParameterName)
                     .Indent().Write(" ROWS")
                     .LineBreak()
                     .Indentation--;
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2019
                     .Indentation++
                     .Indent()
                     .Write("FETCH NEXT ")
-                    .Write(builder.Parameters.Add<int>(expression.LimitValue).ParameterName)
+                    .Write(builder.Parameters.Add(expression.LimitValue.Value).ParameterName)
                     .Indent()
                     .Write(" ROWS ONLY")
                     .LineBreak()

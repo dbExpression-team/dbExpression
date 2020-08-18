@@ -1,6 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Mapper;
-using HatTrick.DbEx.Sql.Pipeline;
+using HatTrick.DbEx.Sql.Converter;
 using System;
 using System.Data;
 using System.Data.Common;
@@ -12,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor : ISqlStatementExecutor
     {
-        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, FieldExpressionConverters converters, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
         {
             int @return = 0;
 
@@ -23,7 +22,15 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (statement.Parameters is object && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            if (statement.Parameters is object && statement.Parameters.Any()) 
+            {
+                foreach (var parameter in statement.Parameters)
+                {
+                    if (parameter.Parameter.Value != DBNull.Value)
+                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    cmd.Parameters.Add(parameter.Parameter);
+                }
+            }
             beforeExecution?.Invoke(cmd);
             try
             {
@@ -52,7 +59,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, FieldExpressionConverters converters, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
         {
             int @return = 0;
 
@@ -65,7 +72,15 @@ namespace HatTrick.DbEx.Sql.Executor
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            if (statement.Parameters is object && statement.Parameters.Any()) { cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray()); }
+            if (statement.Parameters is object && statement.Parameters.Any()) 
+            {
+                foreach (var parameter in statement.Parameters)
+                {
+                    if (parameter.Parameter.Value != DBNull.Value)
+                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    cmd.Parameters.Add(parameter.Parameter);
+                }
+            }
             beforeExecution?.Invoke(cmd);
             try
             {
@@ -94,7 +109,7 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, FieldExpressionConverters converters, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
         {
             DbCommand cmd = connection.CreateDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -104,15 +119,22 @@ namespace HatTrick.DbEx.Sql.Executor
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any())
-                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            {
+                foreach (var parameter in statement.Parameters)
+                {
+                    if (parameter.Parameter.Value != DBNull.Value)
+                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    cmd.Parameters.Add(parameter.Parameter);
+                }
+            }
             beforeExecution?.Invoke(cmd);
             connection.EnsureOpenConnection();
             var reader = cmd.ExecuteReader();
             afterExecution?.Invoke(cmd);
-            return new DataReaderWrapper(connection, reader, mapper);
+            return new DataReaderWrapper(connection, reader, converters);
         }
 
-        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, FieldExpressionConverters converters, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
         {
             DbCommand cmd = connection.CreateDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -122,15 +144,22 @@ namespace HatTrick.DbEx.Sql.Executor
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any())
-                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            {
+                foreach (var parameter in statement.Parameters)
+                {
+                    if (parameter.Parameter.Value != DBNull.Value)
+                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    cmd.Parameters.Add(parameter.Parameter);
+                }
+            }
             beforeExecution?.Invoke(cmd);
             await connection.EnsureOpenConnectionAsync(ct);
             var reader = await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false);
             afterExecution?.Invoke(cmd);
-            return new AsyncDataReaderWrapper(connection, reader, mapper, ct);
+            return new AsyncDataReaderWrapper(connection, reader, converters, ct);
         }
 
-        public virtual T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        public virtual T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, FieldExpressionConverters converters, IValueConverter converter, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
         {
             DbCommand cmd = connection.CreateDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -140,15 +169,22 @@ namespace HatTrick.DbEx.Sql.Executor
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any())
-                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            {
+                foreach (var parameter in statement.Parameters)
+                {
+                    if (parameter.Parameter.Value != DBNull.Value)
+                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    cmd.Parameters.Add(parameter.Parameter);
+                }
+            }
             beforeExecution?.Invoke(cmd);
             connection.EnsureOpenConnection();
             var output = cmd.ExecuteScalar();
             afterExecution?.Invoke(cmd);
-            return mapper.Map<T>(output);
+            return converter.Convert<T>(output);
         }
 
-        public virtual async Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, IValueMapper mapper, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, FieldExpressionConverters converters, IValueConverter converter, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
         {
             DbCommand cmd = connection.CreateDbCommand();
             cmd.Connection = connection.DbConnection;
@@ -158,12 +194,19 @@ namespace HatTrick.DbEx.Sql.Executor
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
             if (statement.Parameters is object && statement.Parameters.Any())
-                cmd.Parameters.AddRange(statement.Parameters.Select(p => p.Parameter).ToArray());
+            {
+                foreach (var parameter in statement.Parameters)
+                {
+                    if (parameter.Parameter.Value != DBNull.Value)
+                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    cmd.Parameters.Add(parameter.Parameter);
+                }
+            }
             beforeExecution?.Invoke(cmd);
             connection.EnsureOpenConnection();
             var output = await cmd.ExecuteScalarAsync(ct).ConfigureAwait(false);
             afterExecution?.Invoke(cmd);
-            return mapper.Map<T>(output);
+            return converter.Convert<T>(output);
         }
     }
 }

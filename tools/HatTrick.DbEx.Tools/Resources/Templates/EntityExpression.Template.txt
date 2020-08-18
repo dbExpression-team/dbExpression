@@ -96,24 +96,11 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
             return expr;
         }}
 
-        protected override void HydrateEntity({($) => ResolveName} {($) => ToCamelCase}, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity({($) => ResolveName} {($) => ToCamelCase}, ISqlFieldReader reader)
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
-			{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($, $.IsNullable) => ResolveAssemblyTypeName}>(reader.ReadField().Value);
-			{/if}
-			{/each}
-        }}
-
-		protected override void HydrateField({($) => ResolveName} {($) => ToCamelCase}, FieldExpression field, object value, IValueMapper mapper)
-        {{
-			{#each Columns}
-			{#if !($) => IsIgnored}
-			if (field == {($) => ResolveName})
-			{{
-				{(..\$) => ToCamelCase}.{($) => ResolveName} = mapper.Map<{($, $.IsNullable) => ResolveAssemblyTypeName}>(value);
-				return;
-			}}
+			{(..\$) => ToCamelCase}.{($) => ResolveName} = reader.ReadField().GetValue<{($, $.IsNullable) => ResolveAssemblyTypeName}>();
 			{/if}
 			{/each}
         }}

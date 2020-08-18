@@ -6,11 +6,11 @@ namespace HatTrick.DbEx.Sql.Mapper
     public class EntityMapper<T> : IEntityMapper<T>
         where T : class, IDbEntity
     {
-        public Action<T, ISqlFieldReader, IValueMapper> Map { get; private set; }
+        public Action<T, ISqlFieldReader> Map { get; private set; }
 
-        public EntityMapper(Action<T, ISqlFieldReader, IValueMapper> mapper)
+        public EntityMapper(Action<T, ISqlFieldReader> map)
         {
-            Map = mapper;
+            Map = map;
         }
     }
 }

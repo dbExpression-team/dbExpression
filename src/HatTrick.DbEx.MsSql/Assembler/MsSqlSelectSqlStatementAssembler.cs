@@ -127,13 +127,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++.Indent().Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(".").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).Write(" BETWEEN ")
-                    .Write(builder.Parameters.Add<int>((expression.SkipValue ?? 0) + 1).ParameterName);
+                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName);
 
             if (expression.LimitValue.HasValue)
             {
                 builder.Appender
                     .Write(" AND ")
-                    .Write(builder.Parameters.Add<int>((expression.SkipValue ?? 0) + expression.LimitValue + 1).ParameterName)
+                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + expression.LimitValue.Value + 1).ParameterName)
                     .LineBreak();
             }
             builder.Appender

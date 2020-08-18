@@ -3,7 +3,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
 
-namespace HatTrick.DbEx.Sql.Builder
+namespace HatTrick.DbEx.MsSql.Builder
 {
     public class MsSqlNullableCastFunctionExpressionBuilder : INullableCastFunctionExpressionBuilder
     {

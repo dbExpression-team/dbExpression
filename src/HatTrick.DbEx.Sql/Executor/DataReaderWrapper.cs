@@ -1,9 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Mapper;
+using HatTrick.DbEx.Sql.Converter;
 using System;
-using System.Data;
 using System.Data.Common;
-using System.Threading;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
@@ -14,15 +12,15 @@ namespace HatTrick.DbEx.Sql.Executor
         private int currentRowIndex;
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
-        protected IValueMapper Mapper { get; private set; }
+        protected FieldExpressionConverters Converters { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueMapper mapper)
+        public DataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, FieldExpressionConverters converters)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
-            Mapper = mapper;
+            Converters = converters;
         }
         #endregion
 
@@ -31,7 +29,6 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             try
             {
-
                 if (DataReader.Read())
                 {
                     var row = new ISqlField[DataReader.FieldCount];
@@ -39,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i], Mapper);
+                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i], Converters[i]);
                     }
                     return new Row(currentRowIndex++, row);
                 }

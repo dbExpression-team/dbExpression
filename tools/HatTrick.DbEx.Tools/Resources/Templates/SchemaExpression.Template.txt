@@ -22,7 +22,7 @@ namespace {() => ResolveRootNamespace}DataService
         #region internals
         private readonly ISqlDatabaseMetadata metadata;
         protected static DatabaseConfiguration config;
-        protected static MsSqlExpressionBuilderFactory expressionBuilderFactory;
+        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory;
         #endregion
 
         #region interface
@@ -51,7 +51,7 @@ namespace {() => ResolveRootNamespace}DataService
             {($) => ResolveName}.Initialize(metadata.Schemas[nameof({($) => ResolveName})]);
             {/if}
             {/each}
-            expressionBuilderFactory = new MsSqlExpressionBuilderFactory();
+            expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         }}
 
         #region select one

@@ -41,6 +41,13 @@
 			"apply": {
 				"name": "PersonAddress"
 			}
+		},
+		{
+			"path": "dbo.Purchase.PaymentMethod",
+			"apply": {
+				"dataType": "PaymentMethodType",
+				"isEnum": true
+			}
 		}
 	]
 }
