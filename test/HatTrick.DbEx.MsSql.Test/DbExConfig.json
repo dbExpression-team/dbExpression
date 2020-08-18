@@ -50,7 +50,7 @@
 			}
 		},
 		{
-			"path": "dbo.Purchase.PaymentMethod",
+			"path": "dbo.Purchase.PaymentMethodType",
 			"apply": {
 				"dataType": "PaymentMethodType",
 				"isEnum": true

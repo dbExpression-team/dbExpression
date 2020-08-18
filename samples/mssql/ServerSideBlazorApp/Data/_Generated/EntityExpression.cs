@@ -441,7 +441,7 @@ namespace ServerSideBlazorApp.dboDataService
         private const string _shipDateFieldName = "ShipDate";
         private const string _expectedDeliveryDateFieldName = "ExpectedDeliveryDate";
         private const string _trackingIdentifierFieldName = "TrackingIdentifier";
-        private const string _paymentMethodFieldName = "PaymentMethod";
+        private const string _paymentMethodTypeFieldName = "PaymentMethodType";
         private const string _dateCreatedFieldName = "DateCreated";
         private const string _dateUpdatedFieldName = "DateUpdated";
         #endregion
@@ -454,7 +454,7 @@ namespace ServerSideBlazorApp.dboDataService
 		public NullableDateTimeFieldExpression<Purchase> ShipDate { get { return Fields[_shipDateFieldName] as NullableDateTimeFieldExpression<Purchase>; } }
 		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get { return Fields[_expectedDeliveryDateFieldName] as NullableDateTimeFieldExpression<Purchase>; } }
 		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get { return Fields[_trackingIdentifierFieldName] as NullableGuidFieldExpression<Purchase>; } }
-		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethod { get { return Fields[_paymentMethodFieldName] as EnumFieldExpression<Purchase, PaymentMethodType>; } }
+		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get { return Fields[_paymentMethodTypeFieldName] as EnumFieldExpression<Purchase, PaymentMethodType>; } }
 		public DateTimeFieldExpression<Purchase> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Purchase>; } }
 		public DateTimeFieldExpression<Purchase> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Purchase>; } }
         #endregion
@@ -473,7 +473,7 @@ namespace ServerSideBlazorApp.dboDataService
 			Fields.Add(_shipDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ShipDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_shipDateFieldName])));
 			Fields.Add(_expectedDeliveryDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ExpectedDeliveryDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_expectedDeliveryDateFieldName])));
 			Fields.Add(_trackingIdentifierFieldName, new NullableGuidFieldExpression<Purchase>("dbo.Purchase.TrackingIdentifier", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_trackingIdentifierFieldName])));
-			Fields.Add(_paymentMethodFieldName, new EnumFieldExpression<Purchase, PaymentMethodType>("dbo.Purchase.PaymentMethod", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_paymentMethodFieldName])));
+			Fields.Add(_paymentMethodTypeFieldName, new EnumFieldExpression<Purchase, PaymentMethodType>("dbo.Purchase.PaymentMethodType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_paymentMethodTypeFieldName])));
 			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
 			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
@@ -495,7 +495,7 @@ namespace ServerSideBlazorApp.dboDataService
                 ShipDate,
                 ExpectedDeliveryDate,
                 TrackingIdentifier,
-                PaymentMethod,
+                PaymentMethodType,
                 DateCreated,
                 DateUpdated
             );
@@ -512,7 +512,7 @@ namespace ServerSideBlazorApp.dboDataService
                 ShipDate.Insert(purchase.ShipDate),
                 ExpectedDeliveryDate.Insert(purchase.ExpectedDeliveryDate),
                 TrackingIdentifier.Insert(purchase.TrackingIdentifier),
-                PaymentMethod.Insert(purchase.PaymentMethod),
+                PaymentMethodType.Insert(purchase.PaymentMethodType),
                 DateCreated.Insert(purchase.DateCreated),
                 DateUpdated.Insert(purchase.DateUpdated)
             );
@@ -528,7 +528,7 @@ namespace ServerSideBlazorApp.dboDataService
 			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate); };
 			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); };
 			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); };
-			if (from.PaymentMethod != to.PaymentMethod) { expr &= PaymentMethod.Set(to.PaymentMethod); };
+			if (from.PaymentMethodType != to.PaymentMethodType) { expr &= PaymentMethodType.Set(to.PaymentMethodType); };
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
@@ -544,7 +544,7 @@ namespace ServerSideBlazorApp.dboDataService
 			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-			purchase.PaymentMethod = reader.ReadField().GetValue<PaymentMethodType>();
+			purchase.PaymentMethodType = reader.ReadField().GetValue<PaymentMethodType>();
 			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
 			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }

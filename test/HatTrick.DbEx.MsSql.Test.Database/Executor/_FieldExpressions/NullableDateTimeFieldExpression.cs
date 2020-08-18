@@ -159,7 +159,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 { 
                     PersonId = 1,
                     PurchaseDate = DateTime.Now,
-                    PaymentMethod = PaymentMethodType.CreditCard,
+                    PaymentMethodType = PaymentMethodType.CreditCard,
                     ShipDate = null,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
