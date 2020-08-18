@@ -3,6 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class ExpressionContainer :
+        IExpression,
         IEquatable<ExpressionContainer>
     {
         #region interface

@@ -9,15 +9,6 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
         private static readonly MsSqlSelectSqlStatementAssembler _selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
         private static readonly MsSqlDeleteSqlStatementAssembler _deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
         private static readonly MsSqlUpdateSqlStatementAssembler _updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
-        private static readonly DateAddFunctionAppender _dateAddFunctionAppender = new DateAddFunctionAppender();
-        private static readonly DateDiffFunctionAppender _dateDiffFunctionAppender = new DateDiffFunctionAppender();
-        private static readonly DatePartFunctionAppender _datePartFunctionAppender = new DatePartFunctionAppender();
-        private static readonly GetDateFunctionAppender _getDateFunctionAppender = new GetDateFunctionAppender();
-        private static readonly GetUtcDateFunctionAppender _getUtcDateFunctionAppender = new GetUtcDateFunctionAppender();
-        private static readonly NewIdFunctionAppender _newIdFunctionAppender = new NewIdFunctionAppender();
-        private static readonly SysDateTimeFunctionAppender _sysDateTimeFunctionAppender = new SysDateTimeFunctionAppender();
-        private static readonly SysDateTimeOffsetFunctionAppender _sysDateTimeOffsetFunctionAppender = new SysDateTimeOffsetFunctionAppender();
-        private static readonly SysUtcDateTimeFunctionAppender _sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionAppender();
 
         #region methods
         public override void RegisterDefaultStatementAssemblers()
@@ -27,20 +18,6 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
             RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(() => throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement."));
             RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(() => _deleteSqlStatementAssembler);
             RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(() => _updateSqlStatementAssembler);
-        }
-
-        public override void RegisterDefaultPartAppenders()
-        {
-            base.RegisterDefaultPartAppenders();
-            base.RegisterPartAppender(_dateAddFunctionAppender);
-            base.RegisterPartAppender(_dateDiffFunctionAppender);
-            base.RegisterPartAppender(_datePartFunctionAppender);
-            base.RegisterPartAppender(_getDateFunctionAppender);
-            base.RegisterPartAppender(_getUtcDateFunctionAppender);
-            base.RegisterPartAppender(_newIdFunctionAppender);
-            base.RegisterPartAppender(_sysDateTimeFunctionAppender);
-            base.RegisterPartAppender(_sysDateTimeOffsetFunctionAppender);
-            base.RegisterPartAppender(_sysUtcDateTimeFunctionAppender);
         }
         #endregion
     }

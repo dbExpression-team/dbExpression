@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
             QueryExpression expressionSet = (exp as IQueryExpressionProvider).Expression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
             string whereClause;
 
             //when

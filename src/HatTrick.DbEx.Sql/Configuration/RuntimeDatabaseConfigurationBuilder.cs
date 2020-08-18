@@ -53,6 +53,25 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
         #endregion
 
+        #region appender
+        public void UseAssemblyPartAppenderFactory(IAssemblyPartAppenderFactory factory)
+        {
+            configuration.AssemblyPartAppenderFactory = factory;
+        }
+
+        public void UseAssemblyPartAppenderFactory<T>()
+            where T : class, IAssemblyPartAppenderFactory, new()
+        {
+            configuration.AssemblyPartAppenderFactory = new T();
+        }
+
+        public void UseAssemblyPartAppenderFactory<T>(Func<T> factory)
+            where T : IAssemblyPartAppenderFactory, new()
+        {
+            configuration.AssemblyPartAppenderFactory = new DelegateAssemblyPartAppenderFactory(new Func<IAssemblyPartAppenderFactory>(() => factory()));
+        }
+        #endregion
+
         #region execution pipeline factory
         public void UseExecutionPipelineFactory(IExecutionPipelineFactory factory)
         {
@@ -94,7 +113,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.StatementBuilderFactory = factory;
         }
 
-        public void UseStatementBuilderFactory(Func<SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
+        public void UseStatementBuilderFactory(Func<IAssemblyPartAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
         {
             configuration.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
         }

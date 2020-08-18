@@ -15,15 +15,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; }
         public QueryExpression Query { get; }
         public Func<QueryExpression, ISqlStatementAssembler> AssemblerFactory { get; }
-        public Func<Type, IAssemblyPartAppender> PartAppenderFactory { get; }
+        public IAssemblyPartAppenderFactory PartAppenderFactory { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
+            IAssemblyPartAppenderFactory partAppenderFactory,
             SqlStatementAssemblerConfiguration config,
             QueryExpression query,
             Func<QueryExpression, ISqlStatementAssembler> assemblerFactory,
-            Func<Type, IAssemblyPartAppender> partAppenderFactory,
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         )
@@ -59,20 +59,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             => DoAppendPart(part, context);
 
         public void AppendPart(ExpressionContainer part, AssemblyContext context)
-            => DoAppendPart(part, context);
+            => DoAppendPart(part.Object, context);
 
-        private void DoAppendPart<T>(T part, AssemblyContext context)
+        private void DoAppendPart(object part, AssemblyContext context)
         {           
-            var appender = PartAppenderFactory(part.GetType());
+            var appender = PartAppenderFactory.CreatePartAppender(part);
             if (appender is object)
             { 
                 appender.AppendPart(part, this, context);
-                return;
-            }
-
-            if (part is ExpressionContainer container)
-            {
-                DoAppendPart(container.Object, context);
                 return;
             }
 
