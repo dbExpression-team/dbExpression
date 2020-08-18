@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DbEx.Data
 {
-	#region AddressType
-	public enum AddressType : int
+    public enum AddressType : int
 	{
 		[Display(Name = "Shipping", Description = "Shipping Address")]
 		Shipping = 0,
@@ -13,5 +12,4 @@ namespace DbEx.Data
 		[Display(Name = "Billing", Description = "Billing Address")]
 		Billing = 2,
 	}
-	#endregion
 }

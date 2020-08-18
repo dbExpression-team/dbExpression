@@ -108,66 +108,17 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Address address, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(Address address, ISqlFieldReader reader)
         {
-			address.Id = mapper.Map<int>(reader.ReadField().Value);
-			address.AddressType = mapper.Map<AddressType?>(reader.ReadField().Value);
-			address.Line1 = mapper.Map<string>(reader.ReadField().Value);
-			address.Line2 = mapper.Map<string>(reader.ReadField().Value);
-			address.City = mapper.Map<string>(reader.ReadField().Value);
-			address.State = mapper.Map<string>(reader.ReadField().Value);
-			address.Zip = mapper.Map<string>(reader.ReadField().Value);
-			address.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-			address.DateUpdated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(Address address, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				address.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == AddressType)
-			{
-				address.AddressType = mapper.Map<AddressType?>(value);
-				return;
-			}
-			if (field == Line1)
-			{
-				address.Line1 = mapper.Map<string>(value);
-				return;
-			}
-			if (field == Line2)
-			{
-				address.Line2 = mapper.Map<string>(value);
-				return;
-			}
-			if (field == City)
-			{
-				address.City = mapper.Map<string>(value);
-				return;
-			}
-			if (field == State)
-			{
-				address.State = mapper.Map<string>(value);
-				return;
-			}
-			if (field == Zip)
-			{
-				address.Zip = mapper.Map<string>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				address.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == DateUpdated)
-			{
-				address.DateUpdated = mapper.Map<DateTime>(value);
-				return;
-			}
+			address.Id = reader.ReadField().GetValue<int>();
+			address.AddressType = reader.ReadField().GetValue<AddressType?>();
+			address.Line1 = reader.ReadField().GetValue<string>();
+			address.Line2 = reader.ReadField().GetValue<string>();
+			address.City = reader.ReadField().GetValue<string>();
+			address.State = reader.ReadField().GetValue<string>();
+			address.Zip = reader.ReadField().GetValue<string>();
+			address.DateCreated = reader.ReadField().GetValue<DateTime>();
+			address.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -271,66 +222,17 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Person person, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(Person person, ISqlFieldReader reader)
         {
-			person.Id = mapper.Map<int>(reader.ReadField().Value);
-			person.FirstName = mapper.Map<string>(reader.ReadField().Value);
-			person.LastName = mapper.Map<string>(reader.ReadField().Value);
-			person.BirthDate = mapper.Map<DateTime?>(reader.ReadField().Value);
-			person.GenderType = mapper.Map<GenderType>(reader.ReadField().Value);
-			person.CreditLimit = mapper.Map<int?>(reader.ReadField().Value);
-			person.YearOfLastCreditLimitReview = mapper.Map<int?>(reader.ReadField().Value);
-			person.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-			person.DateUpdated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(Person person, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				person.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == FirstName)
-			{
-				person.FirstName = mapper.Map<string>(value);
-				return;
-			}
-			if (field == LastName)
-			{
-				person.LastName = mapper.Map<string>(value);
-				return;
-			}
-			if (field == BirthDate)
-			{
-				person.BirthDate = mapper.Map<DateTime?>(value);
-				return;
-			}
-			if (field == GenderType)
-			{
-				person.GenderType = mapper.Map<GenderType>(value);
-				return;
-			}
-			if (field == CreditLimit)
-			{
-				person.CreditLimit = mapper.Map<int?>(value);
-				return;
-			}
-			if (field == YearOfLastCreditLimitReview)
-			{
-				person.YearOfLastCreditLimitReview = mapper.Map<int?>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				person.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == DateUpdated)
-			{
-				person.DateUpdated = mapper.Map<DateTime>(value);
-				return;
-			}
+			person.Id = reader.ReadField().GetValue<int>();
+			person.FirstName = reader.ReadField().GetValue<string>();
+			person.LastName = reader.ReadField().GetValue<string>();
+			person.BirthDate = reader.ReadField().GetValue<DateTime?>();
+			person.GenderType = reader.ReadField().GetValue<GenderType>();
+			person.CreditLimit = reader.ReadField().GetValue<int?>();
+			person.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+			person.DateCreated = reader.ReadField().GetValue<DateTime>();
+			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -404,36 +306,12 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(PersonAddress personAddress, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(PersonAddress personAddress, ISqlFieldReader reader)
         {
-			personAddress.Id = mapper.Map<int>(reader.ReadField().Value);
-			personAddress.PersonId = mapper.Map<int>(reader.ReadField().Value);
-			personAddress.AddressId = mapper.Map<int>(reader.ReadField().Value);
-			personAddress.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(PersonAddress personAddress, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				personAddress.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == PersonId)
-			{
-				personAddress.PersonId = mapper.Map<int>(value);
-				return;
-			}
-			if (field == AddressId)
-			{
-				personAddress.AddressId = mapper.Map<int>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				personAddress.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
+			personAddress.Id = reader.ReadField().GetValue<int>();
+			personAddress.PersonId = reader.ReadField().GetValue<int>();
+			personAddress.AddressId = reader.ReadField().GetValue<int>();
+			personAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -537,66 +415,17 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Product product, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(Product product, ISqlFieldReader reader)
         {
-			product.Id = mapper.Map<int>(reader.ReadField().Value);
-			product.ProductCategoryType = mapper.Map<ProductCategoryType?>(reader.ReadField().Value);
-			product.Name = mapper.Map<string>(reader.ReadField().Value);
-			product.Description = mapper.Map<string>(reader.ReadField().Value);
-			product.ListPrice = mapper.Map<decimal>(reader.ReadField().Value);
-			product.Price = mapper.Map<decimal>(reader.ReadField().Value);
-			product.Quantity = mapper.Map<int>(reader.ReadField().Value);
-			product.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-			product.DateUpdated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(Product product, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				product.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == ProductCategoryType)
-			{
-				product.ProductCategoryType = mapper.Map<ProductCategoryType?>(value);
-				return;
-			}
-			if (field == Name)
-			{
-				product.Name = mapper.Map<string>(value);
-				return;
-			}
-			if (field == Description)
-			{
-				product.Description = mapper.Map<string>(value);
-				return;
-			}
-			if (field == ListPrice)
-			{
-				product.ListPrice = mapper.Map<decimal>(value);
-				return;
-			}
-			if (field == Price)
-			{
-				product.Price = mapper.Map<decimal>(value);
-				return;
-			}
-			if (field == Quantity)
-			{
-				product.Quantity = mapper.Map<int>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				product.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == DateUpdated)
-			{
-				product.DateUpdated = mapper.Map<DateTime>(value);
-				return;
-			}
+			product.Id = reader.ReadField().GetValue<int>();
+			product.ProductCategoryType = reader.ReadField().GetValue<ProductCategoryType?>();
+			product.Name = reader.ReadField().GetValue<string>();
+			product.Description = reader.ReadField().GetValue<string>();
+			product.ListPrice = reader.ReadField().GetValue<decimal>();
+			product.Price = reader.ReadField().GetValue<decimal>();
+			product.Quantity = reader.ReadField().GetValue<int>();
+			product.DateCreated = reader.ReadField().GetValue<DateTime>();
+			product.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -612,6 +441,7 @@ namespace ServerSideBlazorApp.dboDataService
         private const string _shipDateFieldName = "ShipDate";
         private const string _expectedDeliveryDateFieldName = "ExpectedDeliveryDate";
         private const string _trackingIdentifierFieldName = "TrackingIdentifier";
+        private const string _paymentMethodFieldName = "PaymentMethod";
         private const string _dateCreatedFieldName = "DateCreated";
         private const string _dateUpdatedFieldName = "DateUpdated";
         #endregion
@@ -624,6 +454,7 @@ namespace ServerSideBlazorApp.dboDataService
 		public NullableDateTimeFieldExpression<Purchase> ShipDate { get { return Fields[_shipDateFieldName] as NullableDateTimeFieldExpression<Purchase>; } }
 		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get { return Fields[_expectedDeliveryDateFieldName] as NullableDateTimeFieldExpression<Purchase>; } }
 		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get { return Fields[_trackingIdentifierFieldName] as NullableGuidFieldExpression<Purchase>; } }
+		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethod { get { return Fields[_paymentMethodFieldName] as EnumFieldExpression<Purchase, PaymentMethodType>; } }
 		public DateTimeFieldExpression<Purchase> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Purchase>; } }
 		public DateTimeFieldExpression<Purchase> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Purchase>; } }
         #endregion
@@ -642,6 +473,7 @@ namespace ServerSideBlazorApp.dboDataService
 			Fields.Add(_shipDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ShipDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_shipDateFieldName])));
 			Fields.Add(_expectedDeliveryDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ExpectedDeliveryDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_expectedDeliveryDateFieldName])));
 			Fields.Add(_trackingIdentifierFieldName, new NullableGuidFieldExpression<Purchase>("dbo.Purchase.TrackingIdentifier", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_trackingIdentifierFieldName])));
+			Fields.Add(_paymentMethodFieldName, new EnumFieldExpression<Purchase, PaymentMethodType>("dbo.Purchase.PaymentMethod", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_paymentMethodFieldName])));
 			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
 			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
         }
@@ -663,6 +495,7 @@ namespace ServerSideBlazorApp.dboDataService
                 ShipDate,
                 ExpectedDeliveryDate,
                 TrackingIdentifier,
+                PaymentMethod,
                 DateCreated,
                 DateUpdated
             );
@@ -679,6 +512,7 @@ namespace ServerSideBlazorApp.dboDataService
                 ShipDate.Insert(purchase.ShipDate),
                 ExpectedDeliveryDate.Insert(purchase.ExpectedDeliveryDate),
                 TrackingIdentifier.Insert(purchase.TrackingIdentifier),
+                PaymentMethod.Insert(purchase.PaymentMethod),
                 DateCreated.Insert(purchase.DateCreated),
                 DateUpdated.Insert(purchase.DateUpdated)
             );
@@ -694,72 +528,25 @@ namespace ServerSideBlazorApp.dboDataService
 			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate); };
 			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); };
 			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); };
+			if (from.PaymentMethod != to.PaymentMethod) { expr &= PaymentMethod.Set(to.PaymentMethod); };
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); };
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
             return expr;
         }
 
-        protected override void HydrateEntity(Purchase purchase, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(Purchase purchase, ISqlFieldReader reader)
         {
-			purchase.Id = mapper.Map<int>(reader.ReadField().Value);
-			purchase.PersonId = mapper.Map<int>(reader.ReadField().Value);
-			purchase.TotalPurchaseAmount = mapper.Map<decimal>(reader.ReadField().Value);
-			purchase.PurchaseDate = mapper.Map<DateTime>(reader.ReadField().Value);
-			purchase.ShipDate = mapper.Map<DateTime?>(reader.ReadField().Value);
-			purchase.ExpectedDeliveryDate = mapper.Map<DateTime?>(reader.ReadField().Value);
-			purchase.TrackingIdentifier = mapper.Map<Guid?>(reader.ReadField().Value);
-			purchase.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-			purchase.DateUpdated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(Purchase purchase, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				purchase.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == PersonId)
-			{
-				purchase.PersonId = mapper.Map<int>(value);
-				return;
-			}
-			if (field == TotalPurchaseAmount)
-			{
-				purchase.TotalPurchaseAmount = mapper.Map<decimal>(value);
-				return;
-			}
-			if (field == PurchaseDate)
-			{
-				purchase.PurchaseDate = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == ShipDate)
-			{
-				purchase.ShipDate = mapper.Map<DateTime?>(value);
-				return;
-			}
-			if (field == ExpectedDeliveryDate)
-			{
-				purchase.ExpectedDeliveryDate = mapper.Map<DateTime?>(value);
-				return;
-			}
-			if (field == TrackingIdentifier)
-			{
-				purchase.TrackingIdentifier = mapper.Map<Guid?>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				purchase.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == DateUpdated)
-			{
-				purchase.DateUpdated = mapper.Map<DateTime>(value);
-				return;
-			}
+			purchase.Id = reader.ReadField().GetValue<int>();
+			purchase.PersonId = reader.ReadField().GetValue<int>();
+			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<decimal>();
+			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
+			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
+			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
+			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
+			purchase.PaymentMethod = reader.ReadField().GetValue<PaymentMethodType>();
+			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
+			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -851,54 +638,15 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(PurchaseLine purchaseLine, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(PurchaseLine purchaseLine, ISqlFieldReader reader)
         {
-			purchaseLine.Id = mapper.Map<int>(reader.ReadField().Value);
-			purchaseLine.PurchaseId = mapper.Map<int>(reader.ReadField().Value);
-			purchaseLine.ProductId = mapper.Map<int>(reader.ReadField().Value);
-			purchaseLine.PurchasePrice = mapper.Map<decimal>(reader.ReadField().Value);
-			purchaseLine.Quantity = mapper.Map<int>(reader.ReadField().Value);
-			purchaseLine.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-			purchaseLine.DateUpdated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(PurchaseLine purchaseLine, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				purchaseLine.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == PurchaseId)
-			{
-				purchaseLine.PurchaseId = mapper.Map<int>(value);
-				return;
-			}
-			if (field == ProductId)
-			{
-				purchaseLine.ProductId = mapper.Map<int>(value);
-				return;
-			}
-			if (field == PurchasePrice)
-			{
-				purchaseLine.PurchasePrice = mapper.Map<decimal>(value);
-				return;
-			}
-			if (field == Quantity)
-			{
-				purchaseLine.Quantity = mapper.Map<int>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				purchaseLine.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == DateUpdated)
-			{
-				purchaseLine.DateUpdated = mapper.Map<DateTime>(value);
-				return;
-			}
+			purchaseLine.Id = reader.ReadField().GetValue<int>();
+			purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
+			purchaseLine.ProductId = reader.ReadField().GetValue<int>();
+			purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
+			purchaseLine.Quantity = reader.ReadField().GetValue<int>();
+			purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
+			purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -961,24 +709,10 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, ISqlFieldReader reader)
         {
-			personTotalPurchasesView.Id = mapper.Map<int>(reader.ReadField().Value);
-			personTotalPurchasesView.TotalPurchases = mapper.Map<decimal?>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(PersonTotalPurchasesView personTotalPurchasesView, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				personTotalPurchasesView.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == TotalPurchases)
-			{
-				personTotalPurchasesView.TotalPurchases = mapper.Map<decimal?>(value);
-				return;
-			}
+			personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
+			personTotalPurchasesView.TotalPurchases = reader.ReadField().GetValue<decimal?>();
         }
 		#endregion
     }
@@ -1061,36 +795,12 @@ namespace ServerSideBlazorApp.secDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Person person, ISqlFieldReader reader, IValueMapper mapper)
+        protected override void HydrateEntity(Person person, ISqlFieldReader reader)
         {
-			person.Id = mapper.Map<int>(reader.ReadField().Value);
-			person.SSN = mapper.Map<string>(reader.ReadField().Value);
-			person.DateCreated = mapper.Map<DateTime>(reader.ReadField().Value);
-			person.DateUpdated = mapper.Map<DateTime>(reader.ReadField().Value);
-        }
-
-		protected override void HydrateField(Person person, FieldExpression field, object value, IValueMapper mapper)
-        {
-			if (field == Id)
-			{
-				person.Id = mapper.Map<int>(value);
-				return;
-			}
-			if (field == SSN)
-			{
-				person.SSN = mapper.Map<string>(value);
-				return;
-			}
-			if (field == DateCreated)
-			{
-				person.DateCreated = mapper.Map<DateTime>(value);
-				return;
-			}
-			if (field == DateUpdated)
-			{
-				person.DateUpdated = mapper.Map<DateTime>(value);
-				return;
-			}
+			person.Id = reader.ReadField().GetValue<int>();
+			person.SSN = reader.ReadField().GetValue<string>();
+			person.DateCreated = reader.ReadField().GetValue<DateTime>();
+			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }

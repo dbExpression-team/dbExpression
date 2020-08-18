@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public abstract class ValueTypeFormatter<TFrom, TTo> : IValueTypeFormatter<TFrom, TTo>
+    public class ValueTypeFormatter<TFrom, TTo> : IValueTypeFormatter<TFrom, TTo>
         where TFrom : IConvertible
         where TTo : IComparable
     {

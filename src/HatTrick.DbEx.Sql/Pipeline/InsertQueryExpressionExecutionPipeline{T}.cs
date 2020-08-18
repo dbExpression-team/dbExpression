@@ -1,8 +1,11 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Mapper;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading;
@@ -64,10 +67,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 connection = database.ConnectionFactory.CreateSqlConnection();
 
+            var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();
+
             var reader = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
                 connection,
-                database.MapperFactory.CreateValueMapper(),
+                new FieldExpressionConverters(fields, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd)));
                     configureCommand?.Invoke(cmd);
@@ -76,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
 
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = database.MapperFactory.CreateValueMapper();
+            var valueMapper = database.ValueConverterFactory.CreateConverter();
 
             ISqlRow row;
             while ((row = reader.ReadRow()) is object)
@@ -91,7 +96,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     throw new DbExpressionException("Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
                 }
                 var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                mapper.Map(entity as T, row, valueMapper);
+                mapper.Map(entity as T, row);
             }
 
             if (afterInsert is object)
@@ -126,10 +131,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 connection = database.ConnectionFactory.CreateSqlConnection();
 
+            var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();            
+
             var reader = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
                 statement,
                 connection,
-                database.MapperFactory.CreateValueMapper(),
+                new FieldExpressionConverters(fields, database.ValueConverterFactory),
                 async cmd => {
                     if (beforeExecution is object)
                     {
@@ -147,7 +154,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
 
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = database.MapperFactory.CreateValueMapper();
+            var valueMapper = database.ValueConverterFactory.CreateConverter();
 
             ISqlRow row;
             while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
@@ -162,7 +169,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     throw new DbExpressionException("Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
                 }
                 var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                mapper.Map(entity as T, row, valueMapper);
+                mapper.Map(entity as T, row);
             }
 
             if (afterInsert is object)

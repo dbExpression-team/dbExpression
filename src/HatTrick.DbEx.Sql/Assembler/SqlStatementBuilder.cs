@@ -46,9 +46,8 @@ namespace HatTrick.DbEx.Sql.Assembler
                 Configuration = AssemblerConfiguration,
             };
 
-            var assembler = AssemblerFactory(Query);
-            if (assembler is null)
-                throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{Query}', please ensure an assembler has been registered during startup initialization of DbExpression.");
+            var assembler = AssemblerFactory(Query)
+                ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{Query}', please ensure an assembler has been registered during startup initialization of DbExpression.");
 
             assembler.AssembleStatement(Query, this, context);
 
@@ -62,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendPart(ExpressionContainer part, AssemblyContext context)
             => DoAppendPart(part, context);
 
-        private void DoAppendPart(object part, AssemblyContext context)
+        private void DoAppendPart<T>(T part, AssemblyContext context)
         {
             if (part is QueryExpression query)
             {
@@ -76,19 +75,18 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
             }
 
-            var appender = PartAppenderFactory(part.GetType()) ?? throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{part.GetType()}', please ensure an appender has been registered during startup initialization of DbExpression.");
+            var appender = PartAppenderFactory(part.GetType()) 
+                ?? throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{part.GetType()}', please ensure an appender has been registered during startup initialization of DbExpression.");
 
             appender.AppendPart(part, this, context);
         }
 
-        public void AssembleStatement(QueryExpression set, AssemblyContext context)
+        public void AssembleStatement(QueryExpression expression, AssemblyContext context)
         {
-            var assembler = AssemblerFactory(set);
-            if (assembler is null)
-            {
-                throw new DbExpressionConfigurationException($"Could not resolve an assembler for type '{nameof(Query)}', please ensure an assembler has been registered during startup initialization of DbExpression.");
-            }
-            assembler.AssembleStatement(set, this, context);
+            var assembler = AssemblerFactory(expression)
+                ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for type '{expression.GetType()}', please ensure an assembler has been registered during startup initialization of DbExpression.");
+            
+            assembler.AssembleStatement(expression, this, context);
         }
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";

@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
@@ -229,17 +230,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseMapperFactory<T>()
             where T : class, IMapperFactory, new()
         {
-            var factory = new T();
-            if (factory is MapperFactory m)
-                m.RegisterDefaultMappers();
-            configuration.MapperFactory = factory;
+            configuration.MapperFactory = new T();
         }
 
         public void UseMapperFactory<T>(Action<MapperFactoryConfigurationBuilder> configure)
             where T : MapperFactory, new()
         {
             var factory = new T();
-            factory.RegisterDefaultMappers();
             configure?.Invoke(new MapperFactoryConfigurationBuilder(factory));
             configuration.MapperFactory = factory;
         }
@@ -247,6 +244,37 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void UseEntityMapperFactory(Func<IMapperFactory> factory)
         {
             configuration.MapperFactory = new DelegateMapperFactory(factory);
+        }
+
+        #endregion
+
+        #region value converter factory
+        public void UseValueConverterFactory(IValueConverterFactory factory)
+        {
+            configuration.ValueConverterFactory = factory;
+        }
+
+        public void UseValueConverterFactory<T>()
+            where T : class, IValueConverterFactory, new()
+        {
+            var factory = new T();
+            if (factory is ValueConverterFactory m)
+                m.RegisterDefaultConverters();
+            configuration.ValueConverterFactory = factory;
+        }
+
+        public void UseValueConverterFactory<T>(Action<ValueConverterFactoryConfigurationBuilder> configure)
+            where T : ValueConverterFactory, new()
+        {
+            var factory = new T();
+            factory.RegisterDefaultConverters();
+            configure?.Invoke(new ValueConverterFactoryConfigurationBuilder(factory));
+            configuration.ValueConverterFactory = factory;
+        }
+
+        public ValueConverterFactoryConfigurationBuilder WithValueConverterFactory()
+        {
+            return new ValueConverterFactoryConfigurationBuilder(configuration.ValueConverterFactory as ValueConverterFactory);
         }
 
         #endregion

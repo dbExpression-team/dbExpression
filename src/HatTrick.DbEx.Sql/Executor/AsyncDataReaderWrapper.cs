@@ -1,7 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Mapper;
+using HatTrick.DbEx.Sql.Converter;
 using System;
-using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,18 +15,18 @@ namespace HatTrick.DbEx.Sql.Executor
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
-        protected IValueMapper Mapper { get; private set; }
+        protected FieldExpressionConverters Converters { get; private set; }
         #endregion
 
         #region constructors
-        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueMapper mapper) : this(sqlConnection, dataReader, mapper, CancellationToken.None) { }
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, FieldExpressionConverters converters) : this(sqlConnection, dataReader, converters, CancellationToken.None) { }
 
-        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueMapper mapper, CancellationToken ct)
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, FieldExpressionConverters converters, CancellationToken ct)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
             CancellationToken = ct == null ? CancellationToken.None : ct;
-            Mapper = mapper;
+            Converters = converters;
             CancellationToken.Register(() => Dispose(true));
         }
         #endregion
@@ -47,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i], Mapper);
+                        row[i] = new Field(i, DataReader.GetName(i), values[i] == DBNull.Value ? null : values[i], Converters[i]);
                     }
                     return new Row(currentRowIndex++, row);
                 }

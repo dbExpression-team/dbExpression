@@ -98,6 +98,7 @@ namespace ServerSideBlazorApp.dboData
         public DateTime? ShipDate { get; set; }
         public DateTime? ExpectedDeliveryDate { get; set; }
         public Guid? TrackingIdentifier { get; set; }
+        public PaymentMethodType PaymentMethod { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
