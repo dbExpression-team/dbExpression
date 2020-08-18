@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
@@ -101,6 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 { 
                     PersonId = 1,
                     PurchaseDate = DateTime.Now,
+                    PaymentMethod = PaymentMethodType.ACH,
                     ShipDate = DateTime.Now,
                     TrackingIdentifier = null,
                     DateCreated = DateTime.Now,

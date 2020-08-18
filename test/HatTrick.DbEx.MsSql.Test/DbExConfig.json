@@ -24,7 +24,9 @@
 			"path": "dbo.Address.AddressType",
 			"apply": {
 				"dataType": "AddressType?",
-				"isEnum": true
+				"isEnum": true,
+				"format": "EnumToString",
+				"formatx": "EnumToString || MyComany.xxx.AddressTypeFormatter"
 			}
 		},
 		{
@@ -45,6 +47,13 @@
 			"path": "dbo.Person_Address",
 			"apply": {
 				"name": "PersonAddress"
+			}
+		},
+		{
+			"path": "dbo.Purchase.PaymentMethod",
+			"apply": {
+				"dataType": "PaymentMethodType",
+				"isEnum": true
 			}
 		}
 	]

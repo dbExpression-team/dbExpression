@@ -1,20 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Converter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
-using HatTrick.DbEx.MsSql.Configuration;
-using System.Configuration;
-using System.Net.Http;
+using ServerSideBlazorApp.dboDataService;
 using ServerSideBlazorApp.Service;
+using System;
+using System.Linq;
+using System.Net.Http;
 
 namespace ServerSideBlazorApp
 {
@@ -35,7 +34,10 @@ namespace ServerSideBlazorApp
             services.AddServerSideBlazor();
 
             services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<CRMDatabase>(Configuration.GetConnectionString("Default"))
+                dbex => dbex.AddMsSql2019Database<CRMDatabase>(
+                    Configuration.GetConnectionString("Default"), 
+                    null, 
+                    fields => fields.For(dbo.Purchase.PaymentMethod).UseConverter<StringEnumValueConverter<PaymentMethodType>>())
             );
 
             services.AddSingleton<CustomerService>();

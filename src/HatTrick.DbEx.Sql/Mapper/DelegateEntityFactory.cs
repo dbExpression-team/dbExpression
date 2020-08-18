@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {

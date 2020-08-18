@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -48,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public T ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
             where T : class, IDbEntity, new()
         {
-            T value = default;
+            T entity = default;
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -59,13 +60,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (row == default)
                         return;
 
-                    value = database.EntityFactory.CreateEntity<T>();
+                    entity = database.EntityFactory.CreateEntity<T>();
                     var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-                    var valueMapper = database.MapperFactory.CreateValueMapper();
-                    mapper.Map(value, row, valueMapper);
+                    mapper.Map(entity, row);
                 }
             );
-            return value;
+            return entity;
         }
 
         public async Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
@@ -84,8 +84,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                     value = database.EntityFactory.CreateEntity<T>();
                     var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-                    var valueMapper = database.MapperFactory.CreateValueMapper();
-                    mapper.Map(value, row, valueMapper);
+                    mapper.Map(value, row);
                 },
                 ct
             ).ConfigureAwait(false);
@@ -97,7 +96,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = database.MapperFactory.CreateValueMapper();
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -107,9 +105,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlRow row;
                     while ((row = reader.ReadRow()) is object)
                     {
-                        var value = database.EntityFactory.CreateEntity<T>();
-                        mapper.Map(value, row, valueMapper);
-                        values.Add(value);
+                        var entity = database.EntityFactory.CreateEntity<T>();
+                        mapper.Map(entity, row);
+                        values.Add(entity);
                     }
                 }
             );
@@ -121,7 +119,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = database.MapperFactory.CreateValueMapper();
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -132,7 +129,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
                     {
                         var value = database.EntityFactory.CreateEntity<T>();
-                        mapper.Map(value, row, valueMapper);
+                        mapper.Map(value, row);
                         values.Add(value);
                     }
                 },
@@ -154,8 +151,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (field is null)
                         return;
 
-                    var mapper = database.MapperFactory.CreateValueMapper<T>();
-                    value = mapper.Map(field.Value);
+                    var converter = database.ValueConverterFactory.CreateConverter<T>();
+                    value = converter.Convert(field.Value);
                 }
             );
             return value;
@@ -178,8 +175,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (field is null)
                         return;
 
-                    var mapper = database.MapperFactory.CreateValueMapper<T>();
-                    value = mapper.Map(field.Value);
+                    var converter = database.ValueConverterFactory.CreateConverter<T>();
+                    value = converter.Convert(field.Value);
                 },
                 ct
             ).ConfigureAwait(false);
@@ -189,7 +186,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
             var values = new List<T>();
-            var mapper = database.MapperFactory.CreateValueMapper<T>();
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -203,7 +199,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        values.Add(mapper.Map(field.Value));
+                        values.Add(field.GetValue<T>());
                     }
                 }
             );
@@ -213,7 +209,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public async Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
-            var mapper = database.MapperFactory.CreateValueMapper<T>();
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -227,7 +222,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        values.Add(mapper.Map(field.Value));
+                        values.Add(field.GetValue<T>());
                     }
                 },
                 ct
@@ -238,6 +233,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public dynamic ExecuteSelectDynamic(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
             dynamic value = default;
+            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -250,7 +246,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
+                    mapper.Map(value, row, converters);
                 }
             );
             return value;
@@ -259,6 +255,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public async Task<dynamic> ExecuteSelectDynamicAsync(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
             dynamic value = default;
+            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -271,7 +268,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row);
+                    mapper.Map(value, row, converters);
                 },
                 ct
             ).ConfigureAwait(false);
@@ -282,6 +279,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
+            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -292,7 +290,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = reader.ReadRow()) is object)
                     {
                         var value = new ExpandoObject();
-                        mapper.Map(value, row);
+                        mapper.Map(value, row, converters);
                         values.Add(value);
                     }
                 }
@@ -304,6 +302,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
+            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -314,7 +313,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
                     {
                         var value = new ExpandoObject();
-                        mapper.Map(value, row);
+                        mapper.Map(value, row, converters);
                         values.Add(value);
                     }
                 },
@@ -460,8 +459,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var reader = executor.ExecuteQuery(
                 statement, 
-                connection, 
-                database.MapperFactory.CreateValueMapper(),
+                connection,
+                new FieldExpressionConverters(expression.Select, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd))); 
                     configureCommand?.Invoke(cmd); 
@@ -503,7 +502,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,
-                database.MapperFactory.CreateValueMapper(),
+                new FieldExpressionConverters(expression.Select, database.ValueConverterFactory),
                 async cmd => { 
                     await beforeExecution?.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statementBuilder.CreateSqlStatement(), cmd)), ct); 
                     configureCommand?.Invoke(cmd); 
@@ -527,7 +526,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 await afterSelect.InvokeAsync(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(database, expression, statement)), ct).ConfigureAwait(false);
             }
         }
-
     }
     #endregion
 }

@@ -11,7 +11,6 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionProvider<SchemaExpression>,
         IExpressionListProvider<FieldExpression>,
         IExpressionAliasProvider,
-        IFieldExpressionMapper,
         IEquatable<EntityExpression>
    {
         #region internals
@@ -124,10 +123,5 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         protected abstract SelectExpressionSet GetInclusiveSelectExpression();
-
-        void IFieldExpressionMapper.MapField(IDbEntity entity, FieldExpression field, object value, IValueMapper mapper)
-            => HydrateField(entity, field, value, mapper);
-
-        protected abstract void HydrateField(IDbEntity entity, FieldExpression field, object value, IValueMapper mapper);
     }
 }

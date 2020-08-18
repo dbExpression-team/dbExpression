@@ -1,8 +1,11 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,10 +60,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             beforeDelete?.Invoke(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(database, expression, appender, parameterBuilder)));
 
+            var fields = statement.Parameters.Where(x => x.Field is object).Select(x => x.Field);
+
             var rowsAffected = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
                 statement,
                 connection,
-                database.MapperFactory.CreateValueMapper(),
+                new FieldExpressionConverters(fields, database.ValueConverterFactory),
+                database.ValueConverterFactory.CreateConverter(),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd))); 
                     configureCommand?.Invoke(cmd); 
@@ -95,11 +101,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 await beforeDelete.InvokeAsync(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(database, expression, appender, parameterBuilder)), ct).ConfigureAwait(false);
             }
-                    
+
+            var fields = statement.Parameters.Where(x => x.Field is object).Select(x => x.Field);
+
             var rowsAffected = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalarAsync<int>(
                 statement,
                 connection,
-                database.MapperFactory.CreateValueMapper(),
+                new FieldExpressionConverters(fields, database.ValueConverterFactory),
+                database.ValueConverterFactory.CreateConverter(),
                 async cmd => {
                     if (beforeExecution is object)
                     {

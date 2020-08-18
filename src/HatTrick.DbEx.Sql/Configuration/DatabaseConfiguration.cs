@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
@@ -19,6 +20,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlConnectionFactory ConnectionFactory { get; set; }
         public IMapperFactory MapperFactory { get; set; }
         public IEntityFactory EntityFactory { get; set; }
+        public IValueConverterFactory ValueConverterFactory { get; set; }
         public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; set; } = new SqlStatementAssemblerConfiguration();
         #endregion
     }
