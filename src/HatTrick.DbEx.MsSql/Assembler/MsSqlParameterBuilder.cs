@@ -55,15 +55,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         private DbParameter Create<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)
         {
-            SqlParameter parameter;
-            if (value == null)
-            {
-                parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = DBNull.Value };
-            }
-            else
-            {
-                parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
-            }
+            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
 
             if (size.HasValue)
                 parameter.Size = size.Value;
