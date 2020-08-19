@@ -20,38 +20,38 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region methods
         BooleanCastFunctionExpression ICastFunctionExpressionBuilder.AsBit()
-            => new BooleanCastFunctionExpression(Expression, new ExpressionContainer(DbType.Boolean));
+            => new BooleanCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Boolean));
 
         ByteCastFunctionExpression ICastFunctionExpressionBuilder.AsTinyInt()
-            => new ByteCastFunctionExpression(Expression, new ExpressionContainer(DbType.Byte));
+            => new ByteCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Byte));
 
         DateTimeCastFunctionExpression ICastFunctionExpressionBuilder.AsDateTime()
-            => new DateTimeCastFunctionExpression(Expression, new ExpressionContainer(DbType.DateTime));
+            => new DateTimeCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.DateTime));
 
         DateTimeOffsetCastFunctionExpression ICastFunctionExpressionBuilder.AsDateTimeOffset()
-            => new DateTimeOffsetCastFunctionExpression(Expression, new ExpressionContainer(DbType.DateTimeOffset));
+            => new DateTimeOffsetCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.DateTimeOffset));
 
         DecimalCastFunctionExpression ICastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
-            => new DecimalCastFunctionExpression(Expression, new ExpressionContainer(DbType.Decimal));
+            => new DecimalCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Decimal));
 
         SingleCastFunctionExpression ICastFunctionExpressionBuilder.AsFloat()
-            => new SingleCastFunctionExpression(Expression, new ExpressionContainer(DbType.Single));
+            => new SingleCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Single));
 
         GuidCastFunctionExpression ICastFunctionExpressionBuilder.AsUniqueIdentifier()
-            => new GuidCastFunctionExpression(Expression, new ExpressionContainer(DbType.Guid));
+            => new GuidCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Guid));
 
         Int16CastFunctionExpression ICastFunctionExpressionBuilder.AsSmallInt()
-            => new Int16CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int16));
+            => new Int16CastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Int16));
 
         Int32CastFunctionExpression ICastFunctionExpressionBuilder.AsInt()
-            => new Int32CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int32));
+            => new Int32CastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Int32));
 
         Int64CastFunctionExpression ICastFunctionExpressionBuilder.AsBigInt()
-            => new Int64CastFunctionExpression(Expression, new ExpressionContainer(DbType.Int64));
+            => new Int64CastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Int64));
 
         StringCastFunctionExpression ICastFunctionExpressionBuilder.AsVarChar(int size)
         {
-            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.String))
+            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.String))
             {
                 Size = size
             };
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         StringCastFunctionExpression ICastFunctionExpressionBuilder.AsChar(int size)
         {
-            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.String))
+            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.String))
             {
                 Size = size
             };
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         StringCastFunctionExpression ICastFunctionExpressionBuilder.AsNVarChar(int size)
         {
-            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.AnsiString))
+            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.AnsiString))
             {
                 Size = size
             };
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         StringCastFunctionExpression ICastFunctionExpressionBuilder.AsNChar(int size)
         {
-            var exp = new StringCastFunctionExpression(Expression, new ExpressionContainer(DbType.AnsiString))
+            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.AnsiString))
             {
                 Size = size
             };

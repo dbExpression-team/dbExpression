@@ -8,14 +8,14 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateDiffFunctionExpression>
     {
         #region interface
-        public ExpressionContainer DatePart { get; private set; }
+        public DatePartsExpression DatePart { get; private set; }
         public ExpressionMediator StartDate { get; private set; }
         public ExpressionMediator EndDate { get; private set; }
         string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator startDate, ExpressionMediator endDate)
+        protected DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator startDate, ExpressionMediator endDate)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
             StartDate = startDate ?? throw new ArgumentNullException($"{nameof(startDate)} is required.");

@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeDateAddFunctionExpression>
     {
         #region constructors
-        public DateTimeDateAddFunctionExpression(ExpressionContainer datePart, ExpressionMediator value, ExpressionMediator<DateTime> expression) : base(datePart, value, expression)
+        public DateTimeDateAddFunctionExpression(DatePartsExpression datePart, ExpressionMediator value, ExpressionMediator<DateTime> expression) : base(datePart, value, expression)
         {
         }
         #endregion

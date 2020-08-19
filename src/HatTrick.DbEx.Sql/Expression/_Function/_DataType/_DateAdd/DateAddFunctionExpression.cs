@@ -7,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateAddFunctionExpression>
     {
         #region interface
-        public ExpressionContainer DatePart { get; private set; }
+        public DatePartsExpression DatePart { get; private set; }
         public ExpressionMediator Value { get; private set; }
         #endregion
 
         #region constructors
-        protected DateAddFunctionExpression(ExpressionContainer datePart, ExpressionMediator value, ExpressionMediator expression) : base(expression)
+        protected DateAddFunctionExpression(DatePartsExpression datePart, ExpressionMediator value, ExpressionMediator expression) : base(expression)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
             Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");

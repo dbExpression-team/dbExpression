@@ -1,4 +1,6 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
+﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
@@ -17,15 +19,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override void RegisterDefaultPartAppenders()
         {
             base.RegisterDefaultPartAppenders();
-            base.RegisterPartAppender(_dateAddFunctionAppender);
-            base.RegisterPartAppender(_dateDiffFunctionAppender);
-            base.RegisterPartAppender(_datePartFunctionAppender);
-            base.RegisterPartAppender(_getDateFunctionAppender);
-            base.RegisterPartAppender(_getUtcDateFunctionAppender);
-            base.RegisterPartAppender(_newIdFunctionAppender);
-            base.RegisterPartAppender(_sysDateTimeFunctionAppender);
-            base.RegisterPartAppender(_sysDateTimeOffsetFunctionAppender);
-            base.RegisterPartAppender(_sysUtcDateTimeFunctionAppender);
+            base.RegisterPartAppender<DateAddFunctionExpression>(_dateAddFunctionAppender);
+            base.RegisterPartAppender<DateDiffFunctionExpression>(_dateDiffFunctionAppender);
+            base.RegisterPartAppender<DatePartFunctionExpression>(_datePartFunctionAppender);
+            base.RegisterPartAppender<GetDateFunctionExpression>(_getDateFunctionAppender);
+            base.RegisterPartAppender<GetUtcDateFunctionExpression>(_getUtcDateFunctionAppender);
+            base.RegisterPartAppender<NewIdFunctionExpression>(_newIdFunctionAppender);
+            base.RegisterPartAppender<SysDateTimeFunctionExpression>(_sysDateTimeFunctionAppender);
+            base.RegisterPartAppender<SysDateTimeOffsetFunctionExpression>(_sysDateTimeOffsetFunctionAppender);
+            base.RegisterPartAppender<SysUtcDateTimeFunctionExpression>(_sysUtcDateTimeFunctionAppender);
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace HatTrick.DbEx.Sql.Assembler
+﻿using HatTrick.DbEx.Sql.Expression;
+
+namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface IAssemblyPartAppenderFactory
     {
-        IAssemblyPartAppender CreatePartAppender(object part);
+        IAssemblyPartAppender<T> CreatePartAppender<T>(T part)
+            where T : IExpression;
     }
 }

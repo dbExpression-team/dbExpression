@@ -7,14 +7,14 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<CastFunctionExpression>
     {
         #region interface
-        public ExpressionContainer ConvertToDbType { get; set; }
+        public DbTypeExpression ConvertToDbType { get; set; }
         public int? Size { get; set; }
         public int? Precision { get; set; }
         public int? Scale { get; set; }
         #endregion
 
         #region constructors
-        protected CastFunctionExpression(ExpressionMediator expression, ExpressionContainer convertToDbType) : base(expression)
+        protected CastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression)
         {
             ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
         }

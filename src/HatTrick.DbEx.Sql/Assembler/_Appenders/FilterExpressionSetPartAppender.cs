@@ -13,28 +13,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        public override void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (expression is FilterExpressionSet set)
-            {
-                if (set.LeftArg is null && set.RightArg is null)
-                    return;
-
-                if (set.IsSingleFilter && set.SingleFilter.Object is FilterExpression singleFilter)
-                {
-                    builder.AppendPart(singleFilter, context);
-                }
-                else
-                {
-                    AppendPart(set, builder, context);
-                }
-            }
-            else
-            {
-                builder.AppendPart(expression as FilterExpression, context);
-            }
-        }
-
         public override void AppendPart(FilterExpressionSet expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression is null || (expression.LeftArg is null && expression.RightArg is null))

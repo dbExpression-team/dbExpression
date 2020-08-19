@@ -2,11 +2,7 @@
 {
     public class NullableValueTypePartAppender<T> : IAssemblyPartAppender<T>
     {
-        public virtual void AppendPart(object value, ISqlStatementBuilder builder, AssemblyContext context)
-            => AppendPart((T)value, builder, context);
-
         public virtual void AppendPart(T value, ISqlStatementBuilder builder, AssemblyContext context)
             =>  builder.Appender.Write(builder.Parameters.Add(value, context.Field).Parameter.ParameterName);
-
     }
 }

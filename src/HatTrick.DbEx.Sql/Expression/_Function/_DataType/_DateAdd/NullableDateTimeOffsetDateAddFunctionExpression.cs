@@ -7,10 +7,10 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeOffsetDateAddFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetDateAddFunctionExpression(ExpressionContainer datePart, NullableExpressionMediator<int> value, NullableExpressionMediator<DateTimeOffset> expression) : base(datePart, value, expression)
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, NullableExpressionMediator<int> value, NullableExpressionMediator<DateTimeOffset> expression) : base(datePart, value, expression)
         {
         }
-        public NullableDateTimeOffsetDateAddFunctionExpression(ExpressionContainer datePart, ExpressionMediator<int> value, ExpressionMediator<DateTimeOffset> expression) : base(datePart, value, expression)
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, ExpressionMediator<int> value, ExpressionMediator<DateTimeOffset> expression) : base(datePart, value, expression)
         {
         }
         #endregion

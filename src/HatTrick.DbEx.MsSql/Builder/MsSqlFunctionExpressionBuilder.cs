@@ -108,131 +108,131 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         #region date add
         public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, DateTimeExpressionMediator field)
-            => new DateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
+            => new DateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
         public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullableDateTimeExpressionMediator field)
-            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), new NullableInt32ExpressionMediator(new LiteralExpression<int>(value)), field);
+            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableInt32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
         public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, DateTimeOffsetExpressionMediator field)
-            => new DateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
+            => new DateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
         public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullableDateTimeOffsetExpressionMediator field)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
         public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, DateTimeExpressionMediator field)
-            => new DateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new DateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullableDateTimeExpressionMediator field)
-            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, DateTimeOffsetExpressionMediator field)
-            => new DateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new DateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullableDateTimeOffsetExpressionMediator field)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, DateTimeExpressionMediator field)
-            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullableDateTimeExpressionMediator field)
-            => new NullableDateTimeDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, DateTimeOffsetExpressionMediator field)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullableDateTimeOffsetExpressionMediator field)
-            => new NullableDateTimeOffsetDateAddFunctionExpression(new ExpressionContainer(datePart), value, field);
+            => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
         #endregion
 
         #region date part
         public static Int32DatePartFunctionExpression DatePart(DateParts datePart, DateTimeExpressionMediator field)
-            => new Int32DatePartFunctionExpression(new ExpressionContainer(datePart), field);
+            => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
 
         public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullableDateTimeExpressionMediator field)
-            => new NullableInt32DatePartFunctionExpression(new ExpressionContainer(datePart), field);
+            => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
 
         public static Int32DatePartFunctionExpression DatePart(DateParts datePart, DateTimeOffsetExpressionMediator field)
-            => new Int32DatePartFunctionExpression(new ExpressionContainer(datePart), field);
+            => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
 
         public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullableDateTimeOffsetExpressionMediator field)
-            => new NullableInt32DatePartFunctionExpression(new ExpressionContainer(datePart), field);
+            => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
         #endregion
 
         #region date diff
         #region DateTime
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, DateTimeExpressionMediator endDate)
-            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(startDate)), endDate);
+            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, NullableDateTimeExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(startDate)), endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, DateTimeExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(startDate)), endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, NullableDateTimeExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(startDate)), endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, DateTime endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, DateTime? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, DateTime endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, DateTime? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(endDate)));
 
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, DateTimeExpressionMediator endDate)
-            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeExpressionMediator startDate, NullableDateTimeExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, DateTimeExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeExpressionMediator startDate, NullableDateTimeExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
         #endregion
 
         #region DateTimeOffset
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, DateTimeOffsetExpressionMediator endDate)
-            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(startDate)), endDate);
+            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, NullableDateTimeOffsetExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(startDate)), endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, DateTimeOffsetExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(startDate)), endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, NullableDateTimeOffsetExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(startDate)), endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, DateTimeOffset endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, DateTimeOffset? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, DateTimeOffset endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, DateTimeOffset? endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(endDate)));
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(endDate)));
 
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, DateTimeOffsetExpressionMediator endDate)
-            => new Int32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetExpressionMediator startDate, NullableDateTimeOffsetExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, DateTimeOffsetExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetExpressionMediator startDate, NullableDateTimeOffsetExpressionMediator endDate)
-            => new NullableInt32DateDiffFunctionExpression(new ExpressionContainer(datePart), startDate, endDate);
+            => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
         #endregion
         #endregion
 

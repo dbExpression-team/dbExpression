@@ -3,7 +3,6 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;

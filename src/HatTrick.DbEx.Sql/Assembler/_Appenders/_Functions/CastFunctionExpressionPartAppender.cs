@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("CAST(");
             builder.AppendPart(expression.Expression, context);
             builder.Appender.Write(" AS ");
-            builder.Appender.Write(expression.ConvertToDbType.Object.ToString());
+            builder.Appender.Write(expression.ConvertToDbType.Expression.ToString());
             if (expression.Size.HasValue)
             {
                 builder.Appender.Write("(");

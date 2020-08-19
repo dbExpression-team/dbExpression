@@ -2,9 +2,9 @@
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public abstract class PartAppender : IAssemblyPartAppender
+    public abstract class PartAppender : IAssemblyPartAppender, IAssemblyPartAppender<IExpression>
     {
-        public abstract void AppendPart(object expression, ISqlStatementBuilder builder, AssemblyContext context);
+        public abstract void AppendPart(IExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
 
         protected static void AppendDistinct(IExpressionIsDistinctProvider distinct, ISqlStatementBuilder builder, AssemblyContext context)
         {

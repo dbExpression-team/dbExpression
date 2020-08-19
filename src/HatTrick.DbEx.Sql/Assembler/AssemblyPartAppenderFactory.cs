@@ -72,15 +72,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly NullableValueTypePartAppender<short?> _nullableInt16Appender = new NullableValueTypePartAppender<short?>();
         private static readonly EnumValueTypePartAppender _enumAppender = new EnumValueTypePartAppender();
         private static readonly ValueTypePartAppender<string> _stringAppender = new ValueTypePartAppender<string>();
-        private static readonly DBNullValueTypePartAppender _dbNullAppender = new DBNullValueTypePartAppender();
         #endregion
 
         private readonly ConcurrentDictionary<Type, Func<IAssemblyPartAppender>> _partAppenders = new ConcurrentDictionary<Type, Func<IAssemblyPartAppender>>();
 
-        public IAssemblyPartAppender CreatePartAppender(object part)
-        {
-            return ResolvePartAppender(part.GetType(), part.GetType());
-        }
+        public IAssemblyPartAppender<T> CreatePartAppender<T>(T part)
+            where T : IExpression
+            => ResolvePartAppender(part.GetType(), part.GetType()) as IAssemblyPartAppender<T>;
 
         public void RegisterPartAppender<T, U>()
             where U : class, IAssemblyPartAppender<T>, new()
@@ -157,8 +155,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(short), () => _int16Appender);
             _partAppenders.TryAdd(typeof(short?), () => _nullableInt16Appender);
             _partAppenders.TryAdd(typeof(string), () => _stringAppender);
-
-            _partAppenders.TryAdd(typeof(DBNull), () => _dbNullAppender);
         }
 
         private IAssemblyPartAppender ResolvePartAppender(Type current, Type original)
