@@ -6,19 +6,21 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpression,
         IEquatable<LiteralExpression>
     {
+        private object _expression;
+
         #region interface
-        public ExpressionContainer Expression { get; private set; }
+        public object Expression => _expression ?? DBNull.Value;
         #endregion
 
         #region constructors
-        protected LiteralExpression(ExpressionContainer expression)
+        protected LiteralExpression(object expression)
         {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            _expression = expression;
         }
         #endregion
 
         #region tostring
-        public override string ToString() => Expression?.Object?.ToString() ?? "null";
+        public override string ToString() => Expression?.ToString() ?? "null";
         #endregion
 
         #region equals

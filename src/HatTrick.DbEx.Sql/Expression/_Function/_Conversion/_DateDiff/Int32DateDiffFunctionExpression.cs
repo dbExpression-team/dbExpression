@@ -7,19 +7,19 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int32DateDiffFunctionExpression>
     {
         #region constructors
-        public Int32DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
         {
         }
 
-        public Int32DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
         {
         }
 
-        public Int32DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
         {
         }
 
-        public Int32DateDiffFunctionExpression(ExpressionContainer datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
         {
         }
         #endregion

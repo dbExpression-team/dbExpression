@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpression
     {
         #region interface
-        public ExpressionContainer Expression { get; private set; }
+        public IExpression Expression { get; private set; }
         #endregion
 
         #region constructors
@@ -17,17 +17,17 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public HavingExpression(FilterExpression havingCondition)
         {
-            Expression = new ExpressionContainer(havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required."));
+            Expression = havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required.");
         }
 
         public HavingExpression(FilterExpressionSet havingCondition)
         {
-            Expression = new ExpressionContainer(havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required."));
+            Expression = havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => Expression.Object.ToString();
+        public override string ToString() => Expression.ToString();
         #endregion
 
         #region conditional & operator
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 a.Expression = b.Expression;
                 return a;
             }
-            a.Expression = new ExpressionContainer(new ExpressionContainerPair(a.Expression, b.Expression));
+            a.Expression = new ExpressionPair(a.Expression, b.Expression);
             return a;
         }
         #endregion

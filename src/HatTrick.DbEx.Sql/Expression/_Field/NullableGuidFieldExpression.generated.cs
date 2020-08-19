@@ -9,20 +9,20 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region isnull
-        public override FilterExpression<bool> IsNull() => new FilterExpression<bool>(new NullableGuidExpressionMediator(this), new NullableGuidExpressionMediator(new LiteralExpression<Guid>(DBNull.Value)), FilterExpressionOperator.Equal);
-        public override FilterExpression<bool> IsNotNull() => new FilterExpression<bool>(new NullableGuidExpressionMediator(this), new NullableGuidExpressionMediator(new LiteralExpression<Guid>(DBNull.Value)), FilterExpressionOperator.NotEqual);
+        public override FilterExpression<bool> IsNull() => new FilterExpression<bool>(new NullableGuidExpressionMediator(this), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.Equal);
+        public override FilterExpression<bool> IsNotNull() => new FilterExpression<bool>(new NullableGuidExpressionMediator(this), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.NotEqual);
         #endregion
 
         #region set
         public override AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new GuidExpressionMediator(new LiteralExpression<Guid>(value)));
         public override AssignmentExpression Set(ExpressionMediator<Guid> value) => new AssignmentExpression(this, value);
-        public override AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(value)));
+        public override AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(value)));
         public override AssignmentExpression Set(NullableExpressionMediator<Guid> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert
         public override InsertExpression Insert(Guid value) => new InsertExpression(this, new GuidExpressionMediator(new LiteralExpression<Guid>(value)));
-        public override InsertExpression Insert(Guid? value) => new InsertExpression(this, new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(value)));
+        public override InsertExpression Insert(Guid? value) => new InsertExpression(this, new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(value)));
         #endregion
 
         #region order
@@ -47,10 +47,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpression<bool?> operator ==(NullableGuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(NullableGuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator ==(DBNull a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DBNull a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(NullableGuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableGuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new NullableGuidExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new NullableGuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
         #endregion
 
         #region Guid
@@ -61,26 +61,26 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator >(NullableGuidFieldExpression a, Guid b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(NullableGuidFieldExpression a, Guid b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool?> operator ==(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(Guid a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new GuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool?> operator ==(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(b)), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableGuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool?> operator ==(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(Guid? a, NullableGuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(a)), new NullableGuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         
         #region mediator

@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SingleCastFunctionExpression>
     {
         #region constructors
-        public SingleCastFunctionExpression(ExpressionMediator expression, ExpressionContainer convertToDbType) : base(expression, convertToDbType)
+        public SingleCastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
         {
         }
         #endregion

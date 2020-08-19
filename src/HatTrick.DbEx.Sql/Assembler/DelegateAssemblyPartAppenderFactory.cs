@@ -17,7 +17,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        public IAssemblyPartAppender CreatePartAppender(object part)
+        public IAssemblyPartAppender<T> CreatePartAppender<T>(T part)
+            where T : IExpression
             => factory().CreatePartAppender(part);
         #endregion
     }

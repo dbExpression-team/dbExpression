@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableBooleanCastFunctionExpression>
     {
         #region constructors
-        public NullableBooleanCastFunctionExpression(ExpressionMediator expression, ExpressionContainer convertToDbType) : base(expression, convertToDbType)
+        public NullableBooleanCastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
         {
         }
         #endregion

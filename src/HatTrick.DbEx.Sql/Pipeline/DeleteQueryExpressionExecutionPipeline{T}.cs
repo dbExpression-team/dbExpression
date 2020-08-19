@@ -2,7 +2,6 @@
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Data.Common;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,11 +7,11 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DatePartFunctionExpression>
     {
         #region interface
-        public ExpressionContainer DatePart { get; private set; }
+        public DatePartsExpression DatePart { get; private set; }
         #endregion
 
         #region constructors
-        protected DatePartFunctionExpression(ExpressionContainer datePart, ExpressionMediator expression) : base(expression)
+        protected DatePartFunctionExpression(DatePartsExpression datePart, ExpressionMediator expression) : base(expression)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
         }

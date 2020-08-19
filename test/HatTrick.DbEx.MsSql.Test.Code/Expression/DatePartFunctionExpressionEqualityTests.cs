@@ -2,22 +2,19 @@
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Expression
 {
     public class DatePartFunctionExpressionEqaulityTests : TestBase
     {
-        [Fact]
-        public void DatePart_functions_of_purchase_date_should_be_equal()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void DatePart_functions_of_purchase_date_should_be_equal(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             var exp1 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
             var exp2 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
 
@@ -25,10 +22,13 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             Assert.True(exp1.Equals(exp2));
         }
 
-        [Fact]
-        public void DatePart_functions_of_purchase_date_with_one_aliased_should_not_be_equal()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void DatePart_functions_of_purchase_date_with_one_aliased_should_not_be_equal(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             var exp1 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
             var exp2 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("foo");
 
@@ -36,10 +36,13 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             Assert.False(exp1.Equals(exp2));
         }
 
-        [Fact]
-        public void DatePart_functions_of_purchase_date_should_have_same_hash_codes()
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void DatePart_functions_of_purchase_date_should_have_same_hash_codes(int version)
         {
             //given
+            ConfigureForMsSqlVersion(version);
+
             var exp1 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
             var exp2 = db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate);
 
@@ -52,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
         }
 
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void DatePart_functions_of_purchase_date_with_one_aliased_should_have_different_hash_codes(int version)
         {
             //given
@@ -70,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
         }
 
         [Theory]
-        [InlineData(2014)]
+        [MsSqlVersions.AllVersions]
         public void DatePart_functions_of_purchase_date_with_different_date_part_should_have_different_hash_codes(int version)
         {
             //given

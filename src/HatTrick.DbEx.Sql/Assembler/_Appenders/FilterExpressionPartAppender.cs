@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private void AppendFilterExpressionThatMayContainDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //if either side of the filter expression is DBNull.Value, construct the side with an expression and append appropriate "IS NULL"
-            if (expression.LeftArg.Expression is LiteralExpression left && left.Expression.Object is DBNull || expression.RightArg.Expression is LiteralExpression right && right.Expression.Object is DBNull)
+            if (expression.LeftArg.Expression is LiteralExpression left && left.Expression is DBNull || expression.RightArg.Expression is LiteralExpression right && right.Expression is DBNull)
             {
                 AppendFilterExpressionWithLeftOrRightEqualToDBNull(expression, builder, context);
             }
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private void AppendFilterExpressionWithLeftOrRightEqualToDBNull(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.LeftArg.Expression is LiteralExpression left && left.Expression.Object is DBNull)
+            if (expression.LeftArg.Expression is LiteralExpression left && left.Expression is DBNull)
             {
                 AppendFilterExpressionWithDBNull(expression, expression.RightArg, builder, context);
             }
@@ -79,13 +79,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             builder.AppendPart(expression.LeftArg, context);
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-            if (expression.ExpressionOperator == FilterExpressionOperator.In && expression.RightArg.Expression is LiteralExpression right && right.Expression.Object is Array arr)
+            if (expression.ExpressionOperator == FilterExpressionOperator.In && expression.RightArg.Expression is LiteralExpression right && right.Expression is Array arr)
             {
                 builder.Appender.Write("(");
                 for (var i = 0; i < arr.Length; i++)
                 {
                     var value = arr.GetValue(i);
-                    builder.AppendPart(new ExpressionContainer(value), context);
+                    builder.Parameters.Add(value, value.GetType());
                     if (i != arr.Length - 1)
                         builder.Appender.Write(", ");
                 }

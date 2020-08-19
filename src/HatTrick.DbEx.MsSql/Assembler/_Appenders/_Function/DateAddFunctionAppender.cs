@@ -1,5 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler
@@ -11,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         {
             builder.Appender
                 .Write("DATEADD(")
-                .Write(expression.DatePart.Object.ToString().ToLower())
+                .Write(expression.DatePart.Expression.ToString().ToLower())
                 .Write(", ");
 
             builder.AppendPart(expression.Value, context);
