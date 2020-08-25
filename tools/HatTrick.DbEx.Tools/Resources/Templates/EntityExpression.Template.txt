@@ -13,14 +13,6 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
     #region {($) => InsertSpaceOnCapitalizationAndToLower}
     public partial class {($) => ResolveName}Entity : EntityExpression<{($) => ResolveName}>
     {{
-        #region internals
-		{#each Columns}
-		{#if !($) => IsIgnored}
-        private static string _{($) => ToCamelCase}FieldIdentifier;
-		{/if}
-		{/each}
-        #endregion
-
         #region interface properties
 		{#each Columns}
 		{#if !($) => IsIgnored}

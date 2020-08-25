@@ -10,28 +10,16 @@ namespace ServerSideBlazorApp.dboDataService
     #region address
     public partial class AddressEntity : EntityExpression<Address>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _addressTypeFieldIdentifier;
-        private static string _line1FieldIdentifier;
-        private static string _line2FieldIdentifier;
-        private static string _cityFieldIdentifier;
-        private static string _stateFieldIdentifier;
-        private static string _zipFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        private static string _dateUpdatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Address> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<Address>; } }
-		public NullableEnumFieldExpression<Address, AddressType> AddressType { get { return Fields[_addressTypeFieldIdentifier] as NullableEnumFieldExpression<Address, AddressType>; } }
-		public StringFieldExpression<Address> Line1 { get { return Fields[_line1FieldIdentifier] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> Line2 { get { return Fields[_line2FieldIdentifier] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> City { get { return Fields[_cityFieldIdentifier] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> State { get { return Fields[_stateFieldIdentifier] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> Zip { get { return Fields[_zipFieldIdentifier] as StringFieldExpression<Address>; } }
-		public DateTimeFieldExpression<Address> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<Address>; } }
-		public DateTimeFieldExpression<Address> DateUpdated { get { return Fields[_dateUpdatedFieldIdentifier] as DateTimeFieldExpression<Address>; } }
+		public Int32FieldExpression<Address> Id { get; private set; }
+		public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
+		public StringFieldExpression<Address> Line1 { get; private set; }
+		public StringFieldExpression<Address> Line2 { get; private set; }
+		public StringFieldExpression<Address> City { get; private set; }
+		public StringFieldExpression<Address> State { get; private set; }
+		public StringFieldExpression<Address> Zip { get; private set; }
+		public DateTimeFieldExpression<Address> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Address> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -45,15 +33,15 @@ namespace ServerSideBlazorApp.dboDataService
 
         private AddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Address>(_idFieldIdentifier, this));
-            Fields.Add(_addressTypeFieldIdentifier = $"{identifier}.AddressType", new NullableEnumFieldExpression<Address, AddressType>(_addressTypeFieldIdentifier, this));
-            Fields.Add(_line1FieldIdentifier = $"{identifier}.Line1", new StringFieldExpression<Address>(_line1FieldIdentifier, this));
-            Fields.Add(_line2FieldIdentifier = $"{identifier}.Line2", new StringFieldExpression<Address>(_line2FieldIdentifier, this));
-            Fields.Add(_cityFieldIdentifier = $"{identifier}.City", new StringFieldExpression<Address>(_cityFieldIdentifier, this));
-            Fields.Add(_stateFieldIdentifier = $"{identifier}.State", new StringFieldExpression<Address>(_stateFieldIdentifier, this));
-            Fields.Add(_zipFieldIdentifier = $"{identifier}.Zip", new StringFieldExpression<Address>(_zipFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Address>(_dateCreatedFieldIdentifier, this));
-            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Address>(_dateUpdatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Address>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, AddressType>($"{identifier}.AddressType", this));
+            Fields.Add($"{identifier}.Line1", Line1 = new StringFieldExpression<Address>($"{identifier}.Line1", this));
+            Fields.Add($"{identifier}.Line2", Line2 = new StringFieldExpression<Address>($"{identifier}.Line2", this));
+            Fields.Add($"{identifier}.City", City = new StringFieldExpression<Address>($"{identifier}.City", this));
+            Fields.Add($"{identifier}.State", State = new StringFieldExpression<Address>($"{identifier}.State", this));
+            Fields.Add($"{identifier}.Zip", Zip = new StringFieldExpression<Address>($"{identifier}.Zip", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Address>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Address>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -129,28 +117,16 @@ namespace ServerSideBlazorApp.dboDataService
     #region person
     public partial class PersonEntity : EntityExpression<Person>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _firstNameFieldIdentifier;
-        private static string _lastNameFieldIdentifier;
-        private static string _birthDateFieldIdentifier;
-        private static string _genderTypeFieldIdentifier;
-        private static string _creditLimitFieldIdentifier;
-        private static string _yearOfLastCreditLimitReviewFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        private static string _dateUpdatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Person> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<Person>; } }
-		public StringFieldExpression<Person> FirstName { get { return Fields[_firstNameFieldIdentifier] as StringFieldExpression<Person>; } }
-		public StringFieldExpression<Person> LastName { get { return Fields[_lastNameFieldIdentifier] as StringFieldExpression<Person>; } }
-		public NullableDateTimeFieldExpression<Person> BirthDate { get { return Fields[_birthDateFieldIdentifier] as NullableDateTimeFieldExpression<Person>; } }
-		public EnumFieldExpression<Person, GenderType> GenderType { get { return Fields[_genderTypeFieldIdentifier] as EnumFieldExpression<Person, GenderType>; } }
-		public NullableInt32FieldExpression<Person> CreditLimit { get { return Fields[_creditLimitFieldIdentifier] as NullableInt32FieldExpression<Person>; } }
-		public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get { return Fields[_yearOfLastCreditLimitReviewFieldIdentifier] as NullableInt32FieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateUpdated { get { return Fields[_dateUpdatedFieldIdentifier] as DateTimeFieldExpression<Person>; } }
+		public Int32FieldExpression<Person> Id { get; private set; }
+		public StringFieldExpression<Person> FirstName { get; private set; }
+		public StringFieldExpression<Person> LastName { get; private set; }
+		public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
+		public EnumFieldExpression<Person, GenderType> GenderType { get; private set; }
+		public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
+		public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
+		public DateTimeFieldExpression<Person> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -164,15 +140,15 @@ namespace ServerSideBlazorApp.dboDataService
 
         private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Person>(_idFieldIdentifier, this));
-            Fields.Add(_firstNameFieldIdentifier = $"{identifier}.FirstName", new StringFieldExpression<Person>(_firstNameFieldIdentifier, this));
-            Fields.Add(_lastNameFieldIdentifier = $"{identifier}.LastName", new StringFieldExpression<Person>(_lastNameFieldIdentifier, this));
-            Fields.Add(_birthDateFieldIdentifier = $"{identifier}.BirthDate", new NullableDateTimeFieldExpression<Person>(_birthDateFieldIdentifier, this));
-            Fields.Add(_genderTypeFieldIdentifier = $"{identifier}.GenderType", new EnumFieldExpression<Person, GenderType>(_genderTypeFieldIdentifier, this));
-            Fields.Add(_creditLimitFieldIdentifier = $"{identifier}.CreditLimit", new NullableInt32FieldExpression<Person>(_creditLimitFieldIdentifier, this));
-            Fields.Add(_yearOfLastCreditLimitReviewFieldIdentifier = $"{identifier}.YearOfLastCreditLimitReview", new NullableInt32FieldExpression<Person>(_yearOfLastCreditLimitReviewFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Person>(_dateCreatedFieldIdentifier, this));
-            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Person>(_dateUpdatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Person>($"{identifier}.FirstName", this));
+            Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Person>($"{identifier}.LastName", this));
+            Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Person>($"{identifier}.BirthDate", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Person, GenderType>($"{identifier}.GenderType", this));
+            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Person>($"{identifier}.CreditLimit", this));
+            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Person>($"{identifier}.YearOfLastCreditLimitReview", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -248,18 +224,11 @@ namespace ServerSideBlazorApp.dboDataService
     #region person address
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _personIdFieldIdentifier;
-        private static string _addressIdFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<PersonAddress> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<PersonAddress>; } }
-		public Int32FieldExpression<PersonAddress> PersonId { get { return Fields[_personIdFieldIdentifier] as Int32FieldExpression<PersonAddress>; } }
-		public Int32FieldExpression<PersonAddress> AddressId { get { return Fields[_addressIdFieldIdentifier] as Int32FieldExpression<PersonAddress>; } }
-		public DateTimeFieldExpression<PersonAddress> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<PersonAddress>; } }
+		public Int32FieldExpression<PersonAddress> Id { get; private set; }
+		public Int32FieldExpression<PersonAddress> PersonId { get; private set; }
+		public Int32FieldExpression<PersonAddress> AddressId { get; private set; }
+		public DateTimeFieldExpression<PersonAddress> DateCreated { get; private set; }
         #endregion
 
         #region constructors
@@ -273,10 +242,10 @@ namespace ServerSideBlazorApp.dboDataService
 
         private PersonAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<PersonAddress>(_idFieldIdentifier, this));
-            Fields.Add(_personIdFieldIdentifier = $"{identifier}.PersonId", new Int32FieldExpression<PersonAddress>(_personIdFieldIdentifier, this));
-            Fields.Add(_addressIdFieldIdentifier = $"{identifier}.AddressId", new Int32FieldExpression<PersonAddress>(_addressIdFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<PersonAddress>(_dateCreatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonAddress>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<PersonAddress>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.AddressId", AddressId = new Int32FieldExpression<PersonAddress>($"{identifier}.AddressId", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PersonAddress>($"{identifier}.DateCreated", this));
         }
         #endregion
 
@@ -332,28 +301,16 @@ namespace ServerSideBlazorApp.dboDataService
     #region product
     public partial class ProductEntity : EntityExpression<Product>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _productCategoryTypeFieldIdentifier;
-        private static string _nameFieldIdentifier;
-        private static string _descriptionFieldIdentifier;
-        private static string _listPriceFieldIdentifier;
-        private static string _priceFieldIdentifier;
-        private static string _quantityFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        private static string _dateUpdatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Product> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<Product>; } }
-		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get { return Fields[_productCategoryTypeFieldIdentifier] as NullableEnumFieldExpression<Product, ProductCategoryType>; } }
-		public StringFieldExpression<Product> Name { get { return Fields[_nameFieldIdentifier] as StringFieldExpression<Product>; } }
-		public StringFieldExpression<Product> Description { get { return Fields[_descriptionFieldIdentifier] as StringFieldExpression<Product>; } }
-		public DecimalFieldExpression<Product> ListPrice { get { return Fields[_listPriceFieldIdentifier] as DecimalFieldExpression<Product>; } }
-		public DecimalFieldExpression<Product> Price { get { return Fields[_priceFieldIdentifier] as DecimalFieldExpression<Product>; } }
-		public Int32FieldExpression<Product> Quantity { get { return Fields[_quantityFieldIdentifier] as Int32FieldExpression<Product>; } }
-		public DateTimeFieldExpression<Product> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<Product>; } }
-		public DateTimeFieldExpression<Product> DateUpdated { get { return Fields[_dateUpdatedFieldIdentifier] as DateTimeFieldExpression<Product>; } }
+		public Int32FieldExpression<Product> Id { get; private set; }
+		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
+		public StringFieldExpression<Product> Name { get; private set; }
+		public StringFieldExpression<Product> Description { get; private set; }
+		public DecimalFieldExpression<Product> ListPrice { get; private set; }
+		public DecimalFieldExpression<Product> Price { get; private set; }
+		public Int32FieldExpression<Product> Quantity { get; private set; }
+		public DateTimeFieldExpression<Product> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -367,15 +324,15 @@ namespace ServerSideBlazorApp.dboDataService
 
         private ProductEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Product>(_idFieldIdentifier, this));
-            Fields.Add(_productCategoryTypeFieldIdentifier = $"{identifier}.ProductCategoryType", new NullableEnumFieldExpression<Product, ProductCategoryType>(_productCategoryTypeFieldIdentifier, this));
-            Fields.Add(_nameFieldIdentifier = $"{identifier}.Name", new StringFieldExpression<Product>(_nameFieldIdentifier, this));
-            Fields.Add(_descriptionFieldIdentifier = $"{identifier}.Description", new StringFieldExpression<Product>(_descriptionFieldIdentifier, this));
-            Fields.Add(_listPriceFieldIdentifier = $"{identifier}.ListPrice", new DecimalFieldExpression<Product>(_listPriceFieldIdentifier, this));
-            Fields.Add(_priceFieldIdentifier = $"{identifier}.Price", new DecimalFieldExpression<Product>(_priceFieldIdentifier, this));
-            Fields.Add(_quantityFieldIdentifier = $"{identifier}.Quantity", new Int32FieldExpression<Product>(_quantityFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Product>(_dateCreatedFieldIdentifier, this));
-            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Product>(_dateUpdatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Product>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, ProductCategoryType>($"{identifier}.ProductCategoryType", this));
+            Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
+            Fields.Add($"{identifier}.Description", Description = new StringFieldExpression<Product>($"{identifier}.Description", this));
+            Fields.Add($"{identifier}.ListPrice", ListPrice = new DecimalFieldExpression<Product>($"{identifier}.ListPrice", this));
+            Fields.Add($"{identifier}.Price", Price = new DecimalFieldExpression<Product>($"{identifier}.Price", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<Product>($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Product>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Product>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -451,30 +408,17 @@ namespace ServerSideBlazorApp.dboDataService
     #region purchase
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _personIdFieldIdentifier;
-        private static string _totalPurchaseAmountFieldIdentifier;
-        private static string _purchaseDateFieldIdentifier;
-        private static string _shipDateFieldIdentifier;
-        private static string _expectedDeliveryDateFieldIdentifier;
-        private static string _trackingIdentifierFieldIdentifier;
-        private static string _paymentMethodTypeFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        private static string _dateUpdatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Purchase> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<Purchase>; } }
-		public Int32FieldExpression<Purchase> PersonId { get { return Fields[_personIdFieldIdentifier] as Int32FieldExpression<Purchase>; } }
-		public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get { return Fields[_totalPurchaseAmountFieldIdentifier] as DecimalFieldExpression<Purchase>; } }
-		public DateTimeFieldExpression<Purchase> PurchaseDate { get { return Fields[_purchaseDateFieldIdentifier] as DateTimeFieldExpression<Purchase>; } }
-		public NullableDateTimeFieldExpression<Purchase> ShipDate { get { return Fields[_shipDateFieldIdentifier] as NullableDateTimeFieldExpression<Purchase>; } }
-		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get { return Fields[_expectedDeliveryDateFieldIdentifier] as NullableDateTimeFieldExpression<Purchase>; } }
-		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get { return Fields[_trackingIdentifierFieldIdentifier] as NullableGuidFieldExpression<Purchase>; } }
-		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get { return Fields[_paymentMethodTypeFieldIdentifier] as EnumFieldExpression<Purchase, PaymentMethodType>; } }
-		public DateTimeFieldExpression<Purchase> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<Purchase>; } }
-		public DateTimeFieldExpression<Purchase> DateUpdated { get { return Fields[_dateUpdatedFieldIdentifier] as DateTimeFieldExpression<Purchase>; } }
+		public Int32FieldExpression<Purchase> Id { get; private set; }
+		public Int32FieldExpression<Purchase> PersonId { get; private set; }
+		public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
+		public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
+		public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
+		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
+		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
+		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
+		public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -488,16 +432,16 @@ namespace ServerSideBlazorApp.dboDataService
 
         private PurchaseEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Purchase>(_idFieldIdentifier, this));
-            Fields.Add(_personIdFieldIdentifier = $"{identifier}.PersonId", new Int32FieldExpression<Purchase>(_personIdFieldIdentifier, this));
-            Fields.Add(_totalPurchaseAmountFieldIdentifier = $"{identifier}.TotalPurchaseAmount", new DecimalFieldExpression<Purchase>(_totalPurchaseAmountFieldIdentifier, this));
-            Fields.Add(_purchaseDateFieldIdentifier = $"{identifier}.PurchaseDate", new DateTimeFieldExpression<Purchase>(_purchaseDateFieldIdentifier, this));
-            Fields.Add(_shipDateFieldIdentifier = $"{identifier}.ShipDate", new NullableDateTimeFieldExpression<Purchase>(_shipDateFieldIdentifier, this));
-            Fields.Add(_expectedDeliveryDateFieldIdentifier = $"{identifier}.ExpectedDeliveryDate", new NullableDateTimeFieldExpression<Purchase>(_expectedDeliveryDateFieldIdentifier, this));
-            Fields.Add(_trackingIdentifierFieldIdentifier = $"{identifier}.TrackingIdentifier", new NullableGuidFieldExpression<Purchase>(_trackingIdentifierFieldIdentifier, this));
-            Fields.Add(_paymentMethodTypeFieldIdentifier = $"{identifier}.PaymentMethodType", new EnumFieldExpression<Purchase, PaymentMethodType>(_paymentMethodTypeFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Purchase>(_dateCreatedFieldIdentifier, this));
-            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Purchase>(_dateUpdatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DecimalFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
+            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
+            Fields.Add($"{identifier}.ShipDate", ShipDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ShipDate", this));
+            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
+            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new NullableGuidFieldExpression<Purchase>($"{identifier}.TrackingIdentifier", this));
+            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, PaymentMethodType>($"{identifier}.PaymentMethodType", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -577,24 +521,14 @@ namespace ServerSideBlazorApp.dboDataService
     #region purchase line
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _purchaseIdFieldIdentifier;
-        private static string _productIdFieldIdentifier;
-        private static string _purchasePriceFieldIdentifier;
-        private static string _quantityFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        private static string _dateUpdatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<PurchaseLine> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<PurchaseLine>; } }
-		public Int32FieldExpression<PurchaseLine> PurchaseId { get { return Fields[_purchaseIdFieldIdentifier] as Int32FieldExpression<PurchaseLine>; } }
-		public Int32FieldExpression<PurchaseLine> ProductId { get { return Fields[_productIdFieldIdentifier] as Int32FieldExpression<PurchaseLine>; } }
-		public DecimalFieldExpression<PurchaseLine> PurchasePrice { get { return Fields[_purchasePriceFieldIdentifier] as DecimalFieldExpression<PurchaseLine>; } }
-		public Int32FieldExpression<PurchaseLine> Quantity { get { return Fields[_quantityFieldIdentifier] as Int32FieldExpression<PurchaseLine>; } }
-		public DateTimeFieldExpression<PurchaseLine> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<PurchaseLine>; } }
-		public DateTimeFieldExpression<PurchaseLine> DateUpdated { get { return Fields[_dateUpdatedFieldIdentifier] as DateTimeFieldExpression<PurchaseLine>; } }
+		public Int32FieldExpression<PurchaseLine> Id { get; private set; }
+		public Int32FieldExpression<PurchaseLine> PurchaseId { get; private set; }
+		public Int32FieldExpression<PurchaseLine> ProductId { get; private set; }
+		public DecimalFieldExpression<PurchaseLine> PurchasePrice { get; private set; }
+		public Int32FieldExpression<PurchaseLine> Quantity { get; private set; }
+		public DateTimeFieldExpression<PurchaseLine> DateCreated { get; private set; }
+		public DateTimeFieldExpression<PurchaseLine> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -608,13 +542,13 @@ namespace ServerSideBlazorApp.dboDataService
 
         private PurchaseLineEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<PurchaseLine>(_idFieldIdentifier, this));
-            Fields.Add(_purchaseIdFieldIdentifier = $"{identifier}.PurchaseId", new Int32FieldExpression<PurchaseLine>(_purchaseIdFieldIdentifier, this));
-            Fields.Add(_productIdFieldIdentifier = $"{identifier}.ProductId", new Int32FieldExpression<PurchaseLine>(_productIdFieldIdentifier, this));
-            Fields.Add(_purchasePriceFieldIdentifier = $"{identifier}.PurchasePrice", new DecimalFieldExpression<PurchaseLine>(_purchasePriceFieldIdentifier, this));
-            Fields.Add(_quantityFieldIdentifier = $"{identifier}.Quantity", new Int32FieldExpression<PurchaseLine>(_quantityFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<PurchaseLine>(_dateCreatedFieldIdentifier, this));
-            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<PurchaseLine>(_dateUpdatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PurchaseLine>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new Int32FieldExpression<PurchaseLine>($"{identifier}.PurchaseId", this));
+            Fields.Add($"{identifier}.ProductId", ProductId = new Int32FieldExpression<PurchaseLine>($"{identifier}.ProductId", this));
+            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new DecimalFieldExpression<PurchaseLine>($"{identifier}.PurchasePrice", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<PurchaseLine>($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PurchaseLine>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<PurchaseLine>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -682,14 +616,9 @@ namespace ServerSideBlazorApp.dboDataService
     #region person total purchases view
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _totalPurchasesFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<PersonTotalPurchasesView> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<PersonTotalPurchasesView>; } }
-		public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get { return Fields[_totalPurchasesFieldIdentifier] as NullableDecimalFieldExpression<PersonTotalPurchasesView>; } }
+		public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
+		public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get; private set; }
         #endregion
 
         #region constructors
@@ -703,8 +632,8 @@ namespace ServerSideBlazorApp.dboDataService
 
         private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<PersonTotalPurchasesView>(_idFieldIdentifier, this));
-            Fields.Add(_totalPurchasesFieldIdentifier = $"{identifier}.TotalPurchases", new NullableDecimalFieldExpression<PersonTotalPurchasesView>(_totalPurchasesFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonTotalPurchasesView>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.TotalPurchases", TotalPurchases = new NullableDecimalFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalPurchases", this));
         }
         #endregion
 
@@ -762,18 +691,11 @@ namespace ServerSideBlazorApp.secDataService
     #region person
     public partial class PersonEntity : EntityExpression<Person>
     {
-        #region internals
-        private static string _idFieldIdentifier;
-        private static string _sSNFieldIdentifier;
-        private static string _dateCreatedFieldIdentifier;
-        private static string _dateUpdatedFieldIdentifier;
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Person> Id { get { return Fields[_idFieldIdentifier] as Int32FieldExpression<Person>; } }
-		public StringFieldExpression<Person> SSN { get { return Fields[_sSNFieldIdentifier] as StringFieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateCreated { get { return Fields[_dateCreatedFieldIdentifier] as DateTimeFieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateUpdated { get { return Fields[_dateUpdatedFieldIdentifier] as DateTimeFieldExpression<Person>; } }
+		public Int32FieldExpression<Person> Id { get; private set; }
+		public StringFieldExpression<Person> SSN { get; private set; }
+		public DateTimeFieldExpression<Person> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -787,10 +709,10 @@ namespace ServerSideBlazorApp.secDataService
 
         private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Person>(_idFieldIdentifier, this));
-            Fields.Add(_sSNFieldIdentifier = $"{identifier}.SSN", new StringFieldExpression<Person>(_sSNFieldIdentifier, this));
-            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Person>(_dateCreatedFieldIdentifier, this));
-            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Person>(_dateUpdatedFieldIdentifier, this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.SSN", SSN = new StringFieldExpression<Person>($"{identifier}.SSN", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
         }
         #endregion
 

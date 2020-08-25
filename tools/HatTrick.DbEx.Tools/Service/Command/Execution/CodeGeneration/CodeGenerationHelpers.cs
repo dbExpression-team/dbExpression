@@ -143,12 +143,12 @@ namespace HatTrick.DbEx.Tools.Service
 
         public string BuildFieldExpressionInterfaceProperty(MsSqlColumn column, INamedMeta tableOrView)
         {
-            return $"public {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}> {ResolveName(column)} {{ get {{ return Fields[_{ToCamelCase(column)}FieldIdentifier] as {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>; }} }}";
+            return $"public {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}> {ResolveName(column)} {{ get; private set; }}";
         }
 
         public string BuildEntityExpressionConstructorForFieldExpression(MsSqlColumn column, INamedMeta tableOrView, INamedMeta schema)
         {
-            return $"Fields.Add(_{ToCamelCase(column)}FieldIdentifier = $\"{{identifier}}.{column.Name}\", new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>(_{ToCamelCase(column)}FieldIdentifier, this));";
+            return $"Fields.Add($\"{{identifier}}.{column.Name}\", {ResolveName(column)} = new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>($\"{{identifier}}.{column.Name}\", this));";
         }
 
         #region name represents last touched timestamp

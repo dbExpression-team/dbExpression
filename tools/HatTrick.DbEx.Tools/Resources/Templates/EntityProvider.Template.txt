@@ -4,17 +4,19 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
     #region {($) => ResolveName}
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable IDE1006 // Naming Styles
     public partial class {($) => ResolveName}
+#pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
         #region internals
-        private static {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression("{..\$.Name}.{$.Name}");
+        private static readonly {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression("{..\$.Name}.{$.Name}");
         #endregion
 
         #region interface
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        public static {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return _schema.{($) => ResolveName}; }} }}
+        public static {($) => ResolveName}Entity {($) => ResolveName} => _schema.{($) => ResolveName};
 		{/if}
 		{/each}
         #endregion

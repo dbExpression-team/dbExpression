@@ -241,21 +241,14 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
     using System;
 
     #region {$.Name}
-    [Serializable]
+#pragma warning disable IDE1006 // Naming Styles
     public class {($) => ResolveName}SchemaExpression : SchemaExpression
+#pragma warning restore IDE1006 // Naming Styles
     {{
-        #region internals
-		{#each ($) => ResolveConsolidatedTablesAndViews}
-		{#if !($) => IsIgnored}
-        private static string _{($) => ToCamelCase}EntityIdentifier;
-		{/if}
-		{/each}
-        #endregion
-
         #region interface
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        public {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return Entities[_{($) => ToCamelCase}EntityIdentifier] as {($) => ResolveName}Entity; }} }}
+        public {($) => ResolveName}Entity {($) => ResolveName} {{ get; private set; }}
 		{/if}
 		{/each}
         #endregion
@@ -265,7 +258,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         {{
 			{#each ($) => ResolveConsolidatedTablesAndViews}
 			{#if !($) => IsIgnored}
-            Entities.Add(_{($) => ToCamelCase}EntityIdentifier = $"{{identifier}}.{$.Name}", new {($) => ResolveName}Entity(_{($) => ToCamelCase}EntityIdentifier, this));
+            Entities.Add($"{{identifier}}.{$.Name}", {($) => ResolveName} = new {($) => ResolveName}Entity($"{{identifier}}.{$.Name}", this));
 			{/if}
 			{/each}
         }}
