@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [MsSqlVersions.AllVersions]
+        [MsSqlVersions.AllVersionsExcept(2005)]
         public void Can_many_persons_be_inserted_successfully(int version, int expected = 10)
         {
             //given
@@ -173,6 +173,33 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             retrieved.Should().HaveCount(expected);
+        }
+
+        [Fact]
+        public void Does_inserting_multiple_persons_fail_for_v2005()
+        {
+            //given
+            ConfigureForMsSqlVersion(2005);
+
+            var firstNames = Enumerable.Range(0, 2).Select(x => $"FirstName_{x}");
+            var lastNames = Enumerable.Range(0, 2).Select(x => $"LastName_{x}");
+            var persons = Enumerable.Range(0, 2).Select(x =>
+                new Person
+                {
+                    FirstName = firstNames.ElementAt(x),
+                    LastName = lastNames.ElementAt(x),
+                    GenderType = x % 2 == 0 ? GenderType.Female : GenderType.Male,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
+                }
+            ).ToList();
+
+            Action execute = () => db.InsertMany(persons)
+                .Into(dbo.Person)
+                .Execute();
+
+            //when & then
+            execute.Should().Throw<DbExpressionException>().And.Message.Should().Be("MsSql version 2005 does not support inserting multiple records in a single statement.");
         }
     }
 }
