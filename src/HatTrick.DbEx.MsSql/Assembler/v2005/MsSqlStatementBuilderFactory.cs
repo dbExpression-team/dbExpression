@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Assembler;
+﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2005
@@ -7,6 +6,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
     public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
     {
         private static readonly MsSqlSelectSqlStatementAssembler _selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
+        private static readonly MsSql.v2005.Assembler.MsSqlInsertSqlStatementAssembler _insertManySqlStatementAssembler = new MsSql.v2005.Assembler.MsSqlInsertSqlStatementAssembler();
         private static readonly MsSqlDeleteSqlStatementAssembler _deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
         private static readonly MsSqlUpdateSqlStatementAssembler _updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
 
@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
         {
             base.RegisterDefaultStatementAssemblers();
             RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(() => _selectSqlStatementAssembler);
-            RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(() => throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement."));
+            RegisterStatementAssembler<InsertQueryExpression, MsSql.v2005.Assembler.MsSqlInsertSqlStatementAssembler>(() => _insertManySqlStatementAssembler);
             RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(() => _deleteSqlStatementAssembler);
             RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(() => _updateSqlStatementAssembler);
         }
