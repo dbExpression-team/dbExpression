@@ -5,9 +5,9 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class FieldExpressionConfigurationBuilder : IFieldExpressionConfigurationBuilder
     {
-        private DatabaseConfiguration config;
+        private RuntimeSqlDatabaseConfiguration config;
 
-        public FieldExpressionConfigurationBuilder(DatabaseConfiguration config)
+        public FieldExpressionConfigurationBuilder(RuntimeSqlDatabaseConfiguration config)
         {
             this.config = config;
         }

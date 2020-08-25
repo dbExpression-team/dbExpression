@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public ISqlStatementBuilder SqlStatementBuilder { get; private set; }
 
-        public AfterAssemblyPipelineExecutionContext(DatabaseConfiguration database, QueryExpression expression, ISqlStatementBuilder builder)
+        public AfterAssemblyPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, ISqlStatementBuilder builder)
             : base(database, expression)
         {
             SqlStatementBuilder = builder;

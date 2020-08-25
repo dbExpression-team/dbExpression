@@ -143,12 +143,12 @@ namespace HatTrick.DbEx.Tools.Service
 
         public string BuildFieldExpressionInterfaceProperty(MsSqlColumn column, INamedMeta tableOrView)
         {
-            return $"public {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}> {ResolveName(column)} {{ get {{ return Fields[_{ToCamelCase(column)}FieldName] as {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>; }} }}";
+            return $"public {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}> {ResolveName(column)} {{ get {{ return Fields[_{ToCamelCase(column)}FieldIdentifier] as {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>; }} }}";
         }
 
         public string BuildEntityExpressionConstructorForFieldExpression(MsSqlColumn column, INamedMeta tableOrView, INamedMeta schema)
         {
-            return $"Fields.Add(_{ToCamelCase(column)}FieldName, new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>(\"{ResolveName(schema)}.{ResolveName(tableOrView)}.{ResolveName(column)}\", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_{ToCamelCase(column)}FieldName])));";
+            return $"Fields.Add(_{ToCamelCase(column)}FieldIdentifier, new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>(_{ToCamelCase(column)}FieldIdentifier, this));";
         }
 
         #region name represents last touched timestamp

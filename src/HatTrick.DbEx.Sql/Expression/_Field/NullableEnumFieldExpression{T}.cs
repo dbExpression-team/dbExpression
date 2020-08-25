@@ -9,21 +9,13 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        protected NullableEnumFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        protected NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
         }
 
-        protected NullableEnumFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
-        }
-        #endregion
-
-        #region as
-        public new NullableFieldExpression<TEnum> As(string alias)
-        {
-            base.As(alias);
-            return this;
         }
         #endregion
 

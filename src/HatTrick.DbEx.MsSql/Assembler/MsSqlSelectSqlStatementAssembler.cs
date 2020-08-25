@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
+﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
@@ -46,13 +47,17 @@ namespace HatTrick.DbEx.MsSql.Assembler
             AppendHavingClause(expression, builder, context);
 
             //end CTE
-            builder.Appender.Indent().Write("AS ").Write(expression.BaseEntity.ToString("[s.e]", true)).LineBreak()
+            builder.Appender.Indent().Write("AS ")
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write((expression.BaseEntity as ISqlMetadataIdentifier).Identifier)
+                    .Write(context.Configuration.IdentifierDelimiter.End)
+                    .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++
                     .Write("[__index] BETWEEN ")
-                    .Write(builder.Parameters.Add<int>((expression.SkipValue ?? 0) + 1).ParameterName)
+                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)
                     .Write(" AND ")
-                    .Write(builder.Parameters.Add<int>((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1).ParameterName)
+                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1).ParameterName)
                     .LineBreak()
                 .Indentation--.Indent().Write("ORDER BY").LineBreak()
                 .Indentation++.Indent().Write("[__index]");

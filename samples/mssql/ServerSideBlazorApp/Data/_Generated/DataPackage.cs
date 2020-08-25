@@ -1,9 +1,10 @@
-using System;
-using HatTrick.DbEx.Sql;
-using ServerSideBlazorApp.Data;
 
 namespace ServerSideBlazorApp.dboData
 {
+    using System;
+    using HatTrick.DbEx.Sql;
+    using ServerSideBlazorApp.Data;
+
     #region address
     public partial class Address : IDbEntity
     {
@@ -26,6 +27,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
     #region person
     public partial class Person : IDbEntity
     {
@@ -48,6 +50,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
     #region person address
     public partial class PersonAddress : IDbEntity
     {
@@ -65,6 +68,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
     #region product
     public partial class Product : IDbEntity
     {
@@ -87,6 +91,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
     #region purchase
     public partial class Purchase : IDbEntity
     {
@@ -110,6 +115,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
     #region purchase line
     public partial class PurchaseLine : IDbEntity
     {
@@ -130,6 +136,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
     #region person total purchases view
     public partial class PersonTotalPurchasesView : IDbEntity
     {
@@ -145,9 +152,14 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
+
 }
 namespace ServerSideBlazorApp.secData
 {
+    using System;
+    using HatTrick.DbEx.Sql;
+    using ServerSideBlazorApp.Data;
+
     #region person
     public partial class Person : IDbEntity
     {
@@ -165,4 +177,5 @@ namespace ServerSideBlazorApp.secData
         #endregion
     }
     #endregion
+
 }

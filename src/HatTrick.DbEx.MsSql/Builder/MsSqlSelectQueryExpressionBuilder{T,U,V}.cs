@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         public new SelectQueryExpression Expression => base.Expression as SelectQueryExpression;
 
-        public MsSqlSelectQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
         {
 
         }

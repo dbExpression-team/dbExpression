@@ -12,6 +12,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private SqlStatement _sqlStatement;
         #endregion
 
+        public ISqlDatabaseMetadataProvider DatabaseMetadata { get; }
         public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; }
         public QueryExpression Query { get; }
         public Func<QueryExpression, ISqlStatementAssembler> AssemblerFactory { get; }
@@ -20,6 +21,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
+            ISqlDatabaseMetadataProvider databaseMetadata,
             IAssemblyPartAppenderFactory partAppenderFactory,
             SqlStatementAssemblerConfiguration config,
             QueryExpression query,
@@ -28,6 +30,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             ISqlParameterBuilder parameterBuilder
         )
         {
+            DatabaseMetadata = databaseMetadata;
             AssemblerConfiguration = config;
             Query = query;
             AssemblerFactory = assemblerFactory;
@@ -82,5 +85,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
+
+        public ISqlSchemaMetadata FindMetadata(SchemaExpression schema) => DatabaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifier).Identifier);
+        public ISqlEntityMetadata FindMetadata(EntityExpression entity) => DatabaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifier).Identifier);
+        public ISqlFieldMetadata FindMetadata(FieldExpression field) => DatabaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifier).Identifier);
     }
 }

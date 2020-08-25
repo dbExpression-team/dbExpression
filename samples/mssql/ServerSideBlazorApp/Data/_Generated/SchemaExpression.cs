@@ -1,53 +1,28 @@
-using System;
-
 namespace ServerSideBlazorApp.DataService
 {
-    using System.Collections.Generic;
-    using System.Dynamic;
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Builder.Syntax;
     using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Connection;
-    using ServerSideBlazorApp.dboDataService;
-    using ServerSideBlazorApp.secDataService;
+    using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
 
     #region runtime
-    public class CRMDatabase : IRuntimeSqlDatabase
+    public abstract class CRMDatabaseRuntimeSqlDatabase : IRuntimeSqlDatabase
     {
         #region internals
-        private readonly ISqlDatabaseMetadata metadata;
-        protected static DatabaseConfiguration config;
-        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory;
+        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        ISqlDatabaseMetadata IRuntimeSqlDatabase.Metadata => metadata;
-        DatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
-        #endregion
-
-        #region constructors
-        public CRMDatabase()
-        {
-            metadata = new CRMDatabaseSqlDatabaseMetadataProvider().Database;
-        }
-
-        public CRMDatabase(ISqlDatabaseMetadata metadata)
-        {
-            this.metadata = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required.");
-        }
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration { get => config; set => config = value; }
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfiguration(DatabaseConfiguration configuration)
-        {
-            config = configuration;
-            dbo.Initialize(metadata.Schemas[nameof(dbo)]);
-            sec.Initialize(metadata.Schemas[nameof(sec)]);
-            expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
-        }
-
         #region select one
         public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
@@ -250,7 +225,7 @@ namespace ServerSideBlazorApp.DataService
 
     #region db
     #pragma warning disable IDE1006 // Naming Styles
-    public partial class db : CRMDatabase
+    public partial class db : CRMDatabaseRuntimeSqlDatabase
     #pragma warning restore IDE1006 // Naming Styles
     {
     	
@@ -262,7 +237,6 @@ namespace ServerSideBlazorApp.dboDataService
 {
     using HatTrick.DbEx.Sql.Expression;
     using System;
-    using HatTrick.DbEx.Sql;
 
     #region dbo
     [Serializable]
@@ -289,15 +263,15 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        public dboSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
+        public dboSchemaExpression() : base("dbo", null)
         {
-            Entities.Add(_addressEntityName, new AddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_addressEntityName])));
-            Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
-            Entities.Add(_personAddressEntityName, new PersonAddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personAddressEntityName])));
-            Entities.Add(_productEntityName, new ProductEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_productEntityName])));
-            Entities.Add(_purchaseEntityName, new PurchaseEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_purchaseEntityName])));
-            Entities.Add(_purchaseLineEntityName, new PurchaseLineEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_purchaseLineEntityName])));
-            Entities.Add(_personTotalPurchasesViewEntityName, new PersonTotalPurchasesViewEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personTotalPurchasesViewEntityName])));
+            Entities.Add(_addressEntityName, new AddressEntity(this));
+            Entities.Add(_personEntityName, new PersonEntity(this));
+            Entities.Add(_personAddressEntityName, new PersonAddressEntity(this));
+            Entities.Add(_productEntityName, new ProductEntity(this));
+            Entities.Add(_purchaseEntityName, new PurchaseEntity(this));
+            Entities.Add(_purchaseLineEntityName, new PurchaseLineEntity(this));
+            Entities.Add(_personTotalPurchasesViewEntityName, new PersonTotalPurchasesViewEntity(this));
         }
         #endregion
     }
@@ -307,7 +281,6 @@ namespace ServerSideBlazorApp.secDataService
 {
     using HatTrick.DbEx.Sql.Expression;
     using System;
-    using HatTrick.DbEx.Sql;
 
     #region sec
     [Serializable]
@@ -322,9 +295,9 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region constructors
-        public secSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
+        public secSchemaExpression() : base("sec", null)
         {
-            Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
+            Entities.Add(_personEntityName, new PersonEntity(this));
         }
         #endregion
     }

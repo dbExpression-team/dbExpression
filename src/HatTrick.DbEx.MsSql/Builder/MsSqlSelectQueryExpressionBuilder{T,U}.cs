@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlSelectQueryExpressionBuilder<T,U> : SelectQueryExpressionBuilder<T, U>
         where U : class, IContinuationExpressionBuilder<T>
     {
-        public MsSqlSelectQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
         { }
     }
 }

@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IUpdateContinuationExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        protected UpdateQueryExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
+        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 

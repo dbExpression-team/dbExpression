@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         IList<ParameterizedFieldExpression> Parameters { get; }
         DbParameter Add<T>(T value);
         DbParameter Add(object value, Type valueType);
-        ParameterizedFieldExpression Add<T>(T value, FieldExpression expression);
-        ParameterizedFieldExpression AddOutput(FieldExpression field);
+        ParameterizedFieldExpression Add<T>(T value, FieldExpression expression, ISqlFieldMetadata meta);
+        ParameterizedFieldExpression AddOutput(FieldExpression field, ISqlFieldMetadata meta);
     }
 }

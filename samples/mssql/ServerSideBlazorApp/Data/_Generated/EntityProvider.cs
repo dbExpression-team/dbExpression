@@ -1,14 +1,11 @@
-using System;
 
 namespace ServerSideBlazorApp.dboDataService
 {
-    using HatTrick.DbEx.Sql;
-
     #region dbo
     public partial class dbo
     {
         #region internals
-        private static dboSchemaExpression _schema;
+        private static dboSchemaExpression _schema = new dboSchemaExpression();
         #endregion
 
         #region interface
@@ -27,25 +24,16 @@ namespace ServerSideBlazorApp.dboDataService
 
         }
         #endregion
-
-		#region methods
-        public static void Initialize(ISqlSchemaMetadata metadata)
-        {
-            _schema = new dboSchemaExpression(new Lazy<ISqlSchemaMetadata>(() => metadata));
-        }
-        #endregion
     }
     #endregion
 }
 namespace ServerSideBlazorApp.secDataService
 {
-    using HatTrick.DbEx.Sql;
-
     #region sec
     public partial class sec
     {
         #region internals
-        private static secSchemaExpression _schema;
+        private static secSchemaExpression _schema = new secSchemaExpression();
         #endregion
 
         #region interface
@@ -56,13 +44,6 @@ namespace ServerSideBlazorApp.secDataService
         private sec()
         {
 
-        }
-        #endregion
-
-		#region methods
-        public static void Initialize(ISqlSchemaMetadata metadata)
-        {
-            _schema = new secSchemaExpression(new Lazy<ISqlSchemaMetadata>(() => metadata));
         }
         #endregion
     }

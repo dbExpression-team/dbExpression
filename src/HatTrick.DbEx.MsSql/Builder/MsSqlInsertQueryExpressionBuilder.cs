@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         public new InsertQueryExpression Expression => base.Expression as InsertQueryExpression;
 
-        public MsSqlInsertQueryExpressionBuilder(DatabaseConfiguration configuration, IEnumerable<T> instances) : base(configuration, instances, configuration.QueryExpressionFactory.CreateQueryExpression<InsertQueryExpression>())
+        public MsSqlInsertQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<T> instances) : base(configuration, instances, configuration.QueryExpressionFactory.CreateQueryExpression<InsertQueryExpression>())
         {
         }
     }

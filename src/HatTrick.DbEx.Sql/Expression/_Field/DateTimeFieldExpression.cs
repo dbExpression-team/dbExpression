@@ -8,12 +8,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeFieldExpression>
     {
         #region constructors
-        protected DateTimeFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        protected DateTimeFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected DateTimeFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        protected DateTimeFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }

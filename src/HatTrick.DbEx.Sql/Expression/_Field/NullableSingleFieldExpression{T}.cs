@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -9,20 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : IDbEntity
     {
         #region constructors
-        public NullableSingleFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        public NullableSingleFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        private NullableSingleFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        private NullableSingleFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
         #endregion
         
         #region as
-        public new NullableSingleFieldExpression<TEntity> As(string alias)
-            => new NullableSingleFieldExpression<TEntity>(base.Identifier, base.Entity, base.MetadataResolver, alias);
+        public NullableSingleFieldExpression<TEntity> As(string alias)
+            => new NullableSingleFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 
         #region equals

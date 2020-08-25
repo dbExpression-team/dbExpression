@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDoubleFieldExpression>
     {
         #region constructors
-        protected NullableDoubleFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        protected NullableDoubleFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected NullableDoubleFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        protected NullableDoubleFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }

@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         IValueContinuationExpressionBuilder<T>,
         IValueListContinuationExpressionBuilder<T>
     {
-        public MsSqlSelectQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
         { }
     }
 }

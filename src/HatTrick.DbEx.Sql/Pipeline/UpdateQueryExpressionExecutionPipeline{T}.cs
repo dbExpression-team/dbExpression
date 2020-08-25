@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         where T : class, IDbEntity
     {
         #region internals
-        private readonly DatabaseConfiguration database;
+        private readonly RuntimeSqlDatabaseConfiguration database;
         private readonly PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly;
         private readonly PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly;
         private readonly PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution;
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region constructors
         public UpdateQueryExpressionExecutionPipeline(
-            DatabaseConfiguration database,
+            RuntimeSqlDatabaseConfiguration database,
             PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
             PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly,
             PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution,
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
             if (connection is null)
                 connection = database.ConnectionFactory.CreateSqlConnection();
 
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
             if (connection is null)
                 connection = database.ConnectionFactory.CreateSqlConnection();
 

@@ -7,6 +7,7 @@ namespace HatTrick.DbEx.Sql
         IEquatable<SqlFieldMetadata>
     {
         public ISqlEntityMetadata Entity { get; private set; }
+        public string Identifier { get; private set; }
         public string Name { get; private set; }
         public object DbType { get; private set; }
         public int? Size { get; private set; }
@@ -17,24 +18,27 @@ namespace HatTrick.DbEx.Sql
         public SqlFieldMetadata()
         { }
 
-        public SqlFieldMetadata(ISqlEntityMetadata parent, string name, object dbType)
+        public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType)
         {
             Entity = parent;
+            Identifier = identifier;
             Name = name;
             DbType = dbType;
         }
 
-        public SqlFieldMetadata(ISqlEntityMetadata parent, string name, object dbType, int size)
+        public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType, int size)
         {
             Entity = parent;
+            Identifier = identifier;
             Name = name;
             DbType = dbType;
             Size = size;
         }
 
-        public SqlFieldMetadata(ISqlEntityMetadata parent, string name, object dbType, byte precision, byte scale)
+        public SqlFieldMetadata(ISqlEntityMetadata parent, string identifier, string name, object dbType, byte precision, byte scale)
         {
             Entity = parent;
+            Identifier = identifier;
             Name = name;
             DbType = dbType;
             Precision = precision;
@@ -49,6 +53,8 @@ namespace HatTrick.DbEx.Sql
             if (Entity is null && obj.Entity is object) return false;
             if (Entity is object && obj.Entity is null) return false;
             if (!Entity.Equals(obj.Entity)) return false;
+
+            if (!StringComparer.Ordinal.Equals(Identifier, obj.Identifier)) return false;
 
             if (!StringComparer.Ordinal.Equals(Name, obj.Name)) return false;
 
@@ -85,6 +91,7 @@ namespace HatTrick.DbEx.Sql
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Entity is object ? Entity.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Identifier is object ? Identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Name is object ? Name.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (DbType is object ? DbType.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Size is object ? Size.GetHashCode() : 0);

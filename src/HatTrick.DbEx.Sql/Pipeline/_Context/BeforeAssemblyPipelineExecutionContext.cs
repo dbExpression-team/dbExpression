@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class BeforeAssemblyPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public BeforeAssemblyPipelineExecutionContext(DatabaseConfiguration database, QueryExpression expression)
+        public BeforeAssemblyPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
             : base(database, expression)
         {
         }

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -10,15 +9,11 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public IList<ParameterizedFieldExpression> Parameters { get; set; } = new List<ParameterizedFieldExpression>();
 
-        protected SqlParameterBuilder()
-        {
-        }
-
         #region abstract methods
         public abstract DbParameter Add<T>(T value);
-        public abstract ParameterizedFieldExpression Add<T>(T value, FieldExpression expression);
+        public abstract ParameterizedFieldExpression Add<T>(T value, FieldExpression expression, ISqlFieldMetadata meta);
         public abstract DbParameter Add(object value, Type valueType);
-        public abstract ParameterizedFieldExpression AddOutput(FieldExpression expression);
+        public abstract ParameterizedFieldExpression AddOutput(FieldExpression expression, ISqlFieldMetadata meta);
         #endregion
     }
 }

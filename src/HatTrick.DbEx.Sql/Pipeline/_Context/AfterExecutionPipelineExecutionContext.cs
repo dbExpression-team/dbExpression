@@ -10,7 +10,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public SqlStatement Statement { get; private set; }
         public DbCommand DbCommand { get; private set; }
 
-        public AfterExecutionPipelineExecutionContext(DatabaseConfiguration database, QueryExpression expression, SqlStatement statement, DbCommand command)
+        public AfterExecutionPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, SqlStatement statement, DbCommand command)
             : base(database, expression)
         {
             Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");

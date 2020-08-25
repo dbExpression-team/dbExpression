@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write((expression as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata.Name);
+            builder.Appender.Write(builder.FindMetadata(expression).Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
 
             if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Declaration)

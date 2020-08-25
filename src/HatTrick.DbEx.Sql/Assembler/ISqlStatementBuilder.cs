@@ -16,6 +16,10 @@ namespace HatTrick.DbEx.Sql.Assembler
             where T : class, IExpression;
 
         string GenerateAlias();
+
+        ISqlSchemaMetadata FindMetadata(SchemaExpression schema);
+        ISqlEntityMetadata FindMetadata(EntityExpression entity);
+        ISqlFieldMetadata FindMetadata(FieldExpression field);
         #endregion
     }
 }

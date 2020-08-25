@@ -1,16 +1,12 @@
-using System;
-
 {#each Schemas}
 {#if !($) => IsIgnored}
 namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
-    using HatTrick.DbEx.Sql;
-
     #region {($) => ResolveName}
     public partial class {($) => ResolveName}
     {{
         #region internals
-        private static {($) => ResolveName}SchemaExpression _schema;
+        private static {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression();
         #endregion
 
         #region interface
@@ -25,13 +21,6 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         private {($) => ResolveName}()
         {{
 
-        }}
-        #endregion
-
-		#region methods
-        public static void Initialize(ISqlSchemaMetadata metadata)
-        {{
-            _schema = new {($) => ResolveName}SchemaExpression(new Lazy<ISqlSchemaMetadata>(() => metadata));
         }}
         #endregion
     }}

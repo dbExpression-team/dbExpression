@@ -5,12 +5,12 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class FieldExpression<TValue> : FieldExpression
     {
         #region constructors
-        protected FieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        protected FieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected FieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        protected FieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
         }
         #endregion

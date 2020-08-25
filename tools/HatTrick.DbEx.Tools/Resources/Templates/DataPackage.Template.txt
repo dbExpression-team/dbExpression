@@ -1,11 +1,11 @@
-﻿using System;
-using HatTrick.DbEx.Sql;
-using {() => ResolveRootNamespace}Data;
-
-{#each Schemas}
+﻿{#each Schemas}
 {#if !($) => IsIgnored}
 namespace {() => ResolveRootNamespace}{($) => ResolveName}Data
 {{
+    using System;
+    using HatTrick.DbEx.Sql;
+    using {() => ResolveRootNamespace}Data;
+
 	{#each ($) => ResolveConsolidatedTablesAndViews}
 	{#if !($) => IsIgnored}
     #region {($) => InsertSpaceOnCapitalizationAndToLower}
@@ -26,6 +26,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}Data
         #endregion
     }}
     #endregion
+
 	{/if}
 	{/each}
 }}

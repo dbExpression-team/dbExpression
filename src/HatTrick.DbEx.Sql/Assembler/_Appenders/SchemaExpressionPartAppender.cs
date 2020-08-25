@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendPart(SchemaExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write((expression as ISqlMetadataProvider<ISqlSchemaMetadata>).Metadata.Name);
+            builder.Appender.Write(builder.FindMetadata(expression).Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
         }
     }

@@ -10,10 +10,10 @@ namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
-        public virtual DatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<RuntimeDatabaseConfigurationBuilder> postConfigure = null, Action<IFieldExpressionConfigurationBuilder> fieldConfigure = null)
+        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<RuntimeSqlDatabaseConfigurationBuilder> postConfigure = null, Action<IFieldExpressionConfigurationBuilder> fieldConfigure = null)
         {
-            DatabaseConfiguration config = null;
-            Action<RuntimeDatabaseConfigurationBuilder> configureDatabase = database =>
+            RuntimeSqlDatabaseConfiguration config = null;
+            Action<RuntimeSqlDatabaseConfigurationBuilder> configureDatabase = database =>
             {
                 config = (database as IRuntimeSqlDatabaseConfigurationBuilder).Configuration; 
                 postConfigure?.Invoke(database);
