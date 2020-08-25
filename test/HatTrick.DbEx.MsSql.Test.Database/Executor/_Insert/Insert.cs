@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_a_person_with_string_delimiter_in_last_name_be_inserted_successfully(int version, string expected = "O''Conner")
+        public void Can_a_person_with_string_delimiter_in_last_name_be_inserted_successfully(int version, string expected = "O'Conner")
         {
             //given
             ConfigureForMsSqlVersion(version);
