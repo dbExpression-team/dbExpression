@@ -148,7 +148,7 @@ namespace HatTrick.DbEx.Tools.Service
 
         public string BuildEntityExpressionConstructorForFieldExpression(MsSqlColumn column, INamedMeta tableOrView, INamedMeta schema)
         {
-            return $"Fields.Add(_{ToCamelCase(column)}FieldIdentifier, new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>(_{ToCamelCase(column)}FieldIdentifier, this));";
+            return $"Fields.Add(_{ToCamelCase(column)}FieldIdentifier = $\"{{identifier}}.{column.Name}\", new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>(_{ToCamelCase(column)}FieldIdentifier, this));";
         }
 
         #region name represents last touched timestamp

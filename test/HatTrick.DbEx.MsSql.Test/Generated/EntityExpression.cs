@@ -11,15 +11,15 @@ namespace DbEx.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.Address.Id";
-        private const string _addressTypeFieldIdentifier = "MsSqlDbExTest.dbo.Address.AddressType";
-        private const string _line1FieldIdentifier = "MsSqlDbExTest.dbo.Address.Line1";
-        private const string _line2FieldIdentifier = "MsSqlDbExTest.dbo.Address.Line2";
-        private const string _cityFieldIdentifier = "MsSqlDbExTest.dbo.Address.City";
-        private const string _stateFieldIdentifier = "MsSqlDbExTest.dbo.Address.State";
-        private const string _zipFieldIdentifier = "MsSqlDbExTest.dbo.Address.Zip";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.dbo.Address.DateCreated";
-        private const string _dateUpdatedFieldIdentifier = "MsSqlDbExTest.dbo.Address.DateUpdated";
+        private static string _idFieldIdentifier;
+        private static string _addressTypeFieldIdentifier;
+        private static string _line1FieldIdentifier;
+        private static string _line2FieldIdentifier;
+        private static string _cityFieldIdentifier;
+        private static string _stateFieldIdentifier;
+        private static string _zipFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
+        private static string _dateUpdatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -35,28 +35,32 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public AddressEntity(SchemaExpression schema): this(schema, null)
+        private AddressEntity() : base(null, null, null)
         {
         }
 
-        private AddressEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.Address", schema, alias)
+		public AddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<Address>(_idFieldIdentifier, this));
-			Fields.Add(_addressTypeFieldIdentifier, new NullableEnumFieldExpression<Address, AddressType>(_addressTypeFieldIdentifier, this));
-			Fields.Add(_line1FieldIdentifier, new StringFieldExpression<Address>(_line1FieldIdentifier, this));
-			Fields.Add(_line2FieldIdentifier, new StringFieldExpression<Address>(_line2FieldIdentifier, this));
-			Fields.Add(_cityFieldIdentifier, new StringFieldExpression<Address>(_cityFieldIdentifier, this));
-			Fields.Add(_stateFieldIdentifier, new StringFieldExpression<Address>(_stateFieldIdentifier, this));
-			Fields.Add(_zipFieldIdentifier, new StringFieldExpression<Address>(_zipFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<Address>(_dateCreatedFieldIdentifier, this));
-			Fields.Add(_dateUpdatedFieldIdentifier, new DateTimeFieldExpression<Address>(_dateUpdatedFieldIdentifier, this));
+        }
+
+        private AddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Address>(_idFieldIdentifier, this));
+            Fields.Add(_addressTypeFieldIdentifier = $"{identifier}.AddressType", new NullableEnumFieldExpression<Address, AddressType>(_addressTypeFieldIdentifier, this));
+            Fields.Add(_line1FieldIdentifier = $"{identifier}.Line1", new StringFieldExpression<Address>(_line1FieldIdentifier, this));
+            Fields.Add(_line2FieldIdentifier = $"{identifier}.Line2", new StringFieldExpression<Address>(_line2FieldIdentifier, this));
+            Fields.Add(_cityFieldIdentifier = $"{identifier}.City", new StringFieldExpression<Address>(_cityFieldIdentifier, this));
+            Fields.Add(_stateFieldIdentifier = $"{identifier}.State", new StringFieldExpression<Address>(_stateFieldIdentifier, this));
+            Fields.Add(_zipFieldIdentifier = $"{identifier}.Zip", new StringFieldExpression<Address>(_zipFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Address>(_dateCreatedFieldIdentifier, this));
+            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Address>(_dateUpdatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public AddressEntity As(string name)
         {
-            return new AddressEntity(this.schema, name);
+            return new AddressEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -126,15 +130,15 @@ namespace DbEx.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.Person.Id";
-        private const string _firstNameFieldIdentifier = "MsSqlDbExTest.dbo.Person.FirstName";
-        private const string _lastNameFieldIdentifier = "MsSqlDbExTest.dbo.Person.LastName";
-        private const string _birthDateFieldIdentifier = "MsSqlDbExTest.dbo.Person.BirthDate";
-        private const string _genderTypeFieldIdentifier = "MsSqlDbExTest.dbo.Person.GenderType";
-        private const string _creditLimitFieldIdentifier = "MsSqlDbExTest.dbo.Person.CreditLimit";
-        private const string _yearOfLastCreditLimitReviewFieldIdentifier = "MsSqlDbExTest.dbo.Person.YearOfLastCreditLimitReview";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.dbo.Person.DateCreated";
-        private const string _dateUpdatedFieldIdentifier = "MsSqlDbExTest.dbo.Person.DateUpdated";
+        private static string _idFieldIdentifier;
+        private static string _firstNameFieldIdentifier;
+        private static string _lastNameFieldIdentifier;
+        private static string _birthDateFieldIdentifier;
+        private static string _genderTypeFieldIdentifier;
+        private static string _creditLimitFieldIdentifier;
+        private static string _yearOfLastCreditLimitReviewFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
+        private static string _dateUpdatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -150,28 +154,32 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public PersonEntity(SchemaExpression schema): this(schema, null)
+        private PersonEntity() : base(null, null, null)
         {
         }
 
-        private PersonEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.Person", schema, alias)
+		public PersonEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<Person>(_idFieldIdentifier, this));
-			Fields.Add(_firstNameFieldIdentifier, new StringFieldExpression<Person>(_firstNameFieldIdentifier, this));
-			Fields.Add(_lastNameFieldIdentifier, new StringFieldExpression<Person>(_lastNameFieldIdentifier, this));
-			Fields.Add(_birthDateFieldIdentifier, new NullableDateTimeFieldExpression<Person>(_birthDateFieldIdentifier, this));
-			Fields.Add(_genderTypeFieldIdentifier, new EnumFieldExpression<Person, GenderType>(_genderTypeFieldIdentifier, this));
-			Fields.Add(_creditLimitFieldIdentifier, new NullableInt32FieldExpression<Person>(_creditLimitFieldIdentifier, this));
-			Fields.Add(_yearOfLastCreditLimitReviewFieldIdentifier, new NullableInt32FieldExpression<Person>(_yearOfLastCreditLimitReviewFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<Person>(_dateCreatedFieldIdentifier, this));
-			Fields.Add(_dateUpdatedFieldIdentifier, new DateTimeFieldExpression<Person>(_dateUpdatedFieldIdentifier, this));
+        }
+
+        private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Person>(_idFieldIdentifier, this));
+            Fields.Add(_firstNameFieldIdentifier = $"{identifier}.FirstName", new StringFieldExpression<Person>(_firstNameFieldIdentifier, this));
+            Fields.Add(_lastNameFieldIdentifier = $"{identifier}.LastName", new StringFieldExpression<Person>(_lastNameFieldIdentifier, this));
+            Fields.Add(_birthDateFieldIdentifier = $"{identifier}.BirthDate", new NullableDateTimeFieldExpression<Person>(_birthDateFieldIdentifier, this));
+            Fields.Add(_genderTypeFieldIdentifier = $"{identifier}.GenderType", new EnumFieldExpression<Person, GenderType>(_genderTypeFieldIdentifier, this));
+            Fields.Add(_creditLimitFieldIdentifier = $"{identifier}.CreditLimit", new NullableInt32FieldExpression<Person>(_creditLimitFieldIdentifier, this));
+            Fields.Add(_yearOfLastCreditLimitReviewFieldIdentifier = $"{identifier}.YearOfLastCreditLimitReview", new NullableInt32FieldExpression<Person>(_yearOfLastCreditLimitReviewFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Person>(_dateCreatedFieldIdentifier, this));
+            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Person>(_dateUpdatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
         {
-            return new PersonEntity(this.schema, name);
+            return new PersonEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -241,10 +249,10 @@ namespace DbEx.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.Person_Address.Id";
-        private const string _personIdFieldIdentifier = "MsSqlDbExTest.dbo.Person_Address.PersonId";
-        private const string _addressIdFieldIdentifier = "MsSqlDbExTest.dbo.Person_Address.AddressId";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.dbo.Person_Address.DateCreated";
+        private static string _idFieldIdentifier;
+        private static string _personIdFieldIdentifier;
+        private static string _addressIdFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -255,23 +263,27 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public PersonAddressEntity(SchemaExpression schema): this(schema, null)
+        private PersonAddressEntity() : base(null, null, null)
         {
         }
 
-        private PersonAddressEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.Person_Address", schema, alias)
+		public PersonAddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<PersonAddress>(_idFieldIdentifier, this));
-			Fields.Add(_personIdFieldIdentifier, new Int32FieldExpression<PersonAddress>(_personIdFieldIdentifier, this));
-			Fields.Add(_addressIdFieldIdentifier, new Int32FieldExpression<PersonAddress>(_addressIdFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<PersonAddress>(_dateCreatedFieldIdentifier, this));
+        }
+
+        private PersonAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<PersonAddress>(_idFieldIdentifier, this));
+            Fields.Add(_personIdFieldIdentifier = $"{identifier}.PersonId", new Int32FieldExpression<PersonAddress>(_personIdFieldIdentifier, this));
+            Fields.Add(_addressIdFieldIdentifier = $"{identifier}.AddressId", new Int32FieldExpression<PersonAddress>(_addressIdFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<PersonAddress>(_dateCreatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public PersonAddressEntity As(string name)
         {
-            return new PersonAddressEntity(this.schema, name);
+            return new PersonAddressEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -321,15 +333,15 @@ namespace DbEx.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.Product.Id";
-        private const string _productCategoryTypeFieldIdentifier = "MsSqlDbExTest.dbo.Product.ProductCategoryType";
-        private const string _nameFieldIdentifier = "MsSqlDbExTest.dbo.Product.Name";
-        private const string _descriptionFieldIdentifier = "MsSqlDbExTest.dbo.Product.Description";
-        private const string _listPriceFieldIdentifier = "MsSqlDbExTest.dbo.Product.ListPrice";
-        private const string _priceFieldIdentifier = "MsSqlDbExTest.dbo.Product.Price";
-        private const string _quantityFieldIdentifier = "MsSqlDbExTest.dbo.Product.Quantity";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.dbo.Product.DateCreated";
-        private const string _dateUpdatedFieldIdentifier = "MsSqlDbExTest.dbo.Product.DateUpdated";
+        private static string _idFieldIdentifier;
+        private static string _productCategoryTypeFieldIdentifier;
+        private static string _nameFieldIdentifier;
+        private static string _descriptionFieldIdentifier;
+        private static string _listPriceFieldIdentifier;
+        private static string _priceFieldIdentifier;
+        private static string _quantityFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
+        private static string _dateUpdatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -345,28 +357,32 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public ProductEntity(SchemaExpression schema): this(schema, null)
+        private ProductEntity() : base(null, null, null)
         {
         }
 
-        private ProductEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.Product", schema, alias)
+		public ProductEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<Product>(_idFieldIdentifier, this));
-			Fields.Add(_productCategoryTypeFieldIdentifier, new NullableEnumFieldExpression<Product, ProductCategoryType>(_productCategoryTypeFieldIdentifier, this));
-			Fields.Add(_nameFieldIdentifier, new StringFieldExpression<Product>(_nameFieldIdentifier, this));
-			Fields.Add(_descriptionFieldIdentifier, new StringFieldExpression<Product>(_descriptionFieldIdentifier, this));
-			Fields.Add(_listPriceFieldIdentifier, new DecimalFieldExpression<Product>(_listPriceFieldIdentifier, this));
-			Fields.Add(_priceFieldIdentifier, new DecimalFieldExpression<Product>(_priceFieldIdentifier, this));
-			Fields.Add(_quantityFieldIdentifier, new Int32FieldExpression<Product>(_quantityFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<Product>(_dateCreatedFieldIdentifier, this));
-			Fields.Add(_dateUpdatedFieldIdentifier, new DateTimeFieldExpression<Product>(_dateUpdatedFieldIdentifier, this));
+        }
+
+        private ProductEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Product>(_idFieldIdentifier, this));
+            Fields.Add(_productCategoryTypeFieldIdentifier = $"{identifier}.ProductCategoryType", new NullableEnumFieldExpression<Product, ProductCategoryType>(_productCategoryTypeFieldIdentifier, this));
+            Fields.Add(_nameFieldIdentifier = $"{identifier}.Name", new StringFieldExpression<Product>(_nameFieldIdentifier, this));
+            Fields.Add(_descriptionFieldIdentifier = $"{identifier}.Description", new StringFieldExpression<Product>(_descriptionFieldIdentifier, this));
+            Fields.Add(_listPriceFieldIdentifier = $"{identifier}.ListPrice", new DecimalFieldExpression<Product>(_listPriceFieldIdentifier, this));
+            Fields.Add(_priceFieldIdentifier = $"{identifier}.Price", new DecimalFieldExpression<Product>(_priceFieldIdentifier, this));
+            Fields.Add(_quantityFieldIdentifier = $"{identifier}.Quantity", new Int32FieldExpression<Product>(_quantityFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Product>(_dateCreatedFieldIdentifier, this));
+            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Product>(_dateUpdatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public ProductEntity As(string name)
         {
-            return new ProductEntity(this.schema, name);
+            return new ProductEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -436,16 +452,16 @@ namespace DbEx.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.Id";
-        private const string _personIdFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.PersonId";
-        private const string _totalPurchaseAmountFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.TotalPurchaseAmount";
-        private const string _purchaseDateFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.PurchaseDate";
-        private const string _shipDateFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.ShipDate";
-        private const string _expectedDeliveryDateFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.ExpectedDeliveryDate";
-        private const string _trackingIdentifierFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.TrackingIdentifier";
-        private const string _paymentMethodTypeFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.PaymentMethodType";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.DateCreated";
-        private const string _dateUpdatedFieldIdentifier = "MsSqlDbExTest.dbo.Purchase.DateUpdated";
+        private static string _idFieldIdentifier;
+        private static string _personIdFieldIdentifier;
+        private static string _totalPurchaseAmountFieldIdentifier;
+        private static string _purchaseDateFieldIdentifier;
+        private static string _shipDateFieldIdentifier;
+        private static string _expectedDeliveryDateFieldIdentifier;
+        private static string _trackingIdentifierFieldIdentifier;
+        private static string _paymentMethodTypeFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
+        private static string _dateUpdatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -462,29 +478,33 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public PurchaseEntity(SchemaExpression schema): this(schema, null)
+        private PurchaseEntity() : base(null, null, null)
         {
         }
 
-        private PurchaseEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.Purchase", schema, alias)
+		public PurchaseEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<Purchase>(_idFieldIdentifier, this));
-			Fields.Add(_personIdFieldIdentifier, new Int32FieldExpression<Purchase>(_personIdFieldIdentifier, this));
-			Fields.Add(_totalPurchaseAmountFieldIdentifier, new DecimalFieldExpression<Purchase>(_totalPurchaseAmountFieldIdentifier, this));
-			Fields.Add(_purchaseDateFieldIdentifier, new DateTimeFieldExpression<Purchase>(_purchaseDateFieldIdentifier, this));
-			Fields.Add(_shipDateFieldIdentifier, new NullableDateTimeFieldExpression<Purchase>(_shipDateFieldIdentifier, this));
-			Fields.Add(_expectedDeliveryDateFieldIdentifier, new NullableDateTimeFieldExpression<Purchase>(_expectedDeliveryDateFieldIdentifier, this));
-			Fields.Add(_trackingIdentifierFieldIdentifier, new NullableGuidFieldExpression<Purchase>(_trackingIdentifierFieldIdentifier, this));
-			Fields.Add(_paymentMethodTypeFieldIdentifier, new EnumFieldExpression<Purchase, PaymentMethodType>(_paymentMethodTypeFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<Purchase>(_dateCreatedFieldIdentifier, this));
-			Fields.Add(_dateUpdatedFieldIdentifier, new DateTimeFieldExpression<Purchase>(_dateUpdatedFieldIdentifier, this));
+        }
+
+        private PurchaseEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Purchase>(_idFieldIdentifier, this));
+            Fields.Add(_personIdFieldIdentifier = $"{identifier}.PersonId", new Int32FieldExpression<Purchase>(_personIdFieldIdentifier, this));
+            Fields.Add(_totalPurchaseAmountFieldIdentifier = $"{identifier}.TotalPurchaseAmount", new DecimalFieldExpression<Purchase>(_totalPurchaseAmountFieldIdentifier, this));
+            Fields.Add(_purchaseDateFieldIdentifier = $"{identifier}.PurchaseDate", new DateTimeFieldExpression<Purchase>(_purchaseDateFieldIdentifier, this));
+            Fields.Add(_shipDateFieldIdentifier = $"{identifier}.ShipDate", new NullableDateTimeFieldExpression<Purchase>(_shipDateFieldIdentifier, this));
+            Fields.Add(_expectedDeliveryDateFieldIdentifier = $"{identifier}.ExpectedDeliveryDate", new NullableDateTimeFieldExpression<Purchase>(_expectedDeliveryDateFieldIdentifier, this));
+            Fields.Add(_trackingIdentifierFieldIdentifier = $"{identifier}.TrackingIdentifier", new NullableGuidFieldExpression<Purchase>(_trackingIdentifierFieldIdentifier, this));
+            Fields.Add(_paymentMethodTypeFieldIdentifier = $"{identifier}.PaymentMethodType", new EnumFieldExpression<Purchase, PaymentMethodType>(_paymentMethodTypeFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Purchase>(_dateCreatedFieldIdentifier, this));
+            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Purchase>(_dateUpdatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public PurchaseEntity As(string name)
         {
-            return new PurchaseEntity(this.schema, name);
+            return new PurchaseEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -558,13 +578,13 @@ namespace DbEx.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.Id";
-        private const string _purchaseIdFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.PurchaseId";
-        private const string _productIdFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.ProductId";
-        private const string _purchasePriceFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.PurchasePrice";
-        private const string _quantityFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.Quantity";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.DateCreated";
-        private const string _dateUpdatedFieldIdentifier = "MsSqlDbExTest.dbo.PurchaseLine.DateUpdated";
+        private static string _idFieldIdentifier;
+        private static string _purchaseIdFieldIdentifier;
+        private static string _productIdFieldIdentifier;
+        private static string _purchasePriceFieldIdentifier;
+        private static string _quantityFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
+        private static string _dateUpdatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -578,26 +598,30 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public PurchaseLineEntity(SchemaExpression schema): this(schema, null)
+        private PurchaseLineEntity() : base(null, null, null)
         {
         }
 
-        private PurchaseLineEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.PurchaseLine", schema, alias)
+		public PurchaseLineEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<PurchaseLine>(_idFieldIdentifier, this));
-			Fields.Add(_purchaseIdFieldIdentifier, new Int32FieldExpression<PurchaseLine>(_purchaseIdFieldIdentifier, this));
-			Fields.Add(_productIdFieldIdentifier, new Int32FieldExpression<PurchaseLine>(_productIdFieldIdentifier, this));
-			Fields.Add(_purchasePriceFieldIdentifier, new DecimalFieldExpression<PurchaseLine>(_purchasePriceFieldIdentifier, this));
-			Fields.Add(_quantityFieldIdentifier, new Int32FieldExpression<PurchaseLine>(_quantityFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<PurchaseLine>(_dateCreatedFieldIdentifier, this));
-			Fields.Add(_dateUpdatedFieldIdentifier, new DateTimeFieldExpression<PurchaseLine>(_dateUpdatedFieldIdentifier, this));
+        }
+
+        private PurchaseLineEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<PurchaseLine>(_idFieldIdentifier, this));
+            Fields.Add(_purchaseIdFieldIdentifier = $"{identifier}.PurchaseId", new Int32FieldExpression<PurchaseLine>(_purchaseIdFieldIdentifier, this));
+            Fields.Add(_productIdFieldIdentifier = $"{identifier}.ProductId", new Int32FieldExpression<PurchaseLine>(_productIdFieldIdentifier, this));
+            Fields.Add(_purchasePriceFieldIdentifier = $"{identifier}.PurchasePrice", new DecimalFieldExpression<PurchaseLine>(_purchasePriceFieldIdentifier, this));
+            Fields.Add(_quantityFieldIdentifier = $"{identifier}.Quantity", new Int32FieldExpression<PurchaseLine>(_quantityFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<PurchaseLine>(_dateCreatedFieldIdentifier, this));
+            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<PurchaseLine>(_dateUpdatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public PurchaseLineEntity As(string name)
         {
-            return new PurchaseLineEntity(this.schema, name);
+            return new PurchaseLineEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -659,8 +683,8 @@ namespace DbEx.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.dbo.PersonTotalPurchasesView.Id";
-        private const string _totalPurchasesFieldIdentifier = "MsSqlDbExTest.dbo.PersonTotalPurchasesView.TotalPurchases";
+        private static string _idFieldIdentifier;
+        private static string _totalPurchasesFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -669,21 +693,25 @@ namespace DbEx.dboDataService
         #endregion
 
         #region constructors
-		public PersonTotalPurchasesViewEntity(SchemaExpression schema): this(schema, null)
+        private PersonTotalPurchasesViewEntity() : base(null, null, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.dbo.PersonTotalPurchasesView", schema, alias)
+		public PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<PersonTotalPurchasesView>(_idFieldIdentifier, this));
-			Fields.Add(_totalPurchasesFieldIdentifier, new NullableDecimalFieldExpression<PersonTotalPurchasesView>(_totalPurchasesFieldIdentifier, this));
+        }
+
+        private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<PersonTotalPurchasesView>(_idFieldIdentifier, this));
+            Fields.Add(_totalPurchasesFieldIdentifier = $"{identifier}.TotalPurchases", new NullableDecimalFieldExpression<PersonTotalPurchasesView>(_totalPurchasesFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
         {
-            return new PersonTotalPurchasesViewEntity(this.schema, name);
+            return new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -735,10 +763,10 @@ namespace DbEx.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region internals
-        private const string _idFieldIdentifier = "MsSqlDbExTest.sec.Person.Id";
-        private const string _sSNFieldIdentifier = "MsSqlDbExTest.sec.Person.SSN";
-        private const string _dateCreatedFieldIdentifier = "MsSqlDbExTest.sec.Person.DateCreated";
-        private const string _dateUpdatedFieldIdentifier = "MsSqlDbExTest.sec.Person.DateUpdated";
+        private static string _idFieldIdentifier;
+        private static string _sSNFieldIdentifier;
+        private static string _dateCreatedFieldIdentifier;
+        private static string _dateUpdatedFieldIdentifier;
         #endregion
 
         #region interface properties
@@ -749,23 +777,27 @@ namespace DbEx.secDataService
         #endregion
 
         #region constructors
-		public PersonEntity(SchemaExpression schema): this(schema, null)
+        private PersonEntity() : base(null, null, null)
         {
         }
 
-        private PersonEntity(SchemaExpression schema, string alias) : base("MsSqlDbExTest.sec.Person", schema, alias)
+		public PersonEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldIdentifier, new Int32FieldExpression<Person>(_idFieldIdentifier, this));
-			Fields.Add(_sSNFieldIdentifier, new StringFieldExpression<Person>(_sSNFieldIdentifier, this));
-			Fields.Add(_dateCreatedFieldIdentifier, new DateTimeFieldExpression<Person>(_dateCreatedFieldIdentifier, this));
-			Fields.Add(_dateUpdatedFieldIdentifier, new DateTimeFieldExpression<Person>(_dateUpdatedFieldIdentifier, this));
+        }
+
+        private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add(_idFieldIdentifier = $"{identifier}.Id", new Int32FieldExpression<Person>(_idFieldIdentifier, this));
+            Fields.Add(_sSNFieldIdentifier = $"{identifier}.SSN", new StringFieldExpression<Person>(_sSNFieldIdentifier, this));
+            Fields.Add(_dateCreatedFieldIdentifier = $"{identifier}.DateCreated", new DateTimeFieldExpression<Person>(_dateCreatedFieldIdentifier, this));
+            Fields.Add(_dateUpdatedFieldIdentifier = $"{identifier}.DateUpdated", new DateTimeFieldExpression<Person>(_dateUpdatedFieldIdentifier, this));
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
         {
-            return new PersonEntity(this.schema, name);
+            return new PersonEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()

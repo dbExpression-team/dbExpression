@@ -18,6 +18,14 @@ namespace {() => ResolveRootNamespace}DataService
 
     public class {($) => ResolveName}SqlDatabaseMetadata : ISqlDatabaseMetadata
     {{
+        #region internals
+		{#each Schemas}
+		{#if !($) => IsIgnored}
+        private static string _{($) => ToCamelCase}SchemaIdentifier;
+		{/if}
+		{/each}
+        #endregion
+
         #region interface
         public string Identifier {{ get; private set; }}
         public string Name {{ get; private set; }}
@@ -31,7 +39,7 @@ namespace {() => ResolveRootNamespace}DataService
             Name = name;
 			{#each Schemas}
 			{#if !($) => IsIgnored}
-            Schemas.Add("{$.Name}", new {($) => ResolveName}SchemaMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}"));
+            Schemas.Add(_{($) => ToCamelCase}SchemaIdentifier = $"{{identifier}}.{$.Name}", new {($) => ResolveName}SchemaMetadata(this, _{($) => ToCamelCase}SchemaIdentifier, "{$.Name}"));
 			{/if}
 			{/each}
         }}

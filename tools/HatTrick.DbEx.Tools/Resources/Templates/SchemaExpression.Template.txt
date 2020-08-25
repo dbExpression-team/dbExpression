@@ -14,12 +14,12 @@ namespace {() => ResolveRootNamespace}DataService
     public abstract class {($) => ResolveName}RuntimeSqlDatabase : IRuntimeSqlDatabase
     {{
         #region internals
-        protected static DatabaseConfiguration config;
+        protected static RuntimeSqlDatabaseConfiguration config;
         protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        DatabaseConfiguration IRuntimeSqlDatabase.Configuration {{ get => config; set => config = value; }}
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration {{ get => config; set => config = value; }}
         #endregion
 
         #region methods
@@ -247,7 +247,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #region internals
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        private const string _{($) => ToCamelCase}EntityName = "{$.Name}";
+        private static string _{($) => ToCamelCase}EntityIdentifier;
 		{/if}
 		{/each}
         #endregion
@@ -255,17 +255,17 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #region interface
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        public {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return Entities[_{($) => ToCamelCase}EntityName] as {($) => ResolveName}Entity; }} }}
+        public {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return Entities[_{($) => ToCamelCase}EntityIdentifier] as {($) => ResolveName}Entity; }} }}
 		{/if}
 		{/each}
         #endregion
 
         #region constructors
-        public {($) => ResolveName}SchemaExpression() : base("{($) => ResolveName}", null)
+        public {($) => ResolveName}SchemaExpression(string identifier) : base(identifier, null)
         {{
 			{#each ($) => ResolveConsolidatedTablesAndViews}
 			{#if !($) => IsIgnored}
-            Entities.Add(_{($) => ToCamelCase}EntityName, new {($) => ResolveName}Entity(this));
+            Entities.Add(_{($) => ToCamelCase}EntityIdentifier = $"{{identifier}}.{$.Name}", new {($) => ResolveName}Entity(_{($) => ToCamelCase}EntityIdentifier, this));
 			{/if}
 			{/each}
         }}

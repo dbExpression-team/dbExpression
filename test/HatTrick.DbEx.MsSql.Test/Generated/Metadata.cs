@@ -15,6 +15,11 @@ namespace DbEx.DataService
 
     public class MsSqlDbExTestSqlDatabaseMetadata : ISqlDatabaseMetadata
     {
+        #region internals
+        private static string _dboSchemaIdentifier;
+        private static string _secSchemaIdentifier;
+        #endregion
+
         #region interface
         public string Identifier { get; private set; }
         public string Name { get; private set; }
@@ -26,8 +31,8 @@ namespace DbEx.DataService
         {
             Identifier = identifier;
             Name = name;
-            Schemas.Add("dbo", new dboSchemaMetadata(this, $"{identifier}.dbo", "dbo"));
-            Schemas.Add("sec", new secSchemaMetadata(this, $"{identifier}.sec", "sec"));
+            Schemas.Add(_dboSchemaIdentifier = $"{identifier}.dbo", new dboSchemaMetadata(this, _dboSchemaIdentifier, "dbo"));
+            Schemas.Add(_secSchemaIdentifier = $"{identifier}.sec", new secSchemaMetadata(this, _secSchemaIdentifier, "sec"));
         }
         #endregion
     }

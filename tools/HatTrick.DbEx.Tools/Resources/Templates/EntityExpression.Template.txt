@@ -16,7 +16,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #region internals
 		{#each Columns}
 		{#if !($) => IsIgnored}
-        private const string _{($) => ToCamelCase}FieldIdentifier = "{..\..\..\$.Name}.{..\..\$.Name}.{..\$.Name}.{$.Name}";
+        private static string _{($) => ToCamelCase}FieldIdentifier;
 		{/if}
 		{/each}
         #endregion
@@ -30,15 +30,19 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #endregion
 
         #region constructors
-		public {($) => ResolveName}Entity(SchemaExpression schema): this(schema, null)
+        private {($) => ResolveName}Entity() : base(null, null, null)
         {{
         }}
 
-        private {($) => ResolveName}Entity(SchemaExpression schema, string alias) : base("{..\..\$.Name}.{..\$.Name}.{$.Name}", schema, alias)
+		public {($) => ResolveName}Entity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+        {{
+        }}
+
+        private {($) => ResolveName}Entity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
-			{($, ..\$, ..\..\$) => BuildEntityExpressionConstructorForFieldExpression}
+            {($, ..\$, ..\..\$) => BuildEntityExpressionConstructorForFieldExpression}
 			{/if}
 			{/each}
         }}
@@ -47,7 +51,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #region methods
         public {($) => ResolveName}Entity As(string name)
         {{
-            return new {($) => ResolveName}Entity(this.schema, name);
+            return new {($) => ResolveName}Entity(this.identifier, this.schema, name);
         }}
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()

@@ -3,10 +3,12 @@
 namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
     #region {($) => ResolveName}
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
     public partial class {($) => ResolveName}
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
         #region internals
-        private static {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression();
+        private static {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression("{..\$.Name}.{$.Name}");
         #endregion
 
         #region interface

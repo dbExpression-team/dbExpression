@@ -243,35 +243,35 @@ namespace DbEx.dboDataService
     public class dboSchemaExpression : SchemaExpression
     {
         #region internals
-        private const string _addressEntityName = "Address";
-        private const string _personEntityName = "Person";
-        private const string _personAddressEntityName = "Person_Address";
-        private const string _productEntityName = "Product";
-        private const string _purchaseEntityName = "Purchase";
-        private const string _purchaseLineEntityName = "PurchaseLine";
-        private const string _personTotalPurchasesViewEntityName = "PersonTotalPurchasesView";
+        private static string _addressEntityIdentifier;
+        private static string _personEntityIdentifier;
+        private static string _personAddressEntityIdentifier;
+        private static string _productEntityIdentifier;
+        private static string _purchaseEntityIdentifier;
+        private static string _purchaseLineEntityIdentifier;
+        private static string _personTotalPurchasesViewEntityIdentifier;
         #endregion
 
         #region interface
-        public AddressEntity Address { get { return Entities[_addressEntityName] as AddressEntity; } }
-        public PersonEntity Person { get { return Entities[_personEntityName] as PersonEntity; } }
-        public PersonAddressEntity PersonAddress { get { return Entities[_personAddressEntityName] as PersonAddressEntity; } }
-        public ProductEntity Product { get { return Entities[_productEntityName] as ProductEntity; } }
-        public PurchaseEntity Purchase { get { return Entities[_purchaseEntityName] as PurchaseEntity; } }
-        public PurchaseLineEntity PurchaseLine { get { return Entities[_purchaseLineEntityName] as PurchaseLineEntity; } }
-        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return Entities[_personTotalPurchasesViewEntityName] as PersonTotalPurchasesViewEntity; } }
+        public AddressEntity Address { get { return Entities[_addressEntityIdentifier] as AddressEntity; } }
+        public PersonEntity Person { get { return Entities[_personEntityIdentifier] as PersonEntity; } }
+        public PersonAddressEntity PersonAddress { get { return Entities[_personAddressEntityIdentifier] as PersonAddressEntity; } }
+        public ProductEntity Product { get { return Entities[_productEntityIdentifier] as ProductEntity; } }
+        public PurchaseEntity Purchase { get { return Entities[_purchaseEntityIdentifier] as PurchaseEntity; } }
+        public PurchaseLineEntity PurchaseLine { get { return Entities[_purchaseLineEntityIdentifier] as PurchaseLineEntity; } }
+        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return Entities[_personTotalPurchasesViewEntityIdentifier] as PersonTotalPurchasesViewEntity; } }
         #endregion
 
         #region constructors
-        public dboSchemaExpression() : base("dbo", null)
+        public dboSchemaExpression(string identifier) : base(identifier, null)
         {
-            Entities.Add(_addressEntityName, new AddressEntity(this));
-            Entities.Add(_personEntityName, new PersonEntity(this));
-            Entities.Add(_personAddressEntityName, new PersonAddressEntity(this));
-            Entities.Add(_productEntityName, new ProductEntity(this));
-            Entities.Add(_purchaseEntityName, new PurchaseEntity(this));
-            Entities.Add(_purchaseLineEntityName, new PurchaseLineEntity(this));
-            Entities.Add(_personTotalPurchasesViewEntityName, new PersonTotalPurchasesViewEntity(this));
+            Entities.Add(_addressEntityIdentifier = $"{identifier}.Address", new AddressEntity(_addressEntityIdentifier, this));
+            Entities.Add(_personEntityIdentifier = $"{identifier}.Person", new PersonEntity(_personEntityIdentifier, this));
+            Entities.Add(_personAddressEntityIdentifier = $"{identifier}.Person_Address", new PersonAddressEntity(_personAddressEntityIdentifier, this));
+            Entities.Add(_productEntityIdentifier = $"{identifier}.Product", new ProductEntity(_productEntityIdentifier, this));
+            Entities.Add(_purchaseEntityIdentifier = $"{identifier}.Purchase", new PurchaseEntity(_purchaseEntityIdentifier, this));
+            Entities.Add(_purchaseLineEntityIdentifier = $"{identifier}.PurchaseLine", new PurchaseLineEntity(_purchaseLineEntityIdentifier, this));
+            Entities.Add(_personTotalPurchasesViewEntityIdentifier = $"{identifier}.PersonTotalPurchasesView", new PersonTotalPurchasesViewEntity(_personTotalPurchasesViewEntityIdentifier, this));
         }
         #endregion
     }
@@ -287,17 +287,17 @@ namespace DbEx.secDataService
     public class secSchemaExpression : SchemaExpression
     {
         #region internals
-        private const string _personEntityName = "Person";
+        private static string _personEntityIdentifier;
         #endregion
 
         #region interface
-        public PersonEntity Person { get { return Entities[_personEntityName] as PersonEntity; } }
+        public PersonEntity Person { get { return Entities[_personEntityIdentifier] as PersonEntity; } }
         #endregion
 
         #region constructors
-        public secSchemaExpression() : base("sec", null)
+        public secSchemaExpression(string identifier) : base(identifier, null)
         {
-            Entities.Add(_personEntityName, new PersonEntity(this));
+            Entities.Add(_personEntityIdentifier = $"{identifier}.Person", new PersonEntity(_personEntityIdentifier, this));
         }
         #endregion
     }
