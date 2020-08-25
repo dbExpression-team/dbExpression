@@ -18,14 +18,13 @@ namespace HatTrick.DbEx.Sql.Assembler
                 }
             }
 
-            var provider = expression as ISqlMetadataProvider<ISqlEntityMetadata>;
             if (context.Configuration.IncludeSchemaName)
             {
                 builder.AppendPart((expression as IExpressionProvider<SchemaExpression>).Expression, context);
                 builder.Appender.Write(".");
             }
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
-            builder.Appender.Write(provider.Metadata.Name);
+            builder.Appender.Write(builder.FindMetadata(expression).Name);
             builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
 
             if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.Declaration)

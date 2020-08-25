@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Builder
             IDeleteContinuationExpressionBuilder<T>
             where T : class, IDbEntity
     {
-        protected DeleteQueryExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
+        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 

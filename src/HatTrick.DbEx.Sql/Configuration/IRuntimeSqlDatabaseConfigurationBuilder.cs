@@ -2,6 +2,6 @@
 {
     public interface IRuntimeSqlDatabaseConfigurationBuilder
     {
-        DatabaseConfiguration Configuration { get; }
+        RuntimeSqlDatabaseConfiguration Configuration { get; }
     }
 }

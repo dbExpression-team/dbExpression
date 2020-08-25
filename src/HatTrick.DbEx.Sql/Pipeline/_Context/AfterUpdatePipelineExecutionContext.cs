@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public SqlStatement Statement { get; private set; }
         public IEnumerable<UpdateFieldDescriptor> Fields { get; private set; }
 
-        public AfterUpdatePipelineExecutionContext(DatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement)
+        public AfterUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement)
             : base(database, expression)
         {
             Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");

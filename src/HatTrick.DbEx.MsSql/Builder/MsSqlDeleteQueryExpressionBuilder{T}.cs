@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlDeleteQueryExpressionBuilder<T> : DeleteQueryExpressionBuilder<T>
         where T : class, IDbEntity
     {
-        public MsSqlDeleteQueryExpressionBuilder(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
+        public MsSqlDeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 
         }
 
-        protected override IDeleteContinuationExpressionBuilder<U> CreateTypedBuilder<U>(DatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<U> entity)
+        protected override IDeleteContinuationExpressionBuilder<U> CreateTypedBuilder<U>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<U> entity)
         {
             return new MsSqlDeleteQueryExpressionBuilder<U>(configuration, expression, entity);
         }

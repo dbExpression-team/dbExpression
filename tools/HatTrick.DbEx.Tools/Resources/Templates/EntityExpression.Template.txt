@@ -1,29 +1,18 @@
-using System;
-using {() => ResolveRootNamespace}Data;
-
 {#each Schemas}
 {#if !($) => IsIgnored}
 namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
     using {() => ResolveRootNamespace}{($) => ResolveName}Data;
-    using HatTrick.DbEx.Sql;
+    using {() => ResolveRootNamespace}Data;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
-    using HatTrick.DbEx.Sql.Mapper;
+    using System;
 
 	{#each ($) => ResolveConsolidatedTablesAndViews}
 	{#if !($) => IsIgnored}
     #region {($) => InsertSpaceOnCapitalizationAndToLower}
     public partial class {($) => ResolveName}Entity : EntityExpression<{($) => ResolveName}>
     {{
-        #region internals
-		{#each Columns}
-		{#if !($) => IsIgnored}
-        private const string _{($) => ToCamelCase}FieldName = "{$.Name}";
-		{/if}
-		{/each}
-        #endregion
-
         #region interface properties
 		{#each Columns}
 		{#if !($) => IsIgnored}
@@ -33,15 +22,19 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #endregion
 
         #region constructors
-		public {($) => ResolveName}Entity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private {($) => ResolveName}Entity() : base(null, null, null)
         {{
         }}
 
-        private {($) => ResolveName}Entity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("{(..\$) => ResolveName}.{($) => ResolveName}", schema, metadata, alias)
+		public {($) => ResolveName}Entity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+        {{
+        }}
+
+        private {($) => ResolveName}Entity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {{
 			{#each Columns}
 			{#if !($) => IsIgnored}
-			{($, ..\$, ..\..\$) => BuildEntityExpressionConstructorForFieldExpression}
+            {($, ..\$, ..\..\$) => BuildEntityExpressionConstructorForFieldExpression}
 			{/if}
 			{/each}
         }}
@@ -50,7 +43,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #region methods
         public {($) => ResolveName}Entity As(string name)
         {{
-            return new {($) => ResolveName}Entity(this.Schema, this.MetadataResolver, name);
+            return new {($) => ResolveName}Entity(this.identifier, this.schema, name);
         }}
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -107,6 +100,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 		#endregion
     }}
     #endregion
+
 	{/if}
     {/each}
 }}

@@ -7,54 +7,34 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class SchemaExpression : 
         IExpression,
-        ISqlMetadataProvider<ISqlSchemaMetadata>,
+        ISqlMetadataIdentifier,
         IExpressionListProvider<EntityExpression>,
         IExpressionAliasProvider,
         IEquatable<SchemaExpression>
     {
         #region internals
-        protected object Identifier;
-        protected Lazy<ISqlSchemaMetadata> MetadataResolver;
-        protected ISqlSchemaMetadata Metadata => MetadataResolver.Value;
+        protected readonly string identifier;
         protected IDictionary<string, EntityExpression> Entities { get; } = new Dictionary<string, EntityExpression>();
         protected string Alias { get; }
         #endregion
 
         #region interface
-        ISqlSchemaMetadata ISqlMetadataProvider<ISqlSchemaMetadata>.Metadata => Metadata;
+        public string Identifier => identifier;
         IList<EntityExpression> IExpressionListProvider<EntityExpression>.Expressions => Entities.Values.ToList();
         string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        protected SchemaExpression(object identifier, Lazy<ISqlSchemaMetadata> metadata, string alias)
+        protected SchemaExpression(string identifier, string alias)
         {
-            Identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
-            MetadataResolver = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required");
+            this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
             Alias = alias;
         }
         #endregion
 
         #region methods
-        public override string ToString() => ToString("[s]");
-
-        public string ToString(string format)
-        {
-            string val;
-            switch (format)
-            {
-                case "s":
-                    val = this.Metadata.Name;
-                    break;
-                case "[s]":
-                    val = $"[{this.Metadata.Name}]";
-                    break;
-                default:
-                    throw new ArgumentException("encountered unknown format string");
-            }
-
-            return val;
-        }
+        public override string ToString()
+            => Identifier;
         #endregion
 
         #region operators

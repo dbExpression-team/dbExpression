@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IValueListContinuationExpressionBuilder<T>
     {
         #region constructors
-        protected QueryExpressionBuilder(DatabaseConfiguration configuration, QueryExpression expression) : base(configuration, expression)
+        protected QueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, QueryExpression expression) : base(configuration, expression)
         { }
         #endregion
     }

@@ -1,43 +1,47 @@
 namespace {() => ResolveRootNamespace}DataService
 {{
-    using HatTrick.DbEx.Sql;
-    using System.Collections.Generic;
 	{#each Schemas}
 	{#if !($) => IsIgnored}
 	using {() => ResolveRootNamespace}{($) => ResolveName}DataService;
 	{/if}
 	{/each}
+    using HatTrick.DbEx.Sql;
+    using System.Collections.Generic;
 
-    public class {($) => ResolveName}SqlDatabaseMetadataProvider : ISqlDatabaseMetadataProvider
+    public class {($) => ResolveName} : RuntimeEnvironmentSqlDatabase
     {{
-        #region interface
-        public ISqlDatabaseMetadata Database {{ get; private set; }}
-        #endregion
-
-        #region constructors
-        public {($) => ResolveName}SqlDatabaseMetadataProvider()
-        {{
-            Database = new {($) => ResolveName}SqlDatabaseMetadata("{($) => ResolveName}");
-			{#each Schemas}
-			{#if !($) => IsIgnored}
-            Database.Schemas.Add("{$.Name}", new {($) => ResolveName}SchemaMetadata(Database));
-			{/if}
-			{/each}
+        public {($) => ResolveName}() : base(new db(), new SqlDatabaseMetadataProvider(new {($) => ResolveName}SqlDatabaseMetadata("{($) => ResolveName}", "{($) => ResolveName}"))) 
+        {{ 
+        
         }}
-        #endregion
     }}
 
     public class {($) => ResolveName}SqlDatabaseMetadata : ISqlDatabaseMetadata
     {{
+        #region internals
+		{#each Schemas}
+		{#if !($) => IsIgnored}
+        private static string _{($) => ToCamelCase}SchemaIdentifier;
+		{/if}
+		{/each}
+        #endregion
+
         #region interface
-        public string Name {{ get; set; }}
+        public string Identifier {{ get; private set; }}
+        public string Name {{ get; private set; }}
         public IDictionary<string, ISqlSchemaMetadata> Schemas {{ get; }} = new Dictionary<string, ISqlSchemaMetadata>();
         #endregion
 
         #region constructors
-        public {($) => ResolveName}SqlDatabaseMetadata(string databaseName)
+        public {($) => ResolveName}SqlDatabaseMetadata(string identifier, string name)
         {{
-            Name = databaseName;
+            Identifier = identifier;
+            Name = name;
+			{#each Schemas}
+			{#if !($) => IsIgnored}
+            Schemas.Add(_{($) => ToCamelCase}SchemaIdentifier = $"{{identifier}}.{$.Name}", new {($) => ResolveName}SchemaMetadata(this, _{($) => ToCamelCase}SchemaIdentifier, "{$.Name}"));
+			{/if}
+			{/each}
         }}
         #endregion
     }}
@@ -52,50 +56,61 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
     using System.Collections.Generic;
     using System.Data;
 
+    #region {($) => InsertSpaceOnCapitalizationAndToLower}
 	public class {($) => ResolveName}SchemaMetadata : ISqlSchemaMetadata
     {{
 		#region interface
-        public string Name => "{$.Name}";
         public ISqlDatabaseMetadata Database {{ get; }}
+        public string Identifier {{ get; }}
+        public string Name {{ get; }}
         public IDictionary<string, ISqlEntityMetadata> Entities {{ get; }} = new Dictionary<string, ISqlEntityMetadata>();
 		#endregion
 
         #region constructors
-        public {($) => ResolveName}SchemaMetadata(ISqlDatabaseMetadata database)
+        public {($) => ResolveName}SchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
         {{
             Database = database;
+            Identifier = identifier;
+            Name = name;
 			{#each ($) => ResolveConsolidatedTablesAndViews}
 			{#if !($) => IsIgnored}
-            Entities.Add("{$.Name}", new {($) => ResolveName}EntityMetadata(this));
+            Entities.Add($"{{identifier}}.{$.Name}", new {($) => ResolveName}EntityMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}"));
 			{/if}
 			{/each}
         }}
         #endregion
     }}
+    #endregion
 
 	{#each ($) => ResolveConsolidatedTablesAndViews}
 	{#if !($) => IsIgnored}
+    #region {($)  => InsertSpaceOnCapitalizationAndToLower}
 	public class {($)  => ResolveName}EntityMetadata : ISqlEntityMetadata
 	{{
         #region interface
-        public string Name => "{$.Name}";
         public ISqlSchemaMetadata Schema {{ get; }}
+        public string Identifier {{ get; }}
+        public string Name {{ get; }}
         public IDictionary<string, ISqlFieldMetadata> Fields {{ get; }} = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public {($) => ResolveName}EntityMetadata(ISqlSchemaMetadata schema)
+        public {($) => ResolveName}EntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {{
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
 			{#each Columns}
 			{#if !($) => IsIgnored}
-            Fields.Add("{$.Name}", new MsSqlFieldMetadata(this, "{$.Name}", SqlDbType.{$.SqlType}, {$.MaxLength}){#if $.IsIdentity} {{ IsIdentity = true }}{/if});
+            Fields.Add($"{{identifier}}.{$.Name}", new MsSqlFieldMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}", SqlDbType.{$.SqlType}, {$.MaxLength}){#if $.IsIdentity} {{ IsIdentity = true }}{/if});
 			{/if}
 			{/each}
         }}
         #endregion
     }}
+    #endregion
+
 	{/if}
 	{/each}
 }}

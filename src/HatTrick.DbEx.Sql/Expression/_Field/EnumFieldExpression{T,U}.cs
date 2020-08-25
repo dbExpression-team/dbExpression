@@ -8,19 +8,19 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        public EnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
         }
 
-        protected EnumFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        protected EnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
         #endregion
 
         #region as
-        public new EnumFieldExpression<TEntity, TEnum> As(string alias) 
-            => new EnumFieldExpression<TEntity,TEnum>(base.Identifier, base.Entity, base.MetadataResolver, alias);
+        public EnumFieldExpression<TEntity, TEnum> As(string alias) 
+            => new EnumFieldExpression<TEntity,TEnum>(base.identifier, base.entity, alias);
         #endregion
 
         #region in value set

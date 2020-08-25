@@ -8,9 +8,10 @@ using HatTrick.DbEx.Sql.Pipeline;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class DatabaseConfiguration
+    public class RuntimeSqlDatabaseConfiguration
     {
         #region interface
+        public ISqlDatabaseMetadataProvider MetadataProvider { get; set; }
         public IQueryExpressionFactory QueryExpressionFactory { get; set; }
         public IExecutionPipelineFactory ExecutionPipelineFactory { get; set;  }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }

@@ -1,64 +1,54 @@
-using System;
-using DbEx.Data;
 
 namespace DbEx.dboDataService
 {
     using DbEx.dboData;
-    using HatTrick.DbEx.Sql;
+    using DbEx.Data;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
-    using HatTrick.DbEx.Sql.Mapper;
+    using System;
 
     #region address
     public partial class AddressEntity : EntityExpression<Address>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _addressTypeFieldName = "AddressType";
-        private const string _line1FieldName = "Line1";
-        private const string _line2FieldName = "Line2";
-        private const string _cityFieldName = "City";
-        private const string _stateFieldName = "State";
-        private const string _zipFieldName = "Zip";
-        private const string _dateCreatedFieldName = "DateCreated";
-        private const string _dateUpdatedFieldName = "DateUpdated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Address> Id { get { return Fields[_idFieldName] as Int32FieldExpression<Address>; } }
-		public NullableEnumFieldExpression<Address, AddressType> AddressType { get { return Fields[_addressTypeFieldName] as NullableEnumFieldExpression<Address, AddressType>; } }
-		public StringFieldExpression<Address> Line1 { get { return Fields[_line1FieldName] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> Line2 { get { return Fields[_line2FieldName] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> City { get { return Fields[_cityFieldName] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> State { get { return Fields[_stateFieldName] as StringFieldExpression<Address>; } }
-		public StringFieldExpression<Address> Zip { get { return Fields[_zipFieldName] as StringFieldExpression<Address>; } }
-		public DateTimeFieldExpression<Address> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Address>; } }
-		public DateTimeFieldExpression<Address> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Address>; } }
+		public Int32FieldExpression<Address> Id { get; private set; }
+		public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
+		public StringFieldExpression<Address> Line1 { get; private set; }
+		public StringFieldExpression<Address> Line2 { get; private set; }
+		public StringFieldExpression<Address> City { get; private set; }
+		public StringFieldExpression<Address> State { get; private set; }
+		public StringFieldExpression<Address> Zip { get; private set; }
+		public DateTimeFieldExpression<Address> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Address> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-		public AddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private AddressEntity() : base(null, null, null)
         {
         }
 
-        private AddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Address", schema, metadata, alias)
+		public AddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Address>("dbo.Address.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_addressTypeFieldName, new NullableEnumFieldExpression<Address, AddressType>("dbo.Address.AddressType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_addressTypeFieldName])));
-			Fields.Add(_line1FieldName, new StringFieldExpression<Address>("dbo.Address.Line1", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_line1FieldName])));
-			Fields.Add(_line2FieldName, new StringFieldExpression<Address>("dbo.Address.Line2", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_line2FieldName])));
-			Fields.Add(_cityFieldName, new StringFieldExpression<Address>("dbo.Address.City", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_cityFieldName])));
-			Fields.Add(_stateFieldName, new StringFieldExpression<Address>("dbo.Address.State", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_stateFieldName])));
-			Fields.Add(_zipFieldName, new StringFieldExpression<Address>("dbo.Address.Zip", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_zipFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Address>("dbo.Address.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Address>("dbo.Address.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+        }
+
+        private AddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Address>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, AddressType>($"{identifier}.AddressType", this));
+            Fields.Add($"{identifier}.Line1", Line1 = new StringFieldExpression<Address>($"{identifier}.Line1", this));
+            Fields.Add($"{identifier}.Line2", Line2 = new StringFieldExpression<Address>($"{identifier}.Line2", this));
+            Fields.Add($"{identifier}.City", City = new StringFieldExpression<Address>($"{identifier}.City", this));
+            Fields.Add($"{identifier}.State", State = new StringFieldExpression<Address>($"{identifier}.State", this));
+            Fields.Add($"{identifier}.Zip", Zip = new StringFieldExpression<Address>($"{identifier}.Zip", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Address>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Address>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
         public AddressEntity As(string name)
         {
-            return new AddressEntity(this.Schema, this.MetadataResolver, name);
+            return new AddressEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -123,56 +113,49 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
     #region person
     public partial class PersonEntity : EntityExpression<Person>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _firstNameFieldName = "FirstName";
-        private const string _lastNameFieldName = "LastName";
-        private const string _birthDateFieldName = "BirthDate";
-        private const string _genderTypeFieldName = "GenderType";
-        private const string _creditLimitFieldName = "CreditLimit";
-        private const string _yearOfLastCreditLimitReviewFieldName = "YearOfLastCreditLimitReview";
-        private const string _dateCreatedFieldName = "DateCreated";
-        private const string _dateUpdatedFieldName = "DateUpdated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Person> Id { get { return Fields[_idFieldName] as Int32FieldExpression<Person>; } }
-		public StringFieldExpression<Person> FirstName { get { return Fields[_firstNameFieldName] as StringFieldExpression<Person>; } }
-		public StringFieldExpression<Person> LastName { get { return Fields[_lastNameFieldName] as StringFieldExpression<Person>; } }
-		public NullableDateTimeFieldExpression<Person> BirthDate { get { return Fields[_birthDateFieldName] as NullableDateTimeFieldExpression<Person>; } }
-		public EnumFieldExpression<Person, GenderType> GenderType { get { return Fields[_genderTypeFieldName] as EnumFieldExpression<Person, GenderType>; } }
-		public NullableInt32FieldExpression<Person> CreditLimit { get { return Fields[_creditLimitFieldName] as NullableInt32FieldExpression<Person>; } }
-		public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get { return Fields[_yearOfLastCreditLimitReviewFieldName] as NullableInt32FieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Person>; } }
+		public Int32FieldExpression<Person> Id { get; private set; }
+		public StringFieldExpression<Person> FirstName { get; private set; }
+		public StringFieldExpression<Person> LastName { get; private set; }
+		public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
+		public EnumFieldExpression<Person, GenderType> GenderType { get; private set; }
+		public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
+		public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
+		public DateTimeFieldExpression<Person> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-		public PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private PersonEntity() : base(null, null, null)
         {
         }
 
-        private PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Person", schema, metadata, alias)
+		public PersonEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Person>("dbo.Person.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_firstNameFieldName, new StringFieldExpression<Person>("dbo.Person.FirstName", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_firstNameFieldName])));
-			Fields.Add(_lastNameFieldName, new StringFieldExpression<Person>("dbo.Person.LastName", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_lastNameFieldName])));
-			Fields.Add(_birthDateFieldName, new NullableDateTimeFieldExpression<Person>("dbo.Person.BirthDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_birthDateFieldName])));
-			Fields.Add(_genderTypeFieldName, new EnumFieldExpression<Person, GenderType>("dbo.Person.GenderType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_genderTypeFieldName])));
-			Fields.Add(_creditLimitFieldName, new NullableInt32FieldExpression<Person>("dbo.Person.CreditLimit", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_creditLimitFieldName])));
-			Fields.Add(_yearOfLastCreditLimitReviewFieldName, new NullableInt32FieldExpression<Person>("dbo.Person.YearOfLastCreditLimitReview", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_yearOfLastCreditLimitReviewFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Person>("dbo.Person.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Person>("dbo.Person.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+        }
+
+        private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Person>($"{identifier}.FirstName", this));
+            Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Person>($"{identifier}.LastName", this));
+            Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Person>($"{identifier}.BirthDate", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Person, GenderType>($"{identifier}.GenderType", this));
+            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Person>($"{identifier}.CreditLimit", this));
+            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Person>($"{identifier}.YearOfLastCreditLimitReview", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
         {
-            return new PersonEntity(this.Schema, this.MetadataResolver, name);
+            return new PersonEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -237,41 +220,39 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
     #region person address
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _personIdFieldName = "PersonId";
-        private const string _addressIdFieldName = "AddressId";
-        private const string _dateCreatedFieldName = "DateCreated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<PersonAddress> Id { get { return Fields[_idFieldName] as Int32FieldExpression<PersonAddress>; } }
-		public Int32FieldExpression<PersonAddress> PersonId { get { return Fields[_personIdFieldName] as Int32FieldExpression<PersonAddress>; } }
-		public Int32FieldExpression<PersonAddress> AddressId { get { return Fields[_addressIdFieldName] as Int32FieldExpression<PersonAddress>; } }
-		public DateTimeFieldExpression<PersonAddress> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<PersonAddress>; } }
+		public Int32FieldExpression<PersonAddress> Id { get; private set; }
+		public Int32FieldExpression<PersonAddress> PersonId { get; private set; }
+		public Int32FieldExpression<PersonAddress> AddressId { get; private set; }
+		public DateTimeFieldExpression<PersonAddress> DateCreated { get; private set; }
         #endregion
 
         #region constructors
-		public PersonAddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private PersonAddressEntity() : base(null, null, null)
         {
         }
 
-        private PersonAddressEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.PersonAddress", schema, metadata, alias)
+		public PersonAddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<PersonAddress>("dbo.PersonAddress.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_personIdFieldName, new Int32FieldExpression<PersonAddress>("dbo.PersonAddress.PersonId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_personIdFieldName])));
-			Fields.Add(_addressIdFieldName, new Int32FieldExpression<PersonAddress>("dbo.PersonAddress.AddressId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_addressIdFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<PersonAddress>("dbo.PersonAddress.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
+        }
+
+        private PersonAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonAddress>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<PersonAddress>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.AddressId", AddressId = new Int32FieldExpression<PersonAddress>($"{identifier}.AddressId", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PersonAddress>($"{identifier}.DateCreated", this));
         }
         #endregion
 
         #region methods
         public PersonAddressEntity As(string name)
         {
-            return new PersonAddressEntity(this.Schema, this.MetadataResolver, name);
+            return new PersonAddressEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -316,56 +297,49 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
     #region product
     public partial class ProductEntity : EntityExpression<Product>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _productCategoryTypeFieldName = "ProductCategoryType";
-        private const string _nameFieldName = "Name";
-        private const string _descriptionFieldName = "Description";
-        private const string _listPriceFieldName = "ListPrice";
-        private const string _priceFieldName = "Price";
-        private const string _quantityFieldName = "Quantity";
-        private const string _dateCreatedFieldName = "DateCreated";
-        private const string _dateUpdatedFieldName = "DateUpdated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Product> Id { get { return Fields[_idFieldName] as Int32FieldExpression<Product>; } }
-		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get { return Fields[_productCategoryTypeFieldName] as NullableEnumFieldExpression<Product, ProductCategoryType>; } }
-		public StringFieldExpression<Product> Name { get { return Fields[_nameFieldName] as StringFieldExpression<Product>; } }
-		public StringFieldExpression<Product> Description { get { return Fields[_descriptionFieldName] as StringFieldExpression<Product>; } }
-		public DecimalFieldExpression<Product> ListPrice { get { return Fields[_listPriceFieldName] as DecimalFieldExpression<Product>; } }
-		public DecimalFieldExpression<Product> Price { get { return Fields[_priceFieldName] as DecimalFieldExpression<Product>; } }
-		public Int32FieldExpression<Product> Quantity { get { return Fields[_quantityFieldName] as Int32FieldExpression<Product>; } }
-		public DateTimeFieldExpression<Product> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Product>; } }
-		public DateTimeFieldExpression<Product> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Product>; } }
+		public Int32FieldExpression<Product> Id { get; private set; }
+		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
+		public StringFieldExpression<Product> Name { get; private set; }
+		public StringFieldExpression<Product> Description { get; private set; }
+		public DecimalFieldExpression<Product> ListPrice { get; private set; }
+		public DecimalFieldExpression<Product> Price { get; private set; }
+		public Int32FieldExpression<Product> Quantity { get; private set; }
+		public DateTimeFieldExpression<Product> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-		public ProductEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private ProductEntity() : base(null, null, null)
         {
         }
 
-        private ProductEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Product", schema, metadata, alias)
+		public ProductEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Product>("dbo.Product.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_productCategoryTypeFieldName, new NullableEnumFieldExpression<Product, ProductCategoryType>("dbo.Product.ProductCategoryType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_productCategoryTypeFieldName])));
-			Fields.Add(_nameFieldName, new StringFieldExpression<Product>("dbo.Product.Name", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_nameFieldName])));
-			Fields.Add(_descriptionFieldName, new StringFieldExpression<Product>("dbo.Product.Description", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_descriptionFieldName])));
-			Fields.Add(_listPriceFieldName, new DecimalFieldExpression<Product>("dbo.Product.ListPrice", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_listPriceFieldName])));
-			Fields.Add(_priceFieldName, new DecimalFieldExpression<Product>("dbo.Product.Price", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_priceFieldName])));
-			Fields.Add(_quantityFieldName, new Int32FieldExpression<Product>("dbo.Product.Quantity", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_quantityFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Product>("dbo.Product.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Product>("dbo.Product.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+        }
+
+        private ProductEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Product>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, ProductCategoryType>($"{identifier}.ProductCategoryType", this));
+            Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
+            Fields.Add($"{identifier}.Description", Description = new StringFieldExpression<Product>($"{identifier}.Description", this));
+            Fields.Add($"{identifier}.ListPrice", ListPrice = new DecimalFieldExpression<Product>($"{identifier}.ListPrice", this));
+            Fields.Add($"{identifier}.Price", Price = new DecimalFieldExpression<Product>($"{identifier}.Price", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<Product>($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Product>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Product>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
         public ProductEntity As(string name)
         {
-            return new ProductEntity(this.Schema, this.MetadataResolver, name);
+            return new ProductEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -430,59 +404,51 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
     #region purchase
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _personIdFieldName = "PersonId";
-        private const string _totalPurchaseAmountFieldName = "TotalPurchaseAmount";
-        private const string _purchaseDateFieldName = "PurchaseDate";
-        private const string _shipDateFieldName = "ShipDate";
-        private const string _expectedDeliveryDateFieldName = "ExpectedDeliveryDate";
-        private const string _trackingIdentifierFieldName = "TrackingIdentifier";
-        private const string _paymentMethodTypeFieldName = "PaymentMethodType";
-        private const string _dateCreatedFieldName = "DateCreated";
-        private const string _dateUpdatedFieldName = "DateUpdated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Purchase> Id { get { return Fields[_idFieldName] as Int32FieldExpression<Purchase>; } }
-		public Int32FieldExpression<Purchase> PersonId { get { return Fields[_personIdFieldName] as Int32FieldExpression<Purchase>; } }
-		public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get { return Fields[_totalPurchaseAmountFieldName] as DecimalFieldExpression<Purchase>; } }
-		public DateTimeFieldExpression<Purchase> PurchaseDate { get { return Fields[_purchaseDateFieldName] as DateTimeFieldExpression<Purchase>; } }
-		public NullableDateTimeFieldExpression<Purchase> ShipDate { get { return Fields[_shipDateFieldName] as NullableDateTimeFieldExpression<Purchase>; } }
-		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get { return Fields[_expectedDeliveryDateFieldName] as NullableDateTimeFieldExpression<Purchase>; } }
-		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get { return Fields[_trackingIdentifierFieldName] as NullableGuidFieldExpression<Purchase>; } }
-		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get { return Fields[_paymentMethodTypeFieldName] as EnumFieldExpression<Purchase, PaymentMethodType>; } }
-		public DateTimeFieldExpression<Purchase> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Purchase>; } }
-		public DateTimeFieldExpression<Purchase> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Purchase>; } }
+		public Int32FieldExpression<Purchase> Id { get; private set; }
+		public Int32FieldExpression<Purchase> PersonId { get; private set; }
+		public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
+		public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
+		public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
+		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
+		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
+		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
+		public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-		public PurchaseEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private PurchaseEntity() : base(null, null, null)
         {
         }
 
-        private PurchaseEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.Purchase", schema, metadata, alias)
+		public PurchaseEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Purchase>("dbo.Purchase.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_personIdFieldName, new Int32FieldExpression<Purchase>("dbo.Purchase.PersonId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_personIdFieldName])));
-			Fields.Add(_totalPurchaseAmountFieldName, new DecimalFieldExpression<Purchase>("dbo.Purchase.TotalPurchaseAmount", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_totalPurchaseAmountFieldName])));
-			Fields.Add(_purchaseDateFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.PurchaseDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchaseDateFieldName])));
-			Fields.Add(_shipDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ShipDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_shipDateFieldName])));
-			Fields.Add(_expectedDeliveryDateFieldName, new NullableDateTimeFieldExpression<Purchase>("dbo.Purchase.ExpectedDeliveryDate", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_expectedDeliveryDateFieldName])));
-			Fields.Add(_trackingIdentifierFieldName, new NullableGuidFieldExpression<Purchase>("dbo.Purchase.TrackingIdentifier", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_trackingIdentifierFieldName])));
-			Fields.Add(_paymentMethodTypeFieldName, new EnumFieldExpression<Purchase, PaymentMethodType>("dbo.Purchase.PaymentMethodType", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_paymentMethodTypeFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Purchase>("dbo.Purchase.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+        }
+
+        private PurchaseEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DecimalFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
+            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
+            Fields.Add($"{identifier}.ShipDate", ShipDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ShipDate", this));
+            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
+            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new NullableGuidFieldExpression<Purchase>($"{identifier}.TrackingIdentifier", this));
+            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, PaymentMethodType>($"{identifier}.PaymentMethodType", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PurchaseEntity As(string name)
         {
-            return new PurchaseEntity(this.Schema, this.MetadataResolver, name);
+            return new PurchaseEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -551,50 +517,45 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
     #region purchase line
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _purchaseIdFieldName = "PurchaseId";
-        private const string _productIdFieldName = "ProductId";
-        private const string _purchasePriceFieldName = "PurchasePrice";
-        private const string _quantityFieldName = "Quantity";
-        private const string _dateCreatedFieldName = "DateCreated";
-        private const string _dateUpdatedFieldName = "DateUpdated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<PurchaseLine> Id { get { return Fields[_idFieldName] as Int32FieldExpression<PurchaseLine>; } }
-		public Int32FieldExpression<PurchaseLine> PurchaseId { get { return Fields[_purchaseIdFieldName] as Int32FieldExpression<PurchaseLine>; } }
-		public Int32FieldExpression<PurchaseLine> ProductId { get { return Fields[_productIdFieldName] as Int32FieldExpression<PurchaseLine>; } }
-		public DecimalFieldExpression<PurchaseLine> PurchasePrice { get { return Fields[_purchasePriceFieldName] as DecimalFieldExpression<PurchaseLine>; } }
-		public Int32FieldExpression<PurchaseLine> Quantity { get { return Fields[_quantityFieldName] as Int32FieldExpression<PurchaseLine>; } }
-		public DateTimeFieldExpression<PurchaseLine> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<PurchaseLine>; } }
-		public DateTimeFieldExpression<PurchaseLine> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<PurchaseLine>; } }
+		public Int32FieldExpression<PurchaseLine> Id { get; private set; }
+		public Int32FieldExpression<PurchaseLine> PurchaseId { get; private set; }
+		public Int32FieldExpression<PurchaseLine> ProductId { get; private set; }
+		public DecimalFieldExpression<PurchaseLine> PurchasePrice { get; private set; }
+		public Int32FieldExpression<PurchaseLine> Quantity { get; private set; }
+		public DateTimeFieldExpression<PurchaseLine> DateCreated { get; private set; }
+		public DateTimeFieldExpression<PurchaseLine> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-		public PurchaseLineEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private PurchaseLineEntity() : base(null, null, null)
         {
         }
 
-        private PurchaseLineEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.PurchaseLine", schema, metadata, alias)
+		public PurchaseLineEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_purchaseIdFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.PurchaseId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchaseIdFieldName])));
-			Fields.Add(_productIdFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.ProductId", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_productIdFieldName])));
-			Fields.Add(_purchasePriceFieldName, new DecimalFieldExpression<PurchaseLine>("dbo.PurchaseLine.PurchasePrice", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_purchasePriceFieldName])));
-			Fields.Add(_quantityFieldName, new Int32FieldExpression<PurchaseLine>("dbo.PurchaseLine.Quantity", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_quantityFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<PurchaseLine>("dbo.PurchaseLine.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<PurchaseLine>("dbo.PurchaseLine.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+        }
+
+        private PurchaseLineEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PurchaseLine>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new Int32FieldExpression<PurchaseLine>($"{identifier}.PurchaseId", this));
+            Fields.Add($"{identifier}.ProductId", ProductId = new Int32FieldExpression<PurchaseLine>($"{identifier}.ProductId", this));
+            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new DecimalFieldExpression<PurchaseLine>($"{identifier}.PurchasePrice", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<PurchaseLine>($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PurchaseLine>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<PurchaseLine>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PurchaseLineEntity As(string name)
         {
-            return new PurchaseLineEntity(this.Schema, this.MetadataResolver, name);
+            return new PurchaseLineEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -651,35 +612,35 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
     #region person total purchases view
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _totalPurchasesFieldName = "TotalPurchases";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<PersonTotalPurchasesView> Id { get { return Fields[_idFieldName] as Int32FieldExpression<PersonTotalPurchasesView>; } }
-		public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get { return Fields[_totalPurchasesFieldName] as NullableDecimalFieldExpression<PersonTotalPurchasesView>; } }
+		public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
+		public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get; private set; }
         #endregion
 
         #region constructors
-		public PersonTotalPurchasesViewEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private PersonTotalPurchasesViewEntity() : base(null, null, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("dbo.PersonTotalPurchasesView", schema, metadata, alias)
+		public PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<PersonTotalPurchasesView>("dbo.PersonTotalPurchasesView.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_totalPurchasesFieldName, new NullableDecimalFieldExpression<PersonTotalPurchasesView>("dbo.PersonTotalPurchasesView.TotalPurchases", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_totalPurchasesFieldName])));
+        }
+
+        private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonTotalPurchasesView>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.TotalPurchases", TotalPurchases = new NullableDecimalFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalPurchases", this));
         }
         #endregion
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
         {
-            return new PersonTotalPurchasesViewEntity(this.Schema, this.MetadataResolver, name);
+            return new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -717,50 +678,48 @@ namespace DbEx.dboDataService
 		#endregion
     }
     #endregion
+
 }
 namespace DbEx.secDataService
 {
     using DbEx.secData;
-    using HatTrick.DbEx.Sql;
+    using DbEx.Data;
     using HatTrick.DbEx.Sql.Executor;
     using HatTrick.DbEx.Sql.Expression;
-    using HatTrick.DbEx.Sql.Mapper;
+    using System;
 
     #region person
     public partial class PersonEntity : EntityExpression<Person>
     {
-        #region internals
-        private const string _idFieldName = "Id";
-        private const string _sSNFieldName = "SSN";
-        private const string _dateCreatedFieldName = "DateCreated";
-        private const string _dateUpdatedFieldName = "DateUpdated";
-        #endregion
-
         #region interface properties
-		public Int32FieldExpression<Person> Id { get { return Fields[_idFieldName] as Int32FieldExpression<Person>; } }
-		public StringFieldExpression<Person> SSN { get { return Fields[_sSNFieldName] as StringFieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateCreated { get { return Fields[_dateCreatedFieldName] as DateTimeFieldExpression<Person>; } }
-		public DateTimeFieldExpression<Person> DateUpdated { get { return Fields[_dateUpdatedFieldName] as DateTimeFieldExpression<Person>; } }
+		public Int32FieldExpression<Person> Id { get; private set; }
+		public StringFieldExpression<Person> SSN { get; private set; }
+		public DateTimeFieldExpression<Person> DateCreated { get; private set; }
+		public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-		public PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata): this(schema, metadata, null)
+        private PersonEntity() : base(null, null, null)
         {
         }
 
-        private PersonEntity(SchemaExpression schema, Lazy<ISqlEntityMetadata> metadata, string alias) : base("sec.Person", schema, metadata, alias)
+		public PersonEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
-			Fields.Add(_idFieldName, new Int32FieldExpression<Person>("sec.Person.Id", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_idFieldName])));
-			Fields.Add(_sSNFieldName, new StringFieldExpression<Person>("sec.Person.SSN", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_sSNFieldName])));
-			Fields.Add(_dateCreatedFieldName, new DateTimeFieldExpression<Person>("sec.Person.DateCreated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateCreatedFieldName])));
-			Fields.Add(_dateUpdatedFieldName, new DateTimeFieldExpression<Person>("sec.Person.DateUpdated", this, new Lazy<ISqlFieldMetadata>(() => metadata.Value.Fields[_dateUpdatedFieldName])));
+        }
+
+        private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.SSN", SSN = new StringFieldExpression<Person>($"{identifier}.SSN", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
         {
-            return new PersonEntity(this.Schema, this.MetadataResolver, name);
+            return new PersonEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -805,4 +764,5 @@ namespace DbEx.secDataService
 		#endregion
     }
     #endregion
+
 }

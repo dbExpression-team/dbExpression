@@ -9,20 +9,20 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class RuntimeDatabaseConfigurationBuilder : IRuntimeSqlDatabaseConfigurationBuilder
+    public class RuntimeSqlDatabaseConfigurationBuilder : IRuntimeSqlDatabaseConfigurationBuilder
     {
         #region internals
-        private readonly DatabaseConfiguration configuration;
+        private readonly RuntimeSqlDatabaseConfiguration configuration;
         #endregion
 
         #region interface
-        DatabaseConfiguration IRuntimeSqlDatabaseConfigurationBuilder.Configuration => configuration;
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabaseConfigurationBuilder.Configuration => configuration;
         #endregion
 
         #region constructors
-        public RuntimeDatabaseConfigurationBuilder(DatabaseConfiguration configuration)
+        public RuntimeSqlDatabaseConfigurationBuilder(IRuntimeSqlDatabase runtime)
         {
-            this.configuration = configuration;
+            this.configuration = runtime.Configuration;
         }
         #endregion
 
@@ -31,6 +31,19 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void ConfigureAssembler(Action<SqlStatementAssemblerConfiguration> config)
         {
             config(configuration.AssemblerConfiguration);
+        }
+        #endregion
+
+        #region sql field metadata factory
+        public void UseDatabaseMetadata(ISqlDatabaseMetadataProvider meta)
+        {
+            configuration.MetadataProvider = meta;
+        }
+
+        public void UseDatabaseMetadata<T>()
+            where T : class, ISqlDatabaseMetadataProvider, new()
+        {
+            configuration.MetadataProvider = new T();
         }
         #endregion
 
@@ -113,7 +126,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.StatementBuilderFactory = factory;
         }
 
-        public void UseStatementBuilderFactory(Func<IAssemblyPartAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
+        public void UseStatementBuilderFactory(Func<ISqlDatabaseMetadataProvider, IAssemblyPartAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
         {
             configuration.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
         }

@@ -1,59 +1,28 @@
-using System;
-
 namespace {() => ResolveRootNamespace}DataService
 {{
-    using System.Collections.Generic;
-    using System.Dynamic;
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Builder.Syntax;
     using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Connection;
-    {#each Schemas}
-    {#if !($) => IsIgnored}
-    using {() => ResolveRootNamespace}{($) => ResolveName}DataService;
-    {/if}
-    {/each}
+    using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
 
     #region runtime
-    public class {($) => ResolveName} : IRuntimeSqlDatabase
+    public abstract class {($) => ResolveName}RuntimeSqlDatabase : IRuntimeSqlDatabase
     {{
         #region internals
-        private readonly ISqlDatabaseMetadata metadata;
-        protected static DatabaseConfiguration config;
-        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory;
+        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        ISqlDatabaseMetadata IRuntimeSqlDatabase.Metadata => metadata;
-        DatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
-        #endregion
-
-        #region constructors
-        public {($) => ResolveName}()
-        {{
-            metadata = new {($) => ResolveName}SqlDatabaseMetadataProvider().Database;
-        }}
-
-        public {($) => ResolveName}(ISqlDatabaseMetadata metadata)
-        {{
-            this.metadata = metadata ?? throw new ArgumentNullException($"{{nameof(metadata)}} is required.");
-        }}
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration {{ get => config; set => config = value; }}
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfiguration(DatabaseConfiguration configuration)
-        {{
-            config = configuration;
-            {#each Schemas}
-            {#if !($) => IsIgnored}
-            {($) => ResolveName}.Initialize(metadata.Schemas[nameof({($) => ResolveName})]);
-            {/if}
-            {/each}
-            expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
-        }}
-
         #region select one
         public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
@@ -256,7 +225,7 @@ namespace {() => ResolveRootNamespace}DataService
 
     #region db
     #pragma warning disable IDE1006 // Naming Styles
-    public partial class db : {($) => ResolveName}
+    public partial class db : {($) => ResolveName}RuntimeSqlDatabase
     #pragma warning restore IDE1006 // Naming Styles
     {{
     	
@@ -270,34 +239,26 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
     using HatTrick.DbEx.Sql.Expression;
     using System;
-    using HatTrick.DbEx.Sql;
 
     #region {$.Name}
-    [Serializable]
+#pragma warning disable IDE1006 // Naming Styles
     public class {($) => ResolveName}SchemaExpression : SchemaExpression
+#pragma warning restore IDE1006 // Naming Styles
     {{
-        #region internals
-		{#each ($) => ResolveConsolidatedTablesAndViews}
-		{#if !($) => IsIgnored}
-        private const string _{($) => ToCamelCase}EntityName = "{$.Name}";
-		{/if}
-		{/each}
-        #endregion
-
         #region interface
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        public {($) => ResolveName}Entity {($) => ResolveName} {{ get {{ return Entities[_{($) => ToCamelCase}EntityName] as {($) => ResolveName}Entity; }} }}
+        public {($) => ResolveName}Entity {($) => ResolveName} {{ get; private set; }}
 		{/if}
 		{/each}
         #endregion
 
         #region constructors
-        public {($) => ResolveName}SchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("{($) => ResolveName}", metadata, null)
+        public {($) => ResolveName}SchemaExpression(string identifier) : base(identifier, null)
         {{
 			{#each ($) => ResolveConsolidatedTablesAndViews}
 			{#if !($) => IsIgnored}
-            Entities.Add(_{($) => ToCamelCase}EntityName, new {($) => ResolveName}Entity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_{($) => ToCamelCase}EntityName])));
+            Entities.Add($"{{identifier}}.{$.Name}", {($) => ResolveName} = new {($) => ResolveName}Entity($"{{identifier}}.{$.Name}", this));
 			{/if}
 			{/each}
         }}

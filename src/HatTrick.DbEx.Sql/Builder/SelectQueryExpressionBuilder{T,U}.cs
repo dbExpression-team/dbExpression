@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Builder
         where U : class, IContinuationExpressionBuilder<T>
     {
         #region constructors
-        protected SelectQueryExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
+        protected SelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         { }
         #endregion
 

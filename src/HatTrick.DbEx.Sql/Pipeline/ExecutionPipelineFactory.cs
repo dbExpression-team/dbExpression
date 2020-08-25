@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual IInsertQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(DatabaseConfiguration database, InsertQueryExpression expression)
+        public virtual IInsertQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression)
             where T : class, IDbEntity
         {
             return new InsertQueryExpressionExecutionPipeline<T>(
@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual IUpdateQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(DatabaseConfiguration database, UpdateQueryExpression expression)
+        public virtual IUpdateQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression)
             where T : class, IDbEntity
         {
             return new UpdateQueryExpressionExecutionPipeline<T>(
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual IDeleteQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(DatabaseConfiguration database, DeleteQueryExpression expression)
+        public virtual IDeleteQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
             where T : class, IDbEntity
         {
             return new DeleteQueryExpressionExecutionPipeline<T>(
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline(DatabaseConfiguration database, SelectQueryExpression expression)
+        public virtual ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression)
         {
             return new SelectQueryExpressionExecutionPipeline(
                 database,

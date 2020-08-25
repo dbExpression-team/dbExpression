@@ -8,12 +8,12 @@ namespace HatTrick.DbEx.Sql.Builder
         IUpdateFromExpressionBuilder
     {
         #region constructors
-        protected UpdateQueryExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression) : base(configuration, expression)
+        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression) : base(configuration, expression)
         {
 
         }
 
-        protected UpdateQueryExpressionBuilder(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression entity) : base(configuration, expression)
+        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression entity) : base(configuration, expression)
         {
             Expression.BaseEntity = entity;
         }
@@ -24,6 +24,6 @@ namespace HatTrick.DbEx.Sql.Builder
             return CreateTypedBuilder(Configuration, Expression as UpdateQueryExpression, entity);
         }
 
-        protected abstract IUpdateContinuationExpressionBuilder<T> CreateTypedBuilder<T>(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity) where T : class, IDbEntity;
+        protected abstract IUpdateContinuationExpressionBuilder<T> CreateTypedBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity) where T : class, IDbEntity;
     }
 }

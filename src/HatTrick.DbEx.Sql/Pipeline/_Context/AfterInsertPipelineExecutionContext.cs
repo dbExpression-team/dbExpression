@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public InsertedEntityPipelineExecutionContext Entity { get; private set; }
         public SqlStatement Statement { get; private set; }
 
-        public AfterInsertPipelineExecutionContext(DatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target, SqlStatement statement)
+        public AfterInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target, SqlStatement statement)
             : base(database, expression)
         {
             Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");

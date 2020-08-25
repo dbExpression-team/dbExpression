@@ -1,37 +1,38 @@
 namespace ServerSideBlazorApp.DataService
 {
-    using HatTrick.DbEx.Sql;
-    using System.Collections.Generic;
 	using ServerSideBlazorApp.dboDataService;
 	using ServerSideBlazorApp.secDataService;
+    using HatTrick.DbEx.Sql;
+    using System.Collections.Generic;
 
-    public class CRMDatabaseSqlDatabaseMetadataProvider : ISqlDatabaseMetadataProvider
+    public class CRMDatabase : RuntimeEnvironmentSqlDatabase
     {
-        #region interface
-        public ISqlDatabaseMetadata Database { get; private set; }
-        #endregion
-
-        #region constructors
-        public CRMDatabaseSqlDatabaseMetadataProvider()
-        {
-            Database = new CRMDatabaseSqlDatabaseMetadata("CRMDatabase");
-            Database.Schemas.Add("dbo", new dboSchemaMetadata(Database));
-            Database.Schemas.Add("sec", new secSchemaMetadata(Database));
+        public CRMDatabase() : base(new db(), new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase", "CRMDatabase"))) 
+        { 
+        
         }
-        #endregion
     }
 
     public class CRMDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
     {
+        #region internals
+        private static string _dboSchemaIdentifier;
+        private static string _secSchemaIdentifier;
+        #endregion
+
         #region interface
-        public string Name { get; set; }
+        public string Identifier { get; private set; }
+        public string Name { get; private set; }
         public IDictionary<string, ISqlSchemaMetadata> Schemas { get; } = new Dictionary<string, ISqlSchemaMetadata>();
         #endregion
 
         #region constructors
-        public CRMDatabaseSqlDatabaseMetadata(string databaseName)
+        public CRMDatabaseSqlDatabaseMetadata(string identifier, string name)
         {
-            Name = databaseName;
+            Identifier = identifier;
+            Name = name;
+            Schemas.Add(_dboSchemaIdentifier = $"{identifier}.dbo", new dboSchemaMetadata(this, _dboSchemaIdentifier, "dbo"));
+            Schemas.Add(_secSchemaIdentifier = $"{identifier}.sec", new secSchemaMetadata(this, _secSchemaIdentifier, "sec"));
         }
         #endregion
     }
@@ -44,191 +45,238 @@ namespace ServerSideBlazorApp.dboDataService
     using System.Collections.Generic;
     using System.Data;
 
+    #region dbo
 	public class dboSchemaMetadata : ISqlSchemaMetadata
     {
 		#region interface
-        public string Name => "dbo";
         public ISqlDatabaseMetadata Database { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
 		#endregion
 
         #region constructors
-        public dboSchemaMetadata(ISqlDatabaseMetadata database)
+        public dboSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
         {
             Database = database;
-            Entities.Add("Address", new AddressEntityMetadata(this));
-            Entities.Add("Person", new PersonEntityMetadata(this));
-            Entities.Add("Person_Address", new PersonAddressEntityMetadata(this));
-            Entities.Add("Product", new ProductEntityMetadata(this));
-            Entities.Add("Purchase", new PurchaseEntityMetadata(this));
-            Entities.Add("PurchaseLine", new PurchaseLineEntityMetadata(this));
-            Entities.Add("PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this));
+            Identifier = identifier;
+            Name = name;
+            Entities.Add($"{identifier}.Address", new AddressEntityMetadata(this, $"{identifier}.Address", "Address"));
+            Entities.Add($"{identifier}.Person", new PersonEntityMetadata(this, $"{identifier}.Person", "Person"));
+            Entities.Add($"{identifier}.Person_Address", new PersonAddressEntityMetadata(this, $"{identifier}.Person_Address", "Person_Address"));
+            Entities.Add($"{identifier}.Product", new ProductEntityMetadata(this, $"{identifier}.Product", "Product"));
+            Entities.Add($"{identifier}.Purchase", new PurchaseEntityMetadata(this, $"{identifier}.Purchase", "Purchase"));
+            Entities.Add($"{identifier}.PurchaseLine", new PurchaseLineEntityMetadata(this, $"{identifier}.PurchaseLine", "PurchaseLine"));
+            Entities.Add($"{identifier}.PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this, $"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView"));
         }
         #endregion
     }
+    #endregion
 
+    #region address
 	public class AddressEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "Address";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public AddressEntityMetadata(ISqlSchemaMetadata schema)
+        public AddressEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("AddressType", new MsSqlFieldMetadata(this, "AddressType", SqlDbType.Int, 4));
-            Fields.Add("Line1", new MsSqlFieldMetadata(this, "Line1", SqlDbType.VarChar, 50));
-            Fields.Add("Line2", new MsSqlFieldMetadata(this, "Line2", SqlDbType.VarChar, 50));
-            Fields.Add("City", new MsSqlFieldMetadata(this, "City", SqlDbType.VarChar, 60));
-            Fields.Add("State", new MsSqlFieldMetadata(this, "State", SqlDbType.Char, 2));
-            Fields.Add("Zip", new MsSqlFieldMetadata(this, "Zip", SqlDbType.VarChar, 10));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.AddressType", new MsSqlFieldMetadata(this, $"{identifier}.AddressType", "AddressType", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.Line1", new MsSqlFieldMetadata(this, $"{identifier}.Line1", "Line1", SqlDbType.VarChar, 50));
+            Fields.Add($"{identifier}.Line2", new MsSqlFieldMetadata(this, $"{identifier}.Line2", "Line2", SqlDbType.VarChar, 50));
+            Fields.Add($"{identifier}.City", new MsSqlFieldMetadata(this, $"{identifier}.City", "City", SqlDbType.VarChar, 60));
+            Fields.Add($"{identifier}.State", new MsSqlFieldMetadata(this, $"{identifier}.State", "State", SqlDbType.Char, 2));
+            Fields.Add($"{identifier}.Zip", new MsSqlFieldMetadata(this, $"{identifier}.Zip", "Zip", SqlDbType.VarChar, 10));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
+    #region person
 	public class PersonEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "Person";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public PersonEntityMetadata(ISqlSchemaMetadata schema)
+        public PersonEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("FirstName", new MsSqlFieldMetadata(this, "FirstName", SqlDbType.VarChar, 20));
-            Fields.Add("LastName", new MsSqlFieldMetadata(this, "LastName", SqlDbType.VarChar, 20));
-            Fields.Add("BirthDate", new MsSqlFieldMetadata(this, "BirthDate", SqlDbType.DateTime, 8));
-            Fields.Add("GenderType", new MsSqlFieldMetadata(this, "GenderType", SqlDbType.Int, 4));
-            Fields.Add("CreditLimit", new MsSqlFieldMetadata(this, "CreditLimit", SqlDbType.Int, 4));
-            Fields.Add("YearOfLastCreditLimitReview", new MsSqlFieldMetadata(this, "YearOfLastCreditLimitReview", SqlDbType.Int, 4));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.FirstName", new MsSqlFieldMetadata(this, $"{identifier}.FirstName", "FirstName", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.LastName", new MsSqlFieldMetadata(this, $"{identifier}.LastName", "LastName", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.BirthDate", new MsSqlFieldMetadata(this, $"{identifier}.BirthDate", "BirthDate", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.GenderType", new MsSqlFieldMetadata(this, $"{identifier}.GenderType", "GenderType", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.CreditLimit", new MsSqlFieldMetadata(this, $"{identifier}.CreditLimit", "CreditLimit", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", new MsSqlFieldMetadata(this, $"{identifier}.YearOfLastCreditLimitReview", "YearOfLastCreditLimitReview", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
+    #region person address
 	public class PersonAddressEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "Person_Address";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public PersonAddressEntityMetadata(ISqlSchemaMetadata schema)
+        public PersonAddressEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("PersonId", new MsSqlFieldMetadata(this, "PersonId", SqlDbType.Int, 4));
-            Fields.Add("AddressId", new MsSqlFieldMetadata(this, "AddressId", SqlDbType.Int, 4));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.AddressId", new MsSqlFieldMetadata(this, $"{identifier}.AddressId", "AddressId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
+    #region product
 	public class ProductEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "Product";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public ProductEntityMetadata(ISqlSchemaMetadata schema)
+        public ProductEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("ProductCategoryType", new MsSqlFieldMetadata(this, "ProductCategoryType", SqlDbType.Int, 4));
-            Fields.Add("Name", new MsSqlFieldMetadata(this, "Name", SqlDbType.VarChar, 80));
-            Fields.Add("Description", new MsSqlFieldMetadata(this, "Description", SqlDbType.VarChar, 2000));
-            Fields.Add("ListPrice", new MsSqlFieldMetadata(this, "ListPrice", SqlDbType.Decimal, 9));
-            Fields.Add("Price", new MsSqlFieldMetadata(this, "Price", SqlDbType.Decimal, 9));
-            Fields.Add("Quantity", new MsSqlFieldMetadata(this, "Quantity", SqlDbType.Int, 4));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.ProductCategoryType", new MsSqlFieldMetadata(this, $"{identifier}.ProductCategoryType", "ProductCategoryType", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.Name", new MsSqlFieldMetadata(this, $"{identifier}.Name", "Name", SqlDbType.VarChar, 80));
+            Fields.Add($"{identifier}.Description", new MsSqlFieldMetadata(this, $"{identifier}.Description", "Description", SqlDbType.VarChar, 2000));
+            Fields.Add($"{identifier}.ListPrice", new MsSqlFieldMetadata(this, $"{identifier}.ListPrice", "ListPrice", SqlDbType.Decimal, 9));
+            Fields.Add($"{identifier}.Price", new MsSqlFieldMetadata(this, $"{identifier}.Price", "Price", SqlDbType.Decimal, 9));
+            Fields.Add($"{identifier}.Quantity", new MsSqlFieldMetadata(this, $"{identifier}.Quantity", "Quantity", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
+    #region purchase
 	public class PurchaseEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "Purchase";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public PurchaseEntityMetadata(ISqlSchemaMetadata schema)
+        public PurchaseEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("PersonId", new MsSqlFieldMetadata(this, "PersonId", SqlDbType.Int, 4));
-            Fields.Add("TotalPurchaseAmount", new MsSqlFieldMetadata(this, "TotalPurchaseAmount", SqlDbType.Decimal, 9));
-            Fields.Add("PurchaseDate", new MsSqlFieldMetadata(this, "PurchaseDate", SqlDbType.DateTime, 8));
-            Fields.Add("ShipDate", new MsSqlFieldMetadata(this, "ShipDate", SqlDbType.DateTime, 8));
-            Fields.Add("ExpectedDeliveryDate", new MsSqlFieldMetadata(this, "ExpectedDeliveryDate", SqlDbType.DateTime, 8));
-            Fields.Add("TrackingIdentifier", new MsSqlFieldMetadata(this, "TrackingIdentifier", SqlDbType.UniqueIdentifier, 16));
-            Fields.Add("PaymentMethodType", new MsSqlFieldMetadata(this, "PaymentMethodType", SqlDbType.VarChar, 20));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Decimal, 9));
+            Fields.Add($"{identifier}.PurchaseDate", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseDate", "PurchaseDate", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.ShipDate", new MsSqlFieldMetadata(this, $"{identifier}.ShipDate", "ShipDate", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.ExpectedDeliveryDate", new MsSqlFieldMetadata(this, $"{identifier}.ExpectedDeliveryDate", "ExpectedDeliveryDate", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.TrackingIdentifier", new MsSqlFieldMetadata(this, $"{identifier}.TrackingIdentifier", "TrackingIdentifier", SqlDbType.UniqueIdentifier, 16));
+            Fields.Add($"{identifier}.PaymentMethodType", new MsSqlFieldMetadata(this, $"{identifier}.PaymentMethodType", "PaymentMethodType", SqlDbType.VarChar, 20));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
+    #region purchase line
 	public class PurchaseLineEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "PurchaseLine";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public PurchaseLineEntityMetadata(ISqlSchemaMetadata schema)
+        public PurchaseLineEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("PurchaseId", new MsSqlFieldMetadata(this, "PurchaseId", SqlDbType.Int, 4));
-            Fields.Add("ProductId", new MsSqlFieldMetadata(this, "ProductId", SqlDbType.Int, 4));
-            Fields.Add("PurchasePrice", new MsSqlFieldMetadata(this, "PurchasePrice", SqlDbType.Decimal, 9));
-            Fields.Add("Quantity", new MsSqlFieldMetadata(this, "Quantity", SqlDbType.Int, 4));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.PurchaseId", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseId", "PurchaseId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.ProductId", new MsSqlFieldMetadata(this, $"{identifier}.ProductId", "ProductId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.PurchasePrice", new MsSqlFieldMetadata(this, $"{identifier}.PurchasePrice", "PurchasePrice", SqlDbType.Decimal, 9));
+            Fields.Add($"{identifier}.Quantity", new MsSqlFieldMetadata(this, $"{identifier}.Quantity", "Quantity", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
+    #region person total purchases view
 	public class PersonTotalPurchasesViewEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "PersonTotalPurchasesView";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public PersonTotalPurchasesViewEntityMetadata(ISqlSchemaMetadata schema)
+        public PersonTotalPurchasesViewEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4));
-            Fields.Add("TotalPurchases", new MsSqlFieldMetadata(this, "TotalPurchases", SqlDbType.Decimal, 17));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.TotalPurchases", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchases", "TotalPurchases", SqlDbType.Decimal, 17));
         }
         #endregion
     }
+    #endregion
+
 }
 namespace ServerSideBlazorApp.secDataService
 {
@@ -237,41 +285,52 @@ namespace ServerSideBlazorApp.secDataService
     using System.Collections.Generic;
     using System.Data;
 
+    #region sec
 	public class secSchemaMetadata : ISqlSchemaMetadata
     {
 		#region interface
-        public string Name => "sec";
         public ISqlDatabaseMetadata Database { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
 		#endregion
 
         #region constructors
-        public secSchemaMetadata(ISqlDatabaseMetadata database)
+        public secSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
         {
             Database = database;
-            Entities.Add("Person", new PersonEntityMetadata(this));
+            Identifier = identifier;
+            Name = name;
+            Entities.Add($"{identifier}.Person", new PersonEntityMetadata(this, $"{identifier}.Person", "Person"));
         }
         #endregion
     }
+    #endregion
 
+    #region person
 	public class PersonEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
-        public string Name => "Person";
         public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
         public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
         #endregion
 		
         #region constructors
-        public PersonEntityMetadata(ISqlSchemaMetadata schema)
+        public PersonEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
+            Identifier = identifier;
+            Name = name;
 			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-            Fields.Add("Id", new MsSqlFieldMetadata(this, "Id", SqlDbType.Int, 4){ IsIdentity = true });
-            Fields.Add("SSN", new MsSqlFieldMetadata(this, "SSN", SqlDbType.Char, 9));
-            Fields.Add("DateCreated", new MsSqlFieldMetadata(this, "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add("DateUpdated", new MsSqlFieldMetadata(this, "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
+            Fields.Add($"{identifier}.SSN", new MsSqlFieldMetadata(this, $"{identifier}.SSN", "SSN", SqlDbType.Char, 9));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }
         #endregion
     }
+    #endregion
+
 }

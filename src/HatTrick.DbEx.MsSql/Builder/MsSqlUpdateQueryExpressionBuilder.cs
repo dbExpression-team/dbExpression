@@ -9,12 +9,12 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         public new UpdateQueryExpression Expression => base.Expression as UpdateQueryExpression;
 
-        public MsSqlUpdateQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>())
+        public MsSqlUpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>())
         { 
         
         }
 
-        protected override IUpdateContinuationExpressionBuilder<U> CreateTypedBuilder<U>(DatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<U> entity)
+        protected override IUpdateContinuationExpressionBuilder<U> CreateTypedBuilder<U>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<U> entity)
         {
             return new MsSqlUpdateQueryExpressionBuilder<U>(configuration, expression, entity);
         }

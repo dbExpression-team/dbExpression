@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public IEnumerable<InsertFieldDescriptor> Fields { get; private set; }
         public IAppender CommandTextWriter { get; private set; }
 
-        public BeforeInsertPipelineExecutionContext(DatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        public BeforeInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target, IAppender appender, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
             CommandTextWriter = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");

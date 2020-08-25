@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public IDbEntity InsertedEntity { get; private set; }
 
-        public InsertedEntityPipelineExecutionContext(DatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target)
+        public InsertedEntityPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target)
             : base(database, expression)
         {
             InsertedEntity = target.Entity;

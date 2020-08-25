@@ -1,53 +1,28 @@
-using System;
-
 namespace DbEx.DataService
 {
-    using System.Collections.Generic;
-    using System.Dynamic;
     using HatTrick.DbEx.MsSql.Builder;
     using HatTrick.DbEx.Sql.Builder.Syntax;
     using HatTrick.DbEx.Sql.Configuration;
     using HatTrick.DbEx.Sql.Expression;
     using HatTrick.DbEx.Sql;
     using HatTrick.DbEx.Sql.Connection;
-    using DbEx.dboDataService;
-    using DbEx.secDataService;
+    using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
 
     #region runtime
-    public class MsSqlDbExTest : IRuntimeSqlDatabase
+    public abstract class MsSqlDbExTestRuntimeSqlDatabase : IRuntimeSqlDatabase
     {
         #region internals
-        private readonly ISqlDatabaseMetadata metadata;
-        protected static DatabaseConfiguration config;
-        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory;
+        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        ISqlDatabaseMetadata IRuntimeSqlDatabase.Metadata => metadata;
-        DatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
-        #endregion
-
-        #region constructors
-        public MsSqlDbExTest()
-        {
-            metadata = new MsSqlDbExTestSqlDatabaseMetadataProvider().Database;
-        }
-
-        public MsSqlDbExTest(ISqlDatabaseMetadata metadata)
-        {
-            this.metadata = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required.");
-        }
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration { get => config; set => config = value; }
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfiguration(DatabaseConfiguration configuration)
-        {
-            config = configuration;
-            dbo.Initialize(metadata.Schemas[nameof(dbo)]);
-            sec.Initialize(metadata.Schemas[nameof(sec)]);
-            expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
-        }
-
         #region select one
         public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
@@ -250,7 +225,7 @@ namespace DbEx.DataService
 
     #region db
     #pragma warning disable IDE1006 // Naming Styles
-    public partial class db : MsSqlDbExTest
+    public partial class db : MsSqlDbExTestRuntimeSqlDatabase
     #pragma warning restore IDE1006 // Naming Styles
     {
     	
@@ -262,42 +237,32 @@ namespace DbEx.dboDataService
 {
     using HatTrick.DbEx.Sql.Expression;
     using System;
-    using HatTrick.DbEx.Sql;
 
     #region dbo
-    [Serializable]
+#pragma warning disable IDE1006 // Naming Styles
     public class dboSchemaExpression : SchemaExpression
+#pragma warning restore IDE1006 // Naming Styles
     {
-        #region internals
-        private const string _addressEntityName = "Address";
-        private const string _personEntityName = "Person";
-        private const string _personAddressEntityName = "Person_Address";
-        private const string _productEntityName = "Product";
-        private const string _purchaseEntityName = "Purchase";
-        private const string _purchaseLineEntityName = "PurchaseLine";
-        private const string _personTotalPurchasesViewEntityName = "PersonTotalPurchasesView";
-        #endregion
-
         #region interface
-        public AddressEntity Address { get { return Entities[_addressEntityName] as AddressEntity; } }
-        public PersonEntity Person { get { return Entities[_personEntityName] as PersonEntity; } }
-        public PersonAddressEntity PersonAddress { get { return Entities[_personAddressEntityName] as PersonAddressEntity; } }
-        public ProductEntity Product { get { return Entities[_productEntityName] as ProductEntity; } }
-        public PurchaseEntity Purchase { get { return Entities[_purchaseEntityName] as PurchaseEntity; } }
-        public PurchaseLineEntity PurchaseLine { get { return Entities[_purchaseLineEntityName] as PurchaseLineEntity; } }
-        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get { return Entities[_personTotalPurchasesViewEntityName] as PersonTotalPurchasesViewEntity; } }
+        public AddressEntity Address { get; private set; }
+        public PersonEntity Person { get; private set; }
+        public PersonAddressEntity PersonAddress { get; private set; }
+        public ProductEntity Product { get; private set; }
+        public PurchaseEntity Purchase { get; private set; }
+        public PurchaseLineEntity PurchaseLine { get; private set; }
+        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
         #endregion
 
         #region constructors
-        public dboSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("dbo", metadata, null)
+        public dboSchemaExpression(string identifier) : base(identifier, null)
         {
-            Entities.Add(_addressEntityName, new AddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_addressEntityName])));
-            Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
-            Entities.Add(_personAddressEntityName, new PersonAddressEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personAddressEntityName])));
-            Entities.Add(_productEntityName, new ProductEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_productEntityName])));
-            Entities.Add(_purchaseEntityName, new PurchaseEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_purchaseEntityName])));
-            Entities.Add(_purchaseLineEntityName, new PurchaseLineEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_purchaseLineEntityName])));
-            Entities.Add(_personTotalPurchasesViewEntityName, new PersonTotalPurchasesViewEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personTotalPurchasesViewEntityName])));
+            Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", this));
+            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
+            Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", this));
+            Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", this));
+            Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", this));
+            Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", this));
+            Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", this));
         }
         #endregion
     }
@@ -307,24 +272,20 @@ namespace DbEx.secDataService
 {
     using HatTrick.DbEx.Sql.Expression;
     using System;
-    using HatTrick.DbEx.Sql;
 
     #region sec
-    [Serializable]
+#pragma warning disable IDE1006 // Naming Styles
     public class secSchemaExpression : SchemaExpression
+#pragma warning restore IDE1006 // Naming Styles
     {
-        #region internals
-        private const string _personEntityName = "Person";
-        #endregion
-
         #region interface
-        public PersonEntity Person { get { return Entities[_personEntityName] as PersonEntity; } }
+        public PersonEntity Person { get; private set; }
         #endregion
 
         #region constructors
-        public secSchemaExpression(Lazy<ISqlSchemaMetadata> metadata) : base("sec", metadata, null)
+        public secSchemaExpression(string identifier) : base(identifier, null)
         {
-            Entities.Add(_personEntityName, new PersonEntity(this, new Lazy<ISqlEntityMetadata>(() => metadata.Value.Entities[_personEntityName])));
+            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
         }
         #endregion
     }

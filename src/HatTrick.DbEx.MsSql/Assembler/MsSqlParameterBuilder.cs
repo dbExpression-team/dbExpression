@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override DbParameter Add<T>(T value)
         {
             var parameter = Create(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
-            var parameterized = new ParameterizedFieldExpression(parameter, null);
+            var parameterized = new ParameterizedFieldExpression(parameter, null, null);
             Parameters.Add(parameterized);
             return parameter;
         }
@@ -22,33 +22,31 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override DbParameter Add(object value, Type valueType)
         {
             var parameter = Create(value, MsSqlTypeMap.GetSqlType(valueType), null, null, null);
-            var parameterized = new ParameterizedFieldExpression(parameter, null);
+            var parameterized = new ParameterizedFieldExpression(parameter, null, null);
             Parameters.Add(parameterized);
             return parameter;
         }
 
-        public override ParameterizedFieldExpression Add<T>(T value, FieldExpression field)
+        public override ParameterizedFieldExpression Add<T>(T value, FieldExpression field, ISqlFieldMetadata meta)
         {
             DbParameter parameter;
             if (field is object)
             {
-                var metadata = (field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
-                parameter = Create(value, (SqlDbType)metadata.DbType, metadata.Size, metadata.Precision, metadata.Scale);
+                parameter = Create(value, (SqlDbType)meta.DbType, meta.Size, meta.Precision, meta.Scale);
             }
             else
             {
                 parameter = Create(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
             }
-            var parameterized = new ParameterizedFieldExpression(parameter, field);
+            var parameterized = new ParameterizedFieldExpression(parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }
 
-        public override ParameterizedFieldExpression AddOutput(FieldExpression field)
+        public override ParameterizedFieldExpression AddOutput(FieldExpression field, ISqlFieldMetadata meta)
         {
-            var metadata = (field as ISqlMetadataProvider<ISqlFieldMetadata>).Metadata;
-            var parameter = new SqlParameter($"@P{(Parameters.Count + 1)}", (SqlDbType)metadata.DbType) { Direction = ParameterDirection.Output };
-            var parameterized = new ParameterizedFieldExpression(parameter, field);
+            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", (SqlDbType)meta.DbType) { Direction = ParameterDirection.Output };
+            var parameterized = new ParameterizedFieldExpression(parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }

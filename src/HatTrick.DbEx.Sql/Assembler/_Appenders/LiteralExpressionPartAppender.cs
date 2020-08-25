@@ -9,7 +9,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (context?.Field is object)
             {
-                builder.Appender.Write(builder.Parameters.Add(expression.Expression is null || expression.Expression is DBNull ? DBNull.Value : expression.Expression, context.Field).Parameter.ParameterName);
+                builder.Appender.Write(
+                    builder.Parameters.Add(
+                        expression.Expression is null || expression.Expression is DBNull ? DBNull.Value : expression.Expression, 
+                        context.Field, 
+                        builder.FindMetadata(context.Field)
+                    )
+                    .Parameter.ParameterName
+                );
             }
             else if (expression.Expression is null || expression.Expression is DBNull)
             {

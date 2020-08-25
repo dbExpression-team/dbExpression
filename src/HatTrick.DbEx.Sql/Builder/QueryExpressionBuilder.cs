@@ -9,11 +9,11 @@ namespace HatTrick.DbEx.Sql.Builder
         ITerminationExpressionBuilder,
         IQueryExpressionProvider
     {
-        public DatabaseConfiguration Configuration { get; private set; }
+        public RuntimeSqlDatabaseConfiguration Configuration { get; private set; }
         public virtual QueryExpression Expression { get; private set; }
         QueryExpression IQueryExpressionProvider.Expression => Expression;
 
-        protected QueryExpressionBuilder(DatabaseConfiguration configuration, QueryExpression expression)
+        protected QueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, QueryExpression expression)
         {
             Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");

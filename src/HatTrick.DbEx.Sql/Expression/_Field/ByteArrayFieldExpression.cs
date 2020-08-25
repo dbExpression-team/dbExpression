@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,20 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ByteArrayFieldExpression>
     {
         #region constructors
-        protected ByteArrayFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata) : base(identifier, entity, metadata)
+        protected ByteArrayFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
         }
 
-        protected ByteArrayFieldExpression(object identifier, EntityExpression entity, Lazy<ISqlFieldMetadata> metadata, string alias) : base(identifier, entity, metadata, alias)
+        protected ByteArrayFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
-        }
-        #endregion
-
-        #region as
-        public new ByteArrayFieldExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
         }
         #endregion
 

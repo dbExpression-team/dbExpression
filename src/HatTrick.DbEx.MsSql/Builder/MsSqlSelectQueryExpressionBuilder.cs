@@ -8,12 +8,12 @@ namespace HatTrick.DbEx.MsSql.Builder
     public partial class MsSqlSelectQueryExpressionBuilder : SelectQueryExpressionBuilder
     {
         #region constructors
-        public MsSqlSelectQueryExpressionBuilder(DatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>())
         {
 
         }
 
-        public MsSqlSelectQueryExpressionBuilder(DatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         {
 
         }

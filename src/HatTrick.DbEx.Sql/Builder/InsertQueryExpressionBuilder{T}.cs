@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Builder
         private readonly IEnumerable<T> instances;
         private InsertQueryExpression insert => Expression as InsertQueryExpression;
 
-        protected InsertQueryExpressionBuilder(DatabaseConfiguration configuration, IEnumerable<T> instances, InsertQueryExpression expression) : base(configuration, expression)
+        protected InsertQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<T> instances, InsertQueryExpression expression) : base(configuration, expression)
         {
             this.instances = instances;
         }
