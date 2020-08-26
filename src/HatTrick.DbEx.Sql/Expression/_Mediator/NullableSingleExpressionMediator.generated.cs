@@ -379,5 +379,53 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         #endregion
+
+        #region filter operators
+        #region float
+        public static FilterExpression<bool?> operator ==(NullableSingleExpressionMediator a, float b) => new FilterExpression<bool?>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableSingleExpressionMediator a, float b) => new FilterExpression<bool?>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableSingleExpressionMediator a, float b) => new FilterExpression<bool?>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableSingleExpressionMediator a, float b) => new FilterExpression<bool?>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableSingleExpressionMediator a, float b) => new FilterExpression<bool?>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableSingleExpressionMediator a, float b) => new FilterExpression<bool?>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(float a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(float a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(float a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(float a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(float a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(float a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableSingleExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableSingleExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableSingleExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableSingleExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableSingleExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableSingleExpressionMediator a, float? b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(float? a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(float? a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(float? a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(float? a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(float? a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(float? a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+        
+        #region mediator
+        public static FilterExpression<bool?> operator ==(NullableSingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableSingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableSingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableSingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableSingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableSingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableSingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableSingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableSingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableSingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableSingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableSingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+        #endregion
     }
 }

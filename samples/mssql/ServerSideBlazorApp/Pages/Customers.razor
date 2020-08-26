@@ -2,11 +2,11 @@
 @inject GlobalProgressBar ProgressBar
 @inject CustomerService service
 
-<h3>PeopleList</h3>
+<h3>Customers</h3>
 
 <div>
     <GridLoading RecordCount="@(CurrentPage?.TotalCount)"></GridLoading>
-    @if (CurrentPage is object && CurrentPage.Page.Any())
+    @if (CurrentPage.Page.Any())
     {
         <MatCard>
             <MatCardContent Class="m-4">
@@ -38,46 +38,5 @@
 
 
 @code {
-    private int PageIndex { get; set; } = 0;
-    private int PageSize { get; set; } = 5;
-    private string SearchPhrase { get; set; }
-    private PageResponseModel<dynamic> CurrentPage { get; set; }
-
-    protected override async Task OnInitializedAsync() => await FetchCurrentPage();
-
-    private async Task FetchCurrentPage()
-    {
-        await ProgressBar.Show();
-        var model = new PageRequestModel { Limit = PageSize, Offset = PageIndex * PageSize, SearchPhrase = SearchPhrase };
-
-        try
-        {
-            CurrentPage = await service.GetSummaryPageAsync(model);
-        }
-        catch (Exception e)
-        {
-
-        }
-        finally
-        {
-            await ProgressBar.Hide();
-        }
-
-        StateHasChanged();
-    }
-
-    private async Task OnPage(MatPaginatorPageEvent e)
-    {
-        PageSize = e.PageSize;
-        PageIndex = e.PageIndex;
-        await FetchCurrentPage();
-        StateHasChanged();
-    }
-
-    private async Task OnPage(int index)
-    {
-        PageIndex = index;
-        await FetchCurrentPage();
-        StateHasChanged();
-    }
+    
 }

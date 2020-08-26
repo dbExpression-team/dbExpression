@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public Int64ExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected Int64ExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new Int64ExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new Int64ExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals

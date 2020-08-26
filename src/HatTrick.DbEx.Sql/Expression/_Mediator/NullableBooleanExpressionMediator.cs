@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public NullableBooleanExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected NullableBooleanExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new NullableBooleanExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new NullableBooleanExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals

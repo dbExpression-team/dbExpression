@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_a_schema(int version, string identifier = "MsSqlDbExTest.dbo")
+        public void Can_resolve_metadata_for_a_schema(int version, string identifier = "dbo")
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_an_entity(int version, string identifier = "MsSqlDbExTest.dbo.Address")
+        public void Can_resolve_metadata_for_an_entity(int version, string identifier = "dbo.Address")
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_an_entity_that_was_generated_with_name_override(int version, string identifier = "MsSqlDbExTest.dbo.Person_Address")
+        public void Can_resolve_metadata_for_an_entity_that_was_generated_with_name_override(int version, string identifier = "dbo.Person_Address")
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_resolve_metadata_for_a_field(int version, string identifier = "MsSqlDbExTest.dbo.Address.Id")
+        public void Can_resolve_metadata_for_a_field(int version, string identifier = "dbo.Address.Id")
         {
             //given
             var config = ConfigureForMsSqlVersion(version);

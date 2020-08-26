@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ExpressionMediator : 
+    public abstract class ExpressionMediator : 
         IExpression,
         IExpressionAliasProvider,
         IEquatable<ExpressionMediator>
@@ -21,20 +21,21 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public ExpressionMediator(IExpression expression)
+        protected ExpressionMediator(IExpression expression) : this(expression, null)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+        }
+
+        protected ExpressionMediator(IExpression expression, string alias)
+        {
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            Alias = string.IsNullOrWhiteSpace(alias) ? null : alias;
         }
         #endregion
 
         #region as
-        public ExpressionMediator As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+        public abstract ExpressionMediator As(string alias);
         #endregion
-
 
         #region order
         public virtual OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
@@ -42,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region tostring
-        public override string ToString() => $"Mediator({Expression})";
+        public override string ToString() => Expression?.ToString();
         #endregion
 
         #region equals

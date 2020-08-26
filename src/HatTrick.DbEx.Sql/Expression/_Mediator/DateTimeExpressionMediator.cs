@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public DateTimeExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected DateTimeExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new DateTimeExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new DateTimeExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals

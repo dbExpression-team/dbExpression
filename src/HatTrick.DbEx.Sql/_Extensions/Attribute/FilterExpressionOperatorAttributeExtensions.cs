@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Attribute
         public static FilterExpressionOperator GetFilterOperator(this string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                return default(FilterExpressionOperator);
+                return default;
 
             var values = Enum.GetValues(typeof(FilterExpressionOperator));
             var fi = typeof(FilterExpressionOperator).GetFields();
@@ -48,13 +48,13 @@ namespace HatTrick.DbEx.Sql.Attribute
             if (Enum.TryParse(value, true, out FilterExpressionOperator parsedValue))
                 return parsedValue;
 
-            return default(FilterExpressionOperator);
+            return default;
         }
 
         public static SortedDictionary<FilterExpressionOperator, string> GetValuesAndFilterOperators(this Type type)
         {
             if (type != typeof(FilterExpressionOperator))
-                throw new InvalidOperationException("Type must be DBFilterExpressionOperator");
+                throw new InvalidOperationException($"Type must be {nameof(FilterExpressionOperator)}");
 
             var sortedDictionary = new SortedDictionary<FilterExpressionOperator, string>();
             foreach (var value in Enum.GetValues(type))

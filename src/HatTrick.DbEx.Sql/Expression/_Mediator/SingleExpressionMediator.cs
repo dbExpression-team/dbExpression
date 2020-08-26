@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public SingleExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected SingleExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new SingleExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new SingleExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals

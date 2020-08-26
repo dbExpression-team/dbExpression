@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public DecimalExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected DecimalExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new DecimalExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new DecimalExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals

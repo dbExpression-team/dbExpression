@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Attribute;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -22,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => $"({LeftArg} {ExpressionOperator} {RightArg})";
+        public override string ToString() => $"({LeftArg} {ExpressionOperator.GetArithmeticOperator()} {RightArg})";
         #endregion
 
         #region equals

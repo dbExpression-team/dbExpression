@@ -10,7 +10,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
         #region internals
-        private static readonly {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression("{..\$.Name}.{$.Name}");
+        private static readonly {($) => ResolveName}SchemaExpression _schema = new {($) => ResolveName}SchemaExpression("{$.Name}");
         #endregion
 
         #region interface
