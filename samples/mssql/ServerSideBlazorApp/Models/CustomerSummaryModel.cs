@@ -1,4 +1,6 @@
-﻿namespace ServerSideBlazorApp.Models
+﻿using System.Collections;
+
+namespace ServerSideBlazorApp.Models
 {
     public class CustomerSummaryModel
     {

@@ -16,14 +16,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public NullableEnumExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected NullableEnumExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new NullableEnumExpressionMediator<TEnum> As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new NullableEnumExpressionMediator<TEnum>(this.Expression, alias);
         #endregion
 
         #region order

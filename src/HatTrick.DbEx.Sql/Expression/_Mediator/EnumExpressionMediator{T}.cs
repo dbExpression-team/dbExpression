@@ -15,14 +15,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public EnumExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected EnumExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new EnumExpressionMediator<TEnum> As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new EnumExpressionMediator<TEnum>(this.Expression, alias);
         #endregion
 
         #region order

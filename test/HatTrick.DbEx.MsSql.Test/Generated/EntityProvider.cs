@@ -9,7 +9,7 @@ namespace DbEx.dboDataService
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         #region internals
-        private static readonly dboSchemaExpression _schema = new dboSchemaExpression("MsSqlDbExTest.dbo");
+        private static readonly dboSchemaExpression _schema = new dboSchemaExpression("dbo");
         #endregion
 
         #region interface
@@ -41,7 +41,7 @@ namespace DbEx.secDataService
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         #region internals
-        private static readonly secSchemaExpression _schema = new secSchemaExpression("MsSqlDbExTest.sec");
+        private static readonly secSchemaExpression _schema = new secSchemaExpression("sec");
         #endregion
 
         #region interface

@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public NullableDateTimeOffsetExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected NullableDateTimeOffsetExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new NullableDateTimeOffsetExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new NullableDateTimeOffsetExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals

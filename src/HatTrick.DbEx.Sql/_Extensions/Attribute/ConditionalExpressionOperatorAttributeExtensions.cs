@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Attribute
         public static ConditionalExpressionOperator GetConditionalOperator(this string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                return default(ConditionalExpressionOperator);
+                return default;
 
             var values = Enum.GetValues(typeof(ConditionalExpressionOperator));
             var fi = typeof(ConditionalExpressionOperator).GetFields();
@@ -48,13 +48,13 @@ namespace HatTrick.DbEx.Sql.Attribute
             if (Enum.TryParse(value, true, out ConditionalExpressionOperator parsedValue))
                 return parsedValue;
 
-            return default(ConditionalExpressionOperator);
+            return default;
         }
 
         public static SortedDictionary<ConditionalExpressionOperator, string> GetValuesAndConditionalOperators(this Type type)
         {
             if (type != typeof(ConditionalExpressionOperator))
-                throw new InvalidOperationException("Type must be DBConditionalExpressionOperator");
+                throw new InvalidOperationException($"Type must be {nameof(ConditionalExpressionOperator)}");
 
             var sortedDictionary = new SortedDictionary<ConditionalExpressionOperator, string>();
             foreach (var value in Enum.GetValues(type))

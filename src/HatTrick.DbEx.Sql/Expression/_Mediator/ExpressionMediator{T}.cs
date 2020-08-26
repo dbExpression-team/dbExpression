@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -11,9 +9,17 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public ExpressionMediator(IExpression expression) : base(expression)
+        protected ExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected ExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
+        #endregion
+
+        #region as
+        public override ExpressionMediator As(string alias) => throw new NotImplementedException("Expected concrete type to override the As method.");
         #endregion
     }
 }

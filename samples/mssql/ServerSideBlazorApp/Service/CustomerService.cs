@@ -16,20 +16,6 @@ namespace ServerSideBlazorApp.Service
 {
     public class CustomerService
     {
-        private static readonly IDictionary<string, OrderByExpression> orderByFields = new Dictionary<string, OrderByExpression>()
-        {
-            { nameof(CustomerSummaryModel.Name), dbo.Person.FirstName + " " + dbo.Person.LastName },
-            { nameof(CustomerSummaryModel.LifetimeValue), db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m) },
-            { nameof(CustomerSummaryModel.CurrentAge), db.fx.DatePart(DateParts.Year, db.fx.GetDate()) - db.fx.IsNull(db.fx.DatePart(DateParts.Year, dbo.Person.BirthDate), db.fx.DatePart(DateParts.Year, db.fx.GetDate())) }
-        };
-
-        private static readonly IDictionary<string, SelectExpression> selectFields = new Dictionary<string, SelectExpression>()
-        {
-            { nameof(CustomerSummaryModel.Name), dbo.Person.FirstName + " " + dbo.Person.LastName },
-            { nameof(CustomerSummaryModel.LifetimeValue), db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m) },
-            { nameof(CustomerSummaryModel.CurrentAge), db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Person.BirthDate, db.fx.GetUtcDate()) / 365.25) }
-        };
-
         public async Task<IEnumerable<(int,decimal)>> GetPurchaseValueByYear(int customerId)
         {
             IEnumerable<dynamic> metrics = await
@@ -49,12 +35,9 @@ namespace ServerSideBlazorApp.Service
             return metrics.Select(x => ((int,decimal))(x.Year, x.TotalPurchaseAmount));
         }
 
-        public async Task<PageResponseModel<dynamic>> GetSummaryPageAsync(PageModel model)
+        public async Task<PageResponseModel<CustomerSummaryModel>> GetSummaryPageAsync(PageModel model)
         {
-            var queryPredicate = !string.IsNullOrWhiteSpace(model.SearchPhrase) ? (dbo.Person.FirstName + " " + dbo.Person.LastName).Like(model.SearchPhrase + "%") : null;
-
             var customers = await
-
                 db.SelectMany(
                     dbo.Person.Id,
                     (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
@@ -62,7 +45,7 @@ namespace ServerSideBlazorApp.Service
                     db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Person.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge")
                 )
                 .From(dbo.Person)
-                .Where(queryPredicate)
+                .Where(string.IsNullOrWhiteSpace(model.SearchPhrase) ? null : (dbo.Person.FirstName + " " + dbo.Person.LastName).Like(model.SearchPhrase + '%'))
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(
                     dbo.Person.FirstName + " " + dbo.Person.LastName
@@ -78,18 +61,16 @@ namespace ServerSideBlazorApp.Service
                     }
                 );
 
-            var countOfCustomers = await 
-
+            var countOfCustomers = await
                 db.SelectOne(
                     db.fx.Count()
                 )
                 .From(dbo.Person)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Person.Id == dbo.PersonTotalPurchasesView.Id)
-                .Where(queryPredicate)
-
+                .Where(string.IsNullOrWhiteSpace(model.SearchPhrase) ? null : (dbo.Person.FirstName + " " + dbo.Person.LastName).Like(model.SearchPhrase + '%'))
                 .ExecuteAsync();
 
-            return new PageResponseModel<dynamic>(
+            return new PageResponseModel<CustomerSummaryModel>(
                 model.Offset, 
                 model.Limit, 
                 model.SearchPhrase, 

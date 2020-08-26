@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -20,7 +21,19 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region tostring
-        public override string ToString() => Expression?.ToString() ?? "null";
+        public override string ToString()
+        {
+            if (Expression is null)
+                return "null";
+
+            if (!(Expression is string))
+                return Expression.ToString();
+
+            string exp = Expression as string;
+            if (exp.All(char.IsWhiteSpace)) return $"'{Expression}'";
+
+            return Expression.ToString();
+        }
         #endregion
 
         #region equals

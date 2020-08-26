@@ -57,5 +57,35 @@ namespace {Namespace}
         {/each}
         #endregion
         #endregion
+
+        #region filter operators
+        {#each FilterOperations}
+        public static FilterExpression<bool> operator {$.FilterOperatorSymbol}({..\$.Type.Name}ExpressionMediator a, {..\$.Type.Alias} b) => new FilterExpression<bool>(a, new {..\$.Type.Name}ExpressionMediator(new LiteralExpression<{..\$.Type.Alias}>(b)), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<bool> operator {$.FilterOperatorSymbol}({..\$.Type.Alias} a, {..\$.Type.Name}ExpressionMediator b) => new FilterExpression<bool>(new {..\$.Type.Name}ExpressionMediator(new LiteralExpression<{..\$.Type.Alias}>(a)), b, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#if Type.IsNullable}
+        {#each FilterOperations}
+        public static FilterExpression<bool> operator {$.FilterOperatorSymbol}({..\$.Type.Name}ExpressionMediator a, {..\$.Type.Alias}? b) => new FilterExpression<bool>(a, new {..\$.Type.Name}ExpressionMediator(new LiteralExpression<{..\$.Type.Alias}?>(b)), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#each FilterOperations}
+        public static FilterExpression<bool> operator {$.FilterOperatorSymbol}({..\$.Type.Alias}? a, {..\$.Type.Name}ExpressionMediator b) => new FilterExpression<bool>(new {..\$.Type.Name}ExpressionMediator(new LiteralExpression<{..\$.Type.Alias}?>(a)), b, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+        {/if}
+
+        {#each FilterOperations}
+        public static FilterExpression<bool> operator {$.FilterOperatorSymbol}({..\$.Type.Name}ExpressionMediator a, {..\$.Type.Name}ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+
+        {#if Type.IsNullable}
+        {#each FilterOperations}
+        public static FilterExpression<bool?> operator {$.FilterOperatorSymbol}({..\$.Type.Name}ExpressionMediator a, Nullable{..\$.Type.Name}ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
+        {/if}
+        #endregion
     }}
 }}

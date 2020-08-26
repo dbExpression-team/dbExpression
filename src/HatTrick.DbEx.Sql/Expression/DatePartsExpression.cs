@@ -16,6 +16,10 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
+        #region to string
+        public override string ToString() => Expression.ToString() ?? string.Empty;
+        #endregion
+
         #region equals
         public bool Equals(DatePartsExpression obj)
         {

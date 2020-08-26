@@ -14,14 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public GuidExpressionMediator(IExpression expression) : base(expression)
         {
         }
+
+        protected GuidExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
         #endregion
 
         #region as
         public new GuidExpressionMediator As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+            => new GuidExpressionMediator(this.Expression, alias);
         #endregion
 
         #region equals
