@@ -63,6 +63,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2019", "2019", "{C00E09CC-7
 		build\mssql\2019\.env = build\mssql\2019\.env
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "versioning", "versioning", "{27D3DE1C-1F2B-4CB0-B10B-455EF0C32DB4}"
+	ProjectSection(SolutionItems) = preProject
+		build\versioning\CreateAssemblyInfoFiles.ps1 = build\versioning\CreateAssemblyInfoFiles.ps1
+		build\versioning\version.json = build\versioning\version.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,6 +134,7 @@ Global
 		{75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB} = {F642B40A-E26D-4E67-94EB-8E9DA192E642}
 		{694DC721-5CA7-4A94-BFD7-BCCDE37F2C1D} = {75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB}
 		{C00E09CC-7AE2-4217-890F-5F43B08E1B51} = {75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB}
+		{27D3DE1C-1F2B-4CB0-B10B-455EF0C32DB4} = {F642B40A-E26D-4E67-94EB-8E9DA192E642}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}
