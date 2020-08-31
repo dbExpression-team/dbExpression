@@ -1,0 +1,40 @@
+{
+	projects: [
+		{
+			name: "tools",
+			companyName: "HatTrick Labs, LLC",
+			productName: "HatTrick.DbEx.Tools",
+			assemblyInfoPath: "../../tools/HatTrick.DbEx.Tools/Properties/AssemblyInfo.cs",
+			major: 1,
+			minor: 0,
+			nuGetSuffix: "beta"
+		},
+		{
+			name: "dbex",
+			companyName: "HatTrick Labs, LLC",
+			productName: "HatTrick.DbEx.MsSql",
+			assemblyInfoPath: "../../src/HatTrick.DbEx/Properties/AssemblyInfo.cs",
+			major: 1,
+			minor: 0,
+			nuGetSuffix: "beta"
+		},
+		{
+			name: "dbex-sql",
+			companyName: "HatTrick Labs, LLC",
+			productName: "HatTrick.DbEx.MsSql",
+			assemblyInfoPath: "../../src/HatTrick.DbEx.Sql/Properties/AssemblyInfo.cs",
+			major: 1,
+			minor: 0,
+			nuGetSuffix: "beta"
+		},
+		{
+			name: "dbex-mssql",
+			companyName: "HatTrick Labs, LLC",
+			productName: "HatTrick.DbEx.MsSql",
+			assemblyInfoPath: "../../src/HatTrick.DbEx.MsSql/Properties/AssemblyInfo.cs",
+			major: 1,
+			minor: 0,
+			nuGetSuffix: "beta"
+		}
+	]
+}

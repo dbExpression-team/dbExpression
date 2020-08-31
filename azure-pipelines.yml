@@ -43,8 +43,14 @@ stages:
     displayName: 'Build'
     jobs:
     - job: Build
-      displayName: 'Build'          
-      steps:      
+      displayName: 'Build'
+      steps:
+        - task: PowerShell@2
+          displayName: 'Create Assembly Info Files'
+          inputs:
+            filePath: '$(Build.SourcesDirectory)/build/versioning/CreateAssemblyInfoFiles.ps1'
+            arguments: '$(Build.SourceBranchName) $(Build.SourceVersion) $(Build.BuildNumber)'
+            workingDirectory: $(Build.SourcesDirectory)/build/versioning
         - task: NuGetCommand@2
           displayName: Restore NuGet Packages
           inputs:
