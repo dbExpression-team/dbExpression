@@ -66,6 +66,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "versioning", "versioning", "{27D3DE1C-1F2B-4CB0-B10B-455EF0C32DB4}"
 	ProjectSection(SolutionItems) = preProject
 		build\versioning\CreateAssemblyInfoFiles.ps1 = build\versioning\CreateAssemblyInfoFiles.ps1
+		build\versioning\CreateNuspecFiles.ps1 = build\versioning\CreateNuspecFiles.ps1
+		build\versioning\GenerateVersion.ps1 = build\versioning\GenerateVersion.ps1
 		build\versioning\version.json = build\versioning\version.json
 	EndProjectSection
 EndProject
