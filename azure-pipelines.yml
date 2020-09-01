@@ -51,6 +51,14 @@ stages:
             filePath: '$(Build.SourcesDirectory)/build/versioning/CreateAssemblyInfoFiles.ps1'
             arguments: '$(Build.SourceBranchName) $(Build.SourceVersion) $(Build.BuildNumber)'
             workingDirectory: $(Build.SourcesDirectory)/build/versioning
+            pwsh: true
+        - task: PowerShell@2
+          displayName: 'Create Nuspec Files'
+          inputs:
+            filePath: '$(Build.SourcesDirectory)/build/versioning/CreateNuspecFiles.ps1'
+            arguments: '$(Build.SourceBranchName) $(Build.SourceVersion)'
+            workingDirectory: $(Build.SourcesDirectory)/build/versioning
+            pwsh: true
         - task: NuGetCommand@2
           displayName: Restore NuGet Packages
           inputs:
