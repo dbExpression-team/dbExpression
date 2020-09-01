@@ -5,16 +5,15 @@
 			name: "tools",
 			productName: "HatTrick.DbEx.Tools",
 			assemblyInfoPath: "../../tools/HatTrick.DbEx.Tools/Properties/AssemblyInfo.cs",
-			major: 2,
-			minor: 1,
+			major: 1,
+			minor: 0,
 			nuGet: {
+				patch: 1,
 				nuSpecPath: "../../tools/HatTrick.DbEx.Tools/HatTrick.DbEx.Tools.nuspec",
 				id: "HatTrick.DbEx.Tools",
 				title: "Code Generation",
 				authors: "jerrod.eiman, gwgrubbs",
 				description: "A .net tool for generating code",
-				patch: 1,
-				suffix: "bankfix",
 				tags: [
 					"code-generation",
 					"sql-query"
@@ -31,12 +30,12 @@
 			major: 1,
 			minor: 0,
 			nuGet: {
+				patch: 1,
 				nuSpecPath: "../../src/HatTrick.DbEx.Sql/HatTrick.DbEx.Sql.nuspec",
 				id: "HatTrick.DbEx.Sql",
 				title: "DbExpression base library for sql",
 				authors: "jerrod.eiman, gwgrubbs",
 				description: "Common abstractions used by platform specific versions of DbExpression",
-				patch: 1,
 				licenseType: "MIT",
 				projectUrl: "https://github.com/HatTrickLabs/db-ex",
 			}
@@ -48,12 +47,12 @@
 			major: 1,
 			minor: 0,
 			nuGet: {
+				patch: 1,
 				nuSpecPath: "../../src/HatTrick.DbEx.MsSql/HatTrick.DbEx.MsSql.nuspec",
 				id: "HatTrick.DbEx.MsSql",
 				title: "DbExpression for Microsoft Sql Server",
 				authors: "jerrod.eiman, gwgrubbs",
 				description: "Description",
-				patch: 1,
 				licenseType: "MIT",
 				projectUrl: "https://github.com/HatTrickLabs/db-ex",
 			}
