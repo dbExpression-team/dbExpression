@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.Common;
 using System.Data.SqlClient;
 using ht = HatTrick.DbEx.Sql.Connection;
@@ -9,7 +8,11 @@ namespace HatTrick.DbEx.MsSql
     public class MsSqlConnection : ht.SqlConnection
     {
         #region constructors
-        public MsSqlConnection() : base()
+        private MsSqlConnection() : base()
+        {
+        }
+
+        public MsSqlConnection(string connectionString) : base(connectionString)
         {
         }
 

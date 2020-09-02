@@ -9,7 +9,6 @@
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
-    <ProjectReference Include="..\HatTrick.DbEx\HatTrick.DbEx.csproj" />
   </ItemGroup>
 
   <ItemGroup>
