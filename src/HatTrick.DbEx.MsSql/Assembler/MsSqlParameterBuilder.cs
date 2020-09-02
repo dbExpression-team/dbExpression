@@ -11,9 +11,16 @@ namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlParameterBuilder : SqlParameterBuilder
     {
+        private readonly Func<Type, SqlDbType> typeMap;
+
+        public MsSqlParameterBuilder(Func<Type, SqlDbType> typeMap)
+        {
+            this.typeMap = typeMap ?? throw new ArgumentNullException($"{nameof(typeMap)} is required.");
+        }
+
         public override DbParameter Add<T>(T value)
         {
-            var parameter = Create(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
+            var parameter = Create(value, typeMap(typeof(T)), null, null, null);
             var parameterized = new ParameterizedFieldExpression(parameter, null, null);
             Parameters.Add(parameterized);
             return parameter;
@@ -21,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         public override DbParameter Add(object value, Type valueType)
         {
-            var parameter = Create(value, MsSqlTypeMap.GetSqlType(valueType), null, null, null);
+            var parameter = Create(value, typeMap(valueType), null, null, null);
             var parameterized = new ParameterizedFieldExpression(parameter, null, null);
             Parameters.Add(parameterized);
             return parameter;
@@ -36,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             }
             else
             {
-                parameter = Create(value, MsSqlTypeMap.GetSqlType(typeof(T)), null, null, null);
+                parameter = Create(value, typeMap(typeof(T)), null, null, null);
             }
             var parameterized = new ParameterizedFieldExpression(parameter, field, meta);
             Parameters.Add(parameterized);

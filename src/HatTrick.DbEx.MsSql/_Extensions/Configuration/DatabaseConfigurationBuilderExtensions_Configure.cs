@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.MsSql.Assembler;
 using HatTrick.DbEx.MsSql.Connection;
+using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
@@ -50,8 +51,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
             builder.UseEntityFactory<EntityFactory>();
             builder.UseValueConverterFactory<ValueConverterFactory>();
             builder.UseMapperFactory<MapperFactory>();
-            builder.UseParameterBuilderFactory<MsSqlParameterBuilderFactory>();
             builder.UseExecutionPipelineFactory<ExecutionPipelineFactory>();
+            builder.UseParameterBuilderFactory(new MsSqlParameterBuilderFactory(t => MsSqlTypeMap.GetSqlType(t)));
 
             var appenderFactory = new MsSqlAssemblyPartAppenderFactory();
             appenderFactory.RegisterDefaultPartAppenders();

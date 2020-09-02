@@ -1,6 +1,4 @@
-﻿using HatTrick.DbEx.Configuration;
-using System;
-using System.Configuration;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
@@ -37,19 +35,18 @@ namespace HatTrick.DbEx.Sql.Connection
         #endregion
 
         #region constructors
-        protected SqlConnection() : this(ConfigurationService.Database.DefaultDatabase)
+        protected SqlConnection()
         {
         }
 
-        protected SqlConnection(string connectionStringName)
+        protected SqlConnection(string connectionString)
         {
-            if (string.IsNullOrEmpty(connectionStringName))
+            if (string.IsNullOrEmpty(connectionString))
             {
-                throw new ArgumentNullException(nameof(connectionStringName));
+                throw new ArgumentNullException(nameof(connectionString));
             }
 
-            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[connectionStringName] ?? throw new ArgumentException("no connection string found for provided name: " + connectionStringName, nameof(connectionStringName)); ;
-            ConnectionStringFactory = () => settings.ConnectionString;
+            ConnectionStringFactory = () => connectionString;
         }
 
         protected SqlConnection(Func<string> connectionStringFactory)

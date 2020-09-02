@@ -1,24 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using HatTrick.DbEx.Utility;
+using HatTrick.DbEx.Sql;
 
 namespace HatTrick.DbEx.MsSql.Types
 {
     public static class MsSqlTypeMap
     {
         #region internals
-        private static object _sqlTypeDictLock = new object();
-        private static Dictionary<Type, SqlDbType> _sqlTypeDict;
+        private static Dictionary<Type, SqlDbType> sqlTypeMap = new Dictionary<Type, SqlDbType>()
+        {
+            { typeof(string), SqlDbType.VarChar }, //TODO: JRod, how varchar/nvarchar (sqlserver isnt picky...sqlce is ?)
+            { typeof(int), SqlDbType.Int },
+            { typeof(decimal), SqlDbType.Decimal },
+            { typeof(DateTime), SqlDbType.DateTime },
+            { typeof(bool), SqlDbType.Bit },
+            { typeof(byte), SqlDbType.TinyInt },
+            { typeof(long), SqlDbType.BigInt },
+            { typeof(object), SqlDbType.Binary },
+            { typeof(double), SqlDbType.Float },
+            { typeof(float), SqlDbType.Real },
+            { typeof(short), SqlDbType.SmallInt },
+            { typeof(Guid), SqlDbType.UniqueIdentifier },
+            { typeof(byte[]), SqlDbType.VarBinary },
+            { typeof(ushort), SqlDbType.SmallInt },
+            { typeof(sbyte), SqlDbType.TinyInt },
+            { typeof(uint), SqlDbType.Int },
+            { typeof(TimeSpan), SqlDbType.Time },
+            
+            { typeof(int?), SqlDbType.Int },
+            { typeof(bool?), SqlDbType.Bit },
+            { typeof(DateTime?), SqlDbType.DateTime },
+            { typeof(decimal?), SqlDbType.Decimal },
+            { typeof(long?), SqlDbType.BigInt },
+            { typeof(ulong?), SqlDbType.BigInt },
+            { typeof(double?), SqlDbType.Float },
+            { typeof(float?), SqlDbType.Real },
+            { typeof(short?), SqlDbType.SmallInt },
+            { typeof(ushort?), SqlDbType.SmallInt },
+            { typeof(byte?), SqlDbType.TinyInt },
+            { typeof(sbyte?), SqlDbType.TinyInt },
+            { typeof(uint?), SqlDbType.Int }
+        };
         #endregion
 
         #region get sql type text
         public static string GetSqlTypeText(Type t, int? maxLength, int? precision, int? scale)
         {
             string sqlBase;
-            if (MsSqlTypeMap.IsSqlTypeKnown(t))
+            if (IsSqlTypeKnown(t))
             {
-                sqlBase = MsSqlTypeMap.GetSqlType(t).ToString().ToLower();
+                sqlBase = GetSqlType(t).ToString().ToLower();
                 if (maxLength.HasValue)
                 {
                     if (maxLength.Value == -1)
@@ -163,21 +195,20 @@ namespace HatTrick.DbEx.MsSql.Types
         public static SqlDbType GetSqlType(Type t)
         {
             if (t is null) { throw new ArgumentNullException("t", "Cannot resolve type 'null'"); }
-            Dictionary<Type, SqlDbType> typeDict = GetSqlTypeDictionary();
 
             Type underlyingType;
             if (t.IsEnum)
             {
-                underlyingType = TypeUtility.GetUnderlyingEnumType(t);
+                underlyingType = t.GetUnderlyingEnumType();
             }
             else
             {
-                underlyingType = TypeUtility.EnsureUnderlyingType(t);
+                underlyingType = t.EnsureUnderlyingType();
             }
 
-            if (typeDict.ContainsKey(underlyingType))
+            if (sqlTypeMap.ContainsKey(underlyingType))
             {
-                return typeDict[underlyingType];
+                return sqlTypeMap[underlyingType];
             }
             else
             {
@@ -221,9 +252,9 @@ namespace HatTrick.DbEx.MsSql.Types
             precision = null;
             scale = null;
 
-            SqlDbType? sqlT = MsSqlTypeMap.GetSqlDBTypeFromDeclaration(sqlTypeText);
+            SqlDbType? sqlT = GetSqlDBTypeFromDeclaration(sqlTypeText);
 
-            if (sqlT is object && MsSqlTypeMap.SqlTypeAllowsPrecisionAndScale(sqlT.Value))
+            if (sqlT is object && SqlTypeAllowsPrecisionAndScale(sqlT.Value))
             {
                 sqlTypeText = sqlTypeText.Replace(" ", string.Empty);
                 int openIdx = sqlTypeText.IndexOf('(');
@@ -314,7 +345,7 @@ namespace HatTrick.DbEx.MsSql.Types
             try
             {
                 SqlDbType sqlT = (SqlDbType)Enum.Parse(typeof(SqlDbType), sqlTypeDeclaration, true);
-                return (GetAssemblyType(sqlT, false) == TypeUtility.EnsureUnderlyingType(assemblyType));
+                return (GetAssemblyType(sqlT, false) == assemblyType.EnsureUnderlyingType());
             }
             catch
             {
@@ -330,7 +361,7 @@ namespace HatTrick.DbEx.MsSql.Types
             {
                 throw new ArgumentException("The assembly type supplied is not a known type.", "assemblyType");
             }
-            return (GetAssemblyType(sqlType, false) == TypeUtility.EnsureUnderlyingType(assemblyType));
+            return GetAssemblyType(sqlType, false) == assemblyType.EnsureUnderlyingType();
         }
         #endregion
 
@@ -341,15 +372,14 @@ namespace HatTrick.DbEx.MsSql.Types
             Type underlyingType;
             if (t.IsEnum)
             {
-                underlyingType = TypeUtility.GetUnderlyingEnumType(t);
+                underlyingType = t.GetUnderlyingEnumType();
             }
             else
             {
-                underlyingType = TypeUtility.EnsureUnderlyingType(t);
+                underlyingType = t.EnsureUnderlyingType();
             }
 
-            Dictionary<Type, SqlDbType> typeDict = MsSqlTypeMap.GetSqlTypeDictionary();
-            return typeDict.ContainsKey(underlyingType);
+            return sqlTypeMap.ContainsKey(underlyingType);
         }
         #endregion
 
@@ -372,52 +402,6 @@ namespace HatTrick.DbEx.MsSql.Types
             {
                 return false;
             }
-        }
-        #endregion
-
-        #region get sql type dictionary
-        private static Dictionary<Type, SqlDbType> GetSqlTypeDictionary()
-        {
-            lock (_sqlTypeDictLock)
-            {
-                if (_sqlTypeDict is null)
-                {
-                    _sqlTypeDict = new Dictionary<Type, SqlDbType>();
-
-                    _sqlTypeDict.Add(typeof(string), SqlDbType.VarChar); //TODO: JRod, how varchar/nvarchar (sqlserver isnt picky...sqlce is ?)
-                    _sqlTypeDict.Add(typeof(int), SqlDbType.Int);
-                    _sqlTypeDict.Add(typeof(decimal), SqlDbType.Decimal);
-                    _sqlTypeDict.Add(typeof(DateTime), SqlDbType.DateTime);
-                    _sqlTypeDict.Add(typeof(bool), SqlDbType.Bit);
-                    _sqlTypeDict.Add(typeof(byte), SqlDbType.TinyInt);
-                    _sqlTypeDict.Add(typeof(long), SqlDbType.BigInt);
-                    _sqlTypeDict.Add(typeof(object), SqlDbType.Binary);
-                    _sqlTypeDict.Add(typeof(double), SqlDbType.Float);
-                    _sqlTypeDict.Add(typeof(Single), SqlDbType.Real);
-                    _sqlTypeDict.Add(typeof(short), SqlDbType.SmallInt);
-                    _sqlTypeDict.Add(typeof(Guid), SqlDbType.UniqueIdentifier);
-                    _sqlTypeDict.Add(typeof(byte[]), SqlDbType.VarBinary);
-                    _sqlTypeDict.Add(typeof(ushort), SqlDbType.SmallInt);
-                    _sqlTypeDict.Add(typeof(sbyte), SqlDbType.TinyInt);
-                    _sqlTypeDict.Add(typeof(uint), SqlDbType.Int);
-                    _sqlTypeDict.Add(typeof(TimeSpan), SqlDbType.Time);
-
-                    _sqlTypeDict.Add(typeof(int?), SqlDbType.Int);
-                    _sqlTypeDict.Add(typeof(bool?), SqlDbType.Bit);
-                    _sqlTypeDict.Add(typeof(DateTime?), SqlDbType.DateTime);
-                    _sqlTypeDict.Add(typeof(decimal?), SqlDbType.Decimal);
-                    _sqlTypeDict.Add(typeof(long?), SqlDbType.BigInt);
-                    _sqlTypeDict.Add(typeof(ulong?), SqlDbType.BigInt);
-                    _sqlTypeDict.Add(typeof(double?), SqlDbType.Float);
-                    _sqlTypeDict.Add(typeof(Single?), SqlDbType.Real);
-                    _sqlTypeDict.Add(typeof(short?), SqlDbType.SmallInt);
-                    _sqlTypeDict.Add(typeof(ushort?), SqlDbType.SmallInt);
-                    _sqlTypeDict.Add(typeof(byte?), SqlDbType.TinyInt);
-                    _sqlTypeDict.Add(typeof(sbyte?), SqlDbType.TinyInt);
-                    _sqlTypeDict.Add(typeof(uint?), SqlDbType.Int);
-                }
-            }
-            return _sqlTypeDict;
         }
         #endregion
     }
