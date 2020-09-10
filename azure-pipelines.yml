@@ -14,9 +14,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  solution: '**/DbEx.sln'
-  rootName: HatTrick.DbEx
-  rootNameMsSql: HatTrick.DbEx.MsSql
+  solution: 'DbEx.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netCoreVersion: '3.1'
@@ -24,165 +22,123 @@ variables:
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
 
-stages:
-  - stage: Initialize
+jobs:
+  - job: Initialize
     displayName: 'Initialize Agent'
-    jobs:
-    - job: Install
-      displayName: 'Install Agent Dependencies'
-      steps:
-      - checkout: none
-      - task: NuGetToolInstaller@0
-        displayName: Install NuGet
-      - task: DockerInstaller@0
-        displayName: Install Docker CLI
-        inputs:
-          dockerVersion: '17.09.0-ce'
-          
-  - stage: Build
-    displayName: 'Build'
-    jobs:
-    - job: Build
-      displayName: 'Build'
-      steps:
-        - task: PowerShell@2
-          displayName: 'Create Assembly Info Files'
-          inputs:
-            filePath: '$(Build.SourcesDirectory)/build/versioning/CreateAssemblyInfoFiles.ps1'
-            arguments: '$(Build.SourceBranchName) $(Build.SourceVersion) $(Build.BuildNumber)'
-            workingDirectory: $(Build.SourcesDirectory)/build/versioning
-            pwsh: true
-        - task: PowerShell@2
-          displayName: 'Create Nuspec Files'
-          inputs:
-            filePath: '$(Build.SourcesDirectory)/build/versioning/CreateNuspecFiles.ps1'
-            arguments: '$(Build.SourceBranchName) $(Build.SourceVersion)'
-            workingDirectory: $(Build.SourcesDirectory)/build/versioning
-            pwsh: true
-        - task: NuGetCommand@2
-          displayName: Restore NuGet Packages
-          inputs:
-            restoreSolution: '$(solution)'
-            arguments: '-PackagesDirectory $(Build.SourcesDirectory)/packages'
-        - task: DotNetCoreCLI@2
-          displayName: 'Build Solution'
-          inputs:
-            command: 'build'
-            projects: '$(solution)'
-            arguments: '--configuration $(buildConfiguration)'
-        - publish: $(Build.SourcesDirectory)
-          displayName: 'Publish to Staging Location'
-          artifact: $(stageLocationName)
-            
-  - stage: Test_Code
+    steps:
+    
+    - checkout: none
+
+    - task: NuGetToolInstaller@0
+      displayName: Install NuGet
+    
+    - task: DockerInstaller@0
+      displayName: Install Docker CLI
+      inputs:
+        dockerVersion: '17.09.0-ce'
+
+  - job: Build
+    dependsOn: Initialize
+    displayName: 'Build and Package Solution'
+    steps:
+
+    - task: PowerShell@2
+      displayName: 'Build and Package Solution'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/build.ps1'
+        arguments: '-Configuration $(buildConfiguration) -BranchName $(Build.SourceBranchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber)'
+        workingDirectory: $(Build.SourcesDirectory)
+        pwsh: true
+
+    - publish: $(Build.SourcesDirectory)
+      displayName: 'Publish to Staging Location'
+      artifact: $(stageLocationName)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Execute Tests'
+      inputs:
+        command: 'test'
+        projects: '$(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj'
+        arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Build.SourcesDirectory)/results/mssql-core.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: $(Build.SourcesDirectory)/results/mssql-core.trx
+        testRunTitle: 'MSSQL (Core)'
+        mergeTestResults: true
+        failTaskOnFailedTests: true
+
+    - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+      displayName: 'Generate Code Coverage Report'
+      inputs:
+        reports: $(Build.SourcesDirectory)/test/HatTrick.DbEx.MsSql.Test.Code/**/coverage.cobertura.xml
+        targetdir: $(Build.SourcesDirectory)/results/coverage
+        reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+
+    - publish: $(Build.SourcesDirectory)/results/mssql-core.trx
+      displayName: 'Publish Results to Staging Location'
+      artifact: mssql-core-results
+
+  - job: Test_MSSQL_2017
     dependsOn: Build
-    displayName: 'Test MSSQL Core'
-    jobs:
-    - job:
-      displayName: 'MSSQL'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-      - task: DotNetCoreCLI@2
-        displayName: 'Execute Tests'
-        inputs:
-          command: test
-          projects: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/*.csproj
-          arguments: '--configuration $(buildConfiguration) --logger "trx;LogFileName=$(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude="[*Test]*"'
-      - task: PublishTestResults@2
-        displayName: 'Publish Test Results'
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx
-          testRunTitle: 'MSSQL (Core)'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-      - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-        displayName: 'Generate Code Coverage Report'
-        inputs:
-          reports: $(Pipeline.Workspace)/$(stageLocationName)/test/HatTrick.DbEx.MsSql.Test.Code/**/coverage.cobertura.xml
-          targetdir: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-          reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'          
-#      - task: PublishCodeCoverageResults@1
-#        displayName: 'Publish Code Coverage Results'
-#        inputs:
-#          codeCoverageTool: cobertura
-#          summaryFileLocation: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage/*obertura.xml #case sensitivity: C|c
-#          # To make the task not regenerate the report, a pipeline environment variable was added: "disable.coverage.autogenerate: 'true'"
-#          # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
-#          reportDirectory: $(Pipeline.Workspace)/$(stageLocationName)/results/coverage
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-core-results
-        
-  - stage: Test_Execution
+    displayName: 'Test MSSQL 2017'
+    steps:
+
+    - checkout: none
+    - download: current
+      artifact: $(stageLocationName)
+
+    - template: ${{variables['System.DefaultWorkingDirectory']}}/build/mssql/azure-pipelines-test-template.yml
+      parameters:
+        version: 2017
+        workingFolder: $(Pipeline.Workspace)/$(stageLocationName)
+        testOutputFilePath: /results
+        testOutputFileName: mssql-2017.trx
+        codeCoverageOutputFilePath: /results
+        codeCoverageOutputFileName: mssql-2017.cobertura.xml
+
+    - task: PublishTestResults@2
+      displayName: Publish Test Results
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx
+        testRunTitle: 'MSSQL 2017'
+        mergeTestResults: true
+        failTaskOnFailedTests: true
+
+    - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx 
+      displayName: 'Publish Results to Staging Location'
+      artifact: mssql-2017-results
+
+  - job: Test_MSSQL_2019
     dependsOn: Build
-    displayName: 'Test MSSQL Platforms'
-    jobs:          
-    - job: Test_MSSQL_2017
-      displayName: 'MSSQL 2017'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-      - template: ${{variables['System.DefaultWorkingDirectory']}}/build/mssql/azure-pipelines-test-template.yml
-        parameters:
-          version: 2017
-          workingFolder: $(Pipeline.Workspace)/$(stageLocationName)
-          testOutputFilePath: /results
-          testOutputFileName: mssql-2017.trx
-          codeCoverageOutputFilePath: /results
-          codeCoverageOutputFileName: mssql-2017.cobertura.xml
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx
-          testRunTitle: 'MSSQL 2017'
-          mergeTestResults: true
-          failTaskOnFailedTests: true          
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2017.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-2017-results
-    - job: Test_MSSQL_2019
-      displayName: 'MSSQL 2019'
-      steps:
-      - checkout: none
-      - download: current
-        artifact: $(stageLocationName)
-      - template: ${{variables['System.DefaultWorkingDirectory']}}/build/mssql/azure-pipelines-test-template.yml
-        parameters:
-          version: 2019
-          workingFolder: $(Pipeline.Workspace)/$(stageLocationName)
-          testOutputFilePath: /results
-          testOutputFileName: mssql-2019.trx
-          codeCoverageOutputFilePath: /results
-          codeCoverageOutputFileName: mssql-2019.cobertura.xml
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testResultsFormat: VSTest
-          testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx
-          testRunTitle: 'MSSQL 2019'
-          mergeTestResults: true
-          failTaskOnFailedTests: true
-      - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx 
-        displayName: 'Publish Results to Staging Location'
-        artifact: mssql-2019-results
-        
-  - stage: Publish
-    dependsOn: 
-    -  Test_Code
-    -  Test_Execution
-    jobs:
-      - job: Publish
-        displayName: 'Publish Artifacts'
-        steps:
-        - checkout: none
-#        - task: PublishBuildArtifacts@1
-#          displayName: 'Publish Build Artifacts'
-#          inputs:
-#            pathtoPublish: $(Pipeline.Workspace)/$(stageLocationName)
-#            artifactName: drop
-#            publishLocation: Container
+    displayName: 'Test MSSQL 2019'
+    steps:
+
+    - checkout: none
+    - download: current
+      artifact: $(stageLocationName)
+
+    - template: ${{variables['System.DefaultWorkingDirectory']}}/build/mssql/azure-pipelines-test-template.yml
+      parameters:
+        version: 2019
+        workingFolder: $(Pipeline.Workspace)/$(stageLocationName)
+        testOutputFilePath: /results
+        testOutputFileName: mssql-2019.trx
+        codeCoverageOutputFilePath: /results
+        codeCoverageOutputFileName: mssql-2019.cobertura.xml
+
+    - task: PublishTestResults@2
+      displayName: Publish Test Results
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx
+        testRunTitle: 'MSSQL 2019'
+        mergeTestResults: true
+        failTaskOnFailedTests: true
+
+    - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx 
+      displayName: 'Publish Results to Staging Location'
+      artifact: mssql-2019-results
