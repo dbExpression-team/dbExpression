@@ -61,12 +61,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2019", "2019", "{C00E09CC-7
 		build\mssql\2019\.env = build\mssql\2019\.env
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "versioning", "versioning", "{27D3DE1C-1F2B-4CB0-B10B-455EF0C32DB4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HatTrick", "HatTrick", "{E009B64D-3137-4D5C-B6F2-1E7F5F846FF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AssemblyVersion", "AssemblyVersion", "{17CA9493-5AAC-41CB-A0BA-7F7DA96638E5}"
 	ProjectSection(SolutionItems) = preProject
-		build\versioning\CreateAssemblyInfoFiles.ps1 = build\versioning\CreateAssemblyInfoFiles.ps1
-		build\versioning\CreateNuspecFiles.ps1 = build\versioning\CreateNuspecFiles.ps1
-		build\versioning\GenerateVersion.ps1 = build\versioning\GenerateVersion.ps1
-		build\versioning\version.json = build\versioning\version.json
+		build\HatTrick\AssemblyVersion\AssemblyVersion.psd1 = build\HatTrick\AssemblyVersion\AssemblyVersion.psd1
+		build\HatTrick\AssemblyVersion\AssemblyVersion.psm1 = build\HatTrick\AssemblyVersion\AssemblyVersion.psm1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Project", "Project", "{22FF1C5D-1BA5-4C40-A532-37140E0EC569}"
+	ProjectSection(SolutionItems) = preProject
+		build\HatTrick\Project\Project.psd1 = build\HatTrick\Project\Project.psd1
+		build\HatTrick\Project\Project.psm1 = build\HatTrick\Project\Project.psm1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGetPackage", "NuGetPackage", "{2EBC770C-DEDD-4B5B-A192-7DA10127F255}"
+	ProjectSection(SolutionItems) = preProject
+		build\HatTrick\NuGetPackage\NuGetPackage.psd1 = build\HatTrick\NuGetPackage\NuGetPackage.psd1
+		build\HatTrick\NuGetPackage\NuGetPackage.psm1 = build\HatTrick\NuGetPackage\NuGetPackage.psm1
 	EndProjectSection
 EndProject
 Global
@@ -129,7 +141,10 @@ Global
 		{75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB} = {F642B40A-E26D-4E67-94EB-8E9DA192E642}
 		{694DC721-5CA7-4A94-BFD7-BCCDE37F2C1D} = {75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB}
 		{C00E09CC-7AE2-4217-890F-5F43B08E1B51} = {75E3DA0E-D0C7-4F69-9546-BBE33D3EDEDB}
-		{27D3DE1C-1F2B-4CB0-B10B-455EF0C32DB4} = {F642B40A-E26D-4E67-94EB-8E9DA192E642}
+		{E009B64D-3137-4D5C-B6F2-1E7F5F846FF5} = {F642B40A-E26D-4E67-94EB-8E9DA192E642}
+		{17CA9493-5AAC-41CB-A0BA-7F7DA96638E5} = {E009B64D-3137-4D5C-B6F2-1E7F5F846FF5}
+		{22FF1C5D-1BA5-4C40-A532-37140E0EC569} = {E009B64D-3137-4D5C-B6F2-1E7F5F846FF5}
+		{2EBC770C-DEDD-4B5B-A192-7DA10127F255} = {E009B64D-3137-4D5C-B6F2-1E7F5F846FF5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5A7FA65E-C2BD-41FE-A832-2A7D3B71256E}
