@@ -21,7 +21,16 @@ Param
         [switch]$UseBranchNameAsVersionSuffixWhenNotSupplied
    )
 
-Write-Host "VersionFilePath parameter: " $VersionFilePath
+Write-Host "Configuration parameter: " $Configuration
+Write-Host "BuildPropsFilePath parameter: " $VersionFilePath
+Write-Host "BranchName parameter: " $BranchName
+Write-Host "CommitSHA parameter: " $CommitSHA
+Write-Host "BuildIdentifier parameter: " $BuildIdentifier
+Write-Host "SkipGenerationOfBuildFiles switch: " $SkipGenerationOfBuildFiles
+Write-Host "SkipGenerationOfAssembyInfoFiles switch: " $SkipGenerationOfAssembyInfoFiles
+Write-Host "SkipGenerationOfBuildPropFiles switch: " $SkipGenerationOfBuildPropFiles
+Write-Host "SkipGenerationOfBuildTargetFiles switch: " $SkipGenerationOfBuildTargetFiles
+Write-Host "UseBranchNameAsVersionSuffixWhenNotSupplied switch: " $UseBranchNameAsVersionSuffixWhenNotSupplied
 
 # read configuration from file
 $config = Get-Content $BuildPropsFilePath | ConvertFrom-Json
@@ -41,7 +50,7 @@ if (!($SkipGenerationOfBuildFiles))
             }
             elseif ($UseBranchNameAsVersionSuffixWhenNotSupplied -and $BranchName -ne "master")
             {
-                $rgx = [System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9 -]");
+                $rgx = [System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9]");
                 $suffix = $rgx.Replace($BranchName, "-")
             }
         }
