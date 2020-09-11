@@ -11,7 +11,7 @@ class AssemblyVersion
     [DateTime]$CurrentUtcDate
 
     [string]$AssemblyVersion
-
+    [string]$AssemblyInformationalVersion
 
     AssemblyVersion(
         [string]$Major,
@@ -34,6 +34,20 @@ class AssemblyVersion
         $this.Revision = [int]((New-TimeSpan -Start (New-Object "System.DateTime" -ArgumentList $this.CurrentUtcDate.Year, $this.CurrentUtcDate.Month, $this.CurrentUtcDate.Day) -End $this.CurrentUtcDate).TotalSeconds / 2)
 
         $this.AssemblyVersion = "{0}.{1}.{2}.{3}" -f $this.Major, $this.Minor, $this.Build, $this.Revision
+        
+        if ([string]::IsNullOrEmpty($this.Patch))
+        {
+            $this.AssemblyInformationalVersion = $this.AssemblyVersion
+        }
+        else
+        {
+            $version = "{0}.{1}.{2}" -f $this.Major, $this.Minor, $this.Patch
+            if (![string]::IsNullOrEmpty($this.Suffix))
+            {
+                $version = "{0}-{1}" -f $version, $this.Suffix
+            }      
+            $this.AssemblyInformationalVersion = $version
+       }
     }
 
     [string] ToAssemblyVersionAttribute()

@@ -17,8 +17,9 @@ Param
         [switch]$SkipGenerationOfBuildFiles,
         [switch]$SkipGenerationOfAssembyInfoFiles,
         [switch]$SkipGenerationOfBuildPropFiles,
-        [switch]$SkipGenerationOfBuildTargetFiles
-    )
+        [switch]$SkipGenerationOfBuildTargetFiles,
+        [switch]$UseBranchNameAsVersionSuffixWhenNotSupplied
+   )
 
 Write-Host "VersionFilePath parameter: " $VersionFilePath
 
@@ -31,11 +32,25 @@ if (!($SkipGenerationOfBuildFiles))
 {
     foreach ($project in $config.Projects)
     {
+        $suffix = $null
+        if ((Get-Member -InputObject $project -Name "NuGet" -MemberType Properties) -and $project.nuGet -ne $null)
+        {
+            if(Get-Member -InputObject $project.nuGet -Name "Suffix" -MemberType Properties)
+            {
+                $suffix = $project.nuGet.suffix
+            }
+            elseif ($UseBranchNameAsVersionSuffixWhenNotSupplied -and $BranchName -ne "master")
+            {
+                $rgx = [System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9 -]");
+                $suffix = $rgx.Replace($BranchName, "-")
+            }
+        }
+
         $version = New-AssemblyVersion `
             -Major $project.major `
             -Minor $project.minor `
             -Patch ($project.nuGet -eq $null ? "" : $project.nuGet.patch) `
-            -Suffix ($project.nuGet -eq $null ? "" : $project.nuGet.suffix) `
+            -Suffix $suffix `
             -CurrentUtcDate $now
     
         $p = New-Project `
@@ -52,7 +67,7 @@ if (!($SkipGenerationOfBuildFiles))
         if (!($SkipGenerationOfBuildPropFiles))
         {
             Write-Host "Creating Directory.Build.props for" $p.ProjectPath
-            New-BuildPropsFile $p $config.companyName
+            New-BuildPropsFile -Project $p -CompanyName $config.companyName -AssemblyVersion $version
         }
      
         if (!($SkipGenerationOfBuildTargetFiles))
