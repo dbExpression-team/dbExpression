@@ -14,9 +14,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  solution: '**/DbEx.sln'
-  rootName: HatTrick.DbEx
-  rootNameMsSql: HatTrick.DbEx.MsSql
+  solution: 'DbEx.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netCoreVersion: '3.1'
@@ -38,48 +36,32 @@ stages:
         displayName: Install Docker CLI
         inputs:
           dockerVersion: '17.09.0-ce'
-          
+
   - stage: Build
-    displayName: 'Build'
+    dependsOn: Initialize
+    displayName: 'Build and Package'
     jobs:
-    - job: Build
-      displayName: 'Build'
+    - job:
+      displayName: 'Build Solution and Publish Assets'
       steps:
-        - task: PowerShell@2
-          displayName: 'Create Assembly Info Files'
-          inputs:
-            filePath: '$(Build.SourcesDirectory)/build/versioning/CreateAssemblyInfoFiles.ps1'
-            arguments: '$(Build.SourceBranchName) $(Build.SourceVersion) $(Build.BuildNumber)'
-            workingDirectory: $(Build.SourcesDirectory)/build/versioning
-            pwsh: true
-        - task: PowerShell@2
-          displayName: 'Create Nuspec Files'
-          inputs:
-            filePath: '$(Build.SourcesDirectory)/build/versioning/CreateNuspecFiles.ps1'
-            arguments: '$(Build.SourceBranchName) $(Build.SourceVersion)'
-            workingDirectory: $(Build.SourcesDirectory)/build/versioning
-            pwsh: true
-        - task: NuGetCommand@2
-          displayName: Restore NuGet Packages
-          inputs:
-            restoreSolution: '$(solution)'
-            arguments: '-PackagesDirectory $(Build.SourcesDirectory)/packages'
-        - task: DotNetCoreCLI@2
-          displayName: 'Build Solution'
-          inputs:
-            command: 'build'
-            projects: '$(solution)'
-            arguments: '--configuration $(buildConfiguration)'
-        - publish: $(Build.SourcesDirectory)
-          displayName: 'Publish to Staging Location'
-          artifact: $(stageLocationName)
-            
+      - task: PowerShell@2
+        displayName: 'Build and Package Solution'
+        inputs:
+          filePath: '$(Build.SourcesDirectory)/build.ps1'
+          arguments: '-Configuration $(buildConfiguration) -BranchName $(Build.SourceBranchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber)'
+          workingDirectory: $(Build.SourcesDirectory)
+          pwsh: true
+        
+      - publish: $(Build.SourcesDirectory)
+        displayName: 'Publish to Staging Location'
+        artifact: $(stageLocationName)
+
   - stage: Test_Code
     dependsOn: Build
     displayName: 'Test MSSQL Core'
     jobs:
     - job:
-      displayName: 'MSSQL'
+      displayName: 'Test MSSQL'
       steps:
       - checkout: none
       - download: current
@@ -115,13 +97,13 @@ stages:
       - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-core.trx 
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-core-results
-        
+
   - stage: Test_Execution
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:          
     - job: Test_MSSQL_2017
-      displayName: 'MSSQL 2017'
+      displayName: 'Test MSSQL 2017'
       steps:
       - checkout: none
       - download: current
@@ -146,7 +128,7 @@ stages:
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-2017-results
     - job: Test_MSSQL_2019
-      displayName: 'MSSQL 2019'
+      displayName: 'Test MSSQL 2019'
       steps:
       - checkout: none
       - download: current
@@ -170,19 +152,3 @@ stages:
       - publish: $(Pipeline.Workspace)/$(stageLocationName)/results/mssql-2019.trx 
         displayName: 'Publish Results to Staging Location'
         artifact: mssql-2019-results
-        
-  - stage: Publish
-    dependsOn: 
-    -  Test_Code
-    -  Test_Execution
-    jobs:
-      - job: Publish
-        displayName: 'Publish Artifacts'
-        steps:
-        - checkout: none
-#        - task: PublishBuildArtifacts@1
-#          displayName: 'Publish Build Artifacts'
-#          inputs:
-#            pathtoPublish: $(Pipeline.Workspace)/$(stageLocationName)
-#            artifactName: drop
-#            publishLocation: Container
