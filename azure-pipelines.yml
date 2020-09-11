@@ -23,6 +23,7 @@ variables:
   system.debug: true
   stageLocationName: db-ex
   disable.coverage.autogenerate: 'true'
+  # Azure Pipelines reports Build.SourceBranchName incorrectly if it has a forward slash in the name (release/foo -> foo).  Following expression creates a variable that adheres to the full and complete branch name.
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/') }}:
     branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:

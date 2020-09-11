@@ -22,7 +22,7 @@ Param
    )
 
 Write-Host "Configuration parameter: " $Configuration
-Write-Host "BuildPropsFilePath parameter: " $VersionFilePath
+Write-Host "BuildPropsFilePath parameter: " $BuildPropsFilePath
 Write-Host "BranchName parameter: " $BranchName
 Write-Host "CommitSHA parameter: " $CommitSHA
 Write-Host "BuildIdentifier parameter: " $BuildIdentifier
