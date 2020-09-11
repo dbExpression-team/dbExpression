@@ -40,7 +40,7 @@
 			major: 1,
 			minor: 0,
 			nuGet: {
-				patch: 12,
+				patch: 0,
 				id: "HatTrick.DbEx.MsSql",
 				title: "DbExpression for Microsoft Sql Server",
 				authors: "jerrod.eiman, gwgrubbs",

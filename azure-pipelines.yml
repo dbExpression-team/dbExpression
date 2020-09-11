@@ -48,7 +48,7 @@ stages:
         displayName: 'Build and Package Solution'
         inputs:
           filePath: '$(Build.SourcesDirectory)/build.ps1'
-          arguments: '-Configuration $(buildConfiguration) -BranchName $(Build.SourceBranchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber)'
+          arguments: '-Configuration $(buildConfiguration) -BranchName $(Build.SourceBranchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -UseBranchNameAsVersionSuffixWhenNotSupplied'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
         

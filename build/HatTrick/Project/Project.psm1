@@ -248,7 +248,9 @@ function New-BuildPropsFile()
         [Parameter(ValueFromPipelineByPropertyName)]
         [Project]$Project,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$CompanyName
+        [string]$CompanyName,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [AssemblyVersion]$AssemblyVersion
     )
 
     $dependencies = $Project.GetProjectDependencies()    
@@ -280,6 +282,7 @@ function New-BuildPropsFile()
 
         $props.WriteElementString("Id", $Project.Id)
         $props.WriteElementString("Title", $Project.Title)
+        $props.WriteElementString("Version", $AssemblyVersion.AssemblyInformationalVersion)
         $props.WriteElementString("Authors", $Project.Authors)
         $props.WriteElementString("RequireLicenseAcceptance", $Project.RequireLicenseAcceptance ? "true" : "false")    
         $props.WriteElementString("PackageLicenseExpression", $Project.LicenseType)
