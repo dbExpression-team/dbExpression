@@ -63,19 +63,19 @@ if (!($SkipGenerationOfBuildFiles))
     
         if (!($SkipGenerationOfAssembyInfoFiles))
         {
-            Write-Host "Creating AssemblyInfo.cs for" $p.ProjectPath
+            Write-Host ("[{0}]: Creating AssemblyInfo.cs file" -f $p.Name)
             New-AssemblyInfoFile -AssemblyVersion $version -BranchName $BranchName -CommitSHA $CommitSHA -BuildIdentifier $BuildIdentifier -CompanyName $config.companyName -Project $p
         }
 
         if (!($SkipGenerationOfBuildPropFiles))
         {
-            Write-Host "Creating Directory.Build.props for" $p.ProjectPath
+            Write-Host ("[{0}]: Creating Directory.Build.props file" -f $p.Name)
             New-BuildPropsFile -Project $p -CompanyName $config.companyName -AssemblyVersion $version
         }
      
         if (!($SkipGenerationOfBuildTargetFiles))
         {
-            Write-Host "Creating Directory.Build.targets for" $p.ProjectPath
+            Write-Host ("[{0}]: Creating Directory.Build.targets file" -f $p.Name)
             New-BuildTargetsFile $p
         }
     }
