@@ -131,7 +131,7 @@ class Project
             $version = $packageReference.GetAttribute("Version")
             if (!($Dependencies.ContainsKey($include)))
             {
-                Write-Host ("[{0}]: Adding dependency {1} (version {2})" -f $Name, $include, $version)
+                Write-Host ("[{0}]: Adding dependency {1} (version {2})" -f $this.Name, $include, $version)
                 $dependencies.Add([NuGetDependency]::new($include, $version))
             }
             elseif ($dependencies[$include] -ne $version)
