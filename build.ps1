@@ -52,6 +52,9 @@ if (!($SkipGenerationOfBuildFiles))
             -Patch ($project.nuGet -eq $null ? "" : $project.nuGet.patch) `
             -Suffix $suffix `
             -CurrentUtcDate $now
+
+        Write-Host ("[{0}]: AssemblyVersion: {1}" -f $project.name, $version.AssemblyVersion)
+        Write-Host ("[{0}]: AssemblyInformationalVersion: {1}" -f $project.name, $version.AssemblyInformationalVersion)
     
         $p = New-Project `
             -ProjectPath $project.csprojPath `
