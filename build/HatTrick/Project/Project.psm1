@@ -3,6 +3,7 @@ Set-StrictMode -Version Latest
 class Project
 {
     [ValidateNotNullOrEmpty()][string]$ProjectPath
+    [ValidateNotNullOrEmpty()][string]$Name
     [string]$AssemblyInfoPath
     [string]$CompanyName
     [string]$ProductName
@@ -33,6 +34,7 @@ class Project
         $this.ProjectPath = Join-Path -Path $csprojDirectory -ChildPath (Split-Path $ProjectPath -Leaf)
 
         $this.CompanyName = $CompanyName
+        $this.Name = $Configuration.name
         $this.ProductName = $Configuration.productName
         if ((Get-Member -InputObject $Configuration -Name "NuGet" -MemberType Properties) -and $Configuration.nuGet -ne $null)
         {
@@ -129,7 +131,7 @@ class Project
             $version = $packageReference.GetAttribute("Version")
             if (!($Dependencies.ContainsKey($include)))
             {
-                Write-Host ("Adding dependency {0} (version {1})" -f $include, $version)
+                Write-Host ("[{0}]: Adding dependency {1} (version {2})" -f $this.Name, $include, $version)
                 $dependencies.Add([NuGetDependency]::new($include, $version))
             }
             elseif ($dependencies[$include] -ne $version)
@@ -303,7 +305,7 @@ function New-BuildPropsFile()
     }
     else
     {
-        Write-Host ("Skipping creating NuGet specific elements/attributes in Directory.Build.props file for {0} as it is not packable." -f $Project.ProjectPath)
+        Write-Host ("[{0}]: Skipping creating NuGet specific elements/attributes in Directory.Build.props file (IsPackable resolves to false)." -f $Project.Name)
     }
 
     $props.WriteEndElement() # /PropertyGroup
@@ -323,12 +325,12 @@ function New-BuildTargetsFile()
     $dependencies = $Project.GetProjectDependencies()
     if ($dependencies.Count -eq 0)
     {
-        Write-Host "0 project dependencies discovered, not creating a Directory.Build.targets file for " $Project.ProjectPath
+        Write-Host ("[{0}]: 0 project dependencies discovered, not creating a Directory.Build.targets file" -f $Project.Name)
         return
     }
     else
     {
-        Write-Host ("{0} project dependencies discovered, creating a Directory.Build.targets file for {1}" -f $dependencies.Count, $Project.ProjectPath)
+        Write-Host ("[{0}]: {1} project dependencies discovered, creating a Directory.Build.targets file" -f $Project.Name, $dependencies.Count)
     }
 
     # discover/push directory of current csproj path

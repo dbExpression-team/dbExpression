@@ -21,7 +21,16 @@ Param
         [switch]$UseBranchNameAsVersionSuffixWhenNotSupplied
    )
 
-Write-Host "VersionFilePath parameter: " $VersionFilePath
+Write-Host "Configuration parameter: " $Configuration
+Write-Host "BuildPropsFilePath parameter: " $BuildPropsFilePath
+Write-Host "BranchName parameter: " $BranchName
+Write-Host "CommitSHA parameter: " $CommitSHA
+Write-Host "BuildIdentifier parameter: " $BuildIdentifier
+Write-Host "SkipGenerationOfBuildFiles switch: " $SkipGenerationOfBuildFiles
+Write-Host "SkipGenerationOfAssembyInfoFiles switch: " $SkipGenerationOfAssembyInfoFiles
+Write-Host "SkipGenerationOfBuildPropFiles switch: " $SkipGenerationOfBuildPropFiles
+Write-Host "SkipGenerationOfBuildTargetFiles switch: " $SkipGenerationOfBuildTargetFiles
+Write-Host "UseBranchNameAsVersionSuffixWhenNotSupplied switch: " $UseBranchNameAsVersionSuffixWhenNotSupplied
 
 # read configuration from file
 $config = Get-Content $BuildPropsFilePath | ConvertFrom-Json
@@ -41,7 +50,7 @@ if (!($SkipGenerationOfBuildFiles))
             }
             elseif ($UseBranchNameAsVersionSuffixWhenNotSupplied -and $BranchName -ne "master")
             {
-                $rgx = [System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9 -]");
+                $rgx = [System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9]");
                 $suffix = $rgx.Replace($BranchName, "-")
             }
         }
@@ -52,6 +61,9 @@ if (!($SkipGenerationOfBuildFiles))
             -Patch ($project.nuGet -eq $null ? "" : $project.nuGet.patch) `
             -Suffix $suffix `
             -CurrentUtcDate $now
+
+        Write-Host ("[{0}]: AssemblyVersion: {1}" -f $project.name, $version.AssemblyVersion)
+        Write-Host ("[{0}]: AssemblyInformationalVersion: {1}" -f $project.name, $version.AssemblyInformationalVersion)
     
         $p = New-Project `
             -ProjectPath $project.csprojPath `
@@ -60,19 +72,19 @@ if (!($SkipGenerationOfBuildFiles))
     
         if (!($SkipGenerationOfAssembyInfoFiles))
         {
-            Write-Host "Creating AssemblyInfo.cs for" $p.ProjectPath
+            Write-Host ("[{0}]: Creating AssemblyInfo.cs file" -f $p.Name)
             New-AssemblyInfoFile -AssemblyVersion $version -BranchName $BranchName -CommitSHA $CommitSHA -BuildIdentifier $BuildIdentifier -CompanyName $config.companyName -Project $p
         }
 
         if (!($SkipGenerationOfBuildPropFiles))
         {
-            Write-Host "Creating Directory.Build.props for" $p.ProjectPath
+            Write-Host ("[{0}]: Creating Directory.Build.props file" -f $p.Name)
             New-BuildPropsFile -Project $p -CompanyName $config.companyName -AssemblyVersion $version
         }
      
         if (!($SkipGenerationOfBuildTargetFiles))
         {
-            Write-Host "Creating Directory.Build.targets for" $p.ProjectPath
+            Write-Host ("[{0}]: Creating Directory.Build.targets file" -f $p.Name)
             New-BuildTargetsFile $p
         }
     }
