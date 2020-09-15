@@ -11,25 +11,37 @@ namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlParameterBuilder : SqlParameterBuilder
     {
-        private readonly Func<Type, SqlDbType> typeMap;
+        private readonly MsSqlTypeMaps typeMaps;
 
-        public MsSqlParameterBuilder(Func<Type, SqlDbType> typeMap)
+        public MsSqlParameterBuilder(MsSqlTypeMaps typeMaps)
         {
-            this.typeMap = typeMap ?? throw new ArgumentNullException($"{nameof(typeMap)} is required.");
+            this.typeMaps = typeMaps ?? throw new ArgumentNullException($"{nameof(typeMaps)} is required.");
         }
 
         public override DbParameter Add<T>(T value)
         {
-            var parameter = Create(value, typeMap(typeof(T)), null, null, null);
-            var parameterized = new ParameterizedFieldExpression(parameter, null, null);
+            var typeMap = typeMaps.FindByClrType(typeof(T));
+
+            var existing = FindExistingParameter(value, typeof(T), typeMap.DbType, ParameterDirection.Input, null, null, null);
+            if (existing is object)
+                return existing.Parameter;
+
+            var parameter = Create(value, typeMap.PlatformType, null, null, null);
+            var parameterized = new ParameterizedFieldExpression(typeof(T), parameter, null, null);
             Parameters.Add(parameterized);
             return parameter;
         }
 
         public override DbParameter Add(object value, Type valueType)
         {
-            var parameter = Create(value, typeMap(valueType), null, null, null);
-            var parameterized = new ParameterizedFieldExpression(parameter, null, null);
+            var typeMap = typeMaps.FindByClrType(valueType);
+
+            var existing = FindExistingParameter(value, valueType, typeMap.DbType, ParameterDirection.Input, null, null, null);
+            if (existing is object)
+                return existing.Parameter;
+
+            var parameter = Create(value, typeMap.PlatformType, null, null, null);
+            var parameterized = new ParameterizedFieldExpression(valueType, parameter, null, null);
             Parameters.Add(parameterized);
             return parameter;
         }
@@ -37,15 +49,22 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override ParameterizedFieldExpression Add<T>(T value, FieldExpression field, ISqlFieldMetadata meta)
         {
             DbParameter parameter;
+
+            var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType);
+
+            var existing = FindExistingParameter(value, typeof(T), typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
+            if (existing is object)
+                return existing;
+
             if (field is object)
             {
                 parameter = Create(value, (SqlDbType)meta.DbType, meta.Size, meta.Precision, meta.Scale);
             }
             else
             {
-                parameter = Create(value, typeMap(typeof(T)), null, null, null);
+                parameter = Create(value, typeMap.PlatformType, null, null, null);
             }
-            var parameterized = new ParameterizedFieldExpression(parameter, field, meta);
+            var parameterized = new ParameterizedFieldExpression(typeof(T), parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }
@@ -53,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override ParameterizedFieldExpression AddOutput(FieldExpression field, ISqlFieldMetadata meta)
         {
             var parameter = new SqlParameter($"@P{Parameters.Count + 1}", (SqlDbType)meta.DbType) { Direction = ParameterDirection.Output };
-            var parameterized = new ParameterizedFieldExpression(parameter, field, meta);
+            var parameterized = new ParameterizedFieldExpression((field as IExpressionField).DeclaredType, parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }

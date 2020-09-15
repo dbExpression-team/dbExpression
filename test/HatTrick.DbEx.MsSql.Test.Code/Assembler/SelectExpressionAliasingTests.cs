@@ -3,6 +3,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
@@ -27,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
-            var context = new AssemblyContext();
+            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
 
             //when
             builder.AppendPart(queryExpression.Select, context);
@@ -53,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
-            var context = new AssemblyContext();
+            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
@@ -80,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
-            var context = new AssemblyContext();
+            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
@@ -89,6 +90,35 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             select.Should().EndWith($"AS [{alias}]{System.Environment.NewLine}");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_a_group_by_expression_suppress_alias_correctly(int version, string alias = "Name")
+        {
+            //given
+            var database = ConfigureForMsSqlVersion(version);
+            var table = dbo.Person.As("dboPerson");
+
+            ITerminationExpressionBuilder exp =
+
+                db.SelectOne(db.fx.Count(table.FirstName).As(alias))
+                    .From(table)
+                    .GroupBy(table.FirstName);
+
+            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            IAppender appender = database.AppenderFactory.CreateAppender();
+            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
+            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
+            context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
+
+            //when
+            builder.AppendPart(queryExpression.GroupBy, context);
+            var groupBy = builder.Appender.ToString();
+
+            //then
+            groupBy.Should().NotContain($"AS [{alias}]");
         }
     }
 }

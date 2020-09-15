@@ -4,6 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression : 
         IExpression,
+        IExpressionField,
         ISqlMetadataIdentifier,
         IExpressionProvider<EntityExpression>,
         IExpressionAliasProvider,
@@ -11,24 +12,27 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region internals
         protected readonly string identifier;
+        protected readonly Type declaredType;
         protected readonly EntityExpression entity;
         protected readonly string alias;
         #endregion
 
         #region interface
         string ISqlMetadataIdentifier.Identifier => identifier;
+        Type IExpressionField.DeclaredType => declaredType;
         EntityExpression IExpressionProvider<EntityExpression>.Expression => entity;
         string IExpressionAliasProvider.Alias => alias;
         #endregion
 
         #region constructors
-        protected FieldExpression(string identifier, EntityExpression entity) : this(identifier, entity, null)
+        protected FieldExpression(string identifier, Type declaredType, EntityExpression entity) : this(identifier, declaredType, entity, null)
         {
         }
 
-        protected FieldExpression(string identifier, EntityExpression entity, string alias)
+        protected FieldExpression(string identifier, Type declaredType, EntityExpression entity, string alias)
         {
             this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
+            this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
             this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
             this.alias = alias;
         }

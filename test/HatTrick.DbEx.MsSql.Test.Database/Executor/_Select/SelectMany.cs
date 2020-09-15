@@ -157,5 +157,70 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when & then
             await execute.Should().ThrowAsync<DbExpressionException>();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "ORDER BY")]
+        public async Task Can_a_order_by_select_async_when_table_name_is_aliased_execute_successfully(int version, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var table = dbo.Person.As("dboPerson");
+
+            var names = await db.SelectMany(table.FirstName)
+                .From(table)
+                .OrderBy(table.FirstName)
+                .ExecuteAsync();
+
+            //then
+            names.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "GROUP BY")]
+        [Trait("Operation", "HAVING")]
+        public async Task Can_a_group_by_with_having_select_async_when_table_name_is_aliased_execute_successfully(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var table = dbo.Person.As("dboPerson");
+
+            var counts = await db.SelectMany(db.fx.Count(table.FirstName))
+                .From(table)
+                .GroupBy(table.FirstName)
+                .Having(table.FirstName > "U")
+                .ExecuteAsync();
+
+            //then
+            counts.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "GROUP BY")]
+        [Trait("Operation", "HAVING")]
+        public async Task Can_a_group_by_with_having_select_async_when_table_name_and_field_are_aliased_execute_successfully(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var table = dbo.Person.As("dboPerson");
+            var field = table.FirstName.As("dboPersonFirstName");
+
+            var counts = await db.SelectMany(
+                    field, 
+                    db.fx.Count().As("NameGreaterThanUCount")
+                )
+                .From(table)
+                .GroupBy(field)
+                .Having(field > "U")
+                .ExecuteAsync();
+
+            //then
+            counts.Should().HaveCount(expected);
+        }
     }
 }

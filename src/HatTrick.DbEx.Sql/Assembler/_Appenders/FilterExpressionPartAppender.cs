@@ -14,13 +14,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         #region methods
         public override void AppendPart(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-            => AppendFilterExpressionUsingExpressionAppendStyles(expression, builder, context, EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
+            => AppendFilterExpressionUsingExpressionAppendStyles(expression, builder, context, EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
 
-        private void AppendFilterExpressionUsingExpressionAppendStyles(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, FieldExpressionAppendStyle fieldEAppendStyle)
+        private void AppendFilterExpressionUsingExpressionAppendStyles(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, FieldExpressionAppendStyle fieldAppendStyle)
         {
             try
             {
-                context.PushAppendStyles(entityAppendStyle, fieldEAppendStyle);
+                context.PushAppendStyles(entityAppendStyle, fieldAppendStyle);
                 AppendFilterExpressionThatMayContainDBNull(expression, builder, context);
             }
             finally

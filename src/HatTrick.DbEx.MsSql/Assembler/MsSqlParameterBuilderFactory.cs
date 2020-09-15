@@ -1,18 +1,18 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
+﻿using HatTrick.DbEx.MsSql.Types;
+using HatTrick.DbEx.Sql.Assembler;
 using System;
-using System.Data;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlParameterBuilderFactory : ISqlParameterBuilderFactory
     {
-        private readonly Func<Type, SqlDbType> typeMap;
+        private readonly MsSqlTypeMaps typeMaps;
 
-        public MsSqlParameterBuilderFactory(Func<Type, SqlDbType> typeMap)
+        public MsSqlParameterBuilderFactory(MsSqlTypeMaps typeMaps)
         {
-            this.typeMap = typeMap ?? throw new ArgumentNullException($"{nameof(typeMap)} is required.");
+            this.typeMaps = typeMaps ?? throw new ArgumentNullException($"{nameof(typeMaps)} is required.");
         }
 
-        public ISqlParameterBuilder CreateSqlParameterBuilder() => new MsSqlParameterBuilder(typeMap);
+        public ISqlParameterBuilder CreateSqlParameterBuilder() => new MsSqlParameterBuilder(typeMaps);
     }
 }

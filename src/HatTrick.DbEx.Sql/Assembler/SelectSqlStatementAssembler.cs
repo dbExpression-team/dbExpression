@@ -74,7 +74,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write("GROUP BY").LineBreak()
                 .Indentation++;
 
+            context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
             builder.AppendPart(expression.GroupBy, context);
+            context.PopAppendStyles();
 
             builder.Appender
                 .Indentation--;
@@ -88,7 +90,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write("HAVING").LineBreak()
                 .Indentation++;
 
+            context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
             builder.AppendPart(expression.Having, context);
+            context.PopAppendStyles();
 
             builder.Appender.LineBreak()
                 .Indentation--;
@@ -102,7 +106,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Indent().Write("ORDER BY").LineBreak()
                 .Indentation++;
 
+            context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
             builder.AppendPart(expression.OrderBy, context);
+            context.PopAppendStyles();
 
             builder.Appender
                 .Indentation--;

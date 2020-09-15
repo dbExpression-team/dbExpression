@@ -6,12 +6,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : struct, IComparable
     {
         #region constructors
-        protected NullableFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
+        protected NullableFieldExpression(string identifier, Type declaredType, EntityExpression entity) : base(identifier, declaredType, entity)
         {
 
         }
 
-        protected NullableFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableFieldExpression(string identifier, Type declaredType, EntityExpression entity, string alias) : base(identifier, declaredType, entity, alias)
         {
 
         }
