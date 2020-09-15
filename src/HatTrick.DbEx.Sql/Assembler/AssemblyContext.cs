@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -19,11 +20,12 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region constructors
-        public AssemblyContext()
+        public AssemblyContext(SqlStatementAssemblerConfiguration configuration)
         {
             //set default styles
             fieldStyles.Push(FieldExpressionAppendStyle.None);
             entityStyles.Push(EntityExpressionAppendStyle.None);
+            Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
         }
         #endregion
 

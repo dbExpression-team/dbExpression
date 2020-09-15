@@ -49,5 +49,24 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             person.FirstName.Should().Be("Kenny");
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "GROUP BY")]
+        public async Task Can_a_group_by_select_async_when_table_name_is_aliased_runsuccessfully(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var table = dbo.Person.As("dboPerson");
+
+            var count = await db.SelectOne(db.fx.Count(table.FirstName))
+                .From(table)
+                .GroupBy(table.FirstName)
+                .ExecuteAsync();
+
+            //then
+            count.Should().Be(expected);
+        }
     }
 }

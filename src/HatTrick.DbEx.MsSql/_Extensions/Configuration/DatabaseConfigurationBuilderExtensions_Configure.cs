@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             builder.UseValueConverterFactory<ValueConverterFactory>();
             builder.UseMapperFactory<MapperFactory>();
             builder.UseExecutionPipelineFactory<ExecutionPipelineFactory>();
-            builder.UseParameterBuilderFactory(new MsSqlParameterBuilderFactory(t => MsSqlTypeMap.GetSqlType(t)));
+            builder.UseParameterBuilderFactory(new MsSqlParameterBuilderFactory(new MsSqlTypeMaps()));
 
             var appenderFactory = new MsSqlAssemblyPartAppenderFactory();
             appenderFactory.RegisterDefaultPartAppenders();

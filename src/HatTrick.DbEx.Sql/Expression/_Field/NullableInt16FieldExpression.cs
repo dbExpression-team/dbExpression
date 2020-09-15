@@ -7,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableInt16FieldExpression>
     {
         #region constructors
-        protected NullableInt16FieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
+        protected NullableInt16FieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(short), entity)
         {
 
         }
 
-        protected NullableInt16FieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableInt16FieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(short), entity, alias)
         {
 
         }

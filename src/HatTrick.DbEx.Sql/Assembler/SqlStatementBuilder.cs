@@ -44,10 +44,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (_sqlStatement is object)
                 return _sqlStatement;
 
-            var context = new AssemblyContext
-            {
-                Configuration = AssemblerConfiguration,
-            };
+            var context = new AssemblyContext(AssemblerConfiguration);
 
             var assembler = AssemblerFactory(Query)
                 ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{Query}', please ensure an assembler has been registered during startup initialization of DbExpression.");

@@ -3,10 +3,11 @@ using DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
-namespace HatTrick.DbEx.MsSql.Test.Assembler
+namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 {
     [Trait("Statement", "SELECT")]
     [Trait("Clause", "WHERE")]
@@ -32,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Test.Assembler
             string whereClause;
 
             //when
-            builder.AppendPart(expressionSet.Where.LeftArg, new AssemblyContext());
+            builder.AppendPart(expressionSet.Where.LeftArg, new AssemblyContext(new SqlStatementAssemblerConfiguration()));
             whereClause = builder.Appender.ToString();
 
             //then

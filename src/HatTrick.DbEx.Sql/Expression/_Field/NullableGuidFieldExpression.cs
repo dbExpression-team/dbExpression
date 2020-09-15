@@ -7,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableGuidFieldExpression>
     {
         #region constructors
-        protected NullableGuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
+        protected NullableGuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(Guid), entity)
         {
 
         }
 
-        protected NullableGuidFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableGuidFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(Guid), entity, alias)
         {
 
         }
