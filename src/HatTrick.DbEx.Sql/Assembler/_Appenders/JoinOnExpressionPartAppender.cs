@@ -18,10 +18,16 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
-            builder.AppendPart(expression.LeftArg, context);
-            builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-            builder.AppendPart(expression.RightArg, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.LeftArg, context);
+                builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
+                builder.AppendPart(expression.RightArg, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
         }
     }
 }

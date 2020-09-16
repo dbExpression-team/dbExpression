@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private void AppendFilterExpressionUsingExpressionAppendStyles(FilterExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, FieldExpressionAppendStyle fieldAppendStyle)
         {
+            context.PushAppendStyles(entityAppendStyle, fieldAppendStyle);
             try
             {
-                context.PushAppendStyles(entityAppendStyle, fieldAppendStyle);
                 AppendFilterExpressionThatMayContainDBNull(expression, builder, context);
             }
             finally

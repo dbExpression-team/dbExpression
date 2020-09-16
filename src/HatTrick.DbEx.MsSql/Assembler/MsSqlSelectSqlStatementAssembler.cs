@@ -80,8 +80,14 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             //append the select list, which is the "final" select from the CTE
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            builder.AppendPart(expression.Select, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.Select, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender
                 .Indentation--
@@ -96,8 +102,14 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             //append the select list
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            builder.AppendPart(expression.Select, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.Select, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             //append the function providing the windowed index
             builder.Appender
@@ -105,8 +117,14 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            builder.AppendPart(expression.OrderBy, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.OrderBy, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender
                 .Indentation--.Indent().Write(") AS ").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).LineBreak()

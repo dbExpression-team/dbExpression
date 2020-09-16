@@ -24,20 +24,26 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
             builder.Appender.Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            for (var i = 0; i < insertSet.Count; i++)
+            try
             {
-                if (identity is object && (insertSet[i] as IAssignmentExpressionProvider).Assignee == identity)
-                    continue; //don't emit identity columns with the values; they can't be inserted into the table
+                for (var i = 0; i < insertSet.Count; i++)
+                {
+                    if (identity is object && (insertSet[i] as IAssignmentExpressionProvider).Assignee == identity)
+                        continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                builder.Appender.Indent();
-                builder.AppendPart(
-                    (insertSet[i] as IAssignmentExpressionProvider).Assignee,
-                    context
-                );
-                if (i < insertSet.Count - 1)
-                    builder.Appender.Write(", ").LineBreak();
+                    builder.Appender.Indent();
+                    builder.AppendPart(
+                        (insertSet[i] as IAssignmentExpressionProvider).Assignee,
+                        context
+                    );
+                    if (i < insertSet.Count - 1)
+                        builder.Appender.Write(", ").LineBreak();
+                }
             }
-            context.PopAppendStyles();
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write(")").LineBreak();
@@ -49,19 +55,25 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
 
             //write out all fields for the select from INSERTED table
             context.PushAppendStyle(EntityExpressionAppendStyle.None);
-            for (var i = 0; i < insertSet.Count; i++)
+            try
             {
-                builder.Appender.Indent().Write("INSERTED.");
-                builder.AppendPart(
-                    (insertSet[i] as IAssignmentExpressionProvider).Assignee,
-                    context
-                );
-                if (i < insertSet.Count - 1)
-                    builder.Appender.Write(",");
+                for (var i = 0; i < insertSet.Count; i++)
+                {
+                    builder.Appender.Indent().Write("INSERTED.");
+                    builder.AppendPart(
+                        (insertSet[i] as IAssignmentExpressionProvider).Assignee,
+                        context
+                    );
+                    if (i < insertSet.Count - 1)
+                        builder.Appender.Write(",");
 
-                builder.Appender.LineBreak();
+                    builder.Appender.LineBreak();
+                }
             }
-            context.PopAppendStyles();
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender.Indentation--.Indent().Write("VALUES (").LineBreak()
                 .Indentation++;

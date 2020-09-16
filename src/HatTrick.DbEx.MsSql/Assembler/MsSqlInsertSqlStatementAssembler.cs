@@ -106,22 +106,28 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             //write out any non-identity field names as the values from the {insertValueNames} table
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.None);
-            for (var i = 0; i < template.Expressions.Count; i++)
+            try
             {
-                if (identity is object && (template.Expressions[i] as IAssignmentExpressionProvider).Assignee == identity)
-                    continue; //don't emit identity columns with the values; they can't be inserted into the table
+                for (var i = 0; i < template.Expressions.Count; i++)
+                {
+                    if (identity is object && (template.Expressions[i] as IAssignmentExpressionProvider).Assignee == identity)
+                        continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write(insertValuesName)
-                    .Write(context.Configuration.IdentifierDelimiter.End)
-                    .Write(".");
-                builder.AppendPart((template.Expressions[i] as IAssignmentExpressionProvider).Assignee, context);
-                context.Field = null;
-                if (i < template.Expressions.Count - 1)
-                    builder.Appender.Write(", ");
-                builder.Appender.LineBreak();
+                    builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
+                        .Write(insertValuesName)
+                        .Write(context.Configuration.IdentifierDelimiter.End)
+                        .Write(".");
+                    builder.AppendPart((template.Expressions[i] as IAssignmentExpressionProvider).Assignee, context);
+                    context.Field = null;
+                    if (i < template.Expressions.Count - 1)
+                        builder.Appender.Write(", ");
+                    builder.Appender.LineBreak();
+                }
             }
-            context.PopAppendStyles();
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender.Write(")").LineBreak().Indentation--;
 

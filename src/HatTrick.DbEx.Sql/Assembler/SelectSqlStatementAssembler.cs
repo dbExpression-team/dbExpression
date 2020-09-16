@@ -43,8 +43,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Declaration);
-            builder.AppendPart(expression.Select, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.Select, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender.Indentation--;
         }
@@ -75,8 +81,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
-            builder.AppendPart(expression.GroupBy, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.GroupBy, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender
                 .Indentation--;
@@ -91,8 +103,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation++;
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.None);
-            builder.AppendPart(expression.Having, context);
-            context.PopAppendStyles();
+            try
+            {
+                builder.AppendPart(expression.Having, context);
+            }
+            finally
+            {
+                context.PopAppendStyles();
+            }
 
             builder.Appender.LineBreak()
                 .Indentation--;

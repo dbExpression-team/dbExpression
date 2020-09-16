@@ -19,7 +19,7 @@
 					"code-generation",
 					"sql-query"
 				],
-				licenseType: "MIT",
+				licenseType: "Apache-2.0",
 				projectUrl: "https://github.com/HatTrickLabs/db-ex",
 				repositoryUrl: "https://github.com/HatTrickLabs/db-ex",
 				releaseNotesPath: "../..foo.txt",
@@ -45,7 +45,7 @@
 				title: "DbExpression for Microsoft Sql Server",
 				authors: "jerrod.eiman, gwgrubbs",
 				description: "Description",
-				licenseType: "MIT",
+				licenseType: "Apache-2.0",
 				projectUrl: "https://github.com/HatTrickLabs/db-ex",
 				repositoryUrl: "https://github.com/HatTrickLabs/db-ex"
 			}
