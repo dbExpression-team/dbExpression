@@ -9,7 +9,7 @@ assignees: ''
 
 **1) Describe the bug**
 
-_A clear and concise description of what the bug is._
+_A clear and concise description of the issue._
 
 **2) Is the issue with query execution or code generation?**
 
