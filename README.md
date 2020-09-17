@@ -74,7 +74,7 @@ Or more complex statements returning only the fields you need:
     Danny O'Connor (8) has made 4 purchases in 2017.
     */
 ```
-The sql statement executed agains Microsoft Sql Server:
+The sql statement executed against Microsoft Sql Server:
 
 ```SQL
 exec sp_executesql N'SELECT
