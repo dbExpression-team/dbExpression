@@ -108,7 +108,7 @@ Currently, dbExpression supports the following versions of Microsoft Sql Server:
 
 [![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=release%2F1.0)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=release%2F1.0)
 
-dbExpression uses Docker images containing native platforms (i.e. Microsoft Sql Server on Linux).  We run a full suite of integration tests against all of the following:
+dbExpression uses Docker images of native platforms (i.e. Microsoft Sql Server on Linux) to execute a full suite of integration tests against all of the following:
 
 | Platform            		| Status 					|
 | :---            			| :---    					|
