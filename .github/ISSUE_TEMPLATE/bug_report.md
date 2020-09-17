@@ -38,7 +38,7 @@ _for example:_
       .From(dbo.Person)
       .Execute()
 ```
-**6) If accessible through a profile tool, what query is executing against the database platform? (if applicable)**
+**6) If accessible through a profile tool, what query is executing against the database platform (if applicable)?**
 
 _for example:_
 
