@@ -8,12 +8,13 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+
+_A clear and concise description of what the bug is._
 
 **Is the issue with query execution or code generation?**
 
-- [ ] Code generation
 - [ ] Query execution
+- [ ] Code generation
 
 **What platform are you working against?**
 
@@ -27,7 +28,9 @@ A clear and concise description of what the bug is.
 - [ ] Microsoft Azure Sql Database
 
 **What query are you executing?**
-ex: 
+
+_for example:_
+
 ```C#
    db.Select<Person>()
       .From(dbo.Person)
@@ -36,7 +39,9 @@ ex:
 **What, if any, error message are you receiving?**
 
 **If accessible through a profile tool, what query is executing against the database platform?**
-ex:
+
+_for example:_
+
 ```TSQL
    SELECT
       [dbo].[Person].[FirstName],
@@ -44,8 +49,11 @@ ex:
    FROM
       [dbo].[Person]
 ```
+
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+
+_If applicable, add screenshots to help explain the issue._
 
 **Additional context**
-Add any other context about the problem here, for example any configuration you have applied to DbExpression.
+
+_Add any other context about the problem here, for example any startup configuration you have applied to DbExpression._
