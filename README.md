@@ -1,17 +1,9 @@
 # dbExpression
 
 dbExpression is a lightweight framework for fluently building and executing strongly-typed statements against target platforms, generally relational database platforms like Microsoft Sql Server.
- While other frameworks typically use LINQ as the implemenation strategy where the statement resembles the authoring language (C#/VB etc), expressions written with dbExpression take a different approach, where the authored expression resembles the target platform native language.  In the case of Microsoft Sql Server, expressions written using dbExpression look like TSQL.
+ While other frameworks typically use LINQ where statements written in code resemble the authoring language (C#/VB, etc), expressions written with dbExpression take a completely different approach, where the authored statement in code looks like the target platform's native language.  In the case of Microsoft Sql Server, expressions written using dbExpression _look like TSQL_.
 
-**The primary goal of dbExpression is to create a strongly-typed representation of your target platform, and get out of the way and let you write code.**
-
-## Target Platforms
-Currently, dbExpression supports the following versions of Microsoft Sql Server:
-- Microsoft Sql Server, versions 2005-2019
-- Micrsoft Azure Sql Db, all versions
-
- dbExpression is built from the ground up as a DSL over Microsoft Sql Server, eliminating the [object-relational impedance mismatch](https://en.wikipedia.org/wiki/Object-relational_impedance_mismatch)
- that has inherent confusion in code written using LINQ, sent into some ORM black box, and somehow magically translated to SQL.  It overcomes the "How did it interpret I wanted to do that from what I wrote?!!"
+**The primary goal of dbExpression is to provide a strongly-typed representation of your target platform, and get out of the way and let you write code.**
 
 ## Features
 - Write SQL statements in code exactly as you would write them in a query tool
@@ -103,6 +95,14 @@ ORDER BY
 	COUNT([dbo].[Purchase].[PurchaseDate]) ASC
 ;',N'@P1 varchar(1),@P2 int,@P3 int',@P1=' ',@P2=3,@P3=2017
 ```
+
+## Target Platforms
+Currently, dbExpression supports the following versions of Microsoft Sql Server:
+- Microsoft Sql Server, versions 2005-2019
+- Micrsoft Azure Sql Db, all versions
+
+ dbExpression is built from the ground up as a DSL over Microsoft Sql Server, eliminating the [object-relational impedance mismatch](https://en.wikipedia.org/wiki/Object-relational_impedance_mismatch)
+ that has inherent confusion in code written using LINQ, sent into some ORM black box, and somehow magically translated to SQL.  It overcomes the "How did it interpret I wanted to do that from what I wrote?!!"
 
 ## Build Status
 
