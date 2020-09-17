@@ -7,7 +7,9 @@ assignees: ''
 
 ---
 
-**1) Is your feature request related to a problem? (If the request is a an existing issue or defect, please submit a Bug).  Please describe.**
+**If the request is a an existing issue or defect, please submit a Bug**
+
+**1) Is your feature request related to a problem? Please describe.**
 
 _A clear and concise description of what you are trying to achieve but isn't supported by DbExpression._
 
@@ -26,7 +28,7 @@ _A clear and concise description of what you are trying to achieve but isn't sup
 
 _A clear and concise description of what you want to happen._
 
-**3) If the feature request relates directly to a query that could be executed against the database, please provide a sample of the query.**
+**3) If the feature request relates directly to a query that could be executed against the database platform, please provide a sample of the query.**
 
 **4) Describe alternatives/workarounds you've considered**
 
