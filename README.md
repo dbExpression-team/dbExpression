@@ -49,7 +49,7 @@ Or more complex statements returning only the fields you need:
     .From(dbo.Purchase)
     .InnerJoin(dbo.Person).On(dbo.Purchase.PersonId == dbo.Person.Id)
     .OrderBy(
-        db.fx.Count(dbo.Purchase.PurchaseDate).Asc
+        db.fx.Count(dbo.Purchase.PurchaseDate).Desc
     )
     .GroupBy(
         dbo.Person.Id,
@@ -92,7 +92,7 @@ GROUP BY
 HAVING
 	(COUNT([dbo].[Purchase].[PurchaseDate]) >= @P2 AND DATEPART(year, [dbo].[Purchase].[PurchaseDate]) = @P3)
 ORDER BY
-	COUNT([dbo].[Purchase].[PurchaseDate]) ASC
+	COUNT([dbo].[Purchase].[PurchaseDate]) DESC
 ;',N'@P1 varchar(1),@P2 int,@P3 int',@P1=' ',@P2=3,@P3=2017
 ```
 
