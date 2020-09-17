@@ -40,7 +40,7 @@ Or more complex statements returning only the fields you need:
     int year = 2017;
     int purchaseCount = 3;  //any person making 3 or more purchases in a calendar year are considered VIP customers
 
-    var vipStatistics = db.SelectMany(
+    var vipStatistics = await db.SelectMany(
         db.fx.Count(dbo.Purchase.PurchaseDate).As("PurchaseCount"),
         dbo.Person.Id,
         (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName"),
@@ -60,11 +60,11 @@ Or more complex statements returning only the fields you need:
         db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
         & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
     )
-    .Execute();
+    .ExecuteAsync();
 
     foreach (var vip in vipStatistics)
     {
-        Console.WriteLine($"{vip.FullName} ({vip.Id} has made {vip.PurchaseCount} purchases in {vip.PurchaseYear}.");
+        Console.WriteLine($"{vip.FullName} ({vip.Id}) has made {vip.PurchaseCount} purchases in {vip.PurchaseYear}.");
     }
 
     /*
