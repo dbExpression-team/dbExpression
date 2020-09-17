@@ -27,7 +27,9 @@ _A clear and concise description of what the bug is._
 - [ ] Microsoft SQL Server version 2019
 - [ ] Microsoft Azure Sql Database
 
-**4) What query are you executing?**
+**4) What, if any, error message are you receiving?**
+
+**5) What query are you executing (if applicable)?**
 
 _for example:_
 
@@ -36,9 +38,7 @@ _for example:_
       .From(dbo.Person)
       .Execute()
 ```
-**5) What, if any, error message are you receiving?**
-
-**6) If accessible through a profile tool, what query is executing against the database platform?**
+**6) If accessible through a profile tool, what query is executing against the database platform? (if applicable)**
 
 _for example:_
 
@@ -56,4 +56,4 @@ _If applicable, add screenshots to help explain the issue._
 
 **8) Additional context**
 
-_Add any other context about the problem here, for example any startup configuration you have applied to DbExpression._
+_Add any other context about the problem here, for example any startup configuration you have applied to DbExpression and/or the configuration used to generate code._
