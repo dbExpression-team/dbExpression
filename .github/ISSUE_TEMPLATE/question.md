@@ -11,8 +11,7 @@ assignees: ''
 
 - [ ] Query execution
 - [ ] Code generation
-- [ ] Other
-	- _Please describe_
+- [ ] Other (_Please describe_)
 
 **2) What platform are you working against?**
 
