@@ -7,16 +7,16 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+**1) Describe the bug**
 
 _A clear and concise description of what the bug is._
 
-**Is the issue with query execution or code generation?**
+**2) Is the issue with query execution or code generation?**
 
 - [ ] Query execution
 - [ ] Code generation
 
-**What platform are you working against?**
+**3) What platform are you working against?**
 
 - [ ] Microsoft SQL Server version 2005
 - [ ] Microsoft SQL Server version 2008
@@ -27,7 +27,7 @@ _A clear and concise description of what the bug is._
 - [ ] Microsoft SQL Server version 2019
 - [ ] Microsoft Azure Sql Database
 
-**What query are you executing?**
+**4) What query are you executing?**
 
 _for example:_
 
@@ -36,9 +36,9 @@ _for example:_
       .From(dbo.Person)
       .Execute()
 ```
-**What, if any, error message are you receiving?**
+**5) What, if any, error message are you receiving?**
 
-**If accessible through a profile tool, what query is executing against the database platform?**
+**6) If accessible through a profile tool, what query is executing against the database platform?**
 
 _for example:_
 
@@ -50,10 +50,10 @@ _for example:_
       [dbo].[Person]
 ```
 
-**Screenshots**
+**7) Screenshots**
 
 _If applicable, add screenshots to help explain the issue._
 
-**Additional context**
+**8) Additional context**
 
 _Add any other context about the problem here, for example any startup configuration you have applied to DbExpression._
