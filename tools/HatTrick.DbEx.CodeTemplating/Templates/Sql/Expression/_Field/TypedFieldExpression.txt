@@ -47,11 +47,11 @@ namespace {Namespace}
 
         {#if $.OperationType.IsNullable}
         {#each Operations}
-        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\..\$.Type.Name}FieldExpression a, {..\$.OperationType.Alias}? b) => new {..\$.ReturnType.Name}ExpressionMediator(new ArithmeticExpression(new {..\..\$.Type.Name}ExpressionMediator(a), new Nullable{..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}?>(b)), ArithmeticExpressionOperator.{$.ArithmeticOperatorName}));
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\..\$.Type.Name}FieldExpression a, {..\$.OperationType.Alias}? b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ArithmeticExpression(new {..\..\$.Type.Name}ExpressionMediator(a), new Nullable{..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}?>(b)), ArithmeticExpressionOperator.{$.ArithmeticOperatorName}));
         {/each}
 
         {#each Operations}
-        public static {..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\$.OperationType.Alias}? a, {..\..\$.Type.Name}FieldExpression b) => new {..\$.ReturnType.Name}ExpressionMediator(new ArithmeticExpression(new Nullable{..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}?>(a)), new {..\..\$.Type.Name}ExpressionMediator(b), ArithmeticExpressionOperator.{$.ArithmeticOperatorName}));
+        public static Nullable{..\$.ReturnType.Name}ExpressionMediator operator {$.ArithmeticOperatorSymbol}({..\$.OperationType.Alias}? a, {..\..\$.Type.Name}FieldExpression b) => new Nullable{..\$.ReturnType.Name}ExpressionMediator(new ArithmeticExpression(new Nullable{..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}?>(a)), new {..\..\$.Type.Name}ExpressionMediator(b), ArithmeticExpressionOperator.{$.ArithmeticOperatorName}));
         {/each}
         {/if}
         #endregion

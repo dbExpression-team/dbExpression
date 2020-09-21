@@ -17,27 +17,25 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
 
         public ArithmeticBuilder InferArithmeticOperations(TypeModel sourceType, TypeModel targetType)
         {
-            if (targetType == TypeBuilder.Get<bool>() || sourceType == TypeBuilder.Get<bool>() || targetType == TypeBuilder.Get<Guid>() || sourceType == TypeBuilder.Get<Guid>())
+            if (targetType.Type.In(typeof(bool), typeof(Guid)) || sourceType.Type.In(typeof(bool), typeof(Guid)))
             {
                 //can't do math on bools or guids
                 models = new List<ArithmeticOperationTemplateModel>();
             }
-            else if (sourceType == TypeBuilder.Get<DateTime>() || sourceType == TypeBuilder.Get<DateTimeOffset>())
+            else if (targetType.Type == typeof(string) && sourceType.Type == typeof(string))
             {
-                models = new List<ArithmeticOperationTemplateModel>
-                    {
-                        add,
-                        subtract
-                    };
-            }
-            else if (targetType == TypeBuilder.Get<string>())
-            {
+                //can add strings
                 models = new List<ArithmeticOperationTemplateModel>
                     {
                         add
                     };
             }
-            else if (sourceType == TypeBuilder.Get<DateTime>() || sourceType == TypeBuilder.Get<DateTimeOffset>())
+            else if (targetType.Type == typeof(string) || sourceType.Type == typeof(string))
+            {
+                //can't do arithmetic if only 1 is a string
+                models = new List<ArithmeticOperationTemplateModel>();
+            }
+            else if (targetType.In(typeof(DateTime), typeof(DateTimeOffset)) || sourceType.Type.In(typeof(DateTime), typeof(DateTimeOffset)))
             {
                 models = new List<ArithmeticOperationTemplateModel>
                     {
