@@ -169,11 +169,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeCoalesceFunctionExpression a, string b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeCoalesceFunctionExpression a, string b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(string a, NullableDateTimeCoalesceFunctionExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new NullableDateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(string a, NullableDateTimeCoalesceFunctionExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new NullableDateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
 
         
         #endregion
@@ -262,8 +258,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeCoalesceFunctionExpression a, StringExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeCoalesceFunctionExpression a, StringExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
 
         #endregion
 

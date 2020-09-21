@@ -159,11 +159,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, string b) => new DateTimeExpressionMediator(new ArithmeticExpression(new DateTimeExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, string b) => new DateTimeExpressionMediator(new ArithmeticExpression(new DateTimeExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Subtract));
 
-        public static DateTimeExpressionMediator operator +(string a, DateTimeCastFunctionExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(string a, DateTimeCastFunctionExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
 
 
         #endregion
@@ -252,8 +248,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static DateTimeExpressionMediator operator +(DateTimeCastFunctionExpression a, StringExpressionMediator b) => new DateTimeExpressionMediator(new ArithmeticExpression(new DateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeCastFunctionExpression a, StringExpressionMediator b) => new DateTimeExpressionMediator(new ArithmeticExpression(new DateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
 
         #endregion
 
