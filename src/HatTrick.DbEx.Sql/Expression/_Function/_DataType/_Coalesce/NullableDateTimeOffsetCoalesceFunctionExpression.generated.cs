@@ -169,11 +169,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static NullableDateTimeOffsetExpressionMediator operator +(NullableDateTimeOffsetCoalesceFunctionExpression a, string b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeOffsetExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(NullableDateTimeOffsetCoalesceFunctionExpression a, string b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeOffsetExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeOffsetExpressionMediator operator +(string a, NullableDateTimeOffsetCoalesceFunctionExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new NullableDateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(string a, NullableDateTimeOffsetCoalesceFunctionExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new NullableDateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
 
         
         #endregion
@@ -262,8 +258,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static NullableDateTimeOffsetExpressionMediator operator +(NullableDateTimeOffsetCoalesceFunctionExpression a, StringExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeOffsetExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(NullableDateTimeOffsetCoalesceFunctionExpression a, StringExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeOffsetExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
 
         #endregion
 

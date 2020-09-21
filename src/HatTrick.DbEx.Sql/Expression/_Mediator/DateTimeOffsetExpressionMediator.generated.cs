@@ -139,11 +139,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static StringExpressionMediator operator +(DateTimeOffsetExpressionMediator a, string b) => new StringExpressionMediator(new ArithmeticExpression(a, new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
-        public static StringExpressionMediator operator -(DateTimeOffsetExpressionMediator a, string b) => new StringExpressionMediator(new ArithmeticExpression(a, new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Subtract));
 
-        public static StringExpressionMediator operator +(string a, DateTimeOffsetExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), b, ArithmeticExpressionOperator.Add));
-        public static StringExpressionMediator operator -(string a, DateTimeOffsetExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), b, ArithmeticExpressionOperator.Subtract));
 
         #endregion
 

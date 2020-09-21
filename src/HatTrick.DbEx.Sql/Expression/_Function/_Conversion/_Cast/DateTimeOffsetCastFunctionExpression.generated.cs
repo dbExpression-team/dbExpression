@@ -159,11 +159,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static DateTimeOffsetExpressionMediator operator +(DateTimeOffsetCastFunctionExpression a, string b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new DateTimeOffsetExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
-        public static DateTimeOffsetExpressionMediator operator -(DateTimeOffsetCastFunctionExpression a, string b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new DateTimeOffsetExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Subtract));
 
-        public static DateTimeOffsetExpressionMediator operator +(string a, DateTimeOffsetCastFunctionExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static DateTimeOffsetExpressionMediator operator -(string a, DateTimeOffsetCastFunctionExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
 
 
         #endregion
@@ -252,8 +248,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region string
-        public static DateTimeOffsetExpressionMediator operator +(DateTimeOffsetCastFunctionExpression a, StringExpressionMediator b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new DateTimeOffsetExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
-        public static DateTimeOffsetExpressionMediator operator -(DateTimeOffsetCastFunctionExpression a, StringExpressionMediator b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new DateTimeOffsetExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
 
         #endregion
 
