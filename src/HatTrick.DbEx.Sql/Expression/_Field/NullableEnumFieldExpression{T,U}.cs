@@ -7,11 +7,11 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : IDbEntity
         where TEnum : struct, Enum, IComparable
     {
-        public NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
+        public NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TEnum), entity)
         {
         }
 
-        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TEnum), entity, alias)
         {
 
         }

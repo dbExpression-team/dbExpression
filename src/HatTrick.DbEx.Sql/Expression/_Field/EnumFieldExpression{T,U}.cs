@@ -8,11 +8,11 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
+        public EnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TEnum), entity)
         {
         }
 
-        protected EnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected EnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TEnum), entity, alias)
         {
 
         }

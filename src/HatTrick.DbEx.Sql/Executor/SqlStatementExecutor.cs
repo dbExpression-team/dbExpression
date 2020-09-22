@@ -27,7 +27,13 @@ namespace HatTrick.DbEx.Sql.Executor
                 foreach (var parameter in statement.Parameters)
                 {
                     if (parameter.Parameter.Value != DBNull.Value)
-                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    {
+                        var converter = converters.GetConverter(parameter.Field);
+                        if (converter is object)
+                        {
+                            parameter.Parameter.Value = converter.Convert(parameter.Parameter.Value);
+                        }
+                    }
                     cmd.Parameters.Add(parameter.Parameter);
                 }
             }
@@ -77,7 +83,13 @@ namespace HatTrick.DbEx.Sql.Executor
                 foreach (var parameter in statement.Parameters)
                 {
                     if (parameter.Parameter.Value != DBNull.Value)
-                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    {
+                        var converter = converters.GetConverter(parameter.Field);
+                        if (converter is object)
+                        {
+                            parameter.Parameter.Value = converter.Convert(parameter.Parameter.Value);
+                        }
+                    }
                     cmd.Parameters.Add(parameter.Parameter);
                 }
             }
@@ -123,7 +135,13 @@ namespace HatTrick.DbEx.Sql.Executor
                 foreach (var parameter in statement.Parameters)
                 {
                     if (parameter.Parameter.Value != DBNull.Value)
-                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    {
+                        var converter = converters.GetConverter(parameter.Field);
+                        if (converter is object)
+                        {
+                            parameter.Parameter.Value = converter.Convert(parameter.Parameter.Value);
+                        }
+                    }
                     cmd.Parameters.Add(parameter.Parameter);
                 }
             }
@@ -148,7 +166,13 @@ namespace HatTrick.DbEx.Sql.Executor
                 foreach (var parameter in statement.Parameters)
                 {
                     if (parameter.Parameter.Value != DBNull.Value)
-                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    {
+                        var converter = converters.GetConverter(parameter.Field);
+                        if (converter is object)
+                        {
+                            parameter.Parameter.Value = converter.Convert(parameter.Parameter.Value);
+                        }
+                    }
                     cmd.Parameters.Add(parameter.Parameter);
                 }
             }
@@ -172,8 +196,10 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 foreach (var parameter in statement.Parameters)
                 {
-                    if (parameter.Parameter.Value != DBNull.Value)
-                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    if (parameter.Parameter.Value != DBNull.Value && converter is object)
+                    {
+                        parameter.Parameter.Value = converter.Convert(parameter.Parameter.Value);
+                    }
                     cmd.Parameters.Add(parameter.Parameter);
                 }
             }
@@ -197,8 +223,10 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 foreach (var parameter in statement.Parameters)
                 {
-                    if (parameter.Parameter.Value != DBNull.Value)
-                        parameter.Parameter.Value = converters[parameter.Field].Convert(parameter.Parameter.Value);
+                    if (parameter.Parameter.Value != DBNull.Value && converter is object)
+                    {
+                        parameter.Parameter.Value = converter.Convert(parameter.Parameter.Value);
+                    }
                     cmd.Parameters.Add(parameter.Parameter);
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,25 +22,17 @@ namespace HatTrick.DbEx.Sql.Converter
             this.converters = converters;
         }
 
-        public IValueConverter this[FieldExpression field]
+        public IValueConverter GetConverter(FieldExpression field)
         {
-            get
-            {
-                if (field is null)
-                    return converters.CreateConverter();
+            if (field is null)
+                return converters.CreateConverter();
 
-                var fieldExpression = set.FirstOrDefault(x => x == field);
-                return fieldExpression is object ? converters.CreateConverter(fieldExpression) : converters.CreateConverter();
-            }
+            var fieldExpression = set.FirstOrDefault(x => x == field);
+
+            return fieldExpression is object ? converters.CreateConverter(fieldExpression) : converters.CreateConverter();
         }
 
-        public IValueConverter this[int index]
-        {
-            get
-            {
-                var fieldExpression = set.ElementAt(index);
-                return fieldExpression is object ? converters.CreateConverter(fieldExpression) : converters.CreateConverter();
-            }
-        }
+        public IValueConverter GetConverter(int index)
+            => GetConverter(set.ElementAt(index));
     }
 }
