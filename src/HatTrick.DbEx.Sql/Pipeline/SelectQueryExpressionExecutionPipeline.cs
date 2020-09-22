@@ -151,8 +151,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (field is null)
                         return;
 
-                    var converter = database.ValueConverterFactory.CreateConverter<T>();
-                    value = converter.Convert(field.Value);
+                    value = field.GetValue<T>();
                 }
             );
             return value;
@@ -175,8 +174,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     if (field is null)
                         return;
 
-                    var converter = database.ValueConverterFactory.CreateConverter<T>();
-                    value = converter.Convert(field.Value);
+                    value = field.GetValue<T>();
                 },
                 ct
             ).ConfigureAwait(false);

@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql.Converter
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Converter
 {
     public interface IValueConverter : IConverter
     {

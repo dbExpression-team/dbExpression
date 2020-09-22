@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             if (_fieldConverters.TryGetValue(field, out Func<IValueConverter> converter))
                 return converter();
-            return CreateConverter();
+            return _valueConverter ?? (_valueConverter = new ValueConverter(this));
         }
 
         public IValueConverter<T> CreateConverter<T>()
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (_valueConverters.TryGetValue(typeof(T), out Func<IConverter> converter))
                 return converter() as IValueConverter<T>;
 
-            var enumConverter = CreateEnumValueConverter(typeof(T)) 
+            var enumConverter = CreateEnumValueConverter(typeof(T))
                 ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{typeof(T)}', please ensure a mapper has been registered for type '{typeof(T)}'");
 
             _valueConverters.TryAdd(typeof(T), () => enumConverter);
@@ -140,6 +140,9 @@ namespace HatTrick.DbEx.Sql.Converter
 
             public object Convert<T>(T value)
                 => factory.CreateConverter<T>().Convert(value);
+
+            public object Convert(object value)
+                 => factory.CreateConverter().Convert(value);
         }
         #endregion
     }

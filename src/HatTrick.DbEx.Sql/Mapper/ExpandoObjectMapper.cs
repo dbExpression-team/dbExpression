@@ -15,10 +15,9 @@ namespace HatTrick.DbEx.Sql.Mapper
             {
                 if (string.IsNullOrWhiteSpace(field.Name))
                 {
-                    throw new DbExpressionException("A field name or alias is missing and consequently the retrieved value can't be mapped to a property of the dynamic object as the property name is unknown.");
+                    throw new DbExpressionException($"A field name or alias has not been supplied for field index {field.Index}, therefore the retrieved value can't be mapped to a property of the dynamic object.");
                 }
-                var converter = set[field.Index];
-                expando.Add(field.Name, converter.Convert<object>(field.Value));
+                expando.Add(field.Name, set.GetConverter(field.Index).Convert(field.Value));
             }
         }
     }

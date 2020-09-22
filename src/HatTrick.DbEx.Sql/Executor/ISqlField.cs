@@ -6,6 +6,7 @@ namespace HatTrick.DbEx.Sql.Executor
     {
         int Index { get; }
         string Name { get; }
+        Type DataType { get; }
         object Value { get; }
         T GetValue<T>();
     }
