@@ -35,5 +35,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
+
+        #region arithmetic operators
+        #region alias
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, AliasExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, AliasExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, AliasExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, AliasExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, AliasExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+        #endregion
     }
 }

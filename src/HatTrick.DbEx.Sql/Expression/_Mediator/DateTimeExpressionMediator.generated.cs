@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data type
         #region byte
         public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, byte b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Add));
         public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, byte b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Subtract));
@@ -145,7 +145,55 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
 
-        #region mediator
+        #region fields
+        #region byte
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, ByteFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, ByteFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region decimal
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, DecimalFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, DecimalFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region DateTime
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region DateTimeOffset
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, DateTimeOffsetFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, DateTimeOffsetFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region double
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, DoubleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, DoubleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region float
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, SingleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, SingleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region short
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, Int16FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, Int16FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region int
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, Int32FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, Int32FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region long
+        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, Int64FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, Int64FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #endregion
+
+        #region mediators
         #region byte
         public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, ByteExpressionMediator b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, ByteExpressionMediator b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
@@ -219,9 +267,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #endregion
+
+        #region alias
+        //moved to non-generated file
+        #endregion
         #endregion
 
         #region filter operators
+        #region DateTime
         public static FilterExpression<bool> operator ==(DateTimeExpressionMediator a, DateTime b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(DateTimeExpressionMediator a, DateTime b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(b)), FilterExpressionOperator.NotEqual);
         public static FilterExpression<bool> operator <(DateTimeExpressionMediator a, DateTime b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(b)), FilterExpressionOperator.LessThan);
@@ -235,21 +288,25 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool> operator <=(DateTime a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime>(a)), b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool> operator >(DateTime a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime>(a)), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool> operator >=(DateTime a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
 
-        public static FilterExpression<bool> operator ==(DateTimeExpressionMediator a, DateTime? b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(DateTimeExpressionMediator a, DateTime? b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(DateTimeExpressionMediator a, DateTime? b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(DateTimeExpressionMediator a, DateTime? b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(DateTimeExpressionMediator a, DateTime? b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(DateTimeExpressionMediator a, DateTime? b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        #region fields
+        public static FilterExpression<bool> operator ==(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(DateTimeExpressionMediator a, DateTimeFieldExpression b) => new FilterExpression<bool>(a, new DateTimeExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool> operator ==(DateTime? a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(DateTime? a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(DateTime? a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(DateTime? a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(DateTime? a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(DateTime? a, DateTimeExpressionMediator b) => new FilterExpression<bool>(new DateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(DateTimeExpressionMediator a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, new NullableDateTimeExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DateTimeExpressionMediator a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, new NullableDateTimeExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(DateTimeExpressionMediator a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, new NullableDateTimeExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(DateTimeExpressionMediator a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, new NullableDateTimeExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(DateTimeExpressionMediator a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, new NullableDateTimeExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(DateTimeExpressionMediator a, NullableDateTimeFieldExpression b) => new FilterExpression<bool?>(a, new NullableDateTimeExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
 
+        #region mediators
         public static FilterExpression<bool> operator ==(DateTimeExpressionMediator a, DateTimeExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(DateTimeExpressionMediator a, DateTimeExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
         public static FilterExpression<bool> operator <(DateTimeExpressionMediator a, DateTimeExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
@@ -263,6 +320,16 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator <=(DateTimeExpressionMediator a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool?> operator >(DateTimeExpressionMediator a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(DateTimeExpressionMediator a, NullableDateTimeExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+
+        #region alias
+        public static FilterExpression<bool> operator ==(DateTimeExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(DateTimeExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(DateTimeExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(DateTimeExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(DateTimeExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(DateTimeExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
         #endregion
     }
 }

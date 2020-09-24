@@ -15,21 +15,12 @@ namespace HatTrick.DbEx.CodeTemplating
         private const string nullableEnumFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\NullableEnumFunctionExpression.txt";
         private const string nullableTypedFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\NullableTypedFunctionExpression.txt";
 
-        static void Mainx(string[] args)
-        {
-            generator.CreateGenerator()
-                .Generate<StubTypedFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\StubTypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field")
-                .Generate<StubNullableTypedFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\StubNullableTypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field")
-                .Generate<StubEntityTypedFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\StubEntityTypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field")
-                .Generate<StubEntityNullableTypedFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\StubEntityNullableTypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field");
-        }
-
         static void Main(string[] args)
         {
             generator.CreateGenerator()
                 //mediator
                 .Generate<ExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\TypedExpressionMediator.txt", $@"{sqlSrcDirectory}\_Mediator")
-                .Generate<NullableExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\TypedNullableExpressionMediator.txt", $@"{sqlSrcDirectory}\_Mediator")
+                .Generate<NullableExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\NullableTypedExpressionMediator.txt", $@"{sqlSrcDirectory}\_Mediator")
 
                 //field
                 .Generate<FieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\TypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field")

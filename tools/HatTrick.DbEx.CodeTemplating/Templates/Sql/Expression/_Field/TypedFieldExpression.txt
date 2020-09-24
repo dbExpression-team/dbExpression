@@ -34,7 +34,7 @@ namespace {Namespace}
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data type
         {#each ArithmeticOperations}
         #region {$.OperationType.Alias}
         {#each Operations}
@@ -59,7 +59,7 @@ namespace {Namespace}
         {/each}
         #endregion
 
-        #region mediator
+        #region fields
         {#each ArithmeticOperations}
         #region {$.OperationType.Alias}
         {#each Operations}
@@ -76,6 +76,10 @@ namespace {Namespace}
         #endregion
         
         {/each}
+        #endregion
+
+        #region alias
+        //moved to non-generated file
         #endregion
         #endregion
 
@@ -110,6 +114,12 @@ namespace {Namespace}
         public static FilterExpression<bool?> operator {$.FilterOperatorSymbol}({..\$.Type.Name}FieldExpression a, Nullable{..\$.Type.Name}ExpressionMediator b) => new FilterExpression<bool?>(new {..\$.Type.Name}ExpressionMediator(a), b, FilterExpressionOperator.{$.FilterOperatorName});
         {/each}
         {/if}
+        #endregion
+
+        #region alias
+        {#each FilterOperations}
+        public static FilterExpression<bool> operator {$.FilterOperatorSymbol}({..\$.Type.Name}FieldExpression a, AliasExpression b) => new FilterExpression<bool>(new {..\$.Type.Name}ExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.{$.FilterOperatorName});
+        {/each}
         #endregion
         #endregion
     }}
