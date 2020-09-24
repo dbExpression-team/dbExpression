@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators 
-        #region TValue
+        #region data type
         #region byte
         public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, byte b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Add));
         public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, byte b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Subtract));
@@ -225,7 +225,128 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
 
-        #region mediator
+        #region fields
+        #region byte
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, ByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableByteFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region decimal
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDecimalExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDecimalExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDecimalExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDecimalExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDecimalExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region DateTime
+        public static NullableDateTimeExpressionMediator operator +(NullableDecimalExpressionMediator a, DateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDecimalExpressionMediator a, DateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+
+        public static NullableDateTimeExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new NullableDateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new NullableDateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region DateTimeOffset
+        public static NullableDateTimeOffsetExpressionMediator operator +(NullableDecimalExpressionMediator a, DateTimeOffsetFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeOffsetExpressionMediator operator -(NullableDecimalExpressionMediator a, DateTimeOffsetFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+
+        public static NullableDateTimeOffsetExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableDateTimeOffsetFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new NullableDateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeOffsetExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableDateTimeOffsetFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new NullableDateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region double
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, DoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDoubleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDoubleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDoubleExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDoubleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableDoubleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableDoubleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region float
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableSingleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableSingleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableSingleExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableSingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableSingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableSingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region short
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, Int16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt16ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt16ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt16ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt16ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableInt16FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt16ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region int
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, Int32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt32ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt32ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt32ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt32ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableInt32FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt32ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region long
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, Int64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+
+        public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt64ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt64ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt64ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt64ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(NullableDecimalExpressionMediator a, NullableInt64FieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new NullableInt64ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region string
+
+        #endregion
+
+        #endregion
+
+        #region mediators
         #region byte
         public static NullableDecimalExpressionMediator operator +(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         public static NullableDecimalExpressionMediator operator -(NullableDecimalExpressionMediator a, ByteExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
@@ -342,6 +463,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
         #endregion
+
+        #region alias
+        //moved to non-generated file
+        #endregion
         #endregion
 
         #region filter operators
@@ -374,6 +499,22 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator >(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(decimal? a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
+
+        #region fields
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
         
         #region mediator
         public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
@@ -389,6 +530,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new DecimalExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new DecimalExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(new DecimalExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+
+        #region alias
+        public static FilterExpression<bool?> operator ==(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableDecimalExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
     }

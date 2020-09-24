@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data type
         #region byte
         public static NullableByteExpressionMediator operator +(NullableByteFieldExpression a, byte b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Add));
         public static NullableByteExpressionMediator operator -(NullableByteFieldExpression a, byte b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Subtract));
@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
 
-        #region mediator
+        #region fields
         #region byte
         public static NullableByteExpressionMediator operator +(NullableByteFieldExpression a, ByteFieldExpression b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new ByteExpressionMediator(b), ArithmeticExpressionOperator.Add));
         public static NullableByteExpressionMediator operator -(NullableByteFieldExpression a, ByteFieldExpression b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new ByteExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
@@ -367,6 +367,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #endregion
+
+        #region alias
+        //moved to non-generated file
+        #endregion
         #endregion
 
         #region filter operators
@@ -421,6 +425,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator <=(NullableByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool?> operator >(NullableByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(NullableByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+
+        #region alias
+        public static FilterExpression<bool?> operator ==(NullableByteFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(NullableByteFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(NullableByteFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(NullableByteFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(NullableByteFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(NullableByteFieldExpression a, AliasExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
     }

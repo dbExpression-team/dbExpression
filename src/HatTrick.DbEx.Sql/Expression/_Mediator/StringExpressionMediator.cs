@@ -42,7 +42,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
+        #region mediators
         public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        #endregion
+
+        #region alias
+        public static StringExpressionMediator operator +(StringExpressionMediator a, AliasExpression b) => new StringExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        #endregion
         #endregion
     }
 }

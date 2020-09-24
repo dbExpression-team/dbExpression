@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         {
             var builder = new MsSqlSelectQueryExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>>(configuration);
             builder.Expression.Select.Top(1);
-            builder.Expression.Select.Expressions.Add(new SelectExpression(new EnumExpressionMediator<TEnum>(field)));
+            builder.Expression.Select.Expressions.Add(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
             return builder;
         }
 
@@ -59,7 +59,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TEnum : struct, Enum, IComparable
         {
             var builder = new MsSqlSelectQueryExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>>(configuration);
-            builder.Expression.Select.Expressions.Add(new SelectExpression(new EnumExpressionMediator<TEnum>(field)));
+            builder.Expression.Select.Expressions.Add(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
             return builder;
         }
         public IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectExpression field1, SelectExpression field2, params SelectExpression[] fields)

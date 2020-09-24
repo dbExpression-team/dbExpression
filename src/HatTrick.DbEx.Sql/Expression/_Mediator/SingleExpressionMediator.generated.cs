@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data type
         #region byte
         public static SingleExpressionMediator operator +(SingleExpressionMediator a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleExpressionMediator a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Subtract));
@@ -229,7 +229,76 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
 
-        #region mediator
+        #region fields
+        #region byte
+        public static SingleExpressionMediator operator +(SingleExpressionMediator a, ByteFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleExpressionMediator a, ByteFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleExpressionMediator a, ByteFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleExpressionMediator a, ByteFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleExpressionMediator a, ByteFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region decimal
+        public static DecimalExpressionMediator operator +(SingleExpressionMediator a, DecimalFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DecimalExpressionMediator operator -(SingleExpressionMediator a, DecimalFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static DecimalExpressionMediator operator *(SingleExpressionMediator a, DecimalFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static DecimalExpressionMediator operator /(SingleExpressionMediator a, DecimalFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static DecimalExpressionMediator operator %(SingleExpressionMediator a, DecimalFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region DateTime
+        public static DateTimeExpressionMediator operator +(SingleExpressionMediator a, DateTimeFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(SingleExpressionMediator a, DateTimeFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region DateTimeOffset
+        public static DateTimeOffsetExpressionMediator operator +(SingleExpressionMediator a, DateTimeOffsetFieldExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DateTimeOffsetExpressionMediator operator -(SingleExpressionMediator a, DateTimeOffsetFieldExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region double
+        public static DoubleExpressionMediator operator +(SingleExpressionMediator a, DoubleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static DoubleExpressionMediator operator -(SingleExpressionMediator a, DoubleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static DoubleExpressionMediator operator *(SingleExpressionMediator a, DoubleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static DoubleExpressionMediator operator /(SingleExpressionMediator a, DoubleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static DoubleExpressionMediator operator %(SingleExpressionMediator a, DoubleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region float
+        public static SingleExpressionMediator operator +(SingleExpressionMediator a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleExpressionMediator a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleExpressionMediator a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleExpressionMediator a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleExpressionMediator a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region short
+        public static SingleExpressionMediator operator +(SingleExpressionMediator a, Int16FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleExpressionMediator a, Int16FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleExpressionMediator a, Int16FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleExpressionMediator a, Int16FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleExpressionMediator a, Int16FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region int
+        public static SingleExpressionMediator operator +(SingleExpressionMediator a, Int32FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleExpressionMediator a, Int32FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleExpressionMediator a, Int32FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleExpressionMediator a, Int32FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleExpressionMediator a, Int32FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region long
+        public static SingleExpressionMediator operator +(SingleExpressionMediator a, Int64FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleExpressionMediator a, Int64FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleExpressionMediator a, Int64FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleExpressionMediator a, Int64FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleExpressionMediator a, Int64FieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #endregion
+
+        #region mediators
         #region byte
         public static SingleExpressionMediator operator +(SingleExpressionMediator a, ByteExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleExpressionMediator a, ByteExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
@@ -345,9 +414,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #endregion
+
+        #region alias
+        //moved to non-generated file
+        #endregion
         #endregion
 
         #region filter operators
+        #region float
         public static FilterExpression<bool> operator ==(SingleExpressionMediator a, float b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(SingleExpressionMediator a, float b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.NotEqual);
         public static FilterExpression<bool> operator <(SingleExpressionMediator a, float b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThan);
@@ -361,21 +435,25 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool> operator <=(float a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool> operator >(float a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool> operator >=(float a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
 
-        public static FilterExpression<bool> operator ==(SingleExpressionMediator a, float? b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(SingleExpressionMediator a, float? b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(SingleExpressionMediator a, float? b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(SingleExpressionMediator a, float? b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(SingleExpressionMediator a, float? b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(SingleExpressionMediator a, float? b) => new FilterExpression<bool>(a, new SingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        #region fields
+        public static FilterExpression<bool> operator ==(SingleExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool>(a, new SingleExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(SingleExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool>(a, new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(SingleExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool>(a, new SingleExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(SingleExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool>(a, new SingleExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(SingleExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool>(a, new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(SingleExpressionMediator a, SingleFieldExpression b) => new FilterExpression<bool>(a, new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool> operator ==(float? a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(float? a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(float? a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(float? a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(float? a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(float? a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float?>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpression<bool?> operator ==(SingleExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(SingleExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator <(SingleExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool?> operator <=(SingleExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool?> operator >(SingleExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool?> operator >=(SingleExpressionMediator a, NullableSingleFieldExpression b) => new FilterExpression<bool?>(a, new NullableSingleExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
 
+        #region mediators
         public static FilterExpression<bool> operator ==(SingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(SingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
         public static FilterExpression<bool> operator <(SingleExpressionMediator a, SingleExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
@@ -389,6 +467,16 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator <=(SingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool?> operator >(SingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(SingleExpressionMediator a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+
+        #region alias
+        public static FilterExpression<bool> operator ==(SingleExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(SingleExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(SingleExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(SingleExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(SingleExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(SingleExpressionMediator a, AliasExpression b) => new FilterExpression<bool>(a, new ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
         #endregion
     }
 }

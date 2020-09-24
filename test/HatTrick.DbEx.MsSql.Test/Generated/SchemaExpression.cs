@@ -219,6 +219,12 @@ namespace DbEx.DataService
         {
 
         }
+
+        //JROD/GWG: need this in template
+        #pragma warning disable IDE1006 // Naming Styles
+        public static AliasExpression alias(string tableName, string fieldName)
+        #pragma warning restore IDE1006 // Naming Styles
+            => new AliasExpression(tableName, fieldName);
         #endregion
     }
     #endregion

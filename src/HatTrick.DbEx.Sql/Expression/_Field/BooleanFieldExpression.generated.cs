@@ -30,10 +30,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data type
         #endregion
 
-        #region mediator
+        #region fields
+        #endregion
+
+        #region alias
+        //moved to non-generated file
         #endregion
         #endregion
 
@@ -82,6 +86,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator <=(BooleanFieldExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
         public static FilterExpression<bool?> operator >(BooleanFieldExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(BooleanFieldExpression a, NullableBooleanExpressionMediator b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #endregion
+
+        #region alias
+        public static FilterExpression<bool> operator ==(BooleanFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(BooleanFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator <(BooleanFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.LessThan);
+        public static FilterExpression<bool> operator <=(BooleanFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
+        public static FilterExpression<bool> operator >(BooleanFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
+        public static FilterExpression<bool> operator >=(BooleanFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
         #endregion
     }

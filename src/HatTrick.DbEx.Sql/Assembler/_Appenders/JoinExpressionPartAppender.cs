@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             if (expression.JoinToo is QueryExpression joinExpression)
             {
-                builder.Appender.Write(" (").LineBreak()
+                builder.Appender.Write("(").LineBreak()
                     .Indentation++;
 
                 //append the subquery

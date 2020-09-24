@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -11,6 +10,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public SelectExpression(ExpressionMediator expression) : base(expression)
         {
         }
+
+        private SelectExpression(ExpressionMediator expression, string alias) : base(expression, alias)
+        {
+        }
+        #endregion
+
+        #region as
+        public new SelectExpression<TValue> As(string alias)
+            => new SelectExpression<TValue>(Expression, alias);
         #endregion
 
         #region logical & operator

@@ -6,7 +6,10 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region methods
         public override void AppendPart(SelectExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-            => builder.AppendPart(expression.Expression, context);
+        {
+            builder.AppendPart(expression.Expression, context);
+            AppendAlias(expression, builder, context);
+        }
         #endregion
     }
 }
