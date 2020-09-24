@@ -97,9 +97,7 @@ namespace HatTrick.DbEx.Sql.Converter
         }
 
         public IValueConverter CreateConverter()
-            => _valueConverter ?? (_valueConverter = new ValueConverter(this));
-
-        
+            => _valueConverter ?? (_valueConverter = new ValueConverter(this));        
 
         private EnumValueConverter CreateEnumValueConverter(Type enumType)
             => CreateEnumValueConverter(enumType, enumType, false);
