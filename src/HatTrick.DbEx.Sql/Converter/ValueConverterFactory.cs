@@ -4,100 +4,115 @@ using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class ValueConverterFactory : IValueConverterFactory
+    public partial class ValueConverterFactory : IValueConverterFactory
     {
         #region internals
-        private IValueConverter _valueConverter;
-
-        private static readonly PrimitiveValueConverter<bool> _boolConverter = new PrimitiveValueConverter<bool>(Convert.ToBoolean, x => x);
-        private static readonly PrimitiveValueConverter<bool?> _nullableBoolConverter = new PrimitiveValueConverter<bool?>((f) => f is null ? default(bool?) : Convert.ToBoolean(f), x => x);
-        private static readonly PrimitiveValueConverter<short> _shortConverter = new PrimitiveValueConverter<short>(Convert.ToInt16, x => x);
-        private static readonly PrimitiveValueConverter<short?> _nullableShortConverter = new PrimitiveValueConverter<short?>((f) => f is null ? default(short?) : Convert.ToInt16(f), x => x);
-        private static readonly PrimitiveValueConverter<int> _intConverter = new PrimitiveValueConverter<int>(Convert.ToInt32, x => x);
-        private static readonly PrimitiveValueConverter<int?> _nullableIntConverter = new PrimitiveValueConverter<int?>((f) => f is null ? default(int?) : Convert.ToInt32(f), x => x);
-        private static readonly PrimitiveValueConverter<long> _longConverter = new PrimitiveValueConverter<long>(Convert.ToInt64, x => x);
-        private static readonly PrimitiveValueConverter<long?> _nullableLongConverter = new PrimitiveValueConverter<long?>((f) => f is null ? default(long?) : Convert.ToInt64(f), x => x);
-        private static readonly PrimitiveValueConverter<double> _doubleConverter = new PrimitiveValueConverter<double>(Convert.ToDouble, x => x);
-        private static readonly PrimitiveValueConverter<double?> _nullableDoubleConverter = new PrimitiveValueConverter<double?>((f) => f is null ? default(double?) : Convert.ToDouble(f), x => x);
-        private static readonly PrimitiveValueConverter<decimal> _decimalConverter = new PrimitiveValueConverter<decimal>(Convert.ToDecimal, x => x);
-        private static readonly PrimitiveValueConverter<decimal?> _nullableDecimalConverter = new PrimitiveValueConverter<decimal?>((f) => f is null ? default(decimal?) : Convert.ToDecimal(f), x => x);
-        private static readonly PrimitiveValueConverter<float> _floatConverter = new PrimitiveValueConverter<float>(Convert.ToSingle, x => x);
-        private static readonly PrimitiveValueConverter<float?> _nullableFloatConverter = new PrimitiveValueConverter<float?>((f) => f is null ? default(float?) : Convert.ToSingle(f), x => x);
-        private static readonly PrimitiveValueConverter<DateTime> _dateTimeConverter = new PrimitiveValueConverter<DateTime>(Convert.ToDateTime, x => x);
-        private static readonly PrimitiveValueConverter<DateTime?> _nullableDateTimeConverter = new PrimitiveValueConverter<DateTime?>((f) => f is null ? default(DateTime?) : Convert.ToDateTime(f), x => x);
-        private static readonly PrimitiveValueConverter<DateTimeOffset> _dateTimeOffsetConverter = new PrimitiveValueConverter<DateTimeOffset>((f) => new DateTimeOffset(Convert.ToDateTime(f)), x => x);
-        private static readonly PrimitiveValueConverter<DateTimeOffset?> _nullableDateTimeOffsetConverter = new PrimitiveValueConverter<DateTimeOffset?>((f) => f is null ? default(DateTimeOffset?) : new DateTimeOffset(Convert.ToDateTime(f)), x => x);
-        private static readonly PrimitiveValueConverter<Guid> _guidConverter = new PrimitiveValueConverter<Guid>((f) => (Guid)f, x => x);
-        private static readonly PrimitiveValueConverter<Guid?> _nullableGuidConverter = new PrimitiveValueConverter<Guid?>((f) => (Guid?)f, x => x);
-        private static readonly PrimitiveValueConverter<string> _stringConverter = new PrimitiveValueConverter<string>(Convert.ToString, x => x);
-        private static readonly PrimitiveValueConverter<byte[]> _byteArrayConverter = new PrimitiveValueConverter<byte[]>((f) => f is null ? default : (byte[])f, x => x);
-        private static readonly PrimitiveValueConverter<object> _objectConverter = new PrimitiveValueConverter<object>(o => o, x => x);
-
-        private readonly ConcurrentDictionary<Type, Func<IConverter>> _valueConverters = new ConcurrentDictionary<Type, Func<IConverter>>();
+        private static readonly IValueConverter _valueConverter = new ValueConverter();
+        private static readonly IValueConverter _nullableValueConverter = new NullableValueConverter();
+        private readonly ConcurrentDictionary<Type, Func<IValueConverter>> _valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
         private readonly ConcurrentDictionary<FieldExpression, Func<IValueConverter>> _fieldConverters = new ConcurrentDictionary<FieldExpression, Func<IValueConverter>>();
         #endregion
 
         #region methods
         public void RegisterDefaultConverters()
         {
-            _valueConverters.TryAdd(typeof(bool), () => _boolConverter);
-            _valueConverters.TryAdd(typeof(bool?), () => _nullableBoolConverter);
-            _valueConverters.TryAdd(typeof(short), () => _shortConverter);
-            _valueConverters.TryAdd(typeof(short?), () => _nullableShortConverter);
-            _valueConverters.TryAdd(typeof(int), () => _intConverter);
-            _valueConverters.TryAdd(typeof(int?), () => _nullableIntConverter);
-            _valueConverters.TryAdd(typeof(long), () => _longConverter);
-            _valueConverters.TryAdd(typeof(long?), () => _nullableLongConverter);
-            _valueConverters.TryAdd(typeof(double), () => _doubleConverter);
-            _valueConverters.TryAdd(typeof(double?), () => _nullableDoubleConverter);
-            _valueConverters.TryAdd(typeof(decimal), () => _decimalConverter);
-            _valueConverters.TryAdd(typeof(decimal?), () => _nullableDecimalConverter);
-            _valueConverters.TryAdd(typeof(float), () => _floatConverter);
-            _valueConverters.TryAdd(typeof(float?), () => _nullableFloatConverter);
-            _valueConverters.TryAdd(typeof(DateTime), () => _dateTimeConverter);
-            _valueConverters.TryAdd(typeof(DateTime?), () => _nullableDateTimeConverter);
-            _valueConverters.TryAdd(typeof(DateTimeOffset), () => _dateTimeOffsetConverter);
-            _valueConverters.TryAdd(typeof(DateTimeOffset?), () => _nullableDateTimeOffsetConverter);
-            _valueConverters.TryAdd(typeof(Guid), () => _guidConverter);
-            _valueConverters.TryAdd(typeof(Guid?), () => _nullableGuidConverter);
-            _valueConverters.TryAdd(typeof(string), () => _stringConverter);
-            _valueConverters.TryAdd(typeof(byte[]), () => _byteArrayConverter);
-            _valueConverters.TryAdd(typeof(object), () => _objectConverter);
+            _valueConverters.TryAdd(typeof(bool), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(bool?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(short), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(short?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(int), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(int?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(long), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(long?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(double), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(double?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(decimal), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(decimal?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(float), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(float?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(DateTime), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(DateTime?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(DateTimeOffset), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(DateTimeOffset?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(Guid), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(Guid?), () => _nullableValueConverter);
+            _valueConverters.TryAdd(typeof(string), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(byte[]), () => _valueConverter);
+            _valueConverters.TryAdd(typeof(object), () => _valueConverter);
         }
-   
-        public void RegisterConverter<T>(IValueConverter<T> converter)
-            where T : IConvertible => RegisterConverter(() => converter);
 
-        public void RegisterConverter<T>(Func<IValueConverter<T>> converter)
-            where T : IConvertible => _valueConverters.AddOrUpdate(typeof(T), converter, (t, f) => converter);
+        public void RegisterConverter<T>(IValueConverter converter)
+        {
+            if (converter is null)
+                throw new ArgumentNullException($"{nameof(converter)} is required.");
+
+            RegisterConverter<T>(() => converter);
+        }
+
+        public void RegisterConverter<T, U>()
+            where U : class, IValueConverter, new()
+            => RegisterConverter<T>(new U());
+
+        public void RegisterConverter<T>(Func<IValueConverter> converter)
+        {
+            if (converter is null)
+                throw new ArgumentNullException($"{nameof(converter)} is required.");
+
+            _valueConverters.AddOrUpdate(typeof(T), converter, (type, @return) => converter);
+        }
 
         public void RegisterConverter(IValueConverter converter, FieldExpression field)
         {
+            if (converter is null)
+                throw new ArgumentNullException($"{nameof(converter)} is required.");
+
+            if (field is null)
+                throw new ArgumentNullException($"{nameof(field)} is required.");
+
             _fieldConverters.TryAdd(field, () => converter);
         }
 
         public IValueConverter CreateConverter(FieldExpression field)
         {
+            if (field is null)
+                return null;
+
             if (_fieldConverters.TryGetValue(field, out Func<IValueConverter> converter))
                 return converter();
-            return _valueConverter ?? (_valueConverter = new ValueConverter(this));
+
+            return CreateConverter((field as IExpressionField).DeclaredType);
         }
 
-        public IValueConverter<T> CreateConverter<T>()
+        public IValueConverter CreateConverter(Type type)
         {
-            if (_valueConverters.TryGetValue(typeof(T), out Func<IConverter> converter))
-                return converter() as IValueConverter<T>;
+            if (_valueConverters.TryGetValue(type, out Func<IValueConverter> converter))
+                return converter();
 
-            var enumConverter = CreateEnumValueConverter(typeof(T))
-                ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{typeof(T)}', please ensure a mapper has been registered for type '{typeof(T)}'");
+            if (TryCreateEnumValueConverter(type, out IValueConverter enumConverter))
+            {
+                _valueConverters.TryAdd(type, () => enumConverter);
+                return enumConverter;
+            }
 
-            _valueConverters.TryAdd(typeof(T), () => enumConverter);
-
-            return _valueConverters[typeof(T)]() as IValueConverter<T>;
+            throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{type}', please ensure a converter has been registered.");
         }
 
-        public IValueConverter CreateConverter()
-            => _valueConverter ?? (_valueConverter = new ValueConverter(this));
+        public IValueConverter CreateConverter<T>()
+            => CreateConverter(typeof(T));
+
+        private bool TryCreateEnumValueConverter(Type enumType, out IValueConverter converter)
+        {
+            converter = null;
+            try
+            {
+                converter = CreateEnumValueConverter(enumType);
+                return converter is object;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         private EnumValueConverter CreateEnumValueConverter(Type enumType)
             => CreateEnumValueConverter(enumType, enumType, false);
@@ -106,43 +121,14 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             if (enumType.IsEnum)
             {
-                Type converterType;
                 if (isNullable)
                 {
-                    converterType = typeof(NullableEnumValueConverter<,>).MakeGenericType(rootType, enumType);
+                    return new NullableEnumValueConverter();
                 }
-                else
-                {
-                    converterType = typeof(EnumValueConverter<>).MakeGenericType(rootType);
-                }
-                var newUpConverter = System.Linq.Expressions.Expression.New(converterType);
-                var lambda = System.Linq.Expressions.Expression.Lambda(newUpConverter);
-                var invoked = lambda.Compile().DynamicInvoke();
-                return invoked as EnumValueConverter;
+                return new EnumValueConverter();
             }
             enumType = Nullable.GetUnderlyingType(enumType);
             return enumType is null ? null : CreateEnumValueConverter(enumType, rootType, true);
-        }
-        #endregion
-
-        #region classes
-        protected class ValueConverter : IValueConverter
-        {
-            public IValueConverterFactory factory;
-
-            public ValueConverter(IValueConverterFactory factory)
-            {
-                this.factory = factory;
-            }
-
-            public T Convert<T>(object value)
-                => factory.CreateConverter<T>().Convert(value);
-
-            public object Convert<T>(T value)
-                => factory.CreateConverter<T>().Convert(value);
-
-            public object Convert(object value)
-                 => factory.CreateConverter().Convert(value);
         }
         #endregion
     }

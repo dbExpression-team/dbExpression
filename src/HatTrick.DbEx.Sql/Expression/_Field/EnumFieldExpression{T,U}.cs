@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator EnumExpressionMediator<TEnum>(EnumFieldExpression<TEntity, TEnum> a) => new EnumExpressionMediator<TEnum>(a);
-        public static implicit operator SelectExpression<long>(EnumFieldExpression<TEntity, TEnum> a) => new SelectExpression<long>(new EnumExpressionMediator<TEnum>(a));
+        public static implicit operator SelectExpression<TEnum>(EnumFieldExpression<TEntity, TEnum> a) => new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(a));
         public static implicit operator OrderByExpression(EnumFieldExpression<TEntity, TEnum> a) => new OrderByExpression(new EnumExpressionMediator<TEnum>(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(EnumFieldExpression<TEntity, TEnum> a) => new GroupByExpression(new EnumExpressionMediator<TEnum>(a));
         #endregion

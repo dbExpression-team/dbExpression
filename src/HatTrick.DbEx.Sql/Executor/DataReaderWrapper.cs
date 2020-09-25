@@ -1,5 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Converter;
 using System;
 using System.Data.Common;
 
@@ -12,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Executor
         private int currentRowIndex;
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
-        protected FieldExpressionConverters Converters { get; private set; }
+        protected IValueConverterFinder Converters { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, FieldExpressionConverters converters)
+        public DataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterFinder converters)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
@@ -36,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), DataReader.GetFieldType(i), values[i] == DBNull.Value ? null : values[i], Converters.GetConverter(i));
+                        row[i] = new Field(i, DataReader.GetName(i), DataReader.GetFieldType(i), values[i] == DBNull.Value ? null : values[i], Converters);
                     }
                     return new Row(currentRowIndex++, row);
                 }

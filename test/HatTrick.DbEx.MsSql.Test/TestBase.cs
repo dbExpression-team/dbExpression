@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test
 
             Action<IFieldExpressionConfigurationBuilder> configureFields = fields =>
             {
-                fields.For(dbo.Purchase.PaymentMethodType).UseConverter<StringEnumValueConverter<PaymentMethodType>>();
+                fields.For(dbo.Purchase.PaymentMethodType).UseConverter<StringEnumValueConverter>();
             };
 
             switch (version)

@@ -1,5 +1,4 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Converter;
 using System;
 using System.Data.Common;
 using System.Threading;
@@ -15,13 +14,13 @@ namespace HatTrick.DbEx.Sql.Executor
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
-        protected FieldExpressionConverters Converters { get; private set; }
+        protected IValueConverterFinder Converters { get; private set; }
         #endregion
 
         #region constructors
-        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, FieldExpressionConverters converters) : this(sqlConnection, dataReader, converters, CancellationToken.None) { }
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterFinder converters) : this(sqlConnection, dataReader, converters, CancellationToken.None) { }
 
-        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, FieldExpressionConverters converters, CancellationToken ct)
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterFinder converters, CancellationToken ct)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
@@ -46,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), DataReader.GetFieldType(i), values[i] == DBNull.Value ? null : values[i], Converters.GetConverter(i));
+                        row[i] = new Field(i, DataReader.GetName(i), DataReader.GetFieldType(i), values[i] == DBNull.Value ? null : values[i], Converters);
                     }
                     return new Row(currentRowIndex++, row);
                 }

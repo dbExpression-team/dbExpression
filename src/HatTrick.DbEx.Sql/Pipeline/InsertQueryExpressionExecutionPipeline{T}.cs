@@ -71,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
                 connection,
-                new FieldExpressionConverters(fields, database.ValueConverterFactory),
+                new SqlStatementValueConverterResolver(fields, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd)));
                     configureCommand?.Invoke(cmd);
@@ -80,7 +80,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
 
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = database.ValueConverterFactory.CreateConverter();
 
             ISqlRow row;
             while ((row = reader.ReadRow()) is object)
@@ -135,7 +134,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
                 statement,
                 connection,
-                new FieldExpressionConverters(fields, database.ValueConverterFactory),
+                new SqlStatementValueConverterResolver(fields, database.ValueConverterFactory),
                 async cmd => {
                     if (beforeExecution is object)
                     {
@@ -153,7 +152,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
 
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-            var valueMapper = database.ValueConverterFactory.CreateConverter();
 
             ISqlRow row;
             while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)

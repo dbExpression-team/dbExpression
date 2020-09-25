@@ -59,13 +59,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             beforeDelete?.Invoke(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(database, expression, appender, parameterBuilder)));
 
-            var fields = statement.Parameters.Where(x => x.Field is object).Select(x => x.Field);
-
             var rowsAffected = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
                 statement,
                 connection,
-                new FieldExpressionConverters(fields, database.ValueConverterFactory),
-                database.ValueConverterFactory.CreateConverter(),
+                new SqlStatementValueConverterResolver(statement.Parameters, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd))); 
                     configureCommand?.Invoke(cmd); 
@@ -101,13 +98,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 await beforeDelete.InvokeAsync(new Lazy<BeforeDeletePipelineExecutionContext>(() => new BeforeDeletePipelineExecutionContext(database, expression, appender, parameterBuilder)), ct).ConfigureAwait(false);
             }
 
-            var fields = statement.Parameters.Where(x => x.Field is object).Select(x => x.Field);
-
             var rowsAffected = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalarAsync<int>(
                 statement,
                 connection,
-                new FieldExpressionConverters(fields, database.ValueConverterFactory),
-                database.ValueConverterFactory.CreateConverter(),
+                new SqlStatementValueConverterResolver(statement.Parameters, database.ValueConverterFactory),
                 async cmd => {
                     if (beforeExecution is object)
                     {
