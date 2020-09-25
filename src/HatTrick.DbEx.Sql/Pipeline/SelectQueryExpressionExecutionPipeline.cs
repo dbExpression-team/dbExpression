@@ -231,7 +231,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public dynamic ExecuteSelectDynamic(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
         {
             dynamic value = default;
-            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
+            var converters = new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory);
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -253,7 +253,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public async Task<dynamic> ExecuteSelectDynamicAsync(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
         {
             dynamic value = default;
-            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
+            var converters = new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory);
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
+            var converters = new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory);
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -300,7 +300,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-            var converters = new FieldExpressionConverters(expression.Select, database.ValueConverterFactory);
+            var converters = new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory);
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -458,7 +458,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = executor.ExecuteQuery(
                 statement, 
                 connection,
-                new FieldExpressionConverters(expression.Select, database.ValueConverterFactory),
+                new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd))); 
                     configureCommand?.Invoke(cmd); 
@@ -500,7 +500,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,
-                new FieldExpressionConverters(expression.Select, database.ValueConverterFactory),
+                new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory),
                 async cmd => { 
                     await beforeExecution?.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statementBuilder.CreateSqlStatement(), cmd)), ct); 
                     configureCommand?.Invoke(cmd); 

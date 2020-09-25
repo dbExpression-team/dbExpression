@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class ExpandoObjectMapper : IExpandoObjectMapper
     {
-        public void Map(ExpandoObject expandoObject, ISqlRow row, FieldExpressionConverters set)
+        public void Map(ExpandoObject expandoObject, ISqlRow row, SqlStatementValueConverterResolver fieldConverters)
         {
             var expando = expandoObject as IDictionary<string, object>;
             ISqlField field;
@@ -17,8 +17,17 @@ namespace HatTrick.DbEx.Sql.Mapper
                 {
                     throw new DbExpressionException($"A field name or alias has not been supplied for field index {field.Index}, therefore the retrieved value can't be mapped to a property of the dynamic object.");
                 }
-                expando.Add(field.Name, set.GetConverter(field.Index).Convert(field.Value));
+                var converter = fieldConverters.FindConverter(field.Index) ?? fieldConverters.FindConverter(field.DataType);
+                if (converter is object)
+                {
+                    expando.Add(field.Name, converter.ConvertFromDatabase(field.DataType, field.Value));
+                }
+                else
+                {
+                    expando.Add(field.Name, field.Value);
+                }
             }
         }
     }
 }
+

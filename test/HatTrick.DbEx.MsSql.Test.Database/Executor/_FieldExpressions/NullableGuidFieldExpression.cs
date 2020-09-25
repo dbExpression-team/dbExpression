@@ -113,5 +113,43 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when               
             exp.Execute();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
+        public void Can_select_list_of_purchase_record_and_convert_string_to_payment_method(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var purchases = db.SelectMany<Purchase>()
+                .From(dbo.Purchase)
+                .Execute();
+
+            //then
+            purchases.Should().HaveCount(expected);
+            purchases.Should().Match(p => p.All(x => ((PaymentMethodType[])Enum.GetValues(typeof(PaymentMethodType))).Contains(x.PaymentMethodType)));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Statement", "SELECT")]
+        public void Can_select_list_of_PaymentMethodType_field_from_purchase_and_convert_string_to_payment_method(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var paymentMethods = db.SelectMany(
+                    dbo.Purchase.PaymentMethodType
+                )
+                .From(dbo.Purchase)
+                .Execute();
+
+            //then
+            paymentMethods.Should().HaveCount(expected);
+            paymentMethods.Should().Contain((PaymentMethodType[])Enum.GetValues(typeof(PaymentMethodType)));
+        }
     }
 }

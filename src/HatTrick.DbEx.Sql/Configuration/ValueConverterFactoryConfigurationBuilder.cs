@@ -12,8 +12,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             this.factory = factory;
         }
 
-        public void RegisterValueConverter<T>(IValueConverter<T> converter)
+        public void RegisterValueConverter<T>(IValueConverter converter)
             where T : IConvertible
-            => factory.RegisterConverter(converter);
+            => factory.RegisterConverter<T>(converter);
     }
 }

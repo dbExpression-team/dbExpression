@@ -5,11 +5,12 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public interface IValueConverterFactory
     {
-        IValueConverter CreateConverter();
-        IValueConverter<T> CreateConverter<T>();
+        IValueConverter CreateConverter<T>();
+        IValueConverter CreateConverter(Type type);
         IValueConverter CreateConverter(FieldExpression field);
-        void RegisterConverter<T>(IValueConverter<T> converter)
-            where T : IConvertible;
+        void RegisterConverter<T>(IValueConverter converter);
+        void RegisterConverter<T, U>()
+            where U : class, IValueConverter, new();
         void RegisterConverter(IValueConverter converter, FieldExpression field);
     }
 }

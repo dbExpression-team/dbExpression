@@ -7,12 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeFieldExpression>
     {
         #region constructors
-        protected NullableDateTimeFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(DateTime), entity)
+        protected NullableDateTimeFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(DateTime?), entity)
         {
 
         }
 
-        protected NullableDateTimeFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(DateTime), entity, alias)
+        protected NullableDateTimeFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(DateTime?), entity, alias)
         {
 
         }

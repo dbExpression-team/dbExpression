@@ -6,6 +6,6 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IExpandoObjectMapper : IMapper
     {
-        void Map(ExpandoObject xpando, ISqlRow row, FieldExpressionConverters select);
+        void Map(ExpandoObject xpando, ISqlRow row, SqlStatementValueConverterResolver select);
     }
 }

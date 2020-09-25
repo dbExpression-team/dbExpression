@@ -48,22 +48,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         public override ParameterizedFieldExpression Add<T>(T value, FieldExpression field, ISqlFieldMetadata meta)
         {
-            DbParameter parameter;
-
             var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType);
 
             var existing = FindExistingParameter(value, typeof(T), typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
             if (existing is object)
                 return existing;
 
-            if (field is object)
-            {
-                parameter = Create(value, (SqlDbType)meta.DbType, meta.Size, meta.Precision, meta.Scale);
-            }
-            else
-            {
-                parameter = Create(value, typeMap.PlatformType, null, null, null);
-            }
+            var parameter = Create(value, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale);
             var parameterized = new ParameterizedFieldExpression(typeof(T), parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
