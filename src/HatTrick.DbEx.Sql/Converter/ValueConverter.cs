@@ -4,7 +4,14 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public class ValueConverter : IValueConverter
     {
-        public virtual object ConvertToDatabase(Type type, object value)
+        private Type type;
+
+        public ValueConverter(Type type)
+        {
+            this.type = type;
+        }
+
+        public virtual object ConvertToDatabase(object value)
         {
             if (value is null)
                 return default;
@@ -15,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return Convert.ChangeType(value, type);
         }
 
-        public virtual object ConvertFromDatabase(Type type, object value)
+        public virtual object ConvertFromDatabase(object value)
         {
             if (value is null)
                 return default;
