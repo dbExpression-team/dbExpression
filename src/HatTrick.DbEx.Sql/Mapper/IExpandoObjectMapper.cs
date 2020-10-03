@@ -5,6 +5,6 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IExpandoObjectMapper : IMapper
     {
-        void Map(ExpandoObject xpando, ISqlRow row, IValueConverterFinder select);
+        void Map(ExpandoObject xpando, ISqlRow row, IValueConverterFinder finder);
     }
 }
