@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            database.ValueConverterFactory.RegisterConverter<int?, NullableValueConverter>();
+            database.ValueConverterFactory.RegisterConverter<int?>(new NullableValueConverter(typeof(int?)));
 
             var converter = database.ValueConverterFactory.CreateConverter<int?>();
 
@@ -91,7 +91,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            database.ValueConverterFactory.RegisterConverter<AddressType?, NullableValueConverter>();
+            database.ValueConverterFactory.RegisterConverter<AddressType?>(new NullableEnumValueConverter(typeof(AddressType?)));
 
             var converter = database.ValueConverterFactory.CreateConverter<AddressType?>();
 

@@ -189,9 +189,8 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 if (parameter.Parameter.Value != DBNull.Value)
                 {
-                    var resolvedType = (parameter.Field as IExpressionField)?.DeclaredType ?? parameter.DeclaredType;
                     var converter = finder.FindConverter(parameter.Field) ?? finder.FindConverter(parameter.DeclaredType);
-                    parameter.Parameter.Value = converter.ConvertToDatabase(resolvedType, parameter.Parameter.Value);
+                    parameter.Parameter.Value = converter.ConvertToDatabase(parameter.Parameter.Value);
                 }
                 yield return parameter.Parameter;
             }

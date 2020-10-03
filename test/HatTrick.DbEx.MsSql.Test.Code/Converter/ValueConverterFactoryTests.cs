@@ -85,9 +85,9 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
 
         private class SomeValueConverter : IValueConverter
         {
-            public object ConvertFromDatabase(Type type, object value) => throw new NotImplementedException();
+            public object ConvertFromDatabase(object value) => throw new NotImplementedException();
             public T ConvertFromDatabase<T>(object value) => throw new NotImplementedException();
-            public object ConvertToDatabase(Type type, object value) => throw new NotImplementedException();
+            public object ConvertToDatabase(object value) => throw new NotImplementedException();
         }
     }
 }
