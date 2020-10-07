@@ -55,6 +55,48 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Does_isnull_of_expecteddeliverydate_and_shipdate_succeed(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.IsNull(
+                        dbo.Purchase.ExpectedDeliveryDate,
+                        dbo.Purchase.ShipDate
+                    ).As("relevant_date")
+                ).From(dbo.Purchase);
+
+            //when               
+            IList<DateTime?> dates = exp.Execute();
+
+            //then
+            dates.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_isnull_of_expecteddeliverydate_and_null_date_succeed(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.IsNull(
+                        dbo.Purchase.ExpectedDeliveryDate,
+                        (DateTime?)null
+                    ).As("relevant_date")
+                ).From(dbo.Purchase);
+
+            //when               
+            IList<DateTime?> dates = exp.Execute();
+
+            //then
+            dates.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Does_isnull_all_product_dates_and_returning_total_purchase_amount_succeed(int version, int expected = 15)
         {
             //given
