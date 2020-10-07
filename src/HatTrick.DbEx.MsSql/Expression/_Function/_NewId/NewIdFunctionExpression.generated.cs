@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class NewIdFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<Guid>(NewIdFunctionExpression a) => new SelectExpression<Guid>(new GuidExpressionMediator(a));
         public static implicit operator GuidExpressionMediator(NewIdFunctionExpression a) => new GuidExpressionMediator(a);
         public static implicit operator OrderByExpression(NewIdFunctionExpression a) => new OrderByExpression(new GuidExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NewIdFunctionExpression a) => new GroupByExpression(new GuidExpressionMediator(a));

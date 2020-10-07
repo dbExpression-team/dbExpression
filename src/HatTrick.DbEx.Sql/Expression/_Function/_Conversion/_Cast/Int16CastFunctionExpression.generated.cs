@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16CastFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<short>(Int16CastFunctionExpression a) => new SelectExpression<short>(new Int16ExpressionMediator(a));
         public static implicit operator Int16ExpressionMediator(Int16CastFunctionExpression a) => new Int16ExpressionMediator(a);
         public static implicit operator OrderByExpression(Int16CastFunctionExpression a) => new OrderByExpression(new Int16ExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(Int16CastFunctionExpression a) => new GroupByExpression(new Int16ExpressionMediator(a));

@@ -7,6 +7,20 @@
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Resources\Templates\DataPackage.Template.txt" />
+    <None Remove="Resources\Templates\EntityExpression.Template.txt" />
+    <None Remove="Resources\Templates\EntityProvider.Template.txt" />
+    <None Remove="Resources\Templates\Metadata.Template.txt" />
+    <None Remove="Resources\Templates\SchemaExpression.Template.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Templates\DataPackage.Template.txt" />
+    <EmbeddedResource Include="Resources\Templates\EntityExpression.Template.txt" />
+    <EmbeddedResource Include="Resources\Templates\EntityProvider.Template.txt" />
+    <EmbeddedResource Include="Resources\Templates\Metadata.Template.txt" />
+    <EmbeddedResource Include="Resources\Templates\SchemaExpression.Template.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="HatTrick.Model.MsSql" Version="1.0.4" />
     <PackageReference Include="HatTrick.Text.Templating" Version="1.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

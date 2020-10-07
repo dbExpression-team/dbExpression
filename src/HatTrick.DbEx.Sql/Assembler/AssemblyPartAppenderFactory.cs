@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly CeilingFunctionExpressionPartAppender _ceilingFunctionAppender = new CeilingFunctionExpressionPartAppender();
         private static readonly LiteralExpressionPartAppender _literalAppender = new LiteralExpressionPartAppender();
         private static readonly RawExpressionPartAppender _rawAppender = new RawExpressionPartAppender();
-        private static readonly AliasFieldExpressionPartAppender _aliasAppender = new AliasFieldExpressionPartAppender();
+        private static readonly AliasExpressionPartAppender _aliasAppender = new AliasExpressionPartAppender();
         #endregion
 
         #region value type appenders 

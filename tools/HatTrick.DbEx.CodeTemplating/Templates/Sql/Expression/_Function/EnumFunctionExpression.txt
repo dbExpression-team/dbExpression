@@ -7,7 +7,6 @@ namespace {Namespace}
     public partial class Enum{FunctionName}FunctionExpression<TEnum>
     {{
         #region implicit operators
-        public static implicit operator SelectExpression<TEnum>(Enum{FunctionName}FunctionExpression<TEnum> a) => new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(a));
         public static implicit operator EnumExpressionMediator<TEnum>(Enum{FunctionName}FunctionExpression<TEnum> a) => new EnumExpressionMediator<TEnum>(new EnumExpressionMediator<TEnum>(a));
         public static implicit operator OrderByExpression(Enum{FunctionName}FunctionExpression<TEnum> a) => new OrderByExpression(new EnumExpressionMediator<TEnum>(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(Enum{FunctionName}FunctionExpression<TEnum> a) => new GroupByExpression(new EnumExpressionMediator<TEnum>(a));

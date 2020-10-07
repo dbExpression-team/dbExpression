@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidMinimumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<Guid>(GuidMinimumFunctionExpression a) => new SelectExpression<Guid>(new GuidExpressionMediator(a));
         public static implicit operator GuidExpressionMediator(GuidMinimumFunctionExpression a) => new GuidExpressionMediator(a);
         public static implicit operator OrderByExpression(GuidMinimumFunctionExpression a) => new OrderByExpression(new GuidExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

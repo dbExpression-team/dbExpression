@@ -420,15 +420,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpression<bool?> operator >(DoubleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(new DoubleExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
         public static FilterExpression<bool?> operator >=(DoubleFieldExpression a, NullableDoubleExpressionMediator b) => new FilterExpression<bool?>(new DoubleExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
         #endregion
-
-        #region alias
-        public static FilterExpression<bool> operator ==(DoubleFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new DoubleExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(DoubleFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new DoubleExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(DoubleFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new DoubleExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(DoubleFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new DoubleExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(DoubleFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new DoubleExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(DoubleFieldExpression a, AliasExpression b) => new FilterExpression<bool>(new DoubleExpressionMediator(a), new ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
-        #endregion
         #endregion
     }
 }

@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableByteCeilingFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<byte?>(NullableByteCeilingFunctionExpression a) => new SelectExpression<byte?>(new NullableByteExpressionMediator(a));
         public static implicit operator NullableByteExpressionMediator(NullableByteCeilingFunctionExpression a) => new NullableByteExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableByteCeilingFunctionExpression a) => new OrderByExpression(new ByteExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<decimal?>(NullableDecimalMaximumFunctionExpression a) => new SelectExpression<decimal?>(new NullableDecimalExpressionMediator(a));
         public static implicit operator NullableDecimalExpressionMediator(NullableDecimalMaximumFunctionExpression a) => new NullableDecimalExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableDecimalMaximumFunctionExpression a) => new OrderByExpression(new DecimalExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

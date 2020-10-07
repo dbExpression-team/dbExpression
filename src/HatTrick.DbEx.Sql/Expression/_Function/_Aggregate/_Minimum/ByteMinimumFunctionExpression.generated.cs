@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteMinimumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<byte>(ByteMinimumFunctionExpression a) => new SelectExpression<byte>(new ByteExpressionMediator(a));
         public static implicit operator ByteExpressionMediator(ByteMinimumFunctionExpression a) => new ByteExpressionMediator(a);
         public static implicit operator OrderByExpression(ByteMinimumFunctionExpression a) => new OrderByExpression(new ByteExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

@@ -35,12 +35,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, AliasExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, AliasExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        #endregion
-        #endregion
     }
 }

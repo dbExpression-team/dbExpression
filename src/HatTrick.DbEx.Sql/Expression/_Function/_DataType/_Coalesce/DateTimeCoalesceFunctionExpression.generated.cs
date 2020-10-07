@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeCoalesceFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTime>(DateTimeCoalesceFunctionExpression a) => new SelectExpression<DateTime>(new DateTimeExpressionMediator(a));
         public static implicit operator DateTimeExpressionMediator(DateTimeCoalesceFunctionExpression a) => new DateTimeExpressionMediator(a);
         public static implicit operator OrderByExpression(DateTimeCoalesceFunctionExpression a) => new OrderByExpression(new DateTimeExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(DateTimeCoalesceFunctionExpression a) => new GroupByExpression(new DateTimeExpressionMediator(a));

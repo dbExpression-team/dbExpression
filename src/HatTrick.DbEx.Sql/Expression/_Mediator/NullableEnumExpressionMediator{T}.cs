@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -13,11 +12,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableEnumExpressionMediator(IExpression expression) : base(expression)
+        public NullableEnumExpressionMediator(IExpression expression) : base(expression, typeof(TEnum?))
         {
         }
 
-        protected NullableEnumExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableEnumExpressionMediator(IExpression expression, string alias) : base(expression, typeof(TEnum?), alias)
         {
         }
         #endregion

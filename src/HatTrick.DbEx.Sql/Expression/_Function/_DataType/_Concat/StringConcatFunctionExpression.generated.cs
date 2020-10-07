@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringConcatFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<string>(StringConcatFunctionExpression a) => new SelectExpression<string>(new StringExpressionMediator(a));
         public static implicit operator StringExpressionMediator(StringConcatFunctionExpression a) => new StringExpressionMediator(a);
         public static implicit operator OrderByExpression(StringConcatFunctionExpression a) => new OrderByExpression(new StringExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(StringConcatFunctionExpression a) => new GroupByExpression(new StringExpressionMediator(a));

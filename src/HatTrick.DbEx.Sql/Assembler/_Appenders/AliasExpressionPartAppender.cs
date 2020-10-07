@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class AliasFieldExpressionPartAppender : PartAppender<AliasExpression>
+    public class AliasExpressionPartAppender : PartAppender<AliasExpression>
     {
         public override void AppendPart(AliasExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
@@ -13,8 +13,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Write(context.Configuration.IdentifierDelimiter.Begin)
                 .Write(expression.FieldAlias)
                 .Write(context.Configuration.IdentifierDelimiter.End);
-
-            AppendAlias(expression, builder, context);
         }
     }
 }

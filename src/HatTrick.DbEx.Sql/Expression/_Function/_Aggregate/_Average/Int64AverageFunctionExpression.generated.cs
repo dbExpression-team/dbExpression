@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64AverageFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<long>(Int64AverageFunctionExpression a) => new SelectExpression<long>(new Int64ExpressionMediator(a));
         public static implicit operator Int64ExpressionMediator(Int64AverageFunctionExpression a) => new Int64ExpressionMediator(a);
         public static implicit operator OrderByExpression(Int64AverageFunctionExpression a) => new OrderByExpression(new Int64ExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

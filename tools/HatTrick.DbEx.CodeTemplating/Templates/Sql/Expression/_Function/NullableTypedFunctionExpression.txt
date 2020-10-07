@@ -6,12 +6,6 @@ namespace {Namespace}
     public partial class Nullable{Type.Name}{FunctionName}FunctionExpression
     {{
         #region implicit operators
-        {#if Type.IsNullable}
-        public static implicit operator SelectExpression<{Type.Alias}?>(Nullable{Type.Name}{FunctionName}FunctionExpression a) => new SelectExpression<{Type.Alias}?>(new Nullable{Type.Name}ExpressionMediator(a));
-        {/if}
-        {#if !Type.IsNullable}
-        public static implicit operator SelectExpression<{Type.Alias}>(Nullable{Type.Name}{FunctionName}FunctionExpression a) => new SelectExpression(new {Type.Name}ExpressionMediator(a));
-        {/if}
         public static implicit operator Nullable{Type.Name}ExpressionMediator(Nullable{Type.Name}{FunctionName}FunctionExpression a) => new Nullable{Type.Name}ExpressionMediator(a);
         public static implicit operator OrderByExpression(Nullable{Type.Name}{FunctionName}FunctionExpression a) => new OrderByExpression(new {Type.Name}ExpressionMediator(a), OrderExpressionDirection.ASC);
         {#if IsGroupBySupported}

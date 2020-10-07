@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeDateAddFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTime?>(NullableDateTimeDateAddFunctionExpression a) => new SelectExpression<DateTime?>(new NullableDateTimeExpressionMediator(a));
         public static implicit operator NullableDateTimeExpressionMediator(NullableDateTimeDateAddFunctionExpression a) => new NullableDateTimeExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableDateTimeDateAddFunctionExpression a) => new OrderByExpression(new DateTimeExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableDateTimeDateAddFunctionExpression a) => new GroupByExpression(new DateTimeExpressionMediator(a));

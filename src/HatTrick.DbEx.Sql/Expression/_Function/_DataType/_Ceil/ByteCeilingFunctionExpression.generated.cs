@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteCeilingFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<byte>(ByteCeilingFunctionExpression a) => new SelectExpression<byte>(new ByteExpressionMediator(a));
         public static implicit operator ByteExpressionMediator(ByteCeilingFunctionExpression a) => new ByteExpressionMediator(a);
         public static implicit operator OrderByExpression(ByteCeilingFunctionExpression a) => new OrderByExpression(new ByteExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(ByteCeilingFunctionExpression a) => new GroupByExpression(new ByteExpressionMediator(a));

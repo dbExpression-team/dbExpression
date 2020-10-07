@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<byte>(ByteMaximumFunctionExpression a) => new SelectExpression<byte>(new ByteExpressionMediator(a));
         public static implicit operator ByteExpressionMediator(ByteMaximumFunctionExpression a) => new ByteExpressionMediator(a);
         public static implicit operator OrderByExpression(ByteMaximumFunctionExpression a) => new OrderByExpression(new ByteExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

@@ -28,15 +28,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static SingleExpressionMediator operator +(SingleFieldExpression a, AliasExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(SingleFieldExpression a, AliasExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(SingleFieldExpression a, AliasExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(SingleFieldExpression a, AliasExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(SingleFieldExpression a, AliasExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
-        #endregion
-        #endregion
     }
 }

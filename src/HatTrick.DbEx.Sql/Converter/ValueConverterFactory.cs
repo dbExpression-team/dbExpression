@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Converter
             if (_fieldConverters.TryGetValue(field, out Func<IValueConverter> converter))
                 return converter();
 
-            return CreateConverter((field as IExpressionField).DeclaredType);
+            return CreateConverter((field as IExpressionTypeProvider).DeclaredType);
         }
 
         public IValueConverter CreateConverter(Type type)

@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableBooleanExpressionMediator(IExpression expression) : base(expression)
+        public NullableBooleanExpressionMediator(IExpression expression) : base(expression, typeof(bool?))
         {
         }
 
-        protected NullableBooleanExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableBooleanExpressionMediator(IExpression expression, string alias) : base(expression, typeof(bool?), alias)
         {
         }
         #endregion

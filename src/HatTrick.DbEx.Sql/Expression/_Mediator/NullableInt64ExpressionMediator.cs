@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableInt64ExpressionMediator(IExpression expression) : base(expression)
+        public NullableInt64ExpressionMediator(IExpression expression) : base(expression, typeof(long?))
         {
         }
 
-        protected NullableInt64ExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableInt64ExpressionMediator(IExpression expression, string alias) : base(expression, typeof(long?), alias)
         {
         }
         #endregion
@@ -34,16 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static NullableInt64ExpressionMediator operator +(NullableInt64ExpressionMediator a, AliasExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt64ExpressionMediator operator -(NullableInt64ExpressionMediator a, AliasExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt64ExpressionMediator operator *(NullableInt64ExpressionMediator a, AliasExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt64ExpressionMediator operator /(NullableInt64ExpressionMediator a, AliasExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt64ExpressionMediator operator %(NullableInt64ExpressionMediator a, AliasExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
-        #endregion
         #endregion
     }
 }

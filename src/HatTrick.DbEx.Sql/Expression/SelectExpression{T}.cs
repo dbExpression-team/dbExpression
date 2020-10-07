@@ -7,18 +7,9 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SelectExpression<TValue>>
     {
         #region constructors
-        public SelectExpression(ExpressionMediator expression) : base(expression)
+        public SelectExpression(ExpressionMediator expression) : base(expression, typeof(TValue))
         {
         }
-
-        private SelectExpression(ExpressionMediator expression, string alias) : base(expression, alias)
-        {
-        }
-        #endregion
-
-        #region as
-        public new SelectExpression<TValue> As(string alias)
-            => new SelectExpression<TValue>(Expression, alias);
         #endregion
 
         #region logical & operator

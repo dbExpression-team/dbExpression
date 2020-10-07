@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableBooleanCoalesceFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<bool?>(NullableBooleanCoalesceFunctionExpression a) => new SelectExpression<bool?>(new NullableBooleanExpressionMediator(a));
         public static implicit operator NullableBooleanExpressionMediator(NullableBooleanCoalesceFunctionExpression a) => new NullableBooleanExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableBooleanCoalesceFunctionExpression a) => new OrderByExpression(new BooleanExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableBooleanCoalesceFunctionExpression a) => new GroupByExpression(new BooleanExpressionMediator(a));

@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<string>(StringMaximumFunctionExpression a) => new SelectExpression<string>(new StringExpressionMediator(a));
         public static implicit operator StringExpressionMediator(StringMaximumFunctionExpression a) => new StringExpressionMediator(a);
         public static implicit operator OrderByExpression(StringMaximumFunctionExpression a) => new OrderByExpression(new StringExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

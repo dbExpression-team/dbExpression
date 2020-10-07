@@ -4,34 +4,33 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
         IExpression,
+        IExpressionTypeProvider,
         IExpressionAliasProvider
     {
         #region internals
+        protected readonly Type declaredType;
         protected string alias;
         protected bool IsDistinct { get; private set; }
         #endregion
 
         #region interface
         public ExpressionMediator Expression { get; }
+        Type IExpressionTypeProvider.DeclaredType => declaredType;
         string IExpressionAliasProvider.Alias => alias;
         #endregion
 
         #region constructors
-        public SelectExpression(ExpressionMediator expression) : this(expression, null)
+        public SelectExpression(ExpressionMediator expression, Type declaredType) : this(expression, declaredType, null)
         {
 
         }
 
-        protected SelectExpression(ExpressionMediator expression, string alias)
+        protected SelectExpression(ExpressionMediator expression, Type declaredType, string alias)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
+            this.declaredType = declaredType;
             this.alias = alias;
         }
-        #endregion
-
-        #region as
-        public SelectExpression As(string alias)
-            => new SelectExpression(Expression, alias);
         #endregion
 
         #region to string
