@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SingleFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params float[] value) => value is object ? new FilterExpression<float>(new SingleExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<float[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params float[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<float[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<float> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<IEnumerable<float>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

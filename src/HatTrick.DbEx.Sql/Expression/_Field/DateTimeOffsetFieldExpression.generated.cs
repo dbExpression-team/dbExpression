@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeOffsetFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params DateTimeOffset[] value) => value is object ? new FilterExpression<DateTimeOffset>(new DateTimeOffsetExpressionMediator(this), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params DateTimeOffset[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<DateTimeOffset> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DateTimeOffsetExpressionMediator(new LiteralExpression<IEnumerable<DateTimeOffset>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

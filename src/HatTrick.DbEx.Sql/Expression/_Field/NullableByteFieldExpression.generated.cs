@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params byte[] value) => value is object ? new FilterExpression<byte>(new NullableByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params byte[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableByteExpressionMediator(new LiteralExpression<byte[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<byte> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableByteExpressionMediator(new LiteralExpression<IEnumerable<byte>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull

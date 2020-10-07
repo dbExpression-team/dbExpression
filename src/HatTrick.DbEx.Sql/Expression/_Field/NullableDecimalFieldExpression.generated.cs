@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDecimalFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params decimal[] value) => value is object ? new FilterExpression<decimal>(new NullableDecimalExpressionMediator(this), new DecimalExpressionMediator(new LiteralExpression<decimal[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params decimal[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableDecimalExpressionMediator(new LiteralExpression<decimal[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<decimal> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableDecimalExpressionMediator(new LiteralExpression<IEnumerable<decimal>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region isnull
