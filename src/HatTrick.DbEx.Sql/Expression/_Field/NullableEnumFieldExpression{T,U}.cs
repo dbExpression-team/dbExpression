@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -39,7 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public override FilterExpression In(params TEnum[] value) => value is object ? new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params TEnum[] value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<TEnum> value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new LiteralExpression<IEnumerable<TEnum>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region order

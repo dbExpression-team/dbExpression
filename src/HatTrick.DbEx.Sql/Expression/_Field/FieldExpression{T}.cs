@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -21,7 +22,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public abstract FilterExpression In(params TValue[] value);
+        public abstract FilterExpression<bool> In(params TValue[] value);
+        public abstract FilterExpression<bool> In(IEnumerable<TValue> value);
         #endregion
 
         #region set

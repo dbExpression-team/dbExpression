@@ -79,24 +79,19 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             builder.AppendPart(expression.LeftArg, context);
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-            if (expression.ExpressionOperator == FilterExpressionOperator.In && expression.RightArg.Expression is LiteralExpression right && right.Expression is Array arr)
+            context.Field = expression.LeftArg.Expression as FieldExpression;
+            if (expression.ExpressionOperator == FilterExpressionOperator.In)
             {
                 builder.Appender.Write("(");
-                for (var i = 0; i < arr.Length; i++)
-                {
-                    var value = arr.GetValue(i);
-                    builder.Parameters.Add(value, value.GetType());
-                    if (i != arr.Length - 1)
-                        builder.Appender.Write(", ");
-                }
+                builder.AppendPart(expression.RightArg, context);
                 builder.Appender.Write(")");
             }
             else
             {
-                context.Field = expression.LeftArg.Expression as FieldExpression;
                 builder.AppendPart(expression.RightArg, context);
-                context.Field = null;
             }
+            context.Field = null;
+
             if (expression.Negate)
             {
                 builder.Appender.Write(")");

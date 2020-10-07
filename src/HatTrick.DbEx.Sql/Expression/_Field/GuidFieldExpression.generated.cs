@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class GuidFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params Guid[] value) => value is object ? new FilterExpression<Guid>(new GuidExpressionMediator(this), new GuidExpressionMediator(new LiteralExpression<Guid[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params Guid[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new GuidExpressionMediator(new LiteralExpression<Guid[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new GuidExpressionMediator(new LiteralExpression<IEnumerable<Guid>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set

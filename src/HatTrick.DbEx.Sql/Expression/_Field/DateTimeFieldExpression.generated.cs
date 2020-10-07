@@ -1,11 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeFieldExpression
     {
         #region in value set
-        public override FilterExpression In(params DateTime[] value) => value is object ? new FilterExpression<DateTime>(new DateTimeExpressionMediator(this), new DateTimeExpressionMediator(new LiteralExpression<DateTime[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params DateTime[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DateTimeExpressionMediator(new LiteralExpression<DateTime[]>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(IEnumerable<DateTime> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DateTimeExpressionMediator(new LiteralExpression<IEnumerable<DateTime>>(value)), FilterExpressionOperator.In) : null;
         #endregion
 
         #region set
