@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalSumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<decimal>(DecimalSumFunctionExpression a) => new SelectExpression<decimal>(new DecimalExpressionMediator(a));
         public static implicit operator DecimalExpressionMediator(DecimalSumFunctionExpression a) => new DecimalExpressionMediator(a);
         public static implicit operator OrderByExpression(DecimalSumFunctionExpression a) => new OrderByExpression(new DecimalExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

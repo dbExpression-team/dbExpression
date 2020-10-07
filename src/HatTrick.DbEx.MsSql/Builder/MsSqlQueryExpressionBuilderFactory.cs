@@ -28,22 +28,22 @@ namespace HatTrick.DbEx.MsSql.Builder
             return builder;
         }
 
-        public IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectExpression field1, SelectExpression field2, params SelectExpression[] fields)
+        public IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
         {
             var builder = new MsSqlSelectQueryExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>>(configuration);
             builder.Expression.Select.Top(1);
-            builder.Expression.Select.Expressions.Add(field1);
-            builder.Expression.Select.Expressions.Add(field2);
+            builder.Expression.Select.Expressions.Add(new SelectExpression(field1, (field1 as IExpressionTypeProvider).DeclaredType));
+            builder.Expression.Select.Expressions.Add(new SelectExpression(field2, (field2 as IExpressionTypeProvider).DeclaredType));
             foreach (var field in fields)
-                builder.Expression.Select.Expressions.Add(field);
+                builder.Expression.Select.Expressions.Add(new SelectExpression(field, (field as IExpressionTypeProvider).DeclaredType));
             return builder;
         }
 
-        public IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>> CreateSelectOneExpressionBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, SelectExpression<TValue> field)
+        public IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>> CreateSelectOneExpressionBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, ExpressionMediator field)
         {
             var builder = new MsSqlSelectQueryExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(configuration);
             builder.Expression.Select.Top(1);
-            builder.Expression.Select.Expressions.Add(field);
+            builder.Expression.Select.Expressions.Add(new SelectExpression<TValue>(field));
             return builder;
         }
         #endregion
@@ -62,13 +62,13 @@ namespace HatTrick.DbEx.MsSql.Builder
             builder.Expression.Select.Expressions.Add(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
             return builder;
         }
-        public IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectExpression field1, SelectExpression field2, params SelectExpression[] fields)
+        public IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
         {
             var builder = new MsSqlSelectQueryExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(configuration);
-            builder.Expression.Select.Expressions.Add(field1);
-            builder.Expression.Select.Expressions.Add(field2);
+            builder.Expression.Select.Expressions.Add(new SelectExpression(field1, (field1 as IExpressionTypeProvider).DeclaredType));
+            builder.Expression.Select.Expressions.Add(new SelectExpression(field2, (field2 as IExpressionTypeProvider).DeclaredType));
             foreach (var field in fields)
-                builder.Expression.Select.Expressions.Add(field);
+                builder.Expression.Select.Expressions.Add(new SelectExpression(field, (field as IExpressionTypeProvider).DeclaredType));
             return builder;
         }
 

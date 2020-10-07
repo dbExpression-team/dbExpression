@@ -121,12 +121,6 @@ namespace {Namespace}
         {/each}
         {/if}
         #endregion
-
-        #region alias
-        {#each FilterOperations}
-        public static FilterExpression<bool?> operator {$.FilterOperatorSymbol}(Nullable{..\$.Type.Name}ExpressionMediator a, AliasExpression b) => new FilterExpression<bool?>(a, new ExpressionMediator(b), FilterExpressionOperator.{$.FilterOperatorName});
-        {/each}       
-        #endregion
         #endregion
     }}
 }}

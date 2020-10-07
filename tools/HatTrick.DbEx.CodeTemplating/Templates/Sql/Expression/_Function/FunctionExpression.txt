@@ -6,7 +6,6 @@ namespace {Namespace}
     public partial class {FunctionName}FunctionExpression
     {{
         #region implicit operators
-        public static implicit operator SelectExpression<{Type.Alias}>({FunctionName}FunctionExpression a) => new SelectExpression<{Type.Alias}>(new {Type.Name}ExpressionMediator(a));
         public static implicit operator {Type.Name}ExpressionMediator({FunctionName}FunctionExpression a) => new {Type.Name}ExpressionMediator(a);
         public static implicit operator OrderByExpression({FunctionName}FunctionExpression a) => new OrderByExpression(new {Type.Name}ExpressionMediator(a), OrderExpressionDirection.ASC);
         {#if IsGroupBySupported}

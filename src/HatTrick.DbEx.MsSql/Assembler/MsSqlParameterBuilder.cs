@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override ParameterizedFieldExpression AddOutput(FieldExpression field, ISqlFieldMetadata meta)
         {
             var parameter = new SqlParameter($"@P{Parameters.Count + 1}", (SqlDbType)meta.DbType) { Direction = ParameterDirection.Output };
-            var parameterized = new ParameterizedFieldExpression((field as IExpressionField).DeclaredType, parameter, field, meta);
+            var parameterized = new ParameterizedFieldExpression((field as IExpressionTypeProvider).DeclaredType, parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }

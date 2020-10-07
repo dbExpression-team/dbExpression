@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt64SumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<long?>(NullableInt64SumFunctionExpression a) => new SelectExpression<long?>(new NullableInt64ExpressionMediator(a));
         public static implicit operator NullableInt64ExpressionMediator(NullableInt64SumFunctionExpression a) => new NullableInt64ExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableInt64SumFunctionExpression a) => new OrderByExpression(new Int64ExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

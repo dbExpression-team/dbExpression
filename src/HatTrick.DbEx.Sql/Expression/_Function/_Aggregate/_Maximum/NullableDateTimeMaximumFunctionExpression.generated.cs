@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTime?>(NullableDateTimeMaximumFunctionExpression a) => new SelectExpression<DateTime?>(new NullableDateTimeExpressionMediator(a));
         public static implicit operator NullableDateTimeExpressionMediator(NullableDateTimeMaximumFunctionExpression a) => new NullableDateTimeExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableDateTimeMaximumFunctionExpression a) => new OrderByExpression(new DateTimeExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

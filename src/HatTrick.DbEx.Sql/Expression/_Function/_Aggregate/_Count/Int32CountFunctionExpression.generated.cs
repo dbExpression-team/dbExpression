@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32CountFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<int>(Int32CountFunctionExpression a) => new SelectExpression<int>(new Int32ExpressionMediator(a));
         public static implicit operator Int32ExpressionMediator(Int32CountFunctionExpression a) => new Int32ExpressionMediator(a);
         public static implicit operator OrderByExpression(Int32CountFunctionExpression a) => new OrderByExpression(new Int32ExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

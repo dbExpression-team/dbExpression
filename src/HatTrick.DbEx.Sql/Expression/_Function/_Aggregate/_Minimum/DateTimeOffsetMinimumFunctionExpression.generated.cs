@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetMinimumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTimeOffset>(DateTimeOffsetMinimumFunctionExpression a) => new SelectExpression<DateTimeOffset>(new DateTimeOffsetExpressionMediator(a));
         public static implicit operator DateTimeOffsetExpressionMediator(DateTimeOffsetMinimumFunctionExpression a) => new DateTimeOffsetExpressionMediator(a);
         public static implicit operator OrderByExpression(DateTimeOffsetMinimumFunctionExpression a) => new OrderByExpression(new DateTimeOffsetExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

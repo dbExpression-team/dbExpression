@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidCastFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<Guid>(GuidCastFunctionExpression a) => new SelectExpression<Guid>(new GuidExpressionMediator(a));
         public static implicit operator GuidExpressionMediator(GuidCastFunctionExpression a) => new GuidExpressionMediator(a);
         public static implicit operator OrderByExpression(GuidCastFunctionExpression a) => new OrderByExpression(new GuidExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(GuidCastFunctionExpression a) => new GroupByExpression(new GuidExpressionMediator(a));

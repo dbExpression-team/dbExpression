@@ -7,11 +7,10 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql
 {
-
     public class SqlStatementValueConverterResolver : IValueConverterFinder
     {
         #region internals
-        private readonly IEnumerable<FieldExpression> fieldExpressions;
+        private readonly IEnumerable<IExpressionTypeProvider> fieldExpressions;
         private readonly IValueConverterFactory valueConverterFactory;
         #endregion
 
@@ -34,20 +33,40 @@ namespace HatTrick.DbEx.Sql
         {
             if (selectExpressionSet is null)
                 throw new ArgumentNullException($"{nameof(selectExpressionSet)} is required.");
-            this.fieldExpressions = selectExpressionSet.Expressions.Select(x => x.Expression.Expression as FieldExpression);
+            this.fieldExpressions = selectExpressionSet.Expressions.Cast<IExpressionTypeProvider>();
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
         }
         #endregion
 
         #region methods
-        public IValueConverter FindConverter(FieldExpression field)
-            => field is object ? valueConverterFactory.CreateConverter(field) ?? valueConverterFactory.CreateConverter((field as IExpressionField).DeclaredType) : null;
-
         public IValueConverter FindConverter(Type declaredType)
             => valueConverterFactory.CreateConverter(declaredType);
 
+        public IValueConverter FindConverter(FieldExpression field)
+        {
+            if (field is null)
+                return null;
+
+            return FindConverter(field as IExpressionTypeProvider);
+        }
+
         public IValueConverter FindConverter(int index)
-            => FindConverter(fieldExpressions.ElementAt(index));
+            =>  FindConverter(fieldExpressions.ElementAt(index));
+
+        private IValueConverter FindConverter(IExpressionTypeProvider provider)
+        {
+            if (provider is null)
+                return null;
+
+            if (provider is FieldExpression field)
+            {
+                var converter = valueConverterFactory.CreateConverter(field);
+                if (converter is object)
+                    return converter;
+            }
+
+            return valueConverterFactory.CreateConverter(provider.DeclaredType);
+        }
         #endregion
     }
 }

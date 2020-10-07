@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32DateDiffFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<int?>(NullableInt32DateDiffFunctionExpression a) => new SelectExpression<int?>(new NullableInt32ExpressionMediator(a));
         public static implicit operator NullableInt32ExpressionMediator(NullableInt32DateDiffFunctionExpression a) => new NullableInt32ExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableInt32DateDiffFunctionExpression a) => new OrderByExpression(new Int32ExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableInt32DateDiffFunctionExpression a) => new GroupByExpression(new Int32ExpressionMediator(a));

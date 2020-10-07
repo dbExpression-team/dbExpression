@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleSumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<double>(DoubleSumFunctionExpression a) => new SelectExpression<double>(new DoubleExpressionMediator(a));
         public static implicit operator DoubleExpressionMediator(DoubleSumFunctionExpression a) => new DoubleExpressionMediator(a);
         public static implicit operator OrderByExpression(DoubleSumFunctionExpression a) => new OrderByExpression(new DoubleExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

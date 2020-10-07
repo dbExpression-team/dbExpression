@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleIsNullFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<float?>(NullableSingleIsNullFunctionExpression a) => new SelectExpression<float?>(new NullableSingleExpressionMediator(a));
         public static implicit operator NullableSingleExpressionMediator(NullableSingleIsNullFunctionExpression a) => new NullableSingleExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableSingleIsNullFunctionExpression a) => new OrderByExpression(new SingleExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableSingleIsNullFunctionExpression a) => new GroupByExpression(new SingleExpressionMediator(a));

@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<Guid>(GuidMaximumFunctionExpression a) => new SelectExpression<Guid>(new GuidExpressionMediator(a));
         public static implicit operator GuidExpressionMediator(GuidMaximumFunctionExpression a) => new GuidExpressionMediator(a);
         public static implicit operator OrderByExpression(GuidMaximumFunctionExpression a) => new OrderByExpression(new GuidExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableByteIsNullFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<byte?>(NullableByteIsNullFunctionExpression a) => new SelectExpression<byte?>(new NullableByteExpressionMediator(a));
         public static implicit operator NullableByteExpressionMediator(NullableByteIsNullFunctionExpression a) => new NullableByteExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableByteIsNullFunctionExpression a) => new OrderByExpression(new ByteExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableByteIsNullFunctionExpression a) => new GroupByExpression(new ByteExpressionMediator(a));

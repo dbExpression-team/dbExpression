@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableInt16ExpressionMediator(IExpression expression) : base(expression)
+        public NullableInt16ExpressionMediator(IExpression expression) : base(expression, typeof(short?))
         {
         }
 
-        protected NullableInt16ExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableInt16ExpressionMediator(IExpression expression, string alias) : base(expression, typeof(short?), alias)
         {
         }
         #endregion
@@ -34,16 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static NullableInt16ExpressionMediator operator +(NullableInt16ExpressionMediator a, AliasExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableInt16ExpressionMediator operator -(NullableInt16ExpressionMediator a, AliasExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableInt16ExpressionMediator operator *(NullableInt16ExpressionMediator a, AliasExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableInt16ExpressionMediator operator /(NullableInt16ExpressionMediator a, AliasExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
-        public static NullableInt16ExpressionMediator operator %(NullableInt16ExpressionMediator a, AliasExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
-        #endregion
         #endregion
     }
 }

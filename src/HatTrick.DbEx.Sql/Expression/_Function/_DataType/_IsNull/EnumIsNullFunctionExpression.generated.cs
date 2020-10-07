@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class EnumIsNullFunctionExpression<TEnum>
     {
         #region implicit operators
-        public static implicit operator SelectExpression<TEnum>(EnumIsNullFunctionExpression<TEnum> a) => new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(a));
         public static implicit operator EnumExpressionMediator<TEnum>(EnumIsNullFunctionExpression<TEnum> a) => new EnumExpressionMediator<TEnum>(new EnumExpressionMediator<TEnum>(a));
         public static implicit operator OrderByExpression(EnumIsNullFunctionExpression<TEnum> a) => new OrderByExpression(new EnumExpressionMediator<TEnum>(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(EnumIsNullFunctionExpression<TEnum> a) => new GroupByExpression(new EnumExpressionMediator<TEnum>(a));

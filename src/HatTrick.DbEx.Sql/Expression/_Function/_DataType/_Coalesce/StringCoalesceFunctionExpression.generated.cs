@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringCoalesceFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<string>(StringCoalesceFunctionExpression a) => new SelectExpression<string>(new StringExpressionMediator(a));
         public static implicit operator StringExpressionMediator(StringCoalesceFunctionExpression a) => new StringExpressionMediator(a);
         public static implicit operator OrderByExpression(StringCoalesceFunctionExpression a) => new OrderByExpression(new StringExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(StringCoalesceFunctionExpression a) => new GroupByExpression(new StringExpressionMediator(a));

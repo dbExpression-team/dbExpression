@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTimeOffset>(DateTimeOffsetMaximumFunctionExpression a) => new SelectExpression<DateTimeOffset>(new DateTimeOffsetExpressionMediator(a));
         public static implicit operator DateTimeOffsetExpressionMediator(DateTimeOffsetMaximumFunctionExpression a) => new DateTimeOffsetExpressionMediator(a);
         public static implicit operator OrderByExpression(DateTimeOffsetMaximumFunctionExpression a) => new OrderByExpression(new DateTimeOffsetExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

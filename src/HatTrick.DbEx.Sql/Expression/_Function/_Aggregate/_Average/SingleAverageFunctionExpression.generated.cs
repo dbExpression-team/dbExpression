@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleAverageFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<float>(SingleAverageFunctionExpression a) => new SelectExpression<float>(new SingleExpressionMediator(a));
         public static implicit operator SingleExpressionMediator(SingleAverageFunctionExpression a) => new SingleExpressionMediator(a);
         public static implicit operator OrderByExpression(SingleAverageFunctionExpression a) => new OrderByExpression(new SingleExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleMaximumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<float?>(NullableSingleMaximumFunctionExpression a) => new SelectExpression<float?>(new NullableSingleExpressionMediator(a));
         public static implicit operator NullableSingleExpressionMediator(NullableSingleMaximumFunctionExpression a) => new NullableSingleExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableSingleMaximumFunctionExpression a) => new OrderByExpression(new SingleExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

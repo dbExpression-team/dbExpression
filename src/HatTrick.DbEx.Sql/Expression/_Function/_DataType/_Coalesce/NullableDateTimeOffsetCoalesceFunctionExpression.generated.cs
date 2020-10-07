@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetCoalesceFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTimeOffset?>(NullableDateTimeOffsetCoalesceFunctionExpression a) => new SelectExpression<DateTimeOffset?>(new NullableDateTimeOffsetExpressionMediator(a));
         public static implicit operator NullableDateTimeOffsetExpressionMediator(NullableDateTimeOffsetCoalesceFunctionExpression a) => new NullableDateTimeOffsetExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableDateTimeOffsetCoalesceFunctionExpression a) => new OrderByExpression(new DateTimeOffsetExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableDateTimeOffsetCoalesceFunctionExpression a) => new GroupByExpression(new DateTimeOffsetExpressionMediator(a));

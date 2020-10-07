@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleFloorFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<float>(SingleFloorFunctionExpression a) => new SelectExpression<float>(new SingleExpressionMediator(a));
         public static implicit operator SingleExpressionMediator(SingleFloorFunctionExpression a) => new SingleExpressionMediator(a);
         public static implicit operator OrderByExpression(SingleFloorFunctionExpression a) => new OrderByExpression(new SingleExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(SingleFloorFunctionExpression a) => new GroupByExpression(new SingleExpressionMediator(a));

@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression : 
         IExpression,
-        IExpressionField,
+        IExpressionTypeProvider,
         ISqlMetadataIdentifier,
         IExpressionProvider<EntityExpression>,
         IExpressionAliasProvider,
@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region interface
         string ISqlMetadataIdentifier.Identifier => identifier;
-        Type IExpressionField.DeclaredType => declaredType;
+        Type IExpressionTypeProvider.DeclaredType => declaredType;
         EntityExpression IExpressionProvider<EntityExpression>.Expression => entity;
         string IExpressionAliasProvider.Alias => alias;
         #endregion

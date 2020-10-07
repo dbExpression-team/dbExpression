@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableDateTimeOffsetExpressionMediator(IExpression expression) : base(expression)
+        public NullableDateTimeOffsetExpressionMediator(IExpression expression) : base(expression, typeof(DateTimeOffset?))
         {
         }
 
-        protected NullableDateTimeOffsetExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableDateTimeOffsetExpressionMediator(IExpression expression, string alias) : base(expression, typeof(DateTimeOffset?), alias)
         {
         }
         #endregion
@@ -34,13 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static NullableDateTimeOffsetExpressionMediator operator +(NullableDateTimeOffsetExpressionMediator a, AliasExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(NullableDateTimeOffsetExpressionMediator a, AliasExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        #endregion
         #endregion
     }
 }

@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDoubleCastFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<double?>(NullableDoubleCastFunctionExpression a) => new SelectExpression<double?>(new NullableDoubleExpressionMediator(a));
         public static implicit operator NullableDoubleExpressionMediator(NullableDoubleCastFunctionExpression a) => new NullableDoubleExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableDoubleCastFunctionExpression a) => new OrderByExpression(new DoubleExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableDoubleCastFunctionExpression a) => new GroupByExpression(new DoubleExpressionMediator(a));

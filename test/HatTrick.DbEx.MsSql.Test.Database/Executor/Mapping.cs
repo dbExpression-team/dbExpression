@@ -56,6 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
+        [Trait("Function", "ISNULL")]
         [MsSqlVersions.AllVersions]
         public void Can_map_isnull_of_nullable_enum_to_non_null_value_for_dynamic_object(int version)
         {

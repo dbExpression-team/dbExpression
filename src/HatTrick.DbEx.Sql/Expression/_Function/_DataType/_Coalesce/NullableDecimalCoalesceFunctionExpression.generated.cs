@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalCoalesceFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<decimal?>(NullableDecimalCoalesceFunctionExpression a) => new SelectExpression<decimal?>(new NullableDecimalExpressionMediator(a));
         public static implicit operator NullableDecimalExpressionMediator(NullableDecimalCoalesceFunctionExpression a) => new NullableDecimalExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableDecimalCoalesceFunctionExpression a) => new OrderByExpression(new DecimalExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableDecimalCoalesceFunctionExpression a) => new GroupByExpression(new DecimalExpressionMediator(a));

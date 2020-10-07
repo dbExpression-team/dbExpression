@@ -7,7 +7,6 @@ namespace {Namespace}
     public partial class NullableEnum{FunctionName}FunctionExpression<TEnum>
     {{
         #region implicit operators
-        public static implicit operator SelectExpression<TEnum?>(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new SelectExpression<TEnum?>(new NullableEnumExpressionMediator<TEnum>(a));
         public static implicit operator NullableEnumExpressionMediator<TEnum>(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new NullableEnumExpressionMediator<TEnum>(new NullableEnumExpressionMediator<TEnum>(a));
         public static implicit operator OrderByExpression(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new OrderByExpression(new NullableEnumExpressionMediator<TEnum>(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(NullableEnum{FunctionName}FunctionExpression<TEnum> a) => new GroupByExpression(new NullableEnumExpressionMediator<TEnum>(a));

@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableInt32AverageFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<int?>(NullableInt32AverageFunctionExpression a) => new SelectExpression<int?>(new NullableInt32ExpressionMediator(a));
         public static implicit operator NullableInt32ExpressionMediator(NullableInt32AverageFunctionExpression a) => new NullableInt32ExpressionMediator(a);
         public static implicit operator OrderByExpression(NullableInt32AverageFunctionExpression a) => new OrderByExpression(new Int32ExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

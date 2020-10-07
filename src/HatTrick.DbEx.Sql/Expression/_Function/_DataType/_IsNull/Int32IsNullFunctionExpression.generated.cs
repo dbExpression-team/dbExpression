@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32IsNullFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<int>(Int32IsNullFunctionExpression a) => new SelectExpression<int>(new Int32ExpressionMediator(a));
         public static implicit operator Int32ExpressionMediator(Int32IsNullFunctionExpression a) => new Int32ExpressionMediator(a);
         public static implicit operator OrderByExpression(Int32IsNullFunctionExpression a) => new OrderByExpression(new Int32ExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(Int32IsNullFunctionExpression a) => new GroupByExpression(new Int32ExpressionMediator(a));

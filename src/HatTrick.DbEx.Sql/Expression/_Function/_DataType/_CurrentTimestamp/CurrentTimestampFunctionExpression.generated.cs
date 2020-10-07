@@ -6,7 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class CurrentTimestampFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTime>(CurrentTimestampFunctionExpression a) => new SelectExpression<DateTime>(new DateTimeExpressionMediator(a));
         public static implicit operator DateTimeExpressionMediator(CurrentTimestampFunctionExpression a) => new DateTimeExpressionMediator(a);
         public static implicit operator OrderByExpression(CurrentTimestampFunctionExpression a) => new OrderByExpression(new DateTimeExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(CurrentTimestampFunctionExpression a) => new GroupByExpression(new DateTimeExpressionMediator(a));

@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringMinimumFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<string>(StringMinimumFunctionExpression a) => new SelectExpression<string>(new StringExpressionMediator(a));
         public static implicit operator StringExpressionMediator(StringMinimumFunctionExpression a) => new StringExpressionMediator(a);
         public static implicit operator OrderByExpression(StringMinimumFunctionExpression a) => new OrderByExpression(new StringExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

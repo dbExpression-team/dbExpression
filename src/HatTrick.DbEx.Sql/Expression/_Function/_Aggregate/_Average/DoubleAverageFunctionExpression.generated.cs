@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleAverageFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<double>(DoubleAverageFunctionExpression a) => new SelectExpression<double>(new DoubleExpressionMediator(a));
         public static implicit operator DoubleExpressionMediator(DoubleAverageFunctionExpression a) => new DoubleExpressionMediator(a);
         public static implicit operator OrderByExpression(DoubleAverageFunctionExpression a) => new OrderByExpression(new DoubleExpressionMediator(a), OrderExpressionDirection.ASC);
         #endregion

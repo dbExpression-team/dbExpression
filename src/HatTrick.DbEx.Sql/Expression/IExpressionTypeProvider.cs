@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public interface IExpressionField
+    public interface IExpressionTypeProvider
     {
         Type DeclaredType { get; }
     }

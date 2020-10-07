@@ -7,7 +7,6 @@ namespace HatTrick.DbEx.MsSql.Expression
     public partial class SysDateTimeOffsetFunctionExpression
     {
         #region implicit operators
-        public static implicit operator SelectExpression<DateTimeOffset>(SysDateTimeOffsetFunctionExpression a) => new SelectExpression<DateTimeOffset>(new DateTimeOffsetExpressionMediator(a));
         public static implicit operator DateTimeOffsetExpressionMediator(SysDateTimeOffsetFunctionExpression a) => new DateTimeOffsetExpressionMediator(a);
         public static implicit operator OrderByExpression(SysDateTimeOffsetFunctionExpression a) => new OrderByExpression(new DateTimeOffsetExpressionMediator(a), OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(SysDateTimeOffsetFunctionExpression a) => new GroupByExpression(new DateTimeOffsetExpressionMediator(a));

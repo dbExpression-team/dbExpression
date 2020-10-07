@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableDateTimeExpressionMediator(IExpression expression) : base(expression)
+        public NullableDateTimeExpressionMediator(IExpression expression) : base(expression, typeof(DateTime?))
         {
         }
 
-        protected NullableDateTimeExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableDateTimeExpressionMediator(IExpression expression, string alias) : base(expression, typeof(DateTime?), alias)
         {
         }
         #endregion
@@ -34,13 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeExpressionMediator a, AliasExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeExpressionMediator a, AliasExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        #endregion
         #endregion
     }
 }

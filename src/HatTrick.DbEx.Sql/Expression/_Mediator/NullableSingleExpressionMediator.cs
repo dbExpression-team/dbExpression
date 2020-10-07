@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableSingleExpressionMediator(IExpression expression) : base(expression)
+        public NullableSingleExpressionMediator(IExpression expression) : base(expression, typeof(float?))
         {
         }
 
-        protected NullableSingleExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableSingleExpressionMediator(IExpression expression, string alias) : base(expression, typeof(float?), alias)
         {
         }
         #endregion
@@ -34,16 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region arithmetic operators
-        #region alias
-        public static NullableSingleExpressionMediator operator +(NullableSingleExpressionMediator a, AliasExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(NullableSingleExpressionMediator a, AliasExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(NullableSingleExpressionMediator a, AliasExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(NullableSingleExpressionMediator a, AliasExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(NullableSingleExpressionMediator a, AliasExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
-        #endregion
         #endregion
     }
 }
