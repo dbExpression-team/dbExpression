@@ -279,5 +279,41 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             dates.Should().HaveCount(expected);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_ship_date_and_expected_delivery_date_succeed(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate).As("relevant_date")
+                ).From(dbo.Purchase);
+
+            //when               
+            IList<DateTime?> dates = exp.Execute();
+
+            //then
+            dates.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_ship_date_and_expected_delivery_date_and_null_date_succeed(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.ExpectedDeliveryDate, (DateTime?)null).As("relevant_date")
+                ).From(dbo.Purchase);
+
+            //when               
+            IList<DateTime?> dates = exp.Execute();
+
+            //then
+            dates.Should().HaveCount(expected);
+        }
     }
 }
