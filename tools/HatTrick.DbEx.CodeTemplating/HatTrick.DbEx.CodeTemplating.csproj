@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HatTrick.Text.Templating" Version="1.0.2" />
+    <PackageReference Include="HatTrick.Text.Templating" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

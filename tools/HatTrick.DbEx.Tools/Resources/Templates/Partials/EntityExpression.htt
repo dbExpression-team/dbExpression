@@ -1,11 +1,14 @@
 ﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower} entity expression
+    {?var:table = $}
     {?var:tableName = ($) => ResolveName}
-    public partial class {($) => ResolveName}Entity : EntityExpression<{($) => ResolveName}>
+    {?var:columns = Columns.Values}
+    public partial class {:tableName}Entity : EntityExpression<{:tableName}>
     {{
         #region interface properties
 		{#each Columns.Values}
 		{#if !($) => IsIgnored}
-        public {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {($, false) => ResolveClrTypeName} {/if}> {($) => ResolveName} {{ get; private set; }}
+        {?var:columnName = ($) => ResolveName}
+        public {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {($, false) => ResolveClrTypeName} {/if}> {:columnName} {{ get; private set; }}
 		{/if}
 		{/each}
         #endregion
@@ -31,9 +34,9 @@
         #endregion
 
         #region methods
-        public {($) => ResolveName}Entity As(string name)
+        public {:tableName}Entity As(string name)
         {{
-            return new {($) => ResolveName}Entity(this.identifier, this.schema, name);
+            return new {:tableName}Entity(this.identifier, this.schema, name);
         }}
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -41,7 +44,7 @@
             return new SelectExpressionSet(
 				{#each Columns.Values}
 				{#if !($) => IsIgnored}
-                {($) => ResolveName}{#if !(..\$.Columns.Values, $) => IsLast},{/if}
+                {($) => ResolveName}{#if !(:columns, $) => IsLast},{/if+}
 				{/if}
 				{/each}
             );
@@ -50,10 +53,10 @@
         protected override InsertExpressionSet<{($) => ResolveName}> GetInclusiveInsertExpression({($) => ResolveName} {($) => ToCamelCase})
         {{
             return new InsertExpressionSet<{($) => ResolveName}>(
-				{($) => ToCamelCase},
-				{#each Columns.Values}
+				{(:table) => ToCamelCase},
+                {#each Columns.Values}
 				{#if !($) => IsIgnored}
-                {($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns.Values, $) => IsLast},{/if}
+                {($) => ResolveName}.Insert({(:table) => ToCamelCase}.{($) => ResolveName}){#if !(:columns, $) => IsLast},{/if+}
 				{/if}
 				{/each}
             );
@@ -83,7 +86,7 @@
         {{
 			{#each Columns.Values}
 			{#if !($) => IsIgnored}
-			{(..\$) => ToCamelCase}.{($) => ResolveName} = reader.ReadField().GetValue<{($, $.IsNullable) => ResolveClrTypeName}>();
+			{(:table) => ToCamelCase}.{($) => ResolveName} = reader.ReadField().GetValue<{($, $.IsNullable) => ResolveClrTypeName}>();
 			{/if}
 			{/each}
         }}

@@ -8,8 +8,8 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}Data
 {{
 	{#each ($) => ResolveConsolidatedTablesAndViews}
 	{#if !($) => IsIgnored}
-{+>("DataPackage") => GetTemplatePartial+}
-	{+/if}
+{>("DataPackage") => GetTemplatePartial+}
+	{/if}
 	{/each}
 }}
 {/if}

@@ -26,7 +26,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
     #region person
     public partial class Person : IDbEntity
     {
@@ -49,7 +49,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
     #region person address
     public partial class PersonAddress : IDbEntity
     {
@@ -67,7 +67,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
     #region product
     public partial class Product : IDbEntity
     {
@@ -90,7 +90,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
     #region purchase
     public partial class Purchase : IDbEntity
     {
@@ -114,7 +114,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
     #region purchase line
     public partial class PurchaseLine : IDbEntity
     {
@@ -135,7 +135,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
     #region person total purchases view
     public partial class PersonTotalPurchasesView : IDbEntity
     {
@@ -151,7 +151,7 @@ namespace DbEx.dboData
         #endregion
     }
     #endregion
-	
+
 }
 namespace DbEx.secData
 {
@@ -172,5 +172,5 @@ namespace DbEx.secData
         #endregion
     }
     #endregion
-	
+
 }
