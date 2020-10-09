@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Text.RegularExpressions;
+using HatTrick.DbEx.Tools.Configuration;
 using HatTrick.Model.MsSql;
+using HatTrick.Reflection;
 using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace HatTrick.DbEx.Tools.Service
 {
     public class CodeGenerationHelpers
     {
+        #region internals
+        private Dictionary<INamedMeta, object> _meta;
+        #endregion
+
         #region constructors
         public CodeGenerationHelpers()
         {
+            _meta = new Dictionary<INamedMeta, object>();
         }
         #endregion
 
@@ -73,6 +82,7 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region resolve name
+        //this method takes into account override via metadata
         public string ResolveName(INamedMeta namedMeta)
         {
             string name = null;
@@ -88,12 +98,21 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region resolve assembly type name
+        #region resolve strict name
+        //this method does NOT take into account override via metadata
+        public string ResolveStrictName(INamedMeta namedMeta)
+        {
+            string name = namedMeta?.Name;
+            return name;
+        }
+        #endregion
+
+        #region resolve clr type name
         //This method takes into account override via metadata
-        public string ResolveAssemblyTypeName(MsSqlColumn column, bool allowNullableType)
+        public string ResolveClrTypeName(MsSqlColumn column, bool allowNullableType)
         {
             string name = null;
-            if (this.HasDataTypeOverride(column, out string dataTypeOverride))
+            if (this.HasClrTypeOverride(column, out string dataTypeOverride))
             {
                 name = dataTypeOverride.EndsWith("?") && !allowNullableType ? dataTypeOverride.Substring(0, dataTypeOverride.Length - 1) : dataTypeOverride;
             }
@@ -105,7 +124,7 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region resolve strict assembly type name
+        #region resolve strict clr type name
         //this method does NOT take into account override via metadata
         public string ResolveStrictAssemblyTypeName(MsSqlColumn column)
         {
@@ -118,7 +137,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region resolve field expression type name
         public string ResolveFieldExpressionTypeName(MsSqlColumn column, bool allowNullableType)
         {
-            string name = this.ResolveAssemblyTypeName(column, allowNullableType);
+            string name = this.ResolveClrTypeName(column, allowNullableType);
             if (this.IsEnum(column))
             {
                 name = $"{(name.EndsWith("?") ? "Nullable" : string.Empty)}EnumFieldExpression";
@@ -131,28 +150,8 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        public string ResolveFieldExpressionGenericParameters(MsSqlColumn column, INamedMeta tableOrView)
-        {
-            string name = this.ResolveName(tableOrView);
-            if (this.IsEnum(column))
-            {
-                name = $"{name}, {this.ResolveAssemblyTypeName(column, false)}";
-            }
-            return name;
-        }
-
-        public string BuildFieldExpressionInterfaceProperty(MsSqlColumn column, INamedMeta tableOrView)
-        {
-            return $"public {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}> {ResolveName(column)} {{ get; private set; }}";
-        }
-
-        public string BuildEntityExpressionConstructorForFieldExpression(MsSqlColumn column, INamedMeta tableOrView, INamedMeta schema)
-        {
-            return $"Fields.Add($\"{{identifier}}.{column.Name}\", {ResolveName(column)} = new {ResolveFieldExpressionTypeName(column, column.IsNullable)}<{ResolveFieldExpressionGenericParameters(column, tableOrView)}>($\"{{identifier}}.{column.Name}\", this));";
-        }
-
-        #region name represents last touched timestamp
-        public bool NameRepresentsLastTouchedTimestamp(string name)
+		#region name represents last touched timestamp
+		public bool NameRepresentsLastTouchedTimestamp(string name)
         {
             name = name.Replace("-", string.Empty).Replace("_", string.Empty);
 
@@ -174,111 +173,83 @@ namespace HatTrick.DbEx.Tools.Service
         #region has name override
         public bool HasNameOverride(INamedMeta namedMeta, out string nameOverride)
         {
-            return this.TryResolveMeta(namedMeta, "name", out nameOverride);
+            return this.TryResolveMeta(namedMeta, "Name", out nameOverride);
         }
         #endregion
 
         #region has type override
-        public bool HasDataTypeOverride(INamedMeta namedMeta)
+        public bool HasClrTypeOverride(INamedMeta namedMeta)
         {
-            return this.HasDataTypeOverride(namedMeta, out string _);
+            return this.HasClrTypeOverride(namedMeta, out string _);
         }
 
-        public bool HasDataTypeOverride(INamedMeta namedMeta, out string dataTypeOverride)
+        public bool HasClrTypeOverride(INamedMeta namedMeta, out string dataTypeOverride)
         {
-            return this.TryResolveMeta(namedMeta, "dataType", out dataTypeOverride);
+            return this.TryResolveMeta(namedMeta, "ClrType", out dataTypeOverride);
         }
         #endregion
 
         #region has field type override
         public bool IsEnum(INamedMeta namedMeta)
         {
-            this.TryResolveMeta(namedMeta, "isEnum", out string meta);
-            return !string.IsNullOrWhiteSpace(meta) && bool.TryParse(meta, out bool isEnumValue) && isEnumValue;
+            this.TryResolveMeta(namedMeta, "IsEnum", out bool isEnum);
+            return isEnum;
         }
         #endregion
 
         #region is ignored
         public bool IsIgnored(INamedMeta namedMeta)
         {
-            bool isIgnored = false;
-
-            if (this.TryResolveMeta(namedMeta, "ignore", out string ignore))
-            {
-                isIgnored = string.Compare(ignore, "true", true) == 0;
-            }
+            this.TryResolveMeta(namedMeta, "Ignore", out bool isIgnored);
             return isIgnored;
         }
         #endregion
 
         #region try resolve meta
-        private bool TryResolveMeta(INamedMeta namedMeta, string name, out string value)
+        private bool TryResolveMeta<T>(INamedMeta namedMeta, string key, out T value)
         {
-            value = null;
-            string json = namedMeta.Meta;
-            if (json is null)
-            {
+            value = default(T);
+            if (string.IsNullOrEmpty(namedMeta.Meta))
                 return false;
+
+            _meta.TryGetValue(namedMeta, out var meta);
+            if (meta is null)
+            {
+                meta = JsonConvert.DeserializeObject<Apply>(namedMeta.Meta);
+                _meta.Add(namedMeta, meta);
             }
 
-            char[] delimiters = new char[] { ' ', '{', ':', ',', '}', '\t', '\n', '\r' };
+            value = meta.ReflectItem<T>(key, false);
 
-            Tokenizer t = new Tokenizer(delimiters);
-
-            bool found = false;
-            bool set = false;
-            string val = null;
-            t.Emit = (tkn) =>
-            {
-                if (!found)
-                {
-                    if (tkn == name)
-                    {
-                        found = true;
-                    }
-                }
-                else
-                {
-                    if (!set)
-                    {
-                        val = tkn;
-                        set = true;
-                    }
-                }
-            };
-
-            t.Parse(json);
-
-            value = val;
-
-            return (found && set);
+            return value is object;
         }
         #endregion
 
         #region is last
-        public bool IsLast(EnumerableNamedMetaSet<MsSqlColumn> columnSet, MsSqlColumn column)
+        public bool IsLast(IEnumerable<MsSqlColumn> columnSet, MsSqlColumn column)
         {
             bool isLast = false;
             if (columnSet is object)
             {
-                int idxLast = columnSet.Count - 1;
-                isLast = columnSet[idxLast] == column;
+                var set = columnSet.ToList();
+                int idxLast = set.Count - 1;
+                isLast = set[idxLast] == column;
             }
             return isLast;
         }
         #endregion
 
         #region resolve consolidated tables and views
-        public EnumerableNamedMetaSet<INamedMeta> ResolveConsolidatedTablesAndViews(MsSqlSchema schema)
+        public IList<INamedMeta> ResolveConsolidatedTablesAndViews(MsSqlSchema schema)
         {
-            EnumerableNamedMetaSet<INamedMeta> set = new EnumerableNamedMetaSet<INamedMeta>();
-            foreach (MsSqlTable t in schema.Tables)
+            List<INamedMeta> set = new List<INamedMeta>();
+            foreach (string t in schema.Tables.Keys)
             {
-                set.Add(t);
+                set.Add(schema.Tables[t]);
             }
-            foreach (MsSqlView v in schema.Views)
+            foreach (string v in schema.Views.Keys)
             {
-                set.Add(v);
+                set.Add(schema.Views[v]);
             }
             return set;
         }
@@ -297,5 +268,14 @@ namespace HatTrick.DbEx.Tools.Service
             return namedMeta is MsSqlView;
         }
         #endregion
-    }
+
+        #region get template partial
+        public string GetTemplatePartial(string shortName)
+        {
+            var resources = new ResourceAccessor();
+            var resource = resources.GetTemplatePartial(shortName);
+            return resource.Value;
+        }
+		#endregion
+	}
 }

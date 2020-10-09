@@ -1,19 +1,14 @@
-namespace ServerSideBlazorApp.DataService
+using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
+using System.Collections.Generic;
+using System.Data;
+using DbEx.dboDataService;
+using DbEx.secDataService;
+
+namespace DbEx.DataService
 {
-	using ServerSideBlazorApp.dboDataService;
-	using ServerSideBlazorApp.secDataService;
-    using HatTrick.DbEx.Sql;
-    using System.Collections.Generic;
-
-    public class CRMDatabase : RuntimeEnvironmentSqlDatabase
-    {
-        public CRMDatabase() : base(new db(), new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("MsSqlDbExTest", "CRMDatabase"))) 
-        { 
-        
-        }
-    }
-
-    public class CRMDatabaseSqlDatabaseMetadata : ISqlDatabaseMetadata
+    #region db meta
+    public class MsSqlDbSqlDatabaseMetadata : ISqlDatabaseMetadata
     {
         #region interface
         public string Identifier { get; private set; }
@@ -22,7 +17,7 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region constructors
-        public CRMDatabaseSqlDatabaseMetadata(string identifier, string name)
+        public MsSqlDbSqlDatabaseMetadata(string identifier, string name)
         {
             Identifier = identifier;
             Name = name;
@@ -31,15 +26,11 @@ namespace ServerSideBlazorApp.DataService
         }
         #endregion
     }
+    #endregion
 }
 
-namespace ServerSideBlazorApp.dboDataService
+namespace DbEx.dboDataService
 {
-	using HatTrick.DbEx.MsSql.Expression;
-    using HatTrick.DbEx.Sql;
-    using System.Collections.Generic;
-    using System.Data;
-
     #region dbo
 	public class dboSchemaMetadata : ISqlSchemaMetadata
     {
@@ -84,7 +75,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.AddressType", new MsSqlFieldMetadata(this, $"{identifier}.AddressType", "AddressType", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.Line1", new MsSqlFieldMetadata(this, $"{identifier}.Line1", "Line1", SqlDbType.VarChar, 50));
@@ -115,7 +106,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.FirstName", new MsSqlFieldMetadata(this, $"{identifier}.FirstName", "FirstName", SqlDbType.VarChar, 20));
             Fields.Add($"{identifier}.LastName", new MsSqlFieldMetadata(this, $"{identifier}.LastName", "LastName", SqlDbType.VarChar, 20));
@@ -146,7 +137,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.AddressId", new MsSqlFieldMetadata(this, $"{identifier}.AddressId", "AddressId", SqlDbType.Int, 4));
@@ -172,7 +163,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.ProductCategoryType", new MsSqlFieldMetadata(this, $"{identifier}.ProductCategoryType", "ProductCategoryType", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.Name", new MsSqlFieldMetadata(this, $"{identifier}.Name", "Name", SqlDbType.VarChar, 80));
@@ -203,7 +194,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Decimal, 9));
@@ -235,7 +226,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.PurchaseId", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseId", "PurchaseId", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.ProductId", new MsSqlFieldMetadata(this, $"{identifier}.ProductId", "ProductId", SqlDbType.Int, 4));
@@ -264,7 +255,7 @@ namespace ServerSideBlazorApp.dboDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.TotalPurchases", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchases", "TotalPurchases", SqlDbType.Decimal, 17));
         }
@@ -273,13 +264,8 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
 }
-namespace ServerSideBlazorApp.secDataService
+namespace DbEx.secDataService
 {
-	using HatTrick.DbEx.MsSql.Expression;
-    using HatTrick.DbEx.Sql;
-    using System.Collections.Generic;
-    using System.Data;
-
     #region sec
 	public class secSchemaMetadata : ISqlSchemaMetadata
     {
@@ -318,7 +304,7 @@ namespace ServerSideBlazorApp.secDataService
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: JRod, add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.SSN", new MsSqlFieldMetadata(this, $"{identifier}.SSN", "SSN", SqlDbType.Char, 9));
             Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));

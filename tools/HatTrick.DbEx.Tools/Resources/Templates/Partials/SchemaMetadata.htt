@@ -1,0 +1,25 @@
+﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower}
+	public class {($) => ResolveName}SchemaMetadata : ISqlSchemaMetadata
+    {{
+		#region interface
+        public ISqlDatabaseMetadata Database {{ get; }}
+        public string Identifier {{ get; }}
+        public string Name {{ get; }}
+        public IDictionary<string, ISqlEntityMetadata> Entities {{ get; }} = new Dictionary<string, ISqlEntityMetadata>();
+		#endregion
+
+        #region constructors
+        public {($) => ResolveName}SchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
+        {{
+            Database = database;
+            Identifier = identifier;
+            Name = name;
+			{#each ($) => ResolveConsolidatedTablesAndViews}
+			{#if !($) => IsIgnored}
+            Entities.Add($"{{identifier}}.{$.Name}", new {($) => ResolveName}EntityMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}"));
+			{/if}
+			{/each}
+        }}
+        #endregion
+    }}
+    #endregion

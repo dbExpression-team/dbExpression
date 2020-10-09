@@ -1,0 +1,18 @@
+﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower}
+    public partial class {($) => ResolveName} : IDbEntity
+    {{
+        #region interface
+	    {#each Columns.Values}
+	    {#if !($) => IsIgnored}
+        public {($, $.IsNullable) => ResolveClrTypeName} {($) => ResolveName} {{ get; set; }}
+	    {/if}
+	    {/each}
+        #endregion
+
+        #region constructor
+        public {($) => ResolveName}()
+        {{
+        }}
+        #endregion
+    }}
+    #endregion

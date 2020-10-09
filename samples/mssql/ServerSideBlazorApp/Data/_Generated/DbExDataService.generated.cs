@@ -1,25 +1,315 @@
+using ServerSideBlazorApp.Data;
+using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Connection;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+
+namespace ServerSideBlazorApp.DataService
+{
+    #region runtime db
+    public abstract class CRMDatabaseRuntimeSqlDatabase : IRuntimeSqlDatabase
+    {
+        #region internals
+        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
+        #endregion
+
+        #region interface
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration { get => config; set => config = value; }
+        #endregion
+
+        #region select one
+        public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
+            where TEntity : class, IDbEntity
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TEntity>(config);
+
+        public static IFromExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>> SelectOne<TEnum>(IEnumExpressionMediator<TEnum> field)
+            where TEnum : struct, Enum, IComparable
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TEnum>(config, field);
+
+        public static IFromExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>, IValueContinuationExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>>> SelectOne(ByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte>(config, field);
+
+        public static IFromExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>, IValueContinuationExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>>> SelectOne(NullableByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte?>(config, field);
+
+        public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<short>(config, field);
+
+        public static IFromExpressionBuilder<short?, IValueContinuationExpressionBuilder<short?>, IValueContinuationExpressionBuilder<short?, IValueContinuationExpressionBuilder<short?>>> SelectOne(NullableInt16ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<short?>(config, field);
+
+        public static IFromExpressionBuilder<int, IValueContinuationExpressionBuilder<int>, IValueContinuationExpressionBuilder<int, IValueContinuationExpressionBuilder<int>>> SelectOne(Int32ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<int>(config, field);
+
+        public static IFromExpressionBuilder<int?, IValueContinuationExpressionBuilder<int?>, IValueContinuationExpressionBuilder<int?, IValueContinuationExpressionBuilder<int?>>> SelectOne(NullableInt32ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<int?>(config, field);
+
+        public static IFromExpressionBuilder<long, IValueContinuationExpressionBuilder<long>, IValueContinuationExpressionBuilder<long, IValueContinuationExpressionBuilder<long>>> SelectOne(Int64ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<long>(config, field);
+
+        public static IFromExpressionBuilder<long?, IValueContinuationExpressionBuilder<long?>, IValueContinuationExpressionBuilder<long?, IValueContinuationExpressionBuilder<long?>>> SelectOne(NullableInt64ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<long?>(config, field);
+
+        public static IFromExpressionBuilder<decimal, IValueContinuationExpressionBuilder<decimal>, IValueContinuationExpressionBuilder<decimal, IValueContinuationExpressionBuilder<decimal>>> SelectOne(DecimalExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<decimal>(config, field);
+
+        public static IFromExpressionBuilder<decimal?, IValueContinuationExpressionBuilder<decimal?>, IValueContinuationExpressionBuilder<decimal?, IValueContinuationExpressionBuilder<decimal?>>> SelectOne(NullableDecimalExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<decimal?>(config, field);
+
+        public static IFromExpressionBuilder<double, IValueContinuationExpressionBuilder<double>, IValueContinuationExpressionBuilder<double, IValueContinuationExpressionBuilder<double>>> SelectOne(DoubleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<double>(config, field);
+
+        public static IFromExpressionBuilder<double?, IValueContinuationExpressionBuilder<double?>, IValueContinuationExpressionBuilder<double?, IValueContinuationExpressionBuilder<double?>>> SelectOne(NullableDoubleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<double?>(config, field);
+
+        public static IFromExpressionBuilder<float, IValueContinuationExpressionBuilder<float>, IValueContinuationExpressionBuilder<float, IValueContinuationExpressionBuilder<float>>> SelectOne(SingleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<float>(config, field);
+
+        public static IFromExpressionBuilder<float?, IValueContinuationExpressionBuilder<float?>, IValueContinuationExpressionBuilder<float?, IValueContinuationExpressionBuilder<float?>>> SelectOne(NullableSingleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<float?>(config, field);
+
+        public static IFromExpressionBuilder<bool, IValueContinuationExpressionBuilder<bool>, IValueContinuationExpressionBuilder<bool, IValueContinuationExpressionBuilder<bool>>> SelectOne(BooleanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<bool>(config, field);
+
+        public static IFromExpressionBuilder<bool?, IValueContinuationExpressionBuilder<bool?>, IValueContinuationExpressionBuilder<bool?, IValueContinuationExpressionBuilder<bool?>>> SelectOne(NullableBooleanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<bool?>(config, field);
+
+        public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(StringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
+
+        public static IFromExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>, IValueContinuationExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>>> SelectOne(DateTimeExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTime>(config, field);
+
+        public static IFromExpressionBuilder<DateTime?, IValueContinuationExpressionBuilder<DateTime?>, IValueContinuationExpressionBuilder<DateTime?, IValueContinuationExpressionBuilder<DateTime?>>> SelectOne(NullableDateTimeExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTime?>(config, field);
+
+        public static IFromExpressionBuilder<DateTimeOffset, IValueContinuationExpressionBuilder<DateTimeOffset>, IValueContinuationExpressionBuilder<DateTimeOffset, IValueContinuationExpressionBuilder<DateTimeOffset>>> SelectOne(DateTimeOffsetExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTimeOffset>(config, field);
+
+        public static IFromExpressionBuilder<DateTimeOffset?, IValueContinuationExpressionBuilder<DateTimeOffset?>, IValueContinuationExpressionBuilder<DateTimeOffset?, IValueContinuationExpressionBuilder<DateTimeOffset?>>> SelectOne(NullableDateTimeOffsetExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTimeOffset?>(config, field);
+
+        public static IFromExpressionBuilder<Guid, IValueContinuationExpressionBuilder<Guid>, IValueContinuationExpressionBuilder<Guid, IValueContinuationExpressionBuilder<Guid>>> SelectOne(GuidExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<Guid>(config, field);
+
+        public static IFromExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>, IValueContinuationExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>>> SelectOne(NullableGuidExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<Guid?>(config, field);
+
+        public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field1, field2, fields);
+        #endregion
+
+        #region select many
+        public static IListFromExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>> SelectMany<TEntity>()
+            where TEntity : IDbEntity
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TEntity>(config);
+
+        public static IListFromExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>> SelectMany<TEnum>(IEnumExpressionMediator<TEnum> field)
+            where TEnum : struct, Enum, IComparable
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TEnum>(config, field);
+
+        public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte>(config, field);
+
+        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+
+        public static IListFromExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>, IValueListContinuationExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>>> SelectMany(Int16ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<short>(config, field);
+
+        public static IListFromExpressionBuilder<short?, IValueListContinuationExpressionBuilder<short?>, IValueListContinuationExpressionBuilder<short?, IValueListContinuationExpressionBuilder<short?>>> SelectMany(NullableInt16ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<short?>(config, field);
+
+        public static IListFromExpressionBuilder<int, IValueListContinuationExpressionBuilder<int>, IValueListContinuationExpressionBuilder<int, IValueListContinuationExpressionBuilder<int>>> SelectMany(Int32ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<int>(config, field);
+
+        public static IListFromExpressionBuilder<int?, IValueListContinuationExpressionBuilder<int?>, IValueListContinuationExpressionBuilder<int?, IValueListContinuationExpressionBuilder<int?>>> SelectMany(NullableInt32ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<int?>(config, field);
+
+        public static IListFromExpressionBuilder<long, IValueListContinuationExpressionBuilder<long>, IValueListContinuationExpressionBuilder<long, IValueListContinuationExpressionBuilder<long>>> SelectMany(Int64ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<long>(config, field);
+
+        public static IListFromExpressionBuilder<long?, IValueListContinuationExpressionBuilder<long?>, IValueListContinuationExpressionBuilder<long?, IValueListContinuationExpressionBuilder<long?>>> SelectMany(NullableInt64ExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<long?>(config, field);
+
+        public static IListFromExpressionBuilder<decimal, IValueListContinuationExpressionBuilder<decimal>, IValueListContinuationExpressionBuilder<decimal, IValueListContinuationExpressionBuilder<decimal>>> SelectMany(DecimalExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<decimal>(config, field);
+
+        public static IListFromExpressionBuilder<decimal?, IValueListContinuationExpressionBuilder<decimal?>, IValueListContinuationExpressionBuilder<decimal?, IValueListContinuationExpressionBuilder<decimal?>>> SelectMany(NullableDecimalExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<decimal?>(config, field);
+
+        public static IListFromExpressionBuilder<double, IValueListContinuationExpressionBuilder<double>, IValueListContinuationExpressionBuilder<double, IValueListContinuationExpressionBuilder<double>>> SelectMany(DoubleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<double>(config, field);
+
+        public static IListFromExpressionBuilder<double?, IValueListContinuationExpressionBuilder<double?>, IValueListContinuationExpressionBuilder<double?, IValueListContinuationExpressionBuilder<double?>>> SelectMany(NullableDoubleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<double?>(config, field);
+
+        public static IListFromExpressionBuilder<float, IValueListContinuationExpressionBuilder<float>, IValueListContinuationExpressionBuilder<float, IValueListContinuationExpressionBuilder<float>>> SelectMany(SingleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<float>(config, field);
+
+        public static IListFromExpressionBuilder<float?, IValueListContinuationExpressionBuilder<float?>, IValueListContinuationExpressionBuilder<float?, IValueListContinuationExpressionBuilder<float?>>> SelectMany(NullableSingleExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<float?>(config, field);
+
+        public static IListFromExpressionBuilder<bool, IValueListContinuationExpressionBuilder<bool>, IValueListContinuationExpressionBuilder<bool, IValueListContinuationExpressionBuilder<bool>>> SelectMany(BooleanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<bool>(config, field);
+
+        public static IListFromExpressionBuilder<bool?, IValueListContinuationExpressionBuilder<bool?>, IValueListContinuationExpressionBuilder<bool?, IValueListContinuationExpressionBuilder<bool?>>> SelectMany(NullableBooleanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<bool?>(config, field);
+
+        public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(StringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
+
+        public static IListFromExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>, IValueListContinuationExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>>> SelectMany(DateTimeExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<DateTime>(config, field);
+
+        public static IListFromExpressionBuilder<DateTime?, IValueListContinuationExpressionBuilder<DateTime?>, IValueListContinuationExpressionBuilder<DateTime?, IValueListContinuationExpressionBuilder<DateTime?>>> SelectMany(NullableDateTimeExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<DateTime?>(config, field);
+
+        public static IListFromExpressionBuilder<DateTimeOffset, IValueListContinuationExpressionBuilder<DateTimeOffset>, IValueListContinuationExpressionBuilder<DateTimeOffset, IValueListContinuationExpressionBuilder<DateTimeOffset>>> SelectMany(DateTimeOffsetExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<DateTimeOffset>(config, field);
+
+        public static IListFromExpressionBuilder<DateTimeOffset?, IValueListContinuationExpressionBuilder<DateTimeOffset?>, IValueListContinuationExpressionBuilder<DateTimeOffset?, IValueListContinuationExpressionBuilder<DateTimeOffset?>>> SelectMany(NullableDateTimeOffsetExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<DateTimeOffset?>(config, field);
+
+        public static IListFromExpressionBuilder<Guid, IValueListContinuationExpressionBuilder<Guid>, IValueListContinuationExpressionBuilder<Guid, IValueListContinuationExpressionBuilder<Guid>>> SelectMany(GuidExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<Guid>(config, field);
+
+        public static IListFromExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>, IValueListContinuationExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>>> SelectMany(NullableGuidExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<Guid?>(config, field);
+
+
+        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectMany(ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field1, field2, fields);
+        #endregion
+
+        #region update
+        public static IUpdateFromExpressionBuilder Update(params AssignmentExpression[] fields)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+        #endregion
+
+        #region delete
+        public static IDeleteFromExpressionBuilder Delete()
+            => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
+        #endregion
+
+        #region insert
+        public static IInsertExpressionBuilder<T> Insert<T>(T instance)
+            where T : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instance);
+        #endregion
+
+        #region insert many
+        public static IInsertExpressionBuilder<T> InsertMany<T>(IList<T> instances)
+            where T : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
+
+        public static IInsertExpressionBuilder<T> InsertMany<T>(params T[] instances)
+            where T : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
+        #endregion
+
+        #region get connection
+        public static ISqlConnection GetConnection()
+        {
+            return config.ConnectionFactory.CreateSqlConnection();
+        }
+        #endregion
+
+        #region fx
+#pragma warning disable CA1034 // Nested types should not be visible
+#pragma warning disable IDE1006 // Naming Styles
+        public class fx : MsSqlFunctionExpressionBuilder
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CA1034 // Nested types should not be visible
+        {
+        }
+        #endregion
+
+        #region alias
+#pragma warning disable IDE1006 // Naming Styles
+        public static IAliasExpressionContinuationBuilder alias(string tableName, string fieldName)
+#pragma warning restore IDE1006 // Naming Styles
+        {
+            return new AliasExpressionBuilder(new AliasExpression(tableName, fieldName));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region runtime environment db
+    public class CRMDatabase : RuntimeEnvironmentSqlDatabase
+    {
+        public CRMDatabase() : base(new db(), new SqlDatabaseMetadataProvider(new CRMDatabaseSqlDatabaseMetadata("CRMDatabase", "MsSqlDbExTest")))
+        {
+        }
+    }
+    #endregion
+
+    #region db
+#pragma warning disable IDE1006 // Naming Styles
+    public partial class db : CRMDatabaseRuntimeSqlDatabase
+#pragma warning restore IDE1006 // Naming Styles
+    {
+    	
+    }
+    #endregion
+}
 
 namespace ServerSideBlazorApp.dboDataService
 {
-    using ServerSideBlazorApp.dboData;
-    using ServerSideBlazorApp.Data;
-    using HatTrick.DbEx.Sql.Executor;
-    using HatTrick.DbEx.Sql.Expression;
-    using System;
+	using ServerSideBlazorApp.dboData;
 
-    #region address
+    #region dbo schema expression
+#pragma warning disable IDE1006 // Naming Styles
+    public class dboSchemaExpression : SchemaExpression
+#pragma warning restore IDE1006 // Naming Styles
+    {
+        #region interface
+        public AddressEntity Address { get; private set; }
+        public PersonEntity Person { get; private set; }
+        public PersonAddressEntity PersonAddress { get; private set; }
+        public ProductEntity Product { get; private set; }
+        public PurchaseEntity Purchase { get; private set; }
+        public PurchaseLineEntity PurchaseLine { get; private set; }
+        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
+        #endregion
+
+        #region constructors
+        public dboSchemaExpression(string identifier) : base(identifier, null)
+        {
+            Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", this));
+            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
+            Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", this));
+            Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", this));
+            Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", this));
+            Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", this));
+            Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", this));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region address entity expression
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region interface properties
-		public Int32FieldExpression<Address> Id { get; private set; }
-		public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
-		public StringFieldExpression<Address> Line1 { get; private set; }
-		public StringFieldExpression<Address> Line2 { get; private set; }
-		public StringFieldExpression<Address> City { get; private set; }
-		public StringFieldExpression<Address> State { get; private set; }
-		public StringFieldExpression<Address> Zip { get; private set; }
-		public DateTimeFieldExpression<Address> DateCreated { get; private set; }
-		public DateTimeFieldExpression<Address> DateUpdated { get; private set; }
+        public Int32FieldExpression<Address> Id { get; private set; }
+        public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
+        public StringFieldExpression<Address> Line1 { get; private set; }
+        public StringFieldExpression<Address> Line2 { get; private set; }
+        public StringFieldExpression<Address> City { get; private set; }
+        public StringFieldExpression<Address> State { get; private set; }
+        public StringFieldExpression<Address> Zip { get; private set; }
+        public DateTimeFieldExpression<Address> DateCreated { get; private set; }
+        public DateTimeFieldExpression<Address> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -114,19 +404,19 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region person
+    #region person entity expression
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
-		public Int32FieldExpression<Person> Id { get; private set; }
-		public StringFieldExpression<Person> FirstName { get; private set; }
-		public StringFieldExpression<Person> LastName { get; private set; }
-		public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
-		public EnumFieldExpression<Person, GenderType> GenderType { get; private set; }
-		public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
-		public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
-		public DateTimeFieldExpression<Person> DateCreated { get; private set; }
-		public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
+        public Int32FieldExpression<Person> Id { get; private set; }
+        public StringFieldExpression<Person> FirstName { get; private set; }
+        public StringFieldExpression<Person> LastName { get; private set; }
+        public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
+        public EnumFieldExpression<Person, GenderType> GenderType { get; private set; }
+        public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
+        public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
+        public DateTimeFieldExpression<Person> DateCreated { get; private set; }
+        public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -221,14 +511,14 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region person address
+    #region person address entity expression
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region interface properties
-		public Int32FieldExpression<PersonAddress> Id { get; private set; }
-		public Int32FieldExpression<PersonAddress> PersonId { get; private set; }
-		public Int32FieldExpression<PersonAddress> AddressId { get; private set; }
-		public DateTimeFieldExpression<PersonAddress> DateCreated { get; private set; }
+        public Int32FieldExpression<PersonAddress> Id { get; private set; }
+        public Int32FieldExpression<PersonAddress> PersonId { get; private set; }
+        public Int32FieldExpression<PersonAddress> AddressId { get; private set; }
+        public DateTimeFieldExpression<PersonAddress> DateCreated { get; private set; }
         #endregion
 
         #region constructors
@@ -298,19 +588,19 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region product
+    #region product entity expression
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region interface properties
-		public Int32FieldExpression<Product> Id { get; private set; }
-		public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
-		public StringFieldExpression<Product> Name { get; private set; }
-		public StringFieldExpression<Product> Description { get; private set; }
-		public DecimalFieldExpression<Product> ListPrice { get; private set; }
-		public DecimalFieldExpression<Product> Price { get; private set; }
-		public Int32FieldExpression<Product> Quantity { get; private set; }
-		public DateTimeFieldExpression<Product> DateCreated { get; private set; }
-		public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
+        public Int32FieldExpression<Product> Id { get; private set; }
+        public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
+        public StringFieldExpression<Product> Name { get; private set; }
+        public StringFieldExpression<Product> Description { get; private set; }
+        public DecimalFieldExpression<Product> ListPrice { get; private set; }
+        public DecimalFieldExpression<Product> Price { get; private set; }
+        public Int32FieldExpression<Product> Quantity { get; private set; }
+        public DateTimeFieldExpression<Product> DateCreated { get; private set; }
+        public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -405,20 +695,20 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region purchase
+    #region purchase entity expression
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region interface properties
-		public Int32FieldExpression<Purchase> Id { get; private set; }
-		public Int32FieldExpression<Purchase> PersonId { get; private set; }
-		public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
-		public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
-		public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
-		public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
-		public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
-		public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
-		public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
-		public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
+        public Int32FieldExpression<Purchase> Id { get; private set; }
+        public Int32FieldExpression<Purchase> PersonId { get; private set; }
+        public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
+        public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
+        public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
+        public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
+        public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
+        public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
+        public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
+        public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -518,17 +808,17 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region purchase line
+    #region purchase line entity expression
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region interface properties
-		public Int32FieldExpression<PurchaseLine> Id { get; private set; }
-		public Int32FieldExpression<PurchaseLine> PurchaseId { get; private set; }
-		public Int32FieldExpression<PurchaseLine> ProductId { get; private set; }
-		public DecimalFieldExpression<PurchaseLine> PurchasePrice { get; private set; }
-		public Int32FieldExpression<PurchaseLine> Quantity { get; private set; }
-		public DateTimeFieldExpression<PurchaseLine> DateCreated { get; private set; }
-		public DateTimeFieldExpression<PurchaseLine> DateUpdated { get; private set; }
+        public Int32FieldExpression<PurchaseLine> Id { get; private set; }
+        public Int32FieldExpression<PurchaseLine> PurchaseId { get; private set; }
+        public Int32FieldExpression<PurchaseLine> ProductId { get; private set; }
+        public DecimalFieldExpression<PurchaseLine> PurchasePrice { get; private set; }
+        public Int32FieldExpression<PurchaseLine> Quantity { get; private set; }
+        public DateTimeFieldExpression<PurchaseLine> DateCreated { get; private set; }
+        public DateTimeFieldExpression<PurchaseLine> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -613,12 +903,12 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region person total purchases view
+    #region person total purchases view entity expression
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region interface properties
-		public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
-		public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get; private set; }
+        public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
+        public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get; private set; }
         #endregion
 
         #region constructors
@@ -679,23 +969,66 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
+    #region dbo
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable IDE1006 // Naming Styles
+    public partial class dbo
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+    {
+        #region internals
+        private static readonly dboSchemaExpression _schema = new dboSchemaExpression("dbo");
+        #endregion
+
+        #region interface
+        public static AddressEntity Address => _schema.Address;
+        public static PersonEntity Person => _schema.Person;
+        public static PersonAddressEntity PersonAddress => _schema.PersonAddress;
+        public static ProductEntity Product => _schema.Product;
+        public static PurchaseEntity Purchase => _schema.Purchase;
+        public static PurchaseLineEntity PurchaseLine => _schema.PurchaseLine;
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView => _schema.PersonTotalPurchasesView;
+        #endregion
+
+        #region constructors
+        private dbo()
+        {
+
+        }
+        #endregion
+    }
+    #endregion
 }
 namespace ServerSideBlazorApp.secDataService
 {
-    using ServerSideBlazorApp.secData;
-    using ServerSideBlazorApp.Data;
-    using HatTrick.DbEx.Sql.Executor;
-    using HatTrick.DbEx.Sql.Expression;
-    using System;
+	using ServerSideBlazorApp.secData;
 
-    #region person
+    #region sec schema expression
+#pragma warning disable IDE1006 // Naming Styles
+    public class secSchemaExpression : SchemaExpression
+#pragma warning restore IDE1006 // Naming Styles
+    {
+        #region interface
+        public PersonEntity Person { get; private set; }
+        #endregion
+
+        #region constructors
+        public secSchemaExpression(string identifier) : base(identifier, null)
+        {
+            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region person entity expression
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
-		public Int32FieldExpression<Person> Id { get; private set; }
-		public StringFieldExpression<Person> SSN { get; private set; }
-		public DateTimeFieldExpression<Person> DateCreated { get; private set; }
-		public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
+        public Int32FieldExpression<Person> Id { get; private set; }
+        public StringFieldExpression<Person> SSN { get; private set; }
+        public DateTimeFieldExpression<Person> DateCreated { get; private set; }
+        public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -765,4 +1098,27 @@ namespace ServerSideBlazorApp.secDataService
     }
     #endregion
 
+    #region sec
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+#pragma warning disable IDE1006 // Naming Styles
+    public partial class sec
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+    {
+        #region internals
+        private static readonly secSchemaExpression _schema = new secSchemaExpression("sec");
+        #endregion
+
+        #region interface
+        public static PersonEntity Person => _schema.Person;
+        #endregion
+
+        #region constructors
+        private sec()
+        {
+
+        }
+        #endregion
+    }
+    #endregion
 }

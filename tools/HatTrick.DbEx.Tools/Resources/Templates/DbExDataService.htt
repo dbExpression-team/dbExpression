@@ -1,0 +1,41 @@
+using {() => ResolveRootNamespace}Data;
+using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Connection;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+
+namespace {() => ResolveRootNamespace}DataService
+{{
+{+>("RuntimeDb") => GetTemplatePartial}
+
+{+>("RuntimeEnvironmentDb") => GetTemplatePartial+}
+
+{+>("Db") => GetTemplatePartial+}
+}}
+
+{#each Schemas.Values}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
+{{
+	using {() => ResolveRootNamespace}{($) => ResolveName}Data;
+
+{+>("SchemaExpression") => GetTemplatePartial+}
+
+	{#each ($) => ResolveConsolidatedTablesAndViews}
+	{#if !($) => IsIgnored}
+{+>("EntityExpression") => GetTemplatePartial}
+
+	{/if}
+    {/each}
+
+{>("Schema") => GetTemplatePartial+}
+}}
+{/if}
+{/each}

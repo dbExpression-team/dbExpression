@@ -7,14 +7,16 @@ using HatTrick.Model.MsSql;
 using HatTrick.Text.Templating;
 using svc = HatTrick.DbEx.Tools.Service.ServiceDispatch;
 using HatTrick.DbEx.Tools.Configuration;
+using HatTrick.Reflection;
+using System.Linq;
+using System.Reflection;
 
 namespace HatTrick.DbEx.Tools.Service
 {
     public class CodeGenerateExecutionContext : ExecutionContext
     {
-
         #region internals
-        private readonly string[] OPTION_KEYS = new string[] 
+        private readonly string[] OPTION_KEYS = new string[]
         {
             "--help", "-?", //help
             "--path", "-p", //config file path
@@ -23,6 +25,7 @@ namespace HatTrick.DbEx.Tools.Service
         private readonly string DEFAULT_CONFIG_PATH = "./";
         private readonly string DEFAULT_CONFIG_NAME = "DbExConfig.json";
         private readonly string DEFAULT_OUTPUT_PATH = "./DbExGenerated";
+        private readonly char[] INVALID_FILENAME_CHARS = Path.GetInvalidFileNameChars();
         #endregion
 
         #region interface
@@ -52,25 +55,27 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else
             {
-                svc.Feedback.Push(To.Info, $"Executing code generation");
-                svc.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
-                svc.Feedback.Push(To.ConsoleOnly, base.WorkingDirectory);
+                base.PushProgressFeedback("Executing code generation");
 
                 string configPath = this.ResolveConfigPath();
 
                 DbExConfig config = this.GetConfig(configPath);
                 base.PushProgressFeedback("initialized DbEx config");
 
+                this.EnsureWorkingDirectory(config, configPath);
+
+                svc.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
+                svc.Feedback.Push(To.ConsoleOnly, base.WorkingDirectory);
+
                 config.OutputDirectory = this.ResolveOutputDirectory(config);
 
-                this.EnsureOutputDirectory(config);
                 base.PushProgressFeedback("ensured output directory");
 
                 MsSqlModel sqlModel = this.BuildSqlModel(config);
                 base.PushProgressFeedback("extracted full sql model");
 
                 this.ApplySqlModelOverrides(config, sqlModel);
-                base.PushProgressFeedback("applied model meta data");
+                base.PushProgressFeedback("applied model metadata");
 
                 this.RenderOutputs(sqlModel, config);
                 base.PushProgressFeedback("code render completed");
@@ -107,17 +112,16 @@ namespace HatTrick.DbEx.Tools.Service
 
             if (!svc.IO.FileExists(path))
             {
-                throw new CommandException($"Could not resolve DbExConfig.json file at path: {path}");
+                throw new CommandException($"Could not resolve config json file at path: {path}");
             }
 
-            return path;
+            return Path.GetFullPath(path);
         }
         #endregion
 
-        #region resolve output path
-        protected string ResolveOutputDirectory(DbExConfig config)
+		#region resolve output path
+		protected string ResolveOutputDirectory(DbExConfig config)
         {
-            string path = config.OutputDirectory;
             string keyUsed;
             bool optionFound = base.TryGetOption(out string optionPath, out keyUsed, "--output", "-o");
             if (optionFound)
@@ -126,20 +130,12 @@ namespace HatTrick.DbEx.Tools.Service
                 {
                     svc.Feedback.Push(To.Warn, $"Encountered --output command option and outputDirectory config setting, command option used");
                 }
-                path = optionPath;
+                config.OutputDirectory = optionPath;
             }
 
-            if (!svc.IO.DirectoryExists(path))
-            {
-                //it's not a valid file or directory (absolute or relative)...
-                string msg = optionFound
-                    ? $"Command option '{keyUsed}' does not point to a valid file or directory. Value provided: {path}"
-                    : $"Config setting'{nameof(config.OutputDirectory)}' does not point to a valid file or directory. Value provided: {path}";
+            this.EnsureOutputDirectory(config);
 
-                throw new CommandException(msg);
-            }
-
-            return path;
+            return config.OutputDirectory;
         }
         #endregion
 
@@ -192,29 +188,86 @@ namespace HatTrick.DbEx.Tools.Service
             {
                 if (svc.IO.FileExists(config.OutputDirectory))
                 {
-                    throw new CommandException($"There is already a file with the same name as the name you specified for 'outputDirectory' within the DbExConfig");
+                    throw new CommandException($"A file exists with the same name specified for configured 'outputDirectory'");
+                }
+            }
+
+            if (!string.IsNullOrEmpty(config.WorkingDirectory))
+            {
+                if (svc.IO.FileExists(config.WorkingDirectory))
+                {
+                    throw new CommandException($"A file exists at the same path you specified for the configured 'workingDirectory'");
                 }
             }
         }
         #endregion
 
-        #region ensure output path
-        protected void EnsureOutputDirectory(DbExConfig config)
+        #region ensure working directory
+        private void EnsureWorkingDirectory(DbExConfig config, string fullConfigPath)
         {
-            string path = null;
-            if (!string.IsNullOrWhiteSpace(config.OutputDirectory))
+            if (string.IsNullOrEmpty(config.WorkingDirectory))
             {
-                path = config.OutputDirectory;
+                config.WorkingDirectory = base.WorkingDirectory;
+                return;
+            }
+
+            bool isRelative = !Path.IsPathRooted(config.WorkingDirectory) && !Path.IsPathFullyQualified(config.WorkingDirectory);
+            string working = null;
+            if (isRelative)//if working directory is relative, it should be relative to the config .json file path
+            {
+                //set the working directory to the config file directory (we know it exists because we read the config)
+                base.WorkingDirectory = Path.GetDirectoryName(fullConfigPath);
+
+                //now we can get the full path of the config.workingDirectory (relative to the config file)
+                working = Path.GetFullPath(config.WorkingDirectory);
             }
             else
             {
-                path = DEFAULT_OUTPUT_PATH;
-                config.OutputDirectory = path;
+                //configured path is absolute or rooted ... get full path to ensure we have a rooted and fully qualified path.
+                working = Path.GetFullPath(config.WorkingDirectory);
             }
 
-            if (!svc.IO.DirectoryExists(path))
+            if (!svc.IO.DirectoryExists(working))
             {
-                Directory.CreateDirectory(path);
+                svc.Feedback.Push(To.Warn, "No directory exists at configured 'workingDirectory'");
+                svc.Feedback.Push(To.Warn, $"Attempting to create working directory: {working}");
+                Directory.CreateDirectory(working);
+            }
+
+            base.WorkingDirectory = working;
+            config.WorkingDirectory = working;
+            base.PushProgressFeedback($"applied working directory override");
+        }
+		#endregion
+
+		#region ensure output path
+		protected void EnsureOutputDirectory(DbExConfig config)
+        {
+            //was value provided as option or config?
+            bool isProvided = !string.IsNullOrWhiteSpace(config.OutputDirectory);
+
+            if (!isProvided)
+            {
+                config.OutputDirectory = Path.Combine(base.WorkingDirectory, DEFAULT_OUTPUT_PATH);
+            }
+            else
+            {
+                bool isRooted = Path.IsPathRooted(config.OutputDirectory);
+                if (!isRooted)
+                {
+                    config.OutputDirectory = Path.GetFullPath(config.OutputDirectory);
+                }
+            }
+
+            if (!svc.IO.DirectoryExists(config.OutputDirectory))
+            {
+                string msg = isProvided
+                    ? "No directory exists at provided 'outputDirectory'"
+                    : "No directory exists at default 'outputDirectory'";
+
+                svc.Feedback.Push(To.Warn, msg);
+                svc.Feedback.Push(To.Warn, $"Attempting to create output directory: {config.OutputDirectory}");
+                Directory.CreateDirectory(config.OutputDirectory);
             }
         }
         #endregion
@@ -243,41 +296,206 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region apply sql model overrides
-        protected void ApplySqlModelOverrides(DbExConfig config, MsSqlModel sqlModel)
+        protected void ApplySqlModelOverrides(DbExConfig config, MsSqlModel model)
         {
-            if (config is object && config.Meta is object)
+            if (config is object && config.Overrides is object)
             {
-                Meta m = null;
-                for (int i = 0; i < config.Meta.Length; i++)
+                Override o = null;
+                for (int i = 0; i < config.Overrides.Length; i++)
                 {
-                    m = config.Meta[i];
+                    o = config.Overrides[i];
 
-                    if (m.Path is null)
+                    if (!this.EnsureOverride(o, i))
+                        continue;
+
+                    IList<INamedMeta> set = this.ResolveOverrideTarget(model, o);
+                    if (set is null || set.Count == 0)
                     {
-                        svc.Feedback.Push(To.Warn, $"encountered null meta.path value at meta[{i}]");
+                        svc.Feedback.Push(To.Warn, $"override.apply.to.path: '{o.Apply.To.Path}' at meta[{i}] resolved 0 items");
                         continue;
                     }
-                    if (m.Apply is null)
+
+                    foreach (var item in set)
                     {
-                        svc.Feedback.Push(To.Warn, $"encountered null meta.apply value at meta[{i}]");
-                        continue;
-                    }
-                    INamedMeta nm = sqlModel.ResolveItem(m.Path);
-                    if (nm is null)
-                    {
-                        svc.Feedback.Push(To.Warn, $"meta.path: '{(m.Path == string.Empty ? "string.Empty" : m.Path)}' at meta[{i}] could not be resolved.");
-                    }
-                    else
-                    {
-                        nm.Meta = (nm.Meta is null) ? m.Apply.AsString() : (", " + m.Apply.AsString());
+                        item.Meta = o.Apply.ToJson();
                     }
                 }
             }
         }
+		#endregion
+
+		#region ensure override
+        private bool EnsureOverride(Override o, int atIndex)
+        {
+            bool isValid = true;
+            if (o is null)
+            {
+                svc.Feedback.Push(To.Warn, $"encountered null override value at override[{atIndex}]");
+                isValid = false;
+            }
+            else if (o.Apply is null)
+            {
+                svc.Feedback.Push(To.Warn, $"encountered null override.apply value at override[{atIndex}]");
+                isValid = false;
+            }
+            else if (o.Apply.To is null)
+            {
+                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to value at override[{atIndex}]");
+                isValid = false;
+            }
+            else if (o.Apply.To.Path is null)
+            {
+                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at meta[{atIndex}]");
+                isValid = false;
+            }
+            else if (o.Apply.To.Path == string.Empty)
+            {
+                svc.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at meta[{atIndex}]");
+                isValid = false;
+            }
+            return isValid;
+        }
         #endregion
 
-        #region render outputs
-        protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
+        #region resolve override target
+        private IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
+        {
+            IList<INamedMeta> set = null;
+            switch (o.Apply.To.ObjectType)
+            {
+                case ObjectType.Any:
+                    SqlModelAccessor accecssor = new SqlModelAccessor(model);
+                    set = accecssor.ResolveItemSet(o.Apply.To.Path);
+                    break;
+                case ObjectType.Schema:
+                    set = this.ResolveOverrideTarget<MsSqlSchema>(model, o);
+                    break;
+                case ObjectType.Table:
+                    set = this.ResolveOverrideTarget<MsSqlTable>(model, o);
+                    break;
+                case ObjectType.View:
+                    set = this.ResolveOverrideTarget<MsSqlView>(model, o);
+                    break;
+                case ObjectType.Procedure:
+                    set = this.ResolveOverrideTarget<MsSqlProcedure>(model, o);
+                    break;
+                case ObjectType.Relationship:
+                    set = this.ResolveOverrideTarget<MsSqlRelationship>(model, o);
+                    break;
+                case ObjectType.Index:
+                    set = this.ResolveOverrideTarget<MsSqlIndex>(model, o);
+                    break;
+                case ObjectType.Column:
+                    set = this.ResolveOverrideTarget<MsSqlColumn>(model, o);
+                    break;
+                case ObjectType.TableColumn:
+                    set = this.ResolveOverrideTarget<MsSqlTableColumn>(model, o);
+                    break;
+                case ObjectType.ViewColumn:
+                    set = this.ResolveOverrideTarget<MsSqlViewColumn>(model, o);
+                    set.ToList<INamedMeta>();
+                    break;
+                case ObjectType.Parameter:
+                    set = this.ResolveOverrideTarget<MsSqlParameter>(model, o);
+                    break;
+                default:
+                    svc.Feedback.Push(To.Error, $"encountered unknown ObjectType: {o.Apply.To.ObjectType}");
+                    break;
+            }
+            return set;
+        }
+
+        public IList<INamedMeta> ResolveOverrideTarget<T>(MsSqlModel model, Override o) where T : INamedMeta
+        {
+            Predicate<T> predicate = this.BuildMatchPredicate<T>(model, o);
+         
+            SqlModelAccessor accessor = new SqlModelAccessor(model);
+
+            IList<T> set = accessor.ResolveItemSet<T>(o.Apply.To.Path, predicate);
+
+            return set.Cast<INamedMeta>().ToList();
+        }
+        #endregion
+
+        #region build match predicate
+        private Predicate<T> BuildMatchPredicate<T>(MsSqlModel model, Override o)
+        {
+            Predicate<T> predicate = null;
+
+            Dictionary<string, object> match = o.Apply.To.Match;
+            if (match != null && match.Count > 0)
+            {
+                List<Predicate<T>> predicateSet = new List<Predicate<T>>();
+                foreach (string key in match.Keys)
+                {
+                    Type t = typeof(T);
+                    BindingFlags bFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase;
+                    PropertyInfo pi = t.GetProperty(key, bFlags);
+                    IConvertible matchVal = (IConvertible)match[key];
+
+                    Predicate<T> p = (obj) =>
+                    {
+                        var target = pi.GetValue(obj);
+                        string msg = null;  
+                        Type pType = matchVal.GetType();
+                        Type tType = target.GetType();
+                        bool passed = false;
+                        try
+                        {
+                            if (target is object)
+                            {
+                                if (tType == typeof(string))
+                                    passed = string.Compare(target as string, matchVal as string, true) == 0;
+                                else if (tType.IsEnum)
+                                    passed = target.Equals(Enum.Parse(tType, matchVal as string, true));
+                                else
+                                    passed = target.Equals(Convert.ChangeType(matchVal, tType));
+                            }
+                        }
+                        catch (InvalidCastException)
+                        {
+                            passed = false;
+                            msg = $"invalid cast exception for override meta match, provided type: {pType} to target type: {tType}";
+                        }
+                        catch (FormatException)
+                        {
+                            passed = false;
+                            msg = $"format exception for override meta match, provided value: {pType} to target type: {tType}";
+                        }
+                        catch (OverflowException)
+                        {
+                            passed = false;
+                            msg = $"overflow exception for override meta match, provided type: {pType} to target type: {tType}";
+                        }
+                        catch (Exception ex)
+                        {
+                            passed = false;
+                            msg = $"exception encountered coverting override meta match value to target:{Environment.NewLine}{ex.Message}";
+                        }
+
+                        if (msg is object)
+                        {
+                            svc.Feedback.Push(To.Error, msg);
+                        }
+
+                        return passed;
+                    };
+
+                    predicateSet.Add(p);
+                }
+
+                if (predicateSet.Count > 0)
+                {
+                    predicate = (obj) => predicateSet.All(p => p(obj));
+                }
+            }
+
+            return predicate;
+        }
+		#endregion
+
+		#region render outputs
+		protected void RenderOutputs(MsSqlModel sqlModel, DbExConfig config)
         {
             var resources = new ResourceAccessor();
             string[] names = resources.GetTemplateShortNames();
@@ -305,22 +523,21 @@ namespace HatTrick.DbEx.Tools.Service
             LambdaRepository repo = engine.LambdaRepo;
             repo.Register(nameof(helpers.IsIgnored), (Func<INamedMeta, bool>)helpers.IsIgnored);
             repo.Register(nameof(helpers.ToCamelCase), (Func<INamedMeta, string>)helpers.ToCamelCase);
-            repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)(meta => meta is MsSqlModel m && !string.IsNullOrWhiteSpace(config.TypeName) ? config.TypeName : helpers.ResolveName(meta)));
-            //repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)helpers.ResolveName);
+            repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)helpers.ResolveName);
+            repo.Register(nameof(helpers.ResolveStrictName), (Func<INamedMeta, string>)helpers.ResolveStrictName);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string, string>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<INamedMeta, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
-            repo.Register(nameof(helpers.HasDataTypeOverride), (Func<INamedMeta, bool>)helpers.HasDataTypeOverride);
+            repo.Register(nameof(helpers.HasClrTypeOverride), (Func<INamedMeta, bool>)helpers.HasClrTypeOverride);
             repo.Register(nameof(helpers.IsEnum), (Func<INamedMeta, bool>)helpers.IsEnum);
-            repo.Register(nameof(helpers.ResolveAssemblyTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveAssemblyTypeName);
+            repo.Register(nameof(helpers.ResolveClrTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveClrTypeName);
             repo.Register(nameof(helpers.ResolveStrictAssemblyTypeName), (Func<MsSqlColumn, string>)helpers.ResolveStrictAssemblyTypeName);
             repo.Register(nameof(helpers.ResolveFieldExpressionTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveFieldExpressionTypeName);
-            repo.Register(nameof(helpers.BuildFieldExpressionInterfaceProperty), (Func<MsSqlColumn, INamedMeta, string>)helpers.BuildFieldExpressionInterfaceProperty);
-            repo.Register(nameof(helpers.BuildEntityExpressionConstructorForFieldExpression), (Func<MsSqlColumn, INamedMeta, INamedMeta, string>)helpers.BuildEntityExpressionConstructorForFieldExpression);
             repo.Register(nameof(helpers.NameRepresentsLastTouchedTimestamp), (Func<string, bool>)helpers.NameRepresentsLastTouchedTimestamp);
-            repo.Register(nameof(helpers.IsLast), (Func<EnumerableNamedMetaSet<MsSqlColumn>, MsSqlColumn, bool>)helpers.IsLast);
-            repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, EnumerableNamedMetaSet<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
+            repo.Register(nameof(helpers.IsLast), (Func<IEnumerable<MsSqlColumn>, MsSqlColumn, bool>)helpers.IsLast);
+            repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, IList<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
             repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
             repo.Register(nameof(helpers.IsMsSqlView), (Func<INamedMeta, bool>)helpers.IsMsSqlView);
+            repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
             repo.Register("ResolveRootNamespace", (Func<string>)(() => 
             {
                 return string.IsNullOrEmpty(config.RootNamespace) ? "DbEx." : $"{config.RootNamespace.TrimEnd('.')}.";
@@ -338,7 +555,7 @@ namespace HatTrick.DbEx.Tools.Service
             }
 
             string outputDir = config.OutputDirectory;
-            string fileName = $"{resource.Name.Replace(".Template", string.Empty)}.cs";
+            string fileName = $"{resource.Name}.generated.cs";
             string path = Path.Combine(outputDir, fileName);
 
             svc.IO.WriteFile(path, output, Encoding.UTF8);

@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test
             RuntimeSqlDatabaseConfiguration config = null;
             Action<RuntimeSqlDatabaseConfigurationBuilder> configureDatabase = database =>
             {
-                config = (database as IRuntimeSqlDatabaseConfigurationBuilder).Configuration; 
+                config = (database as IRuntimeSqlDatabaseConfigurationBuilder).Configuration;
                 postConfigure?.Invoke(database);
             };
 
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2005Database<MsSqlDbExTest>(
+                            c.AddMsSql2005Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2008Database<MsSqlDbExTest>(
+                            c.AddMsSql2008Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2012Database<MsSqlDbExTest>(
+                            c.AddMsSql2012Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2014Database<MsSqlDbExTest>(
+                            c.AddMsSql2014Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2016Database<MsSqlDbExTest>(
+                            c.AddMsSql2016Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2017Database<MsSqlDbExTest>(
+                            c.AddMsSql2017Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
@@ -102,11 +102,11 @@ namespace HatTrick.DbEx.MsSql.Test
                     {
                         DbExpressionConfigurationBuilder.AddDbExpression(c =>
                         {
-                            c.AddMsSql2019Database<MsSqlDbExTest>(
+                            c.AddMsSql2019Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
                                 configureDatabase,
                                 configureFields
-                            );                                
+                            );
                         });
                         break;
                     }

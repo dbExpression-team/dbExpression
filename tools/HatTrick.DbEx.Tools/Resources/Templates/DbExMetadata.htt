@@ -1,0 +1,30 @@
+using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
+using System.Collections.Generic;
+using System.Data;
+{#each Schemas.Values}
+{#if !($) => IsIgnored}
+using {() => ResolveRootNamespace}{($) => ResolveName}DataService;
+{/if}
+{/each}
+
+namespace {() => ResolveRootNamespace}DataService
+{{
+{+>("DbMetadata") => GetTemplatePartial+}
+}}
+
+{#each Schemas.Values}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
+{{
+{+>("SchemaMetadata") => GetTemplatePartial+}
+
+	{#each ($) => ResolveConsolidatedTablesAndViews}
+	{#if !($) => IsIgnored}
+{+>("EntityMetadata") => GetTemplatePartial+}
+
+	{/if}
+	{/each}
+}}
+{/if}
+{/each}

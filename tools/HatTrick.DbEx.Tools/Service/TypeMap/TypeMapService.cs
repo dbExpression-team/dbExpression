@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Tools.Service
     public class TypeMapService
     {
         #region is nullable type
-        //TODO: JRod, what will happen here when Ms rolls out the new nullable reference types ???
+        //TODO: what will happen here when Ms rolls out the new nullable reference types ???
         public bool IsNullableType(Type t)
         {
             return (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));

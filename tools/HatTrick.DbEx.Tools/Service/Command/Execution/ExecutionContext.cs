@@ -21,7 +21,11 @@ namespace HatTrick.DbEx.Tools.Service
 
         public Dictionary<string, string> Options { get; private set; }
 
-        public string WorkingDirectory { get; private set; }
+        public string WorkingDirectory 
+        { 
+            get { return Directory.GetCurrentDirectory(); }
+            set { Directory.SetCurrentDirectory(value); }
+        }
 
         public string Tab => _tab;
         #endregion
@@ -35,7 +39,6 @@ namespace HatTrick.DbEx.Tools.Service
         {
             _command = command;
             _options = options;
-            this.WorkingDirectory = Directory.GetCurrentDirectory();
         }
         #endregion
 
@@ -45,10 +48,10 @@ namespace HatTrick.DbEx.Tools.Service
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
         }
-        #endregion
+		#endregion
 
-        #region ensure options
-        protected void EnsureOptions(params string[] validOptions)
+		#region ensure options
+		protected void EnsureOptions(params string[] validOptions)
         {
             if (_options is object)
             {
@@ -119,7 +122,7 @@ namespace HatTrick.DbEx.Tools.Service
         protected void PushProgressFeedback(string progressMessage)
         {
             int milliseconds = (int)_stopWatch.ElapsedMilliseconds;
-            svc.Feedback.Push(To.Info, $"@ {milliseconds} ms\t-->\t{progressMessage}");
+            svc.Feedback.Push(To.Info, $"@ {milliseconds.ToString("000")} ms\t-->\t{progressMessage}");
         }
         #endregion
 

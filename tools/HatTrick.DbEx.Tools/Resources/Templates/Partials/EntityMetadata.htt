@@ -1,0 +1,26 @@
+﻿    #region {($)  => InsertSpaceOnCapitalizationAndToLower}
+	public class {($)  => ResolveName}EntityMetadata : ISqlEntityMetadata
+	{{
+        #region interface
+        public ISqlSchemaMetadata Schema {{ get; }}
+        public string Identifier {{ get; }}
+        public string Name {{ get; }}
+        public IDictionary<string, ISqlFieldMetadata> Fields {{ get; }} = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public {($) => ResolveName}EntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {{
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
+			{#each Columns.Values}
+			{#if !($) => IsIgnored}
+            Fields.Add($"{{identifier}}.{$.Name}", new MsSqlFieldMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}", SqlDbType.{$.SqlType}, {$.MaxLength}){#if $.IsIdentity} {{ IsIdentity = true }}{/if});
+			{/if}
+			{/each}
+        }}
+        #endregion
+    }}
+    #endregion

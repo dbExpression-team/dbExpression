@@ -1,0 +1,8 @@
+﻿    #region runtime environment db
+    public class {($) => ResolveName} : RuntimeEnvironmentSqlDatabase
+    {{
+        public {($) => ResolveName}() : base(new db(), new SqlDatabaseMetadataProvider(new {($) => ResolveName}SqlDatabaseMetadata("{($) => ResolveName}", "{($) => ResolveStrictName}")))
+        {{
+        }}
+    }}
+    #endregion

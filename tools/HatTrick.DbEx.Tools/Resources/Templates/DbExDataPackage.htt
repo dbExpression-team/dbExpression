@@ -1,0 +1,16 @@
+﻿using System;
+using HatTrick.DbEx.Sql;
+using {() => ResolveRootNamespace}Data;
+
+{#each Schemas.Values}
+{#if !($) => IsIgnored}
+namespace {() => ResolveRootNamespace}{($) => ResolveName}Data
+{{
+	{#each ($) => ResolveConsolidatedTablesAndViews}
+	{#if !($) => IsIgnored}
+{+>("DataPackage") => GetTemplatePartial+}
+	{+/if}
+	{/each}
+}}
+{/if}
+{/each}
