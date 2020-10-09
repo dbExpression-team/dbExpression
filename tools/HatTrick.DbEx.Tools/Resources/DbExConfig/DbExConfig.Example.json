@@ -6,26 +6,39 @@
         }
     },
     "outputDirectory": "** relative or absolute directory path for generated file output **",
-    "meta": [ /* ** examples below **
+    "overrides": [ /* ** examples below **
+       	{
+		    "apply": { 
+			    "ignore": true,
+			    "to": { 
+				    "path": "dbo.TypeCode",
+			    }
+		    }
+	    },
         {
-            
-            "path": "dbo.Person_Address",
-            "apply": { "name": "PersonAddress" }
+            "apply": {
+                "clrType": "AddressTypeCode", 
+                "isEnum": true 
+                "to": {
+                    "path": "dbo.Address.AddressType"
+                }
+            }
         },
         {
-            
-            "path": "dbo.Address.AddressType",
-            "apply": { "dataType": "AddressTypeCode", "isEnum": true }
+            "apply": {
+                "name": "secure"
+                "to": { 
+                    "path": "sec"
+                }
+            }
         },
         {
-            
-            "path": "sec",
-            "apply": { "name": "secure" }
-        },
-        {
-            
-            "path": "sec.Credentials",
-            "apply": { "ignore": true }
+            "apply": {
+                "ignore": true
+                "to": { 
+                    "path": "sec.Credentials"
+                }
+            }
         }*/
     ]
 }

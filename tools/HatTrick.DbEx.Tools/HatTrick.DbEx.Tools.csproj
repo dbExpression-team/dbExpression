@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -7,22 +7,47 @@
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\Templates\DataPackage.Template.txt" />
-    <None Remove="Resources\Templates\EntityExpression.Template.txt" />
-    <None Remove="Resources\Templates\EntityProvider.Template.txt" />
-    <None Remove="Resources\Templates\Metadata.Template.txt" />
-    <None Remove="Resources\Templates\SchemaExpression.Template.txt" />
+    <None Remove="Resources\DbExConfig\DbExConfig.Example.json" />
+    <None Remove="Resources\Templates\DbExDataPackage.htt" />
+    <None Remove="Resources\Templates\DbExDataService.htt" />
+    <None Remove="Resources\Templates\DbExMetadata.htt" />
+    <None Remove="Resources\Templates\Partials\Alias.htt" />
+    <None Remove="Resources\Templates\Partials\DataPackage.htt" />
+    <None Remove="Resources\Templates\Partials\Db.htt" />
+    <None Remove="Resources\Templates\Partials\DbMetadata.htt" />
+    <None Remove="Resources\Templates\Partials\EntityExpression.htt" />
+    <None Remove="Resources\Templates\Partials\EntityMetadata.htt" />
+    <None Remove="Resources\Templates\Partials\Fx.htt" />
+    <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
+    <None Remove="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
+    <None Remove="Resources\Templates\Partials\Schema.htt" />
+    <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
+    <None Remove="Resources\Templates\Partials\SchemaMetadata.htt" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Templates\DataPackage.Template.txt" />
-    <EmbeddedResource Include="Resources\Templates\EntityExpression.Template.txt" />
-    <EmbeddedResource Include="Resources\Templates\EntityProvider.Template.txt" />
-    <EmbeddedResource Include="Resources\Templates\Metadata.Template.txt" />
-    <EmbeddedResource Include="Resources\Templates\SchemaExpression.Template.txt" />
+    <EmbeddedResource Include="Resources\DbExConfig\DbExConfig.Example.json" />
+    <EmbeddedResource Include="Resources\Templates\DbExDataPackage.htt" />
+    <EmbeddedResource Include="Resources\Templates\DbExMetadata.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\Alias.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\DataPackage.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\Db.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\DbMetadata.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\EntityMetadata.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\Fx.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\SchemaMetadata.htt" />
+    <EmbeddedResource Include="Resources\Templates\DbExDataService.htt" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="HatTrick.Model.MsSql" Version="1.0.4" />
-    <PackageReference Include="HatTrick.Text.Templating" Version="1.0.2" />
+    <PackageReference Include="HatTrick.Model.MsSql" Version="2.0.1" />
+    <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
+    <PackageReference Include="HatTrick.Text.Templating" Version="1.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
   </ItemGroup>

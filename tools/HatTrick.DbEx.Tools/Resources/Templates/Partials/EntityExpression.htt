@@ -1,22 +1,11 @@
-{#each Schemas}
-{#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
-{{
-    using {() => ResolveRootNamespace}{($) => ResolveName}Data;
-    using {() => ResolveRootNamespace}Data;
-    using HatTrick.DbEx.Sql.Executor;
-    using HatTrick.DbEx.Sql.Expression;
-    using System;
-
-	{#each ($) => ResolveConsolidatedTablesAndViews}
-	{#if !($) => IsIgnored}
-    #region {($) => InsertSpaceOnCapitalizationAndToLower}
+﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower} entity expression
+    {?var:tableName = ($) => ResolveName}
     public partial class {($) => ResolveName}Entity : EntityExpression<{($) => ResolveName}>
     {{
         #region interface properties
-		{#each Columns}
+		{#each Columns.Values}
 		{#if !($) => IsIgnored}
-		{($, ..\$) => BuildFieldExpressionInterfaceProperty}
+        public {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {($, false) => ResolveClrTypeName} {/if}> {($) => ResolveName} {{ get; private set; }}
 		{/if}
 		{/each}
         #endregion
@@ -32,9 +21,10 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 
         private {($) => ResolveName}Entity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {{
-			{#each Columns}
+			{#each Columns.Values}
 			{#if !($) => IsIgnored}
-            {($, ..\$, ..\..\$) => BuildEntityExpressionConstructorForFieldExpression}
+            {?var:columnName = ($) => ResolveName}
+            Fields.Add($"{{identifier}}.{$.Name}", {:columnName} = new {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {($, false) => ResolveClrTypeName} {/if}>($"{{identifier}}.{$.Name}", this));
 			{/if}
 			{/each}
         }}
@@ -49,9 +39,9 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {{
             return new SelectExpressionSet(
-				{#each Columns}
+				{#each Columns.Values}
 				{#if !($) => IsIgnored}
-                {($) => ResolveName}{#if !(..\$.Columns, $) => IsLast},{/if}
+                {($) => ResolveName}{#if !(..\$.Columns.Values, $) => IsLast},{/if}
 				{/if}
 				{/each}
             );
@@ -61,9 +51,9 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         {{
             return new InsertExpressionSet<{($) => ResolveName}>(
 				{($) => ToCamelCase},
-				{#each Columns}
+				{#each Columns.Values}
 				{#if !($) => IsIgnored}
-                {($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns, $) => IsLast},{/if}
+                {($) => ResolveName}.Insert({(..\$) => ToCamelCase}.{($) => ResolveName}){#if !(..\$.Columns.Values, $) => IsLast},{/if}
 				{/if}
 				{/each}
             );
@@ -73,7 +63,7 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         {{
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			{#each Columns}
+			{#each Columns.Values}
 			{#if !($) => IsIgnored}
 			{#if !$.IsIdentity}
 			{#if ($.Name) => NameRepresentsLastTouchedTimestamp}
@@ -91,18 +81,12 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 
         protected override void HydrateEntity({($) => ResolveName} {($) => ToCamelCase}, ISqlFieldReader reader)
         {{
-			{#each Columns}
+			{#each Columns.Values}
 			{#if !($) => IsIgnored}
-			{(..\$) => ToCamelCase}.{($) => ResolveName} = reader.ReadField().GetValue<{($, $.IsNullable) => ResolveAssemblyTypeName}>();
+			{(..\$) => ToCamelCase}.{($) => ResolveName} = reader.ReadField().GetValue<{($, $.IsNullable) => ResolveClrTypeName}>();
 			{/if}
 			{/each}
         }}
 		#endregion
     }}
     #endregion
-
-	{/if}
-    {/each}
-}}
-{/if}
-{/each}

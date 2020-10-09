@@ -1,8 +1,4 @@
-{#each Schemas}
-{#if !($) => IsIgnored}
-namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
-{{
-    #region {($) => ResolveName}
+﻿    #region {($) => ResolveName}
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
     public partial class {($) => ResolveName}
@@ -29,6 +25,3 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
         #endregion
     }}
     #endregion
-}}
-{/if}
-{/each}

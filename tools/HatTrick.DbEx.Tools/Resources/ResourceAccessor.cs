@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Tools
         {
             Assembly assem = Assembly.GetExecutingAssembly();
             string[] names = assem.GetManifestResourceNames().ToList()
-                .FindAll(n => n.StartsWith("HatTrick.DbEx.Tools.Resources.Templates"))
+                .FindAll(n => n.StartsWith("HatTrick.DbEx.Tools.Resources.Templates") && !n.Contains(".Partials"))
                 .ToArray(); ;
 
             for (int i = 0; i < names.Length; i++)
@@ -29,16 +29,11 @@ namespace HatTrick.DbEx.Tools
         #region parse short name
         private string ParseShortName(string fullName)
         {
-            //HatTrick.DbEx.Tools.Resources.Templates.{name}.txt
-
-            Tokenizer tokenizer = new Tokenizer(new char[] { '.' });
-            List<string> parts = new List<string>();
-            tokenizer.Emit += (token) =>
-            {
-                parts.Add(token);
-            };
-            tokenizer.Parse(fullName);
-            string shortName = $"{parts[parts.Count - 3]}.{parts[parts.Count - 2]}";
+            //HatTrick.DbEx.Tools.Resources.Templates.{name}.htt
+            //HatTrick.DbEx.Tools.Resources.Templates.Partials.{name}.htt
+            int idx1 = fullName.LastIndexOf('.');
+            int idx2 = fullName.LastIndexOf('.', idx1 - 1);
+            string shortName = fullName.Substring(++idx2, (idx1 - idx2));
 
             return shortName;
         }
@@ -47,7 +42,15 @@ namespace HatTrick.DbEx.Tools
         #region get template
         public Resource GetTemplate(string shortName)
         {
-            string fullName = $"HatTrick.DbEx.Tools.Resources.Templates.{shortName}.txt";
+            string fullName = $"HatTrick.DbEx.Tools.Resources.Templates.{shortName}.htt";
+            return this.Get(fullName);
+        }
+        #endregion
+
+        #region get template partial
+        public Resource GetTemplatePartial(string shortName)
+        {
+            string fullName = $"HatTrick.DbEx.Tools.Resources.Templates.Partials.{shortName}.htt";
             return this.Get(fullName);
         }
         #endregion

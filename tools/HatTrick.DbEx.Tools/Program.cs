@@ -34,6 +34,7 @@ namespace HatTrick.DbEx.Tools
                 svc.Feedback.PushException(exFeedback);
             }
 #if DEBUG
+            Console.WriteLine("Press [Enter] to exit.");
             Console.ReadLine();
 #endif
         }

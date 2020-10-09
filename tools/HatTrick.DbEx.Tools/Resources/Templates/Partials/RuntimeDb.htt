@@ -1,29 +1,15 @@
-namespace DbEx.DataService
-{
-    using HatTrick.DbEx.MsSql.Builder;
-    using HatTrick.DbEx.Sql.Builder;
-    using HatTrick.DbEx.Sql.Builder.Syntax;
-    using HatTrick.DbEx.Sql.Configuration;
-    using HatTrick.DbEx.Sql.Expression;
-    using HatTrick.DbEx.Sql;
-    using HatTrick.DbEx.Sql.Connection;
-    using System;
-    using System.Collections.Generic;
-    using System.Dynamic;
-
-    #region runtime
-    public abstract class MsSqlDbExTestRuntimeSqlDatabase : IRuntimeSqlDatabase
-    {
+﻿    #region runtime db
+    public abstract class {($) => ResolveName}RuntimeSqlDatabase : IRuntimeSqlDatabase
+    {{
         #region internals
         protected static RuntimeSqlDatabaseConfiguration config;
         protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration { get => config; set => config = value; }
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration {{ get => config; set => config = value; }}
         #endregion
 
-        #region methods
         #region select one
         public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
@@ -189,16 +175,23 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field1, field2, fields);
         #endregion
 
+        #region update
         public static IUpdateFromExpressionBuilder Update(params AssignmentExpression[] fields)
             => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+        #endregion
 
+        #region delete
         public static IDeleteFromExpressionBuilder Delete()
             => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
+        #endregion
 
+        #region insert
         public static IInsertExpressionBuilder<T> Insert<T>(T instance)
             where T : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instance);
+        #endregion
 
+        #region insert many
         public static IInsertExpressionBuilder<T> InsertMany<T>(IList<T> instances)
             where T : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
@@ -206,96 +199,18 @@ namespace DbEx.DataService
         public static IInsertExpressionBuilder<T> InsertMany<T>(params T[] instances)
             where T : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
+        #endregion
 
+        #region get connection
         public static ISqlConnection GetConnection()
-        {
+        {{
             return config.ConnectionFactory.CreateSqlConnection();
-        }
-
-        #pragma warning disable CA1034 // Nested types should not be visible
-        #pragma warning disable IDE1006 // Naming Styles
-        public class fx : MsSqlFunctionExpressionBuilder
-        #pragma warning restore IDE1006 // Naming Styles
-        #pragma warning restore CA1034 // Nested types should not be visible
-        {
-
-        }
-
-        #pragma warning disable IDE1006 // Naming Styles
-        public static IAliasExpressionContinuationBuilder alias(string tableName, string fieldName)
-        #pragma warning restore IDE1006 // Naming Styles
-        {
-            return new AliasExpressionBuilder(new AliasExpression(tableName, fieldName));
-        }
+        }}
         #endregion
-    }
+
+{+>("Fx") => GetTemplatePartial+}
+
+{+>("Alias") => GetTemplatePartial+}
+=======
+    }}
     #endregion
-
-    #region db
-    #pragma warning disable IDE1006 // Naming Styles
-    public partial class db : MsSqlDbExTestRuntimeSqlDatabase
-    #pragma warning restore IDE1006 // Naming Styles
-    {
-    	
-    }
-    #endregion
-}
-
-namespace DbEx.dboDataService
-{
-    using HatTrick.DbEx.Sql.Expression;
-    using System;
-
-    #region dbo
-#pragma warning disable IDE1006 // Naming Styles
-    public class dboSchemaExpression : SchemaExpression
-#pragma warning restore IDE1006 // Naming Styles
-    {
-        #region interface
-        public AddressEntity Address { get; private set; }
-        public PersonEntity Person { get; private set; }
-        public PersonAddressEntity PersonAddress { get; private set; }
-        public ProductEntity Product { get; private set; }
-        public PurchaseEntity Purchase { get; private set; }
-        public PurchaseLineEntity PurchaseLine { get; private set; }
-        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
-        #endregion
-
-        #region constructors
-        public dboSchemaExpression(string identifier) : base(identifier, null)
-        {
-            Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", this));
-            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
-            Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", this));
-            Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", this));
-            Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", this));
-            Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", this));
-            Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", this));
-        }
-        #endregion
-    }
-    #endregion
-}
-namespace DbEx.secDataService
-{
-    using HatTrick.DbEx.Sql.Expression;
-    using System;
-
-    #region sec
-#pragma warning disable IDE1006 // Naming Styles
-    public class secSchemaExpression : SchemaExpression
-#pragma warning restore IDE1006 // Naming Styles
-    {
-        #region interface
-        public PersonEntity Person { get; private set; }
-        #endregion
-
-        #region constructors
-        public secSchemaExpression(string identifier) : base(identifier, null)
-        {
-            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
-        }
-        #endregion
-    }
-    #endregion
-}

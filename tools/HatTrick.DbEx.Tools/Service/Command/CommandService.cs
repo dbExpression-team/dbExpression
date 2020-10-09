@@ -90,47 +90,5 @@ namespace HatTrick.DbEx.Tools.Service
             return context;
         }
         #endregion
-
-        #region tokenize options
-        private Dictionary<string, string> TokenizeOptionSet(string optionSet)
-        {
-            Dictionary<string, string> options = null;
-            if (!string.IsNullOrEmpty(optionSet))
-            {
-                options = new Dictionary<string, string>();
-
-                Tokenizer tokenizer = this.GetOptionsTokenizer();
-                string key = null;
-                string val = null;
-                tokenizer.Emit += (token) =>
-                {
-                    if (key is null)
-                        key = token;
-                    else
-                        val = token;
-
-                    if (!(key is null || val is null))
-                    {
-                        options.Add(key, val);
-                        key = null;
-                        val = null;
-                    }
-                };
-
-                tokenizer.Parse(optionSet);
-            }
-
-            return options;
-        }
-        #endregion
-
-        #region get options tokenizer
-        public Tokenizer GetOptionsTokenizer()
-        {
-            char[] delimiters = new char[] { ' ', '{', ':', ',', '}', '\t', '\n', '\r' };
-            var t = new Tokenizer(delimiters);
-            return t;
-        }
-        #endregion
     }
 }

@@ -5,55 +5,74 @@
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
 	},
-	"outputDirectory": "Generated",
+	"workingDirectory": "./",
+	"outputDirectory": "./Generated",
 	"rootNamespace": "DbEx",
-	"meta": [
+	"overrides": [
 		{
-			"path": "dbo.sysdiagrams",
 			"apply": {
-				"ignore": true
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
 			}
 		},
 		{
-			"path": "sec.sysdiagrams",
 			"apply": {
-				"ignore": true
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
 			}
 		},
 		{
-			"path": "dbo.Address.AddressType",
 			"apply": {
-				"dataType": "AddressType?",
+				"name": "MsSqlDb",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "AddressType?",
 				"isEnum": true,
-				"format": "EnumToString",
-				"formatx": "EnumToString || MyComany.xxx.AddressTypeFormatter"
+				"to": {
+					"path": "dbo.Address.AddressType"
+				}
+			}
+
+		},
+		{
+			"apply": {
+				"clrType": "GenderType",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Person.GenderType"
+				}
 			}
 		},
 		{
-			"path": "dbo.Person.GenderType",
 			"apply": {
-				"dataType": "GenderType",
-				"isEnum": true
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
 			}
 		},
 		{
-			"path": "dbo.Product.ProductCategoryType",
 			"apply": {
-				"dataType": "ProductCategoryType?",
-				"isEnum": true
+				"clrType": "ProductCategoryType?",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Product.ProductCategoryType"
+				}
 			}
 		},
 		{
-			"path": "dbo.Person_Address",
 			"apply": {
-				"name": "PersonAddress"
-			}
-		},
-		{
-			"path": "dbo.Purchase.PaymentMethodType",
-			"apply": {
-				"dataType": "PaymentMethodType",
-				"isEnum": true
+				"clrType": "PaymentMethodType",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Purchase.PaymentMethodType"
+				}
 			}
 		}
 	]

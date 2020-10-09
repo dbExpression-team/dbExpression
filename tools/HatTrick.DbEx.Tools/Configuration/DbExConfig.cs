@@ -14,11 +14,11 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string RootNamespace { get; set; }
 
-        public string TypeName { get; set; }
+        public string WorkingDirectory { get; set; }
 
         public string OutputDirectory { get; set; }
 
-        public Meta[] Meta { get; set; }
+        public Override[] Overrides { get; set; }
     }
 
     public class Source
@@ -33,10 +33,8 @@ namespace HatTrick.DbEx.Tools.Configuration
         public string Value { get; set; }
     }
 
-    public class Meta
+    public class Override
     {
-        public string Path { get; set; }
-
         public Apply Apply { get; set; }
     }
 
@@ -44,37 +42,49 @@ namespace HatTrick.DbEx.Tools.Configuration
     {
         public bool Ignore { get; set; }
 
-        public string DataType { get; set; }
+        public string Name { get; set; }
+
+        public string ClrType { get; set; }
 
         public bool IsEnum { get; set; }
 
-        public string Name { get; set; }
+        public ApplyTo To { get; set; }
 
-        public string AsString()
+        public string ToJson()
         {
-            List<string> vals = new List<string>();
-            if (this.Ignore)
-            {
-                vals.Add("ignore: true");
-            }
-            if (this.DataType is object)
-            {
-                vals.Add($"dataType: {this.DataType}");
-            }
-            vals.Add($"isEnum: {this.IsEnum}");
-            if (this.Name is object)
-            {
-                vals.Add($"name: {this.Name}");
-            }
-            string val = string.Join(", ", vals);
-            return val;
+            string json = JsonConvert.SerializeObject(this);
+            return json;
         }
+    }
+
+    public class ApplyTo
+    {
+        public string Path { get; set; }
+
+        public ObjectType ObjectType { get; set; }
+
+        public Dictionary<string, object> Match { get; set; }
     }
 
     public enum SourceTypeCode
     {
         Unknown = 0,
         MsSqlDb = 1,
-        MySqlDb = 2,
+        //MySqlDb = 2,
+    }
+
+    public enum ObjectType
+    {
+        Any,
+        Schema,
+        Table,
+        View,
+        Procedure,
+        Relationship,
+        Index,
+        Column, //table or view
+        TableColumn,
+        ViewColumn,
+        Parameter
     }
 }
