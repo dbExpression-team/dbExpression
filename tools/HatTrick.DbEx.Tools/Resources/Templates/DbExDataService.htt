@@ -13,11 +13,11 @@ using System.Dynamic;
 
 namespace {() => ResolveRootNamespace}DataService
 {{
-{+>("RuntimeDb") => GetTemplatePartial}
+{>("RuntimeDb") => GetTemplatePartial+}
 
-{+>("RuntimeEnvironmentDb") => GetTemplatePartial+}
+{>("RuntimeEnvironmentDb") => GetTemplatePartial+}
 
-{+>("Db") => GetTemplatePartial+}
+{>("Db") => GetTemplatePartial+}
 }}
 
 {#each Schemas.Values}
@@ -26,15 +26,14 @@ namespace {() => ResolveRootNamespace}{($) => ResolveName}DataService
 {{
 	using {() => ResolveRootNamespace}{($) => ResolveName}Data;
 
-{+>("SchemaExpression") => GetTemplatePartial+}
+{>("SchemaExpression") => GetTemplatePartial+}
 
 	{#each ($) => ResolveConsolidatedTablesAndViews}
 	{#if !($) => IsIgnored}
-{+>("EntityExpression") => GetTemplatePartial}
+{>("EntityExpression") => GetTemplatePartial+}
 
 	{/if}
     {/each}
-
 {>("Schema") => GetTemplatePartial+}
 }}
 {/if}
