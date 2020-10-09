@@ -5,48 +5,74 @@
 			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
 		}
 	},
-	"outputDirectory": "Data/_Generated",
+	"workingDirectory": "./",
+	"outputDirectory": "./Data/_Generated",
 	"rootNamespace": "ServerSideBlazorApp",
-	"typeName":  "CRMDatabase",
-	"meta": [
+	"overrides": [
 		{
-			"path": "dbo.sysdiagrams",
 			"apply": {
-				"ignore": true
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
 			}
 		},
 		{
-			"path": "dbo.Address.AddressType",
 			"apply": {
-				"dataType": "AddressType?",
-				"isEnum": true
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
 			}
 		},
 		{
-			"path": "dbo.Person.GenderType",
 			"apply": {
-				"dataType": "GenderType",
-				"isEnum": true
+				"name": "CRMDatabase",
+				"to": {
+					"path": "."
+				}
 			}
 		},
 		{
-			"path": "dbo.Product.ProductCategoryType",
 			"apply": {
-				"dataType": "ProductCategoryType?",
-				"isEnum": true
+				"clrType": "AddressType?",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Address.AddressType"
+				}
+			}
+
+		},
+		{
+			"apply": {
+				"clrType": "GenderType",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Person.GenderType"
+				}
 			}
 		},
 		{
-			"path": "dbo.Person_Address",
 			"apply": {
-				"name": "PersonAddress"
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
 			}
 		},
 		{
-			"path": "dbo.Purchase.PaymentMethodType",
 			"apply": {
-				"dataType": "PaymentMethodType",
-				"isEnum": true
+				"clrType": "ProductCategoryType?",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Product.ProductCategoryType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "PaymentMethodType",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Purchase.PaymentMethodType"
+				}
 			}
 		}
 	]
