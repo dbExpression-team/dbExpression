@@ -62,6 +62,8 @@ namespace HatTrick.DbEx.Tools.Service
                 DbExConfig config = this.GetConfig(configPath);
                 base.PushProgressFeedback("initialized DbEx config");
 
+                this.EnsureConfig(config);
+
                 this.EnsureWorkingDirectory(config, configPath);
 
                 svc.Feedback.Push(To.ConsoleOnly, "«Current working directory:  »Green");
@@ -71,11 +73,14 @@ namespace HatTrick.DbEx.Tools.Service
 
                 base.PushProgressFeedback("ensured output directory");
 
+                base.PushProgressFeedback("starting sql model extraction");
                 MsSqlModel sqlModel = this.BuildSqlModel(config);
                 base.PushProgressFeedback("extracted full sql model");
 
                 this.ApplySqlModelOverrides(config, sqlModel);
                 base.PushProgressFeedback("applied model metadata");
+
+                this.EnsureRenderSafe(config, sqlModel);
 
                 this.RenderOutputs(sqlModel, config);
                 base.PushProgressFeedback("code render completed");
@@ -144,7 +149,6 @@ namespace HatTrick.DbEx.Tools.Service
         {
             string json = svc.IO.GetFileText(path, Encoding.UTF8);
             DbExConfig config = JsonConvert.DeserializeObject<DbExConfig>(json);
-            this.EnsureConfig(config);
             return config;
         }
         #endregion
@@ -184,20 +188,11 @@ namespace HatTrick.DbEx.Tools.Service
                 throw new CommandException(msg);
             }
 
-            if (!string.IsNullOrWhiteSpace(config.OutputDirectory))
+            if (string.IsNullOrWhiteSpace(config.RootNamespace))
             {
-                if (svc.IO.FileExists(config.OutputDirectory))
-                {
-                    throw new CommandException($"A file exists with the same name specified for configured 'outputDirectory'");
-                }
-            }
-
-            if (!string.IsNullOrEmpty(config.WorkingDirectory))
-            {
-                if (svc.IO.FileExists(config.WorkingDirectory))
-                {
-                    throw new CommandException($"A file exists at the same path you specified for the configured 'workingDirectory'");
-                }
+                string key1 = nameof(config.RootNamespace);
+                string msg = $"DbEx configuration file missing required key: {key1}";
+                throw new CommandException(msg);
             }
         }
         #endregion
@@ -212,7 +207,7 @@ namespace HatTrick.DbEx.Tools.Service
             }
 
             bool isRelative = !Path.IsPathRooted(config.WorkingDirectory) && !Path.IsPathFullyQualified(config.WorkingDirectory);
-            string working = null;
+            string working;
             if (isRelative)//if working directory is relative, it should be relative to the config .json file path
             {
                 //set the working directory to the config file directory (we know it exists because we read the config)
@@ -227,6 +222,15 @@ namespace HatTrick.DbEx.Tools.Service
                 working = Path.GetFullPath(config.WorkingDirectory);
             }
 
+            base.WorkingDirectory = working;
+            config.WorkingDirectory = working;
+
+            //error: if a file exists with this exact path
+            if (svc.IO.FileExists(config.WorkingDirectory))
+            {
+                throw new CommandException($"A file exists at the same path you specified for the configured 'workingDirectory'");
+            }
+
             if (!svc.IO.DirectoryExists(working))
             {
                 svc.Feedback.Push(To.Warn, "No directory exists at configured 'workingDirectory'");
@@ -234,13 +238,11 @@ namespace HatTrick.DbEx.Tools.Service
                 Directory.CreateDirectory(working);
             }
 
-            base.WorkingDirectory = working;
-            config.WorkingDirectory = working;
             base.PushProgressFeedback($"applied working directory override");
         }
 		#endregion
 
-		#region ensure output path
+		#region ensure output directory
 		protected void EnsureOutputDirectory(DbExConfig config)
         {
             //was value provided as option or config?
@@ -257,6 +259,11 @@ namespace HatTrick.DbEx.Tools.Service
                 {
                     config.OutputDirectory = Path.GetFullPath(config.OutputDirectory);
                 }
+            }
+
+            if (svc.IO.FileExists(config.OutputDirectory))
+            {
+                throw new CommandException($"A file exists with the same name specified for configured 'outputDirectory'");
             }
 
             if (!svc.IO.DirectoryExists(config.OutputDirectory))
@@ -305,7 +312,7 @@ namespace HatTrick.DbEx.Tools.Service
                 {
                     o = config.Overrides[i];
 
-                    if (!this.EnsureOverride(o, i))
+                    if (!this.EnsureOverride(o, i, config))
                         continue;
 
                     IList<INamedMeta> set = this.ResolveOverrideTarget(model, o);
@@ -325,40 +332,71 @@ namespace HatTrick.DbEx.Tools.Service
 		#endregion
 
 		#region ensure override
-        private bool EnsureOverride(Override o, int atIndex)
+        private bool EnsureOverride(Override o, int atIndex, DbExConfig config)
         {
+            //warnings...
             bool isValid = true;
             if (o is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override value at override[{atIndex}]");
+                svc.Feedback.Push(To.Warn, $"encountered null override value at overrides[{atIndex}]");
                 isValid = false;
             }
             else if (o.Apply is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override.apply value at override[{atIndex}]");
+                svc.Feedback.Push(To.Warn, $"encountered null override.apply value at overrides[{atIndex}]");
                 isValid = false;
             }
             else if (o.Apply.To is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to value at override[{atIndex}]");
+                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to value at overrides[{atIndex}]");
                 isValid = false;
             }
             else if (o.Apply.To.Path is null)
             {
-                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at meta[{atIndex}]");
+                svc.Feedback.Push(To.Warn, $"encountered null override.apply.to.path value at overrides[{atIndex}]");
                 isValid = false;
             }
             else if (o.Apply.To.Path == string.Empty)
             {
-                svc.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at meta[{atIndex}]");
+                svc.Feedback.Push(To.Warn, $"encountered empty override.apply.to.path value at overrides[{atIndex}]");
                 isValid = false;
             }
+
+            if (isValid)//if all relavent values provided, check for hard stop errors
+            {
+                //errors
+                if (o.Apply.To.Path == "." && (string.Compare(o.Apply.Name, config.RootNamespace, true) == 0))
+                {
+                    //setting the root namespace equal the db name causes compile circular dependency
+                    StringBuilder msg = new StringBuilder();
+                    msg.AppendLine($"DbExConfig error: rootNamespace=\"{config.RootNamespace}\" - rootNamespace cannot equal database name override");
+                    msg.AppendLine($"encountered override.apply.name=\"{o.Apply.Name}\" for override.apply.to.path=\"{o.Apply.To.Path}\" at overrides[{atIndex}]");
+                    throw new CommandException(msg.ToString());
+                }
+            }
+
             return isValid;
         }
         #endregion
 
-        #region resolve override target
-        private IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
+        #region ensure render safe
+        private void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
+        {
+            if (!config.Overrides.Any(ov => ov.Apply.To.Path == "."))//if override to path . exists, we caught this issue in ApplyOverrides
+            {
+                if (string.Compare(config.RootNamespace, model.Name, true) == 0)
+                {
+                    //setting the root namespace equal the db name causes compile circular dependency
+                    StringBuilder msg = new StringBuilder();
+                    msg.AppendLine($"DbExConfig error: rootNamespace=\"{config.RootNamespace}\" - rootNamespace cannot equal database name: {model.Name}");
+                    throw new CommandException(msg.ToString());
+                }
+            }
+        }
+		#endregion
+
+		#region resolve override target
+		private IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
         {
             IList<INamedMeta> set = null;
             switch (o.Apply.To.ObjectType)
@@ -538,10 +576,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
             repo.Register(nameof(helpers.IsMsSqlView), (Func<INamedMeta, bool>)helpers.IsMsSqlView);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
-            repo.Register("ResolveRootNamespace", (Func<string>)(() => 
-            {
-                return string.IsNullOrEmpty(config.RootNamespace) ? "DbEx." : $"{config.RootNamespace.TrimEnd('.')}.";
-            }));
+            repo.Register("ResolveRootNamespace", (Func<string>)(() => $"{config.RootNamespace.TrimEnd('.')}."));
 
             string output = null;
             try

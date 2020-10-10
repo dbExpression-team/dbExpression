@@ -1,44 +1,35 @@
 ﻿{
-    "source": {
-        "type": "MsSqlDb",
-        "connectionString": {
-            "value": "** connection string for target db **"
-        }
-    },
-    "outputDirectory": "** relative or absolute directory path for generated file output **",
-    "overrides": [ /* ** examples below **
+	"source": {
+		"type": "MsSqlDb",
+		"connectionString": {
+			"value": "** connection string for target db **"
+		}
+	},
+	"workingDirectory": "./", /* optional: overrides default working dir of execuation relative to THIS file.  so ./ is the path this file resides in */
+	"outputDirectory": "./Generated", /* optional: generated code output path, if not provided defaults to workingDirectory/DbExGenerated */
+	"overrides": [
+		/* ** examples below **
        	{
-		    "apply": { 
-			    "ignore": true,
-			    "to": { 
-				    "path": "dbo.TypeCode",
-			    }
-		    }
-	    },
-        {
-            "apply": {
-                "clrType": "AddressTypeCode", 
-                "isEnum": true 
-                "to": {
-                    "path": "dbo.Address.AddressType"
-                }
-            }
-        },
-        {
-            "apply": {
-                "name": "secure"
-                "to": { 
-                    "path": "sec"
-                }
-            }
-        },
-        {
-            "apply": {
-                "ignore": true
-                "to": { 
-                    "path": "sec.Credentials"
-                }
-            }
-        }*/
-    ]
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
+			}
+		},
+		{
+			"apply": {
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		}
+*/
+	]
 }
