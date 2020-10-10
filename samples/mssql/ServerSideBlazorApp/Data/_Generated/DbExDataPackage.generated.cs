@@ -26,7 +26,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
     #region person
     public partial class Person : IDbEntity
     {
@@ -49,7 +49,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
     #region person address
     public partial class PersonAddress : IDbEntity
     {
@@ -67,7 +67,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
     #region product
     public partial class Product : IDbEntity
     {
@@ -76,9 +76,15 @@ namespace ServerSideBlazorApp.dboData
         public ProductCategoryType? ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal ListPrice { get; set; }
-        public decimal Price { get; set; }
+        public double ListPrice { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
+        public byte[] Image { get; set; }
+        public decimal? Height { get; set; }
+        public decimal? Width { get; set; }
+        public decimal? Depth { get; set; }
+        public decimal? Weight { get; set; }
+        public decimal ShippingWeight { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
@@ -90,7 +96,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
     #region purchase
     public partial class Purchase : IDbEntity
     {
@@ -114,7 +120,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
     #region purchase line
     public partial class PurchaseLine : IDbEntity
     {
@@ -135,13 +141,14 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
     #region person total purchases view
     public partial class PersonTotalPurchasesView : IDbEntity
     {
         #region interface
         public int Id { get; set; }
-        public decimal? TotalPurchases { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public int? TotalCount { get; set; }
         #endregion
 
         #region constructor
@@ -151,7 +158,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
     }
     #endregion
-	
+
 }
 namespace ServerSideBlazorApp.secData
 {
@@ -172,5 +179,5 @@ namespace ServerSideBlazorApp.secData
         #endregion
     }
     #endregion
-	
+
 }

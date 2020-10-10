@@ -10,7 +10,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    [Trait("Function", "COALESECE")]
+    [Trait("Function", "COALESCE")]
     [Trait("Function", "DATEADD")]
     public partial class CoalesceAndDateAdd : ExecutorTestBase
     {

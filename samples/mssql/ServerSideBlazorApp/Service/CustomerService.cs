@@ -41,7 +41,7 @@ namespace ServerSideBlazorApp.Service
                 db.SelectMany(
                     dbo.Person.Id,
                     (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
-                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalPurchases, 0m).As("LifetimeValue"),
+                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0m).As("LifetimeValue"),
                     db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Person.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge")
                 )
                 .From(dbo.Person)
@@ -96,7 +96,7 @@ namespace ServerSideBlazorApp.Service
                     p.BirthDate <= DateTime.Now.Date.AddYears(-21)
                     & a.AddressType == AddressType.Mailing
                     & a.Zip.Like(zip + "%")
-                    & ptpv.TotalPurchases > 1500 //VIP
+                    & ptpv.TotalAmount > 1500 //VIP
                 ).Execute();
 
             return people;

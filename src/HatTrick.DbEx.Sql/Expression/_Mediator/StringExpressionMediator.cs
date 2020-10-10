@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpression Like(string phrase)
-            => new FilterExpression(this, new StringExpressionMediator(new LiteralExpression<string>(phrase)), FilterExpressionOperator.Like);
+            => new FilterExpression(this, new StringExpressionMediator(new LikeExpression(phrase)), FilterExpressionOperator.None);
         #endregion
 
         #region equals

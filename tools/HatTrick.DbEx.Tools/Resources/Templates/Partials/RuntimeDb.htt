@@ -25,6 +25,9 @@
         public static IFromExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>, IValueContinuationExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>>> SelectOne(NullableByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte?>(config, field);
 
+        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(ByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
+
         public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<short>(config, field);
 
@@ -103,6 +106,9 @@
 
         public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte>(config, field);
+
+        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(ByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
         public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
@@ -206,6 +212,8 @@
         {{
             return config.ConnectionFactory.CreateSqlConnection();
         }}
+        #pragma warning disable IDE1006 // Naming Styles
+        #pragma warning restore IDE1006 // Naming Styles
         #endregion
 
 {+>("Fx") => GetTemplatePartial+}

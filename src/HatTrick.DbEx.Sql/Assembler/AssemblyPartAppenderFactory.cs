@@ -45,6 +45,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly LiteralExpressionPartAppender _literalAppender = new LiteralExpressionPartAppender();
         private static readonly RawExpressionPartAppender _rawAppender = new RawExpressionPartAppender();
         private static readonly AliasExpressionPartAppender _aliasAppender = new AliasExpressionPartAppender();
+        private static readonly InExpressionPartAppender _inAppender = new InExpressionPartAppender();
+        private static readonly LikeExpressionPartAppender _likeAppender = new LikeExpressionPartAppender();
         #endregion
 
         #region value type appenders 
@@ -131,6 +133,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(LiteralExpression), () => _literalAppender);
             _partAppenders.TryAdd(typeof(RawExpression), () => _rawAppender);
             _partAppenders.TryAdd(typeof(AliasExpression), () => _aliasAppender);
+            _partAppenders.TryAdd(typeof(InExpression), () => _inAppender);
+            _partAppenders.TryAdd(typeof(LikeExpression), () => _likeAppender);
 
             _partAppenders.TryAdd(typeof(bool), () => _booleanAppender);
             _partAppenders.TryAdd(typeof(bool?), () => _nullableBooleanAppender);

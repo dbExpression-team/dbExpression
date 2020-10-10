@@ -86,9 +86,15 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
 
                 builder.Appender.Indent();
 
-                context.Field = (insertSet[i] as IAssignmentExpressionProvider).Assignee;
-                builder.AppendPart((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
-                context.Field = null;
+                context.PushField((insertSet[i] as IAssignmentExpressionProvider).Assignee);
+                try
+                {
+                    builder.AppendPart((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
+                }
+                finally
+                {
+                    context.PopField();
+                }
 
                 if (i < insertSet.Count - 1)
                     builder.Appender.Write(", ").LineBreak();

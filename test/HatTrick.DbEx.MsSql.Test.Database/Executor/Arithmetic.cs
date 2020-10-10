@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_arithmetic_with_no_order_of_precedence_succeed(int version, decimal expected = 1002.00m)
+        public void Does_arithmetic_with_no_order_of_precedence_succeed(int version, double expected = 1002.00)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -58,10 +58,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var exp = db.SelectOne(
                     dbo.Product.ListPrice * dbo.Product.Quantity + 3
                 ).From(dbo.Product)
-                .Where(dbo.Product.ListPrice == 9.99m);
+                .Where(dbo.Product.ListPrice == 9.99);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);

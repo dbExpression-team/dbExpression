@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ByteArrayFieldExpression<TEntity> : ByteArrayFieldExpression
-        where TEntity : IDbEntity,
+    public class ByteArrayFieldExpression<TEntity> : ByteArrayFieldExpression,
         IEquatable<ByteArrayFieldExpression<TEntity>>
+        where TEntity : IDbEntity
     {
         #region constructors
         public ByteArrayFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -22,11 +22,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => new ByteArrayFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 
-        #region in value set
-        public override FilterExpression<bool> In(params byte[][] value) => value is object ? new FilterExpression<bool>(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.In) : null;
-        public override FilterExpression<bool> In(IEnumerable<byte[]> value) => value is object ? new FilterExpression<bool>(new ByteExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<IEnumerable<byte[]>>(value)), FilterExpressionOperator.In) : null;
-        #endregion
-
         #region set
         public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
         public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(this, value);
@@ -34,6 +29,11 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region insert
         public override InsertExpression Insert(byte[] value) => new InsertExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
+        #endregion
+
+        #region in value set
+        public override FilterExpression<bool> In(params byte[][] value) => value is object ? new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new ByteArrayExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<byte[]> value) => value is object ? new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new ByteArrayExpressionMediator(new LiteralExpression<IEnumerable<byte[]>>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region order

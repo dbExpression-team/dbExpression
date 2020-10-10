@@ -187,7 +187,7 @@ namespace HatTrick.DbEx.Tools.Service
                     nm = isNullable ? "int?" : "int";
                     break;
                 case SqlDbType.Money:
-                    nm = isNullable ? "decimal?" : "decimal";
+                    nm = isNullable ? "double?" : "double";
                     break;
                 case SqlDbType.NChar:
                     nm = "string";
@@ -208,7 +208,7 @@ namespace HatTrick.DbEx.Tools.Service
                     nm = isNullable ? "Int16?" : "Int16";
                     break;
                 case SqlDbType.SmallMoney:
-                    nm = isNullable ? "decimal?" : "decimal";
+                    nm = isNullable ? "double?" : "double";
                     break;
                 case SqlDbType.Structured:
                     nm = "object";
@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.Tools.Service
                     nm = isNullable ? "NullableInt32FieldExpression" : "Int32FieldExpression";
                     break;
                 case SqlDbType.Money:
-                    nm = isNullable ? "NullableDecimalFieldExpression" : "DecimalFieldExpression";
+                    nm = isNullable ? "NullableDoubleFieldExpression" : "DoubleFieldExpression";
                     break;
                 case SqlDbType.NChar:
                     nm = "StringFieldExpression";
@@ -316,7 +316,7 @@ namespace HatTrick.DbEx.Tools.Service
                     nm = isNullable ? "NullableInt16FieldExpression" : "Int16FieldExpression";
                     break;
                 case SqlDbType.SmallMoney:
-                    nm = isNullable ? "NullableDecimalFieldExpression" : "DecimalFieldExpression";
+                    nm = isNullable ? "NullableDoubleFieldExpression" : "DoubleFieldExpression";
                     break;
                 case SqlDbType.Structured:
                     //nm = "object";

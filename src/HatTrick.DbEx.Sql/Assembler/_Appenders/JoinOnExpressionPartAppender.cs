@@ -12,11 +12,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         public override void AppendPart(JoinOnExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (expression.ExpressionOperator == FilterExpressionOperator.In)
-            {
-                throw new InvalidOperationException("Join on clause does not support in");
-            }
-
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
             try
             {

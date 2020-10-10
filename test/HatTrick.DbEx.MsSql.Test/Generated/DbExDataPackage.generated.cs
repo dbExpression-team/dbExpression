@@ -76,9 +76,15 @@ namespace DbEx.dboData
         public ProductCategoryType? ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal ListPrice { get; set; }
-        public decimal Price { get; set; }
+        public double ListPrice { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
+        public byte[] Image { get; set; }
+        public decimal? Height { get; set; }
+        public decimal? Width { get; set; }
+        public decimal? Depth { get; set; }
+        public decimal? Weight { get; set; }
+        public decimal ShippingWeight { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
@@ -141,7 +147,8 @@ namespace DbEx.dboData
     {
         #region interface
         public int Id { get; set; }
-        public decimal? TotalPurchases { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public int? TotalCount { get; set; }
         #endregion
 
         #region constructor

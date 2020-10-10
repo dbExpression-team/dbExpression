@@ -4,21 +4,19 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public enum FilterExpressionOperator
     {
-        [ExpressionOperator(" = ")]
-        Equal = 0,
-        [ExpressionOperator(" <> ")]
-        NotEqual = 1,
-        [ExpressionOperator(" < ")]
-        LessThan = 2,
-        [ExpressionOperator(" <= ")]
-        LessThanOrEqual = 3,
-        [ExpressionOperator(" > ")]
-        GreaterThan = 4,
-        [ExpressionOperator(" >= ")]
-        GreaterThanOrEqual = 5,
-        [ExpressionOperator(" LIKE ")]
-        Like = 6,
-        [ExpressionOperator(" IN ")]
-        In = 7
+        [ExpressionOperator("")]
+        None = 0,
+        [ExpressionOperator("=")]
+        Equal = 1,
+        [ExpressionOperator("<>")]
+        NotEqual = 2,
+        [ExpressionOperator("<")]
+        LessThan = 3,
+        [ExpressionOperator("<=")]
+        LessThanOrEqual = 4,
+        [ExpressionOperator(">")]
+        GreaterThan = 5,
+        [ExpressionOperator(">=")]
+        GreaterThanOrEqual = 6,
     }
 }

@@ -117,5 +117,26 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             recordsAffected.Should().Be(expectedRecordsAffected);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public void Can_update_product_image_to_the_same_as_another_product(int version)
+        {
+            //given
+            AppendImagesToProductsInDatabase();
+            ConfigureForMsSqlVersion(version);
+            var product1 = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute();
+
+            //when
+            db.Update(dbo.Product.Image.Set(product1.Image))
+               .From(dbo.Product)
+               .Where(dbo.Product.Id == 2)
+               .Execute();
+
+            //then
+            var product2Image = db.SelectOne(dbo.Product.Image).From(dbo.Product).Where(dbo.Product.Id == 2).Execute();
+            product2Image.Should().BeEquivalentTo(product1.Image);
+        }
     }
 }

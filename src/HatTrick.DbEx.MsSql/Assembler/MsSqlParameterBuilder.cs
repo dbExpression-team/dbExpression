@@ -50,12 +50,12 @@ namespace HatTrick.DbEx.MsSql.Assembler
         {
             var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType);
 
-            var existing = FindExistingParameter(value, typeof(T), typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
+            var existing = FindExistingParameter(value, typeMap.ClrType, typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
             if (existing is object)
                 return existing;
 
             var parameter = Create(value, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale);
-            var parameterized = new ParameterizedFieldExpression(typeof(T), parameter, field, meta);
+            var parameterized = new ParameterizedFieldExpression(typeMap.ClrType, parameter, field, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }

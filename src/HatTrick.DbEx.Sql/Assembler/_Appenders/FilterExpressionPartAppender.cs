@@ -5,7 +5,9 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class FilterExpressionPartAppender : PartAppender<FilterExpression>
+    public class FilterExpressionPartAppender : PartAppender<FilterExpression>, 
+        IAssemblyPartAppender<FilterExpression<bool>>,
+        IAssemblyPartAppender<FilterExpression<bool?>>
     {
         #region internals
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
@@ -78,25 +80,31 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write("NOT (");
             }
             builder.AppendPart(expression.LeftArg, context);
+
+            builder.Appender.Write(' ');
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-            context.Field = expression.LeftArg.Expression as FieldExpression;
-            if (expression.ExpressionOperator == FilterExpressionOperator.In)
-            {
-                builder.Appender.Write("(");
-                builder.AppendPart(expression.RightArg, context);
-                builder.Appender.Write(")");
-            }
-            else
+            builder.Appender.Write(' ');
+            context.PushField(expression.LeftArg.Expression as FieldExpression);
+            try
             {
                 builder.AppendPart(expression.RightArg, context);
             }
-            context.Field = null;
+            finally
+            {
+                context.PopField();
+            }
 
             if (expression.Negate)
             {
-                builder.Appender.Write(")");
+                builder.Appender.Write(')');
             }
         }
+
+        public void AppendPart(FilterExpression<bool> expression, ISqlStatementBuilder builder, AssemblyContext context)
+            => AppendPart(expression as FilterExpression, builder, context);
+
+        public void AppendPart(FilterExpression<bool?> expression, ISqlStatementBuilder builder, AssemblyContext context)
+            => AppendPart(expression as FilterExpression, builder, context);
         #endregion
     }
 }

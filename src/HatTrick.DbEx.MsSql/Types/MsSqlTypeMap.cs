@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Types
         {
             //reference: https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings
             new DbTypeMap<SqlDbType>(typeof(string), DbType.AnsiString, SqlDbType.VarChar),
-            new DbTypeMap<SqlDbType>(typeof(char), DbType.AnsiString, SqlDbType.Char),
+            new DbTypeMap<SqlDbType>(typeof(char), DbType.AnsiStringFixedLength, SqlDbType.Char),
             new DbTypeMap<SqlDbType>(typeof(char[]), DbType.AnsiString, SqlDbType.VarChar),
             new DbTypeMap<SqlDbType>(typeof(int), DbType.Int32, SqlDbType.Int),
             new DbTypeMap<SqlDbType>(typeof(decimal), DbType.Decimal, SqlDbType.Decimal),
@@ -46,6 +46,14 @@ namespace HatTrick.DbEx.MsSql.Types
             new DbTypeMap<SqlDbType>(typeof(sbyte?), DbType.Byte, SqlDbType.TinyInt),
             new DbTypeMap<SqlDbType>(typeof(uint?), DbType.Int32, SqlDbType.Int),
         };
+
+        private static readonly HashSet<DbTypeMap<SqlDbType>> platformTypeOverrides = new HashSet<DbTypeMap<SqlDbType>>()
+        {
+            new DbTypeMap<SqlDbType>(typeof(double), DbType.Currency, SqlDbType.Money), //disagrees with reference. Reference states DbType=Decimal, but using DbType=Currency
+            new DbTypeMap<SqlDbType>(typeof(double?), DbType.Currency, SqlDbType.Money), //disagrees with reference. Reference states DbType=Decimal, but using DbType=Currency
+            new DbTypeMap<SqlDbType>(typeof(string), DbType.String, SqlDbType.NVarChar),
+            new DbTypeMap<SqlDbType>(typeof(string), DbType.StringFixedLength, SqlDbType.NChar)
+       };
         #endregion
 
         #region methods
@@ -53,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Types
             => typeMaps.FirstOrDefault(x => x.DbType == dbType);
 
         public override DbTypeMap<SqlDbType> FindByPlatformType(SqlDbType dbType)
-            => typeMaps.FirstOrDefault(x => x.PlatformType == dbType);
+            => platformTypeOverrides.FirstOrDefault(x => x.PlatformType == dbType) ?? typeMaps.FirstOrDefault(x => x.PlatformType == dbType);
 
         public override DbTypeMap<SqlDbType> FindByClrType(Type clrType)
         {

@@ -6,8 +6,8 @@ namespace {Namespace}
     public partial class Nullable{Type.Name}FieldExpression
     {{
         #region in value set
-        public override FilterExpression<bool> In(params {Type.Alias}[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new Nullable{Type.Name}ExpressionMediator(new LiteralExpression<{Type.Alias}[]>(value)), FilterExpressionOperator.In) : null;
-        public override FilterExpression<bool> In(IEnumerable<{Type.Alias}> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new Nullable{Type.Name}ExpressionMediator(new LiteralExpression<IEnumerable<{Type.Alias}>>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params {Type.Alias}[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new Nullable{Type.Name}ExpressionMediator(new InExpression<{Type.Alias}>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<{Type.Alias}> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new Nullable{Type.Name}ExpressionMediator(new InExpression<{Type.Alias}>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region isnull

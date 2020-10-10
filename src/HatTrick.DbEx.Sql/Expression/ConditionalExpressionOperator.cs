@@ -4,9 +4,9 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public enum ConditionalExpressionOperator
     {
-        [ExpressionOperator(" AND ")]
+        [ExpressionOperator("AND")]
         And = 0,
-        [ExpressionOperator(" OR ")]
+        [ExpressionOperator("OR")]
         Or = 1
     }
 }

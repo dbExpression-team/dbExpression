@@ -2,6 +2,7 @@
 using HatTrick.DbEx.Sql.Attribute;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -18,26 +19,50 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression is null || (expression.LeftArg is null && expression.RightArg is null))
                 return;
 
-            builder.Appender.Write("(");
-            if (expression.Negate)
+            var thisIsTheRootFilterExperssionSet = context.GetState<ThisIsTheRootFilterExpressionSet>() is null;
+            if (thisIsTheRootFilterExperssionSet)
             {
-                builder.Appender.Write("NOT (");
+                context.SetState(new ThisIsTheRootFilterExpressionSet());
             }
-            if (expression.LeftArg is object)
+
+            try
             {
-                builder.AppendPart(expression.LeftArg, context);
+                var hasSet = expression.LeftArg is FilterExpressionSet || expression.RightArg is FilterExpressionSet;
+                void conditionallyAppend(bool condition, Action<IAppender> appendAction) { if (condition) appendAction(builder.Appender); }
+
+                conditionallyAppend(thisIsTheRootFilterExperssionSet, a => a.Indent());
+
+                conditionallyAppend(expression.Negate, a => a.Write("NOT "));
+                builder.Appender.Write('(');
+
+                if (expression.LeftArg is object)
+                {
+                    conditionallyAppend(hasSet, a => a.LineBreak().Indentation++.Indent());
+                    builder.AppendPart(expression.LeftArg, context);
+                    conditionallyAppend(hasSet, a => a.LineBreak());
+                }
+                if (expression.RightArg is object)
+                {
+                    conditionallyAppend(hasSet, a => a.Indent());
+                    conditionallyAppend(!hasSet, a => a.Write(' '));
+                    builder.Appender.Write(ConditionalOperatorMap[expression.ConditionalOperator]);
+                    conditionallyAppend(!hasSet, a => a.Write(' '));
+                    conditionallyAppend(hasSet, a => a.LineBreak().Indent());
+                    builder.AppendPart(expression.RightArg, context);
+                    conditionallyAppend(hasSet, a => a.Indentation--);
+                }
+
+                conditionallyAppend(hasSet, a => a.LineBreak().Indent());
+                builder.Appender.Write(')');
             }
-            if (expression.RightArg is object)
+            finally
             {
-                builder.Appender.Write(ConditionalOperatorMap[expression.ConditionalOperator]);
-                builder.AppendPart(expression.RightArg, context);
+                if (thisIsTheRootFilterExperssionSet)
+                    context.RemoveState<ThisIsTheRootFilterExpressionSet>();
             }
-            if (expression.Negate)
-            {
-                builder.Appender.Write(")");
-            }
-            builder.Appender.Write(")");
-        }      
+        }
         #endregion
+
+        private class ThisIsTheRootFilterExpressionSet { }
     }
 }

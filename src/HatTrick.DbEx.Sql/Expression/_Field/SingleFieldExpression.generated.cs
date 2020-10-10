@@ -6,8 +6,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params float[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<float[]>(value)), FilterExpressionOperator.In) : null;
-        public override FilterExpression<bool> In(IEnumerable<float> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new SingleExpressionMediator(new LiteralExpression<IEnumerable<float>>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params float[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new SingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<float> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new SingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region set

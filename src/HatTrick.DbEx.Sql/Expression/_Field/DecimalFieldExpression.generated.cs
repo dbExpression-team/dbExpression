@@ -6,8 +6,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params decimal[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DecimalExpressionMediator(new LiteralExpression<decimal[]>(value)), FilterExpressionOperator.In) : null;
-        public override FilterExpression<bool> In(IEnumerable<decimal> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DecimalExpressionMediator(new LiteralExpression<IEnumerable<decimal>>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params decimal[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DecimalExpressionMediator(new InExpression<decimal>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<decimal> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new DecimalExpressionMediator(new InExpression<decimal>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region set

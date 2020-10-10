@@ -40,9 +40,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     if (identity is object && (insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee == identity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                    context.Field = (insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee;
-                    builder.AppendPart((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignment, context);
-                    context.Field = null;
+                    context.PushField((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee);
+                    try
+                    {
+                        builder.AppendPart((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignment, context);
+                    }
+                    finally
+                    {
+                        context.PopField();
+                    }
                     builder.Appender.Write(", ");
                     if (j == insert.Value.Expressions.Count - 1)
                         builder.Appender.Write(i.ToString());
@@ -117,8 +123,16 @@ namespace HatTrick.DbEx.MsSql.Assembler
                         .Write(insertValuesName)
                         .Write(context.Configuration.IdentifierDelimiter.End)
                         .Write(".");
-                    builder.AppendPart((template.Expressions[i] as IAssignmentExpressionProvider).Assignee, context);
-                    context.Field = null;
+
+                    context.PushField((template.Expressions[i] as IAssignmentExpressionProvider).Assignee);
+                    try
+                    {
+                        builder.AppendPart((template.Expressions[i] as IAssignmentExpressionProvider).Assignee, context);
+                    }
+                    finally
+                    {
+                        context.PopField();
+                    }
                     if (i < template.Expressions.Count - 1)
                         builder.Appender.Write(", ");
                     builder.Appender.LineBreak();
