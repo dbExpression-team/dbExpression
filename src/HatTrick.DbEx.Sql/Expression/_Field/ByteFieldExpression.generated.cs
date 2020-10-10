@@ -6,8 +6,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params byte[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<byte[]>(value)), FilterExpressionOperator.In) : null;
-        public override FilterExpression<bool> In(IEnumerable<byte> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new ByteExpressionMediator(new LiteralExpression<IEnumerable<byte>>(value)), FilterExpressionOperator.In) : null;
+        public override FilterExpression<bool> In(params byte[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new ByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<byte> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new ByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region set

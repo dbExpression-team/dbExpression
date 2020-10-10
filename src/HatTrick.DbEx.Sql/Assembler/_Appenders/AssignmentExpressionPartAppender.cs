@@ -6,9 +6,20 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendPart(AssignmentExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.AppendPart((expression as IAssignmentExpressionProvider).Assignee, context);
+            var field = (expression as IAssignmentExpressionProvider).Assignee;
+
+            builder.AppendPart(field, context);
             builder.Appender.Write(" = ");
-            builder.AppendPart((expression as IAssignmentExpressionProvider).Assignment, context);
+
+            context.PushField(field);
+            try
+            {
+                builder.AppendPart((expression as IAssignmentExpressionProvider).Assignment, context);
+            }
+            finally
+            {
+                context.PopField();
+            }
         }
     }
 }

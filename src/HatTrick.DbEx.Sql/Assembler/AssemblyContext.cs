@@ -1,7 +1,9 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -10,11 +12,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region internals
         private readonly Stack<FieldExpressionAppendStyle> fieldStyles = new Stack<FieldExpressionAppendStyle>();
         private readonly Stack<EntityExpressionAppendStyle> entityStyles = new Stack<EntityExpressionAppendStyle>();
+        private readonly Stack<FieldExpression> fields = new Stack<FieldExpression>();
+        private readonly IDictionary<Type,object> state = new ConcurrentDictionary<Type,object>();
         #endregion
 
         #region interface
         public SqlStatementAssemblerConfiguration Configuration { get; set; } = new SqlStatementAssemblerConfiguration();
-        public FieldExpression Field { get; set; }
+        public FieldExpression Field => fields.FirstOrDefault(f => f is object);
         public FieldExpressionAppendStyle FieldExpressionAppendStyle { get; private set; }
         public EntityExpressionAppendStyle EntityExpressionAppendStyle { get; private set; }
         #endregion
@@ -44,20 +48,37 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void PushAppendStyle(EntityExpressionAppendStyle entityAppendStyle)
             => PushAppendStyles(entityAppendStyle, FieldExpressionAppendStyle);
 
+        public void PushField(FieldExpression field)
+            => fields.Push(field);
+
         public void PopAppendStyles()
         {
-            PopEntity();
-            PopField();
-        }        
-
-        private void PopField()
-        {
-            FieldExpressionAppendStyle = fieldStyles.Pop();
+            entityStyles.Pop();
+            fieldStyles.Pop();
         }
 
-        private void PopEntity()
+        public void PopField()
+            => fields.Pop();
+
+        public void SetState<T>(T state)
+            where T : class
+            => this.state.Add(typeof(T), state);
+
+        public T GetState<T>()
+            where T : class
         {
-            EntityExpressionAppendStyle = entityStyles.Pop();
+            if (state.TryGetValue(typeof(T), out var s))
+                return s as T;
+            return default;
+        }
+
+        public T RemoveState<T>()
+            where T : class
+        {
+            var existing = GetState<T>();
+            if (existing is object)
+                state.Remove(typeof(T));
+            return existing;
         }
         #endregion
     }

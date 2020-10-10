@@ -7,7 +7,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    [Trait("Function", "COALESECE")]
+    [Trait("Function", "COALESCE")]
     [Trait("Function", "VAR")]
     public partial class CoalesceAndVariance : ExecutorTestBase
     {

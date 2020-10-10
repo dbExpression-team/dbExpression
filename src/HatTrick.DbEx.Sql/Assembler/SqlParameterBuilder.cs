@@ -35,8 +35,18 @@ namespace HatTrick.DbEx.Sql.Assembler
                     continue;
 
                 if (parameter.Parameter.DbType != dbType)
-                    continue;                
-                
+                    continue;
+
+                if (value == null || value is DBNull)
+                {
+                    if (parameter.Parameter.Value == DBNull.Value)
+                        return parameter; //both null/DBNull, parameters are equivalent
+                    continue;
+                }
+
+                if (parameter.Parameter.Value is DBNull)
+                    continue;  //parameter is null but value isn't, continue before type conversion (DBNull will fail type conversion)
+
                 if (!Convert.ChangeType(parameter.Parameter.Value, parameter.DeclaredType).Equals(Convert.ChangeType(value, declaredType)))
                     continue;
 

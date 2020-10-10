@@ -14,5 +14,11 @@ namespace HatTrick.DbEx.MsSql.Test.Executor
             var seeder = new Seeder(ConfigurationProvider.ConnectionString);
             seeder.RunScript("data.sql");
         }
+
+        public void AppendImagesToProductsInDatabase()
+        {
+            var seeder = new Seeder(ConfigurationProvider.ConnectionString);
+            seeder.RunScript("images.sql");
+        }
     }
 }

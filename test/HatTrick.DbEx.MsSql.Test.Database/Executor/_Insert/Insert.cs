@@ -201,5 +201,46 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when & then
             execute.Should().Throw<DbExpressionException>().And.Message.Should().Be("MsSql version 2005 does not support inserting multiple records in a single statement.");
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_a_product_be_inserted_successfully(int version, double expected = 2.99)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.Insert(
+                new Product
+                {
+                    Id = -1,
+                    ProductCategoryType = ProductCategoryType.ToysAndGames,
+                    Name = "Yo-Yo",
+                    ListPrice = expected,
+                    Price = 2.75,
+                    Quantity = 100,
+                    ShippingWeight = .5m,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow
+                })
+                .Into(dbo.Product);
+
+            //when               
+            exp.Execute();
+
+            //then
+            var t1 = dbo.Product.As("p");
+            var product = db.SelectOne<Product>()
+                .From(t1)
+                .InnerJoin(
+                    db.SelectMany(
+                        db.fx.Max(dbo.Product.Id).As("identity")
+                    )
+                    .From(dbo.Product)
+                ).As("last_insert").On(t1.Id == dbo.Product.As("last_insert").Id.As("identity"))
+                .Execute();
+
+            product.Should().NotBeNull();
+            product.ListPrice.Should().Be(expected);
+        }
     }
 }

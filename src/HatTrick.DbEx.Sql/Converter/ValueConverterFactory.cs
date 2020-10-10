@@ -10,6 +10,8 @@ namespace HatTrick.DbEx.Sql.Converter
         #region internals
         private static readonly IValueConverter boolConverter = new ValueConverter(typeof(bool));
         private static readonly IValueConverter nullableBoolConverter = new NullableValueConverter(typeof(bool?));
+        private static readonly IValueConverter byteConverter = new ValueConverter(typeof(byte));
+        private static readonly IValueConverter nullableByteConverter = new NullableValueConverter(typeof(byte?));
         private static readonly IValueConverter shortConverter = new ValueConverter(typeof(short));
         private static readonly IValueConverter nullableShortConverter = new NullableValueConverter(typeof(short?));
         private static readonly IValueConverter intConverter = new ValueConverter(typeof(int));
@@ -42,6 +44,8 @@ namespace HatTrick.DbEx.Sql.Converter
         {
             _valueConverters.TryAdd(typeof(bool), () => boolConverter);
             _valueConverters.TryAdd(typeof(bool?), () => nullableBoolConverter);
+            _valueConverters.TryAdd(typeof(byte), () => byteConverter);
+            _valueConverters.TryAdd(typeof(byte?), () => nullableByteConverter);
             _valueConverters.TryAdd(typeof(short), () => shortConverter);
             _valueConverters.TryAdd(typeof(short?), () => nullableShortConverter);
             _valueConverters.TryAdd(typeof(int), () => intConverter);

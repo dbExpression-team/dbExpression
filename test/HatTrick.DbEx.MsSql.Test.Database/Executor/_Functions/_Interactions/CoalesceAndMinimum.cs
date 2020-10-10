@@ -8,7 +8,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    [Trait("Function", "COALESECE")]
+    [Trait("Function", "COALESCE")]
     [Trait("Function", "MIN")]
     public partial class CoalesceAndMinimum : ExecutorTestBase
     {

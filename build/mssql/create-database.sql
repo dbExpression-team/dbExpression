@@ -122,38 +122,38 @@ ALTER DATABASE [MsSqlDbExTest] SET  READ_WRITE
 GO
 
 CREATE TABLE [dbo].[Address](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[AddressType] [int] NULL,
-	[Line1] [varchar](50) NOT NULL,
-	[Line2] [varchar](50) NULL,
-	[City] [varchar](60) NOT NULL,
-	[State] [char](2) NOT NULL,
-	[Zip] [varchar](10) NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[AddressType] INT NULL,
+	[Line1] VARCHAR(50) NOT NULL,
+	[Line2] VARCHAR(50) NULL,
+	[City] VARCHAR(60) NOT NULL,
+	[State] CHAR(2) NOT NULL,
+	[Zip] VARCHAR(10) NOT NULL,
+	[DateCreated] DATETIME NOT NULL,
+	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED ([Id])
 )
 GO
 
 CREATE TABLE [dbo].[Person](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[FirstName] [varchar](20) NOT NULL,
-	[LastName] [varchar](20) NOT NULL,
-	[BirthDate] [datetime] NULL,
-	[GenderType] [int] NOT NULL,
-	[CreditLimit] [int] NULL,
-	[YearOfLastCreditLimitReview] [int] NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[FirstName] VARCHAR(20) NOT NULL,
+	[LastName] VARCHAR(20) NOT NULL,
+	[BirthDate] DATETIME NULL,
+	[GenderType] INT NOT NULL,
+	[CreditLimit] INT NULL,
+	[YearOfLastCreditLimitReview] INT NULL,
+	[DateCreated] DATETIME NOT NULL,
+	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([Id]) 
 )
 GO
 
 CREATE TABLE [dbo].[Person_Address](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PersonId] [int] NOT NULL,
-	[AddressId] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[PersonId] INT NOT NULL,
+	[AddressId] INT NOT NULL,
+	[DateCreated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Person_Address] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_Person_Address_Address] FOREIGN KEY([AddressId]) REFERENCES [dbo].[Address] ([Id]),
 	CONSTRAINT [FK_Person_Address_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
@@ -161,43 +161,49 @@ CREATE TABLE [dbo].[Person_Address](
 GO
 
 CREATE TABLE [dbo].[Product](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[ProductCategoryType] [int] NULL,
-	[Name] [varchar](80) NOT NULL,
-	[Description] [varchar](2000) NULL,
-	[ListPrice] [decimal](12, 2) NOT NULL,
-	[Price] [decimal](12, 2) NOT NULL,
-	[Quantity] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[ProductCategoryType] INT NULL,
+	[Name] VARCHAR(80) NOT NULL,
+	[Description] NVARCHAR(2000) NULL,
+	[ListPrice] MONEY NOT NULL,
+	[Price] MONEY NOT NULL,
+	[Quantity] INT NOT NULL,
+	[Image] VARBINARY(MAX) NULL,
+	[Height] DECIMAL(4, 1) NULL,
+	[Width] DECIMAL(4, 1) NULL,
+	[Depth] DECIMAL(4, 1) NULL,
+	[Weight] DECIMAL(4, 1) NULL,
+	[ShippingWeight] DECIMAL(4, 1) NOT NULL,
+	[DateCreated] DATETIME NOT NULL,
+	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([Id]) 
 )
 GO
 
 CREATE TABLE [dbo].[Purchase](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PersonId] [int] NOT NULL,
-	[TotalPurchaseAmount] [decimal](12, 2) NOT NULL,
-	[PurchaseDate] [datetime] NOT NULL,
-	[ShipDate] [datetime] NULL,
-	[ExpectedDeliveryDate] [datetime] NULL,
-	[TrackingIdentifier] [uniqueidentifier] NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[PersonId] INT NOT NULL,
+	[TotalPurchaseAmount] MONEY NOT NULL,
+	[PurchaseDate] DATETIME NOT NULL,
+	[ShipDate] DATETIME NULL,
+	[ExpectedDeliveryDate] DATETIME NULL,
+	[TrackingIdentifier] UNIQUEIDENTIFIER NULL,
 	[PaymentMethodType] VARCHAR(20) NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[DateCreated] DATETIME NOT NULL,
+	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_Purchase_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
 )
 GO
 
 CREATE TABLE [dbo].[PurchaseLine](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[PurchaseId] [int] NOT NULL,
-	[ProductId] [int] NOT NULL,
-	[PurchasePrice] [decimal](12, 2) NOT NULL,
-	[Quantity] [int] NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[PurchaseId] INT NOT NULL,
+	[ProductId] INT NOT NULL,
+	[PurchasePrice] DECIMAL(12, 2) NOT NULL,
+	[Quantity] INT NOT NULL,
+	[DateCreated] DATETIME NOT NULL,
+	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_PurchaseLine] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_PurchaseLine_Purchase] FOREIGN KEY([PurchaseId]) REFERENCES [dbo].[Purchase] ([Id]),
 	CONSTRAINT [FK_PurchaseLine_Product] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Product] ([Id])
@@ -208,10 +214,10 @@ CREATE SCHEMA [sec]
 GO
 
 CREATE TABLE [sec].[Person](
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[SSN] [char](9) NOT NULL,
-	[DateCreated] [datetime] NOT NULL,
-	[DateUpdated] [datetime] NOT NULL,
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[SSN] CHAR(9) NOT NULL,
+	[DateCreated] DATETIMEOFFSET NOT NULL,
+	[DateUpdated] DATETIMEOFFSET NOT NULL,
 	CONSTRAINT [PK_secPerson] PRIMARY KEY CLUSTERED ([Id])
 )
 GO
@@ -220,7 +226,8 @@ CREATE VIEW [dbo].[PersonTotalPurchasesView]
 AS
 SELECT        
 	[dbo].[Person].[Id], 
-	SUM([dbo].[Purchase].[TotalPurchaseAmount]) AS TotalPurchases
+	SUM([dbo].[Purchase].[TotalPurchaseAmount]) AS [TotalAmount],
+	COUNT([dbo].[Purchase].[Id]) AS [TotalCount]
 FROM            
 	[dbo].[Person] 
 	INNER JOIN [dbo].[Purchase] ON [dbo].[Purchase].[PersonId] = [dbo].[Person].[Id]

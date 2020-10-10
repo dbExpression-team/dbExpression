@@ -40,6 +40,9 @@ namespace DbEx.DataService
         public static IFromExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>, IValueContinuationExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>>> SelectOne(NullableByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte?>(config, field);
 
+        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(ByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
+
         public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<short>(config, field);
 
@@ -118,6 +121,9 @@ namespace DbEx.DataService
 
         public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte>(config, field);
+
+        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(ByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
         public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
@@ -221,6 +227,8 @@ namespace DbEx.DataService
         {
             return config.ConnectionFactory.CreateSqlConnection();
         }
+        #pragma warning disable IDE1006 // Naming Styles
+        #pragma warning restore IDE1006 // Naming Styles
         #endregion
 
         #region fx
@@ -595,9 +603,15 @@ namespace DbEx.dboDataService
         public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
         public StringFieldExpression<Product> Name { get; private set; }
         public StringFieldExpression<Product> Description { get; private set; }
-        public DecimalFieldExpression<Product> ListPrice { get; private set; }
-        public DecimalFieldExpression<Product> Price { get; private set; }
+        public DoubleFieldExpression<Product> ListPrice { get; private set; }
+        public DoubleFieldExpression<Product> Price { get; private set; }
         public Int32FieldExpression<Product> Quantity { get; private set; }
+        public ByteArrayFieldExpression<Product> Image { get; private set; }
+        public NullableDecimalFieldExpression<Product> Height { get; private set; }
+        public NullableDecimalFieldExpression<Product> Width { get; private set; }
+        public NullableDecimalFieldExpression<Product> Depth { get; private set; }
+        public NullableDecimalFieldExpression<Product> Weight { get; private set; }
+        public DecimalFieldExpression<Product> ShippingWeight { get; private set; }
         public DateTimeFieldExpression<Product> DateCreated { get; private set; }
         public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
         #endregion
@@ -617,9 +631,15 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, ProductCategoryType>($"{identifier}.ProductCategoryType", this));
             Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
             Fields.Add($"{identifier}.Description", Description = new StringFieldExpression<Product>($"{identifier}.Description", this));
-            Fields.Add($"{identifier}.ListPrice", ListPrice = new DecimalFieldExpression<Product>($"{identifier}.ListPrice", this));
-            Fields.Add($"{identifier}.Price", Price = new DecimalFieldExpression<Product>($"{identifier}.Price", this));
+            Fields.Add($"{identifier}.ListPrice", ListPrice = new DoubleFieldExpression<Product>($"{identifier}.ListPrice", this));
+            Fields.Add($"{identifier}.Price", Price = new DoubleFieldExpression<Product>($"{identifier}.Price", this));
             Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<Product>($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.Image", Image = new ByteArrayFieldExpression<Product>($"{identifier}.Image", this));
+            Fields.Add($"{identifier}.Height", Height = new NullableDecimalFieldExpression<Product>($"{identifier}.Height", this));
+            Fields.Add($"{identifier}.Width", Width = new NullableDecimalFieldExpression<Product>($"{identifier}.Width", this));
+            Fields.Add($"{identifier}.Depth", Depth = new NullableDecimalFieldExpression<Product>($"{identifier}.Depth", this));
+            Fields.Add($"{identifier}.Weight", Weight = new NullableDecimalFieldExpression<Product>($"{identifier}.Weight", this));
+            Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new DecimalFieldExpression<Product>($"{identifier}.ShippingWeight", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Product>($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Product>($"{identifier}.DateUpdated", this));
         }
@@ -641,6 +661,12 @@ namespace DbEx.dboDataService
                 ListPrice,
                 Price,
                 Quantity,
+                Image,
+                Height,
+                Width,
+                Depth,
+                Weight,
+                ShippingWeight,
                 DateCreated,
                 DateUpdated
             );
@@ -657,6 +683,12 @@ namespace DbEx.dboDataService
                 ListPrice.Insert(product.ListPrice),
                 Price.Insert(product.Price),
                 Quantity.Insert(product.Quantity),
+                Image.Insert(product.Image),
+                Height.Insert(product.Height),
+                Width.Insert(product.Width),
+                Depth.Insert(product.Depth),
+                Weight.Insert(product.Weight),
+                ShippingWeight.Insert(product.ShippingWeight),
                 DateCreated.Insert(product.DateCreated),
                 DateUpdated.Insert(product.DateUpdated)
             );
@@ -672,6 +704,12 @@ namespace DbEx.dboDataService
 			if (from.ListPrice != to.ListPrice) { expr &= ListPrice.Set(to.ListPrice); }; 
 			if (from.Price != to.Price) { expr &= Price.Set(to.Price); }; 
 			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity); }; 
+			if (from.Image != to.Image) { expr &= Image.Set(to.Image); }; 
+			if (from.Height != to.Height) { expr &= Height.Set(to.Height); }; 
+			if (from.Width != to.Width) { expr &= Width.Set(to.Width); }; 
+			if (from.Depth != to.Depth) { expr &= Depth.Set(to.Depth); }; 
+			if (from.Weight != to.Weight) { expr &= Weight.Set(to.Weight); }; 
+			if (from.ShippingWeight != to.ShippingWeight) { expr &= ShippingWeight.Set(to.ShippingWeight); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
@@ -684,9 +722,15 @@ namespace DbEx.dboDataService
 			product.ProductCategoryType = reader.ReadField().GetValue<ProductCategoryType?>();
 			product.Name = reader.ReadField().GetValue<string>();
 			product.Description = reader.ReadField().GetValue<string>();
-			product.ListPrice = reader.ReadField().GetValue<decimal>();
-			product.Price = reader.ReadField().GetValue<decimal>();
+			product.ListPrice = reader.ReadField().GetValue<double>();
+			product.Price = reader.ReadField().GetValue<double>();
 			product.Quantity = reader.ReadField().GetValue<int>();
+			product.Image = reader.ReadField().GetValue<byte[]>();
+			product.Height = reader.ReadField().GetValue<decimal?>();
+			product.Width = reader.ReadField().GetValue<decimal?>();
+			product.Depth = reader.ReadField().GetValue<decimal?>();
+			product.Weight = reader.ReadField().GetValue<decimal?>();
+			product.ShippingWeight = reader.ReadField().GetValue<decimal>();
 			product.DateCreated = reader.ReadField().GetValue<DateTime>();
 			product.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
@@ -907,7 +951,8 @@ namespace DbEx.dboDataService
     {
         #region interface properties
         public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
-        public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalPurchases { get; private set; }
+        public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalAmount { get; private set; }
+        public NullableInt32FieldExpression<PersonTotalPurchasesView> TotalCount { get; private set; }
         #endregion
 
         #region constructors
@@ -922,7 +967,8 @@ namespace DbEx.dboDataService
         private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonTotalPurchasesView>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.TotalPurchases", TotalPurchases = new NullableDecimalFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalPurchases", this));
+            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new NullableDecimalFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalAmount", this));
+            Fields.Add($"{identifier}.TotalCount", TotalCount = new NullableInt32FieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalCount", this));
         }
         #endregion
 
@@ -936,7 +982,8 @@ namespace DbEx.dboDataService
         {
             return new SelectExpressionSet(
                 Id,
-                TotalPurchases
+                TotalAmount,
+                TotalCount
             );
         }
 		
@@ -945,7 +992,8 @@ namespace DbEx.dboDataService
             return new InsertExpressionSet<PersonTotalPurchasesView>(
 				personTotalPurchasesView,
                 Id.Insert(personTotalPurchasesView.Id),
-                TotalPurchases.Insert(personTotalPurchasesView.TotalPurchases)
+                TotalAmount.Insert(personTotalPurchasesView.TotalAmount),
+                TotalCount.Insert(personTotalPurchasesView.TotalCount)
             );
         }
 
@@ -954,7 +1002,8 @@ namespace DbEx.dboDataService
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
 			if (from.Id != to.Id) { expr &= Id.Set(to.Id); }; 
-			if (from.TotalPurchases != to.TotalPurchases) { expr &= TotalPurchases.Set(to.TotalPurchases); }; 
+			if (from.TotalAmount != to.TotalAmount) { expr &= TotalAmount.Set(to.TotalAmount); }; 
+			if (from.TotalCount != to.TotalCount) { expr &= TotalCount.Set(to.TotalCount); }; 
 			
             return expr;
         }
@@ -962,7 +1011,8 @@ namespace DbEx.dboDataService
         protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, ISqlFieldReader reader)
         {
 			personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
-			personTotalPurchasesView.TotalPurchases = reader.ReadField().GetValue<decimal?>();
+			personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<decimal?>();
+			personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
     }

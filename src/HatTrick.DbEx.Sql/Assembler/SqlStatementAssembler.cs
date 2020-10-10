@@ -27,7 +27,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
                 return;
 
-            builder.Appender.Indent().Write("WHERE").LineBreak()
+            builder.Appender.Indent().Write("WHERE")
+                .LineBreak()
                 .Indentation++;
 
             builder.AppendPart(expression.Where, context);
