@@ -61,8 +61,8 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
-                .Which.Expression.Should().BeOfType<DateTimeExpressionMediator>()
-                .Which.Expression.Should().BeOfType<DateTimeFieldExpression<Person>>();
+                .Which.Expression.Should().BeOfType<DateTimeOffsetExpressionMediator>()
+                .Which.Expression.Should().BeOfType<DateTimeOffsetFieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
                 .And.BeAssignableTo<EntityExpression<Person>>()

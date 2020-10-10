@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_maximum_total_purchase_amount_succeed(int version, decimal expected = 55.96M)
+        public void Does_selecting_maximum_total_purchase_amount_succeed(int version, double expected = 55.96)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(int version, decimal expected = 55.96m)
+        public void Does_selecting_maximum_distinct_total_purchase_amount_succeed(int version, double expected = 55.96)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_ascending_succeed(int version, decimal expected = 55.96m)
+        public void Can_order_by_maximum_of_total_purchase_amount_ascending_succeed(int version, double expected = 55.96)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Max(dbo.Purchase.TotalPurchaseAmount));
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -70,7 +70,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_descending_succeed(int version, decimal expected = 55.96m)
+        public void Can_order_by_maximum_of_total_purchase_amount_descending_succeed(int version, double expected = 55.96)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Max(dbo.Purchase.TotalPurchaseAmount).Desc);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, decimal expected = 55.96m)
+        public void Can_order_by_maximum_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 55.96)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Max(dbo.Purchase.TotalPurchaseAmount));
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_maximum_of_total_purchase_amount_descending_and_aliasing_succeed(int version, decimal expected = 55.96m)
+        public void Can_order_by_maximum_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 55.96)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -121,7 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Max(dbo.Purchase.TotalPurchaseAmount).Desc);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);

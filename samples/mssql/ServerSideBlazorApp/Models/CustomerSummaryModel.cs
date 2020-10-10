@@ -6,7 +6,7 @@ namespace ServerSideBlazorApp.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal LifetimeValue { get; set; }
+        public double LifetimeValue { get; set; }
         public short? CurrentAge { get; set; }
     }
 }

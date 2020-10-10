@@ -283,7 +283,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_arithmetic_order_of_precedence_succeed(int version, decimal expected = 36m)
+        public void Does_arithmetic_order_of_precedence_succeed(int version, double expected = 36)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -291,10 +291,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var exp = db.SelectOne(
                     (dbo.Purchase.TotalPurchaseAmount + 2) * 3
                 ).From(dbo.Purchase)
-                .Where(dbo.Purchase.TotalPurchaseAmount == 10m);
+                .Where(dbo.Purchase.TotalPurchaseAmount == 10);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);

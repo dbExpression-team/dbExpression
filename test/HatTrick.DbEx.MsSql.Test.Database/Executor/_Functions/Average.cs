@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_averaging_total_purchase_amount_succeed(int version, decimal expected = 20.543m)
+        public void Does_averaging_total_purchase_amount_succeed(int version, double expected = 20.543)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -23,15 +23,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_averaging_distinct_total_purchase_amount_succeed(int version, decimal expected = 21.367m)
+        public void Does_averaging_distinct_total_purchase_amount_succeed(int version, double expected = 21.367)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -41,16 +41,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_average_of_total_purchase_amount_ascending_succeed(int version, decimal expected = 21.367m)
+        public void Can_order_by_average_of_total_purchase_amount_ascending_succeed(int version, double expected = 21.367)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -61,16 +61,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true));
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_average_of_total_purchase_amount_descending_succeed(int version, decimal expected = 21.367m)
+        public void Can_order_by_average_of_total_purchase_amount_descending_succeed(int version, double expected = 21.367)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -81,16 +81,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).Desc);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_average_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, decimal expected = 21.367m)
+        public void Can_order_by_average_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 21.367)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -101,16 +101,16 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true));
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_average_of_total_purchase_amount_descending_and_aliasing_succeed(int version, decimal expected = 21.367m)
+        public void Can_order_by_average_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 21.367)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -121,15 +121,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).Desc);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_average_of_total_purchase_amount_added_to_static_value_succeed(int version, decimal expected = 21.543m)
+        public void Does_average_of_total_purchase_amount_added_to_static_value_succeed(int version, double expected = 21.543)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -139,10 +139,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
@@ -165,7 +165,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_average_of_total_purchase_amount_minus_static_value_succeed(int version, decimal expected = 19.543m)
+        public void Does_average_of_total_purchase_amount_minus_static_value_succeed(int version, double expected = 19.543)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -175,10 +175,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
@@ -201,7 +201,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_average_of_total_purchase_amount_multiplied_by_static_value_succeed(int version, decimal expected = 20.543333m)
+        public void Does_average_of_total_purchase_amount_multiplied_by_static_value_succeed(int version, double expected = 20.543333)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -211,10 +211,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
@@ -237,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_average_of_total_purchase_amount_divided_by_static_value_succeed(int version, decimal expected = 20.543333m)
+        public void Does_average_of_total_purchase_amount_divided_by_static_value_succeed(int version, double expected = 20.543333)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -247,10 +247,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]
@@ -273,7 +273,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_average_of_total_purchase_amount_modulus_of_static_value_succeed(int version, decimal expected = 0.543333m)
+        public void Does_average_of_total_purchase_amount_modulus_of_static_value_succeed(int version, double expected = 0.543333)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -283,10 +283,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal average = exp.Execute();
+            double average = exp.Execute();
 
             //then
-            average.Should().BeApproximately(expected, 0.001M, "Rounding errors in averaging");
+            average.Should().BeApproximately(expected, 0.001, "Rounding errors in averaging");
         }
 
         [Theory]

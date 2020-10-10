@@ -41,7 +41,7 @@ namespace ServerSideBlazorApp.Service
                 db.SelectMany(
                     dbo.Person.Id,
                     (dbo.Person.FirstName + " " + dbo.Person.LastName).As("Name"),
-                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0m).As("LifetimeValue"),
+                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
                     db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Person.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge")
                 )
                 .From(dbo.Person)
@@ -56,7 +56,7 @@ namespace ServerSideBlazorApp.Service
                     {
                         Id = row.ReadField().GetValue<int>(),
                         Name = row.ReadField().GetValue<string>(),
-                        LifetimeValue = row.ReadField().GetValue<decimal?>() ?? 0,
+                        LifetimeValue = row.ReadField().GetValue<double>(),
                         CurrentAge = row.ReadField().GetValue<short?>()
                     }
                 );

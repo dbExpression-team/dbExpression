@@ -203,7 +203,7 @@ namespace ServerSideBlazorApp.dboDataService
 			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
-            Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Decimal, 9));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Money, 8));
             Fields.Add($"{identifier}.PurchaseDate", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseDate", "PurchaseDate", SqlDbType.DateTime, 8));
             Fields.Add($"{identifier}.ShipDate", new MsSqlFieldMetadata(this, $"{identifier}.ShipDate", "ShipDate", SqlDbType.DateTime, 8));
             Fields.Add($"{identifier}.ExpectedDeliveryDate", new MsSqlFieldMetadata(this, $"{identifier}.ExpectedDeliveryDate", "ExpectedDeliveryDate", SqlDbType.DateTime, 8));
@@ -263,7 +263,7 @@ namespace ServerSideBlazorApp.dboDataService
             Name = name;
 			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4));
-            Fields.Add($"{identifier}.TotalAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalAmount", "TotalAmount", SqlDbType.Decimal, 17));
+            Fields.Add($"{identifier}.TotalAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalAmount", "TotalAmount", SqlDbType.Money, 8));
             Fields.Add($"{identifier}.TotalCount", new MsSqlFieldMetadata(this, $"{identifier}.TotalCount", "TotalCount", SqlDbType.Int, 4));
         }
         #endregion
@@ -314,8 +314,8 @@ namespace ServerSideBlazorApp.secDataService
 			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.SSN", new MsSqlFieldMetadata(this, $"{identifier}.SSN", "SSN", SqlDbType.Char, 9));
-            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
-            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTimeOffset, 10));
+            Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTimeOffset, 10));
         }
         #endregion
     }

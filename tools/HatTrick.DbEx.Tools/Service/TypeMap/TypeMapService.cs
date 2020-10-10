@@ -280,8 +280,8 @@ namespace HatTrick.DbEx.Tools.Service
                     nm = isNullable ? "NullableDateTimeFieldExpression" : "DateTimeFieldExpression";
                     break;
                 case SqlDbType.DateTimeOffset:
-                    //nm = isNullable ? "DateTimeOffset?" : "DateTimeOffset";
-                    throw new NotImplementedException();
+                    nm = isNullable ? "NullableDateTimeOffsetFieldExpression" : "DateTimeOffsetFieldExpression";
+                    break;
                 case SqlDbType.Decimal:
                     nm = isNullable ? "NullableDecimalFieldExpression" : "DecimalFieldExpression";
                     break;
