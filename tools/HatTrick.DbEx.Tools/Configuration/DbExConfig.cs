@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Tools.Configuration
     {
         public Source Source { get; set; }
 
-        public string RootNamespace { get; set; }
+        public string RootNamespace { get; set; } = "DbEx";
 
         public string WorkingDirectory { get; set; }
 
