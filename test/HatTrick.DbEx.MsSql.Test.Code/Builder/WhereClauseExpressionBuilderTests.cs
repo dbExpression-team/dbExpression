@@ -95,10 +95,12 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             FilterExpression ssnFilter;
             FilterExpression dateCreatedFilter;
 
+            var now = DateTime.UtcNow;
+
             //when
             exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
-               .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != new DateTime(2000,1,1));
+               .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != now);
 
             filterSet = (exp as IQueryExpressionProvider).Expression.Where;
 
@@ -125,10 +127,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
 
             dateCreatedFilter.Should().NotBeNull();
-            dateCreatedFilter.LeftArg.Expression.Should().BeOfType<DateTimeFieldExpression<Person>>();
+            dateCreatedFilter.LeftArg.Expression.Should().BeOfType<DateTimeOffsetFieldExpression<Person>>();
             dateCreatedFilter.LeftArg.Expression.Should().Be(sec.Person.DateCreated);
-            dateCreatedFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<DateTime>>();
-            dateCreatedFilter.RightArg.Expression.As<LiteralExpression<DateTime>>().Expression.Should().Be(new DateTime(2000, 1, 1));
+            dateCreatedFilter.RightArg.Expression.Should().BeOfType<LiteralExpression<DateTimeOffset>>();
+            dateCreatedFilter.RightArg.Expression.As<LiteralExpression<DateTimeOffset>>().Expression.Should().Be((DateTimeOffset)now);
             dateCreatedFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
         }
     }

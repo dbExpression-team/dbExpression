@@ -103,7 +103,7 @@ namespace ServerSideBlazorApp.dboData
         #region interface
         public int Id { get; set; }
         public int PersonId { get; set; }
-        public decimal TotalPurchaseAmount { get; set; }
+        public double TotalPurchaseAmount { get; set; }
         public DateTime PurchaseDate { get; set; }
         public DateTime? ShipDate { get; set; }
         public DateTime? ExpectedDeliveryDate { get; set; }
@@ -147,7 +147,7 @@ namespace ServerSideBlazorApp.dboData
     {
         #region interface
         public int Id { get; set; }
-        public decimal? TotalAmount { get; set; }
+        public double? TotalAmount { get; set; }
         public int? TotalCount { get; set; }
         #endregion
 
@@ -168,8 +168,8 @@ namespace ServerSideBlazorApp.secData
         #region interface
         public int Id { get; set; }
         public string SSN { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
+        public DateTimeOffset DateUpdated { get; set; }
         #endregion
 
         #region constructor

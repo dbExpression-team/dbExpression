@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_ceil_total_purchase_amount_succeed(int version, decimal expected = 8.00m)
+        public void Does_selecting_ceil_total_purchase_amount_succeed(int version, double expected = 8.00)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_ascending_succeed(int version, decimal expected = 6.00m)
+        public void Can_order_by_ceil_of_total_purchase_amount_ascending_succeed(int version, double expected = 6.00)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount));
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_descending_succeed(int version, decimal expected = 56.00m)
+        public void Can_order_by_ceil_of_total_purchase_amount_descending_succeed(int version, double expected = 56.00)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount).Desc);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, decimal expected = 6.00m)
+        public void Can_order_by_ceil_of_total_purchase_amount_ascending_and_aliasing_succeed(int version, double expected = 6.00)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -83,7 +83,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount));
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_ceil_of_total_purchase_amount_descending_and_aliasing_succeed(int version, decimal expected = 56.00m)
+        public void Can_order_by_ceil_of_total_purchase_amount_descending_and_aliasing_succeed(int version, double expected = 56.00)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -103,7 +103,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Ceiling(dbo.Purchase.TotalPurchaseAmount).Desc);
 
             //when               
-            decimal result = exp.Execute();
+            double result = exp.Execute();
 
             //then
             result.Should().Be(expected);

@@ -324,6 +324,80 @@ namespace HatTrick.DbEx.Sql.Builder
             => new NullableDateTimeOffsetCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6, field7);
         #endregion
 
+        #region double
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, double value)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1 }, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, double? value)
+            => new NullableDoubleCoalesceFunctionExpression(new List<NullableDoubleExpressionMediator> { field1, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)) }.ToArray());
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, DoubleExpressionMediator field2)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1 }, field2);
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2);
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, double value)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2 }, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, double? value)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, DoubleExpressionMediator field3)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2 }, field3);
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3);
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, double value)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3 }, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, double? value)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, DoubleExpressionMediator field4)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3 }, field4);
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4);
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, double value)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3, field4 }, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, double? value)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, DoubleExpressionMediator field5)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3, field4 }, field5);
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4, field5);
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, double value)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3, field4, field5 }, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, double? value)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4, field5, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, DoubleExpressionMediator field6)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3, field4, field5 }, field6);
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, NullableDoubleExpressionMediator field6)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6);
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, NullableDoubleExpressionMediator field6, double value)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3, field4, field5, field6 }, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, NullableDoubleExpressionMediator field6, double? value)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
+
+        public static DoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, NullableDoubleExpressionMediator field6, DoubleExpressionMediator field7)
+            => new DoubleCoalesceFunctionExpression(new List<NullableExpressionMediator<double>> { field1, field2, field3, field4, field5, field6 }, field7);
+
+        public static NullableDoubleCoalesceFunctionExpression Coalesce(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2, NullableDoubleExpressionMediator field3, NullableDoubleExpressionMediator field4, NullableDoubleExpressionMediator field5, NullableDoubleExpressionMediator field6, NullableDoubleExpressionMediator field7)
+            => new NullableDoubleCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6, field7);
+        #endregion
+
         #region decimal
         public static DecimalCoalesceFunctionExpression Coalesce(NullableDecimalExpressionMediator field1, decimal value)
             => new DecimalCoalesceFunctionExpression(new List<NullableExpressionMediator<decimal>> { field1 }, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)));
@@ -975,6 +1049,20 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static NullableDecimalIsNullFunctionExpression IsNull(NullableDecimalExpressionMediator field, decimal? value)
             => new NullableDecimalIsNullFunctionExpression(field, new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>(value)));
+        #endregion
+
+        #region double
+        public static DoubleIsNullFunctionExpression IsNull(NullableDoubleExpressionMediator field1, DoubleExpressionMediator field2)
+            => new DoubleIsNullFunctionExpression(field1, field2);
+
+        public static NullableDoubleIsNullFunctionExpression IsNull(NullableDoubleExpressionMediator field1, NullableDoubleExpressionMediator field2)
+            => new NullableDoubleIsNullFunctionExpression(field1, field2);
+
+        public static DoubleIsNullFunctionExpression IsNull(NullableDoubleExpressionMediator field, double value)
+            => new DoubleIsNullFunctionExpression(field, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
+
+        public static NullableDoubleIsNullFunctionExpression IsNull(NullableDoubleExpressionMediator field, double? value)
+            => new NullableDoubleIsNullFunctionExpression(field, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
         #endregion
 
         #region enum

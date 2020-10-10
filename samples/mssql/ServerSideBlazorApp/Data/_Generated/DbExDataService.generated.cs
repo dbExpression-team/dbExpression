@@ -744,7 +744,7 @@ namespace ServerSideBlazorApp.dboDataService
         #region interface properties
         public Int32FieldExpression<Purchase> Id { get; private set; }
         public Int32FieldExpression<Purchase> PersonId { get; private set; }
-        public DecimalFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
+        public DoubleFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
         public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
         public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
         public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
@@ -767,7 +767,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
-            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DecimalFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DoubleFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
             Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
             Fields.Add($"{identifier}.ShipDate", ShipDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ShipDate", this));
             Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
@@ -838,7 +838,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
 			purchase.Id = reader.ReadField().GetValue<int>();
 			purchase.PersonId = reader.ReadField().GetValue<int>();
-			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<decimal>();
+			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
 			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
 			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
@@ -951,7 +951,7 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
-        public NullableDecimalFieldExpression<PersonTotalPurchasesView> TotalAmount { get; private set; }
+        public NullableDoubleFieldExpression<PersonTotalPurchasesView> TotalAmount { get; private set; }
         public NullableInt32FieldExpression<PersonTotalPurchasesView> TotalCount { get; private set; }
         #endregion
 
@@ -967,7 +967,7 @@ namespace ServerSideBlazorApp.dboDataService
         private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonTotalPurchasesView>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new NullableDecimalFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalAmount", this));
+            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new NullableDoubleFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalAmount", this));
             Fields.Add($"{identifier}.TotalCount", TotalCount = new NullableInt32FieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalCount", this));
         }
         #endregion
@@ -1011,7 +1011,7 @@ namespace ServerSideBlazorApp.dboDataService
         protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, ISqlFieldReader reader)
         {
 			personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
-			personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<decimal?>();
+			personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
 			personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
@@ -1074,8 +1074,8 @@ namespace ServerSideBlazorApp.secDataService
         #region interface properties
         public Int32FieldExpression<Person> Id { get; private set; }
         public StringFieldExpression<Person> SSN { get; private set; }
-        public DateTimeFieldExpression<Person> DateCreated { get; private set; }
-        public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
+        public DateTimeOffsetFieldExpression<Person> DateCreated { get; private set; }
+        public DateTimeOffsetFieldExpression<Person> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -1091,8 +1091,8 @@ namespace ServerSideBlazorApp.secDataService
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.SSN", SSN = new StringFieldExpression<Person>($"{identifier}.SSN", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeOffsetFieldExpression<Person>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeOffsetFieldExpression<Person>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -1138,8 +1138,8 @@ namespace ServerSideBlazorApp.secDataService
         {
 			person.Id = reader.ReadField().GetValue<int>();
 			person.SSN = reader.ReadField().GetValue<string>();
-			person.DateCreated = reader.ReadField().GetValue<DateTime>();
-			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+			person.DateCreated = reader.ReadField().GetValue<DateTimeOffset>();
+			person.DateUpdated = reader.ReadField().GetValue<DateTimeOffset>();
         }
 		#endregion
     }
