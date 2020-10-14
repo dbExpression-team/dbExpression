@@ -16,6 +16,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private void AddParametersFromList(ISqlStatementBuilder builder, FieldExpression field, IEnumerable expression)
         {
             var meta = field is object ? builder.FindMetadata(field) : null;
+            var hasElements = false;
             var enumerator = expression.GetEnumerator();
             var firstElement = true;
             while (enumerator.MoveNext())
@@ -32,7 +33,11 @@ namespace HatTrick.DbEx.Sql.Assembler
                     firstElement = false;
                 }
                 AddParameter(builder, field, meta, enumerator.Current);
+                hasElements = true;
             }
+
+            if (!hasElements)
+                builder.Appender.Write("NULL");
         }
 
         private void AddParameter(ISqlStatementBuilder builder, FieldExpression field, ISqlFieldMetadata meta, object expression)
