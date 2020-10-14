@@ -28,6 +28,9 @@
         public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(ByteArrayExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
 
+        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(NullableByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
+
         public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<short>(config, field);
 
@@ -73,6 +76,9 @@
         public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(StringExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
 
+        public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(NullableStringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
+
         public static IFromExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>, IValueContinuationExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>>> SelectOne(DateTimeExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTime>(config, field);
 
@@ -107,11 +113,14 @@
         public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte>(config, field);
 
+        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+
         public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(ByteArrayExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
-        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(NullableByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
         public static IListFromExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>, IValueListContinuationExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>>> SelectMany(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<short>(config, field);
@@ -156,6 +165,9 @@
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<bool?>(config, field);
 
         public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(StringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
+
+        public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(NullableStringExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
 
         public static IListFromExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>, IValueListContinuationExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>>> SelectMany(DateTimeExpressionMediator field)

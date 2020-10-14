@@ -3,6 +3,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -48,6 +49,101 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_many_address_line2_where_null_succeed(int version, int expected = 27)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 == DBNull.Value);
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_many_address_line2_where_null_reversed_filter_order_succeed(int version, int expected = 27)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where(DBNull.Value == dbo.Address.Line2);
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_many_address_line2_where_not_null_succeed(int version, int expected = 5)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2 != DBNull.Value);
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_many_address_line2_where_not_null_reversed_filter_order_succeed(int version, int expected = 5)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where(DBNull.Value != dbo.Address.Line2);
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_one_address_line2_where_not_null_reversed_filter_order_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where(DBNull.Value != dbo.Address.Line2);
+
+            //when               
+            string result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
         }
     }
 }

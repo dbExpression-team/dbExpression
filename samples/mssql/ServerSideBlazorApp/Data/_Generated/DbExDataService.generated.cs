@@ -43,6 +43,9 @@ namespace ServerSideBlazorApp.DataService
         public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(ByteArrayExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
 
+        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(NullableByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
+
         public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<short>(config, field);
 
@@ -88,6 +91,9 @@ namespace ServerSideBlazorApp.DataService
         public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(StringExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
 
+        public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(NullableStringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
+
         public static IFromExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>, IValueContinuationExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>>> SelectOne(DateTimeExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTime>(config, field);
 
@@ -122,11 +128,14 @@ namespace ServerSideBlazorApp.DataService
         public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte>(config, field);
 
+        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+
         public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(ByteArrayExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
-        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(NullableByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
         public static IListFromExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>, IValueListContinuationExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>>> SelectMany(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<short>(config, field);
@@ -171,6 +180,9 @@ namespace ServerSideBlazorApp.DataService
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<bool?>(config, field);
 
         public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(StringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
+
+        public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(NullableStringExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
 
         public static IListFromExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>, IValueListContinuationExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>>> SelectMany(DateTimeExpressionMediator field)
@@ -311,7 +323,7 @@ namespace ServerSideBlazorApp.dboDataService
         public Int32FieldExpression<Address> Id { get; private set; }
         public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
         public StringFieldExpression<Address> Line1 { get; private set; }
-        public StringFieldExpression<Address> Line2 { get; private set; }
+        public NullableStringFieldExpression<Address> Line2 { get; private set; }
         public StringFieldExpression<Address> City { get; private set; }
         public StringFieldExpression<Address> State { get; private set; }
         public StringFieldExpression<Address> Zip { get; private set; }
@@ -333,7 +345,7 @@ namespace ServerSideBlazorApp.dboDataService
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Address>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, AddressType>($"{identifier}.AddressType", this));
             Fields.Add($"{identifier}.Line1", Line1 = new StringFieldExpression<Address>($"{identifier}.Line1", this));
-            Fields.Add($"{identifier}.Line2", Line2 = new StringFieldExpression<Address>($"{identifier}.Line2", this));
+            Fields.Add($"{identifier}.Line2", Line2 = new NullableStringFieldExpression<Address>($"{identifier}.Line2", this));
             Fields.Add($"{identifier}.City", City = new StringFieldExpression<Address>($"{identifier}.City", this));
             Fields.Add($"{identifier}.State", State = new StringFieldExpression<Address>($"{identifier}.State", this));
             Fields.Add($"{identifier}.Zip", Zip = new StringFieldExpression<Address>($"{identifier}.Zip", this));
@@ -602,11 +614,11 @@ namespace ServerSideBlazorApp.dboDataService
         public Int32FieldExpression<Product> Id { get; private set; }
         public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
         public StringFieldExpression<Product> Name { get; private set; }
-        public StringFieldExpression<Product> Description { get; private set; }
+        public NullableStringFieldExpression<Product> Description { get; private set; }
         public DoubleFieldExpression<Product> ListPrice { get; private set; }
         public DoubleFieldExpression<Product> Price { get; private set; }
         public Int32FieldExpression<Product> Quantity { get; private set; }
-        public ByteArrayFieldExpression<Product> Image { get; private set; }
+        public NullableByteArrayFieldExpression<Product> Image { get; private set; }
         public NullableDecimalFieldExpression<Product> Height { get; private set; }
         public NullableDecimalFieldExpression<Product> Width { get; private set; }
         public NullableDecimalFieldExpression<Product> Depth { get; private set; }
@@ -630,11 +642,11 @@ namespace ServerSideBlazorApp.dboDataService
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Product>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, ProductCategoryType>($"{identifier}.ProductCategoryType", this));
             Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
-            Fields.Add($"{identifier}.Description", Description = new StringFieldExpression<Product>($"{identifier}.Description", this));
+            Fields.Add($"{identifier}.Description", Description = new NullableStringFieldExpression<Product>($"{identifier}.Description", this));
             Fields.Add($"{identifier}.ListPrice", ListPrice = new DoubleFieldExpression<Product>($"{identifier}.ListPrice", this));
             Fields.Add($"{identifier}.Price", Price = new DoubleFieldExpression<Product>($"{identifier}.Price", this));
             Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<Product>($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.Image", Image = new ByteArrayFieldExpression<Product>($"{identifier}.Image", this));
+            Fields.Add($"{identifier}.Image", Image = new NullableByteArrayFieldExpression<Product>($"{identifier}.Image", this));
             Fields.Add($"{identifier}.Height", Height = new NullableDecimalFieldExpression<Product>($"{identifier}.Height", this));
             Fields.Add($"{identifier}.Width", Width = new NullableDecimalFieldExpression<Product>($"{identifier}.Width", this));
             Fields.Add($"{identifier}.Depth", Depth = new NullableDecimalFieldExpression<Product>($"{identifier}.Depth", this));

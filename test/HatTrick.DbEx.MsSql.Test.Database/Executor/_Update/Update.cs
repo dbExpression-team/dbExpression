@@ -4,6 +4,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -137,6 +138,46 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             var product2Image = db.SelectOne(dbo.Product.Image).From(dbo.Product).Where(dbo.Product.Id == 2).Execute();
             product2Image.Should().BeEquivalentTo(product1.Image);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public void Can_update_address_line2_to_null(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var address = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Line2 != DBNull.Value).Execute();
+
+            //when
+            db.Update(dbo.Address.Line2.Set(DBNull.Value))
+               .From(dbo.Address)
+               .Where(dbo.Address.Id == address.Id)
+               .Execute();
+
+            //then
+            var updatedAddress = db.SelectOne<Address>().From(dbo.Address).Where(dbo.Address.Id == address.Id).Execute();
+            updatedAddress.Line2.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public void Can_update_product_image_to_null(int version)
+        {
+            //given
+            AppendImagesToProductsInDatabase();
+            ConfigureForMsSqlVersion(version);
+
+            //when
+            db.Update(dbo.Product.Image.Set(DBNull.Value))
+               .From(dbo.Product)
+               .Where(dbo.Product.Id == 1)
+               .Execute();
+
+            //then
+            var updatedProduct = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute();
+            updatedProduct.Image.Should().BeNull();
         }
     }
 }

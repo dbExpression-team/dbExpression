@@ -30,11 +30,11 @@ namespace {Namespace}
 
         {-#if $.OperationType.IsNullable-}
         {-#each Operations-}
-        public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:operationType.Alias}? b) => new {:returnMediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, new Nullable{:operationType.Name}ExpressionMediator(new LiteralExpression<{:operationType.Alias}?>(b)), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:operationType.NullableAlias} b) => new {:returnMediatorType.Name}ExpressionMediator(new ArithmeticExpression(a, new Nullable{:operationType.Name}ExpressionMediator(new LiteralExpression<{:operationType.NullableAlias}>(b)), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
 
         {-#each Operations-}
-        public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.Alias}? a, {:mediatorType.Name}ExpressionMediator b) => new {:returnMediatorType.Name}ExpressionMediator(new ArithmeticExpression(new Nullable{:operationType.Name}ExpressionMediator(new LiteralExpression<{:operationType.Alias}?>(a)), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        public static {:returnMediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:operationType.NullableAlias} a, {:mediatorType.Name}ExpressionMediator b) => new {:returnMediatorType.Name}ExpressionMediator(new ArithmeticExpression(new Nullable{:operationType.Name}ExpressionMediator(new LiteralExpression<{:operationType.NullableAlias}>(a)), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
         {-/each-}
         {-/if-}
         #endregion

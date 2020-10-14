@@ -247,6 +247,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(DateTimeFieldExpression a, DBNull b) => new FilterExpression<bool?>(new DateTimeExpressionMediator(a), new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DateTimeFieldExpression a, DBNull b) => new FilterExpression<bool?>(new DateTimeExpressionMediator(a), new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, DateTimeFieldExpression b) => new FilterExpression<bool?>(new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>()), new DateTimeExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, DateTimeFieldExpression b) => new FilterExpression<bool?>(new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>()), new DateTimeExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region DateTime
         public static FilterExpression<bool> operator ==(DateTimeFieldExpression a, DateTime b) => new FilterExpression<bool>(new DateTimeExpressionMediator(a), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(DateTimeFieldExpression a, DateTime b) => new FilterExpression<bool>(new DateTimeExpressionMediator(a), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(b)), FilterExpressionOperator.NotEqual);

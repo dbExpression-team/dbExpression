@@ -373,6 +373,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(DecimalFieldExpression a, DBNull b) => new FilterExpression<bool?>(new DecimalExpressionMediator(a), new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DecimalFieldExpression a, DBNull b) => new FilterExpression<bool?>(new DecimalExpressionMediator(a), new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, DecimalFieldExpression b) => new FilterExpression<bool?>(new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>()), new DecimalExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, DecimalFieldExpression b) => new FilterExpression<bool?>(new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>()), new DecimalExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region decimal
         public static FilterExpression<bool> operator ==(DecimalFieldExpression a, decimal b) => new FilterExpression<bool>(new DecimalExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(DecimalFieldExpression a, decimal b) => new FilterExpression<bool>(new DecimalExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.NotEqual);

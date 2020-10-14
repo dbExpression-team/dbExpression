@@ -22,16 +22,12 @@ namespace HatTrick.DbEx.Sql.Expression
             => new NullableEnumFieldExpression<TEntity, TEnum>(base.identifier, base.entity, alias);
         #endregion
 
-        #region isnull
-        public override FilterExpression<bool> IsNull() => new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), FilterExpressionOperator.Equal);
-        public override FilterExpression<bool> IsNotNull() => new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), FilterExpressionOperator.NotEqual);
-        #endregion
-
         #region set
         public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(this, new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
         public override AssignmentExpression Set(TEnum? value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)));
         public override AssignmentExpression Set(ExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(NullableExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
+        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(null)));
         #endregion
 
         #region insert

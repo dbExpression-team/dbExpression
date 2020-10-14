@@ -17,14 +17,10 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region isnull
-        public abstract FilterExpression<bool> IsNull();
-        public abstract FilterExpression<bool> IsNotNull();
-        #endregion
-
         #region set
         public abstract AssignmentExpression Set(TValue? value);
         public abstract AssignmentExpression Set(NullableExpressionMediator<TValue> value);
+        public abstract AssignmentExpression Set(DBNull value);
         #endregion
 
         #region insert value

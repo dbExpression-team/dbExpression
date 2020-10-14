@@ -10,21 +10,19 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpression<bool> In(IEnumerable<bool> value) => value is object ? new FilterExpression<bool>(new BooleanExpressionMediator(this), new NullableBooleanExpressionMediator(new InExpression<bool>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
-        #region isnull
-        public override FilterExpression<bool> IsNull() => new FilterExpression<bool>(new NullableBooleanExpressionMediator(this), new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>()), FilterExpressionOperator.Equal);
-        public override FilterExpression<bool> IsNotNull() => new FilterExpression<bool>(new NullableBooleanExpressionMediator(this), new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>()), FilterExpressionOperator.NotEqual);
-        #endregion
-
         #region set
         public override AssignmentExpression Set(bool value) => new AssignmentExpression(this, new BooleanExpressionMediator(new LiteralExpression<bool>(value)));
         public override AssignmentExpression Set(ExpressionMediator<bool> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(bool? value) => new AssignmentExpression(this, new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>(value)));
         public override AssignmentExpression Set(NullableExpressionMediator<bool> value) => new AssignmentExpression(this, value);
+        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableBooleanExpressionMediator(new LiteralExpression<bool?>(null)));
+
         #endregion
 
         #region insert
         public override InsertExpression Insert(bool value) => new InsertExpression(this, new BooleanExpressionMediator(new LiteralExpression<bool>(value)));
         public override InsertExpression Insert(bool? value) => new InsertExpression(this, new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>(value)));
+
         #endregion
 
         #region order

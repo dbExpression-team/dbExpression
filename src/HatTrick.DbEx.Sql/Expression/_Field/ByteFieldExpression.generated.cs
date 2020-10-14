@@ -373,6 +373,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(ByteFieldExpression a, DBNull b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(ByteFieldExpression a, DBNull b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), new ByteExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region byte
         public static FilterExpression<bool> operator ==(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.NotEqual);

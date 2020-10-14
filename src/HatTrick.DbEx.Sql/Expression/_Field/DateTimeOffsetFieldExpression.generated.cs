@@ -247,6 +247,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(DateTimeOffsetFieldExpression a, DBNull b) => new FilterExpression<bool?>(new DateTimeOffsetExpressionMediator(a), new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DateTimeOffsetFieldExpression a, DBNull b) => new FilterExpression<bool?>(new DateTimeOffsetExpressionMediator(a), new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, DateTimeOffsetFieldExpression b) => new FilterExpression<bool?>(new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>()), new DateTimeOffsetExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, DateTimeOffsetFieldExpression b) => new FilterExpression<bool?>(new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>()), new DateTimeOffsetExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region DateTimeOffset
         public static FilterExpression<bool> operator ==(DateTimeOffsetFieldExpression a, DateTimeOffset b) => new FilterExpression<bool>(new DateTimeOffsetExpressionMediator(a), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(DateTimeOffsetFieldExpression a, DateTimeOffset b) => new FilterExpression<bool>(new DateTimeOffsetExpressionMediator(a), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(b)), FilterExpressionOperator.NotEqual);
