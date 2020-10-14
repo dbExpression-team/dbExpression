@@ -10,21 +10,22 @@ namespace HatTrick.DbEx.CodeTemplating
         private const string templateDirectory = @"Templates\Sql\Expression";
         private const string sqlSrcDirectory = @"src\HatTrick.DbEx.Sql\Expression";
         private const string msSqlSrcDirectory = @"src\HatTrick.DbEx.MsSql\Expression";
-        private const string typedFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\TypedFunctionExpression.txt";
-        private const string enumFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\EnumFunctionExpression.txt";
-        private const string nullableEnumFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\NullableEnumFunctionExpression.txt";
-        private const string nullableTypedFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\NullableTypedFunctionExpression.txt";
+        private const string typedFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\TypedFunctionExpression.htt";
+        private const string enumFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\EnumFunctionExpression.htt";
+        private const string nullableEnumFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\NullableEnumFunctionExpression.htt";
+        private const string nullableTypedFunctionExpressionTemplatePath = @"Templates\Sql\Expression\_Function\NullableTypedFunctionExpression.htt";
+        private const string msSqlFunctionTemplatePath = @"Templates\Sql\Expression\_Function\FunctionExpression.htt";
 
         static void Main(string[] args)
         {
             generator.CreateGenerator()
                 //mediator
-                .Generate<ExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\TypedExpressionMediator.txt", $@"{sqlSrcDirectory}\_Mediator")
-                .Generate<NullableExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\NullableTypedExpressionMediator.txt", $@"{sqlSrcDirectory}\_Mediator")
+                .Generate<ExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\TypedExpressionMediator.htt", $@"{sqlSrcDirectory}\_Mediator")
+                .Generate<NullableExpressionMediatorCodeGenerator, TemplateModel>($@"{templateDirectory}\_Mediator\NullableTypedExpressionMediator.htt", $@"{sqlSrcDirectory}\_Mediator")
 
                 //field
-                .Generate<FieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\TypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field")
-                .Generate<NullableFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\NullableTypedFieldExpression.txt", $@"{sqlSrcDirectory}\_Field")
+                .Generate<FieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\TypedFieldExpression.htt", $@"{sqlSrcDirectory}\_Field")
+                .Generate<NullableFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\NullableTypedFieldExpression.htt", $@"{sqlSrcDirectory}\_Field")
 
                 //aggregate function
                 .Generate<AverageFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_Aggregate\_Average")
@@ -71,7 +72,7 @@ namespace HatTrick.DbEx.CodeTemplating
 
                 .Generate<ConcatFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Concat")
 
-                .Generate<CurrentTimestampFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{sqlSrcDirectory}\_Function\_DataType\_CurrentTimestamp")
+                .Generate<CurrentTimestampFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.htt", $@"{sqlSrcDirectory}\_Function\_DataType\_CurrentTimestamp")
 
                 .Generate<DateAddFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_DateAdd")
                 .Generate<NullableDateAddFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_DateAdd")
@@ -88,17 +89,12 @@ namespace HatTrick.DbEx.CodeTemplating
                 .Generate<NullableCeilingFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Ceil")
 
                 //mssql function
-                .Generate<GetDateFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{msSqlSrcDirectory}\_Function\_GetDate")
-
-                .Generate<GetUtcDateFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{msSqlSrcDirectory}\_Function\_GetUtcDate")
-
-                .Generate<NewIdFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{msSqlSrcDirectory}\_Function\_NewId")
-
-                .Generate<SysDateTimeFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{msSqlSrcDirectory}\_Function\_SysDateTime")
-
-                .Generate<SysDateTimeOffsetFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{msSqlSrcDirectory}\_Function\_SysDateTimeOffset")
-
-                .Generate<SysUtcDateTimeFunctionExpressionCodeGenerator, FunctionTemplateModel>($@"{templateDirectory}\_Function\FunctionExpression.txt", $@"{msSqlSrcDirectory}\_Function\_SysUtcDateTime");
+                .Generate<GetDateFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_GetDate")
+                .Generate<GetUtcDateFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_GetUtcDate")
+                .Generate<NewIdFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_NewId")
+                .Generate<SysDateTimeFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_SysDateTime")
+                .Generate<SysDateTimeOffsetFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_SysDateTimeOffset")
+                .Generate<SysUtcDateTimeFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_SysUtcDateTime");
         }
     }
 }

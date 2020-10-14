@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators 
-        #region data type
+        #region data type 
         #region byte
         public static NullableInt16ExpressionMediator operator +(NullableInt16ExpressionMediator a, byte b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Add));
         public static NullableInt16ExpressionMediator operator -(NullableInt16ExpressionMediator a, byte b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Subtract));
@@ -462,10 +462,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
 
-        #endregion
-
-        #region alias
-        //moved to non-generated file
         #endregion
         #endregion
 

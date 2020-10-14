@@ -1,6 +1,4 @@
-
 using System;
-
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -18,15 +16,15 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region filter operators
-        #region TValue
-        #region
+        #region TEnum
         public static FilterExpression<bool?> operator ==(NullableEnumCoalesceFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(new NullableEnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool?> operator !=(NullableEnumCoalesceFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool?>(new NullableEnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(b)), FilterExpressionOperator.NotEqual);
 
         public static FilterExpression<bool?> operator ==(TEnum a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal);
         public static FilterExpression<bool?> operator !=(TEnum a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual);
 
-        #endregion
+        public static FilterExpression<bool?> operator ==(TEnum? a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(TEnum? a, NullableEnumCoalesceFunctionExpression<TEnum> b) => new FilterExpression<bool?>(new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual);
         #endregion
 
         #region mediator

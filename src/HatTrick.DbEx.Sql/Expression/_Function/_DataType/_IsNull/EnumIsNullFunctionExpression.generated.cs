@@ -1,7 +1,4 @@
 
-using System;
-
-
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class EnumIsNullFunctionExpression<TEnum>
@@ -18,8 +15,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
-        #region TValue
-        #region
+        #region TEnum
+        #region 
         public static FilterExpression<bool> operator ==(EnumIsNullFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool>(new EnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(EnumIsNullFunctionExpression<TEnum> a, TEnum b) => new FilterExpression<bool>(new EnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(b)), FilterExpressionOperator.NotEqual);
 

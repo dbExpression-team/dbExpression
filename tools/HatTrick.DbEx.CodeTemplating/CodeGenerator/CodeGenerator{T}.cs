@@ -3,6 +3,7 @@ using HatTrick.DbEx.CodeTemplating.Model;
 using HatTrick.Text.Templating;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
@@ -19,7 +20,6 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             {
                 TrimWhitespace = false //global flag for whitespace control...                
             };
-            ngin.LambdaRepo.Register("BuildUsings", new Func<IList<string>, string>(usings => usings.Aggregate(string.Empty, (a,b) => $"using {b};{Environment.NewLine}", a => a)));
             //ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
             var output = ngin.Merge(data);
             fileService.WriteFile(fileService.GetOutputPath(fileName), output);
@@ -36,8 +36,6 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             model.Namespace = @namespace;
             model.Type = typeModel;
-            model.IsOrderBySupported = true;
-            model.IsGroupBySupported = true;
 
             if (typeModel is null || typeModel == TypeBuilder.Get<Guid>() || typeModel == TypeBuilder.Get<bool>()) //Guid and Boolean don't support arithmetic
             {

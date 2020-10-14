@@ -1,6 +1,5 @@
 using System;
 
-
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeDateAddFunctionExpression
@@ -32,7 +31,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDateTimeExpressionMediator operator -(DateTime? a, NullableDateTimeDateAddFunctionExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), new NullableDateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
         
         #endregion
-
+        
         #region DateTimeOffset
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableDateTimeDateAddFunctionExpression a, DateTimeOffset b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(b)), ArithmeticExpressionOperator.Add));
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableDateTimeDateAddFunctionExpression a, DateTimeOffset b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(b)), ArithmeticExpressionOperator.Subtract));
@@ -47,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffset? a, NullableDateTimeDateAddFunctionExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(a)), new NullableDateTimeExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
         
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -58,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDateTimeExpressionMediator operator +(NullableDateTimeDateAddFunctionExpression a, NullableDateTimeExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableDateTimeExpressionMediator operator -(NullableDateTimeDateAddFunctionExpression a, NullableDateTimeExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
         #endregion
-
+        
         #region DateTimeOffset
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableDateTimeDateAddFunctionExpression a, DateTimeOffsetExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableDateTimeDateAddFunctionExpression a, DateTimeOffsetExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -66,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDateTimeOffsetExpressionMediator operator +(NullableDateTimeDateAddFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableDateTimeOffsetExpressionMediator operator -(NullableDateTimeDateAddFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
         #endregion
-
+        
         #endregion
         #endregion
 

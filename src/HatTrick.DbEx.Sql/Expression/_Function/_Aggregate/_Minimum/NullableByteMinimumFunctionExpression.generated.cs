@@ -1,6 +1,5 @@
 using System;
 
-
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteMinimumFunctionExpression
@@ -43,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableByteExpressionMediator operator %(byte? a, NullableByteMinimumFunctionExpression b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #region decimal
         public static NullableDecimalExpressionMediator operator +(NullableByteMinimumFunctionExpression a, decimal b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), ArithmeticExpressionOperator.Add));
         public static NullableDecimalExpressionMediator operator -(NullableByteMinimumFunctionExpression a, decimal b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), ArithmeticExpressionOperator.Subtract));
@@ -70,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDecimalExpressionMediator operator %(decimal? a, NullableByteMinimumFunctionExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #region double
         public static NullableDoubleExpressionMediator operator +(NullableByteMinimumFunctionExpression a, double b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new DoubleExpressionMediator(new LiteralExpression<double>(b)), ArithmeticExpressionOperator.Add));
         public static NullableDoubleExpressionMediator operator -(NullableByteMinimumFunctionExpression a, double b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new DoubleExpressionMediator(new LiteralExpression<double>(b)), ArithmeticExpressionOperator.Subtract));
@@ -97,7 +96,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator %(double? a, NullableByteMinimumFunctionExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableDoubleExpressionMediator(new LiteralExpression<double?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #region float
         public static NullableSingleExpressionMediator operator +(NullableByteMinimumFunctionExpression a, float b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), ArithmeticExpressionOperator.Add));
         public static NullableSingleExpressionMediator operator -(NullableByteMinimumFunctionExpression a, float b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), ArithmeticExpressionOperator.Subtract));
@@ -124,7 +123,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator %(float? a, NullableByteMinimumFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #region short
         public static NullableInt16ExpressionMediator operator +(NullableByteMinimumFunctionExpression a, short b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new Int16ExpressionMediator(new LiteralExpression<short>(b)), ArithmeticExpressionOperator.Add));
         public static NullableInt16ExpressionMediator operator -(NullableByteMinimumFunctionExpression a, short b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new Int16ExpressionMediator(new LiteralExpression<short>(b)), ArithmeticExpressionOperator.Subtract));
@@ -151,7 +150,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt16ExpressionMediator operator %(short? a, NullableByteMinimumFunctionExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableInt16ExpressionMediator(new LiteralExpression<short?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #region int
         public static NullableInt32ExpressionMediator operator +(NullableByteMinimumFunctionExpression a, int b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), ArithmeticExpressionOperator.Add));
         public static NullableInt32ExpressionMediator operator -(NullableByteMinimumFunctionExpression a, int b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), ArithmeticExpressionOperator.Subtract));
@@ -178,7 +177,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt32ExpressionMediator operator %(int? a, NullableByteMinimumFunctionExpression b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #region long
         public static NullableInt64ExpressionMediator operator +(NullableByteMinimumFunctionExpression a, long b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), ArithmeticExpressionOperator.Add));
         public static NullableInt64ExpressionMediator operator -(NullableByteMinimumFunctionExpression a, long b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), ArithmeticExpressionOperator.Subtract));
@@ -205,7 +204,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt64ExpressionMediator operator %(long? a, NullableByteMinimumFunctionExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableInt64ExpressionMediator(new LiteralExpression<long?>(a)), new NullableByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -222,7 +221,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableByteExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableByteExpressionMediator b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableByteExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableByteExpressionMediator b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region decimal
         public static NullableDecimalExpressionMediator operator +(NullableByteMinimumFunctionExpression a, DecimalExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableDecimalExpressionMediator operator -(NullableByteMinimumFunctionExpression a, DecimalExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -236,7 +235,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDecimalExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableDecimalExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableDecimalExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableDecimalExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region double
         public static NullableDoubleExpressionMediator operator +(NullableByteMinimumFunctionExpression a, DoubleExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableDoubleExpressionMediator operator -(NullableByteMinimumFunctionExpression a, DoubleExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -250,7 +249,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableDoubleExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableDoubleExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableDoubleExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region float
         public static NullableSingleExpressionMediator operator +(NullableByteMinimumFunctionExpression a, SingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableSingleExpressionMediator operator -(NullableByteMinimumFunctionExpression a, SingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -264,7 +263,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableSingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableSingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region short
         public static NullableInt16ExpressionMediator operator +(NullableByteMinimumFunctionExpression a, Int16ExpressionMediator b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableInt16ExpressionMediator operator -(NullableByteMinimumFunctionExpression a, Int16ExpressionMediator b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -278,7 +277,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt16ExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableInt16ExpressionMediator b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableInt16ExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableInt16ExpressionMediator b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region int
         public static NullableInt32ExpressionMediator operator +(NullableByteMinimumFunctionExpression a, Int32ExpressionMediator b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableInt32ExpressionMediator operator -(NullableByteMinimumFunctionExpression a, Int32ExpressionMediator b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -292,7 +291,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt32ExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableInt32ExpressionMediator b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableInt32ExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableInt32ExpressionMediator b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region long
         public static NullableInt64ExpressionMediator operator +(NullableByteMinimumFunctionExpression a, Int64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static NullableInt64ExpressionMediator operator -(NullableByteMinimumFunctionExpression a, Int64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -306,7 +305,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt64ExpressionMediator operator /(NullableByteMinimumFunctionExpression a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableInt64ExpressionMediator operator %(NullableByteMinimumFunctionExpression a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #endregion
         #endregion
 

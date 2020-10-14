@@ -17,84 +17,80 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
         #endregion
-
+        
         #region byte
 
 
 
         #endregion
-
+        
         #region decimal
 
 
 
         #endregion
-
+        
         #region DateTime
 
 
 
         #endregion
-
+        
         #region DateTimeOffset
 
 
 
         #endregion
-
+        
         #region double
 
 
 
         #endregion
-
+        
         #region float
 
 
 
         #endregion
-
+        
         #region Guid
 
 
 
         #endregion
-
+        
         #region short
 
 
 
         #endregion
-
+        
         #region int
 
 
 
         #endregion
-
+        
         #region long
 
 
 
         #endregion
-
+        
         #region string
         public static StringExpressionMediator operator +(StringExpressionMediator a, string b) => new StringExpressionMediator(new ArithmeticExpression(a, new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
 
         public static StringExpressionMediator operator +(string a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), b, ArithmeticExpressionOperator.Add));
 
         #endregion
-
+        
         #endregion
 
         #region fields
         #endregion
 
         #region mediators
-        #endregion
-
-        #region alias
-        //moved to non-generated file
         #endregion
         #endregion
 

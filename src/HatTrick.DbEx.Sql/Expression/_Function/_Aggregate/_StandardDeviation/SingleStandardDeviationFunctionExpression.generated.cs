@@ -1,6 +1,4 @@
-
 using System;
-
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -43,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(byte? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(byte? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region decimal
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, decimal b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, decimal b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), ArithmeticExpressionOperator.Subtract));
@@ -69,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(decimal? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(decimal? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region double
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, double b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new DoubleExpressionMediator(new LiteralExpression<double>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, double b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new DoubleExpressionMediator(new LiteralExpression<double>(b)), ArithmeticExpressionOperator.Subtract));
@@ -95,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(double? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableDoubleExpressionMediator(new LiteralExpression<double?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(double? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableDoubleExpressionMediator(new LiteralExpression<double?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region float
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), ArithmeticExpressionOperator.Subtract));
@@ -121,7 +119,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(float? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(float? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region short
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new Int16ExpressionMediator(new LiteralExpression<short>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new Int16ExpressionMediator(new LiteralExpression<short>(b)), ArithmeticExpressionOperator.Subtract));
@@ -147,7 +145,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(short? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableInt16ExpressionMediator(new LiteralExpression<short?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(short? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableInt16ExpressionMediator(new LiteralExpression<short?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region int
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), ArithmeticExpressionOperator.Subtract));
@@ -173,7 +171,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(int? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(int? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region long
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), ArithmeticExpressionOperator.Subtract));
@@ -199,7 +197,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(long? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableInt64ExpressionMediator(new LiteralExpression<long?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(long? a, SingleStandardDeviationFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableInt64ExpressionMediator(new LiteralExpression<long?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -216,7 +214,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableByteExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableByteExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region decimal
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, DecimalExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, DecimalExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -230,7 +228,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableDecimalExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableDecimalExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region double
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, DoubleExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, DoubleExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -244,7 +242,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableDoubleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableDoubleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region float
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, SingleExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, SingleExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -258,7 +256,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableSingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableSingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region short
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, Int16ExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, Int16ExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -272,7 +270,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableInt16ExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableInt16ExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region int
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, Int32ExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, Int32ExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -286,7 +284,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableInt32ExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableInt32ExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region long
         public static SingleExpressionMediator operator +(SingleStandardDeviationFunctionExpression a, Int64ExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(SingleStandardDeviationFunctionExpression a, Int64ExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -300,7 +298,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(SingleStandardDeviationFunctionExpression a, NullableInt64ExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(SingleStandardDeviationFunctionExpression a, NullableInt64ExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #endregion
         #endregion
 

@@ -1,6 +1,4 @@
-
 using System;
-
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -44,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableByteExpressionMediator operator /(byte? a, DoubleCeilingFunctionExpression b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableByteExpressionMediator operator %(byte? a, DoubleCeilingFunctionExpression b) => new NullableByteExpressionMediator(new ArithmeticExpression(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region decimal
         public static DecimalExpressionMediator operator +(DoubleCeilingFunctionExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(new DecimalExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), ArithmeticExpressionOperator.Add));
         public static DecimalExpressionMediator operator -(DoubleCeilingFunctionExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(new DecimalExpressionMediator(a), new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), ArithmeticExpressionOperator.Subtract));
@@ -70,7 +68,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDecimalExpressionMediator operator /(decimal? a, DoubleCeilingFunctionExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableDecimalExpressionMediator operator %(decimal? a, DoubleCeilingFunctionExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(a)), new DecimalExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region double
         public static DoubleExpressionMediator operator +(DoubleCeilingFunctionExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), new DoubleExpressionMediator(new LiteralExpression<double>(b)), ArithmeticExpressionOperator.Add));
         public static DoubleExpressionMediator operator -(DoubleCeilingFunctionExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), new DoubleExpressionMediator(new LiteralExpression<double>(b)), ArithmeticExpressionOperator.Subtract));
@@ -96,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator /(double? a, DoubleCeilingFunctionExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableDoubleExpressionMediator(new LiteralExpression<double?>(a)), new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableDoubleExpressionMediator operator %(double? a, DoubleCeilingFunctionExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new NullableDoubleExpressionMediator(new LiteralExpression<double?>(a)), new DoubleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region float
         public static SingleExpressionMediator operator +(DoubleCeilingFunctionExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(DoubleCeilingFunctionExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), ArithmeticExpressionOperator.Subtract));
@@ -122,7 +120,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(float? a, DoubleCeilingFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(float? a, DoubleCeilingFunctionExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region short
         public static Int16ExpressionMediator operator +(DoubleCeilingFunctionExpression a, short b) => new Int16ExpressionMediator(new ArithmeticExpression(new Int16ExpressionMediator(a), new Int16ExpressionMediator(new LiteralExpression<short>(b)), ArithmeticExpressionOperator.Add));
         public static Int16ExpressionMediator operator -(DoubleCeilingFunctionExpression a, short b) => new Int16ExpressionMediator(new ArithmeticExpression(new Int16ExpressionMediator(a), new Int16ExpressionMediator(new LiteralExpression<short>(b)), ArithmeticExpressionOperator.Subtract));
@@ -148,7 +146,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt16ExpressionMediator operator /(short? a, DoubleCeilingFunctionExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableInt16ExpressionMediator(new LiteralExpression<short?>(a)), new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableInt16ExpressionMediator operator %(short? a, DoubleCeilingFunctionExpression b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new NullableInt16ExpressionMediator(new LiteralExpression<short?>(a)), new Int16ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region int
         public static Int32ExpressionMediator operator +(DoubleCeilingFunctionExpression a, int b) => new Int32ExpressionMediator(new ArithmeticExpression(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), ArithmeticExpressionOperator.Add));
         public static Int32ExpressionMediator operator -(DoubleCeilingFunctionExpression a, int b) => new Int32ExpressionMediator(new ArithmeticExpression(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), ArithmeticExpressionOperator.Subtract));
@@ -174,7 +172,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt32ExpressionMediator operator /(int? a, DoubleCeilingFunctionExpression b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableInt32ExpressionMediator operator %(int? a, DoubleCeilingFunctionExpression b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region long
         public static Int64ExpressionMediator operator +(DoubleCeilingFunctionExpression a, long b) => new Int64ExpressionMediator(new ArithmeticExpression(new Int64ExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), ArithmeticExpressionOperator.Add));
         public static Int64ExpressionMediator operator -(DoubleCeilingFunctionExpression a, long b) => new Int64ExpressionMediator(new ArithmeticExpression(new Int64ExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), ArithmeticExpressionOperator.Subtract));
@@ -200,7 +198,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt64ExpressionMediator operator /(long? a, DoubleCeilingFunctionExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableInt64ExpressionMediator(new LiteralExpression<long?>(a)), new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static NullableInt64ExpressionMediator operator %(long? a, DoubleCeilingFunctionExpression b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new NullableInt64ExpressionMediator(new LiteralExpression<long?>(a)), new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -217,7 +215,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableByteExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableByteExpressionMediator b) => new NullableByteExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableByteExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableByteExpressionMediator b) => new NullableByteExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region decimal
         public static DecimalExpressionMediator operator +(DoubleCeilingFunctionExpression a, DecimalExpressionMediator b) => new DecimalExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static DecimalExpressionMediator operator -(DoubleCeilingFunctionExpression a, DecimalExpressionMediator b) => new DecimalExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -231,7 +229,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDecimalExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableDecimalExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableDecimalExpressionMediator b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region double
         public static DoubleExpressionMediator operator +(DoubleCeilingFunctionExpression a, DoubleExpressionMediator b) => new DoubleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static DoubleExpressionMediator operator -(DoubleCeilingFunctionExpression a, DoubleExpressionMediator b) => new DoubleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -245,7 +243,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableDoubleExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableDoubleExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region float
         public static SingleExpressionMediator operator +(DoubleCeilingFunctionExpression a, SingleExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static SingleExpressionMediator operator -(DoubleCeilingFunctionExpression a, SingleExpressionMediator b) => new SingleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -259,7 +257,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableSingleExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableSingleExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableSingleExpressionMediator b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region short
         public static Int16ExpressionMediator operator +(DoubleCeilingFunctionExpression a, Int16ExpressionMediator b) => new Int16ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static Int16ExpressionMediator operator -(DoubleCeilingFunctionExpression a, Int16ExpressionMediator b) => new Int16ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -273,7 +271,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt16ExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableInt16ExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableInt16ExpressionMediator b) => new NullableInt16ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region int
         public static Int32ExpressionMediator operator +(DoubleCeilingFunctionExpression a, Int32ExpressionMediator b) => new Int32ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static Int32ExpressionMediator operator -(DoubleCeilingFunctionExpression a, Int32ExpressionMediator b) => new Int32ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -287,7 +285,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt32ExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableInt32ExpressionMediator b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableInt32ExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableInt32ExpressionMediator b) => new NullableInt32ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #region long
         public static Int64ExpressionMediator operator +(DoubleCeilingFunctionExpression a, Int64ExpressionMediator b) => new Int64ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         public static Int64ExpressionMediator operator -(DoubleCeilingFunctionExpression a, Int64ExpressionMediator b) => new Int64ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Subtract));
@@ -301,7 +299,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt64ExpressionMediator operator /(DoubleCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Divide));
         public static NullableInt64ExpressionMediator operator %(DoubleCeilingFunctionExpression a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(new DoubleExpressionMediator(a), b, ArithmeticExpressionOperator.Modulo));
         #endregion
-
+        
         #endregion
         #endregion
 

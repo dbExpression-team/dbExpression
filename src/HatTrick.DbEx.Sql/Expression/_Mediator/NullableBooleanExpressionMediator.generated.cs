@@ -11,17 +11,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators 
-        #region data type
+        #region data type 
         #endregion
 
         #region fields
         #endregion
 
         #region mediators
-        #endregion
-
-        #region alias
-        //moved to non-generated file
         #endregion
         #endregion
 

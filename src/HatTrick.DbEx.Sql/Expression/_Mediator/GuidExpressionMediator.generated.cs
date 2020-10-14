@@ -19,10 +19,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region mediators
         #endregion
-
-        #region alias
-        //moved to non-generated file
-        #endregion
         #endregion
 
         #region filter operators

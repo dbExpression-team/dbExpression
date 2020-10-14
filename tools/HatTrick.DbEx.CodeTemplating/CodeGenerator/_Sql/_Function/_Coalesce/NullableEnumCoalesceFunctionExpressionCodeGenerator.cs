@@ -16,7 +16,6 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.FunctionName = functionName;
             model.Namespace = @namespace;
             model.Type = typeModel;
-            model.IsOrderBySupported = true;
             model.IsGroupBySupported = true;
             model.FilterOperations = FilterBuilder.CreateBuilder().AddEqual().AddNotEqual().ToList();
         }
