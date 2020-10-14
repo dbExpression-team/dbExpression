@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region arithmetic operators 
-        #region data type
+        #region data type 
         #region byte
         public static NullableDateTimeExpressionMediator operator +(NullableDateTimeExpressionMediator a, byte b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Add));
         public static NullableDateTimeExpressionMediator operator -(NullableDateTimeExpressionMediator a, byte b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new ByteExpressionMediator(new LiteralExpression<byte>(b)), ArithmeticExpressionOperator.Subtract));
@@ -294,10 +294,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
 
-        #endregion
-
-        #region alias
-        //moved to non-generated file
         #endregion
         #endregion
 

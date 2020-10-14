@@ -6,8 +6,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class StringFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params string[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new StringExpressionMediator(new InExpression<string>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<string> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new StringExpressionMediator(new InExpression<string>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params string[] value) => value is object ? new FilterExpression<bool>(new StringExpressionMediator(this), new StringExpressionMediator(new InExpression<string>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<string> value) => value is object ? new FilterExpression<bool>(new StringExpressionMediator(this), new StringExpressionMediator(new InExpression<string>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region set
@@ -38,130 +38,126 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
         #endregion
-
+        
         #region byte
 
 
 
         #endregion
-
+        
         #region decimal
 
 
 
         #endregion
-
+        
         #region DateTime
 
 
 
         #endregion
-
+        
         #region DateTimeOffset
 
 
 
         #endregion
-
+        
         #region double
 
 
 
         #endregion
-
+        
         #region float
 
 
 
         #endregion
-
+        
         #region Guid
 
 
 
         #endregion
-
+        
         #region short
 
 
 
         #endregion
-
+        
         #region int
 
 
 
         #endregion
-
+        
         #region long
 
 
 
         #endregion
-
+        
         #region string
         public static StringExpressionMediator operator +(StringFieldExpression a, string b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), ArithmeticExpressionOperator.Add));
 
         public static StringExpressionMediator operator +(string a, StringFieldExpression b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), ArithmeticExpressionOperator.Add));
 
         #endregion
-
+        
         #endregion
 
         #region fields
         #region bool
 
         #endregion
-
+        
         #region byte
 
         #endregion
-
+        
         #region decimal
 
         #endregion
-
+        
         #region DateTime
 
         #endregion
-
+        
         #region DateTimeOffset
 
         #endregion
-
+        
         #region double
 
         #endregion
-
+        
         #region float
 
         #endregion
-
+        
         #region Guid
 
         #endregion
-
+        
         #region short
 
         #endregion
-
+        
         #region int
 
         #endregion
-
+        
         #region long
 
         #endregion
-
+        
         #region string
         public static StringExpressionMediator operator +(StringFieldExpression a, StringFieldExpression b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(a), new StringExpressionMediator(b), ArithmeticExpressionOperator.Add));
 
         #endregion
-
-        #endregion
-
-        #region alias
-        //moved to non-generated file
+        
         #endregion
         #endregion
 

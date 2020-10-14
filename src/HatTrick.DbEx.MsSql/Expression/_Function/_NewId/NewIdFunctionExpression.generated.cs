@@ -1,7 +1,6 @@
 using System;
 using HatTrick.DbEx.Sql.Expression;
 
-
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class NewIdFunctionExpression

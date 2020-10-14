@@ -1,6 +1,4 @@
-
 using System;
-
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -24,124 +22,124 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
         #endregion
-
+        
         #region byte
 
 
 
         #endregion
-
+        
         #region decimal
 
 
 
         #endregion
-
+        
         #region DateTime
 
 
 
         #endregion
-
+        
         #region DateTimeOffset
 
 
 
         #endregion
-
+        
         #region double
 
 
 
         #endregion
-
+        
         #region float
 
 
 
         #endregion
-
+        
         #region Guid
 
 
 
         #endregion
-
+        
         #region short
 
 
 
         #endregion
-
+        
         #region int
 
 
 
         #endregion
-
+        
         #region long
 
 
 
         #endregion
-
+        
         #region string
 
 
 
         #endregion
-
+        
         #endregion
 
         #region mediator
         #region bool
 
         #endregion
-
+        
         #region byte
 
         #endregion
-
+        
         #region decimal
 
         #endregion
-
+        
         #region DateTime
 
         #endregion
-
+        
         #region DateTimeOffset
 
         #endregion
-
+        
         #region double
 
         #endregion
-
+        
         #region float
 
         #endregion
-
+        
         #region Guid
 
         #endregion
-
+        
         #region short
 
         #endregion
-
+        
         #region int
 
         #endregion
-
+        
         #region long
 
         #endregion
-
+        
         #region string
 
         #endregion
-
+        
         #endregion
         #endregion
 

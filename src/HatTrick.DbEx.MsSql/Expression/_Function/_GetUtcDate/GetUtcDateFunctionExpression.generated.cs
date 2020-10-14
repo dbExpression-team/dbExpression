@@ -1,7 +1,6 @@
 using System;
 using HatTrick.DbEx.Sql.Expression;
 
-
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class GetUtcDateFunctionExpression
@@ -28,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public static DateTimeExpressionMediator operator +(DateTime? a, GetUtcDateFunctionExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -37,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(GetUtcDateFunctionExpression a, NullableDateTimeExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new DateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         #endregion
-
+        
         #endregion
         #endregion
 

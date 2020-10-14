@@ -1,6 +1,4 @@
-
 using System;
-
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -26,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -34,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public static StringExpressionMediator operator +(StringConcatFunctionExpression a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
 
         #endregion
-
+        
         #endregion
         #endregion
 

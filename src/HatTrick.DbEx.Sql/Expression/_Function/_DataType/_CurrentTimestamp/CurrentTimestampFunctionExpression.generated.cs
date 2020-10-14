@@ -1,6 +1,5 @@
 using System;
 
-
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class CurrentTimestampFunctionExpression
@@ -27,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static DateTimeExpressionMediator operator +(DateTime? a, CurrentTimestampFunctionExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(a)), new DateTimeExpressionMediator(b), ArithmeticExpressionOperator.Add));
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -36,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(CurrentTimestampFunctionExpression a, NullableDateTimeExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new DateTimeExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         #endregion
-
+        
         #endregion
         #endregion
 

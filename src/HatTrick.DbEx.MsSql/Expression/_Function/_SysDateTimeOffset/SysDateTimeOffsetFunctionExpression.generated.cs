@@ -1,7 +1,6 @@
 using System;
 using HatTrick.DbEx.Sql.Expression;
 
-
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class SysDateTimeOffsetFunctionExpression
@@ -28,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public static DateTimeOffsetExpressionMediator operator +(DateTimeOffset? a, SysDateTimeOffsetFunctionExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(a)), new DateTimeOffsetExpressionMediator(b), ArithmeticExpressionOperator.Add));
         #endregion
-
+        
         #endregion
 
         #region mediator
@@ -37,7 +36,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public static NullableDateTimeOffsetExpressionMediator operator +(SysDateTimeOffsetFunctionExpression a, NullableDateTimeOffsetExpressionMediator b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new DateTimeOffsetExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
         #endregion
-
+        
         #endregion
         #endregion
 

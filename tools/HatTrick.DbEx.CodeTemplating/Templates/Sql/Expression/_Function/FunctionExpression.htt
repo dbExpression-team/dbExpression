@@ -1,0 +1,107 @@
+﻿{?var:mediatorType = Type-}
+{-?var:functionName = FunctionName-}
+using System;
+{-#each Usings-}
+using {$};
+{/each-}
+
+namespace {Namespace}
+{{
+    public partial class {:functionName}FunctionExpression
+    {{
+        #region implicit operators
+        public static implicit operator {:mediatorType.Name}ExpressionMediator({:functionName}FunctionExpression a) => new {:mediatorType.Name}ExpressionMediator(a);
+        public static implicit operator OrderByExpression({:functionName}FunctionExpression a) => new OrderByExpression(new {:mediatorType.Name}ExpressionMediator(a), OrderExpressionDirection.ASC);
+        {-#if IsGroupBySupported-}
+        public static implicit operator GroupByExpression({:functionName}FunctionExpression a) => new GroupByExpression(new {:mediatorType.Name}ExpressionMediator(a));
+        {-/if-}
+        #endregion
+
+        #region order
+        public override OrderByExpression Asc => new OrderByExpression(new {:mediatorType.Name}ExpressionMediator(this), OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(new {:mediatorType.Name}ExpressionMediator(this), OrderExpressionDirection.DESC);
+        #endregion
+
+        #region arithmetic operators
+        #region TValue
+        {-#each ArithmeticOperations-}
+        #region {$.OperationType.Alias}
+        {-#each Operations-}
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:functionName}FunctionExpression a, {..\$.OperationType.Alias} b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new {:mediatorType.Name}ExpressionMediator(a), new {..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}>(b)), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        {-/each-}
+
+        {-#each Operations-}
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({..\$.OperationType.Alias} a, {:functionName}FunctionExpression b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new {..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}>(a)), new {:mediatorType.Name}ExpressionMediator(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        {-/each-}
+
+        {-#each Operations-}
+        {-#if :mediatorType.IsNullable-}
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:functionName}FunctionExpression a, {..\$.OperationType.Alias}? b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new {:mediatorType.Name}ExpressionMediator(a), new Nullable{..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}?>(b)), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        {-/if-}
+        {-/each-}
+
+        {-#each Operations-}
+        {-#if :mediatorType.IsNullable-}
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({..\$.OperationType.Alias}? a, {:functionName}FunctionExpression b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new Nullable{..\$.OperationType.Name}ExpressionMediator(new LiteralExpression<{..\$.OperationType.Alias}?>(a)), new {:mediatorType.Name}ExpressionMediator(b), ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        {-/if-}
+        {-/each-}
+        #endregion
+        
+        {-/each-}
+        #endregion
+
+        #region mediator
+        {-#each ArithmeticOperations-}
+        #region {:mediatorType.Alias}
+        {-#each Operations-}
+        public static {:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:functionName}FunctionExpression a, {:mediatorType.Name}ExpressionMediator b) => new {:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new {:mediatorType.Name}ExpressionMediator(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        {-/each-}
+
+        {-#each Operations-}
+        {-#if :mediatorType.IsNullable-}
+        public static Nullable{:mediatorType.Name}ExpressionMediator operator {ArithmeticOperatorSymbol}({:functionName}FunctionExpression a, Nullable{:mediatorType.Name}ExpressionMediator b) => new Nullable{:mediatorType.Name}ExpressionMediator(new ArithmeticExpression(new {:mediatorType.Name}ExpressionMediator(a), b, ArithmeticExpressionOperator.{ArithmeticOperatorName}));
+        {-/if-}
+        {-/each-}
+        #endregion
+        
+        {-/each-}
+        #endregion
+        #endregion
+
+        #region filter operators
+        #region TValue
+        #region {:mediatorType.Name}
+        {-#each FilterOperations-}
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:functionName}FunctionExpression a, {:mediatorType.Alias} b) => new FilterExpression<bool>(new {:mediatorType.Name}ExpressionMediator(a), new {:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}>(b)), FilterExpressionOperator.{FilterOperatorName});
+        {-/each-}
+
+        {-#each FilterOperations-}
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:mediatorType.Alias} a, {:functionName}FunctionExpression b) => new FilterExpression<bool>(new {:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}>(a)), new {:mediatorType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName});
+        {-/each-}
+
+        {-#if :mediatorType.IsNullable-}
+        {-#each FilterOperations-}
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:functionName}FunctionExpression a, {:mediatorType.Alias}? b) => new FilterExpression<bool>(new {:mediatorType.Name}ExpressionMediator(a), new Nullable{:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}?>(b)), FilterExpressionOperator.{FilterOperatorName});
+        {-/each-}
+
+        {-#each FilterOperations-}
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:mediatorType.Alias}? a, {:functionName}FunctionExpression b) => new FilterExpression<bool>(new Nullable{:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}?>(a)), new {:mediatorType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName});
+        {-/each-}
+        {-/if-}
+        #endregion
+        #endregion
+
+        #region mediator
+        {-#each FilterOperations-}
+        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:functionName}FunctionExpression a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool>(new {:mediatorType.Name}ExpressionMediator(a), b, FilterExpressionOperator.{FilterOperatorName});
+        {-/each-}
+
+        {-#if :mediatorType.IsNullable-}
+        {-#each FilterOperations-}
+        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:functionName}FunctionExpression a, Nullable{:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool?>(new {:mediatorType.Name}ExpressionMediator(a), b, FilterExpressionOperator.{FilterOperatorName});
+        {-/each-}
+        {-/if-}
+        #endregion
+        #endregion
+    }}
+}}

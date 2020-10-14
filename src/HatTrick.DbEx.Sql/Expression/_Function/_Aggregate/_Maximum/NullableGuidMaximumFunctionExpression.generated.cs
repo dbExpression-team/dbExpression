@@ -1,6 +1,5 @@
 using System;
 
-
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableGuidMaximumFunctionExpression
@@ -23,80 +22,80 @@ namespace HatTrick.DbEx.Sql.Expression
 
         
         #endregion
-
+        
         #region decimal
 
 
 
         
         #endregion
-
+        
         #region double
 
 
 
         
         #endregion
-
+        
         #region float
 
 
 
         
         #endregion
-
+        
         #region short
 
 
 
         
         #endregion
-
+        
         #region int
 
 
 
         
         #endregion
-
+        
         #region long
 
 
 
         
         #endregion
-
+        
         #endregion
 
         #region mediator
         #region byte
 
         #endregion
-
+        
         #region decimal
 
         #endregion
-
+        
         #region double
 
         #endregion
-
+        
         #region float
 
         #endregion
-
+        
         #region short
 
         #endregion
-
+        
         #region int
 
         #endregion
-
+        
         #region long
 
         #endregion
-
+        
         #endregion
         #endregion
 

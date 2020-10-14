@@ -6,8 +6,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params Guid[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params Guid[] value) => value is object ? new FilterExpression<bool>(new GuidExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(new GuidExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
         #endregion
 
         #region isnull
@@ -44,10 +44,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region fields
-        #endregion
-
-        #region alias
-        //moved to non-generated file
         #endregion
         #endregion
 
