@@ -234,7 +234,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             [Theory]
             [MsSqlVersions.AllVersions]
-            public void Does_Integrated_ship_date_equal_to_nullI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_have_7_records(int version, int expected = 7)
+            public void Does_Inegated_ship_date_equal_to_nullI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_have_7_records(int version, int expected = 7)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -252,7 +252,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             [Theory]
             [MsSqlVersions.AllVersions]
-            public void Does_Integrated_ship_date_equal_to_nowI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_have_7_records(int version, int expected = 7)
+            public void Does_Inegated_ship_date_equal_to_nowI_and_Inegated_total_purchase_amount_greater_than_55_or_less_than_10I_have_7_records(int version, int expected = 7)
             {
                 //given
                 ConfigureForMsSqlVersion(version);
@@ -266,6 +266,42 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 //then
                 purchases.Should().HaveCount(expected);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Can_select_many_addresses_where_line2_is_null_succeed(int version, int expected = 27)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectMany(dbo.Address.Id)
+                   .From(dbo.Address)
+                   .Where(dbo.Address.Line2 == DBNull.Value);
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(expected);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Can_select_many_person_ids_where_that_have_no_address(int version, int expected = 15)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                //when               
+                var personsWithNoAddresses = db.SelectMany(dbo.Person.Id)
+                   .From(dbo.Person)
+                   .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                   .Where(dbo.PersonAddress.AddressId == DBNull.Value)
+                   .Execute();
+
+                //then
+                personsWithNoAddresses.Should().HaveCount(expected);
             }
             #endregion
         }

@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region internals
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
-        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators());
+        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => $" {x} "));
         #endregion
 
         #region methods
@@ -81,9 +81,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             builder.AppendPart(expression.LeftArg, context);
 
-            builder.Appender.Write(' ');
             builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-            builder.Appender.Write(' ');
             context.PushField(expression.LeftArg.Expression as FieldExpression);
             try
             {

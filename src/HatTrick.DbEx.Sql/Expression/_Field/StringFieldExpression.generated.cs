@@ -162,6 +162,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(StringFieldExpression a, DBNull b) => new FilterExpression<bool?>(new StringExpressionMediator(a), new NullableStringExpressionMediator(new NullableLiteralExpression<string>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(StringFieldExpression a, DBNull b) => new FilterExpression<bool?>(new StringExpressionMediator(a), new NullableStringExpressionMediator(new NullableLiteralExpression<string>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, StringFieldExpression b) => new FilterExpression<bool?>(new NullableStringExpressionMediator(new NullableLiteralExpression<string>()), new StringExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, StringFieldExpression b) => new FilterExpression<bool?>(new NullableStringExpressionMediator(new NullableLiteralExpression<string>()), new StringExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region string
         public static FilterExpression<bool> operator ==(StringFieldExpression a, string b) => new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(StringFieldExpression a, string b) => new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.NotEqual);

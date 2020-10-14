@@ -40,6 +40,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(GuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(GuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new GuidExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region Guid
         public static FilterExpression<bool> operator ==(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.NotEqual);

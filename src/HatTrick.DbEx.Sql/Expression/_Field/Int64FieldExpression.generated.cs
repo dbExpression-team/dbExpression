@@ -373,6 +373,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(Int64FieldExpression a, DBNull b) => new FilterExpression<bool?>(new Int64ExpressionMediator(a), new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(Int64FieldExpression a, DBNull b) => new FilterExpression<bool?>(new Int64ExpressionMediator(a), new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, Int64FieldExpression b) => new FilterExpression<bool?>(new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>()), new Int64ExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, Int64FieldExpression b) => new FilterExpression<bool?>(new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>()), new Int64ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region long
         public static FilterExpression<bool> operator ==(Int64FieldExpression a, long b) => new FilterExpression<bool>(new Int64ExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(Int64FieldExpression a, long b) => new FilterExpression<bool>(new Int64ExpressionMediator(a), new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.NotEqual);

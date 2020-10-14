@@ -38,325 +38,167 @@ namespace HatTrick.DbEx.Tools.Service
         #region get assembly type
         public Type GetAssemblyType(SqlDbType sqlDbType)
         {
-            Type t = null;
             switch (sqlDbType)
             {
-                case SqlDbType.BigInt:
-                    t = typeof(long);
-                    break;
-                case SqlDbType.Binary:
-                    t = typeof(byte[]);
-                    break;
-                case SqlDbType.Bit:
-                    t = typeof(bool);
-                    break;
-                case SqlDbType.Char:
-                    t = typeof(char);
-                    break;
-                case SqlDbType.Date:
-                    t = typeof(DateTime);
-                    break;
-                case SqlDbType.DateTime:
-                    t = typeof(DateTime);
-                    break;
-                case SqlDbType.DateTime2:
-                    t = typeof(DateTime);
-                    break;
-                case SqlDbType.DateTimeOffset:
-                    t = typeof(DateTimeOffset);
-                    break;
-                case SqlDbType.Decimal:
-                    t = typeof(decimal);
-                    break;
-                case SqlDbType.Float:
-                    t = typeof(double);
-                    break;
-                case SqlDbType.Image:
-                    t = typeof(byte[]);
-                    break;
-                case SqlDbType.Int:
-                    t = typeof(int);
-                    break;
-                case SqlDbType.Money:
-                    t = typeof(decimal);
-                    break;
-                case SqlDbType.NChar:
-                    t = typeof(string);
-                    break;
-                case SqlDbType.NText:
-                    t = typeof(string);
-                    break;
-                case SqlDbType.NVarChar:
-                    t = typeof(string);
-                    break;
-                case SqlDbType.Real:
-                    t = typeof(Single);
-                    break;
-                case SqlDbType.SmallDateTime:
-                    t = typeof(DateTime);
-                    break;
-                case SqlDbType.SmallInt:
-                    t = typeof(Int16);
-                    break;
-                case SqlDbType.SmallMoney:
-                    t = typeof(decimal);
-                    break;
-                case SqlDbType.Structured:
-                    t = typeof(object);
-                    break;
-                case SqlDbType.Text:
-                    t = typeof(string);
-                    break;
-                case SqlDbType.Time:
-                    t = typeof(TimeSpan);
-                    break;
-                case SqlDbType.Timestamp:
-                    t = typeof(byte[]);
-                    break;
-                case SqlDbType.TinyInt:
-                    t = typeof(byte);
-                    break;
-                case SqlDbType.Udt:
-                    t = typeof(object);
-                    break;
-                case SqlDbType.UniqueIdentifier:
-                    t = typeof(Guid);
-                    break;
-                case SqlDbType.VarBinary:
-                    t = typeof(byte[]);
-                    break;
-                case SqlDbType.VarChar:
-                    t = typeof(string);
-                    break;
-                case SqlDbType.Variant:
-                    t = typeof(object);
-                    break;
-                case SqlDbType.Xml:
-                    t = typeof(object);
-                    break;
-                default:
-                    t = typeof(object);
-                    break;
-            }
+                case SqlDbType.BigInt: return typeof(long);
 
-            return t;
+                case SqlDbType.Binary:
+                case SqlDbType.Image:
+                case SqlDbType.VarBinary: return typeof(byte[]);
+
+                case SqlDbType.Bit: return typeof(bool);
+
+                case SqlDbType.Char:
+                case SqlDbType.NChar:
+                case SqlDbType.NText:
+                case SqlDbType.NVarChar:
+                case SqlDbType.Text:
+                case SqlDbType.VarChar: return typeof(string);
+
+                case SqlDbType.Date:
+                case SqlDbType.DateTime:
+                case SqlDbType.DateTime2:
+                case SqlDbType.SmallDateTime: return typeof(DateTime);
+
+                case SqlDbType.DateTimeOffset: return typeof(DateTimeOffset);
+
+                case SqlDbType.Decimal: return typeof(decimal);
+
+                case SqlDbType.Float:
+                case SqlDbType.Money:
+                case SqlDbType.SmallMoney: return typeof(double);
+
+                case SqlDbType.Int: return typeof(int);
+
+                case SqlDbType.SmallInt: return typeof(short);
+
+                case SqlDbType.TinyInt: return typeof(byte);
+
+                case SqlDbType.UniqueIdentifier: return typeof(Guid);
+
+                case SqlDbType.Real:
+                case SqlDbType.Structured:
+                case SqlDbType.Time:
+                case SqlDbType.Timestamp:
+                case SqlDbType.Udt:
+                case SqlDbType.Variant:
+                case SqlDbType.Xml:
+                default:
+                    throw new NotImplementedException();
+            }
         }
         #endregion
 
         #region get assembly type
         public string GetAssemblyTypeShortName(SqlDbType sqlDbType, bool isNullable)
         {
-            string nm = null;
+            string format(string name, bool allowNull) => allowNull ? $"{name}?" : name;
+
             switch (sqlDbType)
             {
-                case SqlDbType.BigInt:
-                    nm = isNullable ? "long?" : "long";
-                    break;
-                case SqlDbType.Binary:
-                    nm = "byte[]";
-                    break;
-                case SqlDbType.Bit:
-                    nm = isNullable ? "bool?" : "bool";
-                    break;
-                case SqlDbType.Char:
-                    //nm = isNullable ? "char?" : "char";
-                    nm = "string";
-                    break;
-                case SqlDbType.Date:
-                    nm = isNullable ? "DateTime?" : "DateTime";
-                    break;
-                case SqlDbType.DateTime:
-                    nm = isNullable ? "DateTime?" : "DateTime";
-                    break;
-                case SqlDbType.DateTime2:
-                    nm = isNullable ? "DateTime?" : "DateTime";
-                    break;
-                case SqlDbType.DateTimeOffset:
-                    nm = isNullable ? "DateTimeOffset?" : "DateTimeOffset";
-                    break;
-                case SqlDbType.Decimal:
-                    nm = isNullable ? "decimal?" : "decimal";
-                    break;
-                case SqlDbType.Float:
-                    nm = isNullable ? "double?" : "double";
-                    break;
-                case SqlDbType.Image:
-                    nm = "byte[]";
-                    break;
-                case SqlDbType.Int:
-                    nm = isNullable ? "int?" : "int";
-                    break;
-                case SqlDbType.Money:
-                    nm = isNullable ? "double?" : "double";
-                    break;
-                case SqlDbType.NChar:
-                    nm = "string";
-                    break;
-                case SqlDbType.NText:
-                    nm = "string";
-                    break;
-                case SqlDbType.NVarChar:
-                    nm = "string";
-                    break;
-                case SqlDbType.Real:
-                    nm = isNullable ? "Single?" : "Single";
-                    break;
-                case SqlDbType.SmallDateTime:
-                    nm = isNullable ? "DateTime?" : "DateTime";
-                    break;
-                case SqlDbType.SmallInt:
-                    nm = isNullable ? "Int16?" : "Int16";
-                    break;
-                case SqlDbType.SmallMoney:
-                    nm = isNullable ? "double?" : "double";
-                    break;
-                case SqlDbType.Structured:
-                    nm = "object";
-                    break;
-                case SqlDbType.Text:
-                    nm = "string";
-                    break;
-                case SqlDbType.Time:
-                    nm = isNullable ? "Timespan?" : "TimeSpan";
-                    break;
-                case SqlDbType.Timestamp:
-                    nm = "byte[]";
-                    break;
-                case SqlDbType.TinyInt:
-                    nm = isNullable ? "byte?" : "byte";
-                    break;
-                case SqlDbType.Udt:
-                    nm = "object";
-                    break;
-                case SqlDbType.UniqueIdentifier:
-                    nm = isNullable ? "Guid?" : "Guid";
-                    break;
-                case SqlDbType.VarBinary:
-                    nm = "byte[]";
-                    break;
-                case SqlDbType.VarChar:
-                    nm = "string";
-                    break;
-                case SqlDbType.Variant:
-                    nm = "object";
-                    break;
-                case SqlDbType.Xml:
-                    nm = "object";
-                    break;
-                default:
-                    nm = "object";
-                    break;
-            }
+                case SqlDbType.BigInt: return format("long", isNullable);
 
-            return nm;
+                case SqlDbType.Binary:
+                case SqlDbType.Image:
+                case SqlDbType.VarBinary: return format("byte[]", false);
+
+                case SqlDbType.Bit: return format("bool", isNullable);
+
+                case SqlDbType.Char:
+                case SqlDbType.NChar:
+                case SqlDbType.NText:
+                case SqlDbType.NVarChar:
+                case SqlDbType.Text:
+                case SqlDbType.VarChar: return format("string", false);
+
+                case SqlDbType.Date:
+                case SqlDbType.DateTime:
+                case SqlDbType.DateTime2:
+                case SqlDbType.SmallDateTime: return format(nameof(DateTime), isNullable);
+
+                case SqlDbType.DateTimeOffset: return format(nameof(DateTimeOffset), isNullable);
+
+                case SqlDbType.Decimal: return format("decimal", isNullable);
+
+                case SqlDbType.Float:
+                case SqlDbType.Money:
+                case SqlDbType.SmallMoney: return format("double", isNullable);
+
+                case SqlDbType.Int: return format("int", isNullable);
+
+                case SqlDbType.SmallInt: return format("short", isNullable);
+
+                case SqlDbType.TinyInt: return format("byte", isNullable);
+
+                case SqlDbType.UniqueIdentifier: return format(nameof(Guid), isNullable);
+
+                case SqlDbType.Real:
+                case SqlDbType.Structured:
+                case SqlDbType.Time:
+                case SqlDbType.Timestamp:
+                case SqlDbType.Udt:
+                case SqlDbType.Variant:
+                case SqlDbType.Xml:
+                default:
+                    throw new NotImplementedException();
+            }
         }
         #endregion
 
         #region resolve field expression name
         public string GetFieldExpressionTypeName(SqlDbType sqlDbType, bool isNullable)
         {
-            string nm = null;
+            string format(string name) => isNullable ? $"Nullable{name}FieldExpression" : $"{name}FieldExpression";
+
             switch (sqlDbType)
             {
-                case SqlDbType.BigInt:
-                    nm = isNullable ? "NullableInt64FieldExpression?" : "Int64FieldExpression";
-                    break;
+                case SqlDbType.BigInt: return format(nameof(Int64));
+
                 case SqlDbType.Binary:
-                    nm = "ByteArrayFieldExpression";
-                    break;
-                case SqlDbType.Bit:
-                    nm = isNullable ? "NullableBooleanFieldExpression" : "BooleanFieldExpression";
-                    break;
-                case SqlDbType.Char:
-                    nm = "StringFieldExpression";
-                    break;
-                case SqlDbType.Date:
-                    nm = isNullable ? "NullableDateTimeFieldExpression" : "DateTimeFieldExpression";
-                    break;
-                case SqlDbType.DateTime:
-                    nm = isNullable ? "NullableDateTimeFieldExpression" : "DateTimeFieldExpression";
-                    break;
-                case SqlDbType.DateTime2:
-                    nm = isNullable ? "NullableDateTimeFieldExpression" : "DateTimeFieldExpression";
-                    break;
-                case SqlDbType.DateTimeOffset:
-                    nm = isNullable ? "NullableDateTimeOffsetFieldExpression" : "DateTimeOffsetFieldExpression";
-                    break;
-                case SqlDbType.Decimal:
-                    nm = isNullable ? "NullableDecimalFieldExpression" : "DecimalFieldExpression";
-                    break;
-                case SqlDbType.Float:
-                    nm = isNullable ? "NullableDoubleFieldExpression" : "DoubleFieldExpression";
-                    break;
                 case SqlDbType.Image:
-                    nm = "ByteArrayFieldExpression";
-                    break;
-                case SqlDbType.Int:
-                    nm = isNullable ? "NullableInt32FieldExpression" : "Int32FieldExpression";
-                    break;
-                case SqlDbType.Money:
-                    nm = isNullable ? "NullableDoubleFieldExpression" : "DoubleFieldExpression";
-                    break;
+                case SqlDbType.VarBinary: return format("ByteArray");
+
+                case SqlDbType.Bit: return format(nameof(Boolean));
+
+                case SqlDbType.Char:
                 case SqlDbType.NChar:
-                    nm = "StringFieldExpression";
-                    break;
                 case SqlDbType.NText:
-                    nm = "StringFieldExpression";
-                    break;
                 case SqlDbType.NVarChar:
-                    nm = "StringFieldExpression";
-                    break;
-                case SqlDbType.Real:
-                    //nm = isNullable ? "Single?" : "Single";
-                    throw new NotImplementedException();
-                case SqlDbType.SmallDateTime:
-                    nm = isNullable ? "NullableDateTimeFieldExpression" : "DateTimeFieldExpression";
-                    break;
-                case SqlDbType.SmallInt:
-                    nm = isNullable ? "NullableInt16FieldExpression" : "Int16FieldExpression";
-                    break;
-                case SqlDbType.SmallMoney:
-                    nm = isNullable ? "NullableDoubleFieldExpression" : "DoubleFieldExpression";
-                    break;
-                case SqlDbType.Structured:
-                    //nm = "object";
-                    throw new NotImplementedException();
                 case SqlDbType.Text:
-                    nm = "StringFieldExpression";
-                    break;
+                case SqlDbType.VarChar: return format(nameof(String));
+
+                case SqlDbType.Date:
+                case SqlDbType.DateTime:
+                case SqlDbType.DateTime2:
+                case SqlDbType.SmallDateTime: return format(nameof(DateTime));
+
+                case SqlDbType.DateTimeOffset: return format(nameof(DateTimeOffset));
+
+                case SqlDbType.Decimal: return format(nameof(Decimal));
+
+                case SqlDbType.Float: return format(nameof(Double));
+
+                case SqlDbType.Int: return format(nameof(Int32));
+
+                case SqlDbType.Money:
+                case SqlDbType.SmallMoney: return format(nameof(Double));
+
+                case SqlDbType.SmallInt: return format(nameof(Int16));
+
+                case SqlDbType.TinyInt: return format(nameof(Byte));
+
+                case SqlDbType.UniqueIdentifier: return format(nameof(Guid));
+                
+                case SqlDbType.Real:
+                case SqlDbType.Structured:
                 case SqlDbType.Time:
-                    //nm = isNullable ? "Timespan?" : "TimeSpan";
-                    throw new NotImplementedException();
                 case SqlDbType.Timestamp:
-                    //nm = "byte[]";
-                    throw new NotImplementedException();
-                case SqlDbType.TinyInt:
-                    nm = isNullable ? "NullableByteFieldExpression" : "ByteFieldExpression";
-                    break;
                 case SqlDbType.Udt:
-                    //nm = "object";
-                    throw new NotImplementedException();
-                case SqlDbType.UniqueIdentifier:
-                    nm = isNullable ? "NullableGuidFieldExpression" : "GuidFieldExpression";
-                    break;
-                case SqlDbType.VarBinary:
-                    nm = "ByteArrayFieldExpression";
-                    break;
-                case SqlDbType.VarChar:
-                    nm = "StringFieldExpression";
-                    break;
                 case SqlDbType.Variant:
-                    //nm = "object";
-                    throw new NotImplementedException();
                 case SqlDbType.Xml:
-                    //nm = "object";
-                    throw new NotImplementedException();
                 default:
-                    //nm = "object";
                     throw new NotImplementedException();
             }
-
-            return nm;
         }
         #endregion
     }

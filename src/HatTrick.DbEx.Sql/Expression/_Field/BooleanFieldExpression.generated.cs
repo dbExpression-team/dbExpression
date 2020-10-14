@@ -40,6 +40,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region filter operators
+        #region DBNull
+        public static FilterExpression<bool?> operator ==(BooleanFieldExpression a, DBNull b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>()), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(BooleanFieldExpression a, DBNull b) => new FilterExpression<bool?>(new BooleanExpressionMediator(a), new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>()), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool?> operator ==(DBNull a, BooleanFieldExpression b) => new FilterExpression<bool?>(new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>()), new BooleanExpressionMediator(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool?> operator !=(DBNull a, BooleanFieldExpression b) => new FilterExpression<bool?>(new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>()), new BooleanExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        #endregion
+
         #region bool
         public static FilterExpression<bool> operator ==(BooleanFieldExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.Equal);
         public static FilterExpression<bool> operator !=(BooleanFieldExpression a, bool b) => new FilterExpression<bool>(new BooleanExpressionMediator(a), new BooleanExpressionMediator(new LiteralExpression<bool>(b)), FilterExpressionOperator.NotEqual);
