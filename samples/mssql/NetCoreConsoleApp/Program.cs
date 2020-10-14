@@ -27,11 +27,10 @@ namespace NetCoreConsoleApp
             sw.Reset();
 
             sw.Start();
-            //RunSelectExpressions();
-            //RunSimpleInsertExpression();
-            //RunTransactionalInsertExpression();
-            //RunBatchInsertExpression();
+            RunSelectExpressions();
+            RunInsertExpressions();
             RunUpdateExpressions();
+            RunDeleteExpressions();
             sw.Stop();
 
             Console.WriteLine($"Queries complete in {sw.ElapsedMilliseconds} milliseconds.");
@@ -89,151 +88,168 @@ namespace NetCoreConsoleApp
             var respz = select.FindAllPeopleInfoHavingMoreThanOneAddress();
             var resp1 = select.GetCompleteBillingAddressInfoByPersonId(2);
             var resp2 = select.GetAllPersonPurchaseCountAndTotalPurchasePriceInfoByZipCode("80456");
+            var resp3 = select.SelectPersonTotalPurchaseToCreditLimitReport();
+            var resp4 = select.SelectVIPByPurchaseCountAndYear(3, 2020);
         }
         #endregion
 
-        #region run simple insert expressions
-        static void RunSimpleInsertExpression()
+        #region run insert expressions
+        static void RunInsertExpressions()
         {
             InsertExpressions inserts = new InsertExpressions();
 
-			var p = new Person() 
-            { 
-                FirstName = "Charlie", 
-                LastName = "Brown", 
-                BirthDate = new DateTime(1950, 10, 1), 
-                GenderType = GenderType.Male, 
-                CreditLimit = 4500, 
-                YearOfLastCreditLimitReview = 2019,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            inserts.SimpleInsertPerson(p);
-		}
-        #endregion
-
-        #region run transactional insert expression
-        static void RunTransactionalInsertExpression()
-        {
-            InsertExpressions insert = new InsertExpressions();
-
-            var p = new Person()
+            #region simple insert
             {
-                FirstName = "Mickey",
-                LastName = "Mouse",
-                BirthDate = new DateTime(1928, 11, 18),
-                GenderType = GenderType.Male,
-                CreditLimit = 80000,
-                YearOfLastCreditLimitReview = 2020,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
 
-            var a = new Address()
+                var p = new Person()
+                {
+                    FirstName = "Charlie",
+                    LastName = "Brown",
+                    BirthDate = new DateTime(1950, 10, 1),
+                    GenderType = GenderType.Male,
+                    CreditLimit = 4500,
+                    YearOfLastCreditLimitReview = 2019,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                inserts.SimpleInsertPerson(p);
+            }
+            #endregion
+
+            #region transactional insert
             {
-                Line1 = "101 Disney Way",
-                Line2 = "Suite 210",
-                City = "Burbank",
-                State = "CA",
-                Zip = "91508",
-                AddressType = AddressType.Mailing,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
+                var p = new Person()
+                {
+                    FirstName = "Mickey",
+                    LastName = "Mouse",
+                    BirthDate = new DateTime(1928, 11, 18),
+                    GenderType = GenderType.Male,
+                    CreditLimit = 80000,
+                    YearOfLastCreditLimitReview = 2020,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
 
-            insert.TransactionalInsertPersonAndAddress(p, a);
+                var a = new Address()
+                {
+                    Line1 = "101 Disney Way",
+                    Line2 = "Suite 210",
+                    City = "Burbank",
+                    State = "CA",
+                    Zip = "91508",
+                    AddressType = AddressType.Mailing,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                inserts.TransactionalInsertPersonAndAddress(p, a);
+            }
+            #endregion
+
+            #region batch insert
+            {
+                var p1 = new Person()
+                {
+                    FirstName = "Bugs",
+                    LastName = "Bunny",
+                    BirthDate = new DateTime(1940, 6, 27),
+                    GenderType = GenderType.Male,
+                    CreditLimit = 75000,
+                    YearOfLastCreditLimitReview = 2018,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                var p2 = new Person()
+                {
+                    FirstName = "Elmer",
+                    LastName = "Fudd",
+                    BirthDate = new DateTime(1940, 3, 2),
+                    GenderType = GenderType.Male,
+                    CreditLimit = 1200,
+                    YearOfLastCreditLimitReview = 2018,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                var p3 = new Person()
+                {
+                    FirstName = "Porky",
+                    LastName = "Pig",
+                    BirthDate = new DateTime(1935, 3, 2),
+                    GenderType = GenderType.Male,
+                    CreditLimit = 7500,
+                    YearOfLastCreditLimitReview = 2018,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                var p4 = new Person()
+                {
+                    FirstName = "Daffy",
+                    LastName = "Duck",
+                    BirthDate = new DateTime(1937, 4, 17),
+                    GenderType = GenderType.Male,
+                    CreditLimit = 10000,
+                    YearOfLastCreditLimitReview = 2015,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                var p5 = new Person()
+                {
+                    FirstName = "Witch",
+                    LastName = "Hazel",
+                    BirthDate = new DateTime(1954, 7, 24),
+                    GenderType = GenderType.Female,
+                    CreditLimit = 35000,
+                    YearOfLastCreditLimitReview = 2016,
+                    DateCreated = DateTime.Now,
+                    DateUpdated = DateTime.Now
+                };
+
+                inserts.BatchInsertPeople(p1, p2, p3, p4, p5);
+            }
+            #endregion
         }
-        #endregion
+		#endregion
 
-        #region run batch insert expression
-        static void RunBatchInsertExpression()
-        {
-            InsertExpressions insert = new InsertExpressions();
-
-            var p1 = new Person()
-            {
-                FirstName = "Bugs",
-                LastName = "Bunny",
-                BirthDate = new DateTime(1940, 6, 27),
-                GenderType = GenderType.Male,
-                CreditLimit = 75000,
-                YearOfLastCreditLimitReview = 2018,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            var p2 = new Person()
-            {
-                FirstName = "Elmer",
-                LastName = "Fudd",
-                BirthDate = new DateTime(1940, 3, 2),
-                GenderType = GenderType.Male,
-                CreditLimit = 1200,
-                YearOfLastCreditLimitReview = 2018,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            var p3 = new Person()
-            {
-                FirstName = "Porky",
-                LastName = "Pig",
-                BirthDate = new DateTime(1935, 3, 2),
-                GenderType = GenderType.Male,
-                CreditLimit = 7500,
-                YearOfLastCreditLimitReview = 2018,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            var p4 = new Person()
-            {
-                FirstName = "Daffy",
-                LastName = "Duck",
-                BirthDate = new DateTime(1937, 4, 17),
-                GenderType = GenderType.Male,
-                CreditLimit = 10000,
-                YearOfLastCreditLimitReview = 2015,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            var p5 = new Person()
-            {
-                FirstName = "Witch",
-                LastName = "Hazel",
-                BirthDate = new DateTime(1954, 7, 24),
-                GenderType = GenderType.Female,
-                CreditLimit = 35000,
-                YearOfLastCreditLimitReview = 2016,
-                DateCreated = DateTime.Now,
-                DateUpdated = DateTime.Now
-            };
-
-            insert.BatchInsertPeople(p1, p2, p3, p4, p5);
-        }
-        #endregion
-
-        #region simple update expressions
+        #region run update expressions
         static void RunUpdateExpressions()
         {
             var updates = new UpdateExpressions();
 
-            updates.SimpleUpdatePersonSetCreditScore(1, 50000);
+			#region simple update
+			updates.SimpleUpdatePersonSetCreditScore(1, 50000);
+			#endregion
 
-            updates.UpdateCreditLimitForAllGenderMatchWithinZip(GenderType.Female, "80440", 1500);
+			#region join based update
+			updates.UpdateCreditLimitForAllGenderMatchWithinZip(GenderType.Female, "80440", 1500);
+			#endregion
 
-        }
-        #endregion
+			#region transactional update
+			updates.UpdatePersonNameAndBillingAddressTransactional(
+                2, 
+                "Butters2", 
+                "Scotch2", 
+                new Address() 
+                { Line1 = "111 Main St", Line2 = "Suite 200", City = "Dallas", State = "TX", Zip = "75001" }
+            );
+			#endregion
+		}
+		#endregion
 
-        #region simple update expression
-        static void RunSimpleUpdateExpression()
+		#region run delete expressions
+		static void RunDeleteExpressions()
         {
-            var updates = new UpdateExpressions();
+            var deletes = new DeleteExpressions();
 
-            updates.SimpleUpdatePersonSetCreditScore(1, 50000);
+            deletes.DeleteProductById(9);
 
+            deletes.DeleteProductsNeverPurchased();
+
+            deletes.DeleteAPersonAndAllAssociatedDataById(3);
         }
         #endregion
     }

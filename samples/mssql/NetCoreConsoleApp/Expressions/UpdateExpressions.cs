@@ -11,9 +11,16 @@ namespace NetCoreConsoleApp
 {
 	public class UpdateExpressions
 	{
-		#region simple update person credit score
+		#region simple update
 		public void SimpleUpdatePersonSetCreditScore(int personId, int creditLimit)
 		{
+			//update dbo.Person
+			//set 
+			//	dbo.Person.CreditLimit = {creditLimit}, 
+			//	dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE()), 
+			//	DateUpdated = GETDATE()
+			//from dbo.Person
+			//where dbo.Person.Id = {personId};
 			db.Update(
 					dbo.Person.CreditLimit.Set(creditLimit), 
 					dbo.Person.YearOfLastCreditLimitReview.Set(DateTime.Now.Year),
@@ -25,11 +32,20 @@ namespace NetCoreConsoleApp
 		}
 		#endregion
 
-		#region update credit limit for all females within zip
+		#region cross table update (join based updates)
 		public int UpdateCreditLimitForAllGenderMatchWithinZip(GenderType gender, string zip, int increase)
 		{
+			//update dbo.Person
+			//set
+			//	dbo.Person.CreditLimit = (dbo.Person.CreditLimit + {increase}), 
+			//	dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE()), 
+			//	DateUpdated = GETDATE()
+			//from dbo.Person
+			//inner join dbo.Person_Address on dbo.Person_Address.PersonId = dbo.Person.Id
+			//inner join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
+			//where dbo.Address.Zip = {zip} and dbo.Person.GenderType = {gender};
 			int rowCount = db.Update(
-					dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + increase),
+					dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + increase), //server side arithmetic
 					dbo.Person.YearOfLastCreditLimitReview.Set(DateTime.Now.Year),
 					dbo.Person.DateUpdated.Set(DateTime.Now)
 				)
@@ -43,9 +59,33 @@ namespace NetCoreConsoleApp
 		}
 		#endregion
 
-		#region update credit limit for all females within zip
+		#region transactional updates
 		public void UpdatePersonNameAndBillingAddressTransactional(int personId, string firstName, string lastName, Address billingAddress)
 		{
+			//set xact_abort on;
+			//begin transaction;
+
+			//update dbo.Person
+			//set
+			//	dbo.Person.FirstName = '',
+			//	dbo.Person.LastName = '',
+			//	dbo.Person.DateUpdated = GETDATE()
+			//from dbo.Person
+			//where dbo.Person.Id = 0;
+
+			//update dbo.Address
+			//set
+			//	dbo.Address.Line1 = '',
+			//	dbo.Address.Line2 = '',
+			//	dbo.Address.City = '',
+			//	dbo.Address.State = '',
+			//	dbo.Address.Zip = '',
+			//	dbo.Address.DateUpdated = GETDATE()
+			//from dbo.Address
+			//inner join dbo.Person_Address on dbo.Person_Address.AddressId = dbo.Address.Id
+			//where dbo.Person_Address.PersonId = 0 and dbo.Address.AddressType = 1
+
+			//commit transaction;
 			var conn = db.GetConnection().BeginTransaction();
 			try
 			{
@@ -55,22 +95,20 @@ namespace NetCoreConsoleApp
 						dbo.Person.DateUpdated.Set(DateTime.Now)
 					)
 					.From(dbo.Person)
-					.InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
-					.InnerJoin(dbo.Address).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
 					.Where(dbo.Person.Id == personId)
 					.Execute(conn);
 
 				db.Update(
 					   dbo.Address.Line1.Set(billingAddress.Line1),
-					   dbo.Address.Line1.Set(billingAddress.Line2),
+					   dbo.Address.Line2.Set(billingAddress.Line2),
 					   dbo.Address.City.Set(billingAddress.City),
 					   dbo.Address.State.Set(billingAddress.State),
 					   dbo.Address.Zip.Set(billingAddress.Zip),
 					   dbo.Address.DateUpdated.Set(DateTime.Now)
 				   )
-				   .From(dbo.Person)
+				   .From(dbo.Address)
 				   .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
-				   .Where(dbo.PersonAddress.PersonId == personId)
+				   .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Billing)
 				   .Execute(conn);
 
 				conn.CommitTransaction();

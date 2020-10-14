@@ -7,6 +7,7 @@ using SimpleConsole.DataService;
 using SimpleConsole.dboData;
 using SimpleConsole.dboDataService;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.MsSql.Expression;
 
 namespace NetCoreConsoleApp
 {
@@ -494,20 +495,94 @@ namespace NetCoreConsoleApp
 		}
 		#endregion
 
-		#region sub queries
-		public void XXXX()
+		#region complex sub queries
+		public object SelectPersonTotalPurchaseToCreditLimitReport()
 		{
 			//select
-			//AVG(aq.quantity) AvgQtyProductPurchased
-			//from
+			//	p.id as PersonId,
+			//	p.LastName + ', ' + p.FirstName as FullName,
+			//	isNull(t0.TotalPurchaseAmount, 0) as TotalPurchaseAmount,
+			//	p.YearOfLastCreditLimitReview,
+			//	p.CreditLimit
+			//from dbo.Person p
+			//left join
 			//(
 			//	select
-			//	dbo.PurchaseLine.ProductId,
-			//	SUM(dbo.PurchaseLine.Quantity) quantity
-			//	from
-			//	dbo.PurchaseLine
-			//	group by dbo.PurchaseLine.ProductId
-			//) aq;
+			//	pu.PersonId,
+			//	sum(pu.TotalPurchaseAmount) as TotalPurchaseAmount
+			//	from dbo.Purchase pu
+			//	group by pu.PersonId
+			//) t0 on t0.PersonId = p.Id
+			//order by p.LastName asc;
+			var rpt = db.SelectMany(
+					dbo.Person.Id.As("PersonId"),
+					db.fx.Concat(dbo.Person.LastName, ", ", dbo.Person.FirstName).As("FullName"),
+					db.fx.IsNull(db.alias("t0", "TotalPurchaseAmount").ToNullableInt(), 0).As("TotalPurchaseAmount"),
+					dbo.Person.YearOfLastCreditLimitReview,
+					dbo.Person.CreditLimit
+				).From(dbo.Person)
+				.LeftJoin(
+					db.SelectMany(
+						dbo.Purchase.PersonId, 
+						db.fx.Sum(dbo.Purchase.TotalPurchaseAmount).As("TotalPurchaseAmount")
+					)
+					.From(dbo.Purchase)
+					.GroupBy(dbo.Purchase.PersonId))
+					.As("t0")
+				.On(db.alias("t0", "PersonId").ToInt() == dbo.Person.Id)
+				.OrderBy(dbo.Person.LastName.Asc)
+				.Execute();
+
+			return rpt;
+		}
+
+		public object SelectVIPByPurchaseCountAndYear(int purchaseCount, int year)
+		{
+			//select
+			//	[dbo].[Person].[Id] AS [PersonId],
+			//	[vips].[PurchaseCount],
+			//	[vips].[PurchaseYear],
+			//	[dbo].[Person].[LastName] + ', ' + [dbo].[Person].[FirstName] as [FullName]
+			//from
+			//[dbo].[Person]
+			//inner join (
+			//		select
+			//			[dbo].[Purchase].[PersonId],
+			//			datepart(year, [dbo].[Purchase].[PurchaseDate]) AS [PurchaseYear],
+			//			count([dbo].[Purchase].[Id]) AS [PurchaseCount]
+			//		from
+			//			[dbo].[Purchase]
+			//		group by
+			//			[dbo].[Purchase].[PersonId], datepart(year, [dbo].[Purchase].[PurchaseDate])
+			//		having 
+			//			(count([dbo].[Purchase].[PurchaseDate]) >= 3 AND datepart(year, [dbo].[Purchase].[PurchaseDate]) = 2017)
+			//) as [vips] on [dbo].[Person].[Id]=[vips].[PersonId]
+			//order by
+			//[dbo].[Person].[LastName] asc, [vips].[PurchaseCount] desc
+
+			var vip = db.SelectMany(
+				dbo.Person.Id.As("PersonId"), 
+				db.alias("vips", "PurchaseCount").ToInt(), 
+				db.alias("vips", "PurchaseYear").ToInt(), 
+				(dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName"))
+				.From(dbo.Person)
+				.InnerJoin(
+					db.SelectMany(
+						dbo.Purchase.PersonId, 
+						db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("PurchaseYear"), 
+						db.fx.Count(dbo.Purchase.Id).As("PurchaseCount")
+						)
+					.From(dbo.Purchase)
+					.GroupBy(dbo.Purchase.PersonId, db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate))
+					.Having(
+							db.fx.Count(dbo.Purchase.Id) >= purchaseCount 
+							& db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year)
+					).As("vips")
+				.On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
+				.OrderBy(dbo.Person.Id.Asc, db.alias("vips", "PurchaseCount").ToInt().Desc)
+				.Execute();
+
+			return vip;
 		}
 		#endregion
 	}
