@@ -124,7 +124,7 @@ CREATE TABLE [dbo].[Person](
 	[Id] INT IDENTITY(1,1) NOT NULL,
 	[FirstName] VARCHAR(20) NOT NULL,
 	[LastName] VARCHAR(20) NOT NULL,
-	[BirthDate] DATETIME NULL,
+	[BirthDate] DATE NULL,
 	[GenderType] INT NOT NULL,
 	[CreditLimit] INT NULL,
 	[YearOfLastCreditLimitReview] INT NULL,
