@@ -110,7 +110,7 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.FirstName", new MsSqlFieldMetadata(this, $"{identifier}.FirstName", "FirstName", SqlDbType.VarChar, 20));
             Fields.Add($"{identifier}.LastName", new MsSqlFieldMetadata(this, $"{identifier}.LastName", "LastName", SqlDbType.VarChar, 20));
-            Fields.Add($"{identifier}.BirthDate", new MsSqlFieldMetadata(this, $"{identifier}.BirthDate", "BirthDate", SqlDbType.DateTime, 8));
+            Fields.Add($"{identifier}.BirthDate", new MsSqlFieldMetadata(this, $"{identifier}.BirthDate", "BirthDate", SqlDbType.Date, 3));
             Fields.Add($"{identifier}.GenderType", new MsSqlFieldMetadata(this, $"{identifier}.GenderType", "GenderType", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.CreditLimit", new MsSqlFieldMetadata(this, $"{identifier}.CreditLimit", "CreditLimit", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.YearOfLastCreditLimitReview", new MsSqlFieldMetadata(this, $"{identifier}.YearOfLastCreditLimitReview", "YearOfLastCreditLimitReview", SqlDbType.Int, 4));
