@@ -6,5 +6,6 @@ namespace HatTrick.DbEx.Sql.Executor
     public interface ISqlRowReader : IDisposable
     {
         ISqlRow ReadRow();
+        void Close();
     }
 }

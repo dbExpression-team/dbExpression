@@ -59,6 +59,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     if (row == default)
                         return;
+                    else
+                        reader.Close();
 
                     entity = database.EntityFactory.CreateEntity<T>();
                     var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
@@ -81,6 +83,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row == default)
                         return;
+                    else
+                        reader.Close();
 
                     value = database.EntityFactory.CreateEntity<T>();
                     var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
@@ -150,6 +154,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var field = reader.ReadRow()?.ReadField();
                     if (field is null)
                         return;
+                    else
+                        reader.Close();
 
                     value = field.GetValue<T>();
                 }
@@ -173,6 +179,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var field = row.ReadField();
                     if (field is null)
                         return;
+                    else
+                        reader.Close();
 
                     value = field.GetValue<T>();
                 },
@@ -241,6 +249,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     if (row == default)
                         return;
+                    else
+                        reader.Close();
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -263,6 +273,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row == default)
                         return;
+                    else
+                        reader.Close();
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -332,6 +344,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = reader.ReadRow();
                     if (row is null)
                         return;
+                    else
+                        reader.Close();
 
                     try
                     {
@@ -358,6 +372,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
                     if (row is null)
                         return;
+                    else
+                        reader.Close();
 
                     try
                     {
