@@ -17,12 +17,12 @@ namespace ServerSideBlazorApp.DataService
     public abstract class CRMDatabaseRuntimeSqlDatabase : IRuntimeSqlDatabase
     {
         #region internals
-        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static RuntimeSqlDatabaseConfiguration config = new RuntimeSqlDatabaseConfiguration();
         protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration { get => config; set => config = value; }
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
         #endregion
 
         #region select one
@@ -762,6 +762,7 @@ namespace ServerSideBlazorApp.dboDataService
         public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
         public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
         public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
+        public NullableEnumFieldExpression<Purchase, PaymentSourceType> PaymentSourceType { get; private set; }
         public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
         public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
         #endregion
@@ -785,6 +786,7 @@ namespace ServerSideBlazorApp.dboDataService
             Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
             Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new NullableGuidFieldExpression<Purchase>($"{identifier}.TrackingIdentifier", this));
             Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, PaymentMethodType>($"{identifier}.PaymentMethodType", this));
+            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new NullableEnumFieldExpression<Purchase, PaymentSourceType>($"{identifier}.PaymentSourceType", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateUpdated", this));
         }
@@ -807,6 +809,7 @@ namespace ServerSideBlazorApp.dboDataService
                 ExpectedDeliveryDate,
                 TrackingIdentifier,
                 PaymentMethodType,
+                PaymentSourceType,
                 DateCreated,
                 DateUpdated
             );
@@ -824,6 +827,7 @@ namespace ServerSideBlazorApp.dboDataService
                 ExpectedDeliveryDate.Insert(purchase.ExpectedDeliveryDate),
                 TrackingIdentifier.Insert(purchase.TrackingIdentifier),
                 PaymentMethodType.Insert(purchase.PaymentMethodType),
+                PaymentSourceType.Insert(purchase.PaymentSourceType),
                 DateCreated.Insert(purchase.DateCreated),
                 DateUpdated.Insert(purchase.DateUpdated)
             );
@@ -840,6 +844,7 @@ namespace ServerSideBlazorApp.dboDataService
 			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); }; 
 			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); }; 
 			if (from.PaymentMethodType != to.PaymentMethodType) { expr &= PaymentMethodType.Set(to.PaymentMethodType); }; 
+			if (from.PaymentSourceType != to.PaymentSourceType) { expr &= PaymentSourceType.Set(to.PaymentSourceType); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
@@ -856,6 +861,7 @@ namespace ServerSideBlazorApp.dboDataService
 			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
 			purchase.PaymentMethodType = reader.ReadField().GetValue<PaymentMethodType>();
+			purchase.PaymentSourceType = reader.ReadField().GetValue<PaymentSourceType?>();
 			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
 			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }

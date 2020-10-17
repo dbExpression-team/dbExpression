@@ -35,10 +35,19 @@ namespace SimpleConsole.Data
 		[Display(Name = "Pay Pal", Description = "Pay Pal")]
 		PayPal = 3
 	}
-	#endregion
+    #endregion
 
-	#region ProductCategoryType
-	public enum ProductCategoryType : int
+    #region payment source type
+    public enum PaymentSourceType
+	{
+		Web = 1,
+		[Display(Name = "In Person")]
+		InPerson = 2
+	}
+    #endregion
+
+    #region product category type
+    public enum ProductCategoryType : int
 	{
 		[Display(Name = "Toys and games", Description = "Toys and games")]
 		ToysAndGames = 1,

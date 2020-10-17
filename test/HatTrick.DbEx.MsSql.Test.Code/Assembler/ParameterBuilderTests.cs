@@ -1,6 +1,7 @@
 ﻿using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
 using System.Linq;
@@ -463,7 +464,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, null, database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string productDescription = "1234";
 
@@ -476,7 +477,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
-            parameter.Field.Should().Be(dbo.Product.Description);
             parameter.Metadata.DbType.Should().Be(SqlDbType.NVarChar);
             parameter.Parameter.DbType.Should().Be(DbType.String);
             parameter.Parameter.Size.Should().Be(parameter.Metadata.Size);
@@ -489,7 +489,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, null, database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string firstName = "xxx";
 
@@ -502,7 +502,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
-            parameter.Field.Should().Be(dbo.Person.FirstName);
             parameter.Metadata.DbType.Should().Be(SqlDbType.VarChar);
             parameter.Parameter.DbType.Should().Be(DbType.AnsiString);
             parameter.Parameter.Size.Should().Be(parameter.Metadata.Size);
@@ -515,7 +514,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, null, database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             double productPrice = 12.99;
 
@@ -528,7 +527,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
-            parameter.Field.Should().Be(dbo.Product.Price);
             parameter.Metadata.DbType.Should().Be(SqlDbType.Money);
             parameter.Parameter.DbType.Should().Be(DbType.Currency);
             parameter.Parameter.Value.Should().Be(productPrice);
@@ -540,7 +538,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, null, database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             byte[] image = new byte[] { 1, 2, 3 };
 
@@ -553,7 +551,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
-            parameter.Field.Should().Be(dbo.Product.Image);
             parameter.Metadata.DbType.Should().Be(SqlDbType.VarBinary);
             parameter.Parameter.DbType.Should().Be(DbType.Binary);
             parameter.Parameter.Value.Should().Be(image);

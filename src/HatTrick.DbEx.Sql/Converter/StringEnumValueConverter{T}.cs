@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public T ConvertFromDatabase<T>(object value)
             => value is null ? default : (T)Enum.Parse(typeof(T), value as string);
 
-        public object ConvertToDatabase(object value)
-            => value is null ? null : value.ToString();
+        public (Type, object) ConvertToDatabase(object value)
+            => value is null ? (type, null) : (type, value.ToString());
     }
 }

@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public abstract class PipelineEventActions<TAsyncDelegate, TSyncDelegate, TPredicate>
     {
-        protected List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>> PipelineItems { get; } = new List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>>();
+        protected readonly List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>> PipelineItems = new List<PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate>>();
 
         public IEnumerable<(TAsyncDelegate, Predicate<TPredicate>)> AsyncActions
             => PipelineItems.Select(pipelineItem => (pipelineItem.AsyncDelegate, pipelineItem.Predicate));
@@ -14,39 +14,39 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public IEnumerable<(TSyncDelegate, Predicate<TPredicate>)> SyncActions
             => PipelineItems.Select(pipelineItem => (pipelineItem.SyncDelegate, pipelineItem.Predicate));
 
-        public virtual IPipelineEventActionBuilder<TPredicate> AddToStart(TAsyncDelegate asyncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToStart(TAsyncDelegate asyncAction)
             => InsertItem(0, asyncAction, MakeSync(asyncAction));
 
-        public virtual IPipelineEventActionBuilder<TPredicate> AddToStart(TSyncDelegate syncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToStart(TSyncDelegate syncAction)
             => AddToStart(MakeAsync(syncAction), syncAction);
 
-        public virtual IPipelineEventActionBuilder<TPredicate> AddToStart(TAsyncDelegate asyncAction, TSyncDelegate syncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToStart(TAsyncDelegate asyncAction, TSyncDelegate syncAction)
             => InsertItem(0, asyncAction, syncAction);
 
-        public virtual IPipelineEventActionBuilder<TPredicate> AddToEnd(TAsyncDelegate asyncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToEnd(TAsyncDelegate asyncAction)
             => AddToEnd(asyncAction, MakeSync(asyncAction));
 
-        public virtual IPipelineEventActionBuilder<TPredicate> AddToEnd(TSyncDelegate syncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToEnd(TSyncDelegate syncAction)
             => AddToEnd(MakeAsync(syncAction), syncAction);
 
-        public virtual IPipelineEventActionBuilder<TPredicate> AddToEnd(TAsyncDelegate asyncAction, TSyncDelegate syncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> AddToEnd(TAsyncDelegate asyncAction, TSyncDelegate syncAction)
         {
             var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> { AsyncDelegate = asyncAction, SyncDelegate = syncAction };
             PipelineItems.Add(pipelineEventAction);
-            return new PipelineEventActionBuilder<TAsyncDelegate, TSyncDelegate, TPredicate>(pipelineEventAction);
+            return pipelineEventAction;
         }
 
-        public virtual IPipelineEventActionBuilder<TPredicate> InsertItem(int index, TAsyncDelegate asyncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> InsertItem(int index, TAsyncDelegate asyncAction)
             => InsertItem(index, asyncAction, MakeSync(asyncAction));
 
-        public virtual void InsertItem(int index, TSyncDelegate syncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> InsertItem(int index, TSyncDelegate syncAction)
             => InsertItem(index, MakeAsync(syncAction), syncAction);
 
-        public virtual IPipelineEventActionBuilder<TPredicate> InsertItem(int index, TAsyncDelegate asyncAction, TSyncDelegate syncAction)
+        public virtual PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> InsertItem(int index, TAsyncDelegate asyncAction, TSyncDelegate syncAction)
         {
             var pipelineEventAction = new PipelineEventAction<TAsyncDelegate, TSyncDelegate, TPredicate> { AsyncDelegate = asyncAction, SyncDelegate = syncAction };
             PipelineItems.Insert(index, pipelineEventAction);
-            return new PipelineEventActionBuilder<TAsyncDelegate, TSyncDelegate, TPredicate>(pipelineEventAction);
+            return pipelineEventAction;
         }
 
         protected abstract TAsyncDelegate MakeAsync(TSyncDelegate syncDelegate);

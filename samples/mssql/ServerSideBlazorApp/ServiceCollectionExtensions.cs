@@ -8,7 +8,7 @@ namespace ServerSideBlazorApp
     {
         public static void AddDbExpression(this IServiceCollection services, params Action<RuntimeEnvironmentBuilder>[] databases)
         {
-            DbExpressionConfigurationBuilder.AddDbExpression(databases);
+            dbExpression.ConfigureRuntime(databases);
         }
     }
 }

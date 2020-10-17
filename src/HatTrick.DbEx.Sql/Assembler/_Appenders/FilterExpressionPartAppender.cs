@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region internals
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
-        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => $" {x} "));
+        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} "));
         #endregion
 
         #region methods

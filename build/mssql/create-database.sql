@@ -189,6 +189,7 @@ CREATE TABLE [dbo].[Purchase](
 	[ExpectedDeliveryDate] DATETIME NULL,
 	[TrackingIdentifier] UNIQUEIDENTIFIER NULL,
 	[PaymentMethodType] VARCHAR(20) NOT NULL,
+	[PaymentSourceType] VARCHAR(20) NULL,
 	[DateCreated] DATETIME NOT NULL,
 	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED ([Id]),

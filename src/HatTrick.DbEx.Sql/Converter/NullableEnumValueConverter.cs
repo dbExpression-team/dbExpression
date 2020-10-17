@@ -15,14 +15,14 @@ namespace HatTrick.DbEx.Sql.Converter
             => value is object ? base.ConvertFromDatabase(value) : default;
 
         public override T ConvertFromDatabase<T>(object value)
-            => value is object ? (T)Enum.ToObject(Nullable.GetUnderlyingType(typeof(T)), value) : default;
+            => value is object ? (T)base.ConvertFromDatabase(value) : default;
 
-        public override object ConvertToDatabase(object value)
+        public override (Type, object) ConvertToDatabase(object value)
         {
             if (value is null)
-                return DBNull.Value;
+                return (type, DBNull.Value);
             
-            return Convert.ToInt32(value);
+            return (type, Convert.ToInt32(value));
         }
     }
 }

@@ -3,6 +3,7 @@ using DbEx.DataService;
 using DbEx.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration.Syntax;
 using HatTrick.DbEx.Sql.Converter;
 using System;
 
@@ -10,102 +11,96 @@ namespace HatTrick.DbEx.MsSql.Test
 {
     public abstract class TestBase
     {
-        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<RuntimeSqlDatabaseConfigurationBuilder> postConfigure = null, Action<IFieldExpressionConfigurationBuilder> fieldConfigure = null)
+        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<IRuntimeSqlDatabaseConfigurationBuilder> postConfigure = null)
         {
             RuntimeSqlDatabaseConfiguration config = null;
-            Action<RuntimeSqlDatabaseConfigurationBuilder> configureDatabase = database =>
+            Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime = database =>
             {
-                config = (database as IRuntimeSqlDatabaseConfigurationBuilder).Configuration;
-                postConfigure?.Invoke(database);
-            };
+                config = (database as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
 
-            Action<IFieldExpressionConfigurationBuilder> configureFields = fields =>
-            {
-                fields.For(dbo.Purchase.PaymentMethodType).UseConverter<StringEnumValueConverter>();
+                database.WhenAssemblingSqlStatements.ConfigureAttributesOfAssemblingSqlStatements(a => a.PrependCommaOnSelectClauseParts = true);
+
+                database.WhenMappingData.ForType<PaymentMethodType>().UseConverter<StringEnumValueConverter>();
+                database.WhenMappingData.ForEnumType<PaymentSourceType>().PersistTheEnumValueAsString();
+
+                postConfigure?.Invoke(database);
             };
 
             switch (version)
             {
                 case 2005:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2005Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;
                     }
                 case 2008:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2008Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;
                     }
                 case 2012:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2012Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;
                     }
                 case 2014:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2014Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;
                     }
                 case 2016:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2016Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;
                     }
                 case 2017:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2017Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;
                     }
                 case 2019:
                     {
-                        DbExpressionConfigurationBuilder.AddDbExpression(c =>
+                        dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2019Database<MsSqlDb>(
                                 ConfigurationProvider.ConnectionString,
-                                configureDatabase,
-                                configureFields
+                                configureRuntime
                             );
                         });
                         break;

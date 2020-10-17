@@ -2,9 +2,9 @@
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class DbExpressionConfigurationBuilder
+    public abstract class DbExpressionConfigurationBuilder
     {
-        public static void AddDbExpression(params Action<RuntimeEnvironmentBuilder>[] databases)
+        protected void ConfigureRuntimeEnvironment(params Action<RuntimeEnvironmentBuilder>[] databases)
         {
             foreach (var database in databases)
             {

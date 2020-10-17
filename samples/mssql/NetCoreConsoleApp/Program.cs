@@ -48,9 +48,16 @@ namespace NetCoreConsoleApp
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                         .Build();
 
-            DbExpressionConfigurationBuilder.AddDbExpression(c =>
+            dbExpression.ConfigureRuntime(c =>
             {
-                c.AddMsSql2014Database<SimpleConsoleDb>(config.GetConnectionString("dbex_mssql_test"));
+                c.AddMsSql2014Database<SimpleConsoleDb>(
+                    config.GetConnectionString("dbex_mssql_test"),
+                    runtime =>
+                    {
+                        runtime.WhenMappingData.ForEnumType<PaymentMethodType>().PersistTheEnumValueAsString();
+                        runtime.WhenMappingData.ForEnumType<PaymentSourceType>().PersistTheEnumValueAsString();
+                    }
+                );
             });
         }
 		#endregion

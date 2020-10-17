@@ -46,7 +46,15 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public ISqlStatementBuilder CreateSqlStatementBuilder(ISqlDatabaseMetadataProvider databaseMetadata, IAssemblyPartAppenderFactory partAppenderFactory, SqlStatementAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
-            => new SqlStatementBuilder(databaseMetadata, partAppenderFactory, config, expression, e => AssemblerFactory(e.GetType()), appender, parameterBuilder);
+            => new SqlStatementBuilder(
+                databaseMetadata, 
+                partAppenderFactory, 
+                config, 
+                expression, 
+                e => AssemblerFactory(e.GetType()), 
+                appender, 
+                parameterBuilder
+            );
         #endregion
     }
 }

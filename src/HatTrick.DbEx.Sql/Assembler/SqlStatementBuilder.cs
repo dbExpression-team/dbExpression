@@ -23,20 +23,20 @@ namespace HatTrick.DbEx.Sql.Assembler
         public SqlStatementBuilder(
             ISqlDatabaseMetadataProvider databaseMetadata,
             IAssemblyPartAppenderFactory partAppenderFactory,
-            SqlStatementAssemblerConfiguration config,
+            SqlStatementAssemblerConfiguration assemblerConfiguration,
             QueryExpression query,
             Func<QueryExpression, ISqlStatementAssembler> assemblerFactory,
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         )
         {
-            DatabaseMetadata = databaseMetadata;
-            AssemblerConfiguration = config;
-            Query = query;
-            AssemblerFactory = assemblerFactory;
-            PartAppenderFactory = partAppenderFactory;
-            Appender = appender;
-            Parameters = parameterBuilder;
+            DatabaseMetadata = databaseMetadata ?? throw new ArgumentNullException($"{nameof(databaseMetadata)} is required.");
+            AssemblerConfiguration = assemblerConfiguration ?? throw new ArgumentNullException($"{nameof(assemblerConfiguration)} is required.");
+            Query = query ?? throw new ArgumentNullException($"{nameof(query)} is required.");
+            AssemblerFactory = assemblerFactory ?? throw new ArgumentNullException($"{nameof(assemblerFactory)} is required.");
+            PartAppenderFactory = partAppenderFactory ?? throw new ArgumentNullException($"{nameof(partAppenderFactory)} is required.");
+            Appender = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
+            Parameters = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
         }
 
         public SqlStatement CreateSqlStatement()
