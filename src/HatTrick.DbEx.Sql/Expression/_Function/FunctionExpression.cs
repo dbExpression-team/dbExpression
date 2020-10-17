@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -14,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public ExpressionMediator Expression { get; }
+        public IExpression Expression { get; }
         string IExpressionAliasProvider.Alias => Alias;
         #endregion
 

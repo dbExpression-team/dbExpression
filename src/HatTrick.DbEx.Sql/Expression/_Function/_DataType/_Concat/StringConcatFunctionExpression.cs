@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public StringConcatFunctionExpression(params StringExpressionMediator[] expressions) : base(expressions)
+        public StringConcatFunctionExpression(params ExpressionMediator<string>[] expressions) : base(expressions)
         {
         }
         #endregion

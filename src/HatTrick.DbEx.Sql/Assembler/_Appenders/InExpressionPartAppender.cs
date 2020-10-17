@@ -47,7 +47,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write(
                    builder.Parameters.Add(
                        expression is null || expression is DBNull ? DBNull.Value : expression,
-                       field,
                        meta
                    )
                    .Parameter.ParameterName

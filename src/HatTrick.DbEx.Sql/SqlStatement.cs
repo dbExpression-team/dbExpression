@@ -8,12 +8,12 @@ namespace HatTrick.DbEx.Sql
     {
         public IAppender CommandTextWriter { get; set; }
         public DbCommandType CommandType { get; set; } = DbCommandType.SqlText;
-        public IList<ParameterizedFieldExpression> Parameters { get; set; } = new List<ParameterizedFieldExpression>();
+        public IList<ParameterizedExpression> Parameters { get; set; } = new List<ParameterizedExpression>();
 
         public SqlStatement()
         { }
 
-        public SqlStatement(IAppender commandTextWriter, IList<ParameterizedFieldExpression> parameters, DbCommandType commandType)
+        public SqlStatement(IAppender commandTextWriter, IList<ParameterizedExpression> parameters, DbCommandType commandType)
         {
             CommandTextWriter = commandTextWriter;
             Parameters = parameters;

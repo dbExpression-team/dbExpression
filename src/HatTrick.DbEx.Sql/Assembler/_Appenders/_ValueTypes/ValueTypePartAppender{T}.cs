@@ -6,6 +6,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         where T : IComparable
     {
         public virtual void AppendPart(T value, ISqlStatementBuilder builder, AssemblyContext context)
-            => builder.Appender.Write(builder.Parameters.Add(value, context.Field, builder.FindMetadata(context.Field)).Parameter.ParameterName);
+            => builder.Appender.Write(builder.Parameters.Add(value, builder.FindMetadata(context.Field)).Parameter.ParameterName);
     }
 }

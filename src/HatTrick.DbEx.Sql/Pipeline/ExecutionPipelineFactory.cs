@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 database,
                 new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions, BeforeAssembly.AsyncActions),
                 new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions, AfterAssembly.AsyncActions),
-                new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions) ,
+                new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions),
                 new PipelineEventHook<AfterExecutionPipelineExecutionContext>(AfterExecution.SyncActions, AfterExecution.AsyncActions),
                 new PipelineEventHook<BeforeUpdatePipelineExecutionContext>(BeforeUpdate.SyncActions, BeforeUpdate.AsyncActions),
                 new PipelineEventHook<AfterUpdatePipelineExecutionContext>(AfterUpdate.SyncActions, AfterUpdate.AsyncActions)

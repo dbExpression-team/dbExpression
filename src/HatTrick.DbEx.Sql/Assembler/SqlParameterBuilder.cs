@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -8,16 +7,15 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public abstract class SqlParameterBuilder : ISqlParameterBuilder
     {
-        public IList<ParameterizedFieldExpression> Parameters { get; set; } = new List<ParameterizedFieldExpression>();
+        public IList<ParameterizedExpression> Parameters { get; set; } = new List<ParameterizedExpression>();
 
         #region abstract methods
         public abstract DbParameter Add<T>(T value);
-        public abstract ParameterizedFieldExpression Add<T>(T value, FieldExpression expression, ISqlFieldMetadata meta);
+        public abstract ParameterizedExpression Add<T>(T value, ISqlFieldMetadata meta);
         public abstract DbParameter Add(object value, Type valueType);
-        public abstract ParameterizedFieldExpression AddOutput(FieldExpression expression, ISqlFieldMetadata meta);
         #endregion
 
-        protected virtual ParameterizedFieldExpression FindExistingParameter<T>(T value, Type declaredType, DbType dbType, ParameterDirection direction, int? size, byte? precision, byte? scale)
+        protected virtual ParameterizedExpression FindExistingParameter<T>(T value, Type declaredType, DbType dbType, ParameterDirection direction, int? size, byte? precision, byte? scale)
         {
             foreach (var parameter in Parameters)
             {

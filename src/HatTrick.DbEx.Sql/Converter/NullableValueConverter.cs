@@ -13,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Converter
             this.underlyingType = Nullable.GetUnderlyingType(type);
         }
 
-        public virtual object ConvertToDatabase(object value)
+        public virtual (Type, object) ConvertToDatabase(object value)
         {
             if (value is null)
-                return default;
+                return (type, default);
 
             if (type == value.GetType())
-                return value;
+                return (type, value);
 
             if (type == underlyingType)
-                return value;
+                return (type, value);
 
-            return Convert.ChangeType(value, underlyingType);
+            return (type, Convert.ChangeType(value, underlyingType));
         }
 
         public virtual object ConvertFromDatabase(object value)

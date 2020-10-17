@@ -1,7 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Concurrent;
-using System.Net;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
@@ -34,9 +33,7 @@ namespace HatTrick.DbEx.Sql.Converter
         private static readonly IValueConverter byteArrayConverter = new ValueConverter(typeof(byte[]));
         private static readonly IValueConverter objectConverter = new ValueConverter(typeof(object));
 
-
         private readonly ConcurrentDictionary<Type, Func<IValueConverter>> _valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
-        private readonly ConcurrentDictionary<FieldExpression, Func<IValueConverter>> _fieldConverters = new ConcurrentDictionary<FieldExpression, Func<IValueConverter>>();
         #endregion
 
         #region methods
@@ -87,28 +84,6 @@ namespace HatTrick.DbEx.Sql.Converter
                 throw new ArgumentNullException($"{nameof(converter)} is required.");
 
             _valueConverters.AddOrUpdate(typeof(T), converter, (type, @return) => converter);
-        }
-
-        public void RegisterConverter(IValueConverter converter, FieldExpression field)
-        {
-            if (converter is null)
-                throw new ArgumentNullException($"{nameof(converter)} is required.");
-
-            if (field is null)
-                throw new ArgumentNullException($"{nameof(field)} is required.");
-
-            _fieldConverters.TryAdd(field, () => converter);
-        }
-
-        public IValueConverter CreateConverter(FieldExpression field)
-        {
-            if (field is null)
-                return null;
-
-            if (_fieldConverters.TryGetValue(field, out Func<IValueConverter> converter))
-                return converter();
-
-            return CreateConverter((field as IExpressionTypeProvider).DeclaredType);
         }
 
         public IValueConverter CreateConverter(Type type)

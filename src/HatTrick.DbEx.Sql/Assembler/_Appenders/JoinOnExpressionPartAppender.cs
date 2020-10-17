@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class JoinOnExpressionPartAppender : PartAppender<JoinOnExpression>
     {
         private static IDictionary<FilterExpressionOperator, string> _filterOperatorMap;
-        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => $" {x} "));
+        private static IDictionary<FilterExpressionOperator, string> FilterOperatorMap => _filterOperatorMap ?? (_filterOperatorMap = typeof(FilterExpressionOperator).GetValuesAndFilterOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} "));
 
         public override void AppendPart(JoinOnExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {

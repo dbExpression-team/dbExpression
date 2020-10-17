@@ -12,7 +12,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Appender.Write(
                         builder.Parameters.Add(
                             expression > Constants.MsSql.DateMinValue ? expression : Constants.MsSql.DateMinValue,
-                            context.Field,
                             builder.FindMetadata(context.Field)
                         )
                         .Parameter.ParameterName

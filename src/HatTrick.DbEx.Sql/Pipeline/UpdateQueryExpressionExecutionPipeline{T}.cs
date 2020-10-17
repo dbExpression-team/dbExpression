@@ -62,7 +62,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var rowsAffected = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
                 statement,
                 connection,
-                new SqlStatementValueConverterResolver(statement.Parameters, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd))); 
                     configureCommand?.Invoke(cmd); 
@@ -101,7 +100,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var rowsAffected = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalarAsync<int>(
                 statement,
                 connection,
-                new SqlStatementValueConverterResolver(statement.Parameters, database.ValueConverterFactory),
                 async cmd => {
                     if (beforeExecution is object)
                     {

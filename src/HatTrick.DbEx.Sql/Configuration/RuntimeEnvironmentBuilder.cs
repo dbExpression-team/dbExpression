@@ -1,14 +1,14 @@
-﻿using System;
+﻿using HatTrick.DbEx.Sql.Configuration.Syntax;
+using System;
 using System.ComponentModel;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
     public class RuntimeEnvironmentBuilder : IRuntimeEnvironmentBuilder
     {
-        RuntimeSqlDatabaseConfigurationBuilder IRuntimeEnvironmentBuilder.ConfigureSqlDatabase(IRuntimeSqlDatabase database, Action<RuntimeSqlDatabaseConfigurationBuilder> configure)
+        public IRuntimeSqlDatabaseConfigurationBuilder ConfigureSqlDatabase(IRuntimeSqlDatabase database, Action<IRuntimeSqlDatabaseConfigurationBuilder> configure)
         {
-            database.Configuration = new RuntimeSqlDatabaseConfiguration();
-            var builder = new RuntimeSqlDatabaseConfigurationBuilder(database);
+            var builder = new RuntimeSqlDatabaseConfigurationBuilder(database.Configuration);
             configure?.Invoke(builder);
             return builder;
         }

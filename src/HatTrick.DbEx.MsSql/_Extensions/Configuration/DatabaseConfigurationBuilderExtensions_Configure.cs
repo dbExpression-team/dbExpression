@@ -4,6 +4,7 @@ using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration.Syntax;
 using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
@@ -40,39 +41,47 @@ namespace HatTrick.DbEx.MsSql.Configuration
             }
         }
 
-        //TO_DISCUSS: Should metadata include server info so we can infer compatibility version, or specifically specify based on method name (i.e. AddMsSql2014Database)
         #pragma warning disable IDE0060
-        private static void ConfigureMsSqlCommon(this RuntimeSqlDatabaseConfigurationBuilder builder, ISqlDatabaseMetadataProvider metadata, Func<string> connectionStringFactory)
+        private static void ConfigureMsSqlCommon(this IRuntimeSqlDatabaseConfigurationBuilder builder, ISqlDatabaseMetadataProvider metadata, Func<string> connectionStringFactory)
         {
-            builder.UseDatabaseMetadata(metadata);
-            builder.UseConnectionFactory(new MsSqlConnectionFactory(connectionStringFactory));
-            builder.UseQueryExpressionFactory<QueryExpressionFactory>();
-            builder.UseAppenderFactory<AppenderFactory>();
-            builder.UseEntityFactory<EntityFactory>();
-            builder.UseValueConverterFactory<ValueConverterFactory>();
-            builder.UseMapperFactory<MapperFactory>();
-            builder.UseExecutionPipelineFactory<ExecutionPipelineFactory>();
-            builder.UseParameterBuilderFactory(new MsSqlParameterBuilderFactory(new MsSqlTypeMaps()));
+            var config = (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
 
-            var appenderFactory = new MsSqlAssemblyPartAppenderFactory();
-            appenderFactory.RegisterDefaultPartAppenders();
-            builder.UseAssemblyPartAppenderFactory(appenderFactory);
+            builder.ForSqlSchemaMetadata
+                .UseThisToGetSqlDatabaseMetadata(metadata);
 
-            var executor = new SqlStatementExecutorFactory();
-            executor.RegisterDefaultExecutors();
-            builder.UseSqlStatementExecutorFactory(executor);
+            builder.WhenExecutingSqlStatements
+                .UseThisToCreateNewSqlConnections(new MsSqlConnectionFactory(connectionStringFactory));
+
+            builder.WhenCreatingQueryExpressions
+                .UseThisToCreateNewQueryExpressions<QueryExpressionFactory>();
+
+            builder.ForCreatingEntities
+                .UseThisToInstantiateNewEntities<EntityFactory>();
+
+            builder.WhenMappingData
+                .UseThisToCreateNewValueConverters<ValueConverterFactory>()
+                .UseThisToCreateNewEntityAndDynamicMappers<MapperFactory>();
+
+            builder.WhenAssemblingSqlStatements
+                .UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement<MsSqlAssemblyPartAppenderFactory>()
+                .UseThisToCreateWritersForCreatingSqlStatements<AppenderFactory>()
+                .UseThisToCreateSqlParameters(new MsSqlParameterBuilderFactory(new MsSqlTypeMaps(), () => config.ValueConverterFactory));
+
+            builder.WhenExecutingSqlStatements
+                .UseThisToCreateNewSqlStatementExecutors<SqlStatementExecutorFactory>()
+                .UseThisToCreateNewExecutionPipelines<ExecutionPipelineFactory>();
         }
 
         #region 2005
-        public static void AddMsSql2005Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2005Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2005<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2005<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2005Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2005Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2005<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2005<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2005<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2005<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -82,27 +91,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2005.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2005.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion
 
         #region 2008
-        public static void AddMsSql2008Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2008Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2008<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2008<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2008Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2008Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2008<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2008<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2008<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2008<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -112,27 +118,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2008.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2008.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion
 
         #region 2012
-        public static void AddMsSql2012Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2012Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2012<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2012<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2012Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2012Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2012<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2012<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2012<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2012<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -142,27 +145,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2012.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2012.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion
 
         #region 2014
-        public static void AddMsSql2014Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2014Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2014<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2014<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2014Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2014Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2014<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2014<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2014<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2014<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -172,27 +172,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2014.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2014.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion
 
         #region 2016
-        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2016<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2016<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2016<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2016<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2016<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2016<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -202,27 +199,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2016.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2016.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion
 
         #region 2017
-        public static void AddMsSql2017Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2017Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2017<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2017<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2017Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2017Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2017<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2017<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2017<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2017<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -232,27 +226,24 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2017.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2017.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion
 
         #region 2019
-        public static void AddMsSql2019Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2019Database<T>(this RuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2019<T>(() => connectionString, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2019<T>(() => connectionString, null, runtimeConfiguration);
 
-        public static void AddMsSql2019Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        public static void AddMsSql2019Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => builder.ConfigureMsSql2019<T>(connectionStringFactory, null, runtimeConfiguration, fieldConfiguration);
+            => builder.ConfigureMsSql2019<T>(connectionStringFactory, null, runtimeConfiguration);
 
-        private static void ConfigureMsSql2019<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<RuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null, Action<IFieldExpressionConfigurationBuilder> fieldConfiguration = null)
+        private static void ConfigureMsSql2019<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, string metadataKey = null, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             EnsureValidConnectionString(connectionStringFactory);
@@ -262,13 +253,10 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 init.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
 
                 //configure sql statement builder factory
-                var factory = new Assembler.v2019.MsSqlStatementBuilderFactory();
-                factory.RegisterDefaultStatementAssemblers();
-                init.UseStatementBuilderFactory(factory);
+                init.WhenAssemblingSqlStatements
+                    .UseThisToCreateNewSqlStatementBuilders<Assembler.v2019.MsSqlStatementBuilderFactory>();
 
                 runtimeConfiguration?.Invoke(init);
-
-                fieldConfiguration?.Invoke(new FieldExpressionConfigurationBuilder((init as IRuntimeSqlDatabaseConfigurationBuilder).Configuration));
             });
         }
         #endregion

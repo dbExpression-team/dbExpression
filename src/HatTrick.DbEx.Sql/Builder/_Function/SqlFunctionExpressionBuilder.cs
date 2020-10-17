@@ -8,23 +8,23 @@ namespace HatTrick.DbEx.Sql.Builder
     public partial class SqlFunctionExpressionBuilder
     {
         #region concat
-        public static StringConcatFunctionExpression Concat(params StringExpressionMediator[] fields)
+        public static StringConcatFunctionExpression Concat(params ExpressionMediator<string>[] fields)
             => new StringConcatFunctionExpression(fields);
 
-        public static StringConcatFunctionExpression Concat(string value, params StringExpressionMediator[] fields)
-            => new StringConcatFunctionExpression(new List<StringExpressionMediator> { new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
+        public static StringConcatFunctionExpression Concat(string value, params ExpressionMediator<string>[] fields)
+            => new StringConcatFunctionExpression(new List<ExpressionMediator<string>> { new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
 
-        public static StringConcatFunctionExpression Concat(StringExpressionMediator field1, string value, params StringExpressionMediator[] fields)
-            => new StringConcatFunctionExpression(new List<StringExpressionMediator> { field1, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
+        public static StringConcatFunctionExpression Concat(ExpressionMediator<string> field1, string value, params ExpressionMediator<string>[] fields)
+            => new StringConcatFunctionExpression(new List<ExpressionMediator<string>> { field1, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
 
-        public static StringConcatFunctionExpression Concat(StringExpressionMediator field1, StringExpressionMediator field2, string value, params StringExpressionMediator[] fields)
-            => new StringConcatFunctionExpression(new List<StringExpressionMediator> { field1, field2, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
+        public static StringConcatFunctionExpression Concat(ExpressionMediator<string> field1, ExpressionMediator<string> field2, string value, params ExpressionMediator<string>[] fields)
+            => new StringConcatFunctionExpression(new List<ExpressionMediator<string>> { field1, field2, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
 
-        public static StringConcatFunctionExpression Concat(StringExpressionMediator field1, StringExpressionMediator field2, StringExpressionMediator field3, string value, params StringExpressionMediator[] fields)
-            => new StringConcatFunctionExpression(new List<StringExpressionMediator> { field1, field2, field3, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
+        public static StringConcatFunctionExpression Concat(ExpressionMediator<string> field1, ExpressionMediator<string> field2, ExpressionMediator<string> field3, string value, params ExpressionMediator<string>[] fields)
+            => new StringConcatFunctionExpression(new List<ExpressionMediator<string>> { field1, field2, field3, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
 
-        public static StringConcatFunctionExpression Concat(StringExpressionMediator field1, StringExpressionMediator field2, StringExpressionMediator field3, StringExpressionMediator field4, string value, params StringExpressionMediator[] fields)
-            => new StringConcatFunctionExpression(new List<StringExpressionMediator> { field1, field2, field3, field4, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
+        public static StringConcatFunctionExpression Concat(ExpressionMediator<string> field1, ExpressionMediator<string> field2, ExpressionMediator<string> field3, ExpressionMediator<string> field4, string value, params ExpressionMediator<string>[] fields)
+            => new StringConcatFunctionExpression(new List<ExpressionMediator<string>> { field1, field2, field3, field4, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(fields).ToArray());
         #endregion
 
         #region coalesce

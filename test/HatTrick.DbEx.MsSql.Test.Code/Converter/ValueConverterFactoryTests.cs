@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
         {
             public object ConvertFromDatabase(object value) => throw new NotImplementedException();
             public T ConvertFromDatabase<T>(object value) => throw new NotImplementedException();
-            public object ConvertToDatabase(object value) => throw new NotImplementedException();
+            public (Type, object) ConvertToDatabase(object value) => throw new NotImplementedException();
         }
     }
 }

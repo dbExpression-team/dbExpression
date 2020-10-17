@@ -2,12 +2,12 @@
     public abstract class {($) => ResolveName}RuntimeSqlDatabase : IRuntimeSqlDatabase
     {{
         #region internals
-        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static RuntimeSqlDatabaseConfiguration config = new RuntimeSqlDatabaseConfiguration();
         protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration {{ get => config; set => config = value; }}
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
         #endregion
 
         #region select one

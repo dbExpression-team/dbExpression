@@ -35,7 +35,13 @@ namespace HatTrick.DbEx.Sql.Executor
                     DataReader.GetValues(values);
                     for (int i = 0; i < values.Length; i++)
                     {
-                        row[i] = new Field(i, DataReader.GetName(i), DataReader.GetFieldType(i), values[i] == DBNull.Value ? null : values[i], Converters);
+                        row[i] = new Field(
+                            i, 
+                            DataReader.GetName(i), 
+                            DataReader.GetFieldType(i), 
+                            values[i] == DBNull.Value ? null : values[i], 
+                            Converters.FindConverter(i) ?? Converters.FindConverter(DataReader.GetFieldType(i))
+                        );
                     }
                     return new Row(currentRowIndex++, row);
                 }

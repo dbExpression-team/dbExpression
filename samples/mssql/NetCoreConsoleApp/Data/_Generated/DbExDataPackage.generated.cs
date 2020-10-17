@@ -109,6 +109,7 @@ namespace SimpleConsole.dboData
         public DateTime? ExpectedDeliveryDate { get; set; }
         public Guid? TrackingIdentifier { get; set; }
         public PaymentMethodType PaymentMethodType { get; set; }
+        public PaymentSourceType? PaymentSourceType { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion

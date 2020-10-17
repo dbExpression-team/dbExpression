@@ -74,6 +74,15 @@
 					"path": "dbo.Purchase.PaymentMethodType"
 				}
 			}
+		},
+		{
+			"apply": {
+				"clrType": "PaymentSourceType?",
+				"isEnum": true,
+				"to": {
+					"path": "dbo.Purchase.PaymentSourceType"
+				}
+			}
 		}
 	]
 }

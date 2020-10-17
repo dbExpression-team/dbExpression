@@ -17,12 +17,12 @@ namespace SimpleConsole.DataService
     public abstract class SimpleConsoleDbRuntimeSqlDatabase : IRuntimeSqlDatabase
     {
         #region internals
-        protected static RuntimeSqlDatabaseConfiguration config;
+        protected static RuntimeSqlDatabaseConfiguration config = new RuntimeSqlDatabaseConfiguration();
         protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration { get => config; set => config = value; }
+        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
         #endregion
 
         #region select one
@@ -41,6 +41,9 @@ namespace SimpleConsole.DataService
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte?>(config, field);
 
         public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(ByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
+
+        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(NullableByteArrayExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<byte[]>(config, field);
 
         public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16ExpressionMediator field)
@@ -88,6 +91,9 @@ namespace SimpleConsole.DataService
         public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(StringExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
 
+        public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(NullableStringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<string>(config, field);
+
         public static IFromExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>, IValueContinuationExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>>> SelectOne(DateTimeExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<DateTime>(config, field);
 
@@ -122,11 +128,14 @@ namespace SimpleConsole.DataService
         public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte>(config, field);
 
+        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+
         public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(ByteArrayExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
-        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullableByteExpressionMediator field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte?>(config, field);
+        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(NullableByteArrayExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<byte[]>(config, field);
 
         public static IListFromExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>, IValueListContinuationExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>>> SelectMany(Int16ExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<short>(config, field);
@@ -171,6 +180,9 @@ namespace SimpleConsole.DataService
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<bool?>(config, field);
 
         public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(StringExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
+
+        public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(NullableStringExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<string>(config, field);
 
         public static IListFromExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>, IValueListContinuationExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>>> SelectMany(DateTimeExpressionMediator field)
@@ -311,7 +323,7 @@ namespace SimpleConsole.dboDataService
         public Int32FieldExpression<Address> Id { get; private set; }
         public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
         public StringFieldExpression<Address> Line1 { get; private set; }
-        public StringFieldExpression<Address> Line2 { get; private set; }
+        public NullableStringFieldExpression<Address> Line2 { get; private set; }
         public StringFieldExpression<Address> City { get; private set; }
         public StringFieldExpression<Address> State { get; private set; }
         public StringFieldExpression<Address> Zip { get; private set; }
@@ -333,7 +345,7 @@ namespace SimpleConsole.dboDataService
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Address>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, AddressType>($"{identifier}.AddressType", this));
             Fields.Add($"{identifier}.Line1", Line1 = new StringFieldExpression<Address>($"{identifier}.Line1", this));
-            Fields.Add($"{identifier}.Line2", Line2 = new StringFieldExpression<Address>($"{identifier}.Line2", this));
+            Fields.Add($"{identifier}.Line2", Line2 = new NullableStringFieldExpression<Address>($"{identifier}.Line2", this));
             Fields.Add($"{identifier}.City", City = new StringFieldExpression<Address>($"{identifier}.City", this));
             Fields.Add($"{identifier}.State", State = new StringFieldExpression<Address>($"{identifier}.State", this));
             Fields.Add($"{identifier}.Zip", Zip = new StringFieldExpression<Address>($"{identifier}.Zip", this));
@@ -602,11 +614,11 @@ namespace SimpleConsole.dboDataService
         public Int32FieldExpression<Product> Id { get; private set; }
         public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
         public StringFieldExpression<Product> Name { get; private set; }
-        public StringFieldExpression<Product> Description { get; private set; }
+        public NullableStringFieldExpression<Product> Description { get; private set; }
         public DoubleFieldExpression<Product> ListPrice { get; private set; }
         public DoubleFieldExpression<Product> Price { get; private set; }
         public Int32FieldExpression<Product> Quantity { get; private set; }
-        public ByteArrayFieldExpression<Product> Image { get; private set; }
+        public NullableByteArrayFieldExpression<Product> Image { get; private set; }
         public NullableDecimalFieldExpression<Product> Height { get; private set; }
         public NullableDecimalFieldExpression<Product> Width { get; private set; }
         public NullableDecimalFieldExpression<Product> Depth { get; private set; }
@@ -630,11 +642,11 @@ namespace SimpleConsole.dboDataService
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Product>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, ProductCategoryType>($"{identifier}.ProductCategoryType", this));
             Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
-            Fields.Add($"{identifier}.Description", Description = new StringFieldExpression<Product>($"{identifier}.Description", this));
+            Fields.Add($"{identifier}.Description", Description = new NullableStringFieldExpression<Product>($"{identifier}.Description", this));
             Fields.Add($"{identifier}.ListPrice", ListPrice = new DoubleFieldExpression<Product>($"{identifier}.ListPrice", this));
             Fields.Add($"{identifier}.Price", Price = new DoubleFieldExpression<Product>($"{identifier}.Price", this));
             Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<Product>($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.Image", Image = new ByteArrayFieldExpression<Product>($"{identifier}.Image", this));
+            Fields.Add($"{identifier}.Image", Image = new NullableByteArrayFieldExpression<Product>($"{identifier}.Image", this));
             Fields.Add($"{identifier}.Height", Height = new NullableDecimalFieldExpression<Product>($"{identifier}.Height", this));
             Fields.Add($"{identifier}.Width", Width = new NullableDecimalFieldExpression<Product>($"{identifier}.Width", this));
             Fields.Add($"{identifier}.Depth", Depth = new NullableDecimalFieldExpression<Product>($"{identifier}.Depth", this));
@@ -750,6 +762,7 @@ namespace SimpleConsole.dboDataService
         public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
         public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
         public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
+        public NullableEnumFieldExpression<Purchase, PaymentSourceType> PaymentSourceType { get; private set; }
         public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
         public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
         #endregion
@@ -773,6 +786,7 @@ namespace SimpleConsole.dboDataService
             Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
             Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new NullableGuidFieldExpression<Purchase>($"{identifier}.TrackingIdentifier", this));
             Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, PaymentMethodType>($"{identifier}.PaymentMethodType", this));
+            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new NullableEnumFieldExpression<Purchase, PaymentSourceType>($"{identifier}.PaymentSourceType", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateUpdated", this));
         }
@@ -795,6 +809,7 @@ namespace SimpleConsole.dboDataService
                 ExpectedDeliveryDate,
                 TrackingIdentifier,
                 PaymentMethodType,
+                PaymentSourceType,
                 DateCreated,
                 DateUpdated
             );
@@ -812,6 +827,7 @@ namespace SimpleConsole.dboDataService
                 ExpectedDeliveryDate.Insert(purchase.ExpectedDeliveryDate),
                 TrackingIdentifier.Insert(purchase.TrackingIdentifier),
                 PaymentMethodType.Insert(purchase.PaymentMethodType),
+                PaymentSourceType.Insert(purchase.PaymentSourceType),
                 DateCreated.Insert(purchase.DateCreated),
                 DateUpdated.Insert(purchase.DateUpdated)
             );
@@ -828,6 +844,7 @@ namespace SimpleConsole.dboDataService
 			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); }; 
 			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); }; 
 			if (from.PaymentMethodType != to.PaymentMethodType) { expr &= PaymentMethodType.Set(to.PaymentMethodType); }; 
+			if (from.PaymentSourceType != to.PaymentSourceType) { expr &= PaymentSourceType.Set(to.PaymentSourceType); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
@@ -844,6 +861,7 @@ namespace SimpleConsole.dboDataService
 			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
 			purchase.PaymentMethodType = reader.ReadField().GetValue<PaymentMethodType>();
+			purchase.PaymentSourceType = reader.ReadField().GetValue<PaymentSourceType?>();
 			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
 			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }

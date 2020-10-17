@@ -21,14 +21,6 @@ namespace HatTrick.DbEx.Sql
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
         }
 
-        public SqlStatementValueConverterResolver(IEnumerable<ParameterizedFieldExpression> fieldExpressions, IValueConverterFactory valueConverterFactory)
-        {
-            if (fieldExpressions is null)
-                throw new ArgumentNullException($"{nameof(fieldExpressions)} is required.");
-            this.fieldExpressions = fieldExpressions.Where(x => x.Field is object).Select(x => x.Field);
-            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
-        }
-
         public SqlStatementValueConverterResolver(SelectExpressionSet selectExpressionSet, IValueConverterFactory valueConverterFactory)
         {
             if (selectExpressionSet is null)
@@ -42,14 +34,6 @@ namespace HatTrick.DbEx.Sql
         public IValueConverter FindConverter(Type declaredType)
             => valueConverterFactory.CreateConverter(declaredType);
 
-        public IValueConverter FindConverter(FieldExpression field)
-        {
-            if (field is null)
-                return null;
-
-            return FindConverter(field as IExpressionTypeProvider);
-        }
-
         public IValueConverter FindConverter(int index)
             =>  FindConverter(fieldExpressions.ElementAt(index));
 
@@ -57,13 +41,6 @@ namespace HatTrick.DbEx.Sql
         {
             if (provider is null)
                 return null;
-
-            if (provider is FieldExpression field)
-            {
-                var converter = valueConverterFactory.CreateConverter(field);
-                if (converter is object)
-                    return converter;
-            }
 
             return valueConverterFactory.CreateConverter(provider.DeclaredType);
         }

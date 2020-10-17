@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Converter
             return (T)Enum.ToObject(typeof(T), value);
         }
 
-        public virtual object ConvertToDatabase(object value)
-            => Convert.ToInt32(value);
+        public virtual (Type, object) ConvertToDatabase(object value)
+            => (typeof(int), Convert.ToInt32(value));
     }
 }

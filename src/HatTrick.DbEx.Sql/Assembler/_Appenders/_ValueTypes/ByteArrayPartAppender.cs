@@ -3,6 +3,6 @@
     public class ByteArrayPartAppender : IAssemblyPartAppender<byte[]>
     {
         public void AppendPart(byte[] expression, ISqlStatementBuilder builder, AssemblyContext context)
-            =>  builder.Appender.Write(builder.Parameters.Add(expression, context.Field, builder.FindMetadata(context.Field)).Parameter.ParameterName);
+            =>  builder.Appender.Write(builder.Parameters.Add(expression, builder.FindMetadata(context.Field)).Parameter.ParameterName);
     }
 }
