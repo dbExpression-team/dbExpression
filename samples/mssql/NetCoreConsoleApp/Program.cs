@@ -59,7 +59,6 @@ namespace NetCoreConsoleApp
 		static void RunSelectExpressions()
         {
             var select = new SelectExpressions();
-
             var respa = select.SelectPersonById(1);
             var respb = select.SelectPersonByFirstNameLastNameAndBirthdate("Kyle", "Broflovski", DateTime.Parse("1996-03-01"));
             var respc = select.SelectTotalPurchaseViewByPersonId(2);
@@ -116,7 +115,6 @@ namespace NetCoreConsoleApp
                 inserts.SimpleInsertPerson(p);
             }
             #endregion
-
             #region transactional insert
             {
                 var p = new Person()
@@ -220,9 +218,9 @@ namespace NetCoreConsoleApp
         {
             var updates = new UpdateExpressions();
 
-			#region simple update
-			updates.SimpleUpdatePersonSetCreditScore(1, 50000);
-			#endregion
+            #region simple update
+            updates.SimpleUpdatePersonSetCreditScore(1, 50000);
+            #endregion
 
 			#region join based update
 			updates.UpdateCreditLimitForAllGenderMatchWithinZip(GenderType.Female, "80440", 1500);

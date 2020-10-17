@@ -39,15 +39,13 @@ namespace HatTrick.DbEx.Sql.Executor
                     }
                     return new Row(currentRowIndex++, row);
                 }
+
                 //asking for a row and the reader has finished, proactively shut everything down.
-                DataReader.Close();
-                if (!SqlConnection.IsTransactional)
-                    SqlConnection.Disconnect();
+                Close();
             }
             catch
             {
-                if (DataReader != null && !DataReader.IsClosed)
-                    DataReader.Close(); //redundant, but required for sqlCe before rollback...
+                Close();
 
                 if (SqlConnection.IsTransactional)
                 {
@@ -63,7 +61,16 @@ namespace HatTrick.DbEx.Sql.Executor
             return null;
         }
 
-        protected virtual void Dispose(bool disposing)
+        public void Close()
+        {
+            if (DataReader is object && !DataReader.IsClosed)
+                DataReader.Close();
+
+            if (!SqlConnection.IsTransactional)
+                SqlConnection.Disconnect();
+        }
+
+		protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
             {
