@@ -17,12 +17,4 @@ namespace HatTrick.DbEx.Sql.Types
             PlatformType = platformType;
         }
     }
-
-    public abstract class DbTypeMaps<T>
-        where T : Enum
-    {
-        public abstract DbTypeMap<T> FindByDbType(DbType dbType);
-        public abstract DbTypeMap<T> FindByPlatformType(T platformType);
-        public abstract DbTypeMap<T> FindByClrType(Type clrType);
-    }
 }

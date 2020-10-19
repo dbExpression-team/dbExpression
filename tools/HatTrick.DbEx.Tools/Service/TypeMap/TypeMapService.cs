@@ -44,6 +44,8 @@ namespace HatTrick.DbEx.Tools.Service
 
                 case SqlDbType.Binary:
                 case SqlDbType.Image:
+                case SqlDbType.Timestamp:
+                case SqlDbType.Udt:
                 case SqlDbType.VarBinary: return typeof(byte[]);
 
                 case SqlDbType.Bit: return typeof(bool);
@@ -76,15 +78,15 @@ namespace HatTrick.DbEx.Tools.Service
 
                 case SqlDbType.UniqueIdentifier: return typeof(Guid);
 
-                case SqlDbType.Real:
+                case SqlDbType.Real: return typeof(float);
+
+                case SqlDbType.Time: return typeof(TimeSpan);
+
                 case SqlDbType.Structured:
-                case SqlDbType.Time:
-                case SqlDbType.Timestamp:
-                case SqlDbType.Udt:
                 case SqlDbType.Variant:
                 case SqlDbType.Xml:
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"The sql database type {sqlDbType} is not compatible with dbExpression.");
             }
         }
         #endregion
@@ -100,6 +102,8 @@ namespace HatTrick.DbEx.Tools.Service
 
                 case SqlDbType.Binary:
                 case SqlDbType.Image:
+                case SqlDbType.Timestamp:
+                case SqlDbType.Udt:
                 case SqlDbType.VarBinary: return format("byte[]", false);
 
                 case SqlDbType.Bit: return format("bool", isNullable);
@@ -132,15 +136,15 @@ namespace HatTrick.DbEx.Tools.Service
 
                 case SqlDbType.UniqueIdentifier: return format(nameof(Guid), isNullable);
 
-                case SqlDbType.Real:
+                case SqlDbType.Real: return format("float", isNullable);
+
+                case SqlDbType.Time: return format(nameof(TimeSpan), isNullable);
+                
                 case SqlDbType.Structured:
-                case SqlDbType.Time:
-                case SqlDbType.Timestamp:
-                case SqlDbType.Udt:
                 case SqlDbType.Variant:
                 case SqlDbType.Xml:
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"The sql database type {sqlDbType} is not compatible with dbExpression.");
             }
         }
         #endregion
@@ -156,12 +160,15 @@ namespace HatTrick.DbEx.Tools.Service
 
                 case SqlDbType.Binary:
                 case SqlDbType.Image:
+                case SqlDbType.Timestamp:
+                case SqlDbType.Udt:
                 case SqlDbType.VarBinary: return format("ByteArray");
-
+                
                 case SqlDbType.Bit: return format(nameof(Boolean));
 
                 case SqlDbType.Char:
-                case SqlDbType.NChar:
+                case SqlDbType.NChar: return format(nameof(Char));
+
                 case SqlDbType.NText:
                 case SqlDbType.NVarChar:
                 case SqlDbType.Text:
@@ -189,15 +196,15 @@ namespace HatTrick.DbEx.Tools.Service
 
                 case SqlDbType.UniqueIdentifier: return format(nameof(Guid));
                 
-                case SqlDbType.Real:
+                case SqlDbType.Real: return format(nameof(Single));
+
+                case SqlDbType.Time: return format(nameof(TimeSpan));
+
                 case SqlDbType.Structured:
-                case SqlDbType.Time:
-                case SqlDbType.Timestamp:
-                case SqlDbType.Udt:
                 case SqlDbType.Variant:
                 case SqlDbType.Xml:
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException($"The sql database type {sqlDbType} is not compatible with dbExpression.");
             }
         }
         #endregion
