@@ -8,10 +8,14 @@ namespace HatTrick.DbEx.MsSql.Types
 {
     public class MsSqlTypeMapFactory : IDbTypeMapFactory<SqlDbType>
     {
-        #region internals
+        #region 
+        /// <summary>
+        /// Set of maps for converting between SqlDbType, DbType, and .NET runtime types.
+        /// reference: https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings
+        /// </summary>
+        /// <remarks>Precedence in this last is important; when resolving a SqlDbType or DbType by .NET runtime type, the "first" in the list matching the .NET runtime type will be returned.</remarks>
         private static readonly List<DbTypeMap<SqlDbType>> typeMaps = new List<DbTypeMap<SqlDbType>>()
         {
-            //reference: https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings
             new DbTypeMap<SqlDbType>(typeof(long), DbType.Int64, SqlDbType.BigInt),
             new DbTypeMap<SqlDbType>(typeof(long?), DbType.Int64, SqlDbType.BigInt),
             new DbTypeMap<SqlDbType>(typeof(ulong), DbType.Int64, SqlDbType.BigInt),
@@ -20,6 +24,8 @@ namespace HatTrick.DbEx.MsSql.Types
             new DbTypeMap<SqlDbType>(typeof(byte[]), DbType.Binary, SqlDbType.Binary),
             new DbTypeMap<SqlDbType>(typeof(byte[]), DbType.Binary, SqlDbType.Image),
             new DbTypeMap<SqlDbType>(typeof(byte[]), DbType.Binary, SqlDbType.VarBinary),
+            new DbTypeMap<SqlDbType>(typeof(byte[]), DbType.Binary, SqlDbType.Timestamp),
+            new DbTypeMap<SqlDbType>(typeof(byte[]), DbType.Binary, SqlDbType.Udt),
 
             new DbTypeMap<SqlDbType>(typeof(bool), DbType.Boolean, SqlDbType.Bit),
             new DbTypeMap<SqlDbType>(typeof(bool?), DbType.Boolean, SqlDbType.Bit),            
@@ -41,7 +47,10 @@ namespace HatTrick.DbEx.MsSql.Types
             
             new DbTypeMap<SqlDbType>(typeof(DateTimeOffset), DbType.DateTimeOffset, SqlDbType.DateTimeOffset),
             new DbTypeMap<SqlDbType>(typeof(DateTimeOffset?), DbType.DateTimeOffset, SqlDbType.DateTimeOffset),
-            
+
+            new DbTypeMap<SqlDbType>(typeof(TimeSpan), DbType.Time, SqlDbType.Time),
+            new DbTypeMap<SqlDbType>(typeof(TimeSpan?), DbType.Time, SqlDbType.Time),
+
             new DbTypeMap<SqlDbType>(typeof(decimal), DbType.Decimal, SqlDbType.Decimal),
             new DbTypeMap<SqlDbType>(typeof(decimal?), DbType.Decimal, SqlDbType.Decimal),
             
@@ -68,12 +77,8 @@ namespace HatTrick.DbEx.MsSql.Types
             new DbTypeMap<SqlDbType>(typeof(Guid), DbType.Guid, SqlDbType.UniqueIdentifier),
             new DbTypeMap<SqlDbType>(typeof(Guid?), DbType.Guid, SqlDbType.UniqueIdentifier),
 
-            //to review:
-            new DbTypeMap<SqlDbType>(typeof(float), DbType.Single, SqlDbType.Real),  //exception in code gen
-            new DbTypeMap<SqlDbType>(typeof(float?), DbType.Single, SqlDbType.Real),  //exception in code gen
-
-            new DbTypeMap<SqlDbType>(typeof(TimeSpan), DbType.Time, SqlDbType.Time), //????
-
+            new DbTypeMap<SqlDbType>(typeof(float), DbType.Single, SqlDbType.Real),
+            new DbTypeMap<SqlDbType>(typeof(float?), DbType.Single, SqlDbType.Real)
         };
         #endregion
 

@@ -11,19 +11,24 @@ namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlParameterBuilder : SqlParameterBuilder
     {
+        #region internals
         private readonly IDbTypeMapFactory<SqlDbType> typeMaps;
         private readonly IValueConverterFactory valueConverterFactory;
+        #endregion
 
-        public MsSqlParameterBuilder(MsSqlTypeMaps typeMaps)
+        #region constructors
+        public MsSqlParameterBuilder(IDbTypeMapFactory<SqlDbType> typeMaps, IValueConverterFactory valueConverterFactory)
         {
             this.typeMaps = typeMaps ?? throw new ArgumentNullException($"{nameof(typeMaps)} is required.");
-            this.valueConverterFactory = valueConverterFactory;
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
         }
+        #endregion
 
+        #region methods
         public override DbParameter Add<T>(T value)
         {
             var (type, converted) = ConvertDbParameterValue(value);
-            var typeMap = typeMaps.FindByClrType(typeof(T));
+            var typeMap = typeMaps.FindByClrType(type)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {typeof(T)}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
             var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
@@ -39,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         public override DbParameter Add(object value, Type valueType)
         {
             var (type, converted) = ConvertDbParameterValue(valueType, value);
-            var typeMap = typeMaps.FindByClrType(valueType);
+            var typeMap = typeMaps.FindByClrType(type)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {valueType}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
             var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
@@ -100,5 +105,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 parameter.Scale = scale.Value;
             return parameter;
         }
+        #endregion
     }
 }
