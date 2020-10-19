@@ -3,6 +3,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -167,6 +168,26 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().StartWith(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_cast_product_valid_end_time_of_day_for_purchase_to_datetime_succeed(int version, int expected = 23)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Cast(dbo.Product.ValidEndTimeOfDayForPurchase).AsDateTime()
+                ).From(dbo.Product)
+                .Where(dbo.Product.ValidEndTimeOfDayForPurchase != DBNull.Value);
+
+            //when               
+            DateTime? result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+            result.Value.Hour.Should().Be(expected);
         }
     }
 }

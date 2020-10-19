@@ -223,6 +223,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
 
+        #region TimeSpan
+
+
+
+        #endregion
+
         #endregion
 
         #region fields
@@ -344,6 +350,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
 
+        #region TimeSpan
+
+        #endregion
+
         #endregion
 
         #region mediators
@@ -461,6 +471,10 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableDoubleExpressionMediator operator %(NullableDoubleExpressionMediator a, NullableInt64ExpressionMediator b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
 
+
+        #region TimeSpan
+
+        #endregion
 
         #endregion
         #endregion

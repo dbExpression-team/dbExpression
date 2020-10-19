@@ -978,6 +978,79 @@ namespace HatTrick.DbEx.Sql.Builder
             => new StringCoalesceFunctionExpression(new List<ExpressionMediator<string>> { field1, field2, field3, field4, field5, field6 }, field7);
         #endregion
 
+        #region TimeSpan
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, TimeSpan value)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1 }, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, TimeSpan? value)
+            => new NullableTimeSpanCoalesceFunctionExpression(new List<NullableTimeSpanExpressionMediator> { field1, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)) }.ToArray());
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, TimeSpanExpressionMediator field2)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1 }, field2);
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2);
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, TimeSpan value)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2 }, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, TimeSpan? value)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, TimeSpanExpressionMediator field3)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2 }, field3);
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3);
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, TimeSpan value)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3 }, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, TimeSpan? value)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, TimeSpanExpressionMediator field4)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3 }, field4);
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4);
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, TimeSpan value)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3, field4 }, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, TimeSpan? value)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, TimeSpanExpressionMediator field5)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3, field4 }, field5);
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4, field5);
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, TimeSpan value)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3, field4, field5 }, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, TimeSpan? value)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4, field5, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, TimeSpanExpressionMediator field6)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3, field4, field5 }, field6);
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, NullableTimeSpanExpressionMediator field6)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6);
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, NullableTimeSpanExpressionMediator field6, TimeSpan value)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3, field4, field5, field6 }, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, NullableTimeSpanExpressionMediator field6, TimeSpan? value)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+
+        public static TimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, NullableTimeSpanExpressionMediator field6, TimeSpanExpressionMediator field7)
+            => new TimeSpanCoalesceFunctionExpression(new List<NullableExpressionMediator<TimeSpan>> { field1, field2, field3, field4, field5, field6 }, field7);
+
+        public static NullableTimeSpanCoalesceFunctionExpression Coalesce(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2, NullableTimeSpanExpressionMediator field3, NullableTimeSpanExpressionMediator field4, NullableTimeSpanExpressionMediator field5, NullableTimeSpanExpressionMediator field6, NullableTimeSpanExpressionMediator field7)
+            => new NullableTimeSpanCoalesceFunctionExpression(field1, field2, field3, field4, field5, field6, field7);
+        #endregion
         #endregion
 
         #region isnull
@@ -1160,6 +1233,20 @@ namespace HatTrick.DbEx.Sql.Builder
         public static StringIsNullFunctionExpression IsNull(StringExpressionMediator field, string value)
             => new StringIsNullFunctionExpression(field, new StringExpressionMediator(new LiteralExpression<string>(value)));
         #endregion
+
+        #region TimeSpan
+        public static TimeSpanIsNullFunctionExpression IsNull(NullableTimeSpanExpressionMediator field1, TimeSpanExpressionMediator field2)
+            => new TimeSpanIsNullFunctionExpression(field1, field2);
+
+        public static NullableTimeSpanIsNullFunctionExpression IsNull(NullableTimeSpanExpressionMediator field1, NullableTimeSpanExpressionMediator field2)
+            => new NullableTimeSpanIsNullFunctionExpression(field1, field2);
+
+        public static TimeSpanIsNullFunctionExpression IsNull(NullableTimeSpanExpressionMediator field, TimeSpan value)
+            => new TimeSpanIsNullFunctionExpression(field, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
+
+        public static NullableTimeSpanIsNullFunctionExpression IsNull(NullableTimeSpanExpressionMediator field, TimeSpan? value)
+            => new NullableTimeSpanIsNullFunctionExpression(field, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+        #endregion
         #endregion
 
         #region average
@@ -1269,6 +1356,12 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static StringMinimumFunctionExpression Min(StringExpressionMediator field, bool distinct = false)
             => new StringMinimumFunctionExpression(field, distinct);
+
+        public static TimeSpanMinimumFunctionExpression Min(TimeSpanExpressionMediator field, bool distinct = false)
+            => new TimeSpanMinimumFunctionExpression(field, distinct);
+
+        public static NullableTimeSpanMinimumFunctionExpression Min(NullableTimeSpanExpressionMediator field, bool distinct = false)
+            => new NullableTimeSpanMinimumFunctionExpression(field, distinct);
         #endregion
 
         #region maximum
@@ -1334,6 +1427,12 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static StringMaximumFunctionExpression Max(StringExpressionMediator field, bool distinct = false)
             => new StringMaximumFunctionExpression(field, distinct);
+
+        public static TimeSpanMaximumFunctionExpression Max(TimeSpanExpressionMediator field, bool distinct = false)
+            => new TimeSpanMaximumFunctionExpression(field, distinct);
+
+        public static NullableTimeSpanMaximumFunctionExpression Max(NullableTimeSpanExpressionMediator field, bool distinct = false)
+            => new NullableTimeSpanMaximumFunctionExpression(field, distinct);
         #endregion
 
         #region count

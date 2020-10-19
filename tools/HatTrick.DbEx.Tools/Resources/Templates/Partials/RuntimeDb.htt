@@ -97,6 +97,12 @@
         public static IFromExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>, IValueContinuationExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>>> SelectOne(NullableGuidExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<Guid?>(config, field);
 
+        public static IFromExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>, IValueContinuationExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>>> SelectOne(TimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TimeSpan>(config, field);
+
+        public static IFromExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>, IValueContinuationExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>>> SelectOne(NullableTimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TimeSpan?>(config, field);
+
         public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field1, field2, fields);
         #endregion
@@ -188,7 +194,12 @@
         public static IListFromExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>, IValueListContinuationExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>>> SelectMany(NullableGuidExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<Guid?>(config, field);
 
+        public static IListFromExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>, IValueListContinuationExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>>> SelectMany(TimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TimeSpan>(config, field);
 
+        public static IListFromExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>, IValueListContinuationExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>>> SelectMany(NullableTimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TimeSpan?>(config, field);
+            
         public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectMany(ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field1, field2, fields);
         #endregion

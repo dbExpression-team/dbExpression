@@ -85,6 +85,8 @@ namespace SimpleConsole.dboData
         public decimal? Depth { get; set; }
         public decimal? Weight { get; set; }
         public decimal ShippingWeight { get; set; }
+        public TimeSpan? ValidStartTimeOfDayForPurchase { get; set; }
+        public TimeSpan? ValidEndTimeOfDayForPurchase { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion

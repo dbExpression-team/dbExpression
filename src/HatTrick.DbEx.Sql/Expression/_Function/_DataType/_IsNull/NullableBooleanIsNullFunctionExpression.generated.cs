@@ -98,6 +98,13 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
         
+        #region TimeSpan
+
+
+
+        
+        #endregion
+        
         #endregion
 
         #region mediator
@@ -142,6 +149,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
         
         #region long
+
+        #endregion
+        
+        #region TimeSpan
 
         #endregion
         

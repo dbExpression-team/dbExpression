@@ -20,6 +20,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         private static readonly TypeModel _int = new TypeModel<int>("int");
         private static readonly TypeModel _long = new TypeModel<long>("long");
         private static readonly TypeModel _string = new TypeModel<string>("string");
+        private static readonly TypeModel _timeSpan = new TypeModel<TimeSpan>("TimeSpan");
 
         private static readonly Dictionary<Type, TypeModel> allTypes = new Dictionary<Type, TypeModel>()
         {
@@ -34,8 +35,9 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
             { typeof(short), _short },
             { typeof(int), _int },
             { typeof(long), _long },
-            { typeof(string), _string }
-        };
+            { typeof(string), _string },
+            { typeof(TimeSpan), _timeSpan }
+       };
 
         private static readonly Dictionary<Type, TypeModel> numericTypes = new Dictionary<Type, TypeModel>()
         {
@@ -52,7 +54,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         {
             { typeof(DateTime), _dateTime },
             { typeof(DateTimeOffset), _dateTimeOffset }
-        };
+       };
 
         private HashSet<TypeModel> @types = new HashSet<TypeModel>();
         private HashSet<TypeModel> exceptTypes = new HashSet<TypeModel>();
@@ -150,12 +152,12 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
             if (sourceType == Get<DateTime>())
             {
                 if (targetType == Get<string>()) return Get<string>();
-                return Get<DateTime>();
+                return sourceType;
             }
             if (sourceType == Get<DateTimeOffset>())
             {
                 if (targetType == Get<string>()) return Get<string>();
-                return Get<DateTimeOffset>();
+                return sourceType;
             }
             if (sourceType == Get<double>())
             {
@@ -221,6 +223,11 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
                 if (targetType == Get<long>()) return Get<float>();
                 if (targetType == Get<short>()) return Get<float>();
                 if (targetType == Get<string>()) return Get<string>();
+            }
+            if (sourceType == Get<TimeSpan>())
+            {
+                if (targetType == Get<DateTime>()) return Get<DateTime>();
+                return sourceType;
             }
             return sourceType;
         }

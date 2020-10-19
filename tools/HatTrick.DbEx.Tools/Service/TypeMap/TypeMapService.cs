@@ -167,8 +167,7 @@ namespace HatTrick.DbEx.Tools.Service
                 case SqlDbType.Bit: return format(nameof(Boolean));
 
                 case SqlDbType.Char:
-                case SqlDbType.NChar: return format(nameof(Char));
-
+                case SqlDbType.NChar:
                 case SqlDbType.NText:
                 case SqlDbType.NVarChar:
                 case SqlDbType.Text:

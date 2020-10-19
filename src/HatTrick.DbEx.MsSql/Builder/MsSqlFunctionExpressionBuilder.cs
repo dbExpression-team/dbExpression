@@ -104,6 +104,14 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static ICastFunctionExpressionBuilder Cast(StringExpressionMediator field)
             => new MsSqlCastFunctionExpressionBuilder(field);
         #endregion
+
+        #region TimeSpan
+        public static ICastFunctionExpressionBuilder Cast(TimeSpanExpressionMediator field)
+            => new MsSqlCastFunctionExpressionBuilder(field);
+
+        public static INullableCastFunctionExpressionBuilder Cast(NullableTimeSpanExpressionMediator field)
+           => new MsSqlNullableCastFunctionExpressionBuilder(field);
+        #endregion
         #endregion
 
         #region date add
