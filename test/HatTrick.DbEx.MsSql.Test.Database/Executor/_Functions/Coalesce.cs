@@ -315,5 +315,43 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             dates.Should().HaveCount(expected);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_valid_start_time_of_day_for_purchase_and_valid_end_time_of_day_for_purchase_and_timespan_succeed(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, TimeSpan.FromHours(expected)).As("relevant_date")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ValidStartTimeOfDayForPurchase == DBNull.Value & dbo.Product.ValidEndTimeOfDayForPurchase == DBNull.Value);
+
+            //when               
+            IList<TimeSpan> dates = exp.Execute();
+
+            //then
+            dates.Should().OnlyContain(x => x == TimeSpan.FromHours(expected));
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_coalesce_of_valid_start_time_of_day_for_purchase_and_valid_end_time_of_day_for_purchase_and_null_succeed(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Coalesce(dbo.Product.ValidStartTimeOfDayForPurchase, dbo.Product.ValidEndTimeOfDayForPurchase, (TimeSpan?)null).As("relevant_date")
+                ).From(dbo.Product)
+                .Where(dbo.Product.ValidStartTimeOfDayForPurchase == DBNull.Value & dbo.Product.ValidEndTimeOfDayForPurchase == DBNull.Value);
+
+            //when               
+            IList<TimeSpan?> dates = exp.Execute();
+
+            //then
+            dates.Should().OnlyContain(x => x == null);
+        }
     }
 }

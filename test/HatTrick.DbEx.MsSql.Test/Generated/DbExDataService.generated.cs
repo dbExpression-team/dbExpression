@@ -112,6 +112,12 @@ namespace DbEx.DataService
         public static IFromExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>, IValueContinuationExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>>> SelectOne(NullableGuidExpressionMediator field)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<Guid?>(config, field);
 
+        public static IFromExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>, IValueContinuationExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>>> SelectOne(TimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TimeSpan>(config, field);
+
+        public static IFromExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>, IValueContinuationExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>>> SelectOne(NullableTimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TimeSpan?>(config, field);
+
         public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field1, field2, fields);
         #endregion
@@ -203,7 +209,12 @@ namespace DbEx.DataService
         public static IListFromExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>, IValueListContinuationExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>>> SelectMany(NullableGuidExpressionMediator field)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder<Guid?>(config, field);
 
+        public static IListFromExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>, IValueListContinuationExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>>> SelectMany(TimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TimeSpan>(config, field);
 
+        public static IListFromExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>, IValueListContinuationExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>>> SelectMany(NullableTimeSpanExpressionMediator field)
+            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TimeSpan?>(config, field);
+            
         public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectMany(ExpressionMediator field1, ExpressionMediator field2, params ExpressionMediator[] fields)
             => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field1, field2, fields);
         #endregion
@@ -624,6 +635,8 @@ namespace DbEx.dboDataService
         public NullableDecimalFieldExpression<Product> Depth { get; private set; }
         public NullableDecimalFieldExpression<Product> Weight { get; private set; }
         public DecimalFieldExpression<Product> ShippingWeight { get; private set; }
+        public NullableTimeSpanFieldExpression<Product> ValidStartTimeOfDayForPurchase { get; private set; }
+        public NullableTimeSpanFieldExpression<Product> ValidEndTimeOfDayForPurchase { get; private set; }
         public DateTimeFieldExpression<Product> DateCreated { get; private set; }
         public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
         #endregion
@@ -652,6 +665,8 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.Depth", Depth = new NullableDecimalFieldExpression<Product>($"{identifier}.Depth", this));
             Fields.Add($"{identifier}.Weight", Weight = new NullableDecimalFieldExpression<Product>($"{identifier}.Weight", this));
             Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new DecimalFieldExpression<Product>($"{identifier}.ShippingWeight", this));
+            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new NullableTimeSpanFieldExpression<Product>($"{identifier}.ValidStartTimeOfDayForPurchase", this));
+            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new NullableTimeSpanFieldExpression<Product>($"{identifier}.ValidEndTimeOfDayForPurchase", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Product>($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Product>($"{identifier}.DateUpdated", this));
         }
@@ -679,6 +694,8 @@ namespace DbEx.dboDataService
                 Depth,
                 Weight,
                 ShippingWeight,
+                ValidStartTimeOfDayForPurchase,
+                ValidEndTimeOfDayForPurchase,
                 DateCreated,
                 DateUpdated
             );
@@ -701,6 +718,8 @@ namespace DbEx.dboDataService
                 Depth.Insert(product.Depth),
                 Weight.Insert(product.Weight),
                 ShippingWeight.Insert(product.ShippingWeight),
+                ValidStartTimeOfDayForPurchase.Insert(product.ValidStartTimeOfDayForPurchase),
+                ValidEndTimeOfDayForPurchase.Insert(product.ValidEndTimeOfDayForPurchase),
                 DateCreated.Insert(product.DateCreated),
                 DateUpdated.Insert(product.DateUpdated)
             );
@@ -722,6 +741,8 @@ namespace DbEx.dboDataService
 			if (from.Depth != to.Depth) { expr &= Depth.Set(to.Depth); }; 
 			if (from.Weight != to.Weight) { expr &= Weight.Set(to.Weight); }; 
 			if (from.ShippingWeight != to.ShippingWeight) { expr &= ShippingWeight.Set(to.ShippingWeight); }; 
+			if (from.ValidStartTimeOfDayForPurchase != to.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(to.ValidStartTimeOfDayForPurchase); }; 
+			if (from.ValidEndTimeOfDayForPurchase != to.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(to.ValidEndTimeOfDayForPurchase); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
             expr &= DateUpdated.Set(DateTime.UtcNow);
 			
@@ -743,6 +764,8 @@ namespace DbEx.dboDataService
 			product.Depth = reader.ReadField().GetValue<decimal?>();
 			product.Weight = reader.ReadField().GetValue<decimal?>();
 			product.ShippingWeight = reader.ReadField().GetValue<decimal>();
+			product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+			product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
 			product.DateCreated = reader.ReadField().GetValue<DateTime>();
 			product.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }

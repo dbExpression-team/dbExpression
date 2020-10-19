@@ -91,6 +91,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
+        #region TimeSpan
+
+
+
+        #endregion
+        
         #endregion
 
         #region mediator
@@ -140,6 +146,10 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #region string
         public static StringExpressionMediator operator +(StringIsNullFunctionExpression a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(new StringExpressionMediator(a), b, ArithmeticExpressionOperator.Add));
+
+        #endregion
+        
+        #region TimeSpan
 
         #endregion
         

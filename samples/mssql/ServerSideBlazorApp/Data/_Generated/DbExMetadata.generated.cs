@@ -177,6 +177,8 @@ namespace ServerSideBlazorApp.dboDataService
             Fields.Add($"{identifier}.Depth", new MsSqlFieldMetadata(this, $"{identifier}.Depth", "Depth", SqlDbType.Decimal, 5));
             Fields.Add($"{identifier}.Weight", new MsSqlFieldMetadata(this, $"{identifier}.Weight", "Weight", SqlDbType.Decimal, 5));
             Fields.Add($"{identifier}.ShippingWeight", new MsSqlFieldMetadata(this, $"{identifier}.ShippingWeight", "ShippingWeight", SqlDbType.Decimal, 5));
+            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", new MsSqlFieldMetadata(this, $"{identifier}.ValidStartTimeOfDayForPurchase", "ValidStartTimeOfDayForPurchase", SqlDbType.Time, 5));
+            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", new MsSqlFieldMetadata(this, $"{identifier}.ValidEndTimeOfDayForPurchase", "ValidEndTimeOfDayForPurchase", SqlDbType.Time, 5));
             Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
             Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }

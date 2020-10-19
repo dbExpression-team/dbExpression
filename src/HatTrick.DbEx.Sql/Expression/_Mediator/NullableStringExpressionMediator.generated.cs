@@ -24,6 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
 
 
+
         #endregion
 
         #region fields
@@ -77,9 +78,14 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableStringExpressionMediator operator +(NullableStringExpressionMediator a, NullableStringFieldExpression b) => new NullableStringExpressionMediator(new ArithmeticExpression(a, new NullableStringExpressionMediator(b), ArithmeticExpressionOperator.Add));
         #endregion
 
+        #region TimeSpan
+
+        #endregion
+
         #endregion
 
         #region mediators
+
 
 
 

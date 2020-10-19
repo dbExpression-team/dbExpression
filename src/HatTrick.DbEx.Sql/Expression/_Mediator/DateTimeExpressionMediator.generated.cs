@@ -143,6 +143,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
+        #region TimeSpan
+
+
+
+        #endregion
+        
         #endregion
 
         #region fields
@@ -189,6 +195,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #region long
         public static DateTimeExpressionMediator operator +(DateTimeExpressionMediator a, Int64FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Add));
         public static DateTimeExpressionMediator operator -(DateTimeExpressionMediator a, Int64FieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Subtract));
+        #endregion
+
+        #region TimeSpan
         #endregion
 
         #endregion
@@ -264,6 +273,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static NullableDateTimeExpressionMediator operator +(DateTimeExpressionMediator a, NullableInt64ExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         public static NullableDateTimeExpressionMediator operator -(DateTimeExpressionMediator a, NullableInt64ExpressionMediator b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        #endregion
+        
+        #region TimeSpan
+
         #endregion
         
         #endregion

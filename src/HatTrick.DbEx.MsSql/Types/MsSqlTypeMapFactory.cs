@@ -30,8 +30,9 @@ namespace HatTrick.DbEx.MsSql.Types
             new DbTypeMap<SqlDbType>(typeof(bool), DbType.Boolean, SqlDbType.Bit),
             new DbTypeMap<SqlDbType>(typeof(bool?), DbType.Boolean, SqlDbType.Bit),            
 
-            new DbTypeMap<SqlDbType>(typeof(char), DbType.AnsiStringFixedLength, SqlDbType.Char),
-            new DbTypeMap<SqlDbType>(typeof(char?), DbType.AnsiStringFixedLength, SqlDbType.Char),
+            //new DbTypeMap<SqlDbType>(typeof(char), DbType.AnsiStringFixedLength, SqlDbType.Char),
+            //new DbTypeMap<SqlDbType>(typeof(char?), DbType.AnsiStringFixedLength, SqlDbType.Char),
+            new DbTypeMap<SqlDbType>(typeof(string), DbType.AnsiStringFixedLength, SqlDbType.Char), //dbExpression doesn't support Char expressions; they map to string
             new DbTypeMap<SqlDbType>(typeof(char), DbType.StringFixedLength, SqlDbType.NChar),
             new DbTypeMap<SqlDbType>(typeof(char?), DbType.StringFixedLength, SqlDbType.NChar),
             new DbTypeMap<SqlDbType>(typeof(string), DbType.AnsiString, SqlDbType.VarChar),

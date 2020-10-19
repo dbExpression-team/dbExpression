@@ -159,6 +159,8 @@ CREATE TABLE [dbo].[Product](
 	[Depth] DECIMAL(4, 1) NULL,
 	[Weight] DECIMAL(4, 1) NULL,
 	[ShippingWeight] DECIMAL(4, 1) NOT NULL,
+	[ValidStartTimeOfDayForPurchase] TIME NULL,
+	[ValidEndTimeOfDayForPurchase] TIME NULL,
 	[DateCreated] DATETIME NOT NULL,
 	[DateUpdated] DATETIME NOT NULL,
 	CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([Id]) 

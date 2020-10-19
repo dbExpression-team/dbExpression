@@ -38,6 +38,7 @@ The populated data ([```data.sql```](data.sql)) produces the following counts/me
 	- 3 have 'Electronics' product category type
 	- 3 have 'Books' product category type
 	- product ids 3, 6, 9 have no purchases (each in a different category type)
+	- 1 product have a value for valid start and end purchase times
 - Purchase
 	- 15 records
 	- 3 have 1 item and quantity of 1

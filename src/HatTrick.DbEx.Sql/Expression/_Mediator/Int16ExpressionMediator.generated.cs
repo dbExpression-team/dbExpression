@@ -227,6 +227,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
+        #region TimeSpan
+
+
+
+        #endregion
+        
         #endregion
 
         #region fields
@@ -294,6 +300,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public static Int64ExpressionMediator operator *(Int16ExpressionMediator a, Int64FieldExpression b) => new Int64ExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Multiply));
         public static Int64ExpressionMediator operator /(Int16ExpressionMediator a, Int64FieldExpression b) => new Int64ExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Divide));
         public static Int64ExpressionMediator operator %(Int16ExpressionMediator a, Int64FieldExpression b) => new Int64ExpressionMediator(new ArithmeticExpression(a, new Int64ExpressionMediator(b), ArithmeticExpressionOperator.Modulo));
+        #endregion
+
+        #region TimeSpan
         #endregion
 
         #endregion
@@ -411,6 +420,10 @@ namespace HatTrick.DbEx.Sql.Expression
         public static NullableInt64ExpressionMediator operator *(Int16ExpressionMediator a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
         public static NullableInt64ExpressionMediator operator /(Int16ExpressionMediator a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
         public static NullableInt64ExpressionMediator operator %(Int16ExpressionMediator a, NullableInt64ExpressionMediator b) => new NullableInt64ExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        #endregion
+        
+        #region TimeSpan
+
         #endregion
         
         #endregion

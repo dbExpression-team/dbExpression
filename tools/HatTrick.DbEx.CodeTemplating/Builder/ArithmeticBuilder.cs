@@ -35,6 +35,11 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
                 //can't do arithmetic if only 1 is a string
                 models = new List<ArithmeticOperationTemplateModel>();
             }
+            else if (targetType.Type == typeof(TimeSpan) || sourceType.Type == typeof(TimeSpan))
+            {
+                //timespan doesn't support arithmetic without conversion
+                models = new List<ArithmeticOperationTemplateModel>();
+            }
             else if (targetType.In(typeof(DateTime), typeof(DateTimeOffset)) || sourceType.Type.In(typeof(DateTime), typeof(DateTimeOffset)))
             {
                 models = new List<ArithmeticOperationTemplateModel>
@@ -66,6 +71,9 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
 
             if (typeof(DateTime).In(sourceType, operationType))
                 return TypeBuilder.Get<DateTime>();
+
+            if (typeof(TimeSpan).In(sourceType, operationType))
+                return TypeBuilder.Get<TimeSpan>();
 
             if (typeof(decimal).In(sourceType, operationType))
                 return TypeBuilder.Get<decimal>();

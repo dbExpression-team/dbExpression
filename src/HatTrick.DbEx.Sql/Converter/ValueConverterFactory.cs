@@ -32,6 +32,8 @@ namespace HatTrick.DbEx.Sql.Converter
         private static readonly IValueConverter stringConverter = new ValueConverter(typeof(string));
         private static readonly IValueConverter byteArrayConverter = new ValueConverter(typeof(byte[]));
         private static readonly IValueConverter objectConverter = new ValueConverter(typeof(object));
+        private static readonly IValueConverter timeSpanConverter = new ValueConverter(typeof(TimeSpan));
+        private static readonly IValueConverter nullableTimeSpanConverter = new ValueConverter(typeof(TimeSpan?));
 
         private readonly ConcurrentDictionary<Type, Func<IValueConverter>> _valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
         #endregion
@@ -64,6 +66,8 @@ namespace HatTrick.DbEx.Sql.Converter
             _valueConverters.TryAdd(typeof(string), () => stringConverter);
             _valueConverters.TryAdd(typeof(byte[]), () => byteArrayConverter);
             _valueConverters.TryAdd(typeof(object), () => objectConverter);
+            _valueConverters.TryAdd(typeof(TimeSpan), () => timeSpanConverter);
+            _valueConverters.TryAdd(typeof(TimeSpan?), () => nullableTimeSpanConverter);
         }
 
         public void RegisterConverter<T>(IValueConverter converter)
