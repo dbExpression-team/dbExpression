@@ -4,6 +4,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -81,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return this;
         }
 
-        public IRuntimeSqlDatabaseSqlStatementExecutionConfigurationBuilder UseThisToCreateNewSqlConnections(Func<SqlConnection> factory)
+        public IRuntimeSqlDatabaseSqlStatementExecutionConfigurationBuilder UseThisToCreateNewSqlConnections(Func<IDbConnection> factory)
         {
             configuration.ConnectionFactory = new DelegateSqlConnectionFactory(factory);
             return this;

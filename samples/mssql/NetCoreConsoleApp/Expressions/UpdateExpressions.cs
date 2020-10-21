@@ -86,9 +86,11 @@ namespace NetCoreConsoleApp
 			//where dbo.Person_Address.PersonId = 0 and dbo.Address.AddressType = 1
 
 			//commit transaction;
-			var conn = db.GetConnection().BeginTransaction();
+			var conn = db.GetConnection();
 			try
 			{
+				conn.BeginTransaction();
+
 				db.Update(
 						dbo.Person.FirstName.Set(firstName),
 						dbo.Person.LastName.Set(lastName),

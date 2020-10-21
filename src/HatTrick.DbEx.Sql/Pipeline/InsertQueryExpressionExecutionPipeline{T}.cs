@@ -5,6 +5,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading;
@@ -47,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -64,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
 
             if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
+                connection = new SqlConnector(database.ConnectionFactory);
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();
 
@@ -104,7 +105,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
         }
 
-        public async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -127,7 +128,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
 
             if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
+                connection = new SqlConnector(database.ConnectionFactory);
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();            
 

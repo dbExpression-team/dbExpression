@@ -5,6 +5,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Dynamic;
 using System.Threading;
@@ -46,7 +47,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public T ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public T ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
             where T : class, IDbEntity, new()
         {
             T entity = default;
@@ -70,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return entity;
         }
 
-        public async Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
             T value = default;
@@ -95,7 +96,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
             where T : class, IDbEntity, new()
         {
             var values = new List<T>();
@@ -118,7 +119,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
             var values = new List<T>();
@@ -142,7 +143,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public T ExecuteSelectValue<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public T ExecuteSelectValue<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             T value = default;
             ExecuteSelectQuery(
@@ -163,7 +164,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public async Task<T> ExecuteSelectValueAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<T> ExecuteSelectValueAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             T value = default;
             await ExecuteSelectQueryAsync(
@@ -189,7 +190,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
@@ -212,7 +213,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -236,7 +237,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public dynamic ExecuteSelectDynamic(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public dynamic ExecuteSelectDynamic(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             dynamic value = default;
             var converters = new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory);
@@ -260,7 +261,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public async Task<dynamic> ExecuteSelectDynamicAsync(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<dynamic> ExecuteSelectDynamicAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             dynamic value = default;
             var converters = new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory);
@@ -285,7 +286,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public IList<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public IList<dynamic> ExecuteSelectDynamicList(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -308,7 +309,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -332,7 +333,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public T ExecuteSelectObject<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map)
+        public T ExecuteSelectObject<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlRow, T> map)
         {
             T value = default;
             ExecuteSelectQuery(
@@ -360,7 +361,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public async Task<T> ExecuteSelectObjectAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map, CancellationToken ct)
+        public async Task<T> ExecuteSelectObjectAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlRow, T> map, CancellationToken ct)
         {
             T value = default;
             await ExecuteSelectQueryAsync(
@@ -389,7 +390,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public IList<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map)
+        public IList<T> ExecuteSelectObjectList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlRow, T> map)
         {
             var values = new List<T>();
             ExecuteSelectQuery(
@@ -417,7 +418,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, Func<ISqlRow, T> map, CancellationToken ct)
+        public async Task<IList<T>> ExecuteSelectObjectListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlRow, T> map, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteSelectQueryAsync(
@@ -450,15 +451,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
         private void ExecuteSelectQuery(
             SelectQueryExpression expression,
             ISqlConnection connection,
-            Action<DbCommand> configureCommand,
+            Action<IDbCommand> configureCommand,
             Action<ISqlRowReader> transform
         )
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
+            //if (connection is null)
+            //    connection = database.ConnectionFactory.CreateSqlConnection();
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)));
             var statement = statementBuilder.CreateSqlStatement();
@@ -467,7 +468,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
             if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
+                connection = new SqlConnector(database.ConnectionFactory);
 
             beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, appender, parameterBuilder)));
 
@@ -493,7 +494,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         private async Task ExecuteSelectQueryAsync(
             SelectQueryExpression expression,
             ISqlConnection connection,
-            Action<DbCommand> configureCommand,
+            Action<IDbCommand> configureCommand,
             Func<IAsyncSqlRowReader, Task> transform,
             CancellationToken ct
         )
@@ -501,8 +502,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
+            //if (connection is null)
+            //    connection = database.ConnectionFactory.CreateSqlConnection();
 
             await beforeAssembly?.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct);
             var statement = statementBuilder.CreateSqlStatement();
@@ -511,7 +512,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
             if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
+                connection = new SqlConnector(database.ConnectionFactory);
 
             var reader = await executor.ExecuteQueryAsync(
                 statement,
