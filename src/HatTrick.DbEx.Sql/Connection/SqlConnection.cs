@@ -6,21 +6,107 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
-    public abstract class SqlConnection : ISqlConnection, IDisposable
+    public class SqlConnector : ISqlConnection
     {
-        #region internals
-        private bool disposed;
-        protected DbConnection _dbConnection;
-        protected Func<string> ConnectionStringFactory { get; private set; }
-        public DbTransaction DbTransaction { get; private set; }
-        #endregion
-
-        #region interface properties
-        public DbConnection DbConnection
+        #region i db connection
+        public string ConnectionString
         {
             get
             {
-                this.EnsureConnection();
+                EnsureConnection();
+                return _dbConnection.ConnectionString;
+            }
+            set { throw new NotSupportedException("Overwriting connection string is not suppoted."); }
+        }
+
+        public int ConnectionTimeout
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.ConnectionTimeout;
+            }
+        }
+
+        public string Database
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.Database;
+            }
+        }
+
+        public ConnectionState State
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.State;
+            }
+        }
+
+        public IDbTransaction BeginTransaction()
+        {
+            if (_dbConnection?.State != ConnectionState.Open)
+                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+
+            DbTransaction = DbConnection.BeginTransaction();
+            return DbTransaction;
+        }
+
+        public IDbTransaction BeginTransaction(IsolationLevel iso)
+        {
+            if (_dbConnection?.State != ConnectionState.Open)
+                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+
+            DbTransaction = DbConnection.BeginTransaction(iso);
+            return DbTransaction;
+        }
+
+        public void ChangeDatabase(string databaseName)
+        {
+            EnsureConnection();
+            _dbConnection.ChangeDatabase(databaseName);
+        }
+
+        public void Close()
+        {
+            if (DbTransaction != null)
+            { 
+                DbTransaction.Dispose();
+                DbTransaction = null; //ensure null, it drives the IsTransactional property
+            }
+
+            if (_dbConnection != null && _dbConnection.State != ConnectionState.Closed)
+                _dbConnection.Close();
+        }
+
+        public IDbCommand CreateCommand()
+        {
+            EnsureConnection();
+            return _dbConnection.CreateCommand();
+        }
+
+        public void Open()
+        {
+            EnsureConnection();
+            _dbConnection.Open();
+        }
+        #endregion
+
+        #region i sql connection
+        private bool disposed;
+        protected IDbConnection _dbConnection;
+        protected ISqlConnectionFactory _connectionFactory;
+
+        public IDbTransaction DbTransaction { get; private set; }
+
+        public IDbConnection DbConnection
+        {
+            get
+            {
+                EnsureConnection();
                 return _dbConnection;
             }
             protected set
@@ -29,110 +115,74 @@ namespace HatTrick.DbEx.Sql.Connection
             }
         }
 
-        public abstract DbCommand CreateDbCommand();
-
         public bool IsTransactional => DbTransaction is object;
-        #endregion
 
-        #region constructors
-        protected SqlConnection()
+        public SqlConnector(ISqlConnectionFactory connectionFactory)
         {
-        }
-
-        protected SqlConnection(string connectionString)
-        {
-            if (string.IsNullOrEmpty(connectionString))
+            if (connectionFactory is null)
             {
-                throw new ArgumentNullException(nameof(connectionString));
+                throw new ArgumentNullException(nameof(connectionFactory));
             }
 
-            ConnectionStringFactory = () => connectionString;
+            _connectionFactory = connectionFactory;
         }
 
-        protected SqlConnection(Func<string> connectionStringFactory)
+        protected void EnsureConnection()
         {
-            ConnectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException($"{nameof(connectionStringFactory)} is required.");
+            if (DbConnection is null)
+                DbConnection = _connectionFactory.CreateSqlConnection();
         }
-        #endregion
 
-        #region connection management methods
-        public void EnsureOpenConnection()
+        public void EnsureOpen()
         {
-            this.EnsureConnection();
+            EnsureConnection();
             if (_dbConnection.State != ConnectionState.Open)
-            {
                 _dbConnection.Open();
-            }
         }
 
-        public async Task EnsureOpenConnectionAsync(CancellationToken ct)
+        public async Task EnsureOpenAsync(CancellationToken cancellation)
         {
-            this.EnsureConnection();
+            EnsureConnection();
             if (_dbConnection.State != ConnectionState.Open)
-            {
-                await _dbConnection.OpenAsync(ct).ConfigureAwait(false);
-            }
-        }
-
-        public void Disconnect()
-        {
-            if (DbConnection is object)
-            {
-                if (DbConnection.State != ConnectionState.Closed)
-                {
-                    DbConnection.Close();
-                }
-                DbConnection.Dispose();
-                DbConnection = null;
-            }
-
-            if (DbTransaction is object)
-            {
-                DbTransaction.Dispose();
-                DbTransaction = null;
-            }
-        }
-        #endregion
-
-        #region transaction methods
-        public ISqlConnection BeginTransaction()
-        {
-            this.EnsureOpenConnection();
-            DbTransaction = DbConnection.BeginTransaction();
-            return this;
-        }
-
-        public ISqlConnection BeginTransaction(IsolationLevel iso)
-        {
-            this.EnsureOpenConnection();
-            DbTransaction = DbConnection.BeginTransaction(iso);
-            return this;
+                await (_dbConnection as DbConnection).OpenAsync(cancellation);
         }
 
         public void CommitTransaction()
         {
             if (DbTransaction is null)
             {
-                throw new InvalidOperationException("'CommitTransaction' failed.  A transaction was not started.");
+                throw new InvalidOperationException("'CommitTransaction' failed.  No pending transaction exists.");
             }
-            DbTransaction.Commit();
-            this.Disconnect();
+
+            try
+            {
+                DbTransaction.Commit();
+            }
+            finally //Transactions are NOT reusable in any way.  No reason to risk consumer not disposing.
+            {
+                DbTransaction.Dispose();
+                DbTransaction = null;
+            }
         }
 
         public void RollbackTransaction()
         {
-            if (this.IsTransactional)
+            if (!(DbConnection is null))
             {
-                DbTransaction.Rollback();
+                try
+                {
+                    DbTransaction.Rollback();
+                }
+                finally //Transactions are NOT reusable in any way.  No reason to risk consumer not disposing.
+                {
+                    DbTransaction.Dispose();
+                    DbTransaction = null;
+                }
             }
-            this.Disconnect();
         }
         #endregion
 
-        #region abstract methods
-        protected abstract void EnsureConnection();
-        #endregion
-
+        #region i disposable
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -142,16 +192,15 @@ namespace HatTrick.DbEx.Sql.Connection
                     if (DbTransaction is object)
                     {
                         DbTransaction.Dispose();
+                        DbTransaction = null; //ensure null, it drives the IsTransactional property
                     }
+
                     if (_dbConnection is object)
                     {
-                        if (_dbConnection.State == ConnectionState.Open)
-                            _dbConnection.Close();
                         _dbConnection.Dispose();
+                        _dbConnection = null;
                     }
                 }
-                DbTransaction = null;
-                DbConnection = null;
                 disposed = true;
             }
         }
@@ -161,5 +210,6 @@ namespace HatTrick.DbEx.Sql.Connection
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

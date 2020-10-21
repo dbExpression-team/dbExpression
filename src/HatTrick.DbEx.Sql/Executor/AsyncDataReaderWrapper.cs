@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
 using System;
+using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -56,24 +57,12 @@ namespace HatTrick.DbEx.Sql.Executor
                 }
                 //asking for a row and the reader has finished, proactively shut everything down.
                 DataReader.Close();
-                if (!SqlConnection.IsTransactional)
-                    SqlConnection.Disconnect();
             }
             catch
             {
                 Close();
-
-                if (SqlConnection.IsTransactional)
-                {
-                    SqlConnection.RollbackTransaction();
-                }
-                else
-                {
-                    SqlConnection.Disconnect();
-                }
                 throw;
             }
-
             return null;
         }
 
@@ -82,8 +71,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (DataReader is object && !DataReader.IsClosed)
                 DataReader.Close();
 
-            if (!SqlConnection.IsTransactional)
-                SqlConnection.Disconnect();
+            DataReader.Dispose();
+            DataReader = null;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -91,21 +80,8 @@ namespace HatTrick.DbEx.Sql.Executor
             if (!disposed)
             {
                 if (disposing)
-                {
-                    if (DataReader is object)
-                    {
-                        if (!DataReader.IsClosed)
-                            DataReader.Close();
-                        DataReader.Dispose();
-                    }
-                    if (SqlConnection is object)
-                    {
-                        if (!SqlConnection.IsTransactional)
-                            SqlConnection.Disconnect();
-                    }
-                }
-                DataReader = null;
-                SqlConnection = null;
+                    Close();
+
                 disposed = true;
             }
         }

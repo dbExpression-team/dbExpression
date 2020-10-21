@@ -1,5 +1,6 @@
 ﻿using HatTrick.DbEx.Sql.Connection;
 using System;
+using System.Data;
 using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Executor
@@ -10,12 +11,12 @@ namespace HatTrick.DbEx.Sql.Executor
         private bool disposed;
         private int currentRowIndex;
         protected ISqlConnection SqlConnection { get; private set; }
-        protected DbDataReader DataReader { get; private set; }
+        protected IDataReader DataReader { get; private set; }
         protected IValueConverterFinder Converters { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterFinder converters)
+        public DataReaderWrapper(ISqlConnection sqlConnection, IDataReader dataReader, IValueConverterFinder converters)
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
@@ -52,15 +53,6 @@ namespace HatTrick.DbEx.Sql.Executor
             catch
             {
                 Close();
-
-                if (SqlConnection.IsTransactional)
-                {
-                    SqlConnection.RollbackTransaction();
-                }
-                else
-                {
-                    SqlConnection.Disconnect();
-                }
                 throw;
             }
 
@@ -72,30 +64,17 @@ namespace HatTrick.DbEx.Sql.Executor
             if (DataReader is object && !DataReader.IsClosed)
                 DataReader.Close();
 
-            if (!SqlConnection.IsTransactional)
-                SqlConnection.Disconnect();
+            DataReader.Dispose();
+            DataReader = null;
         }
 
-		protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
             {
                 if (disposing)
-                {
-                    if (DataReader is object)
-                    {
-                        if (!DataReader.IsClosed)
-                            DataReader.Close();
-                        DataReader.Dispose();
-                    }
-                    if (SqlConnection is object)
-                    {
-                        if (!SqlConnection.IsTransactional)
-                            SqlConnection.Disconnect();
-                    }
-                }
-                DataReader = null;
-                SqlConnection = null;
+                    Close();
+
                 disposed = true;
             }
         }

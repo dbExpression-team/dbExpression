@@ -3,6 +3,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
 using System;
+using System.Data;
 
 namespace HatTrick.DbEx.Sql.Configuration.Syntax
 {
@@ -22,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Configuration.Syntax
         IRuntimeSqlDatabaseSqlStatementExecutionConfigurationBuilder UseThisToCreateNewSqlConnections<T>()
             where T : ISqlConnectionFactory, new();
 
-        IRuntimeSqlDatabaseSqlStatementExecutionConfigurationBuilder UseThisToCreateNewSqlConnections(Func<SqlConnection> factory);
+        IRuntimeSqlDatabaseSqlStatementExecutionConfigurationBuilder UseThisToCreateNewSqlConnections(Func<IDbConnection> factory);
 
         IRuntimeSqlDatabaseSqlStatementExecutionConfigurationBuilder UseThisToAccessAConnectionFactoryToCreateNewSqlConnections(Func<ISqlConnectionFactory> factory);
 
