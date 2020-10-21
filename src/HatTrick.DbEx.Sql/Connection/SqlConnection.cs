@@ -8,93 +8,6 @@ namespace HatTrick.DbEx.Sql.Connection
 {
     public class SqlConnector : ISqlConnection
     {
-        #region i db connection
-        public string ConnectionString
-        {
-            get
-            {
-                EnsureConnection();
-                return _dbConnection.ConnectionString;
-            }
-            set { throw new NotSupportedException("Overwriting connection string is not suppoted."); }
-        }
-
-        public int ConnectionTimeout
-        {
-            get
-            {
-                EnsureConnection();
-                return _dbConnection.ConnectionTimeout;
-            }
-        }
-
-        public string Database
-        {
-            get
-            {
-                EnsureConnection();
-                return _dbConnection.Database;
-            }
-        }
-
-        public ConnectionState State
-        {
-            get
-            {
-                EnsureConnection();
-                return _dbConnection.State;
-            }
-        }
-
-        public IDbTransaction BeginTransaction()
-        {
-            if (_dbConnection?.State != ConnectionState.Open)
-                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
-
-            DbTransaction = _dbConnection.BeginTransaction();
-            return DbTransaction;
-        }
-
-        public IDbTransaction BeginTransaction(IsolationLevel iso)
-        {
-            if (_dbConnection?.State != ConnectionState.Open)
-                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
-
-            DbTransaction = _dbConnection.BeginTransaction(iso);
-            return DbTransaction;
-        }
-
-        public void ChangeDatabase(string databaseName)
-        {
-            EnsureConnection();
-            _dbConnection.ChangeDatabase(databaseName);
-        }
-
-        public void Close()
-        {
-            if (DbTransaction != null)
-            { 
-                DbTransaction.Dispose();
-                DbTransaction = null; //ensure null, it drives the IsTransactional property
-            }
-
-            if (_dbConnection != null && _dbConnection.State != ConnectionState.Closed)
-                _dbConnection.Close();
-        }
-
-        public IDbCommand CreateCommand()
-        {
-            EnsureConnection();
-            return _dbConnection.CreateCommand();
-        }
-
-        public void Open()
-        {
-            EnsureConnection();
-            _dbConnection.Open();
-        }
-        #endregion
-
         #region i sql connection
         private bool disposed;
         protected IDbConnection _dbConnection;
@@ -179,6 +92,93 @@ namespace HatTrick.DbEx.Sql.Connection
                     DbTransaction = null;
                 }
             }
+        }
+        #endregion
+
+        #region i db connection
+        public string ConnectionString
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.ConnectionString;
+            }
+            set { throw new NotSupportedException("Overwriting connection string is not suppoted."); }
+        }
+
+        public int ConnectionTimeout
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.ConnectionTimeout;
+            }
+        }
+
+        public string Database
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.Database;
+            }
+        }
+
+        public ConnectionState State
+        {
+            get
+            {
+                EnsureConnection();
+                return _dbConnection.State;
+            }
+        }
+
+        public IDbTransaction BeginTransaction()
+        {
+            if (_dbConnection?.State != ConnectionState.Open)
+                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+
+            DbTransaction = _dbConnection.BeginTransaction();
+            return DbTransaction;
+        }
+
+        public IDbTransaction BeginTransaction(IsolationLevel iso)
+        {
+            if (_dbConnection?.State != ConnectionState.Open)
+                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+
+            DbTransaction = _dbConnection.BeginTransaction(iso);
+            return DbTransaction;
+        }
+
+        public void ChangeDatabase(string databaseName)
+        {
+            EnsureConnection();
+            _dbConnection.ChangeDatabase(databaseName);
+        }
+
+        public void Close()
+        {
+            if (DbTransaction is object)
+            { 
+                DbTransaction.Dispose();
+                DbTransaction = null; //ensure null, it drives the IsTransactional property
+            }
+
+            if (_dbConnection is object && _dbConnection.State != ConnectionState.Closed)
+                _dbConnection.Close();
+        }
+
+        public IDbCommand CreateCommand()
+        {
+            EnsureConnection();
+            return _dbConnection.CreateCommand();
+        }
+
+        public void Open()
+        {
+            EnsureConnection();
+            _dbConnection.Open();
         }
         #endregion
 
