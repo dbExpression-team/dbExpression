@@ -5,11 +5,14 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlTypes;
 using System.Dynamic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,11 +23,17 @@ namespace HatTrick.DbEx.Sql
         #region InsertTerminationExpressionBuilder
         public static void Execute<T>(this IInsertTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                builder.ExecutePipeline(connection, null);
+        }
 
         public static void Execute<T>(this IInsertTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static void Execute<T>(this IInsertTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
@@ -36,7 +45,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
@@ -44,7 +56,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity
@@ -52,7 +67,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connetion = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connetion, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
            where T : class, IDbEntity
@@ -60,7 +78,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IInsertTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
@@ -70,11 +91,17 @@ namespace HatTrick.DbEx.Sql
         #region UpdateTerminationExpressionBuilder
         public static int Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static void Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static void Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
@@ -86,7 +113,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
@@ -94,7 +124,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity
@@ -102,7 +135,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
             where T : class, IDbEntity
@@ -110,7 +146,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
@@ -120,11 +159,17 @@ namespace HatTrick.DbEx.Sql
         #region DeleteTerminationExpressionBuilder
         public static int Execute<T>(this IDeleteTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static int Execute<T>(this IDeleteTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static int Execute<T>(this IDeleteTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
@@ -136,7 +181,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
@@ -144,7 +192,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity
@@ -152,7 +203,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
             where T : class, IDbEntity
@@ -160,7 +214,10 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<int> ExecuteAsync<T>(this IDeleteTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
@@ -169,11 +226,17 @@ namespace HatTrick.DbEx.Sql
 
         #region ValueTerminationExpressionBuilder<T>
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder)
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : IComparable
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : IComparable
@@ -184,11 +247,17 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder)
             where T : IComparable
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : IComparable
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : IComparable
@@ -200,11 +269,17 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : IComparable
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : IComparable
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : IComparable
@@ -213,10 +288,16 @@ namespace HatTrick.DbEx.Sql
 
         #region ValueListTerminationExpressionBuilder<T>
         public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder)
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder, int commandTimeout)
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             => builder.ExecutePipeline(connection, null);
@@ -225,10 +306,16 @@ namespace HatTrick.DbEx.Sql
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder)
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, int commandTimeout)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             => await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
@@ -237,10 +324,16 @@ namespace HatTrick.DbEx.Sql
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             => await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
@@ -251,10 +344,17 @@ namespace HatTrick.DbEx.Sql
 
         #region ValueTerminationExpressionBuilder<ExpandoObject>
         public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder)
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
+
 
         public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static dynamic Execute(this IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection)
             => builder.ExecutePipeline(connection, null);
@@ -263,10 +363,16 @@ namespace HatTrick.DbEx.Sql
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
 
         public static async Task<dynamic> ExecuteAsync(this IValueTerminationExpressionBuilder<ExpandoObject> builder)
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<dynamic> ExecuteAsync(this IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<dynamic> ExecuteAsync(this IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection)
             => await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
@@ -275,10 +381,16 @@ namespace HatTrick.DbEx.Sql
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<dynamic> ExecuteAsync(this IValueTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task<dynamic> ExecuteAsync(this IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<dynamic> ExecuteAsync(this IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, CancellationToken ct)
             => await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
@@ -289,10 +401,16 @@ namespace HatTrick.DbEx.Sql
 
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow, T> map)
-            => builder.ExecutePipeline(null, null, map);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null, map);
+        }
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ISqlRow, T> map)
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout, map);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout, map);
+        }
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Func<ISqlRow, T> map)
             => builder.ExecutePipeline(connection, null, map);
@@ -301,10 +419,16 @@ namespace HatTrick.DbEx.Sql
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout, map);
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow, T> map)
-            => await builder.ExecutePipelineAsync(null, null, map, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, map, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ISqlRow, T> map)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, map, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, map, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Func<ISqlRow, T> map)
             => await builder.ExecutePipelineAsync(connection, null, map, CancellationToken.None).ConfigureAwait(false);
@@ -313,10 +437,16 @@ namespace HatTrick.DbEx.Sql
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, map, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow, T> map, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, null, map, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, map, ct).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ISqlRow, T> map, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, map, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, map, ct).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Func<ISqlRow, T> map, CancellationToken ct)
             => await builder.ExecutePipelineAsync(connection, null, map, ct).ConfigureAwait(false);
@@ -327,10 +457,16 @@ namespace HatTrick.DbEx.Sql
 
         #region ValueListTerminationExpressionBuilder<ExpandoObject>
         public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder)
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static IList<dynamic> Execute(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection)
             => builder.ExecutePipeline(connection, null);
@@ -339,10 +475,16 @@ namespace HatTrick.DbEx.Sql
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
 
         public static async Task<IList<dynamic>> ExecuteAsync(this IValueListTerminationExpressionBuilder<ExpandoObject> builder)
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<dynamic>> ExecuteAsync(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<dynamic>> ExecuteAsync(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection)
             => await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
@@ -351,10 +493,16 @@ namespace HatTrick.DbEx.Sql
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<IList<dynamic>> ExecuteAsync(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<dynamic>> ExecuteAsync(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<dynamic>> ExecuteAsync(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, CancellationToken ct)
             => await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
@@ -363,11 +511,17 @@ namespace HatTrick.DbEx.Sql
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
 
 
-        public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow,T> map)
-            => builder.ExecutePipeline(null, null, map);
+        public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow, T> map)
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null, map);
+        }
 
         public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ISqlRow, T> map)
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout, map);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout, map);
+        }
 
         public static IList<T> Execute<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Func<ISqlRow, T> map)
             => builder.ExecutePipeline(connection, null, map);
@@ -376,10 +530,16 @@ namespace HatTrick.DbEx.Sql
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout, map);
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow, T> map)
-            => await builder.ExecutePipelineAsync(null, null, map, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, map, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ISqlRow, T> map)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, map, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, map, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Func<ISqlRow, T> map)
             => await builder.ExecutePipelineAsync(connection, null, map, CancellationToken.None).ConfigureAwait(false);
@@ -388,10 +548,16 @@ namespace HatTrick.DbEx.Sql
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, map, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, Func<ISqlRow, T> map, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, null, map, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, map, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, int commandTimeout, Func<ISqlRow, T> map, CancellationToken ct)
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, map, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, map, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this IValueListTerminationExpressionBuilder<ExpandoObject> builder, ISqlConnection connection, Func<ISqlRow, T> map, CancellationToken ct)
             => await builder.ExecutePipelineAsync(connection, null, map, ct).ConfigureAwait(false);
@@ -401,13 +567,19 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region TypeTerminationExpressionBuilder
-        public static T Execute<T>(this ITypeTerminationExpressionBuilder<T> builder) 
+        public static T Execute<T>(this ITypeTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static T Execute<T>(this ITypeTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity, new()
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static T Execute<T>(this ITypeTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity, new()
@@ -419,11 +591,17 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity, new()
@@ -435,11 +613,17 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<T> ExecuteAsync<T>(this ITypeTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity, new()
@@ -453,11 +637,17 @@ namespace HatTrick.DbEx.Sql
         #region TypeListTerminationExpressionBuilder
         public static IList<T> Execute<T>(this ITypeListTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => builder.ExecutePipeline(null, null);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, null);
+        }
 
         public static IList<T> Execute<T>(this ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity, new()
-            => builder.ExecutePipeline(null, command => command.CommandTimeout = commandTimeout);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+        }
 
         public static IList<T> Execute<T>(this ITypeListTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity, new()
@@ -469,11 +659,17 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, null, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity, new()
@@ -485,11 +681,16 @@ namespace HatTrick.DbEx.Sql
 
         public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, null, ct).ConfigureAwait(false);
-
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+        }
         public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity, new()
-            => await builder.ExecutePipelineAsync(null, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        {
+            using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+        }
 
         public static async Task<IList<T>> ExecuteAsync<T>(this ITypeListTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity, new()
@@ -611,17 +812,21 @@ namespace HatTrick.DbEx.Sql
         }
         #endregion
 
+        #region get database configuration
         private static RuntimeSqlDatabaseConfiguration GetDatabaseConfiguration(this ITerminationExpressionBuilder builder)
         {
             var concrete = builder as QueryExpressionBuilder ?? throw new DbExpressionConfigurationException($"The parameter '{nameof(builder)}' has type '{builder}', the type must be assignable to type '{typeof(QueryExpressionBuilder)}'.");
             return concrete.Configuration ?? throw new DbExpressionConfigurationException($"Database configuration is required, please review and ensure the correct configuration for DbExpression.");
         }
+        #endregion
 
+        #region get query expression
         private static T GetQueryExpression<T>(this ITerminationExpressionBuilder builder)
             where T : QueryExpression
         {
             var provider = builder as IQueryExpressionProvider ?? throw new DbExpressionConfigurationException($"The parameter '{nameof(builder)}' must be assignable to type '{typeof(IQueryExpressionProvider)}'.");
             return provider.Expression as T ?? throw new DbExpressionConfigurationException($"Query expression is type '{provider.Expression}', the type was expected to be the requested type of '{typeof(T)}'.");
         }
+        #endregion
     }
 }

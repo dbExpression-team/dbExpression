@@ -52,28 +52,31 @@ namespace NetCoreConsoleApp
 			//COMMIT TRANSACTION;
 
 			//grab a connection and start a transaction
-			var conn = db.GetConnection();
-			try
+			using (var conn = db.GetConnection())
 			{
-				conn.BeginTransaction();
+				conn.Open();
+				try
+				{
+					conn.BeginTransaction();
 
-				db.Insert(p).Into(dbo.Person).Execute(conn);
-				db.Insert(a).Into(dbo.Address).Execute(conn);
+					db.Insert(p).Into(dbo.Person).Execute(conn);
+					db.Insert(a).Into(dbo.Address).Execute(conn);
 
-				//both p and a have identity PKs, so the Id's of each should now be populated
-				var pa = new PersonAddress()
-				{ PersonId = p.Id, AddressId = a.Id, DateCreated = DateTime.Now };
+					//both p and a have identity PKs, so the Id's of each should now be populated
+					var pa = new PersonAddress()
+					{ PersonId = p.Id, AddressId = a.Id, DateCreated = DateTime.Now };
 
-				db.Insert(pa).Into(dbo.PersonAddress).Execute(conn);
+					db.Insert(pa).Into(dbo.PersonAddress).Execute(conn);
 
-				//commit the transaction
-				conn.CommitTransaction();
-			}
-			catch(Exception ex)
-			{
-				var msg = ex.Message;
-				//on error, ensure transaction rollback
-				conn.RollbackTransaction();
+					//commit the transaction
+					conn.CommitTransaction();
+				}
+				catch (Exception ex)
+				{
+					var msg = ex.Message;
+					//on error, ensure transaction rollback
+					conn.RollbackTransaction();
+				}
 			}
 		}
 		#endregion

@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Connection
             if (_dbConnection?.State != ConnectionState.Open)
                 throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
 
-            DbTransaction = DbConnection.BeginTransaction();
+            DbTransaction = _dbConnection.BeginTransaction();
             return DbTransaction;
         }
 
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql.Connection
             if (_dbConnection?.State != ConnectionState.Open)
                 throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
 
-            DbTransaction = DbConnection.BeginTransaction(iso);
+            DbTransaction = _dbConnection.BeginTransaction(iso);
             return DbTransaction;
         }
 
@@ -129,8 +129,8 @@ namespace HatTrick.DbEx.Sql.Connection
 
         protected void EnsureConnection()
         {
-            if (DbConnection is null)
-                DbConnection = _connectionFactory.CreateSqlConnection();
+            if (_dbConnection is null)
+                _dbConnection = _connectionFactory.CreateSqlConnection();
         }
 
         public void EnsureOpen()
