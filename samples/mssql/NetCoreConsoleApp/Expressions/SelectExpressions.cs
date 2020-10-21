@@ -8,6 +8,7 @@ using SimpleConsole.dboData;
 using SimpleConsole.dboDataService;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql.Connection;
 
 namespace NetCoreConsoleApp
 {

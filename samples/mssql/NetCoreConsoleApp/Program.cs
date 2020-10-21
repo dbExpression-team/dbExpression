@@ -27,10 +27,15 @@ namespace NetCoreConsoleApp
             sw.Reset();
 
             sw.Start();
-            RunSelectExpressions();
-            RunInsertExpressions();
-            RunUpdateExpressions();
-            RunDeleteExpressions();
+            for (int i = 0; i < 250; i++)
+            {
+                Console.WriteLine(i);
+                RunSelectExpressions();
+                RunInsertExpressions();
+                RunUpdateExpressions();
+                RunDeleteExpressions();
+            }
+            
             sw.Stop();
 
             Console.WriteLine($"Queries complete in {sw.ElapsedMilliseconds} milliseconds.");
@@ -122,6 +127,7 @@ namespace NetCoreConsoleApp
                 inserts.SimpleInsertPerson(p);
             }
             #endregion
+
             #region transactional insert
             {
                 var p = new Person()

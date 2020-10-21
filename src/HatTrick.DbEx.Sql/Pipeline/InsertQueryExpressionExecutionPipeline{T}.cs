@@ -64,8 +64,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     beforeInsert?.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert, appender, parameterBuilder)));
             }
 
-            if (connection is null)
-                connection = new SqlConnector(database.ConnectionFactory);
+            //if (connection is null)
+            //    connection = new SqlConnector(database.ConnectionFactory);
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();
 
@@ -127,8 +127,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     await beforeInsert.InvokeAsync(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert, appender, parameterBuilder)), ct).ConfigureAwait(false);
             }
 
-            if (connection is null)
-                connection = new SqlConnector(database.ConnectionFactory);
+            //if (connection is null)
+            //    connection = new SqlConnector(database.ConnectionFactory);
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();            
 
