@@ -40,7 +40,9 @@ namespace HatTrick.DbEx.Tools.Service
                 || command == "generate"                    //code generation
                 || command == "mkc"                         //make config
                 || command == "mkconfig"                    //make config
-                || command == "makeconfig";                 //make config 
+                || command == "makeconfig"                  //make config 
+                || command == "ver"                         //version
+                || command == "version";                    //version
 
             return isknown;
         }
@@ -73,6 +75,10 @@ namespace HatTrick.DbEx.Tools.Service
             if (string.IsNullOrEmpty(command))
             {
                 context = new UsageExecutionContext(command);
+            }
+            else if (RenderVersionInfoExecutionContext.CommandTextValues.Contains(command))
+            {
+                context = new RenderVersionInfoExecutionContext(command, options);
             }
             else if (MakeConfigExecutionContext.CommandTextValues.Contains(command))
             {
