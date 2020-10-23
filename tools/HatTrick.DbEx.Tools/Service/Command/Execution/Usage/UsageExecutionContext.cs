@@ -16,12 +16,12 @@ namespace HatTrick.DbEx.Tools.Service
         #region execute
         public override void Execute()
         {
-            string assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"«Usage:  »Green");
             svc.Feedback.Push(To.ConsoleOnly, $"dbex [command] [options]");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, "Commands:»Green");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}ver|version");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}generate|gen");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}makeconfig|mkconfig|mkc");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
