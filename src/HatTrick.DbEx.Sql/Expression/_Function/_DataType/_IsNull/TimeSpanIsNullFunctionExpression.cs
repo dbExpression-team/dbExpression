@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<TimeSpanIsNullFunctionExpression>
     {
         #region constructors
-        public TimeSpanIsNullFunctionExpression(NullableExpressionMediator<TimeSpan> expression, ExpressionMediator<TimeSpan> value) : base(expression, value)
+        public TimeSpanIsNullFunctionExpression(ExpressionMediator<TimeSpan> expression, ExpressionMediator<TimeSpan> value) : base(expression, value)
         {
         }
         #endregion

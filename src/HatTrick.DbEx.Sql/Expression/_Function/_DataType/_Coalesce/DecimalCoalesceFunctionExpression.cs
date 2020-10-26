@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DecimalCoalesceFunctionExpression>
     {
         #region constructors
-        public DecimalCoalesceFunctionExpression(IList<NullableExpressionMediator<decimal>> expressions, ExpressionMediator<decimal> notNull) : base(expressions, notNull)
+        public DecimalCoalesceFunctionExpression(IList<ExpressionMediator<decimal>> expressions) : base(expressions)
         {
         }
         #endregion

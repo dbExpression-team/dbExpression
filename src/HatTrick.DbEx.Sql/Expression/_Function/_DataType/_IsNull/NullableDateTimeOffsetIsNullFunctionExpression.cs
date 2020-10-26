@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeOffsetIsNullFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetIsNullFunctionExpression(NullableExpressionMediator<DateTimeOffset> expression, ExpressionMediator<DateTimeOffset> value) : base(expression, value)
+        public NullableDateTimeOffsetIsNullFunctionExpression(ExpressionMediator<DateTimeOffset> expression, ExpressionMediator<DateTimeOffset> value) : base(expression, value)
         {
         }
         #endregion

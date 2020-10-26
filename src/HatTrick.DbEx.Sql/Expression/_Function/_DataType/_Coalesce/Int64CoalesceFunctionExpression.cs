@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int64CoalesceFunctionExpression>
     {
         #region constructors
-        public Int64CoalesceFunctionExpression(IList<NullableExpressionMediator<long>> expressions, ExpressionMediator<long> notNull) : base(expressions, notNull)
+        public Int64CoalesceFunctionExpression(IList<ExpressionMediator<long>> expressions) : base(expressions)
         {
         }
         #endregion

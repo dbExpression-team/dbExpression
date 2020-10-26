@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeOffsetCoalesceFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetCoalesceFunctionExpression(IList<NullableExpressionMediator<DateTimeOffset>> expressions, ExpressionMediator<DateTimeOffset> notNull) : base(expressions, notNull)
+        public DateTimeOffsetCoalesceFunctionExpression(IList<ExpressionMediator<DateTimeOffset>> expressions) : base(expressions)
         {
         }
         #endregion

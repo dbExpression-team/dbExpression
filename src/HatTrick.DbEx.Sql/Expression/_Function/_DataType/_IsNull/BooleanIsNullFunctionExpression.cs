@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -8,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<BooleanIsNullFunctionExpression>
     {
         #region constructors
-        public BooleanIsNullFunctionExpression(NullableExpressionMediator<bool> expression, ExpressionMediator<bool> notNull) : base(expression, notNull)
+        public BooleanIsNullFunctionExpression(ExpressionMediator<bool> expression, ExpressionMediator<bool> notNull) : base(expression, notNull)
         {
         }
         #endregion

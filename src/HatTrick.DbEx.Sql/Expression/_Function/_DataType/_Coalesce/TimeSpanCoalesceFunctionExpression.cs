@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<TimeSpanCoalesceFunctionExpression>
     {
         #region constructors
-        public TimeSpanCoalesceFunctionExpression(IList<NullableExpressionMediator<TimeSpan>> expressions, ExpressionMediator<TimeSpan> notNull) : base(expressions, notNull)
+        public TimeSpanCoalesceFunctionExpression(IList<ExpressionMediator<TimeSpan>> expressions) : base(expressions)
         {
         }
         #endregion

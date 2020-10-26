@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        private EnumExpressionMediator()
+        protected EnumExpressionMediator()
         {
         }
 
@@ -17,6 +17,10 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         protected EnumExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        {
+        }
+
+        protected EnumExpressionMediator(IExpression expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
         }
         #endregion

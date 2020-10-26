@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected CoalesceFunctionExpression(params ExpressionMediator[] expressions) : base()
+        protected CoalesceFunctionExpression(IEnumerable<ExpressionMediator> expressions) : base()
         {
             Expression = expressions.ToList();
         }

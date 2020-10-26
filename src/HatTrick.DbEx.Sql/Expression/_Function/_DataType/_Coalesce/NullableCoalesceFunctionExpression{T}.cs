@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -6,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableCoalesceFunctionExpression(params NullableExpressionMediator<TValue>[] expressions) : base(expressions)
+        protected NullableCoalesceFunctionExpression(IEnumerable<ExpressionMediator<TValue>> expressions) : base(expressions)
         {
         }
         #endregion

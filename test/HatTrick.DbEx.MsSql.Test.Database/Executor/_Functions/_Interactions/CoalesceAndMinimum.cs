@@ -79,6 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var exp = db.SelectOne(
                     db.fx.Min(db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Person.Id))
                 ).From(dbo.Person);
+
             //when               
             int result = exp.Execute();
 
