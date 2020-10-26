@@ -1,88 +1,89 @@
 {
-	"source": {
-		"type": "MsSqlDb",
-		"connectionString": {
-			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
-		}
-	},
-	"workingDirectory": "./",
-	"outputDirectory": "./Data/_Generated",
-	"rootNamespace": "SimpleConsole",
-	"overrides": [
-		{
-			"apply": {
-				"ignore": true,
-				"to": { "path": "dbo.sysdiagrams" }
-			}
-		},
-		{
-			"apply": {
-				"ignore": true,
-				"to": { "path": "sec.sysdiagrams" }
+  "source": {
+    "type": "MsSqlDb",
+    "connectionString": {
+      "value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+    }
+  },
+  "workingDirectory": "./",
+  "outputDirectory": "./Data/_Generated",
+  "rootNamespace": "SimpleConsole",
+  "enums": [
+    "AddressType",
+    "GenderType",
+    "ProductCategoryType",
+    "PaymentMethodType",
+    "PaymentSourceType"
+  ],
+  "overrides": [
+    {
+      "apply": {
+        "ignore": true,
+        "to": { "path": "dbo.sysdiagrams" }
+      }
+    },
+    {
+      "apply": {
+        "ignore": true,
+        "to": { "path": "sec.sysdiagrams" }
 
-			}
-		},
-		{
-			"apply": {
-				"name": "SimpleConsoleDb",
-				"to": {
-					"path": "."
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "AddressType?",
-				"isEnum": true,
-				"to": {
-					"path": "dbo.Address.AddressType"
-				}
-			}
-
-		},
-		{
-			"apply": {
-				"clrType": "GenderType",
-				"isEnum": true,
-				"to": {
-					"path": "dbo.Person.GenderType"
-				}
-			}
-		},
-		{
-			"apply": {
-				"name": "PersonAddress",
-				"to": {
-					"path": "dbo.Person_Address"
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "ProductCategoryType?",
-				"isEnum": true,
-				"to": {
-					"path": "dbo.Product.ProductCategoryType"
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "PaymentMethodType",
-				"isEnum": true,
-				"to": {
-					"path": "dbo.Purchase.PaymentMethodType"
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "PaymentSourceType?",
-				"isEnum": true,
-				"to": {
-					"path": "dbo.Purchase.PaymentSourceType"
-				}
-			}
-		}
-	]
+      }
+    },
+    {
+      "apply": {
+        "name": "SimpleConsoleDb",
+        "to": {
+          "path": "."
+        }
+      }
+    },
+    {
+      "apply": {
+        "clrType": "AddressType?",
+        "to": {
+          "path": "dbo.Address.AddressType"
+        }
+      }
+    },
+    {
+      "apply": {
+        "clrType": "GenderType",
+        "to": {
+          "path": "dbo.Person.GenderType"
+        }
+      }
+    },
+    {
+      "apply": {
+        "name": "PersonAddress",
+        "to": {
+          "path": "dbo.Person_Address"
+        }
+      }
+    },
+    {
+      "apply": {
+        "clrType": "ProductCategoryType?",
+        "to": {
+          "path": "dbo.Product.ProductCategoryType"
+        }
+      }
+    },
+    {
+      "apply": {
+        "clrType": "PaymentMethodType",
+        "to": {
+          "path": "dbo.Purchase.PaymentMethodType"
+        }
+      }
+    },
+    {
+      "apply": {
+        "clrType": "PaymentSourceType?",
+        "to": {
+          "path": "dbo.Purchase.PaymentSourceType"
+        }
+      }
+    }
+  ]
 }
