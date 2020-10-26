@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableTimeSpanIsNullFunctionExpression>
     {
         #region constructors
-        public NullableTimeSpanIsNullFunctionExpression(NullableExpressionMediator<TimeSpan> expression, ExpressionMediator<TimeSpan> value) : base(expression, value)
+        public NullableTimeSpanIsNullFunctionExpression(ExpressionMediator<TimeSpan> expression, ExpressionMediator<TimeSpan> value) : base(expression, value)
         {
         }
         #endregion

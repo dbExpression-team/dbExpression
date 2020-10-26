@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableInt16IsNullFunctionExpression>
     {
         #region constructors
-        public NullableInt16IsNullFunctionExpression(NullableExpressionMediator<short> expression, ExpressionMediator<short> value) : base(expression, value)
+        public NullableInt16IsNullFunctionExpression(ExpressionMediator<short> expression, ExpressionMediator<short> value) : base(expression, value)
         {
         }
         #endregion

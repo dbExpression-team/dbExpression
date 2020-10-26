@@ -3,7 +3,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableEnumExpressionMediator<TEnum> :
-        NullableExpressionMediator<TEnum>,
+        EnumExpressionMediator<TEnum>,
         IEquatable<NullableEnumExpressionMediator<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableEnumExpressionMediator(IExpression expression) : base(expression, typeof(TEnum?))
+        public NullableEnumExpressionMediator(IExpression expression) : base(expression, typeof(TEnum?), null)
         {
         }
 

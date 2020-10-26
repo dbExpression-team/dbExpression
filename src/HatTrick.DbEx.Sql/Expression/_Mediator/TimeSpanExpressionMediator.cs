@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region equals
         public bool Equals(TimeSpanExpressionMediator obj)
-            => obj is DateTimeExpressionMediator && base.Equals(obj);
+            => obj is TimeSpanExpressionMediator && base.Equals(obj);
 
         public override bool Equals(object obj)
             => obj is TimeSpanExpressionMediator exp && base.Equals(exp);
