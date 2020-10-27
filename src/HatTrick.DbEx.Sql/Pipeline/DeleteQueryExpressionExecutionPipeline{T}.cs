@@ -51,8 +51,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            //if (connection is null)
-            //    connection = new SqlConnector(database.ConnectionFactory);
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)));
             var statement = statementBuilder.CreateSqlStatement();
@@ -80,13 +78,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            //if (connection is null)
-            //    connection = new SqlConnector(database.ConnectionFactory);
 
             if (beforeAssembly is object)
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
             }
+
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {

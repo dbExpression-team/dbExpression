@@ -458,17 +458,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            //if (connection is null)
-            //    connection = database.ConnectionFactory.CreateSqlConnection();
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)));
             var statement = statementBuilder.CreateSqlStatement();
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder)));
 
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
-
-            if (connection is null)
-                connection = new SqlConnector(database.ConnectionFactory);
 
             beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, appender, parameterBuilder)));
 
@@ -502,17 +497,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            //if (connection is null)
-            //    connection = database.ConnectionFactory.CreateSqlConnection();
 
             await beforeAssembly?.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct);
             var statement = statementBuilder.CreateSqlStatement();
             await afterAssembly?.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder)), ct);
 
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
-
-            if (connection is null)
-                connection = new SqlConnector(database.ConnectionFactory);
 
             var reader = await executor.ExecuteQueryAsync(
                 statement,

@@ -33,9 +33,7 @@ namespace HatTrick.DbEx.Sql.Connection
         public SqlConnector(ISqlConnectionFactory connectionFactory)
         {
             if (connectionFactory is null)
-            {
                 throw new ArgumentNullException(nameof(connectionFactory));
-            }
 
             _connectionFactory = connectionFactory;
         }
@@ -63,9 +61,7 @@ namespace HatTrick.DbEx.Sql.Connection
         public void CommitTransaction()
         {
             if (DbTransaction is null)
-            {
-                throw new InvalidOperationException("'CommitTransaction' failed.  No pending transaction exists.");
-            }
+                throw new DbExpressionException("'CommitTransaction' failed.  No pending transaction exists.");
 
             try
             {
@@ -80,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public void RollbackTransaction()
         {
-            if (!(DbConnection is null))
+            if (!(DbConnection is null)) //should allow multi rollback calls without error.
             {
                 try
                 {
@@ -136,7 +132,10 @@ namespace HatTrick.DbEx.Sql.Connection
         public IDbTransaction BeginTransaction()
         {
             if (_dbConnection?.State != ConnectionState.Open)
-                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+                throw new DbExpressionException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+
+            if (DbTransaction != null)
+                throw new DbExpressionException("An pending transaction already exists for this connection.  Parallel transactions are not supported.");
 
             DbTransaction = _dbConnection.BeginTransaction();
             return DbTransaction;
@@ -145,7 +144,10 @@ namespace HatTrick.DbEx.Sql.Connection
         public IDbTransaction BeginTransaction(IsolationLevel iso)
         {
             if (_dbConnection?.State != ConnectionState.Open)
-                throw new InvalidOperationException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+                throw new DbExpressionException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
+
+            if (DbTransaction != null)
+                throw new DbExpressionException("An pending transaction already exists for this connection.  Parallel transactions are not supported.");
 
             DbTransaction = _dbConnection.BeginTransaction(iso);
             return DbTransaction;
