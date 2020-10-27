@@ -8,6 +8,7 @@ using SimpleConsole.dboData;
 using SimpleConsole.dboDataService;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql.Connection;
 
 namespace NetCoreConsoleApp
 {
@@ -18,8 +19,6 @@ namespace NetCoreConsoleApp
 		{
 			//select * from dbo.Person where dbo.Person.Id = {id};
 			var p = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.Id == id).Execute();
-
-			var bd = db.SelectOne(dbo.Person.BirthDate).From(dbo.Person).Where(dbo.Person.Id == id).Execute();
 
 			return p;
 		}

@@ -18,6 +18,8 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string OutputDirectory { get; set; }
 
+        public string[] Enums { get; set; }
+
         public Override[] Overrides { get; set; }
     }
 

@@ -86,38 +86,43 @@ namespace NetCoreConsoleApp
 			//where dbo.Person_Address.PersonId = 0 and dbo.Address.AddressType = 1
 
 			//commit transaction;
-			var conn = db.GetConnection().BeginTransaction();
-			try
-			{
-				db.Update(
-						dbo.Person.FirstName.Set(firstName),
-						dbo.Person.LastName.Set(lastName),
-						dbo.Person.DateUpdated.Set(DateTime.Now)
-					)
-					.From(dbo.Person)
-					.Where(dbo.Person.Id == personId)
-					.Execute(conn);
 
-				db.Update(
-					   dbo.Address.Line1.Set(billingAddress.Line1),
-					   dbo.Address.Line2.Set(billingAddress.Line2),
-					   dbo.Address.City.Set(billingAddress.City),
-					   dbo.Address.State.Set(billingAddress.State),
-					   dbo.Address.Zip.Set(billingAddress.Zip),
-					   dbo.Address.DateUpdated.Set(DateTime.Now)
-				   )
-				   .From(dbo.Address)
-				   .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
-				   .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Billing)
-				   .Execute(conn);
-
-				conn.CommitTransaction();
-			}
-			catch
+			using (var conn = db.GetConnection())
 			{
-				conn.RollbackTransaction();
+				conn.Open();
+				try
+				{
+					conn.BeginTransaction();
+
+					db.Update(
+							dbo.Person.FirstName.Set(firstName),
+							dbo.Person.LastName.Set(lastName),
+							dbo.Person.DateUpdated.Set(DateTime.Now)
+						)
+						.From(dbo.Person)
+						.Where(dbo.Person.Id == personId)
+						.Execute(conn);
+
+					db.Update(
+						   dbo.Address.Line1.Set(billingAddress.Line1),
+						   dbo.Address.Line2.Set(billingAddress.Line2),
+						   dbo.Address.City.Set(billingAddress.City),
+						   dbo.Address.State.Set(billingAddress.State),
+						   dbo.Address.Zip.Set(billingAddress.Zip),
+						   dbo.Address.DateUpdated.Set(DateTime.Now)
+					   )
+					   .From(dbo.Address)
+					   .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
+					   .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Billing)
+					   .Execute(conn);
+
+					conn.CommitTransaction();
+				}
+				catch
+				{
+					conn.RollbackTransaction();
+				}
 			}
-			
 		}
 		#endregion
 	}

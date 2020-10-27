@@ -1,7 +1,7 @@
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Connection;
+﻿using HatTrick.DbEx.Sql.Connection;
+using System.Data.SqlClient;
 using System;
-using System.Configuration;
+using System.Data;
 
 namespace HatTrick.DbEx.MsSql.Connection
 {
@@ -14,6 +14,6 @@ namespace HatTrick.DbEx.MsSql.Connection
             this.connectionStringFactory = connectionStringFactory;
         }
 
-        public override ISqlConnection CreateSqlConnection() => new MsSqlConnection(connectionStringFactory);
+        public override IDbConnection CreateSqlConnection() => new SqlConnection(connectionStringFactory());
     }
 }

@@ -1,16 +1,17 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Data;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
     public class DelegateSqlConnectionFactory : ISqlConnectionFactory
     {
         #region internals
-        private readonly Func<ISqlConnection> factory;
+        private readonly Func<IDbConnection> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlConnectionFactory(Func<SqlConnection> factory)
+        public DelegateSqlConnectionFactory(Func<IDbConnection> factory)
         {
             this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection."); ;
         }
@@ -20,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Connection
             if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection.");
 
-            this.factory = new Func<ISqlConnection>(() =>
+            this.factory = new Func<IDbConnection>(() =>
             {
                 var f = factory().CreateSqlConnection();
                 if (f is null)
@@ -31,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Connection
         #endregion
 
         #region methods
-        public ISqlConnection CreateSqlConnection()
+        public IDbConnection CreateSqlConnection()
             => factory();
         #endregion
     }

@@ -538,7 +538,7 @@ namespace HatTrick.DbEx.Tools.Service
             var resources = new ResourceAccessor();
             string[] names = resources.GetTemplateShortNames();
 
-            var helpers = new CodeGenerationHelpers();
+            var helpers = new CodeGenerationHelpers(config);
 
             for (int i = 0; i < names.Length; i++)
             {
@@ -576,7 +576,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
             repo.Register(nameof(helpers.IsMsSqlView), (Func<INamedMeta, bool>)helpers.IsMsSqlView);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
-            repo.Register("ResolveRootNamespace", (Func<string>)(() => $"{config.RootNamespace.TrimEnd('.')}."));
+            repo.Register(nameof(helpers.ResolveRootNamespace), (Func<string>)helpers.ResolveRootNamespace);
 
             string output = null;
             try

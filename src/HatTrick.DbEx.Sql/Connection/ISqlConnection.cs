@@ -5,18 +5,14 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Connection
 {
-    public interface ISqlConnection
+    public interface ISqlConnection : IDbConnection
     {
-        DbConnection DbConnection { get; }
-        DbTransaction DbTransaction { get; }
+        IDbConnection DbConnection { get; }
+        IDbTransaction DbTransaction { get; }
         bool IsTransactional { get; }
-        DbCommand CreateDbCommand();
-        void EnsureOpenConnection();
-        Task EnsureOpenConnectionAsync(CancellationToken ct);
-        ISqlConnection BeginTransaction();
-        ISqlConnection BeginTransaction(IsolationLevel iso);
+        void EnsureOpen();
+        Task EnsureOpenAsync(CancellationToken ct);
         void CommitTransaction();
         void RollbackTransaction();
-        void Disconnect();
     }
 }

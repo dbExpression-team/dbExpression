@@ -15,13 +15,22 @@ namespace HatTrick.DbEx.Tools.Service
     public class CodeGenerationHelpers
     {
         #region internals
+        private DbExConfig _config;
         private Dictionary<INamedMeta, object> _meta;
         #endregion
 
         #region constructors
-        public CodeGenerationHelpers()
+        public CodeGenerationHelpers(DbExConfig config)
         {
+            _config = config;
             _meta = new Dictionary<INamedMeta, object>();
+        }
+        #endregion
+
+        #region resolve root namespace
+        public string ResolveRootNamespace()
+        {
+            return _config.RootNamespace.TrimEnd('.') + '.';
         }
         #endregion
 
@@ -189,10 +198,15 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region has field type override
+        #region is enum
         public bool IsEnum(INamedMeta namedMeta)
         {
-            this.TryResolveMeta(namedMeta, "IsEnum", out bool isEnum);
+            bool isEnum = false;
+            if (this.HasClrTypeOverride(namedMeta, out string dataTypeOverride))
+            {
+                var trimmed = dataTypeOverride.TrimEnd('?');
+                isEnum = _config.Enums.Contains(trimmed);
+            }
             return isEnum;
         }
         #endregion

@@ -248,7 +248,7 @@ namespace ServerSideBlazorApp.DataService
         #region get connection
         public static ISqlConnection GetConnection()
         {
-            return config.ConnectionFactory.CreateSqlConnection();
+            return new SqlConnector(config.ConnectionFactory);
         }
         #pragma warning disable IDE1006 // Naming Styles
         #pragma warning restore IDE1006 // Naming Styles

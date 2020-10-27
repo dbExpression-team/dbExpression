@@ -8,6 +8,8 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using Xunit;
 using DbEx.dboData;
+using HatTrick.DbEx.Sql.Connection;
+using System.Data;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -56,11 +58,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_value_list_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -78,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -95,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_value_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -104,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -123,7 +125,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -180,11 +182,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_type_list_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -202,7 +204,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -219,7 +221,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_type_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -228,7 +230,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -247,7 +249,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -310,11 +312,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -335,7 +337,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -355,7 +357,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_list_with_connection_and_commandTimeout_override_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -364,7 +366,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -386,7 +388,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -456,7 +458,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_list_with_connection_and_map_overrides_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e =>
@@ -465,7 +467,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -486,7 +488,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -509,7 +511,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public void Does_execute_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -518,7 +520,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -540,7 +542,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -602,11 +604,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_value_list_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -624,7 +626,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -641,7 +643,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_value_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -650,7 +652,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -669,7 +671,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -725,11 +727,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_type_list_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -747,7 +749,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -764,7 +766,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 50)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -773,7 +775,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -792,7 +794,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -855,11 +857,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_dynamic_list_with_connection_override_have_correct_connection_on_execution(int version)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -880,7 +882,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -901,7 +903,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -995,7 +997,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1018,7 +1020,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         public async Task Does_execute_async_dynamic_list_with_connection_and_commandTimeout_and_map_overrides_have_correct_connection_and_commandTimeout_on_execution(int version, int expected = 45)
         {
             //given
-            DbConnection usedConnection = null;
+            IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
@@ -1027,7 +1029,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1049,7 +1051,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = config.ConnectionFactory.CreateSqlConnection();
+            var conn = new SqlConnector(config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person);

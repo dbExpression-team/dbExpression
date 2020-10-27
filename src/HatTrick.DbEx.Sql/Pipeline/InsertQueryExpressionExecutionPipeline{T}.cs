@@ -5,6 +5,7 @@ using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading;
@@ -47,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -62,9 +63,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 foreach (var insert in expression.Inserts.Values)
                     beforeInsert?.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert, appender, parameterBuilder)));
             }
-
-            if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();
 
@@ -104,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
         }
 
-        public async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -114,6 +112,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
             }
+
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {
@@ -125,9 +124,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 foreach (var insert in expression.Inserts.Values)
                     await beforeInsert.InvokeAsync(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert, appender, parameterBuilder)), ct).ConfigureAwait(false);
             }
-
-            if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();            
 
