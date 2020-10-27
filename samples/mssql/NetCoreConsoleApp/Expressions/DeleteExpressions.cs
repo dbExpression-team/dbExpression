@@ -73,31 +73,36 @@ namespace NetCoreConsoleApp
 				.Where(dbo.PersonAddress.PersonId == personId)
 				.Execute();
 
-			var tran = db.GetConnection().BeginTransaction();
-			try
+			using (var conn = db.GetConnection())
 			{
-				db.Delete().From(dbo.PurchaseLine)
-					.InnerJoin(dbo.Purchase).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
-					.Where(dbo.Purchase.PersonId == personId)
-					.Execute(tran);
+				conn.Open();
+				try
+				{
+					conn.BeginTransaction();
+					db.Delete().From(dbo.PurchaseLine)
+						.InnerJoin(dbo.Purchase).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
+						.Where(dbo.Purchase.PersonId == personId)
+						.Execute(conn);
 
-				db.Delete().From(dbo.Purchase).Where(dbo.Purchase.PersonId == personId).Execute(tran);
+					db.Delete().From(dbo.Purchase).Where(dbo.Purchase.PersonId == personId).Execute(conn);
 
-				db.Delete().From(dbo.PersonAddress).Where(dbo.PersonAddress.AddressId.In(addressIds)).Execute(tran);
+					db.Delete().From(dbo.PersonAddress).Where(dbo.PersonAddress.AddressId.In(addressIds)).Execute(conn);
 
-				db.Delete().From(dbo.Address)
-					.Where(dbo.Address.Id.In(addressIds))
-					.Execute(tran);
+					db.Delete().From(dbo.Address)
+						.Where(dbo.Address.Id.In(addressIds))
+						.Execute(conn);
 
-				db.Delete().From(sec.Person).Where(sec.Person.Id == personId).Execute(tran);
+					db.Delete().From(sec.Person).Where(sec.Person.Id == personId).Execute(conn);
 
-				db.Delete().From(dbo.Person).Where(dbo.Person.Id == personId).Execute(tran);
-				
-				tran.CommitTransaction();
-			}
-			catch(Exception ex)
-			{
-				tran.RollbackTransaction();
+					db.Delete().From(dbo.Person).Where(dbo.Person.Id == personId).Execute(conn);
+
+					conn.CommitTransaction();
+				}
+				catch (Exception ex)
+				{
+					var msg = ex.Message;
+					conn.RollbackTransaction();
+				}
 			}
 		}
 		#endregion

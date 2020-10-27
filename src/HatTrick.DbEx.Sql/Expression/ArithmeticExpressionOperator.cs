@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public enum ArithmeticExpressionOperator
     {
         [ExpressionOperator(" + ")]
-        Add, //TODO: JRod, Concatenation???
+        Add,
         [ExpressionOperator(" - ")]
         Subtract,
         [ExpressionOperator(" * ")]

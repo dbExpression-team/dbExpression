@@ -3,6 +3,7 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Threading;
@@ -45,13 +46,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand)
+        public int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)));
             var statement = statementBuilder.CreateSqlStatement();
@@ -74,18 +73,17 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection connection, Action<DbCommand> configureCommand, CancellationToken ct)
+        public async Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
-            if (connection is null)
-                connection = database.ConnectionFactory.CreateSqlConnection();
 
             if (beforeAssembly is object)
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
             }
+
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {

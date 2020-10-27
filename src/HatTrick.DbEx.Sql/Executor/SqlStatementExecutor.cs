@@ -10,38 +10,25 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutor : ISqlStatementExecutor
     {
-        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        public virtual int ExecuteNonQuery(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
         {
             int @return = 0;
 
-            DbCommand cmd = connection.CreateDbCommand();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            cmd.Parameters.AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
             try
             {
-                connection.EnsureOpenConnection();
+                connection.EnsureOpen();
                 @return = cmd.ExecuteNonQuery();
                 afterExecution?.Invoke(cmd);
-                if (!connection.IsTransactional) { connection.Disconnect(); }
-            }
-            catch
-            {
-                if (connection.IsTransactional)
-                {
-                    connection.RollbackTransaction();
-                }
-                else
-                {
-                    connection.Disconnect();
-                }
-                throw;
             }
             finally
             {
@@ -51,40 +38,27 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<int> ExecuteNonQueryAsync(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
         {
             int @return = 0;
 
             ct.ThrowIfCancellationRequested();
 
-            DbCommand cmd = connection.CreateDbCommand();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            cmd.Parameters.AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
             try
             {
-                await connection.EnsureOpenConnectionAsync(ct).ConfigureAwait(false);
-                @return = await cmd.ExecuteNonQueryAsync(ct).ConfigureAwait(false);
+                await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
+                @return = await (cmd as DbCommand).ExecuteNonQueryAsync(ct).ConfigureAwait(false);
                 afterExecution?.Invoke(cmd);
-                if (!connection.IsTransactional) { connection.Disconnect(); }
-            }
-            catch
-            {
-                if (connection.IsTransactional)
-                {
-                    connection.RollbackTransaction();
-                }
-                else
-                {
-                    connection.Disconnect();
-                }
-                throw;
             }
             finally
             {
@@ -94,74 +68,74 @@ namespace HatTrick.DbEx.Sql.Executor
             return @return;
         }
 
-        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterFinder finder, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        public virtual ISqlRowReader ExecuteQuery(SqlStatement statement, ISqlConnection connection, IValueConverterFinder finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
         {
-            DbCommand cmd = connection.CreateDbCommand();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            cmd.Parameters.AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
-            connection.EnsureOpenConnection();
+            connection.EnsureOpen();
             var reader = cmd.ExecuteReader();
             afterExecution?.Invoke(cmd);
             return new DataReaderWrapper(connection, reader, finder);
         }
 
-        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterFinder finder, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<IAsyncSqlRowReader> ExecuteQueryAsync(SqlStatement statement, ISqlConnection connection, IValueConverterFinder finder, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
         {
-            DbCommand cmd = connection.CreateDbCommand();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            cmd.Parameters.AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
-            await connection.EnsureOpenConnectionAsync(ct);
-            var reader = await cmd.ExecuteReaderAsync(ct).ConfigureAwait(false);
+            await connection.EnsureOpenAsync(ct);
+            var reader = await (cmd as DbCommand).ExecuteReaderAsync(ct).ConfigureAwait(false);
             afterExecution?.Invoke(cmd);
             return new AsyncDataReaderWrapper(connection, reader, finder, ct);
         }
 
-        public virtual T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution)
+        public virtual T ExecuteScalar<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution)
         {
-            DbCommand cmd = connection.CreateDbCommand();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            cmd.Parameters.AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
-            connection.EnsureOpenConnection();
+            connection.EnsureOpen();
             var output = cmd.ExecuteScalar();
             afterExecution?.Invoke(cmd);
             return (T)Convert.ChangeType(output, typeof(T));
         }
 
-        public virtual async Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, Action<DbCommand> beforeExecution, Action<DbCommand> afterExecution, CancellationToken ct)
+        public virtual async Task<T> ExecuteScalarAsync<T>(SqlStatement statement, ISqlConnection connection, Action<IDbCommand> beforeExecution, Action<IDbCommand> afterExecution, CancellationToken ct)
         {
-            DbCommand cmd = connection.CreateDbCommand();
+            IDbCommand cmd = connection.CreateCommand();
             cmd.Connection = connection.DbConnection;
             cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
-            cmd.Parameters.AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
+            (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
-            connection.EnsureOpenConnection();
-            var output = await cmd.ExecuteScalarAsync(ct).ConfigureAwait(false);
+            connection.EnsureOpen();
+            var output = await (cmd as DbCommand).ExecuteScalarAsync(ct).ConfigureAwait(false);
             afterExecution?.Invoke(cmd);
             return (T)Convert.ChangeType(output, typeof(T));
         }

@@ -1,7 +1,9 @@
-﻿namespace HatTrick.DbEx.Sql.Connection
+﻿using System.Data;
+
+namespace HatTrick.DbEx.Sql.Connection
 {
     public abstract class SqlConnectionFactory : ISqlConnectionFactory
     {
-        public abstract ISqlConnection CreateSqlConnection();
+        public abstract IDbConnection CreateSqlConnection();
     }
 }
