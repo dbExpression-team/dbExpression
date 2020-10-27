@@ -85,6 +85,14 @@
 					"path": "dbo.Purchase.PaymentSourceType"
 				}
 			}
+		},
+		{
+			"apply": {
+				"clrType": "string",
+				"to": {
+					"path": "dbo.Purchase.TotalPurchaseQuantity"
+				}
+			}
 		}
 	]
 }

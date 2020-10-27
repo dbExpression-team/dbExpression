@@ -146,16 +146,16 @@ namespace HatTrick.DbEx.Tools.Service
         #region resolve field expression type name
         public string ResolveFieldExpressionTypeName(MsSqlColumn column, bool allowNullableType)
         {
-            string name = this.ResolveClrTypeName(column, allowNullableType);
             if (this.IsEnum(column))
             {
-                name = $"{(name.EndsWith("?") ? "Nullable" : string.Empty)}EnumFieldExpression";
+                var name = this.ResolveClrTypeName(column, allowNullableType);
+                return $"{(name.EndsWith("?") ? "Nullable" : string.Empty)}EnumFieldExpression";
             }
-            else
+            else if (this.HasClrTypeOverride(column, out string dataTypeOverride))
             {
-                name = svc.TypeMap.GetFieldExpressionTypeName(column.SqlType, column.IsNullable);
+                return svc.TypeMap.GetFieldExpressionTypeName(dataTypeOverride, column.IsNullable);
             }
-            return name;
+            return svc.TypeMap.GetFieldExpressionTypeName(column.SqlType, column.IsNullable);
         }
         #endregion
 

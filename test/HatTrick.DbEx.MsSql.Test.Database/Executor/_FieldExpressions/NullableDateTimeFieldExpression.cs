@@ -3,6 +3,7 @@ using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
+using FluentAssertions.Common;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
@@ -120,6 +121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 new Purchase 
                 { 
                     PersonId = 1,
+                    TotalPurchaseQuantity = 0.ToString(),
                     PurchaseDate = DateTime.Now,
                     PaymentMethodType = PaymentMethodType.CreditCard,
                     ShipDate = null,

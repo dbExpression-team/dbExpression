@@ -779,6 +779,7 @@ namespace ServerSideBlazorApp.dboDataService
         #region interface properties
         public Int32FieldExpression<Purchase> Id { get; private set; }
         public Int32FieldExpression<Purchase> PersonId { get; private set; }
+        public Int32FieldExpression<Purchase> TotalPurchaseQuantity { get; private set; }
         public DoubleFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
         public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
         public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
@@ -803,6 +804,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new Int32FieldExpression<Purchase>($"{identifier}.TotalPurchaseQuantity", this));
             Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DoubleFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
             Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
             Fields.Add($"{identifier}.ShipDate", ShipDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ShipDate", this));
@@ -826,6 +828,7 @@ namespace ServerSideBlazorApp.dboDataService
             return new SelectExpressionSet(
                 Id,
                 PersonId,
+                TotalPurchaseQuantity,
                 TotalPurchaseAmount,
                 PurchaseDate,
                 ShipDate,
@@ -844,6 +847,7 @@ namespace ServerSideBlazorApp.dboDataService
 				purchase,
                 Id.Insert(purchase.Id),
                 PersonId.Insert(purchase.PersonId),
+                TotalPurchaseQuantity.Insert(purchase.TotalPurchaseQuantity),
                 TotalPurchaseAmount.Insert(purchase.TotalPurchaseAmount),
                 PurchaseDate.Insert(purchase.PurchaseDate),
                 ShipDate.Insert(purchase.ShipDate),
@@ -861,6 +865,7 @@ namespace ServerSideBlazorApp.dboDataService
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
 			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); }; 
+			if (from.TotalPurchaseQuantity != to.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(to.TotalPurchaseQuantity); }; 
 			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount); }; 
 			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate); }; 
 			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate); }; 
@@ -878,6 +883,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
 			purchase.Id = reader.ReadField().GetValue<int>();
 			purchase.PersonId = reader.ReadField().GetValue<int>();
+			purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
 			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
 			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
 			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();

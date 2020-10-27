@@ -48,17 +48,22 @@ namespace HatTrick.DbEx.Sql.Attribute
             if (Enum.TryParse(value, true, out ArithmeticExpressionOperator parsedValue))
                 return parsedValue;
 
-            return default(ArithmeticExpressionOperator);
+            return default;
         }
 
-        public static SortedDictionary<ArithmeticExpressionOperator, string> GetValuesAndArithmeticOperators(this Type type)
+        public static SortedDictionary<ArithmeticExpressionOperator, string> GetValuesAndArithmeticOperators(this Type type, Func<string, string> formatValue = null)
         {
             if (type != typeof(ArithmeticExpressionOperator))
                 throw new InvalidOperationException("Type must be DBArithmeticExpressionOperator");
 
             var sortedDictionary = new SortedDictionary<ArithmeticExpressionOperator, string>();
             foreach (var value in Enum.GetValues(type))
-                sortedDictionary.Add((ArithmeticExpressionOperator)value, GetArithmeticOperator((ArithmeticExpressionOperator)value));
+            {
+                var o = GetArithmeticOperator((ArithmeticExpressionOperator)value);
+                if (formatValue is object)
+                    o = formatValue(o);
+                sortedDictionary.Add((ArithmeticExpressionOperator)value, o);
+            }
             return sortedDictionary;
         }
     }
