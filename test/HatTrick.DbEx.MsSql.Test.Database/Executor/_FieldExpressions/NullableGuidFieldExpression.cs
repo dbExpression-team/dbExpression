@@ -101,6 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 new Purchase 
                 { 
                     PersonId = 1,
+                    TotalPurchaseQuantity = 0.ToString(),
                     PurchaseDate = DateTime.Now,
                     PaymentMethodType = PaymentMethodType.ACH,
                     ShipDate = DateTime.Now,

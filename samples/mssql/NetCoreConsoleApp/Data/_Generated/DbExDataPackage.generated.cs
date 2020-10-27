@@ -105,6 +105,7 @@ namespace SimpleConsole.dboData
         #region interface
         public int Id { get; set; }
         public int PersonId { get; set; }
+        public int TotalPurchaseQuantity { get; set; }
         public double TotalPurchaseAmount { get; set; }
         public DateTime PurchaseDate { get; set; }
         public DateTime? ShipDate { get; set; }

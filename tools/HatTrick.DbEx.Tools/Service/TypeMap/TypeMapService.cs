@@ -207,5 +207,27 @@ namespace HatTrick.DbEx.Tools.Service
             }
         }
         #endregion
+
+        #region resolve field expression name
+        public string GetFieldExpressionTypeName(string alias, bool isNullable)
+        {
+            string format(string name) => isNullable ? $"Nullable{name}FieldExpression" : $"{name}FieldExpression";
+
+            switch (alias)
+            {
+                case "long": return format(nameof(Int64));
+                case "string": return format(nameof(String));
+                case "bool": return format(nameof(Boolean));
+                case "byte": return format(nameof(Byte));
+                case "decimal": return format(nameof(Decimal));
+                case "double": return format(nameof(Double));
+                case "float": return format(nameof(Single));
+                case "int": return format(nameof(Int32));
+                case "short": return format(nameof(Int16));
+                default:
+                    return format(alias);
+            }
+        }
+        #endregion
     }
 }

@@ -4,15 +4,15 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public enum ArithmeticExpressionOperator
     {
-        [ExpressionOperator(" + ")]
-        Add, //TODO: JRod, Concatenation???
-        [ExpressionOperator(" - ")]
+        [ExpressionOperator("+")]
+        Add,
+        [ExpressionOperator("-")]
         Subtract,
-        [ExpressionOperator(" * ")]
+        [ExpressionOperator("*")]
         Multiply,
-        [ExpressionOperator(" / ")]
+        [ExpressionOperator("/")]
         Divide,
-        [ExpressionOperator(" % ")]
+        [ExpressionOperator("%")]
         Modulo
     }
 }

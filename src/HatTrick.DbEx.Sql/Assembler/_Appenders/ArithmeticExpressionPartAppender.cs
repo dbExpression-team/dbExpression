@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class ArithmeticExpressionPartAppender : PartAppender<ArithmeticExpression>
     {
         private static IDictionary<ArithmeticExpressionOperator, string> _arithmeticOperatorMap;
-        private static IDictionary<ArithmeticExpressionOperator, string> ArithmeticOperatorMap => _arithmeticOperatorMap ?? (_arithmeticOperatorMap = typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators());
+        private static IDictionary<ArithmeticExpressionOperator, string> ArithmeticOperatorMap => _arithmeticOperatorMap ?? (_arithmeticOperatorMap = typeof(ArithmeticExpressionOperator).GetValuesAndArithmeticOperators(x => string.IsNullOrWhiteSpace(x) ? " " : $" {x} "));
 
         public override void AppendPart(ArithmeticExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {

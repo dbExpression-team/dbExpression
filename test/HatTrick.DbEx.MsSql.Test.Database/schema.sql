@@ -170,6 +170,7 @@ GO
 CREATE TABLE [dbo].[Purchase](
 	[Id] INT IDENTITY(1,1) NOT NULL,
 	[PersonId] INT NOT NULL,
+	[TotalPurchaseQuantity] INT NOT NULL,
 	[TotalPurchaseAmount] MONEY NOT NULL,
 	[PurchaseDate] DATETIME NOT NULL,
 	[ShipDate] DATETIME NULL,
