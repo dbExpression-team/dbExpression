@@ -5,14 +5,10 @@ using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Pipeline;
-using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
-using System.Data.SqlTypes;
 using System.Dynamic;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -232,57 +228,48 @@ namespace HatTrick.DbEx.Sql
         }
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
-            where T : IComparable
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
                 return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
         }
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection)
-            where T : IComparable
             => builder.ExecutePipeline(connection, null);
 
         public static T Execute<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder)
-            where T : IComparable
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
                 return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
         }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout)
-            where T : IComparable
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
                 return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
         }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection)
-            where T : IComparable
             => await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
-            where T : IComparable
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, CancellationToken ct)
-            where T : IComparable
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
                 return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
         }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
-            where T : IComparable
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
                 return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
         }
 
         public static async Task<T> ExecuteAsync<T>(this IValueTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
-            where T : IComparable
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
         #endregion
 

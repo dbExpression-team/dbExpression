@@ -1,5 +1,5 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">ServerSideBlazorApp</a>
+﻿<div class="top-row pl-4 navbar navbar-dark" style="min-height:130px">
+    <a class="navbar-brand" href=""></a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,12 +9,22 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <i class="fas fa-chart-line fa-lg pr-4"></i>Dashboard
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="customers">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Customers
+                <i class="fas fa-user-friends fa-lg pr-3"></i>Customers
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="orders">
+                <i class="fas fa-file-invoice-dollar fa-lg pr-4"></i>Orders
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="products">
+                <i class="fas fa-tags fa-lg pr-3"></i>Products
             </NavLink>
         </li>
     </ul>

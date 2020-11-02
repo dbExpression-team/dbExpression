@@ -1,0 +1,42 @@
+﻿@namespace  ServerSideBlazorApp.Shared
+
+<GridLoading RecordCount="@(CurrentPage?.TotalCount)"></GridLoading>
+@if (CurrentPage.Page.Any())
+{
+    <DataGrid TItem="OrderSummaryModel" Data="@CurrentPage.Page" SelectedRowChanged="@SetSelectedOrder" Striped="true" Hoverable="true" SelectedRowStyling="@SelectedRowStyling">
+        <DataGridColumns>
+            <DataGridCommandColumn TItem="OrderSummaryModel" />
+            <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.OrderNumber)" Caption="Order Number" Sortable="false" Width="20%" />
+            <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PurchaseDate)" Caption="Purchase Date" Sortable="false" Width="20%">
+                <DisplayTemplate>
+                    @($"{(context as OrderSummaryModel)?.PurchaseDate.ToString("d", CultureInfo.CurrentUICulture)}")
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PaymentMethod)" Caption="Payment Method" Sortable="false" Width="20%" />
+            <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="false" Width="20%" TextAlignment="TextAlignment.Right">
+                <DisplayTemplate>
+                    @($"{(context as OrderSummaryModel)?.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)}")
+                </DisplayTemplate>
+            </DataGridColumn>
+            <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.ShipDate)" Caption="Shipping Date" Sortable="false" Width="20%">
+                <DisplayTemplate>
+                    @($"{(context as OrderSummaryModel)?.ShipDate?.ToString("d", CultureInfo.CurrentUICulture)}")
+                </DisplayTemplate>
+            </DataGridColumn>
+        </DataGridColumns>
+    </DataGrid>
+}
+@if (SelectedOrder is object)
+{
+    <Card Margin="Margin.Is5.FromTop">
+        <CardBody>
+            <CardTitle>Invoice</CardTitle>
+            <Divider Type="DividerType.Dotted"></Divider>
+            <OrderView Order="@SelectedOrder" />
+        </CardBody>
+    </Card>
+}
+
+@code {
+
+}

@@ -1,0 +1,89 @@
+﻿@namespace ServerSideBlazorApp.Shared
+
+<Card>
+    <CardBody>
+        <CardTitle>
+            @(Address.Type) Address<Button Class="@(Mode == UIControlMode.Edit ? "d-none" : string.Empty)" Clicked="ToggleMode" Color="Color.Link"><i class="fas fa-edit"></i>&nbsp;Edit</Button>
+        </CardTitle>
+        <Divider Type="DividerType.Dotted"></Divider>
+        <CardText>
+            @if (Mode == UIControlMode.View)
+            {
+                <AddressView Address="@Address" />
+            }
+            else if (Mode == UIControlMode.Edit && OnSave is object)
+            {
+                <Form>
+                    <Validations @ref="@validations" Mode="ValidationMode.Auto" Model="@Address" ValidateOnLoad="false" StatusChanged="@SetSubmitButtonState">
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Line 1</FieldLabel>
+                                <TextEdit @bind-Text="@Address.Line1">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Line 2</FieldLabel>
+                                <TextEdit @bind-Text="@Address.Line2">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>City</FieldLabel>
+                                <TextEdit @bind-Text="@Address.City">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>State</FieldLabel>
+                                <FieldBody>
+                                    <Select @bind-SelectedValue="@Address.State">
+                                        <ChildContent>
+                                            <SelectItem Value="@((string)null)">(Select State)</SelectItem>
+                                            @foreach (var state in ListProvider.States)
+                                            {
+                                                <SelectItem Value="@state.Key">@($"{state.Value} ({state.Key})")</SelectItem>
+                                            }
+                                        </ChildContent>
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </Select>
+                                </FieldBody>
+                            </Field>
+                        </Validation>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>ZIP Code</FieldLabel>
+                                <TextEdit @bind-Text="@Address.ZIP">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Paragraph Alignment="TextAlignment.Right" Margin="Margin.Is5.FromTop">
+                            <Button Margin="Margin.Is3.FromRight" Type="ButtonType.Submit" Color="Color.Primary" PreventDefaultOnSubmit="true" Clicked="Save" Disabled="@(!IsValid)">Save</Button><Button Type="ButtonType.Reset" Clicked="@Cancel">Cancel</Button>
+                        </Paragraph>
+                    </Validations>
+                </Form>
+            }
+        </CardText>
+    </CardBody>
+</Card>
+
+@code {
+
+}

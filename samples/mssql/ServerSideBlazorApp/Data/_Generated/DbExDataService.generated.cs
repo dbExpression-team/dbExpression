@@ -304,8 +304,8 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface
         public AddressEntity Address { get; private set; }
-        public PersonEntity Person { get; private set; }
-        public PersonAddressEntity PersonAddress { get; private set; }
+        public CustomerEntity Customer { get; private set; }
+        public CustomerAddressEntity CustomerAddress { get; private set; }
         public ProductEntity Product { get; private set; }
         public PurchaseEntity Purchase { get; private set; }
         public PurchaseLineEntity PurchaseLine { get; private set; }
@@ -316,8 +316,8 @@ namespace ServerSideBlazorApp.dboDataService
         public dboSchemaExpression(string identifier) : base(identifier, null)
         {
             Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", this));
-            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
-            Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", this));
+            Entities.Add($"{identifier}.Person", Customer = new CustomerEntity($"{identifier}.Person", this));
+            Entities.Add($"{identifier}.Person_Address", CustomerAddress = new CustomerAddressEntity($"{identifier}.Person_Address", this));
             Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", this));
             Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", this));
             Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", this));
@@ -434,48 +434,48 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region person entity expression
-    public partial class PersonEntity : EntityExpression<Person>
+    #region customer entity expression
+    public partial class CustomerEntity : EntityExpression<Customer>
     {
         #region interface properties
-        public Int32FieldExpression<Person> Id { get; private set; }
-        public StringFieldExpression<Person> FirstName { get; private set; }
-        public StringFieldExpression<Person> LastName { get; private set; }
-        public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
-        public EnumFieldExpression<Person, GenderType> GenderType { get; private set; }
-        public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
-        public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
-        public DateTimeFieldExpression<Person> DateCreated { get; private set; }
-        public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
+        public Int32FieldExpression<Customer> Id { get; private set; }
+        public StringFieldExpression<Customer> FirstName { get; private set; }
+        public StringFieldExpression<Customer> LastName { get; private set; }
+        public NullableDateTimeFieldExpression<Customer> BirthDate { get; private set; }
+        public EnumFieldExpression<Customer, GenderType> GenderType { get; private set; }
+        public NullableInt32FieldExpression<Customer> CreditLimit { get; private set; }
+        public NullableInt32FieldExpression<Customer> YearOfLastCreditLimitReview { get; private set; }
+        public DateTimeFieldExpression<Customer> DateCreated { get; private set; }
+        public DateTimeFieldExpression<Customer> DateUpdated { get; private set; }
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null)
+        private CustomerEntity() : base(null, null, null)
         {
         }
 
-		public PersonEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public CustomerEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
         }
 
-        private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private CustomerEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Person>($"{identifier}.FirstName", this));
-            Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Person>($"{identifier}.LastName", this));
-            Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Person>($"{identifier}.BirthDate", this));
-            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Person, GenderType>($"{identifier}.GenderType", this));
-            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Person>($"{identifier}.CreditLimit", this));
-            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Person>($"{identifier}.YearOfLastCreditLimitReview", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Customer>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Customer>($"{identifier}.FirstName", this));
+            Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Customer>($"{identifier}.LastName", this));
+            Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Customer>($"{identifier}.BirthDate", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Customer, GenderType>($"{identifier}.GenderType", this));
+            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Customer>($"{identifier}.CreditLimit", this));
+            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Customer>($"{identifier}.YearOfLastCreditLimitReview", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Customer>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Customer>($"{identifier}.DateUpdated", this));
         }
         #endregion
 
         #region methods
-        public PersonEntity As(string name)
+        public CustomerEntity As(string name)
         {
-            return new PersonEntity(this.identifier, this.schema, name);
+            return new CustomerEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -493,23 +493,23 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
+        protected override InsertExpressionSet<Customer> GetInclusiveInsertExpression(Customer customer)
         {
-            return new InsertExpressionSet<Person>(
-				person,
-                Id.Insert(person.Id),
-                FirstName.Insert(person.FirstName),
-                LastName.Insert(person.LastName),
-                BirthDate.Insert(person.BirthDate),
-                GenderType.Insert(person.GenderType),
-                CreditLimit.Insert(person.CreditLimit),
-                YearOfLastCreditLimitReview.Insert(person.YearOfLastCreditLimitReview),
-                DateCreated.Insert(person.DateCreated),
-                DateUpdated.Insert(person.DateUpdated)
+            return new InsertExpressionSet<Customer>(
+				customer,
+                Id.Insert(customer.Id),
+                FirstName.Insert(customer.FirstName),
+                LastName.Insert(customer.LastName),
+                BirthDate.Insert(customer.BirthDate),
+                GenderType.Insert(customer.GenderType),
+                CreditLimit.Insert(customer.CreditLimit),
+                YearOfLastCreditLimitReview.Insert(customer.YearOfLastCreditLimitReview),
+                DateCreated.Insert(customer.DateCreated),
+                DateUpdated.Insert(customer.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person from, Person to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Customer from, Customer to)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
@@ -525,54 +525,54 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Person person, ISqlFieldReader reader)
+        protected override void HydrateEntity(Customer customer, ISqlFieldReader reader)
         {
-			person.Id = reader.ReadField().GetValue<int>();
-			person.FirstName = reader.ReadField().GetValue<string>();
-			person.LastName = reader.ReadField().GetValue<string>();
-			person.BirthDate = reader.ReadField().GetValue<DateTime?>();
-			person.GenderType = reader.ReadField().GetValue<GenderType>();
-			person.CreditLimit = reader.ReadField().GetValue<int?>();
-			person.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-			person.DateCreated = reader.ReadField().GetValue<DateTime>();
-			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+			customer.Id = reader.ReadField().GetValue<int>();
+			customer.FirstName = reader.ReadField().GetValue<string>();
+			customer.LastName = reader.ReadField().GetValue<string>();
+			customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
+			customer.GenderType = reader.ReadField().GetValue<GenderType>();
+			customer.CreditLimit = reader.ReadField().GetValue<int?>();
+			customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+			customer.DateCreated = reader.ReadField().GetValue<DateTime>();
+			customer.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
     #endregion
 
-    #region person address entity expression
-    public partial class PersonAddressEntity : EntityExpression<PersonAddress>
+    #region customer address entity expression
+    public partial class CustomerAddressEntity : EntityExpression<CustomerAddress>
     {
         #region interface properties
-        public Int32FieldExpression<PersonAddress> Id { get; private set; }
-        public Int32FieldExpression<PersonAddress> PersonId { get; private set; }
-        public Int32FieldExpression<PersonAddress> AddressId { get; private set; }
-        public DateTimeFieldExpression<PersonAddress> DateCreated { get; private set; }
+        public Int32FieldExpression<CustomerAddress> Id { get; private set; }
+        public Int32FieldExpression<CustomerAddress> PersonId { get; private set; }
+        public Int32FieldExpression<CustomerAddress> AddressId { get; private set; }
+        public DateTimeFieldExpression<CustomerAddress> DateCreated { get; private set; }
         #endregion
 
         #region constructors
-        private PersonAddressEntity() : base(null, null, null)
+        private CustomerAddressEntity() : base(null, null, null)
         {
         }
 
-		public PersonAddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public CustomerAddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {
         }
 
-        private PersonAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private CustomerAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonAddress>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<PersonAddress>($"{identifier}.PersonId", this));
-            Fields.Add($"{identifier}.AddressId", AddressId = new Int32FieldExpression<PersonAddress>($"{identifier}.AddressId", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PersonAddress>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<CustomerAddress>($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<CustomerAddress>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.AddressId", AddressId = new Int32FieldExpression<CustomerAddress>($"{identifier}.AddressId", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<CustomerAddress>($"{identifier}.DateCreated", this));
         }
         #endregion
 
         #region methods
-        public PersonAddressEntity As(string name)
+        public CustomerAddressEntity As(string name)
         {
-            return new PersonAddressEntity(this.identifier, this.schema, name);
+            return new CustomerAddressEntity(this.identifier, this.schema, name);
         }
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
@@ -585,18 +585,18 @@ namespace ServerSideBlazorApp.dboDataService
             );
         }
 		
-        protected override InsertExpressionSet<PersonAddress> GetInclusiveInsertExpression(PersonAddress personAddress)
+        protected override InsertExpressionSet<CustomerAddress> GetInclusiveInsertExpression(CustomerAddress customerAddress)
         {
-            return new InsertExpressionSet<PersonAddress>(
-				personAddress,
-                Id.Insert(personAddress.Id),
-                PersonId.Insert(personAddress.PersonId),
-                AddressId.Insert(personAddress.AddressId),
-                DateCreated.Insert(personAddress.DateCreated)
+            return new InsertExpressionSet<CustomerAddress>(
+				customerAddress,
+                Id.Insert(customerAddress.Id),
+                PersonId.Insert(customerAddress.PersonId),
+                AddressId.Insert(customerAddress.AddressId),
+                DateCreated.Insert(customerAddress.DateCreated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress from, PersonAddress to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(CustomerAddress from, CustomerAddress to)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
@@ -607,12 +607,12 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(PersonAddress personAddress, ISqlFieldReader reader)
+        protected override void HydrateEntity(CustomerAddress customerAddress, ISqlFieldReader reader)
         {
-			personAddress.Id = reader.ReadField().GetValue<int>();
-			personAddress.PersonId = reader.ReadField().GetValue<int>();
-			personAddress.AddressId = reader.ReadField().GetValue<int>();
-			personAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
+			customerAddress.Id = reader.ReadField().GetValue<int>();
+			customerAddress.PersonId = reader.ReadField().GetValue<int>();
+			customerAddress.AddressId = reader.ReadField().GetValue<int>();
+			customerAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
     }
@@ -779,6 +779,7 @@ namespace ServerSideBlazorApp.dboDataService
         #region interface properties
         public Int32FieldExpression<Purchase> Id { get; private set; }
         public Int32FieldExpression<Purchase> PersonId { get; private set; }
+        public StringFieldExpression<Purchase> OrderNumber { get; private set; }
         public Int32FieldExpression<Purchase> TotalPurchaseQuantity { get; private set; }
         public DoubleFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
         public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
@@ -804,6 +805,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new StringFieldExpression<Purchase>($"{identifier}.OrderNumber", this));
             Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new Int32FieldExpression<Purchase>($"{identifier}.TotalPurchaseQuantity", this));
             Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DoubleFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
             Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
@@ -828,6 +830,7 @@ namespace ServerSideBlazorApp.dboDataService
             return new SelectExpressionSet(
                 Id,
                 PersonId,
+                OrderNumber,
                 TotalPurchaseQuantity,
                 TotalPurchaseAmount,
                 PurchaseDate,
@@ -847,6 +850,7 @@ namespace ServerSideBlazorApp.dboDataService
 				purchase,
                 Id.Insert(purchase.Id),
                 PersonId.Insert(purchase.PersonId),
+                OrderNumber.Insert(purchase.OrderNumber),
                 TotalPurchaseQuantity.Insert(purchase.TotalPurchaseQuantity),
                 TotalPurchaseAmount.Insert(purchase.TotalPurchaseAmount),
                 PurchaseDate.Insert(purchase.PurchaseDate),
@@ -865,6 +869,7 @@ namespace ServerSideBlazorApp.dboDataService
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
 			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); }; 
+			if (from.OrderNumber != to.OrderNumber) { expr &= OrderNumber.Set(to.OrderNumber); }; 
 			if (from.TotalPurchaseQuantity != to.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(to.TotalPurchaseQuantity); }; 
 			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount); }; 
 			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate); }; 
@@ -883,6 +888,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
 			purchase.Id = reader.ReadField().GetValue<int>();
 			purchase.PersonId = reader.ReadField().GetValue<int>();
+			purchase.OrderNumber = reader.ReadField().GetValue<string>();
 			purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
 			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
 			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
@@ -1078,8 +1084,8 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region interface
         public static AddressEntity Address => _schema.Address;
-        public static PersonEntity Person => _schema.Person;
-        public static PersonAddressEntity PersonAddress => _schema.PersonAddress;
+        public static CustomerEntity Customer => _schema.Customer;
+        public static CustomerAddressEntity CustomerAddress => _schema.CustomerAddress;
         public static ProductEntity Product => _schema.Product;
         public static PurchaseEntity Purchase => _schema.Purchase;
         public static PurchaseLineEntity PurchaseLine => _schema.PurchaseLine;

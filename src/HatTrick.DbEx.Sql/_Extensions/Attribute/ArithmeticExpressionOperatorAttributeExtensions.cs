@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Attribute
 {
-    public static class ArithmeticiExpressionOperatorAttributeExtensions
+    public static class ArithmeticExpressionOperatorAttributeExtensions
     {
         public static string GetArithmeticOperator(this ArithmeticExpressionOperator value)
         {
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Attribute
         public static ArithmeticExpressionOperator GetArithmeticOperator(this string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                return default(ArithmeticExpressionOperator);
+                return default;
 
             var values = Enum.GetValues(typeof(ArithmeticExpressionOperator));
             var fi = typeof(ArithmeticExpressionOperator).GetFields();
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.Sql.Attribute
         public static SortedDictionary<ArithmeticExpressionOperator, string> GetValuesAndArithmeticOperators(this Type type, Func<string, string> formatValue = null)
         {
             if (type != typeof(ArithmeticExpressionOperator))
-                throw new InvalidOperationException("Type must be DBArithmeticExpressionOperator");
+                throw new InvalidOperationException($"Type must be {nameof(ArithmeticExpressionOperator)}");
 
             var sortedDictionary = new SortedDictionary<ArithmeticExpressionOperator, string>();
             foreach (var value in Enum.GetValues(type))

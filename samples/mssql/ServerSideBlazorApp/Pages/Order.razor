@@ -1,0 +1,20 @@
+﻿@page "/orders/{id}"
+@inject GlobalProgressBar ProgressBar
+@inject OrderService OrderService
+@inject NavigationManager NavigationManager
+
+@if (Model is object)
+{
+    <MatButton Link="@BuildOrderGridUrl()">&lt; Back</MatButton>
+    <h3>@Model.OrderNumber</h3>
+    <Divider></Divider>
+    <Card>
+        <CardBody>
+            <OrderView Order="@Model" />
+        </CardBody>
+    </Card>
+}
+
+@code {
+
+}

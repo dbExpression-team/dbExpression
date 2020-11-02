@@ -1,7 +1,87 @@
 ﻿@page "/"
+@inject CustomerService CustomerService
+@inject OrderService OrderService
 
-<h1>Hello, world!</h1>
+<h3>Dashboard</h3>
+<Divider></Divider>
 
-Welcome to your new app.
+<CardDeck>
+    <Card>
+        <CardBody>
+            <CardTitle>Recent Sales by Day</CardTitle>
+            <Divider Type="DividerType.Dotted"></Divider>
+            <SingleMetricChart Type="ChartType.Bar" Data="@GetDailySales" ShowLegend="false" />
+        </CardBody>
+    </Card>
+    <Card>
+        <CardBody>
+            <CardTitle>Top VIP Customers</CardTitle>
+            <Divider Type="DividerType.Dotted"></Divider>
+            <CardText>
+                <Table Striped="true">
+                    <TableHeader>
+                        <Blazorise.TableRow>
+                            <TableHeaderCell Style="width:25%">Name</TableHeaderCell>
+                            <TableHeaderCell Style="width:20%">Lifetime Value</TableHeaderCell>
+                        </Blazorise.TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var vip in Top5VIPCustomers)
+                        {
+                            <Blazorise.TableRow>
+                                <TableRowCell>
+                                    <span><i class="fas fa-crown pr-2"></i>&nbsp;</span>
+                                    <Blazorise.Link To="@($"/customers/{vip.Id}")">@vip.Name</Blazorise.Link>
+                                </TableRowCell>
+                                <TableRowCell TextAlignment="TextAlignment.Right">@vip.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                            </Blazorise.TableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </CardText>
+        </CardBody>
+    </Card>
+</CardDeck>
+<CardDeck>
+    <Card>
+        <CardBody>
+            <CardTitle>Recent Orders</CardTitle>
+            <Divider Type="DividerType.Dotted"></Divider>
+            <CardText>
+                <Table Striped="true">
+                    <TableHeader>
+                        <Blazorise.TableRow>
+                            <TableHeaderCell Style="width:25%">Order Number</TableHeaderCell>
+                            <TableHeaderCell Style="width:20%">Customer</TableHeaderCell>
+                            <TableHeaderCell Style="width:20%">Total Amount</TableHeaderCell>
+                        </Blazorise.TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        @foreach (var order in RecentOrders)
+                        {
+                            <Blazorise.TableRow>
+                                <TableRowCell><Blazorise.Link To="@($"/orders/{order.Id}")">@order.OrderNumber</Blazorise.Link></TableRowCell>
+                                <TableRowCell>
+                                    @if (order.IsVIP)
+                                    {
+                                        <i class="fas fa-crown pr-2"></i>
+                                    }
+                                    <Blazorise.Link To="@($"/customers/{order.CustomerId}")">@order.CustomerName</Blazorise.Link>
+                                </TableRowCell>
+                                <TableRowCell TextAlignment="TextAlignment.Right">@order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                            </Blazorise.TableRow>
+                        }
+                    </TableBody>
+                </Table>
+            </CardText>
+        </CardBody>
+    </Card>
+    <Card>
+        <CardBody>
+            <CardTitle>Total Sales by Product Category</CardTitle>
+            <Divider Type="DividerType.Dotted"></Divider>
+            <SingleMetricChart Type="ChartType.Doughnut" Data="@GetSalesByProductCategory" />
+        </CardBody>
+    </Card>
+</CardDeck>
 
-<SurveyPrompt Title="How is Blazor working for you?" />

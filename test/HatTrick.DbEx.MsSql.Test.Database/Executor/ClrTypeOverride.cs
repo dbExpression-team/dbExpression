@@ -83,9 +83,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var purchase = new Purchase
             {
+                PersonId = 1,
+                OrderNumber = $"{DateTime.Now.Date:yyyymmdd}00099",
                 PaymentMethodType = PaymentMethodType.ACH,
                 PaymentSourceType = PaymentSourceType.InPerson,
-                PersonId = 1,
                 PurchaseDate = DateTime.Now,
                 TotalPurchaseAmount = 12.0,
                 TotalPurchaseQuantity = expected,

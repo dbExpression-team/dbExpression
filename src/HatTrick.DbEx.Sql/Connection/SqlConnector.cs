@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public void RollbackTransaction()
         {
-            if (!(DbConnection is null)) //should allow multi rollback calls without error.
+            if (DbTransaction is object) //should allow multi rollback calls without error.
             {
                 try
                 {

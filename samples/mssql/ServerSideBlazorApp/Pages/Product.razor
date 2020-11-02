@@ -1,0 +1,75 @@
+﻿@page "/products/{id}"
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+
+@if (Model is object)
+{
+    <MatButton Link="@BuildProductGridUrl()">&lt; Back</MatButton>
+    <h3>@Model.Name</h3>
+    <MatDivider></MatDivider>
+
+    <Row Margin="Margin.Is3.FromTop">
+        <Column ColumnSize="ColumnSize.Is4">
+            <Card>
+                <CardImage Source="@($"data:image/png;base64,{Model.Image}")"></CardImage>
+                <CardBody>
+                    <CardTitle>Details</CardTitle>
+                    <Divider Type="DividerType.Dotted"></Divider>
+                    <CardText>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>@Model.Name</dd>
+                            <dt>Category</dt>
+                            <dd>@Model.Category</dd>
+                            <dt>Description</dt>
+                            <dd>@Model.Description</dd>
+                            <dt>List Price</dt>
+                            <dd>@Model.ListPrice.ToString("c", CultureInfo.CurrentUICulture)</dd>
+                            <dt>Price</dt>
+                            <dd>@Model.Price.ToString("c", CultureInfo.CurrentUICulture)</dd>
+                            <dt>Quantity on Hand</dt>
+                            <dd>@Model.QuantityOnHand.ToString("#,##0", CultureInfo.CurrentUICulture)</dd>
+                        </dl>
+                    </CardText>
+                </CardBody>
+            </Card>
+
+        </Column>
+        <Column>
+            <Card>
+                <CardBody>
+                    <CardTitle>Dimensions</CardTitle>
+                    <Divider Type="DividerType.Dotted"></Divider>
+                    <CardText>
+                        <dl>
+                            <dt>Height (inches)</dt>
+                            <dd>@Model.Height</dd>
+                            <dt>Width (inches)</dt>
+                            <dd>@Model.Width</dd>
+                            <dt>Depth (inches)</dt>
+                            <dd>@Model.Depth</dd>
+                        </dl>
+                    </CardText>
+                </CardBody>
+            </Card>
+            <Card Margin="Margin.Is3.FromTop">
+                <CardBody>
+                    <CardTitle>Weights</CardTitle>
+                    <Divider Type="DividerType.Dotted"></Divider>
+                    <CardText>
+                        <dl>
+                            <dt>Weight (pounds)</dt>
+                            <dd>@Model.Weight</dd>
+                            <dt>Shipping Weight (pounds)</dt>
+                            <dd>@Model.ShippingWeight</dd>
+                        </dl>
+                    </CardText>
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+}
+
+@code {
+
+}

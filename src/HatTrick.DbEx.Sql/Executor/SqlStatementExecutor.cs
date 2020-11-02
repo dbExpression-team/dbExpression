@@ -98,7 +98,7 @@ namespace HatTrick.DbEx.Sql.Executor
             (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
             beforeExecution?.Invoke(cmd);
-            await connection.EnsureOpenAsync(ct);
+            await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
             var reader = await (cmd as DbCommand).ExecuteReaderAsync(ct).ConfigureAwait(false);
             afterExecution?.Invoke(cmd);
             return new AsyncDataReaderWrapper(connection, reader, finder, ct);
