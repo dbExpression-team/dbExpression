@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ToolCommandName>dbex</ToolCommandName>
     <PackAsTool>true</PackAsTool>
@@ -45,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HatTrick.Model.MsSql" Version="2.0.1" />
+    <PackageReference Include="HatTrick.Model.MsSql" Version="2.1.0" />
     <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
     <PackageReference Include="HatTrick.Text.Templating" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
