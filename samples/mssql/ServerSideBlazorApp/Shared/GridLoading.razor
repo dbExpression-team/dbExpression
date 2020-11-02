@@ -1,17 +1,12 @@
-﻿<MatCard>
-    <MatCardContent>
-        <div class="align-items-center">
-            @if (RecordCount == 0)
-            {
-                <i class="fas fa-ban mr-4"></i><span class="font-weight-light">No records found.</span>
-            }
-            else if (!RecordCount.HasValue)
-            {
-                <i class="fas fa-circle-notch fa-spin mr-4"></i><span class="font-weight-light">Loading...</span>
-            }
-        </div>
-    </MatCardContent>
-</MatCard>
+﻿@if (RecordCount == 0)
+{
+    <CardSubtitle Margin="Margin.Is3">No records found.</CardSubtitle>
+
+}
+else if (!RecordCount.HasValue)
+{
+    <CardSubtitle Margin="Margin.Is3">Loading...</CardSubtitle>
+}
 
 @code {
 

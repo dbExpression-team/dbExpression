@@ -27,8 +27,8 @@ namespace ServerSideBlazorApp.dboData
     }
     #endregion
 
-    #region person
-    public partial class Person : IDbEntity
+    #region customer
+    public partial class Customer : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -43,15 +43,15 @@ namespace ServerSideBlazorApp.dboData
         #endregion
 
         #region constructor
-        public Person()
+        public Customer()
         {
         }
         #endregion
     }
     #endregion
 
-    #region person address
-    public partial class PersonAddress : IDbEntity
+    #region customer address
+    public partial class CustomerAddress : IDbEntity
     {
         #region interface
         public int Id { get; set; }
@@ -61,7 +61,7 @@ namespace ServerSideBlazorApp.dboData
         #endregion
 
         #region constructor
-        public PersonAddress()
+        public CustomerAddress()
         {
         }
         #endregion
@@ -105,6 +105,7 @@ namespace ServerSideBlazorApp.dboData
         #region interface
         public int Id { get; set; }
         public int PersonId { get; set; }
+        public string OrderNumber { get; set; }
         public int TotalPurchaseQuantity { get; set; }
         public double TotalPurchaseAmount { get; set; }
         public DateTime PurchaseDate { get; set; }

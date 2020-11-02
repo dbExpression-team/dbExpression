@@ -1,3 +1,7 @@
+using Blazorise;
+using Blazorise.Icons.FontAwesome;
+using Blazorise.Icons.Material;
+using Blazorise.Material;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Converter;
@@ -44,7 +48,16 @@ namespace ServerSideBlazorApp
                 )
             );
 
+            services.AddBlazorise(options =>
+              {
+                  options.ChangeTextOnKeyPress = true; // optional
+              })
+              .AddMaterialProviders()
+              .AddMaterialIcons();
+
             services.AddSingleton<CustomerService>();
+            services.AddSingleton<OrderService>();
+            services.AddSingleton<ProductService>();
 
             services.AddSingleton<GlobalProgressBar>();
 
@@ -84,6 +97,10 @@ namespace ServerSideBlazorApp
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.ApplicationServices
+              .UseMaterialProviders()
+              .UseMaterialIcons();
 
             app.UseEndpoints(endpoints =>
             {

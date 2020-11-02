@@ -48,8 +48,8 @@ namespace ServerSideBlazorApp.dboDataService
             Identifier = identifier;
             Name = name;
             Entities.Add($"{identifier}.Address", new AddressEntityMetadata(this, $"{identifier}.Address", "Address"));
-            Entities.Add($"{identifier}.Person", new PersonEntityMetadata(this, $"{identifier}.Person", "Person"));
-            Entities.Add($"{identifier}.Person_Address", new PersonAddressEntityMetadata(this, $"{identifier}.Person_Address", "Person_Address"));
+            Entities.Add($"{identifier}.Person", new CustomerEntityMetadata(this, $"{identifier}.Person", "Person"));
+            Entities.Add($"{identifier}.Person_Address", new CustomerAddressEntityMetadata(this, $"{identifier}.Person_Address", "Person_Address"));
             Entities.Add($"{identifier}.Product", new ProductEntityMetadata(this, $"{identifier}.Product", "Product"));
             Entities.Add($"{identifier}.Purchase", new PurchaseEntityMetadata(this, $"{identifier}.Purchase", "Purchase"));
             Entities.Add($"{identifier}.PurchaseLine", new PurchaseLineEntityMetadata(this, $"{identifier}.PurchaseLine", "PurchaseLine"));
@@ -90,8 +90,8 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region person
-	public class PersonEntityMetadata : ISqlEntityMetadata
+    #region customer
+	public class CustomerEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
         public ISqlSchemaMetadata Schema { get; }
@@ -101,7 +101,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 		
         #region constructors
-        public PersonEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        public CustomerEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
             Identifier = identifier;
@@ -121,8 +121,8 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-    #region person address
-	public class PersonAddressEntityMetadata : ISqlEntityMetadata
+    #region customer address
+	public class CustomerAddressEntityMetadata : ISqlEntityMetadata
 	{
         #region interface
         public ISqlSchemaMetadata Schema { get; }
@@ -132,7 +132,7 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 		
         #region constructors
-        public PersonAddressEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        public CustomerAddressEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {
             Schema = schema;
             Identifier = identifier;
@@ -205,6 +205,7 @@ namespace ServerSideBlazorApp.dboDataService
 			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.OrderNumber", new MsSqlFieldMetadata(this, $"{identifier}.OrderNumber", "OrderNumber", SqlDbType.VarChar, 20));
             Fields.Add($"{identifier}.TotalPurchaseQuantity", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Money, 8));
             Fields.Add($"{identifier}.PurchaseDate", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseDate", "PurchaseDate", SqlDbType.DateTime, 8));

@@ -8,5 +8,6 @@ namespace ServerSideBlazorApp.Models
         public string Name { get; set; }
         public double LifetimeValue { get; set; }
         public short? CurrentAge { get; set; }
+        public bool IsVIP { get; set; }
     }
 }

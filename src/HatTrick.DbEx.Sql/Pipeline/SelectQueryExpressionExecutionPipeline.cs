@@ -498,9 +498,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
 
-            await beforeAssembly?.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct);
+            if (beforeAssembly is object)
+            {
+                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
+            }
+
             var statement = statementBuilder.CreateSqlStatement();
-            await afterAssembly?.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder)), ct);
+            if (afterAssembly is object)
+            {
+                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder)), ct).ConfigureAwait(false);
+            }
 
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
@@ -508,8 +515,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 statement,
                 connection,
                 new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory),
-                async cmd => { 
-                    await beforeExecution?.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statementBuilder.CreateSqlStatement(), cmd)), ct); 
+                async cmd => {
+                    if (beforeExecution is object)
+                    {
+                        await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statementBuilder.CreateSqlStatement(), cmd)), ct).ConfigureAwait(false);
+                    }
                     configureCommand?.Invoke(cmd); 
                 },
                 async cmd => {

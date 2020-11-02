@@ -9,7 +9,7 @@ namespace ServerSideBlazorApp
         {
             if (ShowProgress is object)
             {
-                await ShowProgress.Invoke();
+                await ShowProgress.Invoke().ConfigureAwait(false);
             }
         }
 
@@ -17,7 +17,7 @@ namespace ServerSideBlazorApp
         {
             if (HideProgress is object)
             {
-                await HideProgress.Invoke();
+                await HideProgress.Invoke().ConfigureAwait(false);
             }
         }
 

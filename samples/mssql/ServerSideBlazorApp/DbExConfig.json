@@ -39,6 +39,22 @@
 		},
 		{
 			"apply": {
+				"name": "Customer",
+				"to": {
+					"path": "dbo.Person"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "CustomerAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
 				"clrType": "AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
@@ -51,14 +67,6 @@
 				"clrType": "GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
-				}
-			}
-		},
-		{
-			"apply": {
-				"name": "PersonAddress",
-				"to": {
-					"path": "dbo.Person_Address"
 				}
 			}
 		},

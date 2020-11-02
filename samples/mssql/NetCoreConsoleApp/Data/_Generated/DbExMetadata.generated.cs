@@ -205,6 +205,7 @@ namespace SimpleConsole.dboDataService
 			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
             Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int, 4){ IsIdentity = true });
             Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.OrderNumber", new MsSqlFieldMetadata(this, $"{identifier}.OrderNumber", "OrderNumber", SqlDbType.VarChar, 20));
             Fields.Add($"{identifier}.TotalPurchaseQuantity", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.TotalPurchaseAmount", new MsSqlFieldMetadata(this, $"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", SqlDbType.Money, 8));
             Fields.Add($"{identifier}.PurchaseDate", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseDate", "PurchaseDate", SqlDbType.DateTime, 8));

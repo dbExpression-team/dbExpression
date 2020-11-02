@@ -9,6 +9,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -300,6 +301,133 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             persons.Select(x => (GenderType)x.GenderType).Should().AllBeAssignableTo<GenderType>();
+        }
+
+        [Theory]
+        [Trait("Operation", "INNER QUERY")]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_map_complex_dynamic_object_when_providing_mapping_function_to_execute(int version, int personId = 3)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var customer = new Customer();
+
+            //when
+            await db.SelectOne(
+                    dbo.Person.Id,
+                    dbo.Person.GenderType,
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Line1)).ToString(),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Line2)).ToString(),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.City)).ToString(),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.State)).ToString(),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Zip)).ToString(),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Line1)).ToString(),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Line2)).ToString(),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.City)).ToString(),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.State)).ToString(),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Zip)).ToString(),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Line1)).ToString(),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Line2)).ToString(),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.City)).ToString(),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.State)).ToString(),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Zip)).ToString()
+                )
+                .From(dbo.Person)
+                .LeftJoin(
+                    db.SelectOne(
+                        dbo.PersonAddress.PersonId,
+                        dbo.Address.Line1,
+                        dbo.Address.Line2,
+                        dbo.Address.City,
+                        dbo.Address.State,
+                        dbo.Address.Zip
+                    )
+                    .From(dbo.Address)
+                    .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
+                    .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Mailing)
+                ).As(nameof(Customer.MailingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.MailingAddress), nameof(dbo.PersonAddress.PersonId)).ToInt())
+                .LeftJoin(
+                    db.SelectOne(
+                        dbo.PersonAddress.PersonId,
+                        dbo.Address.Line1,
+                        dbo.Address.Line2,
+                        dbo.Address.City,
+                        dbo.Address.State,
+                        dbo.Address.Zip
+                    )
+                    .From(dbo.Address)
+                    .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
+                    .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Billing)
+                ).As(nameof(Customer.BillingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.BillingAddress), nameof(dbo.PersonAddress.PersonId)).ToInt())
+                .LeftJoin(
+                    db.SelectOne(
+                        dbo.PersonAddress.PersonId,
+                        dbo.Address.Line1,
+                        dbo.Address.Line2,
+                        dbo.Address.City,
+                        dbo.Address.State,
+                        dbo.Address.Zip
+                    )
+                    .From(dbo.Address)
+                    .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
+                    .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Shipping)
+                ).As(nameof(Customer.ShippingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.ShippingAddress), nameof(dbo.PersonAddress.PersonId)).ToInt())
+                .Where(dbo.Person.Id == personId)
+                .ExecuteAsync(
+                    sqlRow =>
+                    {
+                        customer.Id = sqlRow.ReadField().GetValue<int>();
+                        customer.Gender = sqlRow.ReadField().GetValue<GenderType>();
+                        customer.MailingAddress.Line1 = sqlRow.ReadField().GetValue<string>();
+                        customer.MailingAddress.Line2 = sqlRow.ReadField().GetValue<string>();
+                        customer.MailingAddress.City = sqlRow.ReadField().GetValue<string>();
+                        customer.MailingAddress.State = sqlRow.ReadField().GetValue<string>();
+                        customer.MailingAddress.ZIP = sqlRow.ReadField().GetValue<string>();
+                        customer.BillingAddress.Line1 = sqlRow.ReadField().GetValue<string>();
+                        customer.BillingAddress.Line2 = sqlRow.ReadField().GetValue<string>();
+                        customer.BillingAddress.City = sqlRow.ReadField().GetValue<string>();
+                        customer.BillingAddress.State = sqlRow.ReadField().GetValue<string>();
+                        customer.BillingAddress.ZIP = sqlRow.ReadField().GetValue<string>();
+                        customer.ShippingAddress.Line1 = sqlRow.ReadField().GetValue<string>();
+                        customer.ShippingAddress.Line2 = sqlRow.ReadField().GetValue<string>();
+                        customer.ShippingAddress.City = sqlRow.ReadField().GetValue<string>();
+                        customer.ShippingAddress.State = sqlRow.ReadField().GetValue<string>();
+                        customer.ShippingAddress.ZIP = sqlRow.ReadField().GetValue<string>();
+                        return customer;
+                    }
+                );
+
+
+            //then
+            customer.Should().NotBeNull();
+            customer.BillingAddress.Should().NotBeNull();
+            customer.MailingAddress.Should().NotBeNull();
+            customer.ShippingAddress.Should().NotBeNull();
+
+            customer.Id.Should().Be(personId);
+            customer.MailingAddress.State.Should().Be("CO");
+            customer.BillingAddress.State.Should().Be("CO");
+            customer.ShippingAddress.State.Should().BeNullOrEmpty();
+        }
+
+        private class Customer
+        {
+            public int Id { get; set; }
+            public Address ShippingAddress { get; set; } = new Address();
+            public Address MailingAddress { get; set; } = new Address();
+            public Address BillingAddress { get; set; } = new Address();
+            public DateTimeOffset? BirthDate { get; set; }
+            public GenderType Gender { get; set; }
+        }
+
+        private class Address
+        {
+            public string Line1 { get; set; }
+            public string Line2 { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+            public string ZIP { get; set; }
         }
     }
 }

@@ -779,6 +779,7 @@ namespace SimpleConsole.dboDataService
         #region interface properties
         public Int32FieldExpression<Purchase> Id { get; private set; }
         public Int32FieldExpression<Purchase> PersonId { get; private set; }
+        public StringFieldExpression<Purchase> OrderNumber { get; private set; }
         public Int32FieldExpression<Purchase> TotalPurchaseQuantity { get; private set; }
         public DoubleFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
         public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
@@ -804,6 +805,7 @@ namespace SimpleConsole.dboDataService
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
             Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new StringFieldExpression<Purchase>($"{identifier}.OrderNumber", this));
             Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new Int32FieldExpression<Purchase>($"{identifier}.TotalPurchaseQuantity", this));
             Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DoubleFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
             Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
@@ -828,6 +830,7 @@ namespace SimpleConsole.dboDataService
             return new SelectExpressionSet(
                 Id,
                 PersonId,
+                OrderNumber,
                 TotalPurchaseQuantity,
                 TotalPurchaseAmount,
                 PurchaseDate,
@@ -847,6 +850,7 @@ namespace SimpleConsole.dboDataService
 				purchase,
                 Id.Insert(purchase.Id),
                 PersonId.Insert(purchase.PersonId),
+                OrderNumber.Insert(purchase.OrderNumber),
                 TotalPurchaseQuantity.Insert(purchase.TotalPurchaseQuantity),
                 TotalPurchaseAmount.Insert(purchase.TotalPurchaseAmount),
                 PurchaseDate.Insert(purchase.PurchaseDate),
@@ -865,6 +869,7 @@ namespace SimpleConsole.dboDataService
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
 			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); }; 
+			if (from.OrderNumber != to.OrderNumber) { expr &= OrderNumber.Set(to.OrderNumber); }; 
 			if (from.TotalPurchaseQuantity != to.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(to.TotalPurchaseQuantity); }; 
 			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount); }; 
 			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate); }; 
@@ -883,6 +888,7 @@ namespace SimpleConsole.dboDataService
         {
 			purchase.Id = reader.ReadField().GetValue<int>();
 			purchase.PersonId = reader.ReadField().GetValue<int>();
+			purchase.OrderNumber = reader.ReadField().GetValue<string>();
 			purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
 			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
 			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
