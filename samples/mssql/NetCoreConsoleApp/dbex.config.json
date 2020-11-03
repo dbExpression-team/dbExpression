@@ -1,5 +1,5 @@
 {
-  "source": {
+  "source": { 
     "type": "MsSqlDb",
     "connectionString": {
       "value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
@@ -9,11 +9,11 @@
   "outputDirectory": "./Data/_Generated",
   "rootNamespace": "SimpleConsole",
   "enums": [
-    "AddressType",
-    "GenderType",
-    "ProductCategoryType",
-    "PaymentMethodType",
-    "PaymentSourceType"
+    "SimpleConsole.Data.AddressType",
+    "SimpleConsole.Data.GenderType",
+    "SimpleConsole.Data.ProductCategoryType",
+    "SimpleConsole.Data.PaymentMethodType",
+    "SimpleConsole.Data.PaymentSourceType"
   ],
   "overrides": [
     {
@@ -39,17 +39,19 @@
     },
     {
       "apply": {
-        "clrType": "AddressType?",
+        "interfaces": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ], /* apply IUpdateableEntity to all tables */
         "to": {
-          "path": "dbo.Address.AddressType"
+          "path": "*.*",
+          "objectType": "table"
         }
       }
     },
     {
       "apply": {
-        "clrType": "GenderType",
+        "interfaces": [ ], /* remove IUpdateableEntity from association tables */
         "to": {
-          "path": "dbo.Person.GenderType"
+          "path": "*.*_*",
+          "objectType": "table"
         }
       }
     },
@@ -63,7 +65,24 @@
     },
     {
       "apply": {
-        "clrType": "ProductCategoryType?",
+        "clrType": "SimpleConsole.Data.AddressType?",
+        "to": {
+          "path": "dbo.Address.AddressType"
+        }
+      }
+    },
+    {
+      "apply": {
+        "clrType": "SimpleConsole.Data.GenderType",
+        "to": {
+          "path": "dbo.Person.GenderType"
+        }
+      }
+    },
+
+    {
+      "apply": {
+        "clrType": "SimpleConsole.Data.ProductCategoryType?",
         "to": {
           "path": "dbo.Product.ProductCategoryType"
         }
@@ -71,7 +90,7 @@
     },
     {
       "apply": {
-        "clrType": "PaymentMethodType",
+        "clrType": "SimpleConsole.Data.PaymentMethodType",
         "to": {
           "path": "dbo.Purchase.PaymentMethodType"
         }
@@ -79,7 +98,7 @@
     },
     {
       "apply": {
-        "clrType": "PaymentSourceType?",
+        "clrType": "SimpleConsole.Data.PaymentSourceType?",
         "to": {
           "path": "dbo.Purchase.PaymentSourceType"
         }

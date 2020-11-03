@@ -1,4 +1,3 @@
-using DbEx.Data;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.Sql.Builder.Syntax;
@@ -332,7 +331,7 @@ namespace DbEx.dboDataService
     {
         #region interface properties
         public Int32FieldExpression<Address> Id { get; private set; }
-        public NullableEnumFieldExpression<Address, AddressType> AddressType { get; private set; }
+        public NullableEnumFieldExpression<Address, DbEx.Data.AddressType> AddressType { get; private set; }
         public StringFieldExpression<Address> Line1 { get; private set; }
         public NullableStringFieldExpression<Address> Line2 { get; private set; }
         public StringFieldExpression<Address> City { get; private set; }
@@ -354,7 +353,7 @@ namespace DbEx.dboDataService
         private AddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Address>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, AddressType>($"{identifier}.AddressType", this));
+            Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, DbEx.Data.AddressType>($"{identifier}.AddressType", this));
             Fields.Add($"{identifier}.Line1", Line1 = new StringFieldExpression<Address>($"{identifier}.Line1", this));
             Fields.Add($"{identifier}.Line2", Line2 = new NullableStringFieldExpression<Address>($"{identifier}.Line2", this));
             Fields.Add($"{identifier}.City", City = new StringFieldExpression<Address>($"{identifier}.City", this));
@@ -413,7 +412,7 @@ namespace DbEx.dboDataService
 			if (from.State != to.State) { expr &= State.Set(to.State); }; 
 			if (from.Zip != to.Zip) { expr &= Zip.Set(to.Zip); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-            expr &= DateUpdated.Set(DateTime.UtcNow);
+			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
 			
             return expr;
         }
@@ -421,7 +420,7 @@ namespace DbEx.dboDataService
         protected override void HydrateEntity(Address address, ISqlFieldReader reader)
         {
 			address.Id = reader.ReadField().GetValue<int>();
-			address.AddressType = reader.ReadField().GetValue<AddressType?>();
+			address.AddressType = reader.ReadField().GetValue<DbEx.Data.AddressType?>();
 			address.Line1 = reader.ReadField().GetValue<string>();
 			address.Line2 = reader.ReadField().GetValue<string>();
 			address.City = reader.ReadField().GetValue<string>();
@@ -442,7 +441,7 @@ namespace DbEx.dboDataService
         public StringFieldExpression<Person> FirstName { get; private set; }
         public StringFieldExpression<Person> LastName { get; private set; }
         public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
-        public EnumFieldExpression<Person, GenderType> GenderType { get; private set; }
+        public EnumFieldExpression<Person, DbEx.Data.GenderType> GenderType { get; private set; }
         public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
         public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
         public DateTimeFieldExpression<Person> DateCreated { get; private set; }
@@ -464,7 +463,7 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Person>($"{identifier}.FirstName", this));
             Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Person>($"{identifier}.LastName", this));
             Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Person>($"{identifier}.BirthDate", this));
-            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Person, GenderType>($"{identifier}.GenderType", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Person, DbEx.Data.GenderType>($"{identifier}.GenderType", this));
             Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Person>($"{identifier}.CreditLimit", this));
             Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Person>($"{identifier}.YearOfLastCreditLimitReview", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
@@ -520,7 +519,7 @@ namespace DbEx.dboDataService
 			if (from.CreditLimit != to.CreditLimit) { expr &= CreditLimit.Set(to.CreditLimit); }; 
 			if (from.YearOfLastCreditLimitReview != to.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(to.YearOfLastCreditLimitReview); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-            expr &= DateUpdated.Set(DateTime.UtcNow);
+			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
 			
             return expr;
         }
@@ -531,7 +530,7 @@ namespace DbEx.dboDataService
 			person.FirstName = reader.ReadField().GetValue<string>();
 			person.LastName = reader.ReadField().GetValue<string>();
 			person.BirthDate = reader.ReadField().GetValue<DateTime?>();
-			person.GenderType = reader.ReadField().GetValue<GenderType>();
+			person.GenderType = reader.ReadField().GetValue<DbEx.Data.GenderType>();
 			person.CreditLimit = reader.ReadField().GetValue<int?>();
 			person.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
 			person.DateCreated = reader.ReadField().GetValue<DateTime>();
@@ -623,7 +622,7 @@ namespace DbEx.dboDataService
     {
         #region interface properties
         public Int32FieldExpression<Product> Id { get; private set; }
-        public NullableEnumFieldExpression<Product, ProductCategoryType> ProductCategoryType { get; private set; }
+        public NullableEnumFieldExpression<Product, DbEx.Data.ProductCategoryType> ProductCategoryType { get; private set; }
         public StringFieldExpression<Product> Name { get; private set; }
         public NullableStringFieldExpression<Product> Description { get; private set; }
         public DoubleFieldExpression<Product> ListPrice { get; private set; }
@@ -653,7 +652,7 @@ namespace DbEx.dboDataService
         private ProductEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Product>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, ProductCategoryType>($"{identifier}.ProductCategoryType", this));
+            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, DbEx.Data.ProductCategoryType>($"{identifier}.ProductCategoryType", this));
             Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
             Fields.Add($"{identifier}.Description", Description = new NullableStringFieldExpression<Product>($"{identifier}.Description", this));
             Fields.Add($"{identifier}.ListPrice", ListPrice = new DoubleFieldExpression<Product>($"{identifier}.ListPrice", this));
@@ -744,7 +743,7 @@ namespace DbEx.dboDataService
 			if (from.ValidStartTimeOfDayForPurchase != to.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(to.ValidStartTimeOfDayForPurchase); }; 
 			if (from.ValidEndTimeOfDayForPurchase != to.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(to.ValidEndTimeOfDayForPurchase); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-            expr &= DateUpdated.Set(DateTime.UtcNow);
+			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
 			
             return expr;
         }
@@ -752,7 +751,7 @@ namespace DbEx.dboDataService
         protected override void HydrateEntity(Product product, ISqlFieldReader reader)
         {
 			product.Id = reader.ReadField().GetValue<int>();
-			product.ProductCategoryType = reader.ReadField().GetValue<ProductCategoryType?>();
+			product.ProductCategoryType = reader.ReadField().GetValue<DbEx.Data.ProductCategoryType?>();
 			product.Name = reader.ReadField().GetValue<string>();
 			product.Description = reader.ReadField().GetValue<string>();
 			product.ListPrice = reader.ReadField().GetValue<double>();
@@ -786,8 +785,8 @@ namespace DbEx.dboDataService
         public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
         public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
         public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
-        public EnumFieldExpression<Purchase, PaymentMethodType> PaymentMethodType { get; private set; }
-        public NullableEnumFieldExpression<Purchase, PaymentSourceType> PaymentSourceType { get; private set; }
+        public EnumFieldExpression<Purchase, DbEx.Data.PaymentMethodType> PaymentMethodType { get; private set; }
+        public NullableEnumFieldExpression<Purchase, DbEx.Data.PaymentSourceType> PaymentSourceType { get; private set; }
         public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
         public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
         #endregion
@@ -812,8 +811,8 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.ShipDate", ShipDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ShipDate", this));
             Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
             Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new NullableGuidFieldExpression<Purchase>($"{identifier}.TrackingIdentifier", this));
-            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, PaymentMethodType>($"{identifier}.PaymentMethodType", this));
-            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new NullableEnumFieldExpression<Purchase, PaymentSourceType>($"{identifier}.PaymentSourceType", this));
+            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, DbEx.Data.PaymentMethodType>($"{identifier}.PaymentMethodType", this));
+            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new NullableEnumFieldExpression<Purchase, DbEx.Data.PaymentSourceType>($"{identifier}.PaymentSourceType", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateUpdated", this));
         }
@@ -879,7 +878,7 @@ namespace DbEx.dboDataService
 			if (from.PaymentMethodType != to.PaymentMethodType) { expr &= PaymentMethodType.Set(to.PaymentMethodType); }; 
 			if (from.PaymentSourceType != to.PaymentSourceType) { expr &= PaymentSourceType.Set(to.PaymentSourceType); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-            expr &= DateUpdated.Set(DateTime.UtcNow);
+			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
 			
             return expr;
         }
@@ -895,8 +894,8 @@ namespace DbEx.dboDataService
 			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
 			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-			purchase.PaymentMethodType = reader.ReadField().GetValue<PaymentMethodType>();
-			purchase.PaymentSourceType = reader.ReadField().GetValue<PaymentSourceType?>();
+			purchase.PaymentMethodType = reader.ReadField().GetValue<DbEx.Data.PaymentMethodType>();
+			purchase.PaymentSourceType = reader.ReadField().GetValue<DbEx.Data.PaymentSourceType?>();
 			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
 			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
@@ -980,7 +979,7 @@ namespace DbEx.dboDataService
 			if (from.PurchasePrice != to.PurchasePrice) { expr &= PurchasePrice.Set(to.PurchasePrice); }; 
 			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-            expr &= DateUpdated.Set(DateTime.UtcNow);
+			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
 			
             return expr;
         }
@@ -1182,7 +1181,7 @@ namespace DbEx.secDataService
 
 			if (from.SSN != to.SSN) { expr &= SSN.Set(to.SSN); }; 
 			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-            expr &= DateUpdated.Set(DateTime.UtcNow);
+			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
 			
             return expr;
         }

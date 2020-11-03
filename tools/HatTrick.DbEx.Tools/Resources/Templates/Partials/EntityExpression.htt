@@ -69,12 +69,7 @@
 			{#each Columns.Values}
 			{#if !($) => IsIgnored}
 			{#if !$.IsIdentity}
-			{#if ($.Name) => NameRepresentsLastTouchedTimestamp}
-            expr &= {($) => ResolveName}.Set(DateTime.UtcNow);
-			{/if}
-			{#if !($.Name) => NameRepresentsLastTouchedTimestamp}
 			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}; 
-			{/if}
 			{/if}
 			{/if}
 			{/each}

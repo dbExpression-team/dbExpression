@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="DbExConfig.json" />
+    <Content Remove="dbex.config.json" />
     <Content Remove="Pages\FetchData.razor" />
   </ItemGroup>
 
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="DbExConfig.json" />
+    <None Include="dbex.config.json" />
   </ItemGroup>
 
   <ItemGroup>

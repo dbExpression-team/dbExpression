@@ -159,23 +159,11 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-		#region name represents last touched timestamp
-		public bool NameRepresentsLastTouchedTimestamp(string name)
+        #region resolve interfaces
+        public string[] ResolveAppliedInterfaces(INamedMeta namedMeta)
         {
-            name = name.Replace("-", string.Empty).Replace("_", string.Empty);
-
-            if (string.Compare(name, "DateUpdated", true) == 0)
-                return true;
-            if (string.Compare(name, "LastUpdated", true) == 0)
-                return true;
-            if (string.Compare(name, "UpdatedAt", true) == 0)
-                return true;
-            if (string.Compare(name, "LastUpdatedAt", true) == 0)
-                return true;
-            if (string.Compare(name, "Updated", true) == 0)
-                return true;
-
-            return false;
+            this.TryResolveMeta<string[]>(namedMeta, "Interfaces", out string[] interfaces);
+            return interfaces;
         }
         #endregion
 
@@ -186,7 +174,7 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region has type override
+        #region has clr type override
         public bool HasClrTypeOverride(INamedMeta namedMeta)
         {
             return this.HasClrTypeOverride(namedMeta, out string _);

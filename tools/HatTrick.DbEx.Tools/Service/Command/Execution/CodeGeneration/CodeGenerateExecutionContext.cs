@@ -23,8 +23,8 @@ namespace HatTrick.DbEx.Tools.Service
             "--output", "-o" //command line override of output path
         };
         private readonly string DEFAULT_CONFIG_PATH = "./";
-        private readonly string DEFAULT_CONFIG_NAME = "DbExConfig.json";
-        private readonly string DEFAULT_OUTPUT_PATH = "./DbExGenerated";
+        private readonly string DEFAULT_CONFIG_NAME = "dbex.config.json";
+        private readonly string DEFAULT_OUTPUT_PATH = "./DbEx";
         private readonly char[] INVALID_FILENAME_CHARS = Path.GetInvalidFileNameChars();
         #endregion
 
@@ -570,13 +570,13 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.ResolveClrTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveClrTypeName);
             repo.Register(nameof(helpers.ResolveStrictAssemblyTypeName), (Func<MsSqlColumn, string>)helpers.ResolveStrictAssemblyTypeName);
             repo.Register(nameof(helpers.ResolveFieldExpressionTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveFieldExpressionTypeName);
-            repo.Register(nameof(helpers.NameRepresentsLastTouchedTimestamp), (Func<string, bool>)helpers.NameRepresentsLastTouchedTimestamp);
             repo.Register(nameof(helpers.IsLast), (Func<IEnumerable<MsSqlColumn>, MsSqlColumn, bool>)helpers.IsLast);
             repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, IList<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
             repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
             repo.Register(nameof(helpers.IsMsSqlView), (Func<INamedMeta, bool>)helpers.IsMsSqlView);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
             repo.Register(nameof(helpers.ResolveRootNamespace), (Func<string>)helpers.ResolveRootNamespace);
+            repo.Register(nameof(helpers.ResolveAppliedInterfaces), (Func<INamedMeta, string[]>)helpers.ResolveAppliedInterfaces);
 
             string output = null;
             try
@@ -605,31 +605,31 @@ namespace HatTrick.DbEx.Tools.Service
             svc.Feedback.Push(To.ConsoleOnly, "dbex generate [options]");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, "Options:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}-p|--path <path to DbExConfig.json>");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}-p|--path <path to dbex.config.json>");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, "Notes:»Green");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Path is assumed to be current working directory if the option is not provided.");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}Path option value can be absolute or relative.");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}default config file name is DbExConfig.json and is assumed if path option points to a directory");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}default config file name is dbex.config.json and is assumed if path option points to a directory");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, "Usage example(s):»Green");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming DbExConfig.json is in the current working directory:»Green");
+            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming dbex.config.json is in the current working directory:»Green");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}{base.Tab}Or");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the DbExConfig.json is in the config folder one direcory below current working directory:»Green");
+            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one direcory below current working directory:»Green");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./config");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the DbExConfig.json is in the config folder one directory above current working directory:»Green");
+            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one directory above current working directory:»Green");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ../config");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the DbExConfig.json resides at an absolute path:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p c:/cofigs/app1/DbExConfig.json");
+            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json resides at an absolute path:»Green");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p c:/cofigs/app1/dbex.config.json");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
-            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the DbExConfig.json resides at a path that includes spaces:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p \"c:/my cofigs/app1/DbExConfig.json\"");
+            svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json resides at a path that includes spaces:»Green");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p \"c:/my cofigs/app1/dbex.config.json\"");
         }
         #endregion
     }

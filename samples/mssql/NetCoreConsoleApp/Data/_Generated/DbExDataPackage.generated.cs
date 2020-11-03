@@ -1,15 +1,14 @@
 using System;
 using HatTrick.DbEx.Sql;
-using SimpleConsole.Data;
 
 namespace SimpleConsole.dboData
 {
     #region address
-    public partial class Address : IDbEntity
+    public partial class Address : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {
         #region interface
         public int Id { get; set; }
-        public AddressType? AddressType { get; set; }
+        public SimpleConsole.Data.AddressType? AddressType { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }
@@ -28,14 +27,14 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region person
-    public partial class Person : IDbEntity
+    public partial class Person : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {
         #region interface
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? BirthDate { get; set; }
-        public GenderType GenderType { get; set; }
+        public SimpleConsole.Data.GenderType GenderType { get; set; }
         public int? CreditLimit { get; set; }
         public int? YearOfLastCreditLimitReview { get; set; }
         public DateTime DateCreated { get; set; }
@@ -69,11 +68,11 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region product
-    public partial class Product : IDbEntity
+    public partial class Product : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {
         #region interface
         public int Id { get; set; }
-        public ProductCategoryType? ProductCategoryType { get; set; }
+        public SimpleConsole.Data.ProductCategoryType? ProductCategoryType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public double ListPrice { get; set; }
@@ -100,7 +99,7 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region purchase
-    public partial class Purchase : IDbEntity
+    public partial class Purchase : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {
         #region interface
         public int Id { get; set; }
@@ -112,8 +111,8 @@ namespace SimpleConsole.dboData
         public DateTime? ShipDate { get; set; }
         public DateTime? ExpectedDeliveryDate { get; set; }
         public Guid? TrackingIdentifier { get; set; }
-        public PaymentMethodType PaymentMethodType { get; set; }
-        public PaymentSourceType? PaymentSourceType { get; set; }
+        public SimpleConsole.Data.PaymentMethodType PaymentMethodType { get; set; }
+        public SimpleConsole.Data.PaymentSourceType? PaymentSourceType { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
@@ -127,7 +126,7 @@ namespace SimpleConsole.dboData
     #endregion
 
     #region purchase line
-    public partial class PurchaseLine : IDbEntity
+    public partial class PurchaseLine : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {
         #region interface
         public int Id { get; set; }
@@ -168,7 +167,7 @@ namespace SimpleConsole.dboData
 namespace SimpleConsole.secData
 {
     #region person
-    public partial class Person : IDbEntity
+    public partial class Person : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {
         #region interface
         public int Id { get; set; }
