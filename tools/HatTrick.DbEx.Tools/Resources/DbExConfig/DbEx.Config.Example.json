@@ -6,13 +6,13 @@
 		}
 	},
 	"workingDirectory": "./", /* optional: overrides default working dir of execuation relative to THIS file.  so ./ is the path this file resides in */
-	"outputDirectory": "./Generated", /* optional: generated code output path, if not provided defaults to workingDirectory/DbExGenerated */
-	"enums": [ /* optional: provided a list of known or used enumeration types */
-		"AddressType"
+	"outputDirectory": "./OutputDirectory", /* optional: generated code output path, if not provided defaults to workingDirectory/DbEx */
+	"enums": [ /* optional: provide a list of known/used enumeration types.   These values should be fully qualified (include namespaces).
+		"DbEx.Data.AddressType"
+		*/
 	],
-	"overrides": [
-		/* ** examples below **
-       	{
+	"overrides": [ /*  examples below 
+    {
 			"apply": {
 				"ignore": true,
 				"to": { "path": "dbo.sysdiagrams" }

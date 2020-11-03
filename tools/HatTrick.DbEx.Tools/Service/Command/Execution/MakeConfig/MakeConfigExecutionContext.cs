@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Tools.Service
             "--help", "-?",                 // help
             "--directory", "--dir", "-d",   //output directory
         };
-        private readonly string SAMPLE_CONFIG_NAME = "DbExConfig.json";
+        private readonly string SAMPLE_CONFIG_NAME = "dbex.config.json";
         private readonly string DEFAULT_OUTPUT_PATH = "./";
         #endregion
 
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.Tools.Service
             var resources = new ResourceAccessor();
             Resource config = resources.Get(resourcePath);
 
-            svc.Feedback.Push(To.Info, $"Writing DbExConfig.json file to:  {path}");
+            svc.Feedback.Push(To.Info, $"Writing dbex.config.json file to:  {path}");
             if (!Path.IsPathFullyQualified(path))
             {
                 svc.Feedback.Push(To.ConsoleOnly, $"«Absolute path:  »Green");

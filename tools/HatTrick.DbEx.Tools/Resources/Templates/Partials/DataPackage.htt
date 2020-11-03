@@ -1,5 +1,5 @@
 ﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower}
-    public partial class {($) => ResolveName} : IDbEntity
+    public partial class {($) => ResolveName} : IDbEntity{#each ($) => ResolveAppliedInterfaces}, {$}{/each+}
     {{
         #region interface
 	    {#each Columns.Values}

@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string ClrType { get; set; }
 
-        public bool IsEnum { get; set; }
+        public string[] Interfaces { get; set; }
 
         public ApplyTo To { get; set; }
 

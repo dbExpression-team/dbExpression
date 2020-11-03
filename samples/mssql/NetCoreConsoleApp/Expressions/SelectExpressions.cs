@@ -63,7 +63,7 @@ namespace NetCoreConsoleApp
 
 		public string GetProductDescriptionByNameAndPrice(string name, double price)
 		{
-			//select * from dbo.Product where dbo.Product.Name = {name} and dbo.Product.Price = {price};
+			//select dbo.Product.Description from dbo.Product where dbo.Product.Name = {name} and dbo.Product.Price = {price};
 			string desc = db.SelectOne(dbo.Product.Description)
 				.From(dbo.Product)
 				.Where(dbo.Product.Name == name & dbo.Product.Price == price)

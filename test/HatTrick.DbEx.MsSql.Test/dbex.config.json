@@ -6,14 +6,14 @@
 		}
 	},
 	"workingDirectory": "./",
-	"outputDirectory": "./Data/_Generated",
-	"rootNamespace": "ServerSideBlazorApp",
+	"outputDirectory": "./Generated",
+	"rootNamespace": "DbEx",
 	"enums": [
-		"AddressType",
-		"GenderType",
-		"ProductCategoryType",
-		"PaymentMethodType",
-		"PaymentSourceType"
+		"DbEx.Data.AddressType",
+		"DbEx.Data.GenderType",
+		"DbEx.Data.ProductCategoryType",
+		"DbEx.Data.PaymentMethodType",
+		"DbEx.Data.PaymentSourceType"
 	],
 	"overrides": [
 		{
@@ -31,7 +31,7 @@
 		},
 		{
 			"apply": {
-				"name": "CRMDatabase",
+				"name": "MsSqlDb",
 				"to": {
 					"path": "."
 				}
@@ -39,23 +39,7 @@
 		},
 		{
 			"apply": {
-				"name": "Customer",
-				"to": {
-					"path": "dbo.Person"
-				}
-			}
-		},
-		{
-			"apply": {
-				"name": "CustomerAddress",
-				"to": {
-					"path": "dbo.Person_Address"
-				}
-			}
-		},
-		{
-			"apply": {
-				"clrType": "AddressType?",
+				"clrType": "DbEx.Data.AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
 				}
@@ -64,7 +48,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "GenderType",
+				"clrType": "DbEx.Data.GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
 				}
@@ -72,7 +56,15 @@
 		},
 		{
 			"apply": {
-				"clrType": "ProductCategoryType?",
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DbEx.Data.ProductCategoryType?",
 				"to": {
 					"path": "dbo.Product.ProductCategoryType"
 				}
@@ -80,7 +72,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "PaymentMethodType",
+				"clrType": "DbEx.Data.PaymentMethodType",
 				"to": {
 					"path": "dbo.Purchase.PaymentMethodType"
 				}
@@ -88,9 +80,17 @@
 		},
 		{
 			"apply": {
-				"clrType": "PaymentSourceType?",
+				"clrType": "DbEx.Data.PaymentSourceType?",
 				"to": {
 					"path": "dbo.Purchase.PaymentSourceType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "string",
+				"to": {
+					"path": "dbo.Purchase.TotalPurchaseQuantity"
 				}
 			}
 		}

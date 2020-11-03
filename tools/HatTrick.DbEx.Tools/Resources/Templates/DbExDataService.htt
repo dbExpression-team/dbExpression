@@ -1,4 +1,3 @@
-using {() => ResolveRootNamespace}Data;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.Sql.Builder.Syntax;

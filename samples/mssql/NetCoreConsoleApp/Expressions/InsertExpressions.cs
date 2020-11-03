@@ -51,7 +51,6 @@ namespace NetCoreConsoleApp
 
 			//COMMIT TRANSACTION;
 
-			//grab a connection and start a transaction
 			using (var conn = db.GetConnection())
 			{
 				conn.Open();
@@ -68,13 +67,11 @@ namespace NetCoreConsoleApp
 
 					db.Insert(pa).Into(dbo.PersonAddress).Execute(conn);
 
-					//commit the transaction
 					conn.CommitTransaction();
 				}
 				catch (Exception ex)
 				{
 					var msg = ex.Message;
-					//on error, ensure transaction rollback
 					conn.RollbackTransaction();
 				}
 			}

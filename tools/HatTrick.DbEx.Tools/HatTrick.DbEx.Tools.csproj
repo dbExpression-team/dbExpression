@@ -7,7 +7,7 @@
     <PackAsTool>true</PackAsTool>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\DbExConfig\DbExConfig.Example.json" />
+    <None Remove="Resources\DbExConfig\DbEx.Config.Example.json" />
     <None Remove="Resources\Templates\DbExDataPackage.htt" />
     <None Remove="Resources\Templates\DbExDataService.htt" />
     <None Remove="Resources\Templates\DbExMetadata.htt" />
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\DbExConfig\DbExConfig.Example.json" />
+    <EmbeddedResource Include="Resources\DbExConfig\DbEx.Config.Example.json" />
     <EmbeddedResource Include="Resources\Templates\DbExDataPackage.htt" />
     <EmbeddedResource Include="Resources\Templates\DbExMetadata.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\Alias.htt" />
