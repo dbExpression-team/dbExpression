@@ -441,7 +441,7 @@ namespace ServerSideBlazorApp.dboDataService
         public StringFieldExpression<Customer> FirstName { get; private set; }
         public StringFieldExpression<Customer> LastName { get; private set; }
         public NullableDateTimeFieldExpression<Customer> BirthDate { get; private set; }
-        public EnumFieldExpression<Customer, GenderType> GenderType { get; private set; }
+        public EnumFieldExpression<Customer, ServerSideBlazorApp.Data.GenderType> GenderType { get; private set; }
         public NullableInt32FieldExpression<Customer> CreditLimit { get; private set; }
         public NullableInt32FieldExpression<Customer> YearOfLastCreditLimitReview { get; private set; }
         public DateTimeFieldExpression<Customer> DateCreated { get; private set; }
@@ -463,7 +463,7 @@ namespace ServerSideBlazorApp.dboDataService
             Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Customer>($"{identifier}.FirstName", this));
             Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Customer>($"{identifier}.LastName", this));
             Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Customer>($"{identifier}.BirthDate", this));
-            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Customer, GenderType>($"{identifier}.GenderType", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Customer, ServerSideBlazorApp.Data.GenderType>($"{identifier}.GenderType", this));
             Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Customer>($"{identifier}.CreditLimit", this));
             Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Customer>($"{identifier}.YearOfLastCreditLimitReview", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Customer>($"{identifier}.DateCreated", this));
@@ -530,7 +530,7 @@ namespace ServerSideBlazorApp.dboDataService
 			customer.FirstName = reader.ReadField().GetValue<string>();
 			customer.LastName = reader.ReadField().GetValue<string>();
 			customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
-			customer.GenderType = reader.ReadField().GetValue<GenderType>();
+			customer.GenderType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.GenderType>();
 			customer.CreditLimit = reader.ReadField().GetValue<int?>();
 			customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
 			customer.DateCreated = reader.ReadField().GetValue<DateTime>();

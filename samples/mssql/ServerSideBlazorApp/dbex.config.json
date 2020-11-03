@@ -40,7 +40,6 @@
 		{
 			"apply": {
 				"name": "Customer",
-				"clrType": "ServerSideBlazorApp.Data.AddressType?",
 				"to": {
 					"path": "dbo.Person"
 				}
@@ -49,7 +48,6 @@
 		{
 			"apply": {
 				"name": "CustomerAddress",
-				"clrType": "ServerSideBlazorApp.Data.GenderType",
 				"to": {
 					"path": "dbo.Person_Address"
 				}
@@ -57,7 +55,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "AddressType?",
+				"clrType": "ServerSideBlazorApp.Data.AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
 				}
@@ -66,7 +64,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "GenderType",
+				"clrType": "ServerSideBlazorApp.Data.GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
 				}
