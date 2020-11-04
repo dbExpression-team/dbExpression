@@ -13,6 +13,10 @@ namespace HatTrick.DbEx.Sql.Builder
         ITypeListSkipContinuationExpressionBuilder<T, U>
         where U : class, IContinuationExpressionBuilder<T>
     {
+        #region internals
+        public new SelectQueryExpression Expression => base.Expression as SelectQueryExpression;
+        #endregion
+
         #region constructors
         protected SelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         { }

@@ -1,27 +1,48 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
     public abstract class UpdateQueryExpressionBuilder<T> : UpdateQueryExpressionBuilder,
         IUpdateInitiationExpressionBuilder,
+        IUpdateFromExpressionBuilder<T>,
         IUpdateContinuationExpressionBuilder<T>
         where T : class, IDbEntity
     {
+        #region internals
+        protected T Target { get; set; }
+        protected T Source { get; set; }
+        #endregion
+
+        #region constructors
         protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<T> entity)
             : base(configuration, expression, entity)
         {
 
         }
 
+        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, T target, T source)
+            : base(configuration, expression)
+        {
+            Target = target ?? throw new ArgumentNullException($"{target} is required.");
+            Source = source ?? throw new ArgumentNullException($"{source} is required.");
+        }
+        #endregion
+
         #region methods
+        IUpdateContinuationExpressionBuilder<T> IUpdateFromExpressionBuilder<T>.From(EntityExpression<T> entity)
+        {
+            Expression.BaseEntity = entity;
+            Expression.Assign = (entity as IExpressionEntity<T>).BuildAssignmentExpression(Source, Target);
+            return this;
+        }
+
         IUpdateFromExpressionBuilder IUpdateInitiationExpressionBuilder.Update(AssignmentExpression[] assignments)
         {
-            if (!(Expression is UpdateQueryExpression update))
-                throw new DbExpressionException($"Expected {nameof(Expression)} to be of type {nameof(UpdateQueryExpression)}, but is actually type {Expression.GetType()}");
             foreach (var assignment in assignments)
-                update.Assign &= assignment;
+                Expression.Assign.Expressions.Add(assignment);
             return this;
         }
 

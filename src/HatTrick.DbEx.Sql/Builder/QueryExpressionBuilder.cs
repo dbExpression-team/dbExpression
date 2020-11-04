@@ -9,15 +9,19 @@ namespace HatTrick.DbEx.Sql.Builder
         ITerminationExpressionBuilder,
         IQueryExpressionProvider
     {
+        #region interface
         public RuntimeSqlDatabaseConfiguration Configuration { get; private set; }
         public virtual QueryExpression Expression { get; private set; }
         QueryExpression IQueryExpressionProvider.Expression => Expression;
+        #endregion
 
+        #region constructors
         protected QueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, QueryExpression expression)
         {
             Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }
+        #endregion
 
         #region methods
         protected U Where<U>(FilterExpressionSet expression) where U : class, IExpressionBuilder
