@@ -15,9 +15,16 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         }
 
+        public MsSqlUpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, T target, T source)
+            : base(configuration, expression, target, source)
+        {
+
+        }
+
         protected override IUpdateContinuationExpressionBuilder<U> CreateTypedBuilder<U>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<U> entity)
         {
-            return new MsSqlUpdateQueryExpressionBuilder<U>(configuration, expression, entity);
+            Expression.BaseEntity = entity;
+            return this as IUpdateContinuationExpressionBuilder<U>;
         }
     }
 }

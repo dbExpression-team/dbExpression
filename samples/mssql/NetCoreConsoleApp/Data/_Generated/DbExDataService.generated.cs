@@ -221,6 +221,10 @@ namespace SimpleConsole.DataService
         #region update
         public static IUpdateFromExpressionBuilder Update(params AssignmentExpression[] fields)
             => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+
+        public static IUpdateFromExpressionBuilder<TEntity> Update<TEntity>(TEntity updateValuesInThisEntity, TEntity fromValuesInThisEntity)
+            where TEntity : class, IDbEntity
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, updateValuesInThisEntity, fromValuesInThisEntity);     
         #endregion
 
         #region delete
@@ -246,9 +250,7 @@ namespace SimpleConsole.DataService
 
         #region get connection
         public static ISqlConnection GetConnection()
-        {
-            return new SqlConnector(config.ConnectionFactory);
-        }
+            => new SqlConnector(config.ConnectionFactory);
         #pragma warning disable IDE1006 // Naming Styles
         #pragma warning restore IDE1006 // Naming Styles
         #endregion

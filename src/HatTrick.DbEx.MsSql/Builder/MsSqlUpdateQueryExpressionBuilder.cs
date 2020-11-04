@@ -7,8 +7,6 @@ namespace HatTrick.DbEx.MsSql.Builder
 {
     public class MsSqlUpdateQueryExpressionBuilder : UpdateQueryExpressionBuilder
     {
-        public new UpdateQueryExpression Expression => base.Expression as UpdateQueryExpression;
-
         public MsSqlUpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory.CreateQueryExpression<UpdateQueryExpression>())
         { 
         

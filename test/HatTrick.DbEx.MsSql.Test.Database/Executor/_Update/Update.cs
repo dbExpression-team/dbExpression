@@ -179,5 +179,36 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var updatedProduct = db.SelectOne<Product>().From(dbo.Product).Where(dbo.Product.Id == 1).Execute();
             updatedProduct.Image.Should().BeNull();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_result_in_correct_records_affected(int version, string lastName = "Biggle", int expectedRecordsAffected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+            var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+
+            target.LastName = $"x{source.LastName}";
+            target.FirstName = $"x{target.FirstName}";
+
+            var exp = db.Update<Person>(
+                   target,
+                   source
+                )
+               .From(dbo.Person)
+               .Where(dbo.Person.Id == source.Id);
+
+            //when               
+            var recordsAffected = exp.Execute();
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == $"x{source.LastName}").Execute();
+
+            //then
+            recordsAffected.Should().Be(expectedRecordsAffected);
+            updated.LastName.Should().Be($"x{source.LastName}");
+            updated.FirstName.Should().Be($"x{source.FirstName}");
+        }
     }
 }

@@ -10,9 +10,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         where U : class, IContinuationExpressionBuilder<T>
         where V : class, IContinuationExpressionBuilder<T, U>
     {
-        public new SelectQueryExpression Expression => base.Expression as SelectQueryExpression;
-
-        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration) : base(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>())
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SelectQueryExpression expression) : base(configuration, expression)
         {
 
         }
