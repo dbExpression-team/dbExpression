@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionSet<OrderByExpression>
     {
         #region interface
-        public IList<OrderByExpression> Expressions { get; }  = new List<OrderByExpression>();
+        public IEnumerable<OrderByExpression> Expressions { get; private set; }  = new List<OrderByExpression>();
         #endregion
 
         #region constructors
@@ -20,13 +20,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public OrderByExpressionSet(OrderByExpression orderByExpression)
         {
-            Expressions.Add(orderByExpression ?? throw new ArgumentNullException($"{nameof(orderByExpression)} is required."));
+            Expressions = Expressions.Concat(new OrderByExpression[1] { orderByExpression ?? throw new ArgumentNullException($"{nameof(orderByExpression)} is required.") });
         }
 
         public OrderByExpressionSet(OrderByExpression aOrderByExpression, OrderByExpression bOrderByExpression)
         {
-            Expressions.Add(aOrderByExpression ?? throw new ArgumentNullException($"{nameof(aOrderByExpression)} is required."));
-            Expressions.Add(bOrderByExpression ?? throw new ArgumentNullException($"{nameof(bOrderByExpression)} is required."));
+            Expressions = new List<OrderByExpression>
+            {
+                aOrderByExpression ?? throw new ArgumentNullException($"{nameof(aOrderByExpression)} is required."),
+                bOrderByExpression ?? throw new ArgumentNullException($"{nameof(bOrderByExpression)} is required.")
+            };
+        }
+
+        public OrderByExpressionSet(IEnumerable<OrderByExpression> orderByExpression)
+        {
+            Expressions = orderByExpression ?? throw new ArgumentNullException($"{nameof(orderByExpression)} is required.");
         }
         #endregion
 
@@ -43,24 +51,17 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else
             {
-                aSet.Expressions.Add(b);
+                aSet.Expressions = aSet.Expressions.Concat(new OrderByExpression[1] { b });
             }
             return aSet;
         }
 
         public static OrderByExpressionSet operator &(OrderByExpressionSet aSet, OrderByExpressionSet bSet)
         {
-            foreach (var b in bSet.Expressions)
-            {
-                if (aSet is null)
-                {
-                    aSet = b;
-                }
-                else
-                {
-                    aSet.Expressions.Add(b);
-                }
-            }
+            if (aSet is null)
+                return bSet;
+
+            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
             return aSet;
         }
         #endregion

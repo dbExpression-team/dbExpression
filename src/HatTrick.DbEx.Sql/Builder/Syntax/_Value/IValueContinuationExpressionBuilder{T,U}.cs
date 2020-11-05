@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Builder.Syntax
 {
@@ -20,6 +21,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IAliasRequiredJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> RightJoin(ISubqueryTerminationExpressionBuilder subquery);
         IAliasRequiredJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> FullJoin(ISubqueryTerminationExpressionBuilder subquery);
         IValueContinuationExpressionBuilder<T, U> OrderBy(params OrderByExpression[] orderBy);
+        IValueContinuationExpressionBuilder<T, U> OrderBy(IEnumerable<OrderByExpression> orderBy);
         IValueContinuationExpressionBuilder<T, U> GroupBy(params GroupByExpression[] groupBy);
         IValueContinuationExpressionBuilder<T, U> Having(HavingExpression havingCondition);
     }

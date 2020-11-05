@@ -1,6 +1,7 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -34,7 +35,9 @@ namespace HatTrick.DbEx.Sql.Builder
             if (Expression.Joins is null)
                 Expression.Joins = new JoinExpressionSet(new JoinExpression(JoinOn, JoinType, expression, Alias));
             else
-                Expression.Joins.Expressions.Add(new JoinExpression(JoinOn, JoinType, expression, Alias));
+            {
+                Expression.Joins = new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(JoinOn, JoinType, expression, Alias) }));
+            }
             return Caller;
         }
     }

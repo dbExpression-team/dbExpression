@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpressionSet :
-        IExpression,
-        IExpressionSet<JoinOnExpression>
+        IExpression
     {
-        #region internals
-        private readonly IList<IExpression> expressions;
-        #endregion
-
         #region interface
-        public IList<JoinOnExpression> Expressions { get; }
-        public ExpressionPair JoinPair => new ExpressionPair(expressions.First(), expressions.Skip(1).First());
-
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
+        public IExpression LeftArg { get; set; }
+        public IExpression RightArg { get; set; }
         #endregion
 
         #region constructors
@@ -26,62 +18,42 @@ namespace HatTrick.DbEx.Sql.Expression
         
         }
 
+        public JoinOnExpressionSet(JoinOnExpression singleFilter)
+        {
+            LeftArg = singleFilter ?? throw new ArgumentNullException($"{nameof(singleFilter)} is required.");
+        }
+
         public JoinOnExpressionSet(JoinOnExpression leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            expressions = new List<IExpression>
-            {
-                leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."),
-                rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")
-            };
+            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
+            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
 
-        public JoinOnExpressionSet(IExpression leftArg, IExpression rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
+        public JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            expressions = new List<IExpression>
-            {
-                leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."),
-                rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")
-            };
-            ConditionalOperator = conditionalOperator;
-            Negate = negate;
-        }
-
-        private JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
-        {
-            expressions = new List<IExpression>
-            {
-                leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."),
-                rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")
-            };
+            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
+            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
 
-        private JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
+        public JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            expressions = new List<IExpression>
-            {
-                leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required."),
-                rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.")
-            };
+            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
+            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
         #endregion
 
         #region to string
-        public override string ToString()
-        {
-            string left = JoinPair.LeftPart.ToString();
-            string right = JoinPair?.RightPart?.ToString();
-            string expression = $"{left} {ConditionalOperator} {right}";
-            return (Negate) ? $"NOT ({expression})" : expression;
-        }
+        public override string ToString() => (Negate) ? $"NOT ({LeftArg} {ConditionalOperator} {RightArg})" : $"{LeftArg} {ConditionalOperator} {RightArg}";
+
         #endregion
 
         #region conditional &, | operators
         public static JoinOnExpressionSet operator &(JoinOnExpressionSet a, JoinOnExpression b)
         {
-            if (a is null && b is object) { return new JoinOnExpressionSet(new NullableLiteralExpression(), b, a.ConditionalOperator, a.Negate); }
+            if (a is null && b is object) { return new JoinOnExpressionSet(b); }
             if (a is object && b is null) { return a; }
             if (a is null && b is null) { return null; }
 
@@ -99,7 +71,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public static JoinOnExpressionSet operator |(JoinOnExpressionSet a, JoinOnExpression b)
         {
-            if (a is null && b is object) { return new JoinOnExpressionSet(new NullableLiteralExpression(), b, a.ConditionalOperator, a.Negate); }
+            if (a is null && b is object) { return new JoinOnExpressionSet(b); }
             if (a is object && b is null) { return a; }
             if (a is null && b is null) { return null; }
 

@@ -11,16 +11,17 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression?.Expressions is null || !expression.Expressions.Any())
                 return;
 
-            for (var i = 0; i < expression.Expressions.Count; i++)
+            var orderBys = expression.Expressions.ToList();
+            for (var i = 0; i < orderBys.Count; i++)
             {
                 builder.Appender.Indent();
 
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
                     builder.Appender.Write(",");
 
-                builder.AppendPart(expression.Expressions[i], context);
+                builder.AppendPart(orderBys[i], context);
 
-                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.Expressions.Count - 1)
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < orderBys.Count - 1)
                     builder.Appender.Write(",");
 
                 builder.Appender.LineBreak();

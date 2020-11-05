@@ -3,8 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpressionSet : 
-        IExpression, 
-        IFunctionExpression
+        IExpression
     {
         #region interface
         public readonly ConditionalExpressionOperator ConditionalOperator;

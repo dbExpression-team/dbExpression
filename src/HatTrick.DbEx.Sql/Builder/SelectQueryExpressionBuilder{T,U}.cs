@@ -1,6 +1,8 @@
 ﻿using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -29,7 +31,19 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
+        IValueListContinuationExpressionBuilder<T, U> IValueListContinuationExpressionBuilder<T, U>.OrderBy(IEnumerable<OrderByExpression> orderBy)
+        {
+            OrderBy(orderBy);
+            return this;
+        }
+
         IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.OrderBy(params OrderByExpression[] orderBy)
+        {
+            OrderBy(orderBy);
+            return this;
+        }
+
+        IValueContinuationExpressionBuilder<T, U> IValueContinuationExpressionBuilder<T, U>.OrderBy(IEnumerable<OrderByExpression> orderBy)
         {
             OrderBy(orderBy);
             return this;
@@ -41,10 +55,15 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        private void OrderBy(params OrderByExpression[] orderBy)
+        ITypeListContinuationExpressionBuilder<T, U> ITypeListContinuationExpressionBuilder<T, U>.OrderBy(IEnumerable<OrderByExpression> orderBy)
         {
-            foreach (var o in orderBy)
-                Expression.OrderBy.Expressions.Add(o);
+            OrderBy(orderBy);
+            return this;
+        }
+
+        private void OrderBy(IEnumerable<OrderByExpression> orderBy)
+        {
+            Expression.OrderBy = new OrderByExpressionSet(Expression.OrderBy.Expressions.Concat(orderBy));
         }
         #endregion
 
@@ -67,10 +86,9 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        private void GroupBy(params GroupByExpression[] groupBy)
+        private void GroupBy(IEnumerable<GroupByExpression> groupBy)
         {
-            foreach (var grouping in groupBy)
-                Expression.GroupBy.Expressions.Add(grouping);
+            Expression.GroupBy = new GroupByExpressionSet(Expression.GroupBy.Expressions.Concat(groupBy));
         }
         #endregion
 

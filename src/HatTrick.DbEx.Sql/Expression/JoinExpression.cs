@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionAliasProvider
     {
         #region interface
-        public JoinOnExpression JoinOnExpression { get; private set; }
+        public JoinOnExpressionSet JoinOnExpression { get; private set; }
         public IExpression JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string Alias { get; set; }

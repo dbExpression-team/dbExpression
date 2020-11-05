@@ -6,6 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpressionSet : 
         IExpression,
+        IExpressionSet<SelectExpression>,
         IExpressionIsDistinctProvider,
         IExpressionTopProvider
     {
@@ -15,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public IList<SelectExpression> Expressions { get; } = new List<SelectExpression>();
+        public IEnumerable<SelectExpression> Expressions { get; private set; } = new List<SelectExpression>();
         bool IExpressionIsDistinctProvider.IsDistinct => _isDistinct;
         int? IExpressionTopProvider.Top => _top;
         #endregion
@@ -33,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public SelectExpressionSet(SelectExpression selectExpression)
         {
-            Expressions.Add(selectExpression ?? throw new ArgumentNullException($"{nameof(selectExpression)} is required"));
+            Expressions = new SelectExpression[1] { selectExpression ?? throw new ArgumentNullException($"{nameof(selectExpression)} is required") };
         }
 
         public SelectExpressionSet(SelectExpressionSet selectExpressionSet)
@@ -41,15 +42,17 @@ namespace HatTrick.DbEx.Sql.Expression
             Expressions = selectExpressionSet?.Expressions;
         }
 
-        public SelectExpressionSet(IList<SelectExpression> expressions)
+        public SelectExpressionSet(IEnumerable<SelectExpression> expressions)
         {
             Expressions = expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required");
         }
 
         public SelectExpressionSet(SelectExpression aSelectExpression, SelectExpression bSelectExpression)
         {
-            Expressions.Add(aSelectExpression ?? throw new ArgumentNullException($"{nameof(aSelectExpression)} is required"));
-            Expressions.Add(bSelectExpression ?? throw new ArgumentNullException($"{nameof(bSelectExpression)} is required"));
+            Expressions = new SelectExpression[2] {
+                aSelectExpression ?? throw new ArgumentNullException($"{nameof(aSelectExpression)} is required"),
+                bSelectExpression ?? throw new ArgumentNullException($"{nameof(bSelectExpression)} is required")
+            };
         }
         #endregion
 
@@ -78,11 +81,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (aSet is null)
             {
-                aSet = new SelectExpressionSet(b);
+                aSet = b;
             }
             else
             {
-                aSet.Expressions.Add(b);
+                aSet.Expressions = aSet.Expressions.Concat(new SelectExpression[1] { b });
             }
             return aSet;
         }
@@ -90,16 +93,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public static SelectExpressionSet operator &(SelectExpressionSet aSet, SelectExpressionSet bSet)
         {
             if (aSet is null)
-            {
-                aSet = new SelectExpressionSet(bSet.Expressions);
-            }
-            else
-            {
-                foreach (var e in bSet.Expressions)
-                {
-                    aSet.Expressions.Add(e);
-                }
-            }
+                return bSet;
+
+            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
             return aSet;
         }
         #endregion
