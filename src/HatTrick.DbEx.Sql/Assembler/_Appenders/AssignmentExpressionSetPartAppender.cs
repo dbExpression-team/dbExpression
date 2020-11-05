@@ -12,11 +12,12 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression?.Expressions is null || !expression.Expressions.Any())
                 return;
 
-            for (var i = 0; i < expression.Expressions.Count; i++)
+            var inserts = expression.Expressions.ToList();
+            for (var i = 0; i < inserts.Count; i++)
             {
                 builder.Appender.Indent();
-                builder.AppendPart(expression.Expressions[i], context);
-                if (i < expression.Expressions.Count - 1)
+                builder.AppendPart(inserts[i], context);
+                if (i < inserts.Count - 1)
                 {
                     builder.Appender.Write(",").LineBreak();
                 }

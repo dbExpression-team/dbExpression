@@ -3,6 +3,7 @@ using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HatTrick.DbEx.MsSql.Assembler
@@ -27,15 +28,17 @@ namespace HatTrick.DbEx.MsSql.Assembler
             if (context.Configuration.PrependCommaOnSelectClauseParts)
                 builder.Appender.Write(", ");
             builder.Appender.Indentation++.Indent().Write("ROW_NUMBER() OVER (");
-            for (var i = 0; i < expression.OrderBy.Expressions.Count; i++)
+
+            var orderBys = expression.OrderBy.Expressions.ToList();
+            for (var i = 0; i < orderBys.Count; i++)
             {
                 builder.Appender.Indent();
 
                 context.PushAppendStyle(EntityExpressionAppendStyle.None);
-                builder.AppendPart(expression.OrderBy.Expressions[i], context);
+                builder.AppendPart(orderBys[i], context);
                 context.PopAppendStyles();
 
-                if (i < expression.OrderBy.Expressions.Count - 1)
+                if (i < orderBys.Count - 1)
                     builder.Appender.Write(", ");
             }
             builder.Appender.Write(") AS [__index]").LineBreak();

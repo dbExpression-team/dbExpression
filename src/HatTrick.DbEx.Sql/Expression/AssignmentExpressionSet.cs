@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public class AssignmentExpressionSet : IExpressionSet<AssignmentExpression>
     {
         #region interface
-        public IList<AssignmentExpression> Expressions { get; }
+        public IEnumerable<AssignmentExpression> Expressions { get; private set; }
         #endregion
 
         #region constructors
@@ -16,14 +16,14 @@ namespace HatTrick.DbEx.Sql.Expression
             Expressions = new List<AssignmentExpression>();
         }
 
-        public AssignmentExpressionSet(IList<AssignmentExpression> assignments)
+        public AssignmentExpressionSet(IEnumerable<AssignmentExpression> assignments)
         {
             Expressions = assignments?.ToList() ?? throw new ArgumentNullException($"{nameof(assignments)} is required.");
         }
 
         public AssignmentExpressionSet(AssignmentExpression assignment)
         {
-            Expressions.Add(assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required."));
+            Expressions = Expressions.Concat(new AssignmentExpression[1] { assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.") });
         }
         #endregion
 
@@ -36,11 +36,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (aSet is null)
             {
-                aSet = new AssignmentExpressionSet(b);
+                aSet = b;
             }
             else
             {
-                aSet.Expressions.Add(b);
+                aSet.Expressions = aSet.Expressions.Concat(new AssignmentExpression[1] { b });
             }
             return aSet;
         }
@@ -48,11 +48,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public static AssignmentExpressionSet operator &(AssignmentExpressionSet aSet, AssignmentExpressionSet bSet)
         {
             if (aSet is null)
-            {
-                aSet = new AssignmentExpressionSet();
-            }
-            foreach (var b in bSet.Expressions)
-                aSet.Expressions.Add(b);
+                return bSet;
+
+            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
             return aSet;
         }
         #endregion

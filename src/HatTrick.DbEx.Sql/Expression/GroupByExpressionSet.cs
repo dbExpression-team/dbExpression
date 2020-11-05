@@ -9,7 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionSet<GroupByExpression>
     {
         #region interface
-        public IList<GroupByExpression> Expressions { get; } = new List<GroupByExpression>();
+        public IEnumerable<GroupByExpression> Expressions { get; private set; } = new List<GroupByExpression>();
         #endregion
 
         #region constructors
@@ -20,13 +20,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public GroupByExpressionSet(GroupByExpression groupByExpression)
         {
-            Expressions.Add(groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required."));
+            Expressions = Expressions.Concat(new GroupByExpression[1] { groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.") });
         }
 
         public GroupByExpressionSet(GroupByExpression aGroupByExpression, GroupByExpression bGroupByExpression)
         {
-            Expressions.Add(aGroupByExpression ?? throw new ArgumentNullException($"{nameof(aGroupByExpression)} is required."));
-            Expressions.Add(bGroupByExpression ?? throw new ArgumentNullException($"{nameof(bGroupByExpression)} is required."));
+            Expressions = new List<GroupByExpression>
+            {
+                aGroupByExpression ?? throw new ArgumentNullException($"{nameof(aGroupByExpression)} is required."),
+                bGroupByExpression ?? throw new ArgumentNullException($"{nameof(bGroupByExpression)} is required.")
+            };
+        }
+
+        public GroupByExpressionSet(IEnumerable<GroupByExpression> groupByExpression)
+        {
+            Expressions = groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.");
         }
         #endregion
 
@@ -39,19 +47,21 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (aSet is null)
             {
-                aSet = new GroupByExpressionSet(b);
+                aSet = b;
             }
             else
             {
-                aSet.Expressions.Add(b);
+                aSet.Expressions = aSet.Expressions.Concat(new GroupByExpression[1] { b });
             }
             return aSet;
         }
 
         public static GroupByExpressionSet operator &(GroupByExpressionSet aSet, GroupByExpressionSet bSet)
         {
-            foreach (var b in bSet.Expressions)
-                aSet.Expressions.Add(b);
+            if (aSet is null)
+                return bSet;
+
+            aSet.Expressions = aSet.Expressions.Concat(bSet?.Expressions);
             return aSet;
         }
         #endregion

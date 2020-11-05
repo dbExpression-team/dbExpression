@@ -18,6 +18,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly FilterExpressionSetPartAppender _filterSetAppender = new FilterExpressionSetPartAppender();
         private static readonly JoinExpressionPartAppender _joinAppender = new JoinExpressionPartAppender();
         private static readonly JoinExpressionSetPartAppender _joinSetAppender = new JoinExpressionSetPartAppender();
+        private static readonly JoinOnExpressionSetPartAppender _joinOnSetAppender = new JoinOnExpressionSetPartAppender();
         private static readonly JoinOnExpressionPartAppender _joinOnClauseAppender = new JoinOnExpressionPartAppender();
         private static readonly GroupByExpressionPartAppender _groupByAppender = new GroupByExpressionPartAppender();
         private static readonly GroupByExpressionSetPartAppender _groupBySetAppender = new GroupByExpressionSetPartAppender();
@@ -106,6 +107,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             _partAppenders.TryAdd(typeof(FilterExpressionSet), () => _filterSetAppender);
             _partAppenders.TryAdd(typeof(JoinExpression), () => _joinAppender);
             _partAppenders.TryAdd(typeof(JoinExpressionSet), () => _joinSetAppender);
+            _partAppenders.TryAdd(typeof(JoinOnExpressionSet), () => _joinOnSetAppender);
             _partAppenders.TryAdd(typeof(JoinOnExpression), () => _joinOnClauseAppender);
             _partAppenders.TryAdd(typeof(GroupByExpression), () => _groupByAppender);
             _partAppenders.TryAdd(typeof(GroupByExpressionSet), () => _groupBySetAppender);

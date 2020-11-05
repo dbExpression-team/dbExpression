@@ -35,22 +35,23 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
                 builder.Appender.Indent().Write("(");
 
-                for (var j = 0; j < insert.Value.Expressions.Count; j++)
+                var inserts = insert.Value.Expressions.ToList();
+                for (var j = 0; j < inserts.Count; j++)
                 {
-                    if (identity is object && (insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee == identity)
+                    if (identity is object && (inserts[j] as IAssignmentExpressionProvider).Assignee == identity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                    context.PushField((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignee);
+                    context.PushField((inserts[j] as IAssignmentExpressionProvider).Assignee);
                     try
                     {
-                        builder.AppendPart((insert.Value.Expressions[j] as IAssignmentExpressionProvider).Assignment, context);
+                        builder.AppendPart((inserts[j] as IAssignmentExpressionProvider).Assignment, context);
                     }
                     finally
                     {
                         context.PopField();
                     }
                     builder.Appender.Write(", ");
-                    if (j == insert.Value.Expressions.Count - 1)
+                    if (j == inserts.Count - 1)
                         builder.Appender.Write(i.ToString());
                 }
 
@@ -69,18 +70,19 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //write out the table structure of the  {insertValueNames} table
-            for (var i = 0; i < template.Expressions.Count; i++)
+            var templateInserts = template.Expressions.ToList();
+            for (var i = 0; i < templateInserts.Count; i++)
             {
-                if (identity is object && (template.Expressions[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();
                 builder.AppendPart(
-                    (template.Expressions[i] as IAssignmentExpressionProvider).Assignee,
+                    (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
                 builder.Appender.Write(", ").LineBreak();
-                if (i == template.Expressions.Count - 1)
+                if (i == templateInserts.Count - 1)
                 {
                     builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
                         .Write(ordinalColumnName)
@@ -93,17 +95,17 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indent().Write("WHEN NOT MATCHED THEN").LineBreak()
                 .Indent().Write("INSERT (").LineBreak().Indentation++;
 
-            for (var i = 0; i < template.Expressions.Count; i++)
+            for (var i = 0; i < templateInserts.Count; i++)
             {
-                if (identity is object && (template.Expressions[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserte into the table
 
                 builder.Appender.Indent();
                 builder.AppendPart(
-                    (template.Expressions[i] as IAssignmentExpressionProvider).Assignee,
+                    (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
-                if (i < template.Expressions.Count - 1)
+                if (i < templateInserts.Count - 1)
                     builder.Appender.Write(", ").LineBreak();
                 else
                     builder.Appender.LineBreak();
@@ -114,9 +116,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.None);
             try
             {
-                for (var i = 0; i < template.Expressions.Count; i++)
+                for (var i = 0; i < templateInserts.Count; i++)
                 {
-                    if (identity is object && (template.Expressions[i] as IAssignmentExpressionProvider).Assignee == identity)
+                    if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                     builder.Appender.Indent().Write(context.Configuration.IdentifierDelimiter.Begin)
@@ -124,16 +126,16 @@ namespace HatTrick.DbEx.MsSql.Assembler
                         .Write(context.Configuration.IdentifierDelimiter.End)
                         .Write(".");
 
-                    context.PushField((template.Expressions[i] as IAssignmentExpressionProvider).Assignee);
+                    context.PushField((templateInserts[i] as IAssignmentExpressionProvider).Assignee);
                     try
                     {
-                        builder.AppendPart((template.Expressions[i] as IAssignmentExpressionProvider).Assignee, context);
+                        builder.AppendPart((templateInserts[i] as IAssignmentExpressionProvider).Assignee, context);
                     }
                     finally
                     {
                         context.PopField();
                     }
-                    if (i < template.Expressions.Count - 1)
+                    if (i < templateInserts.Count - 1)
                         builder.Appender.Write(", ");
                     builder.Appender.LineBreak();
                 }
@@ -156,15 +158,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Write(", ").LineBreak();
 
             //write out all fields for the select from INSERTED table
-            for (var i = 0; i < template.Expressions.Count; i++)
+            for (var i = 0; i < templateInserts.Count; i++)
             {
                 builder.Appender.Indent();
                 builder.Appender.Write("INSERTED.");
                 builder.AppendPart(
-                    (template.Expressions[i] as IAssignmentExpressionProvider).Assignee,
+                    (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
-                if (i < template.Expressions.Count - 1)
+                if (i < templateInserts.Count - 1)
                     builder.Appender.Write(", ").LineBreak();
             }
         }

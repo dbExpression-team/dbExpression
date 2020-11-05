@@ -2,6 +2,7 @@
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -41,8 +42,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         IUpdateFromExpressionBuilder IUpdateInitiationExpressionBuilder.Update(AssignmentExpression[] assignments)
         {
-            foreach (var assignment in assignments)
-                Expression.Assign.Expressions.Add(assignment);
+            Expression.Assign = new AssignmentExpressionSet(Expression.Assign.Expressions.Concat(assignments));
             return this;
         }
 

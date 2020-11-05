@@ -11,7 +11,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression?.Expressions is null || !expression.Expressions.Any())
                 return;
 
-            for (var i = 0; i < expression.Expressions.Count; i++)
+            var selects = expression.Expressions.ToList();
+            for (var i = 0; i < selects.Count; i++)
             {
                 builder.Appender.Indent();
                 if (context.Configuration.PrependCommaOnSelectClauseParts && i > 0)
@@ -19,9 +20,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                     builder.Appender.Write(",");
                 }
 
-                builder.AppendPart(expression.Expressions[i], context);
+                builder.AppendPart(selects[i], context);
 
-                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < expression.Expressions.Count - 1)
+                if (!context.Configuration.PrependCommaOnSelectClauseParts && i < selects.Count - 1)
                 {
                     builder.Appender.Write(",");
                 }

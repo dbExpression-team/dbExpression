@@ -19,8 +19,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression is null || (expression.LeftArg is null && expression.RightArg is null))
                 return;
 
-            var thisIsTheRootFilterExperssionSet = context.GetState<ThisIsTheRootFilterExpressionSet>() is null;
-            if (thisIsTheRootFilterExperssionSet)
+            var thisIsTheRootFilterExpressionSet = context.GetState<ThisIsTheRootFilterExpressionSet>() is null;
+            if (thisIsTheRootFilterExpressionSet)
             {
                 context.SetState(new ThisIsTheRootFilterExpressionSet());
             }
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 var hasSet = expression.LeftArg is FilterExpressionSet || expression.RightArg is FilterExpressionSet;
                 void conditionallyAppend(bool condition, Action<IAppender> appendAction) { if (condition) appendAction(builder.Appender); }
 
-                conditionallyAppend(thisIsTheRootFilterExperssionSet, a => a.Indent());
+                conditionallyAppend(thisIsTheRootFilterExpressionSet, a => a.Indent());
 
                 conditionallyAppend(expression.Negate, a => a.Write("NOT "));
                 builder.Appender.Write('(');
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
             finally
             {
-                if (thisIsTheRootFilterExperssionSet)
+                if (thisIsTheRootFilterExpressionSet)
                     context.RemoveState<ThisIsTheRootFilterExpressionSet>();
             }
         }

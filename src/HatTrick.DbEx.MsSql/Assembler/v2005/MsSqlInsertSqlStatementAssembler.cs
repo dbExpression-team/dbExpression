@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
             if (expression.Inserts.Count > 1)
                 throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement.");
 
-            var insertSet = expression.Inserts.Values.Single().Expressions;
+            var insertSet = expression.Inserts.Values.Single().Expressions.ToList();
             var identity = (expression.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => builder.FindMetadata(x).IsIdentity);
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();

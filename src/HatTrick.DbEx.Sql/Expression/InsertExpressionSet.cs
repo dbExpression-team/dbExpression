@@ -8,18 +8,16 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region interface
         public IDbEntity Entity { get; }
-        public IList<InsertExpression> Expressions { get; } = new List<InsertExpression>();
+        public IEnumerable<InsertExpression> Expressions { get; private set; } = new List<InsertExpression>();
         #endregion
 
         #region constructors
         protected InsertExpressionSet() { }
 
-        public InsertExpressionSet(IDbEntity entity, IList<InsertExpression> fields)
+        public InsertExpressionSet(IDbEntity entity, IEnumerable<InsertExpression> fields)
         {
-            if (entity == null)
-                throw new ArgumentNullException($"{nameof(entity)} is required.");
-            Entity = entity;
-            Expressions = fields?.ToList() ?? throw new ArgumentNullException($"{nameof(fields)} is required.");
+            Entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
+            Expressions = fields ?? throw new ArgumentNullException($"{nameof(fields)} is required.");
         }
         #endregion
     }
