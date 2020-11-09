@@ -51,14 +51,19 @@ namespace HatTrick.DbEx.Sql.Attribute
             return default;
         }
 
-        public static SortedDictionary<ConditionalExpressionOperator, string> GetValuesAndConditionalOperators(this Type type)
+        public static SortedDictionary<ConditionalExpressionOperator, string> GetValuesAndConditionalOperators(this Type type, Func<string, string> formatValue = null)
         {
             if (type != typeof(ConditionalExpressionOperator))
                 throw new InvalidOperationException($"Type must be {nameof(ConditionalExpressionOperator)}");
 
             var sortedDictionary = new SortedDictionary<ConditionalExpressionOperator, string>();
             foreach (var value in Enum.GetValues(type))
-                sortedDictionary.Add((ConditionalExpressionOperator)value, GetConditionalOperator((ConditionalExpressionOperator)value));
+            {
+                var condition = GetConditionalOperator((ConditionalExpressionOperator)value);
+                if (formatValue is object)
+                    condition = formatValue(condition);
+                sortedDictionary.Add((ConditionalExpressionOperator)value, condition);
+            }
             return sortedDictionary;
         }
     }

@@ -10,38 +10,44 @@ namespace HatTrick.DbEx.Sql.Expression
         public bool Negate { get; set; }
         public IExpression LeftArg { get; set; }
         public IExpression RightArg { get; set; }
+        public bool IsSingleFilter => RightArg is null;
+        public object SingleFilter => RightArg is null ? LeftArg : null;
         #endregion
 
         #region constructors
         protected JoinOnExpressionSet()
-        { 
-        
-        }
-
-        public JoinOnExpressionSet(JoinOnExpression singleFilter)
         {
-            LeftArg = singleFilter ?? throw new ArgumentNullException($"{nameof(singleFilter)} is required.");
+
         }
 
-        public JoinOnExpressionSet(JoinOnExpression leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
+        public JoinOnExpressionSet(JoinOnExpression singleJoin)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
-            ConditionalOperator = conditionalOperator;
+            LeftArg = singleJoin ?? throw new ArgumentNullException($"{nameof(singleJoin)} is required.");
         }
 
-        public JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
+        protected JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
 
-        public JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
+        protected JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
+        }
+
+        public JoinOnExpressionSet(IExpression leftArg, IExpression rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
+        {
+            if (leftArg is null && rightArg is null)
+                throw new ArgumentNullException($"{nameof(leftArg)} or {nameof(leftArg)} must be non-null.");
+
+            LeftArg = leftArg;
+            RightArg = rightArg;
+            ConditionalOperator = conditionalOperator;
+            Negate = negate;
         }
         #endregion
 
@@ -89,12 +95,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region negation operator
-        public static JoinOnExpressionSet operator !(JoinOnExpressionSet filter)
+        public static JoinOnExpressionSet operator !(JoinOnExpressionSet a)
         {
-            if (filter is object) filter.Negate = !filter.Negate;
-            return filter;
+            if (a is object) a.Negate = !a.Negate;
+            return a;
         }
         #endregion
     }
-    
+
 }

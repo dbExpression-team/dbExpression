@@ -9,7 +9,6 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IContinuationExpressionBuilder<T, U>
         where U : class, IContinuationExpressionBuilder<T>
     {
-        IValueContinuationExpressionBuilder<T, U> Where(FilterExpression expression);
         IValueContinuationExpressionBuilder<T, U> Where(FilterExpressionSet expression);
         IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> InnerJoin(EntityExpression entity);
         IJoinExpressionBuilder<T, IValueContinuationExpressionBuilder<T, U>> LeftJoin(EntityExpression entity);
@@ -23,6 +22,7 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         IValueContinuationExpressionBuilder<T, U> OrderBy(params OrderByExpression[] orderBy);
         IValueContinuationExpressionBuilder<T, U> OrderBy(IEnumerable<OrderByExpression> orderBy);
         IValueContinuationExpressionBuilder<T, U> GroupBy(params GroupByExpression[] groupBy);
+        IValueContinuationExpressionBuilder<T, U> GroupBy(IEnumerable<GroupByExpression> groupBy);
         IValueContinuationExpressionBuilder<T, U> Having(HavingExpression havingCondition);
     }
 }

@@ -60,6 +60,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void PopField()
             => fields.Pop();
 
+        public void SetState<T>()
+            where T : class, new()
+            => this.state.Add(typeof(T), new T());
+
         public void SetState<T>(T state)
             where T : class
             => this.state.Add(typeof(T), state);

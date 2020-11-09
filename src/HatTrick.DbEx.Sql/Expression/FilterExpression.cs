@@ -1,4 +1,5 @@
 ﻿using System;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -7,9 +8,9 @@ namespace HatTrick.DbEx.Sql.Expression
         IFunctionExpression
     {
         #region interface
-        public ExpressionMediator LeftArg { get; set; }
-        public ExpressionMediator RightArg { get; set; }
-        public readonly FilterExpressionOperator ExpressionOperator;
+        public ExpressionMediator LeftArg { get; private set; }
+        public ExpressionMediator RightArg { get; private set; }
+        public FilterExpressionOperator ExpressionOperator { get; private set; }
         public bool Negate { get; set; }
         #endregion
 
@@ -56,12 +57,15 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region implicit filter expression set operator
-        public static implicit operator FilterExpressionSet(FilterExpression a) => a is null ? null : new FilterExpressionSet(a);
-        #endregion
+        #region implicit operators
+        public static implicit operator FilterExpressionSet(FilterExpression a) 
+            => a is null ? null : new FilterExpressionSet(a);
 
-        #region implicit having expression set operator
-        public static implicit operator HavingExpression(FilterExpression a) => new HavingExpression(a);
+        public static implicit operator HavingExpression(FilterExpression a) 
+            => new HavingExpression(a);
+
+        public static implicit operator JoinOnExpressionSet(FilterExpression a)
+            => a is null ? null : a.ConvertToJoinOnExpressionSet();
         #endregion
 
         #region negation operator

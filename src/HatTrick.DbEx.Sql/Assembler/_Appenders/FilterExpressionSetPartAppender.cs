@@ -1,8 +1,7 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Attribute;
+﻿using HatTrick.DbEx.Sql.Attribute;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -19,50 +18,96 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (expression is null || (expression.LeftArg is null && expression.RightArg is null))
                 return;
 
-            var thisIsTheRootFilterExpressionSet = context.GetState<ThisIsTheRootFilterExpressionSet>() is null;
-            if (thisIsTheRootFilterExpressionSet)
+            //helper action used to conditionally append text to the appender
+            void ifAppend(bool condition, Action<IAppender> trueAction, Action<IAppender> falseAction = null) { if (condition) trueAction(builder.Appender); else if (falseAction is object) falseAction(builder.Appender); }
+
+            //set assembly state to use in recursive calls to this appender
+            var thisIsTheRoot = context.GetState<FilterExpressionSetContext>() is null;
+            if (thisIsTheRoot)
             {
-                context.SetState(new ThisIsTheRootFilterExpressionSet());
+                context.SetState<FilterExpressionSetContext>();
+                builder.Appender.LineBreak().Indent();
             }
 
             try
             {
-                var hasSet = expression.LeftArg is FilterExpressionSet || expression.RightArg is FilterExpressionSet;
-                void conditionallyAppend(bool condition, Action<IAppender> appendAction) { if (condition) appendAction(builder.Appender); }
+                //implicit conversion will create a FilterExpressionSet for a single filter, evaluate whether each arg is "simple" or "complex" for the current
+                var leftIsAComplexExpression = !(expression.LeftArg is FilterExpression || expression.LeftArg is FilterExpressionSet leftSet && leftSet.IsSingleFilter);
+                var rightIsAComplexExpression = !(expression.RightArg is FilterExpression || expression.RightArg is FilterExpressionSet rightSet && rightSet.IsSingleFilter);
 
-                conditionallyAppend(thisIsTheRootFilterExpressionSet, a => a.Indent());
-
-                conditionallyAppend(expression.Negate, a => a.Write("NOT "));
-                builder.Appender.Write('(');
+                //if the expression set is negated, render "NOT"
+                ifAppend(expression.Negate, AppendNegateStart);
 
                 if (expression.LeftArg is object)
                 {
-                    conditionallyAppend(hasSet, a => a.LineBreak().Indentation++.Indent());
+                    ifAppend(leftIsAComplexExpression, AppendParensStart);
+
                     builder.AppendPart(expression.LeftArg, context);
-                    conditionallyAppend(hasSet, a => a.LineBreak());
+
+                    ifAppend(leftIsAComplexExpression, AppendParensEnd);
                 }
                 if (expression.RightArg is object)
                 {
-                    conditionallyAppend(hasSet, a => a.Indent());
-                    conditionallyAppend(!hasSet, a => a.Write(' '));
-                    builder.Appender.Write(ConditionalOperatorMap[expression.ConditionalOperator]);
-                    conditionallyAppend(!hasSet, a => a.Write(' '));
-                    conditionallyAppend(hasSet, a => a.LineBreak().Indent());
+                    AppendConditionalOperator(builder.Appender, expression.ConditionalOperator);
+
+                    ifAppend(rightIsAComplexExpression, AppendParensStart);
+
                     builder.AppendPart(expression.RightArg, context);
-                    conditionallyAppend(hasSet, a => a.Indentation--);
+
+                    ifAppend(rightIsAComplexExpression, AppendParensEnd);
                 }
 
-                conditionallyAppend(hasSet, a => a.LineBreak().Indent());
-                builder.Appender.Write(')');
+                ifAppend(expression.Negate, AppendNegateEnd);
             }
             finally
             {
-                if (thisIsTheRootFilterExpressionSet)
-                    context.RemoveState<ThisIsTheRootFilterExpressionSet>();
+                if (thisIsTheRoot)
+                {
+                    context.RemoveState<FilterExpressionSetContext>();
+                }
             }
         }
+
+        private static void AppendNegateStart(IAppender appender)
+            => appender
+                    .Write("NOT")
+                    .LineBreak()
+                    .Indent()
+                    .Write('(')
+                    .LineBreak()
+                    .Indentation++
+                    .Indent();
+
+        private static void AppendNegateEnd(IAppender appender)
+            => appender
+                    .LineBreak()
+                    .Indentation--
+                    .Indent()
+                    .Write(')');
+
+        private static void AppendParensStart(IAppender appender)
+            => appender
+                    .Write('(')
+                    .LineBreak()
+                    .Indentation++
+                    .Indent();
+
+        private static void AppendParensEnd(IAppender appender)
+            => appender
+                    .LineBreak()
+                    .Indentation--
+                    .Indent()
+                    .Write(')');
+
+        private static void AppendConditionalOperator(IAppender appender, ConditionalExpressionOperator condition)
+            => appender
+                    .LineBreak()
+                    .Indent()
+                    .Write(ConditionalOperatorMap[condition])
+                    .LineBreak()
+                    .Indent();
         #endregion
 
-        private class ThisIsTheRootFilterExpressionSet { }
+        private class FilterExpressionSetContext { }
     }
 }

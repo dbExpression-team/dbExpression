@@ -5,6 +5,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -302,6 +303,192 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 //then
                 personsWithNoAddresses.Should().HaveCount(expected);
+            }
+
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_complex_where_clause_1_succeed(int version, int expected = 5)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectMany(dbo.Purchase.Id)
+                   .From(dbo.Purchase)
+                   .Where(
+                        !(dbo.Purchase.ShipDate == DBNull.Value) 
+                        & 
+                        (
+                            dbo.Purchase.TotalPurchaseAmount > 55 
+                            |
+                            (
+                                dbo.Purchase.TotalPurchaseAmount < 10
+                                &
+                                dbo.Purchase.TotalPurchaseAmount > 0
+                            )
+                        )
+                    );
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(expected);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_complex_where_clause_2_succeed(int version, int expected = 5)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectMany(dbo.Purchase.Id)
+                   .From(dbo.Purchase)
+                   .Where(
+                        !(
+                            dbo.Purchase.ShipDate == DBNull.Value
+                            |
+                            dbo.Purchase.DateCreated >= DateTime.Now
+                        )
+                        &
+                        (
+                            dbo.Purchase.TotalPurchaseAmount > 55
+                            |
+                            (
+                                dbo.Purchase.TotalPurchaseAmount < 10
+                                &
+                                dbo.Purchase.TotalPurchaseAmount > 0
+                            )
+                        )
+                    );
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(expected);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_complex_where_clause_3_succeed(int version, int expectedCount = 1, int expectedId = 14)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectMany(dbo.Purchase.Id)
+                   .From(dbo.Purchase)
+                   .Where(
+                        (
+                            (
+                                dbo.Purchase.ShipDate == DBNull.Value
+                                |
+                                dbo.Purchase.DateCreated >= DateTime.Now  
+                            )
+                            &
+                            (
+                                dbo.Purchase.TotalPurchaseAmount > 55
+                                |
+                                (
+                                    dbo.Purchase.TotalPurchaseAmount < 10
+                                    &
+                                    dbo.Purchase.TotalPurchaseAmount > 0
+                                )
+                            )
+                        )
+                        & dbo.Purchase.Id > 1
+                    );
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(expectedCount);
+                ((int)purchases.First()).Should().Be(expectedId);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_complex_where_clause_4_succeed(int version, int expectedCount = 1, int expectedId = 14)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectMany(dbo.Purchase.Id)
+                   .From(dbo.Purchase)
+                   .Where(
+                        (
+                            dbo.Purchase.ShipDate == DBNull.Value
+                            |
+                            dbo.Purchase.DateCreated >= DateTime.Now
+                        )
+                        &
+                        (
+                            dbo.Purchase.TotalPurchaseAmount > 55
+                            |
+                            (
+                                dbo.Purchase.TotalPurchaseAmount < 10
+                                &
+                                dbo.Purchase.TotalPurchaseAmount > 0
+                            )
+                        )
+                        & 
+                        (
+                            dbo.Purchase.Id > 1
+                            |
+                            dbo.Purchase.Id < 1000
+                        )
+                    );
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(expectedCount);
+                ((int)purchases.First()).Should().Be(expectedId);
+            }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_complex_where_clause_5_succeed(int version, int expectedCount = 1, int expectedId = 14)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                var exp = db.SelectMany(dbo.Purchase.Id)
+                   .From(dbo.Purchase)
+                   .Where(
+                        (
+                            dbo.Purchase.ShipDate == DBNull.Value
+                            |
+                            dbo.Purchase.DateCreated >= DateTime.Now
+                        )
+                        &
+                        (
+                            dbo.Purchase.TotalPurchaseAmount > 55
+                            |
+                            (
+                                dbo.Purchase.TotalPurchaseAmount < 10
+                                &
+                                dbo.Purchase.TotalPurchaseAmount > 0
+                            )
+                        )
+                        &
+                        (
+                            dbo.Purchase.Id > 1
+                            |
+                            dbo.Purchase.Id < 1000
+                        )
+                        & dbo.Purchase.Id < 2000
+                    );
+
+                //when               
+                var purchases = exp.Execute();
+
+                //then
+                purchases.Should().HaveCount(expectedCount);
+                ((int)purchases.First()).Should().Be(expectedId);
             }
             #endregion
         }

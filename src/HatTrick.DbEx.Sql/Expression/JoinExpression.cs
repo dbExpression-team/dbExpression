@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public JoinExpression(IExpression joinToo, JoinOperationExpressionOperator joinType, JoinOnExpression onCondition, string alias)
+        public JoinExpression(IExpression joinToo, JoinOperationExpressionOperator joinType, JoinOnExpressionSet onCondition, string alias)
         {
             JoinToo = joinToo ?? throw new ArgumentNullException($"{nameof(joinToo)} is required.");
             JoinType = joinType;
