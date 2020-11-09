@@ -30,14 +30,13 @@ namespace HatTrick.DbEx.Sql.Builder
             Caller = caller is object ? caller : throw new ArgumentNullException($"{nameof(caller)} is required.");
         }
 
-        T IJoinExpressionBuilder<T>.On(JoinOnExpression expression)
+        T IJoinExpressionBuilder<T>.On(JoinOnExpressionSet joinOn)
         {
-            if (Expression.Joins is null)
-                Expression.Joins = new JoinExpressionSet(new JoinExpression(JoinOn, JoinType, expression, Alias));
-            else
-            {
-                Expression.Joins = new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(JoinOn, JoinType, expression, Alias) }));
-            }
+            Expression.Joins = Expression.Joins is null ? 
+                new JoinExpressionSet(new JoinExpression(JoinOn, JoinType, joinOn, Alias)) 
+                : 
+                new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(JoinOn, JoinType, joinOn, Alias) }));
+
             return Caller;
         }
     }

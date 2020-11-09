@@ -11,11 +11,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "DATEADD")]
-    [Trait("Operation", "WHERE")]
     public partial class DateAdd : ExecutorTestBase
     {
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public void Does_dateadd_of_year_to_shipdate_succeed(int version, int expectedValue = 2018)
         {
             //given
@@ -36,6 +36,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public void Does_dateadd_of_year_to_null_shipdate_returning_datetime_succeed(int version)
         {
             //given

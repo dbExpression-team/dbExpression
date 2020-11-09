@@ -40,6 +40,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         public IAppender Write(string value)
             => appender.Write(value);
 
+        public IAppender Write(char value)
+            => appender.Write(value);
+
         public IAppender If(bool append, params Action<Appender>[] values)
             => appender.If(append, values);
 

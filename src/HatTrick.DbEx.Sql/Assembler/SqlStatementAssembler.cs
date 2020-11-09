@@ -28,7 +28,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             builder.Appender.Indent().Write("WHERE")
-                .LineBreak()
                 .Indentation++;
 
             builder.AppendPart(expression.Where, context);

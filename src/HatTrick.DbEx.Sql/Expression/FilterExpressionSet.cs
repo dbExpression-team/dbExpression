@@ -6,10 +6,10 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpression
     {
         #region interface
-        public readonly ConditionalExpressionOperator ConditionalOperator;
-        public bool Negate { get; set; }
-        public IExpression LeftArg { get; set; }
-        public IExpression RightArg { get; set; }
+        public ConditionalExpressionOperator ConditionalOperator { get; private set; }
+        public bool Negate { get; private set; }
+        public IExpression LeftArg { get; private set; }
+        public IExpression RightArg { get; private set; }
         public bool IsSingleFilter => RightArg is null;
         public object SingleFilter => RightArg is null ? LeftArg : null;
         #endregion
@@ -32,14 +32,14 @@ namespace HatTrick.DbEx.Sql.Expression
             ConditionalOperator = conditionalOperator;
         }
 
-        public FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
+        protected FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
 
-        public FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
+        protected FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public override string ToString() => (Negate) ? $"NOT ({LeftArg} {ConditionalOperator} {RightArg})" : $"{LeftArg} {ConditionalOperator} {RightArg}";
         #endregion
 
-        #region conditional &, | operators
+        #region implicit operators
         public static FilterExpressionSet operator &(FilterExpressionSet a, FilterExpression b)
         {
             if (a is null && b is object) { return new FilterExpressionSet(b); }
@@ -87,13 +87,13 @@ namespace HatTrick.DbEx.Sql.Expression
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }
-        #endregion
 
-        #region implicit having expression set operator
-        public static implicit operator HavingExpression(FilterExpressionSet a) => new HavingExpression(a);
-        #endregion
+        public static implicit operator JoinOnExpressionSet(FilterExpressionSet filter)
+            => filter.ConvertToJoinOnExpressionSet();
 
-        #region negation operator
+        public static implicit operator HavingExpression(FilterExpressionSet a) 
+            => new HavingExpression(a);
+
         public static FilterExpressionSet operator !(FilterExpressionSet filter)
         {
             if (filter is object) filter.Negate = !filter.Negate;

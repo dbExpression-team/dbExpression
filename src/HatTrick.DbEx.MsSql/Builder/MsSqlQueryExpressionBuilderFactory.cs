@@ -13,10 +13,10 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlQueryExpressionBuilderFactory
     {
         #region select one
-        public IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> CreateSelectOneExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
+        public IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> CreateSelectOneExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
             where TEntity : class, IDbEntity
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
+            var builder = new MsSqlSelectQueryExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
             builder.Expression.Select.Top(1);
             return builder;
         }

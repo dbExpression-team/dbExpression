@@ -25,7 +25,7 @@ namespace SimpleConsole.DataService
         #endregion
 
         #region select one
-        public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
+        public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TEntity>(config);
 

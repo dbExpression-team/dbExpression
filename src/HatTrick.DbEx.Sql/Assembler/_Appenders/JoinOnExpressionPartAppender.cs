@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.AppendPart(expression.LeftArg, context);
 
                 builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-                context.PushField(expression.LeftArg.Expression as FieldExpression);
+                context.PushField(expression.LeftArg as FieldExpression);
                 try
                 {
                     builder.AppendPart(expression.RightArg, context);
