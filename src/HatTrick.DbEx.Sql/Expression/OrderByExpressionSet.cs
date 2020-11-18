@@ -5,7 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpressionSet : 
-        IExpression, 
+        IExpressionElement, 
         IExpressionSet<OrderByExpression>
     {
         #region interface

@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int64FloorFunctionExpression :
         FloorFunctionExpression<long>,
+        Int64Element,
+        AnyInt64Element,
         IEquatable<Int64FloorFunctionExpression>
     {
         #region constructors
-        public Int64FloorFunctionExpression(ExpressionMediator<long> expression) : base(expression)
+        public Int64FloorFunctionExpression(Int64Element expression) : base(expression)
+        {
+
+        }
+
+        protected Int64FloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
         {
 
         }
         #endregion
 
         #region as
-        public new Int64FloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int64Element As(string alias)
+            => new Int64FloorFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

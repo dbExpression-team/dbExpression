@@ -3,21 +3,21 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class AssignmentExpression : 
-        IExpression,
+        IExpressionElement,
         IAssignmentExpressionProvider
     {
         #region internals
         private FieldExpression assignee;
-        private ExpressionMediator assignment;
+        private IExpressionElement assignment;
         #endregion
 
         #region interface
         FieldExpression IAssignmentExpressionProvider.Assignee => assignee;
-        ExpressionMediator IAssignmentExpressionProvider.Assignment => assignment;
+        IExpressionElement IAssignmentExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors
-        public AssignmentExpression(FieldExpression assignee, ExpressionMediator assignment)
+        public AssignmentExpression(FieldExpression assignee, IExpressionElement assignment)
         {
             this.assignee = assignee ?? throw new ArgumentNullException($"{nameof(assignee)} is required.");
             this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");

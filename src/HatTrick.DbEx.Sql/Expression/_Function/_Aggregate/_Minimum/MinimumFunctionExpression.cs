@@ -15,7 +15,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected MinimumFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
+        protected MinimumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct) : this(expression, declaredType, isDistinct, null)
+        {
+
+        }
+
+        protected MinimumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct, string alias) : base(expression, declaredType, alias)
         {
             IsDistinct = isDistinct;
         }

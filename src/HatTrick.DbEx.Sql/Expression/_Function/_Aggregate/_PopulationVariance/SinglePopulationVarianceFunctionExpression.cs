@@ -4,38 +4,55 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SinglePopulationVarianceFunctionExpression :
         PopulationVarianceFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SinglePopulationVarianceFunctionExpression>
     {
         #region constructors
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationVarianceFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationVarianceFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<long> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationVarianceFunctionExpression(Int64Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<double> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationVarianceFunctionExpression(DoubleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationVarianceFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationVarianceFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationVarianceFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected SinglePopulationVarianceFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new SinglePopulationVarianceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SinglePopulationVarianceFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

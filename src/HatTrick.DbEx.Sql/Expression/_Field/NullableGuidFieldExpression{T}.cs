@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidFieldExpression<TEntity> : 
         NullableGuidFieldExpression,
         IEquatable<NullableGuidFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableGuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public NullableGuidFieldExpression<TEntity> As(string alias)
+        public override NullGuidElement As(string alias)
             => new NullableGuidFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

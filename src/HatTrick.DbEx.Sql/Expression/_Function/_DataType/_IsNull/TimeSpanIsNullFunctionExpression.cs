@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class TimeSpanIsNullFunctionExpression :
         IsNullFunctionExpression<TimeSpan>,
+        TimeSpanElement,
+        AnyTimeSpanElement,
         IEquatable<TimeSpanIsNullFunctionExpression>
     {
         #region constructors
-        public TimeSpanIsNullFunctionExpression(ExpressionMediator<TimeSpan> expression, ExpressionMediator<TimeSpan> value) : base(expression, value)
+        public TimeSpanIsNullFunctionExpression(AnyTimeSpanElement expression, TimeSpanElement value) : base(expression, value)
         {
+
+        }
+
+        protected TimeSpanIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new TimeSpanIsNullFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public TimeSpanElement As(string alias)
+            => new TimeSpanIsNullFunctionExpression(base.Expression, base.Value, alias);
         #endregion
 
         #region equals

@@ -3,19 +3,25 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableSingleFieldExpression : 
-        NullableFieldExpression<float>,
+        NullableFieldExpression<float,float?>,
+        NullSingleElement,
+        AnySingleElement,
         IEquatable<NullableSingleFieldExpression>
     {
         #region constructors
-        protected NullableSingleFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(float?), entity)
+        protected NullableSingleFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected NullableSingleFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(float?), entity, alias)
+        protected NullableSingleFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract NullSingleElement As(string alias);
         #endregion
 
         #region equals

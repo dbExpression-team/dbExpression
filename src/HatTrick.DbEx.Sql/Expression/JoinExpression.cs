@@ -3,19 +3,19 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpression : 
-        IExpression, 
+        IExpressionElement, 
         IExpressionAliasProvider
     {
         #region interface
         public JoinOnExpressionSet JoinOnExpression { get; private set; }
-        public IExpression JoinToo { get; private set; }
+        public IExpressionElement JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string Alias { get; set; }
         string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public JoinExpression(IExpression joinToo, JoinOperationExpressionOperator joinType, JoinOnExpressionSet onCondition, string alias)
+        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, JoinOnExpressionSet onCondition, string alias)
         {
             JoinToo = joinToo ?? throw new ArgumentNullException($"{nameof(joinToo)} is required.");
             JoinType = joinType;

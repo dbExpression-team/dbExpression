@@ -1,12 +1,13 @@
-﻿namespace ServerSideBlazorApp.Models
+﻿using System.Collections.Generic;
+
+namespace ServerSideBlazorApp.Models
 {
     public abstract class PageModel
     {
         public int Offset { get; set; }
         public int Limit { get; set; }
         public string SearchPhrase { get; set; }
-        public Sort Sort {get; set; }
-
+        public IEnumerable<Sort> Sorting {get; set; }
 
         protected PageModel()
         {
@@ -30,23 +31,15 @@
             Offset = offset;
             Limit = limit;
             SearchPhrase = searchPhrase;
-            Sort = sort;
-        }
-    }
-
-    public class Sort
-    { 
-        public string Field { get; set; }
-        public bool Ascending { get; set; }
-
-        public Sort()
-        {
+            Sorting = new List<Sort> { sort };
         }
 
-        public Sort(string field, bool ascending)
+        protected PageModel(int offset, int limit, string searchPhrase, IEnumerable<Sort> sorting)
         {
-            Field = field;
-            Ascending = ascending;
+            Offset = offset;
+            Limit = limit;
+            SearchPhrase = searchPhrase;
+            Sorting = sorting;
         }
     }
 }

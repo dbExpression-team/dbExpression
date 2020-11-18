@@ -5,20 +5,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeCoalesceFunctionExpression :
         CoalesceFunctionExpression<DateTime>,
+        DateTimeElement,
+        AnyDateTimeElement,
         IEquatable<DateTimeCoalesceFunctionExpression>
     {
         #region constructors
-        public DateTimeCoalesceFunctionExpression(IList<ExpressionMediator<DateTime>> expressions) : base(expressions)
+        public DateTimeCoalesceFunctionExpression(IList<AnyDateTimeElement> expressions) : base(expressions)
         {
+
+        }
+
+        protected DateTimeCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DateTimeCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DateTimeElement As(string alias)
+            => new DateTimeCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

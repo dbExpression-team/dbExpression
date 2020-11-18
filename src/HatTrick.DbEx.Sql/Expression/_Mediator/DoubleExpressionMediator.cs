@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DoubleExpressionMediator :
         ExpressionMediator<double>,
+        DoubleElement,
+        AnyDoubleElement,
         IEquatable<DoubleExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public DoubleExpressionMediator(IExpression expression) : base(expression)
+        public DoubleExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected DoubleExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected DoubleExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new DoubleExpressionMediator As(string alias)
-            => new DoubleExpressionMediator(this.Expression, alias);
+        public DoubleElement As(string alias)
+            => new DoubleExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

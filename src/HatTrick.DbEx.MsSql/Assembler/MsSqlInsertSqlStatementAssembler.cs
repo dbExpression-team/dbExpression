@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("MERGE ");
-            builder.AppendPart(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity, context);
             builder.Appender.Write(" USING (").LineBreak();
 
             builder.Appender.Indent().Write("VALUES").LineBreak().Indentation++;
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     context.PushField((inserts[j] as IAssignmentExpressionProvider).Assignee);
                     try
                     {
-                        builder.AppendPart((inserts[j] as IAssignmentExpressionProvider).Assignment, context);
+                        builder.AppendElement((inserts[j] as IAssignmentExpressionProvider).Assignment, context);
                     }
                     finally
                     {
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();
-                builder.AppendPart(
+                builder.AppendElement(
                     (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
@@ -101,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     continue; //don't emit identity columns with the values; they can't be inserte into the table
 
                 builder.Appender.Indent();
-                builder.AppendPart(
+                builder.AppendElement(
                     (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
@@ -129,7 +129,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     context.PushField((templateInserts[i] as IAssignmentExpressionProvider).Assignee);
                     try
                     {
-                        builder.AppendPart((templateInserts[i] as IAssignmentExpressionProvider).Assignee, context);
+                        builder.AppendElement((templateInserts[i] as IAssignmentExpressionProvider).Assignee, context);
                     }
                     finally
                     {
@@ -162,7 +162,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             {
                 builder.Appender.Indent();
                 builder.Appender.Write("INSERTED.");
-                builder.AppendPart(
+                builder.AppendElement(
                     (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );

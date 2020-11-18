@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class DatePartsExpression : IExpression,
+    public abstract class DatePartsExpression : IExpressionElement,
         IEquatable<DatePartsExpression>
     {
         #region interface

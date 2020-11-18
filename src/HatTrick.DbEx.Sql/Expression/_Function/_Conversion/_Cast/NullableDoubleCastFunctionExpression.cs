@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDoubleCastFunctionExpression :
-        NullableCastFunctionExpression<double>,
+        NullableCastFunctionExpression<double,double?>,
+        NullDoubleElement,
+        AnyDoubleElement,
         IEquatable<NullableDoubleCastFunctionExpression>
     {
         #region constructors
-        public NullableDoubleCastFunctionExpression(NullableExpressionMediator<double> expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public NullableDoubleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+            : base(expression, convertToDbType)
         {
+
+        }
+
+        protected NullableDoubleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDoubleCastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDoubleElement As(string alias)
+            => new NullableDoubleCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

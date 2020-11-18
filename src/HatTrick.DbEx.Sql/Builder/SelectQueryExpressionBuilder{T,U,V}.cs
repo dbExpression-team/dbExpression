@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Builder
             SelectExpressionSet select = Expression.Select;
             if (select is null || !select.Expressions.Any())
             {
-                Expression.Select = new SelectExpressionSet((entity as IExpressionEntity<T>).BuildInclusiveSelectExpression())
+                Expression.Select = new SelectExpressionSet((entity as IExpressionEntity<W>).BuildInclusiveSelectExpression())
                     .Distinct((select as IExpressionIsDistinctProvider).IsDistinct)
                     .Top((select as IExpressionTopProvider).Top);
             }

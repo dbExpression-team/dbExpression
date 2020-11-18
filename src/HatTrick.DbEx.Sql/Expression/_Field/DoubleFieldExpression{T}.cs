@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DoubleFieldExpression<TEntity> : 
         DoubleFieldExpression,
         IEquatable<DoubleFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public DoubleFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public DoubleFieldExpression<TEntity> As(string alias)
+        public override DoubleElement As(string alias)
             => new DoubleFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

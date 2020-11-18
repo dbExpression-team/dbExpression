@@ -12,8 +12,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         SqlStatement CreateSqlStatement();
 
-        void AppendPart<T>(T part, AssemblyContext context)
-            where T : class, IExpression;
+        void AppendElement<T>(T element, AssemblyContext context)
+            where T : class, IExpressionElement;
 
         string GenerateAlias();
 

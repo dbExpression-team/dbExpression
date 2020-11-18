@@ -1,7 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Configuration;
+﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;

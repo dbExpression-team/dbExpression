@@ -15,7 +15,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected PopulationVarianceFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
+        protected PopulationVarianceFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct) : this(expression, declaredType, isDistinct, null)
+        {
+
+        }
+
+        protected PopulationVarianceFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct, string alias) : base(expression, declaredType, alias)
         {
             IsDistinct = isDistinct;
         }

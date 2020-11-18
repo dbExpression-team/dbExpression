@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DecimalFieldExpression<TEntity> : 
         DecimalFieldExpression,
         IEquatable<DecimalFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public DecimalFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public DecimalFieldExpression<TEntity> As(string alias)
+        public override DecimalElement As(string alias)
             => new DecimalFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

@@ -5,28 +5,28 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class NullableEnumFieldExpression<TEntity, TEnum> : NullableEnumFieldExpression<TEnum>,
         IEquatable<NullableEnumFieldExpression<TEntity, TEnum>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
         where TEnum : struct, Enum, IComparable
     {
-        public NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TEnum?), entity)
+        public NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
         }
 
-        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TEnum?), entity, alias)
+        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
 
         #region as
-        public NullableEnumFieldExpression<TEntity, TEnum> As(string alias) 
+        public override NullEnumElement<TEnum> As(string alias)
             => new NullableEnumFieldExpression<TEntity, TEnum>(base.identifier, base.entity, alias);
         #endregion
 
         #region set
         public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(this, new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
         public override AssignmentExpression Set(TEnum? value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
-        public override AssignmentExpression Set(NullableExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(EnumElement<TEnum> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(NullEnumElement<TEnum> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(null)));
         #endregion
 
@@ -36,6 +36,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
+        public override FilterExpression<bool> In(params TEnum?[] value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<TEnum?> value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum?>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(params TEnum[] value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<TEnum> value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum>(value)), FilterExpressionOperator.None) : null;
         #endregion

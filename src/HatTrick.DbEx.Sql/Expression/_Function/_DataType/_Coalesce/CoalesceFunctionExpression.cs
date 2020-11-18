@@ -5,15 +5,21 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CoalesceFunctionExpression : DataTypeFunctionExpression,
-        IFunctionExpression,
         IEquatable<CoalesceFunctionExpression>
     {
         #region interface
-        public new IList<ExpressionMediator> Expression { get; private set; }
+        public new IList<IExpressionElement> Expression { get; private set; }
         #endregion
 
         #region constructors
-        protected CoalesceFunctionExpression(IEnumerable<ExpressionMediator> expressions) : base()
+        protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, Type declaredType) 
+            : this(expressions, declaredType, null)
+        {
+
+        }
+
+        protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, Type declaredType, string alias) 
+            : base(null, declaredType, alias)
         {
             Expression = expressions.ToList();
         }

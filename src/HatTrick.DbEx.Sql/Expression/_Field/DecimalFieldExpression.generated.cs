@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region set
         public override AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<decimal> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

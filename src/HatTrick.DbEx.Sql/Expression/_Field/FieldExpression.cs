@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression : 
-        IExpression,
+        AnyElement,
         IExpressionTypeProvider,
         ISqlMetadataIdentifier,
         IExpressionProvider<EntityExpression>,
@@ -36,10 +36,6 @@ namespace HatTrick.DbEx.Sql.Expression
             this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
             this.alias = alias;
         }
-        #endregion
-
-        #region as
-        //public FieldExpression As(string alias);
         #endregion
 
         #region to string
@@ -83,6 +79,7 @@ namespace HatTrick.DbEx.Sql.Expression
             if (entity is object && obj.entity is null) return false;
             if (!entity.Equals(obj.entity)) return false;
 
+            if (declaredType != obj.declaredType) return false;
             if (!StringComparer.Ordinal.Equals(alias, obj.alias)) return false;
 
             return identifier.Equals(obj.identifier);
@@ -101,6 +98,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 int hash = @base;
                 hash = (hash * multiplier) ^ (identifier is object ? identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (entity is object ? entity.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (alias is object ? alias.GetHashCode() : 0);
                 return hash;
             }

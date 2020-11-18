@@ -5,22 +5,26 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class EnumCoalesceFunctionExpression<TEnum> :
         CoalesceFunctionExpression<TEnum>,
-        IEnumExpressionMediator<TEnum>,
+        EnumElement<TEnum>,
+        AnyEnumElement<TEnum>,
         IEquatable<EnumCoalesceFunctionExpression<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumCoalesceFunctionExpression(IEnumerable<EnumExpressionMediator<TEnum>> expressions) : base(expressions)
+        public EnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions) : base(expressions)
         {
+
+        }
+
+        protected EnumCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new EnumCoalesceFunctionExpression<TEnum> As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public EnumElement<TEnum> As(string alias)
+            => new EnumCoalesceFunctionExpression<TEnum>(base.Expression, alias);
         #endregion
 
         #region equals

@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class Int32FieldExpression : 
         FieldExpression<int>,
+        Int32Element,
+        AnyInt32Element,
         IEquatable<Int32FieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract Int32Element As(string alias);
         #endregion
 
         #region equals

@@ -5,7 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class EntityExpression :
-        IExpression,
+        IExpressionElement,
         ISqlMetadataIdentifier,
         IExpressionProvider<SchemaExpression>,
         IExpressionListProvider<FieldExpression>,

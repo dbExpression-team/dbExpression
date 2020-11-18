@@ -5,6 +5,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -208,10 +209,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var table = dbo.Person.As("dboPerson");
-            var field = table.FirstName.As("dboPersonFirstName");
+            var field = table.FirstName;
 
             var counts = await db.SelectMany(
-                    field, 
+                    field.As("dboPersonFirstName"), 
                     db.fx.Count().As("NameGreaterThanUCount")
                 )
                 .From(table)

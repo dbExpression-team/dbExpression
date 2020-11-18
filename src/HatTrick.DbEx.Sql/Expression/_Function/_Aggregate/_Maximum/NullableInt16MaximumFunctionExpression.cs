@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt16MaximumFunctionExpression :
-        NullableMaximumFunctionExpression<short>,
+        NullableMaximumFunctionExpression<short,short?>,
+        NullInt16Element,
+        AnyInt16Element,
         IEquatable<NullableInt16MaximumFunctionExpression>
     {
         #region constructors
-        public NullableInt16MaximumFunctionExpression(NullableExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt16MaximumFunctionExpression(NullInt16Element expression, bool isDistinct) 
+            : base(expression, isDistinct)
         {
+
+        }
+
+        protected NullableInt16MaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
+            : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableInt16MaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullInt16Element As(string alias)
+            => new NullableInt16MaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

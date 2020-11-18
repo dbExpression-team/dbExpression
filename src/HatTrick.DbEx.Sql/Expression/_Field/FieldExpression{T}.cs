@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class FieldExpression<TValue> : FieldExpression
+    public abstract class FieldExpression<TValue> : FieldExpression,
+        IExpressionElement<TValue>
     {
         #region constructors
         protected FieldExpression(string identifier, Type declaredType, EntityExpression entity) : base(identifier, declaredType, entity)
@@ -13,12 +14,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         protected FieldExpression(string identifier, Type declaredType, EntityExpression entity, string alias) : base(identifier, declaredType, entity, alias)
         {
-        }
-        #endregion
 
-        #region order
-        public override abstract OrderByExpression Asc { get; }
-        public override abstract OrderByExpression Desc { get; }
+        }
         #endregion
 
         #region in value set
@@ -28,7 +25,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region set
         public abstract AssignmentExpression Set(TValue value);
-        public abstract AssignmentExpression Set(ExpressionMediator<TValue> value);
         #endregion
 
         #region insert value

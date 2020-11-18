@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         ISqlStatementBuilder CreateSqlStatementBuilder(
             ISqlDatabaseMetadataProvider databaseMetadata,
-            IAssemblyPartAppenderFactory partAppenderFactory,
+            IExpressionElementAppenderFactory partAppenderFactory,
             SqlStatementAssemblerConfiguration config,
             QueryExpression expression,
             IAppender appender,

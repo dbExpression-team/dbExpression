@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class DbTypeExpression : IExpression,
+    public abstract class DbTypeExpression : IExpressionElement,
         IEquatable<DbTypeExpression>
     {
         #region interface
@@ -14,6 +14,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expression = value;
         }
+        #endregion
+
+        #region to string
+        public override string ToString() => Expression.ToString();
         #endregion
 
         #region equals

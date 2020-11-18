@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidFieldExpression<TEntity> : 
         GuidFieldExpression,
         IEquatable<GuidFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public GuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public GuidFieldExpression<TEntity> As(string alias)
+        public override GuidElement As(string alias)
             => new GuidFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

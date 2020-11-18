@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeMaximumFunctionExpression :
-        NullableMaximumFunctionExpression<DateTime>,
+        NullableMaximumFunctionExpression<DateTime,DateTime?>,
+        NullDateTimeElement,
+        AnyDateTimeElement,
         IEquatable<NullableDateTimeMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeMaximumFunctionExpression(NullableExpressionMediator<DateTime> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableDateTimeMaximumFunctionExpression(NullDateTimeElement expression, bool isDistinct) 
+            : base(expression, isDistinct)
         {
+
+        }
+
+        protected NullableDateTimeMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias)
+            : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDateTimeMaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDateTimeElement As(string alias)
+            => new NullableDateTimeMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

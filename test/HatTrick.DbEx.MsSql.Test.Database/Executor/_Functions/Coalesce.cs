@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IList<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IList<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -176,10 +176,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            DateTime result = exp.Execute();
+            DateTime? result = exp.Execute();
 
             //then
-            result.Year.Should().Be(expected);
+            result.Value.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -196,10 +196,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc);
 
             //when               
-            DateTime result = exp.Execute();
+            DateTime? result = exp.Execute();
 
             //then
-            result.Year.Should().Be(expected);
+            result.Value.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -216,10 +216,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            DateTime result = exp.Execute();
+            DateTime? result = exp.Execute();
 
             //then
-            result.Year.Should().Be(expected);
+            result.Value.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -236,10 +236,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .OrderBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate).Desc);
 
             //when               
-            DateTime result = exp.Execute();
+            DateTime? result = exp.Execute();
 
             //then
-            result.Year.Should().Be(expected);
+            result.Value.Year.Should().Be(expected);
         }
 
         [Theory]
@@ -255,7 +255,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IList<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);
@@ -274,7 +274,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(db.fx.Coalesce(dbo.Purchase.ShipDate, dbo.Purchase.PurchaseDate));
 
             //when               
-            IList<DateTime> dates = exp.Execute();
+            IList<DateTime?> dates = exp.Execute();
 
             //then
             dates.Should().HaveCount(expected);

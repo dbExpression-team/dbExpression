@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class ByteArrayFieldExpression : 
         FieldExpression<byte[]>,
+        ByteArrayElement,
+        AnyByteArrayElement,
         IEquatable<ByteArrayFieldExpression>
     {
         #region constructors
@@ -14,6 +16,10 @@ namespace HatTrick.DbEx.Sql.Expression
         protected ByteArrayFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(byte[]), entity, alias)
         {
         }
+        #endregion
+
+        #region as
+        public abstract ByteArrayElement As(string alias);
         #endregion
 
         #region equals
@@ -29,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region set
         public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

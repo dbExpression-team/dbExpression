@@ -3,33 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt32DateDiffFunctionExpression :
-        NullableDateDiffFunctionExpression<int>,
+        NullableDateDiffFunctionExpression<int,int?>,
+        NullInt32Element,
+        AnyInt32Element,
         IEquatable<NullableInt32DateDiffFunctionExpression>
     {
         #region constructors
-        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate) 
+            : base(datePart, startDate, endDate)
         {
+
         }
 
-        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        protected NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, string alias)
+            : base(datePart, startDate, endDate, alias)
         {
-        }
 
-        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
-        {
-        }
-
-        public NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
-        {
         }
         #endregion
 
         #region as
-        public new NullableInt32DateDiffFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullInt32Element As(string alias)
+            => new NullableInt32DateDiffFunctionExpression(base.DatePart, base.StartDate, base.EndDate, alias);
         #endregion
 
         #region equals

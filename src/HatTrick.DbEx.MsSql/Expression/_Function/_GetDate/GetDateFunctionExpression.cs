@@ -4,16 +4,27 @@ using System;
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class GetDateFunctionExpression : DataTypeFunctionExpression,
-        IDateFunctionExpression,
+        IExpressionElement<DateTime>,
+        DateTimeElement,
         IExpressionAliasProvider,
         IEquatable<GetDateFunctionExpression>
     {
-        #region as
-        public new GetDateFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
+        #region constructors
+        public GetDateFunctionExpression() : base(null, typeof(DateTime))
+        { 
+        
         }
+
+        protected GetDateFunctionExpression(string alias) : base(null, typeof(DateTime), alias)
+        {
+
+        }
+        #endregion
+
+        #region methods
+        #region as
+        public DateTimeElement As(string alias)
+            => new GetDateFunctionExpression(alias);
         #endregion
 
         #region to string
@@ -29,6 +40,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
+        #endregion
         #endregion
     }
 }

@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int32IsNullFunctionExpression :
         IsNullFunctionExpression<int>,
+        Int32Element,
+        AnyInt32Element,
         IEquatable<Int32IsNullFunctionExpression>
     {
         #region constructors
-        public Int32IsNullFunctionExpression(ExpressionMediator<int> expression, ExpressionMediator<int> value) : base(expression, value)
+        public Int32IsNullFunctionExpression(AnyInt32Element expression, Int32Element value) : base(expression, value)
         {
+
+        }
+
+        protected Int32IsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int32IsNullFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int32Element As(string alias)
+            => new Int32IsNullFunctionExpression(base.Expression, base.Value, alias);
         #endregion
 
         #region equals

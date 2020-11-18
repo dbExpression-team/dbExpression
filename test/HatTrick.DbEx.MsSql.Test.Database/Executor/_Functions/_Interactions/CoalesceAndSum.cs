@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(dbo.Person.Id);
 
             //when               
-            IList<int> results = exp.Execute();
+            IList<int?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Person);
 
             //when               
-            int result = exp.Execute();
+            int? result = exp.Execute();
 
             //then
             result.Should().Be(expected);

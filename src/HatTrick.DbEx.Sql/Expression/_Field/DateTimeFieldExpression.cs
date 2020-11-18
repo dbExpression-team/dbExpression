@@ -1,10 +1,11 @@
 using System;
-using System.Linq.Expressions;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class DateTimeFieldExpression : 
         FieldExpression<DateTime>,
+        DateTimeElement,
+        AnyDateTimeElement,
         IEquatable<DateTimeFieldExpression>
     {
         #region constructors
@@ -17,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract DateTimeElement As(string alias);
         #endregion
 
         #region equals

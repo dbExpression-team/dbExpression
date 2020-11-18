@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeOffsetFieldExpression<TEntity> : 
         NullableDateTimeOffsetFieldExpression,
         IEquatable<NullableDateTimeOffsetFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableDateTimeOffsetFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public NullableDateTimeOffsetFieldExpression<TEntity> As(string alias)
+        public override NullDateTimeOffsetElement As(string alias)
             => new NullableDateTimeOffsetFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

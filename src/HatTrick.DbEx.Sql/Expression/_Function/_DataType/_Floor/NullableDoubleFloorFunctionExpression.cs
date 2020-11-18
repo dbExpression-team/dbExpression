@@ -3,21 +3,26 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDoubleFloorFunctionExpression :
-        NullableFloorFunctionExpression<double>,
+        NullableFloorFunctionExpression<double,double?>,
+        NullDoubleElement,
+        AnyDoubleElement,
         IEquatable<NullableDoubleFloorFunctionExpression>
     {
         #region constructors
-        public NullableDoubleFloorFunctionExpression(NullableExpressionMediator<double> expression) : base(expression)
+        public NullableDoubleFloorFunctionExpression(NullDoubleElement expression) : base(expression)
         {
+
+        }
+
+        public NullableDoubleFloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDoubleFloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDoubleElement As(string alias)
+            => new NullableDoubleFloorFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

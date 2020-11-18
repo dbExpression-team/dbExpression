@@ -4,24 +4,17 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FloorFunctionExpression : DataTypeFunctionExpression,
         IFunctionExpression,
-        IExpressionAliasProvider,
         IEquatable<FloorFunctionExpression>
     {
-        #region interface        
-        string IExpressionAliasProvider.Alias => Alias;
-        #endregion
-
         #region constructors
-        protected FloorFunctionExpression(ExpressionMediator expression) : base(expression)
+        protected FloorFunctionExpression(IExpressionElement expression, Type declaredType) : base(expression, declaredType)
         {
-        }
-        #endregion
 
-        #region as
-        public new FloorFunctionExpression As(string alias)
+        }
+
+        protected FloorFunctionExpression(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
-            base.As(alias);
-            return this;
+
         }
         #endregion
 

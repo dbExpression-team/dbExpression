@@ -5,20 +5,23 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeOffsetCoalesceFunctionExpression :
         CoalesceFunctionExpression<DateTimeOffset>,
+        DateTimeOffsetElement,
+        AnyDateTimeOffsetElement,
         IEquatable<DateTimeOffsetCoalesceFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetCoalesceFunctionExpression(IList<ExpressionMediator<DateTimeOffset>> expressions) : base(expressions)
+        public DateTimeOffsetCoalesceFunctionExpression(IEnumerable<AnyDateTimeOffsetElement> expressions) : base(expressions)
+        {
+        }
+
+        protected DateTimeOffsetCoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, string alias) : base(expressions, alias)
         {
         }
         #endregion
 
         #region as
-        public new DateTimeOffsetCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DateTimeOffsetElement As(string alias)
+            => new DateTimeOffsetCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

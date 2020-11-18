@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 .UseThisToCreateNewEntityAndDynamicMappers<MapperFactory>();
 
             builder.WhenAssemblingSqlStatements
-                .UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement<MsSqlAssemblyPartAppenderFactory>()
+                .UseThisToCreateAppendersForWritingSqlStatements<MsSqlExpressionElementAppenderFactory>()
                 .UseThisToCreateWritersForCreatingSqlStatements<AppenderFactory>()
                 .UseThisToCreateSqlParameters(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), () => config.ValueConverterFactory));
 

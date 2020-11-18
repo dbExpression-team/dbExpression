@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class BooleanFieldExpression<TEntity> : 
         BooleanFieldExpression,
         IEquatable<BooleanFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public BooleanFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public BooleanFieldExpression<TEntity> As(string alias)
+        public override BooleanElement As(string alias)
             => new BooleanFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

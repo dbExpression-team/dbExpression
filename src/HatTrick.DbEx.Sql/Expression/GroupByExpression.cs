@@ -2,15 +2,15 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class GroupByExpression : 
-        IExpression
+    public class GroupByExpression :
+        IExpressionElement
     {
         #region interface
-        public ExpressionMediator Expression { get; private set; }
+        public IExpressionElement Expression { get; private set; }
         #endregion
 
         #region constructors
-        public GroupByExpression(ExpressionMediator expression)
+        public GroupByExpression(IExpressionElement expression)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
         }

@@ -1,18 +1,19 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
+﻿using HatTrick.DbEx.MsSql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlCastFunctionExpressionBuilder : ICastFunctionExpressionBuilder
+    public class MsSqlCastFunctionExpressionBuilder : IMsSqlCastFunctionExpressionBuilder
     {
         #region internals
-        public ExpressionMediator Expression { get; private set; }
+        public IExpressionElement Expression { get; private set; }
         #endregion
 
         #region constructors
-        public MsSqlCastFunctionExpressionBuilder(ExpressionMediator expression)
+        public MsSqlCastFunctionExpressionBuilder(IExpressionElement expression)
         {
             Expression = expression;
         }
@@ -33,6 +34,12 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         DecimalCastFunctionExpression ICastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
             => new DecimalCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Decimal));
+
+        DoubleCastFunctionExpression IMsSqlCastFunctionExpressionBuilder.AsMoney()
+            => new DoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Money));
+
+        DoubleCastFunctionExpression IMsSqlCastFunctionExpressionBuilder.AsSmallMoney()
+            => new DoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallMoney));
 
         SingleCastFunctionExpression ICastFunctionExpressionBuilder.AsFloat()
             => new SingleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Float));
@@ -84,6 +91,10 @@ namespace HatTrick.DbEx.MsSql.Builder
             };
             return exp;
         }
+
+        TimeSpanCastFunctionExpression ICastFunctionExpressionBuilder.AsTime()
+            => new TimeSpanCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Time));
+
         #endregion
     }
 }

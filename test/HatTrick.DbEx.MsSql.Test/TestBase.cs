@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test
             {
                 config = (database as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
 
-                database.WhenAssemblingSqlStatements.ConfigureAttributesOfAssemblingSqlStatements(a => a.PrependCommaOnSelectClauseParts = true);
+                database.WhenAssemblingSqlStatements.ConfigureAttributesOfAssemblingSqlStatements(a => a.PrependCommaOnSelectClause = true);
 
                 database.WhenMappingData.ForType<PaymentMethodType>().UseConverter<StringEnumValueConverter>();
                 database.WhenMappingData.ForEnumType<PaymentSourceType>().PersistTheEnumValueAsString();

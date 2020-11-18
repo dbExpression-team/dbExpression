@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params long[] value) => value is object ? new FilterExpression<bool>(new Int64ExpressionMediator(this), new NullableInt64ExpressionMediator(new InExpression<long>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<long> value) => value is object ? new FilterExpression<bool>(new Int64ExpressionMediator(this), new NullableInt64ExpressionMediator(new InExpression<long>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params long?[] value) => value is object ? new FilterExpression<bool>(new NullableInt64ExpressionMediator(this), new NullableInt64ExpressionMediator(new InExpression<long?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<long?> value) => value is object ? new FilterExpression<bool>(new NullableInt64ExpressionMediator(this), new NullableInt64ExpressionMediator(new InExpression<long?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(long value) => new AssignmentExpression(this, new Int64ExpressionMediator(new LiteralExpression<long>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<long> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(Int64Element value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(long? value) => new AssignmentExpression(this, new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<long> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableInt64ExpressionMediator(new LiteralExpression<long?>(null)));
+        public virtual AssignmentExpression Set(NullInt64Element value) => new AssignmentExpression(this, value);
 
         #endregion
 

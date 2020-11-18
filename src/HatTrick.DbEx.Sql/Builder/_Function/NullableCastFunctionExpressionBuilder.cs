@@ -84,6 +84,9 @@ namespace HatTrick.DbEx.Sql.Builder
             };
             return exp;
         }
+
+        NullableTimeSpanCastFunctionExpression INullableCastFunctionExpressionBuilder.AsTime()
+         => new NullableTimeSpanCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Time));
         #endregion
     }
 }

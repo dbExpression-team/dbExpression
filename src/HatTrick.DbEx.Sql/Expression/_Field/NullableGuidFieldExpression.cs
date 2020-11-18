@@ -3,19 +3,25 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableGuidFieldExpression : 
-        NullableFieldExpression<Guid>,
+        NullableFieldExpression<Guid,Guid?>,
+        NullGuidElement,
+        AnyGuidElement,
         IEquatable<NullableGuidFieldExpression>
     {
         #region constructors
-        protected NullableGuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(Guid?), entity)
+        protected NullableGuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected NullableGuidFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(Guid?), entity, alias)
+        protected NullableGuidFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract NullGuidElement As(string alias);
         #endregion
 
         #region equals

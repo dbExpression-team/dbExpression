@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IQueryExpressionFactory QueryExpressionFactory { get; set; }
         public IExecutionPipelineFactory ExecutionPipelineFactory { get; set;  }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
-        public IAssemblyPartAppenderFactory AssemblyPartAppenderFactory { get; set; }
+        public IExpressionElementAppenderFactory AssemblyPartAppenderFactory { get; set; }
         public IAppenderFactory AppenderFactory { get; set; }
         public ISqlParameterBuilderFactory ParameterBuilderFactory { get; set; }
         public ISqlStatementExecutorFactory ExecutorFactory { get; set; }

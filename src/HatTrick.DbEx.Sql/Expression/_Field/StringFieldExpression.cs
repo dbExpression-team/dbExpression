@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class StringFieldExpression : 
         FieldExpression<string>,
+        StringElement,
+        AnyStringElement,
         IEquatable<StringFieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract StringElement As(string alias);
         #endregion
 
         #region equals

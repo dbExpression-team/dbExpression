@@ -7,11 +7,11 @@ namespace HatTrick.DbEx.Sql.Assembler
     public class DelegateSqlStatementBuilderFactory : ISqlStatementBuilderFactory
     {
         #region internals
-        private readonly Func<ISqlDatabaseMetadataProvider, IAssemblyPartAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory;
+        private readonly Func<ISqlDatabaseMetadataProvider, IExpressionElementAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlStatementBuilderFactory(Func<ISqlDatabaseMetadataProvider, IAssemblyPartAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
+        public DelegateSqlStatementBuilderFactory(Func<ISqlDatabaseMetadataProvider, IExpressionElementAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
         {
             this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Builder."); ;
         }
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Builder.");
 
-            this.factory = new Func<ISqlDatabaseMetadataProvider, IAssemblyPartAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder>((databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder) =>
+            this.factory = new Func<ISqlDatabaseMetadataProvider, IExpressionElementAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder>((databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder) =>
             {
                 var f = factory().CreateSqlStatementBuilder(databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder);
                 if (f is null)
@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #endregion
 
         #region methods
-        public ISqlStatementBuilder CreateSqlStatementBuilder(ISqlDatabaseMetadataProvider databaseMetadata, IAssemblyPartAppenderFactory partAppenderFactory, SqlStatementAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        public ISqlStatementBuilder CreateSqlStatementBuilder(ISqlDatabaseMetadataProvider databaseMetadata, IExpressionElementAppenderFactory partAppenderFactory, SqlStatementAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
             => factory(databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder);
         #endregion
     }

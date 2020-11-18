@@ -3,14 +3,10 @@
     public class FilterExpression<T> : FilterExpression
     {
         #region constructors
-        public FilterExpression(ExpressionMediator leftArg, ExpressionMediator rightArg, FilterExpressionOperator expressionOperator)
+        public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator expressionOperator)
             : base(leftArg, rightArg, expressionOperator)
         {
-        }
 
-        public FilterExpression(ExpressionMediator leftArg, NullableExpressionMediator<T> rightArg, FilterExpressionOperator expressionOperator)
-            : base(leftArg, rightArg, expressionOperator)
-        {
         }
         #endregion
 
@@ -22,7 +18,7 @@
             => new HavingExpression(a);
 
         public static implicit operator JoinOnExpressionSet(FilterExpression<T> a)
-            => a is null ? null : a.ConvertToJoinOnExpressionSet();
+            => a?.ConvertToJoinOnExpressionSet();
         #endregion
     }
 }

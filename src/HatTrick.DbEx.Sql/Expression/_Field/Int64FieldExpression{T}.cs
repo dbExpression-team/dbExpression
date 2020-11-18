@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int64FieldExpression<TEntity> : 
         Int64FieldExpression,
         IEquatable<Int64FieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public Int64FieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public Int64FieldExpression<TEntity> As(string alias)
+        public override Int64Element As(string alias)
             => new Int64FieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

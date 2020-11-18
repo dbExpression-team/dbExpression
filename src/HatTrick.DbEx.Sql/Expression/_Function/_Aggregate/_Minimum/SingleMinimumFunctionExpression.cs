@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SingleMinimumFunctionExpression :
         MinimumFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SingleMinimumFunctionExpression>
     {
         #region constructors
-        public SingleMinimumFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleMinimumFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected SingleMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new SingleMinimumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SingleMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

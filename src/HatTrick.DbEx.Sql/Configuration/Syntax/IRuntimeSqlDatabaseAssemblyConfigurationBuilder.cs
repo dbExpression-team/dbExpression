@@ -6,13 +6,13 @@ namespace HatTrick.DbEx.Sql.Configuration.Syntax
     public interface IRuntimeSqlDatabaseAssemblyConfigurationBuilder
     {
         IRuntimeSqlDatabaseAssemblyConfigurationBuilder ConfigureAttributesOfAssemblingSqlStatements(Action<SqlStatementAssemblerConfiguration> config);
-        IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement(IAssemblyPartAppenderFactory factory);
+        IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement(IExpressionElementAppenderFactory factory);
 
-        IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement<T>()
-            where T : class, IAssemblyPartAppenderFactory, new();
+        IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingSqlStatements<T>()
+            where T : class, IExpressionElementAppenderFactory, new();
 
-        IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement<T>(Func<T> factory)
-            where T : IAssemblyPartAppenderFactory, new();
+        IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingSqlStatements<T>(Func<T> factory)
+            where T : IExpressionElementAppenderFactory, new();
 
         IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateWritersForCreatingSqlStatements(IAppenderFactory factory);
 

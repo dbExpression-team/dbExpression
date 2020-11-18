@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeOffsetMinimumFunctionExpression :
-        NullableMinimumFunctionExpression<DateTimeOffset>,
+        NullableMinimumFunctionExpression<DateTimeOffset,DateTimeOffset?>,
+        NullDateTimeOffsetElement,
+        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetMinimumFunctionExpression(NullableExpressionMediator<DateTimeOffset> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableDateTimeOffsetMinimumFunctionExpression(NullDateTimeOffsetElement expression, bool isDistinct) 
+            : base(expression, isDistinct)
         {
+
+        }
+
+        protected NullableDateTimeOffsetMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
+            : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDateTimeOffsetMinimumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDateTimeOffsetElement As(string alias)
+            => new NullableDateTimeOffsetMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

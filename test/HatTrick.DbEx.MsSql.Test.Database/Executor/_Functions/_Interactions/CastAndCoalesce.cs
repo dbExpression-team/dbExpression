@@ -6,6 +6,8 @@ using HatTrick.DbEx.Sql;
 using System;
 using System.Collections.Generic;
 using Xunit;
+using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Builder;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -43,7 +45,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Person);
 
             //when               
-            IList<int> results = exp.Execute();
+            IList<int?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

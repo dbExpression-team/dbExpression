@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeOffsetExpressionMediator :
         ExpressionMediator<DateTimeOffset>,
+        DateTimeOffsetElement,
+        AnyDateTimeOffsetElement,
         IEquatable<DateTimeOffsetExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public DateTimeOffsetExpressionMediator(IExpression expression) : base(expression)
+        public DateTimeOffsetExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected DateTimeOffsetExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected DateTimeOffsetExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new DateTimeOffsetExpressionMediator As(string alias)
-            => new DateTimeOffsetExpressionMediator(this.Expression, alias);
+        public DateTimeOffsetElement As(string alias)
+            => new DateTimeOffsetExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

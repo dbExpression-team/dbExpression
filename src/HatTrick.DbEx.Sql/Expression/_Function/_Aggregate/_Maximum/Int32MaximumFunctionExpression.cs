@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int32MaximumFunctionExpression :
         MaximumFunctionExpression<int>,
+        Int32Element,
+        AnyInt32Element,
         IEquatable<Int32MaximumFunctionExpression>
     {
         #region constructors
-        public Int32MaximumFunctionExpression(ExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32MaximumFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected Int32MaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int32MaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int32Element As(string alias)
+            => new Int32MaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

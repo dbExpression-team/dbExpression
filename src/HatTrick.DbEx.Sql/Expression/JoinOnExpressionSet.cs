@@ -3,13 +3,13 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpressionSet :
-        IExpression
+        IExpressionElement
     {
         #region interface
         public readonly ConditionalExpressionOperator ConditionalOperator;
         public bool Negate { get; set; }
-        public IExpression LeftArg { get; set; }
-        public IExpression RightArg { get; set; }
+        public IExpressionElement LeftArg { get; set; }
+        public IExpressionElement RightArg { get; set; }
         public bool IsSingleFilter => RightArg is null;
         public object SingleFilter => RightArg is null ? LeftArg : null;
         #endregion
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Expression
             ConditionalOperator = conditionalOperator;
         }
 
-        public JoinOnExpressionSet(IExpression leftArg, IExpression rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
+        public JoinOnExpressionSet(IExpressionElement leftArg, IExpressionElement rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
         {
             if (leftArg is null && rightArg is null)
                 throw new ArgumentNullException($"{nameof(leftArg)} or {nameof(leftArg)} must be non-null.");

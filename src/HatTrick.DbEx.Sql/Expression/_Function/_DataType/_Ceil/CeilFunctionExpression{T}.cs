@@ -2,12 +2,19 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class CeilFunctionExpression<TValue> : CeilingFunctionExpression
+    public abstract class CeilFunctionExpression<TValue> : CeilingFunctionExpression,
+        IExpressionElement<TValue>
         where TValue : IComparable
     {
         #region constructors
-        protected CeilFunctionExpression(ExpressionMediator<TValue> expression) : base(expression)
+        protected CeilFunctionExpression(IExpressionElement expression) : base(expression, typeof(TValue))
         {
+
+        }
+
+        protected CeilFunctionExpression(IExpressionElement expression, string alias) : base(expression, typeof(TValue), alias)
+        {
+
         }
         #endregion
     }

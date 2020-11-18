@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SingleAverageFunctionExpression :
         AverageFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SingleAverageFunctionExpression>
     {
         #region constructors
-        public SingleAverageFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleAverageFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected SingleAverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new SingleAverageFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SingleAverageFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

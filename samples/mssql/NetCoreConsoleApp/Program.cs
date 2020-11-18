@@ -27,14 +27,11 @@ namespace NetCoreConsoleApp
             sw.Reset();
 
             sw.Start();
-            for (int i = 0; i < 250; i++)
-            {
-                Console.WriteLine(i);
-                RunSelectExpressions();
-                RunInsertExpressions();
-                RunUpdateExpressions();
-                RunDeleteExpressions();
-            }
+
+            RunSelectExpressions();
+            RunInsertExpressions();
+            RunUpdateExpressions();
+            RunDeleteExpressions();
             
             sw.Stop();
 

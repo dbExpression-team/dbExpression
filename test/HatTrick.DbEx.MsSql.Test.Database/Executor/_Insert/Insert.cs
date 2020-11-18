@@ -47,7 +47,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         db.fx.Max(dbo.Address.Id).As("identity")
                     )
                     .From(dbo.Address)
-                ).As("last_insert").On(t1.Id == dbo.Address.As("last_insert").Id.As("identity"))
+                ).As("last_insert").On(t1.Id == db.alias("last_insert", "identity").ToInt())
                 .Execute();
 
             address.Should().NotBeNull();
@@ -236,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         db.fx.Max(dbo.Product.Id).As("identity")
                     )
                     .From(dbo.Product)
-                ).As("last_insert").On(t1.Id == dbo.Product.As("last_insert").Id.As("identity"))
+                ).As("last_insert").On(t1.Id == db.alias("last_insert","identity").ToInt())
                 .Execute();
 
             product.Should().NotBeNull();

@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDoubleMinimumFunctionExpression :
-        NullableMinimumFunctionExpression<double>,
+        NullableMinimumFunctionExpression<double,double?>,
+        NullDoubleElement,
+        AnyDoubleElement,
         IEquatable<NullableDoubleMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDoubleMinimumFunctionExpression(NullableExpressionMediator<double> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableDoubleMinimumFunctionExpression(NullDoubleElement expression, bool isDistinct) 
+            : base(expression, isDistinct)
         {
+
+        }
+
+        protected NullableDoubleMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
+            : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDoubleMinimumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDoubleElement As(string alias)
+            => new NullableDoubleMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

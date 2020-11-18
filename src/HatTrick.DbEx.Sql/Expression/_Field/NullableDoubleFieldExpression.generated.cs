@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params double[] value) => value is object ? new FilterExpression<bool>(new DoubleExpressionMediator(this), new NullableDoubleExpressionMediator(new InExpression<double>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<double> value) => value is object ? new FilterExpression<bool>(new DoubleExpressionMediator(this), new NullableDoubleExpressionMediator(new InExpression<double>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params double?[] value) => value is object ? new FilterExpression<bool>(new NullableDoubleExpressionMediator(this), new NullableDoubleExpressionMediator(new InExpression<double?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<double?> value) => value is object ? new FilterExpression<bool>(new NullableDoubleExpressionMediator(this), new NullableDoubleExpressionMediator(new InExpression<double?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(double value) => new AssignmentExpression(this, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<double> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(double? value) => new AssignmentExpression(this, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<double> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableDoubleExpressionMediator(new LiteralExpression<double?>(null)));
+        public virtual AssignmentExpression Set(NullDoubleElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

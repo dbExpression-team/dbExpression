@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class ConcatFunctionExpression<TValue> : ConcatFunctionExpression
+    public abstract class ConcatFunctionExpression<TValue> : ConcatFunctionExpression,
+        IExpressionElement<TValue>
         where TValue : IComparable
     {
         #region constructors
-        protected ConcatFunctionExpression()
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions) : base(expressions, typeof(TValue))
         {
+
         }
 
-        protected ConcatFunctionExpression(params ExpressionMediator<TValue>[] expressions) : base(expressions)
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, string alias) : base(expressions, typeof(TValue), alias)
         {
+
         }
         #endregion
     }

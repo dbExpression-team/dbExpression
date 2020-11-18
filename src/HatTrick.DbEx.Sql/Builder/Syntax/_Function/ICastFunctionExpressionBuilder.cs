@@ -19,5 +19,6 @@ namespace HatTrick.DbEx.Sql.Builder.Syntax
         StringCastFunctionExpression AsChar(int size);
         StringCastFunctionExpression AsNVarChar(int size);
         StringCastFunctionExpression AsNChar(int size);
+        TimeSpanCastFunctionExpression AsTime();
     }
 }

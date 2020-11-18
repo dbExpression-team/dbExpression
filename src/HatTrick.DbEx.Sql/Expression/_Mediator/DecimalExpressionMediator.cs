@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DecimalExpressionMediator :
         ExpressionMediator<decimal>,
+        DecimalElement,
+        AnyDecimalElement,
         IEquatable<DecimalExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public DecimalExpressionMediator(IExpression expression) : base(expression)
+        public DecimalExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected DecimalExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected DecimalExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new DecimalExpressionMediator As(string alias)
-            => new DecimalExpressionMediator(this.Expression, alias);
+        public DecimalElement As(string alias)
+            => new DecimalExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

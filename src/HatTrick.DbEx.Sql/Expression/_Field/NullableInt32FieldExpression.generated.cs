@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params int[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableInt32ExpressionMediator(new InExpression<int>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<int> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new NullableInt32ExpressionMediator(new InExpression<int>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params int?[] value) => value is object ? new FilterExpression<bool>(new NullableInt32ExpressionMediator(this), new NullableInt32ExpressionMediator(new InExpression<int?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<int?> value) => value is object ? new FilterExpression<bool>(new NullableInt32ExpressionMediator(this), new NullableInt32ExpressionMediator(new InExpression<int?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(int value) => new AssignmentExpression(this, new Int32ExpressionMediator(new LiteralExpression<int>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<int> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(int? value) => new AssignmentExpression(this, new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<int> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableInt32ExpressionMediator(new LiteralExpression<int?>(null)));
+        public virtual AssignmentExpression Set(NullInt32Element value) => new AssignmentExpression(this, value);
 
         #endregion
 

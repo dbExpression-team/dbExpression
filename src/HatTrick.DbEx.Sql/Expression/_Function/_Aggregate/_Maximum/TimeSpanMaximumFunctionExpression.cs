@@ -4,20 +4,24 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class TimeSpanMaximumFunctionExpression :
         MaximumFunctionExpression<TimeSpan>,
+        TimeSpanElement,
+        AnyTimeSpanElement,
         IEquatable<TimeSpanMaximumFunctionExpression>
     {
         #region constructors
-        public TimeSpanMaximumFunctionExpression(ExpressionMediator<TimeSpan> expression, bool isDistinct) : base(expression, isDistinct)
+        public TimeSpanMaximumFunctionExpression(TimeSpanElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+        protected TimeSpanMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new TimeSpanMaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public TimeSpanElement As(string alias)
+            => new TimeSpanMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

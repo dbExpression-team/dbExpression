@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
 
             //when
-            builder.AppendPart(queryExpression.Select, context);
+            builder.AppendElement(queryExpression.Select, context);
             var select = builder.Appender.ToString();
 
             //then
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
-            builder.AppendPart(queryExpression.Select, context);
+            builder.AppendElement(queryExpression.Select, context);
             var select = builder.Appender.ToString();
 
             //then
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
-            builder.AppendPart(queryExpression.Select, context);
+            builder.AppendElement(queryExpression.Select, context);
             var select = builder.Appender.ToString();
 
             //then
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
-            builder.AppendPart(queryExpression.GroupBy, context);
+            builder.AppendElement(queryExpression.GroupBy, context);
             var groupBy = builder.Appender.ToString();
 
             //then

@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableSingleFieldExpression<TEntity> : 
         NullableSingleFieldExpression,
         IEquatable<NullableSingleFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableSingleFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public NullableSingleFieldExpression<TEntity> As(string alias)
+        public override NullSingleElement As(string alias)
             => new NullableSingleFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

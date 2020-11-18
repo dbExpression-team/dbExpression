@@ -3,7 +3,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class EnumFieldExpression<TEnum> : FieldExpression<TEnum>,
-        IEnumExpressionMediator<TEnum>,
+        EnumElement<TEnum>,
+        AnyEnumElement<TEnum>,
         IEquatable<EnumFieldExpression<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
@@ -16,6 +17,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract EnumElement<TEnum> As(string alias);
         #endregion
 
         #region equals

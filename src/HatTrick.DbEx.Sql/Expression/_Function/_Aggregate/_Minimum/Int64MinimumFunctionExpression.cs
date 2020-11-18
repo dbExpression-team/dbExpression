@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int64MinimumFunctionExpression :
         MinimumFunctionExpression<long>,
+        Int64Element,
+        AnyInt64Element,
         IEquatable<Int64MinimumFunctionExpression>
     {
         #region constructors
-        public Int64MinimumFunctionExpression(ExpressionMediator<long> expression, bool isDistinct) : base(expression, isDistinct)
+        public Int64MinimumFunctionExpression(Int64Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected Int64MinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int64MinimumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int64Element As(string alias)
+            => new Int64MinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

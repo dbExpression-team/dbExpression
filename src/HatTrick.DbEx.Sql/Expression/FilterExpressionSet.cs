@@ -3,13 +3,13 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpressionSet : 
-        IExpression
+        IExpressionElement
     {
         #region interface
         public ConditionalExpressionOperator ConditionalOperator { get; private set; }
         public bool Negate { get; private set; }
-        public IExpression LeftArg { get; private set; }
-        public IExpression RightArg { get; private set; }
+        public IExpressionElement LeftArg { get; private set; }
+        public IExpressionElement RightArg { get; private set; }
         public bool IsSingleFilter => RightArg is null;
         public object SingleFilter => RightArg is null ? LeftArg : null;
         #endregion

@@ -3,7 +3,6 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CastFunctionExpression : ConversionFunctionExpression,
-        IFunctionExpression,
         IEquatable<CastFunctionExpression>
     {
         #region interface
@@ -14,9 +13,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected CastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression)
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType) : this(expression, convertToDbType, convertToType, null, null, null, null)
+        {
+
+        }
+
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int? size, int? precision, int? scale, string alias) : base(expression, convertToType, alias)
         {
             ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
+            Size = size;
+            Precision = precision;
+            Scale = scale;
         }
         #endregion
 

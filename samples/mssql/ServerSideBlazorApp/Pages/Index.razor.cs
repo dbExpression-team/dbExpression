@@ -1,6 +1,4 @@
-﻿using Blazorise.Charts;
-using Microsoft.Extensions.Hosting;
-using ServerSideBlazorApp.Data;
+﻿using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.Models;
 using System;
 using System.Collections.Generic;
@@ -26,11 +24,12 @@ namespace ServerSideBlazorApp.Pages
             }
         }
 
+
         private async Task<IEnumerable<SingleMetricDatasetModel>> GetDailySales()
-            => (await OrderService.GetRecentSalesByDay()).Select(x => 
-                new SingleMetricDatasetModel<double> 
-                { 
-                    Label = new DateTime(x.Year, x.Month, x.Day).ToString("d", CultureInfo.InvariantCulture), 
+            => (await OrderService.GetRecentSalesByDay()).Select(x =>
+                new SingleMetricDatasetModel<double>
+                {
+                    Label = new DateTime(x.Year, x.Month, x.Day).ToString("d", CultureInfo.InvariantCulture),
                     Value = (double)x.TotalSales
                 }
             );

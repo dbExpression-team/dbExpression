@@ -4,7 +4,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class LiteralExpression :
-        IExpression,
+        IExpressionElement,
         IEquatable<LiteralExpression>
     {
         private object _expression;

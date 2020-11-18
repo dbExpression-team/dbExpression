@@ -3,28 +3,34 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class NullableEnumFieldExpression<TEnum> : 
-        NullableFieldExpression<TEnum>,
+        NullableFieldExpression<TEnum,TEnum?>,
         INullableEnumExpressionMediator<TEnum>,
-        IEquatable<NullableFieldExpression<TEnum>>
+        NullEnumElement<TEnum>,
+        AnyEnumElement<TEnum>,
+        IEquatable<NullableFieldExpression<TEnum,TEnum?>>
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        protected NullableEnumFieldExpression(string identifier, Type declaredType, EntityExpression entity) : base(identifier, declaredType, entity)
+        protected NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
         }
 
-        protected NullableEnumFieldExpression(string identifier, Type declaredType, EntityExpression entity, string alias) : base(identifier, declaredType, entity, alias)
+        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
         #endregion
 
+        #region as
+        public abstract NullEnumElement<TEnum> As(string alias);
+        #endregion
+
         #region equals
-        public bool Equals(NullableFieldExpression<TEnum> obj)
-            => obj is NullableFieldExpression<TEnum> && base.Equals(obj);
+        public bool Equals(NullableFieldExpression<TEnum, TEnum?> obj)
+            => obj is NullableFieldExpression<TEnum, TEnum?> && base.Equals(obj);
 
         public override bool Equals(object obj)
-            => obj is NullableFieldExpression<TEnum> exp && base.Equals(exp);
+            => obj is NullableFieldExpression<TEnum, TEnum?> exp && base.Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

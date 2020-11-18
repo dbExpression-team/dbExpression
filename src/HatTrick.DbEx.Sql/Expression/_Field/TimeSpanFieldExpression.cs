@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class TimeSpanFieldExpression : 
         FieldExpression<TimeSpan>,
+        TimeSpanElement,
+        AnyTimeSpanElement,
         IEquatable<TimeSpanFieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract TimeSpanElement As(string alias);
         #endregion
 
         #region equals

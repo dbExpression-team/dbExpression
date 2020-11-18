@@ -3,29 +3,36 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt32AverageFunctionExpression :
-        NullableAverageFunctionExpression<int>,
+        NullableAverageFunctionExpression<int,int?>,
+        NullInt32Element,
+        AnyInt32Element,
         IEquatable<NullableInt32AverageFunctionExpression>
     {
         #region constructors
-        public NullableInt32AverageFunctionExpression(NullableExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32AverageFunctionExpression(NullByteElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
 
-        public NullableInt32AverageFunctionExpression(NullableExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32AverageFunctionExpression(NullInt16Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
 
-        public NullableInt32AverageFunctionExpression(NullableExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32AverageFunctionExpression(NullInt32Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected NullableInt32AverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableInt32AverageFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullInt32Element As(string alias)
+            => new NullableInt32AverageFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

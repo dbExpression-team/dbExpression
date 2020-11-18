@@ -8,16 +8,16 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region internals
         private readonly FieldExpression assignee;
-        private readonly ExpressionMediator assignment;
+        private readonly IExpressionElement assignment;
         #endregion
 
         #region interface
         FieldExpression IAssignmentExpressionProvider.Assignee => assignee;
-        ExpressionMediator IAssignmentExpressionProvider.Assignment => assignment;
+        IExpressionElement IAssignmentExpressionProvider.Assignment => assignment;
         #endregion
 
         #region constructors
-        public InsertExpression(FieldExpression field, ExpressionMediator assignment)
+        public InsertExpression(FieldExpression field, IExpressionElement assignment)
         {
             assignee = field ?? throw new ArgumentNullException($"{nameof(field)} is required.");
             this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");

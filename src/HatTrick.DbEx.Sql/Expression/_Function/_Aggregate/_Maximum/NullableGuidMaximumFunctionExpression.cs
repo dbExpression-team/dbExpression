@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableGuidMaximumFunctionExpression :
-        NullableMaximumFunctionExpression<Guid>,
+        NullableMaximumFunctionExpression<Guid,Guid?>,
+        NullGuidElement,
+        AnyGuidElement,
         IEquatable<NullableGuidMaximumFunctionExpression>
     {
         #region constructors
-        public NullableGuidMaximumFunctionExpression(NullableExpressionMediator<Guid> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableGuidMaximumFunctionExpression(NullGuidElement expression, bool isDistinct) 
+            : base(expression, isDistinct)
         {
+
+        }
+
+        protected NullableGuidMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
+            : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableGuidMaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullGuidElement As(string alias)
+            => new NullableGuidMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

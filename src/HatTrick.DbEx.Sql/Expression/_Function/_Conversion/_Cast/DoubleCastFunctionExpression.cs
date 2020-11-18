@@ -4,20 +4,27 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DoubleCastFunctionExpression :
         CastFunctionExpression<double>,
+        DoubleElement,
+        AnyDoubleElement,
         IEquatable<DoubleCastFunctionExpression>
     {
         #region constructors
-        public DoubleCastFunctionExpression(ExpressionMediator<double> expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public DoubleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+            : base(expression, convertToDbType, typeof(double))
         {
+
+        }
+
+        protected DoubleCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, typeof(double), size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DoubleCastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DoubleElement As(string alias)
+            => new DoubleCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

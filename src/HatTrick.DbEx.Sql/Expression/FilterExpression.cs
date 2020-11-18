@@ -1,26 +1,24 @@
 ﻿using System;
-using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpression : 
-        IExpression,
-        IFunctionExpression
+        IExpressionElement
     {
         #region interface
-        public ExpressionMediator LeftArg { get; private set; }
-        public ExpressionMediator RightArg { get; private set; }
+        public IExpressionElement LeftArg { get; private set; }
+        public IExpressionElement RightArg { get; private set; }
         public FilterExpressionOperator ExpressionOperator { get; private set; }
         public bool Negate { get; set; }
         #endregion
 
         #region constructors
-        public FilterExpression(ExpressionMediator leftArg, ExpressionMediator rightArg, FilterExpressionOperator filterExpressionOperator)
+        public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator)
             : this(leftArg, rightArg, filterExpressionOperator, false)
         {
         }
 
-        public FilterExpression(ExpressionMediator leftArg, ExpressionMediator rightArg, FilterExpressionOperator filterExpressionOperator, bool negate)
+        public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator, bool negate)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
@@ -65,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Expression
             => new HavingExpression(a);
 
         public static implicit operator JoinOnExpressionSet(FilterExpression a)
-            => a is null ? null : a.ConvertToJoinOnExpressionSet();
+            => a?.ConvertToJoinOnExpressionSet();
         #endregion
 
         #region negation operator

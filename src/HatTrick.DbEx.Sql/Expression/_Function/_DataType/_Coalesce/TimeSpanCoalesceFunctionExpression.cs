@@ -5,20 +5,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class TimeSpanCoalesceFunctionExpression :
         CoalesceFunctionExpression<TimeSpan>,
+        TimeSpanElement,
+        AnyTimeSpanElement,
         IEquatable<TimeSpanCoalesceFunctionExpression>
     {
         #region constructors
-        public TimeSpanCoalesceFunctionExpression(IList<ExpressionMediator<TimeSpan>> expressions) : base(expressions)
+        public TimeSpanCoalesceFunctionExpression(IList<AnyTimeSpanElement> expressions) : base(expressions)
         {
+
+        }
+
+        protected TimeSpanCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new TimeSpanCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public TimeSpanElement As(string alias)
+            => new TimeSpanCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

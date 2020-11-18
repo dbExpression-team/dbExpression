@@ -3,24 +3,34 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeOffsetDateAddFunctionExpression :
-        NullableDateAddFunctionExpression<DateTimeOffset>,
+        NullableDateAddFunctionExpression<DateTimeOffset,DateTimeOffset?>,
+        NullDateTimeOffsetElement,
+        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetDateAddFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, NullableExpressionMediator<int> value, NullableExpressionMediator<DateTimeOffset> expression) : base(datePart, value, expression)
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyInt32Element value, NullDateTimeOffsetElement expression)
+            : base(datePart, value, expression)
         {
+
         }
-        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, ExpressionMediator<int> value, ExpressionMediator<DateTimeOffset> expression) : base(datePart, value, expression)
+
+        public NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, AnyInt32Element value, DateTimeOffsetElement expression)
+            : base(datePart, value, expression)
         {
+
+        }
+
+        protected NullableDateTimeOffsetDateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, string alias)
+            : base(datePart, value, expression, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDateTimeOffsetDateAddFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDateTimeOffsetElement As(string alias)
+            => new NullableDateTimeOffsetDateAddFunctionExpression(base.DatePart, base.Value, base.Expression, alias);
         #endregion
 
         #region equals

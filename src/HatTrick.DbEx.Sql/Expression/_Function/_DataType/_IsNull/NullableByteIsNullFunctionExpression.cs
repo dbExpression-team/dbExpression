@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteIsNullFunctionExpression :
-        NullableIsNullFunctionExpression<byte>,
+        NullableIsNullFunctionExpression<byte,byte?>,
+        NullByteElement,
+        AnyByteElement,
         IEquatable<NullableByteIsNullFunctionExpression>
     {
         #region constructors
-        public NullableByteIsNullFunctionExpression(ExpressionMediator<byte> expression, ExpressionMediator<byte> value) : base(expression, value)
+        public NullableByteIsNullFunctionExpression(AnyByteElement expression, NullByteElement value) 
+            : base(expression, value)
         {
+
+        }
+
+        protected NullableByteIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias)
+            : base(expression, value, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableByteIsNullFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullByteElement As(string alias)
+            => new NullableByteIsNullFunctionExpression(base.Expression, base.Value, alias);
         #endregion
 
         #region equals

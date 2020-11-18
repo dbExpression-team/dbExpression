@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class SingleFieldExpression : 
         FieldExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SingleFieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract SingleElement As(string alias);
         #endregion
 
         #region equals

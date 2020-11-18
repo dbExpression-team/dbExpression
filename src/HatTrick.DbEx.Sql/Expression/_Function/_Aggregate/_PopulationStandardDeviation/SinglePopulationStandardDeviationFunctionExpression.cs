@@ -4,38 +4,52 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SinglePopulationStandardDeviationFunctionExpression :
         PopulationStandardDeviationFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SinglePopulationStandardDeviationFunctionExpression>
     {
         #region constructors
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationStandardDeviationFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        {
+
+        }
+
+        public SinglePopulationStandardDeviationFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
+        {
+
+        }
+        public SinglePopulationStandardDeviationFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
         {
         }
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationStandardDeviationFunctionExpression(Int64Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationStandardDeviationFunctionExpression(DoubleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<long> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationStandardDeviationFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<double> expression, bool isDistinct) : base(expression, isDistinct)
+
+        public SinglePopulationStandardDeviationFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
+        protected SinglePopulationStandardDeviationFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
         {
-        }
-        public SinglePopulationStandardDeviationFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
-        {
+
         }
         #endregion
 
         #region as
-        public new SinglePopulationStandardDeviationFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SinglePopulationStandardDeviationFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals
