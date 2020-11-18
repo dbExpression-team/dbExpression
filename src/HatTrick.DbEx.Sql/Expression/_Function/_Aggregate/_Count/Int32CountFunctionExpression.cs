@@ -26,9 +26,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        //protected override IExpressionElement<int> AliasAs(string alias)
-        //    => new Int32CountFunctionExpression(base.Expression, base.IsDistinct, alias);
-
         public Int32Element As(string alias)
             => new Int32CountFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
