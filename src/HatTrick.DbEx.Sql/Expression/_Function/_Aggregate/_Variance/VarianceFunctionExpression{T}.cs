@@ -2,12 +2,19 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class VarianceFunctionExpression<TValue> : VarianceFunctionExpression
+    public abstract class VarianceFunctionExpression<TValue> : VarianceFunctionExpression,
+        IExpressionElement<TValue>
         where TValue : IComparable
     {
         #region constructors
-        protected VarianceFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression, isDistinct)
+        protected VarianceFunctionExpression(IExpressionElement expression, bool isDistinct) : base(expression, typeof(TValue), isDistinct)
         {
+
+        }
+
+        protected VarianceFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, typeof(TValue), isDistinct, alias)
+        {
+
         }
         #endregion
     }

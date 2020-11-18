@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation++.Indent();
 
             context.PushAppendStyle(EntityExpressionAppendStyle.None);
-            builder.AppendPart(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity, context);
             context.PopAppendStyles();
 
             builder.Appender
@@ -28,14 +28,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indent().Write("SET").LineBreak()
                 .Indentation++;
 
-            builder.AppendPart(expression.Assign, context);
+            builder.AppendElement(expression.Assign, context);
 
             builder.Appender.LineBreak()
                 .Indentation--.Indent().Write("FROM").LineBreak()
                 .Indentation++.Indent();
 
             context.PushAppendStyle(EntityExpressionAppendStyle.Declaration);
-            builder.AppendPart(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity, context);
             context.PopAppendStyles();
 
             builder.Appender.Indentation--;

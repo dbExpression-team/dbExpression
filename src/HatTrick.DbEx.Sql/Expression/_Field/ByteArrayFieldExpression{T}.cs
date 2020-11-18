@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class ByteArrayFieldExpression<TEntity> : ByteArrayFieldExpression,
         IEquatable<ByteArrayFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public ByteArrayFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,13 +18,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public ByteArrayFieldExpression<TEntity> As(string alias)
+        public override ByteArrayElement As(string alias)
             => new ByteArrayFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 
         #region set
         public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

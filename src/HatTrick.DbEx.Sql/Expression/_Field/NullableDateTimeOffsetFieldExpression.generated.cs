@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params DateTimeOffset[] value) => value is object ? new FilterExpression<bool>(new DateTimeOffsetExpressionMediator(this), new NullableDateTimeOffsetExpressionMediator(new InExpression<DateTimeOffset>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<DateTimeOffset> value) => value is object ? new FilterExpression<bool>(new DateTimeOffsetExpressionMediator(this), new NullableDateTimeOffsetExpressionMediator(new InExpression<DateTimeOffset>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params DateTimeOffset?[] value) => value is object ? new FilterExpression<bool>(new NullableDateTimeOffsetExpressionMediator(this), new NullableDateTimeOffsetExpressionMediator(new InExpression<DateTimeOffset?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<DateTimeOffset?> value) => value is object ? new FilterExpression<bool>(new NullableDateTimeOffsetExpressionMediator(this), new NullableDateTimeOffsetExpressionMediator(new InExpression<DateTimeOffset?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<DateTimeOffset> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<DateTimeOffset> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(null)));
+        public virtual AssignmentExpression Set(NullDateTimeOffsetElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

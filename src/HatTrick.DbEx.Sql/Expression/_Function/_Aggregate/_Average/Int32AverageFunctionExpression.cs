@@ -4,28 +4,35 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int32AverageFunctionExpression :
         AverageFunctionExpression<int>,
+        Int32Element,
+        AnyInt32Element,
         IEquatable<Int32AverageFunctionExpression>
     {
         #region constructors
-        public Int32AverageFunctionExpression(ExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32AverageFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
 
-        public Int32AverageFunctionExpression(ExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32AverageFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
         }
 
-        public Int32AverageFunctionExpression(ExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32AverageFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected Int32AverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int32AverageFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int32Element As(string alias)
+            => new Int32AverageFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class ByteFieldExpression : 
         FieldExpression<byte>,
+        ByteElement,
+        AnyByteElement,
         IEquatable<ByteFieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract ByteElement As(string alias);
         #endregion
 
         #region equals

@@ -470,10 +470,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Product.Description == productDescription;
 
-            var appender = database.AssemblyPartAppenderFactory.CreatePartAppender(predicate);
+            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
 
             //when
-            appender.AppendPart(predicate, builder, context);
+            appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
@@ -495,10 +495,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Person.FirstName == firstName;
 
-            var appender = database.AssemblyPartAppenderFactory.CreatePartAppender(predicate);
+            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
 
             //when
-            appender.AppendPart(predicate, builder, context);
+            appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
@@ -520,10 +520,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Product.Price == productPrice;
 
-            var appender = database.AssemblyPartAppenderFactory.CreatePartAppender(predicate);
+            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
 
             //when
-            appender.AppendPart(predicate, builder, context);
+            appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then
@@ -544,10 +544,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             var predicate = dbo.Product.Image == image;
 
-            var appender = database.AssemblyPartAppenderFactory.CreatePartAppender(predicate);
+            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
 
             //when
-            appender.AppendPart(predicate, builder, context);
+            appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
 
             //then

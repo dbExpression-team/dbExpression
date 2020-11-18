@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params Guid[] value) => value is object ? new FilterExpression<bool>(new GuidExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(new GuidExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params Guid?[] value) => value is object ? new FilterExpression<bool>(new NullableGuidExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<Guid?> value) => value is object ? new FilterExpression<bool>(new NullableGuidExpressionMediator(this), new NullableGuidExpressionMediator(new InExpression<Guid?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new GuidExpressionMediator(new LiteralExpression<Guid>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<Guid> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<Guid> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(null)));
+        public virtual AssignmentExpression Set(NullGuidElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

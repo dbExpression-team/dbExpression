@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeOffsetMaximumFunctionExpression :
         MaximumFunctionExpression<DateTimeOffset>,
+        DateTimeOffsetElement,
+        AnyDateTimeOffsetElement,
         IEquatable<DateTimeOffsetMaximumFunctionExpression>
     {
         #region constructors
-        public DateTimeOffsetMaximumFunctionExpression(ExpressionMediator<DateTimeOffset> expression, bool isDistinct) : base(expression, isDistinct)
+        public DateTimeOffsetMaximumFunctionExpression(DateTimeOffsetElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected DateTimeOffsetMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DateTimeOffsetMaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DateTimeOffsetElement As(string alias)
+            => new DateTimeOffsetMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

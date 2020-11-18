@@ -8,13 +8,20 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ConcatFunctionExpression>
     {
         #region interface
-        public new IList<ExpressionMediator> Expression { get; private set; }
+        public new IList<AnyStringElement> Expression { get; private set; }
         #endregion
 
         #region constructors
-        protected ConcatFunctionExpression(params ExpressionMediator[] expressions) : base()
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, Type declaredType) : this(expressions, declaredType, null)
         {
-            Expression = expressions.ToList();
+
+        }
+
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, Type declaredType, string alias) : base(null, declaredType, alias)
+        {
+            Expression = expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required.");
+            if (!expressions.Any())
+                throw new ArgumentException($"Expected {nameof(expressions)} to contain at least one element.");
         }
         #endregion
 

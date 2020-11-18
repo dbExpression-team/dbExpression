@@ -4,20 +4,27 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeCastFunctionExpression :
         CastFunctionExpression<DateTime>,
+        DateTimeElement,
+        AnyDateTimeElement,
         IEquatable<DateTimeCastFunctionExpression>
     {
         #region constructors
-        public DateTimeCastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public DateTimeCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType) 
+            : base(expression, convertToDbType, typeof(DateTime))
         {
+
+        }
+
+        protected DateTimeCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, typeof(DateTime), size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DateTimeCastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DateTimeElement As(string alias)
+            => new DateTimeCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

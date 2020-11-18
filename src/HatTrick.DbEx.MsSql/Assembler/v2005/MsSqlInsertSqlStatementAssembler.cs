@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
             builder.Appender.Indent().Write("INSERT INTO ");
-            builder.AppendPart(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity, context);
             builder.Appender.Write(" (").LineBreak();
             builder.Appender.Indentation++;
 
@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                     builder.Appender.Indent();
-                    builder.AppendPart(
+                    builder.AppendElement(
                         (insertSet[i] as IAssignmentExpressionProvider).Assignee,
                         context
                     );
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
                 for (var i = 0; i < insertSet.Count; i++)
                 {
                     builder.Appender.Indent().Write("INSERTED.");
-                    builder.AppendPart(
+                    builder.AppendElement(
                         (insertSet[i] as IAssignmentExpressionProvider).Assignee,
                         context
                     );
@@ -89,7 +89,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
                 context.PushField((insertSet[i] as IAssignmentExpressionProvider).Assignee);
                 try
                 {
-                    builder.AppendPart((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
+                    builder.AppendElement((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
                 }
                 finally
                 {

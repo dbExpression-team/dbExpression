@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class BooleanExpressionMediator :
         ExpressionMediator<bool>,
+        BooleanElement,
+        AnyBooleanElement,
         IEquatable<BooleanExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public BooleanExpressionMediator(IExpression expression) : base(expression)
+        public BooleanExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected BooleanExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected BooleanExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new BooleanExpressionMediator As(string alias)
-            => new BooleanExpressionMediator(this.Expression, alias);
+        public BooleanElement As(string alias)
+            => new BooleanExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

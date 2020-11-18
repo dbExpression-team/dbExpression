@@ -3,7 +3,9 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeExpressionMediator :
-        NullableExpressionMediator<DateTime>,
+        NullableExpressionMediator<DateTime,DateTime?>,
+        NullDateTimeElement,
+        AnyDateTimeElement,
         IEquatable<NullableDateTimeExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableDateTimeExpressionMediator(IExpression expression) : base(expression, typeof(DateTime?))
+        public NullableDateTimeExpressionMediator(IExpressionElement expression) : base(expression, typeof(DateTime?))
         {
         }
 
-        protected NullableDateTimeExpressionMediator(IExpression expression, string alias) : base(expression, typeof(DateTime?), alias)
+        protected NullableDateTimeExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(DateTime?), alias)
         {
         }
         #endregion
 
         #region as
-        public new NullableDateTimeExpressionMediator As(string alias)
-            => new NullableDateTimeExpressionMediator(this.Expression, alias);
+        public NullDateTimeElement As(string alias)
+            => new NullableDateTimeExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

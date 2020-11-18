@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteArrayFieldExpression<TEntity> :
         NullableByteArrayFieldExpression,
         IEquatable<NullableByteArrayFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableByteArrayFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -21,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullableByteArrayFieldExpression<TEntity> As(string alias)
+        public override NullByteArrayElement As(string alias)
             => new NullableByteArrayFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

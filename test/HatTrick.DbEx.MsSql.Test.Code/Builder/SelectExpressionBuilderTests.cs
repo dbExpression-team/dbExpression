@@ -29,7 +29,6 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             //then
             expressionSet.Select.Expressions.Should().ContainSingle()
-                .Which.Expression.Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
@@ -57,11 +56,9 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
             expressionSet.Select.Expressions.Should().Contain(x => x.Expression.Equals(sec.Person.Id))
-                .Which.Expression.Should().BeOfType<Int32ExpressionMediator>()
                 .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
 
-            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Expression.Equals(sec.Person.DateCreated))
-                .Which.Expression.Should().BeOfType<DateTimeOffsetExpressionMediator>()
+            expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
                 .Which.Expression.Should().BeOfType<DateTimeOffsetFieldExpression<Person>>();
 
             expressionSet.BaseEntity.Should().NotBeNull()

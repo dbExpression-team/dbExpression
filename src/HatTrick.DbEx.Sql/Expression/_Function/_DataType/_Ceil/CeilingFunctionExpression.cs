@@ -3,25 +3,17 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CeilingFunctionExpression : DataTypeFunctionExpression,
-        IFunctionExpression,
-        IExpressionAliasProvider,
         IEquatable<CeilingFunctionExpression>
     {
-        #region interface        
-        string IExpressionAliasProvider.Alias => Alias;
-        #endregion
-
         #region constructors
-        protected CeilingFunctionExpression(ExpressionMediator expression) : base(expression)
+        protected CeilingFunctionExpression(IExpressionElement expression, Type declaredType) : base(expression, declaredType)
         {
-        }
-        #endregion
 
-        #region as
-        public new CeilingFunctionExpression As(string alias)
+        }
+
+        protected CeilingFunctionExpression(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
-            base.As(alias);
-            return this;
+
         }
         #endregion
 

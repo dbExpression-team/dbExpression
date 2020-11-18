@@ -3,19 +3,25 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableTimeSpanFieldExpression : 
-        NullableFieldExpression<TimeSpan>,
+        NullableFieldExpression<TimeSpan,TimeSpan?>,
+        NullTimeSpanElement,
+        AnyTimeSpanElement,
         IEquatable<NullableTimeSpanFieldExpression>
     {
         #region constructors
-        protected NullableTimeSpanFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TimeSpan?), entity)
+        protected NullableTimeSpanFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected NullableTimeSpanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TimeSpan?), entity, alias)
+        protected NullableTimeSpanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract NullTimeSpanElement As(string alias);
         #endregion
 
         #region equals

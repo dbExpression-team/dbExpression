@@ -1,24 +1,44 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableSingleCoalesceFunctionExpression :
-        NullableCoalesceFunctionExpression<float>,
+        NullableCoalesceFunctionExpression<float,float?>,
+        NullSingleElement,
+        AnySingleElement,
         IEquatable<NullableSingleCoalesceFunctionExpression>
     {
         #region constructors
-        public NullableSingleCoalesceFunctionExpression(IList<ExpressionMediator<float>> expressions) : base(expressions)
+        public NullableSingleCoalesceFunctionExpression(IList<AnySingleElement> expressions) 
+            : base(expressions)
         {
+
+        }
+
+        public NullableSingleCoalesceFunctionExpression(IList<AnySingleElement> expressions, SingleElement termination) 
+            : base(expressions?.Concat(new IExpressionElement[1] { termination }))
+        {
+
+        }
+
+        public NullableSingleCoalesceFunctionExpression(IList<AnySingleElement> expressions, NullSingleElement termination) 
+            : base(expressions?.Concat(new IExpressionElement[1] { termination }))
+        {
+
+        }
+
+        protected NullableSingleCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
+            : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableSingleCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullSingleElement As(string alias)
+            => new NullableSingleCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

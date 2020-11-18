@@ -6,11 +6,16 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<IsNullFunctionExpression>
     {
         #region interface
-        public ExpressionMediator Value { get; }
+        public IExpressionElement Value { get; }
         #endregion
 
         #region constructors
-        protected IsNullFunctionExpression(ExpressionMediator expression, ExpressionMediator value) : base(expression)
+        protected IsNullFunctionExpression(IExpressionElement expression, Type declaredType, IExpressionElement value) : this(expression, declaredType, value, null)
+        {
+
+        }
+
+        protected IsNullFunctionExpression(IExpressionElement expression, Type declaredType, IExpressionElement value, string alias) : base(expression, declaredType, alias)
         {
             Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");
         }

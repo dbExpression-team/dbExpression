@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeFieldExpression<TEntity> : 
         NullableDateTimeFieldExpression,
         IEquatable<NullableDateTimeFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableDateTimeFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public NullableDateTimeFieldExpression<TEntity> As(string alias)
+        public override NullDateTimeElement As(string alias)
             => new NullableDateTimeFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDecimalFieldExpression<TEntity> : 
         NullableDecimalFieldExpression,
         IEquatable<NullableDecimalFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableDecimalFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public NullableDecimalFieldExpression<TEntity> As(string alias)
+        public override NullDecimalElement As(string alias)
             => new NullableDecimalFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

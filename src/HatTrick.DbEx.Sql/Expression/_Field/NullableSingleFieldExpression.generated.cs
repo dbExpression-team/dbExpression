@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params float[] value) => value is object ? new FilterExpression<bool>(new SingleExpressionMediator(this), new NullableSingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<float> value) => value is object ? new FilterExpression<bool>(new SingleExpressionMediator(this), new NullableSingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params float?[] value) => value is object ? new FilterExpression<bool>(new NullableSingleExpressionMediator(this), new NullableSingleExpressionMediator(new InExpression<float?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<float?> value) => value is object ? new FilterExpression<bool>(new NullableSingleExpressionMediator(this), new NullableSingleExpressionMediator(new InExpression<float?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(float value) => new AssignmentExpression(this, new SingleExpressionMediator(new LiteralExpression<float>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<float> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(SingleElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(float? value) => new AssignmentExpression(this, new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<float> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableSingleExpressionMediator(new LiteralExpression<float?>(null)));
+        public virtual AssignmentExpression Set(NullSingleElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

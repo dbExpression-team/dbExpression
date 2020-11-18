@@ -5,7 +5,7 @@ using System.Text;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class InExpression :
-        IExpression,
+        IExpressionElement,
         IEquatable<InExpression>
     {
         #region interface

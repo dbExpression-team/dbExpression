@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SingleFloorFunctionExpression :
         FloorFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SingleFloorFunctionExpression>
     {
         #region constructors
-        public SingleFloorFunctionExpression(ExpressionMediator<float> expression) : base(expression)
+        public SingleFloorFunctionExpression(SingleElement expression) : base(expression)
+        {
+
+        }
+
+        public SingleFloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
         {
 
         }
         #endregion
 
         #region as
-        public new SingleFloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SingleFloorFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

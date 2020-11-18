@@ -1,15 +1,18 @@
-﻿namespace HatTrick.DbEx.Sql.Expression
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class AggregateFunctionExpression : FunctionExpression
     {
         #region constructors
-        protected AggregateFunctionExpression()
-        { 
-        
+        protected AggregateFunctionExpression(IExpressionElement expression, Type declaredType) : base(expression, declaredType)
+        {
+
         }
 
-        protected AggregateFunctionExpression(ExpressionMediator expression) : base(expression)
+        protected AggregateFunctionExpression(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
+
         }
         #endregion
     }

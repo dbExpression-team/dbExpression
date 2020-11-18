@@ -3,7 +3,9 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableBooleanExpressionMediator :
-        NullableExpressionMediator<bool>,
+        NullableExpressionMediator<bool,bool?>,
+        NullBooleanElement,
+        AnyBooleanElement,
         IEquatable<NullableBooleanExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableBooleanExpressionMediator(IExpression expression) : base(expression, typeof(bool?))
+        public NullableBooleanExpressionMediator(IExpressionElement expression) : base(expression, typeof(bool?))
         {
         }
 
-        protected NullableBooleanExpressionMediator(IExpression expression, string alias) : base(expression, typeof(bool?), alias)
+        protected NullableBooleanExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(bool?), alias)
         {
         }
         #endregion
 
         #region as
-        public new NullableBooleanExpressionMediator As(string alias)
-            => new NullableBooleanExpressionMediator(this.Expression, alias);
+        public NullBooleanElement As(string alias)
+            => new NullableBooleanExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int64ExpressionMediator :
         ExpressionMediator<long>,
+        Int64Element,
+        AnyInt64Element,
         IEquatable<Int64ExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public Int64ExpressionMediator(IExpression expression) : base(expression)
+        public Int64ExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected Int64ExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected Int64ExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new Int64ExpressionMediator As(string alias)
-            => new Int64ExpressionMediator(this.Expression, alias);
+        public Int64Element As(string alias)
+            => new Int64ExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

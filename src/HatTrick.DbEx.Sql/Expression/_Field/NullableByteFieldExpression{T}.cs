@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableByteFieldExpression<TEntity> : 
         NullableByteFieldExpression,
         IEquatable<NullableByteFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public NullableByteFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public NullableByteFieldExpression<TEntity> As(string alias)
+        public override NullByteElement As(string alias)
             => new NullableByteFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

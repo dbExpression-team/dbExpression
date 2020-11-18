@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeOffsetFieldExpression<TEntity> : 
         DateTimeOffsetFieldExpression,
         IEquatable<DateTimeOffsetFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public DateTimeOffsetFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public DateTimeOffsetFieldExpression<TEntity> As(string alias)
+        public override DateTimeOffsetElement As(string alias)
             => new DateTimeOffsetFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

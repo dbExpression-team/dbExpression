@@ -3,6 +3,6 @@
     public interface IAssignmentExpressionProvider
     {
         FieldExpression Assignee { get; }
-        ExpressionMediator Assignment { get; }
+        IExpressionElement Assignment { get; }
     }
 }

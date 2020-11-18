@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -188,6 +189,26 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             result.Should().NotBeNull();
             result.Value.Hour.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_cast_product_category_type_to_varchar(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Cast(dbo.Product.ProductCategoryType).AsVarChar(2)
+                ).From(dbo.Product)
+                .Where(dbo.Product.ProductCategoryType == ProductCategoryType.Books);
+
+            //when               
+            string result = exp.Execute();
+
+            //then
+            result.Should().NotBeNull();
+            result.Should().Be(((int)ProductCategoryType.Books).ToString());
         }
     }
 }

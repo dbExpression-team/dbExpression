@@ -3,29 +3,36 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt32SumFunctionExpression :
-        NullableSumFunctionExpression<int>,
+        NullableSumFunctionExpression<int,int?>,
+        NullInt32Element,
+        AnyInt32Element,
         IEquatable<NullableInt32SumFunctionExpression>
     {
         #region constructors
-        public NullableInt32SumFunctionExpression(NullableExpressionMediator<byte> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32SumFunctionExpression(NullByteElement expression, bool isDistinct) : base(expression, typeof(byte?), isDistinct)
         {
+
         }
 
-        public NullableInt32SumFunctionExpression(NullableExpressionMediator<short> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32SumFunctionExpression(NullInt16Element expression, bool isDistinct) : base(expression, typeof(byte?), isDistinct)
         {
+
         }
 
-        public NullableInt32SumFunctionExpression(NullableExpressionMediator<int> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32SumFunctionExpression(NullInt32Element expression, bool isDistinct) : base(expression, typeof(byte?), isDistinct)
         {
+
+        }
+
+        protected NullableInt32SumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, typeof(byte?), isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableInt32SumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullInt32Element As(string alias)
+            => new NullableInt32SumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

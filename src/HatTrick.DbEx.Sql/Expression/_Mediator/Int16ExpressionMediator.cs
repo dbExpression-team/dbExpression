@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int16ExpressionMediator :
         ExpressionMediator<short>,
+        Int16Element,
+        AnyInt16Element,
         IEquatable<Int16ExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public Int16ExpressionMediator(IExpression expression) : base(expression)
+        public Int16ExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected Int16ExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected Int16ExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new Int16ExpressionMediator As(string alias)
-            => new Int16ExpressionMediator(this.Expression, alias);
+        public Int16Element As(string alias)
+            => new Int16ExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

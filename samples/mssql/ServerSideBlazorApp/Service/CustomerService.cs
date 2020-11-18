@@ -16,15 +16,19 @@ namespace ServerSideBlazorApp.Service
 {
     public class CustomerService : ServiceBase
     {
-        private IDictionary<string, ExpressionMediator> SortConversion = new Dictionary<string, ExpressionMediator>
+        private static NullInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
+
+        private IDictionary<string, AnyElement> SortConversion = new Dictionary<string, AnyElement>
         {
             { nameof(CustomerSummaryModel.Name), dbo.Customer.FirstName + " " + dbo.Customer.LastName },
             { nameof(CustomerSummaryModel.LifetimeValue), dbo.PersonTotalPurchasesView.TotalAmount },
-            { nameof(CustomerSummaryModel.CurrentAge), dbo.Customer.BirthDate }
+            { nameof(CustomerSummaryModel.CurrentAge), currentAgeApproximation }
         };
 
         public async Task<IEnumerable<(int,decimal)>> GetPurchaseValueByYear(int customerId)
         {
+            var x = dbo.Customer.FirstName + " " + dbo.Customer.LastName;
+
             IEnumerable<dynamic> metrics = await
 
                 db.SelectMany(
@@ -49,16 +53,16 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.Id,
                     (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As("Name"),
                     db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
-                    db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge")
+                    currentAgeApproximation.As("CurrentAge")
                 )
                 .From(dbo.Customer)
                 .Where(string.IsNullOrWhiteSpace(model.SearchPhrase) ? null : (dbo.Customer.FirstName + " " + dbo.Customer.LastName).Like(model.SearchPhrase + '%'))
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(
-                    model.Sort is object ? 
-                        (model.Sort.Ascending ? SortConversion[model.Sort.Field].Asc : SortConversion[model.Sort.Field].Desc)
+                    model.Sorting is object && model.Sorting.Any() ?
+                        model.Sorting.Select(s => s.Ascending ? SortConversion[s.Field].Asc : SortConversion[s.Field].Desc)
                         :
-                        (dbo.Customer.FirstName + " " + dbo.Customer.LastName).Asc
+                        new List<OrderByExpression> { (dbo.Customer.FirstName + " " + dbo.Customer.LastName).Asc }
                 )
                 .Skip(model.Offset).Limit(model.Limit)
                 .ExecuteAsync(row => {
@@ -208,7 +212,7 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.Id,
                     (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As("Name"),
                     db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
-                    db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge")
+                    currentAgeApproximation.As("CurrentAge")
                 )
                 .From(customer)
                 .LeftJoin(ptpv).On(ptpv.Id == customer.Id)

@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class TimeSpanFieldExpression<TEntity> : 
         TimeSpanFieldExpression,
         IEquatable<TimeSpanFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public TimeSpanFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public TimeSpanFieldExpression<TEntity> As(string alias)
+        public override TimeSpanElement As(string alias)
             => new TimeSpanFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

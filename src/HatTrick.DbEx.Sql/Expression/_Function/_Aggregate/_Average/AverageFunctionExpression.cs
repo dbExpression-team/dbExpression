@@ -15,7 +15,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected AverageFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
+        protected AverageFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct) : this(expression, declaredType, isDistinct, null)
+        {
+
+        }
+
+        protected AverageFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct, string alias) : base(expression, declaredType, alias)
         {
             IsDistinct = isDistinct;
         }

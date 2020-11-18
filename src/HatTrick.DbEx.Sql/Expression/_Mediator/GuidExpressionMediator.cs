@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class GuidExpressionMediator :
         ExpressionMediator<Guid>,
+        GuidElement,
+        AnyGuidElement,
         IEquatable<GuidExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public GuidExpressionMediator(IExpression expression) : base(expression)
+        public GuidExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected GuidExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected GuidExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new GuidExpressionMediator As(string alias)
-            => new GuidExpressionMediator(this.Expression, alias);
+        public GuidElement As(string alias)
+            => new GuidExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

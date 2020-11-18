@@ -8,11 +8,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params string[] value) => value is object ? new FilterExpression<bool>(new StringExpressionMediator(this), new NullableStringExpressionMediator(new InExpression<string>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<string> value) => value is object ? new FilterExpression<bool>(new StringExpressionMediator(this), new NullableStringExpressionMediator(new InExpression<string>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(string value) => new AssignmentExpression(this, new StringExpressionMediator(new LiteralExpression<string>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<string> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

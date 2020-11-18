@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeExpressionMediator :
         ExpressionMediator<DateTime>,
+        DateTimeElement,
+        AnyDateTimeElement,
         IEquatable<DateTimeExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public DateTimeExpressionMediator(IExpression expression) : base(expression)
+        public DateTimeExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected DateTimeExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected DateTimeExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new DateTimeExpressionMediator As(string alias)
-            => new DateTimeExpressionMediator(this.Expression, alias);
+        public DateTimeElement As(string alias)
+            => new DateTimeExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

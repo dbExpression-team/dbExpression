@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableEnumExpressionMediator<TEnum> :
         EnumExpressionMediator<TEnum>,
+        NullEnumElement<TEnum>,
+        AnyEnumElement<TEnum>,
         IEquatable<NullableEnumExpressionMediator<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
@@ -12,18 +14,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableEnumExpressionMediator(IExpression expression) : base(expression, typeof(TEnum?), null)
+        public NullableEnumExpressionMediator(IExpressionElement expression) : base(expression, typeof(TEnum?), null)
         {
         }
 
-        protected NullableEnumExpressionMediator(IExpression expression, string alias) : base(expression, typeof(TEnum?), alias)
+        protected NullableEnumExpressionMediator(IExpressionElement expression, string alias) : base(expression, typeof(TEnum?), alias)
         {
         }
         #endregion
 
         #region as
-        public new NullableEnumExpressionMediator<TEnum> As(string alias)
-            => new NullableEnumExpressionMediator<TEnum>(this.Expression, alias);
+        public NullEnumElement<TEnum> As(string alias)
+            => new NullableEnumExpressionMediator<TEnum>(base.Expression, alias);
         #endregion
 
         #region order

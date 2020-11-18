@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class DoubleFieldExpression : 
         FieldExpression<double>,
+        DoubleElement,
+        AnyDoubleElement,
         IEquatable<DoubleFieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract DoubleElement As(string alias);
         #endregion
 
         #region equals

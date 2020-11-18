@@ -24,26 +24,26 @@ namespace HatTrick.DbEx.Sql.Configuration
             return this;
         }
 
-        #region part appender
-        public IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement(IAssemblyPartAppenderFactory factory)
+        #region element appender
+        public IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement(IExpressionElementAppenderFactory factory)
         {
             configuration.AssemblyPartAppenderFactory = factory;
             return this;
         }
 
-        public IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement<T>()
-            where T : class, IAssemblyPartAppenderFactory, new()
+        public IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingSqlStatements<T>()
+            where T : class, IExpressionElementAppenderFactory, new()
         {
             configuration.AssemblyPartAppenderFactory = new T();
-            if (configuration.AssemblyPartAppenderFactory is AssemblyPartAppenderFactory defaultFactory)
-                defaultFactory.RegisterDefaultPartAppenders();
+            if (configuration.AssemblyPartAppenderFactory is ExpressionElementAppenderFactory defaultFactory)
+                defaultFactory.RegisterDefaultElementAppenders();
             return this;
         }
 
-        public IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingQueryExpressionPartsToTheSqlStatement<T>(Func<T> factory)
-            where T : IAssemblyPartAppenderFactory, new()
+        public IRuntimeSqlDatabaseAssemblyConfigurationBuilder UseThisToCreateAppendersForWritingSqlStatements<T>(Func<T> factory)
+            where T : IExpressionElementAppenderFactory, new()
         {
-            configuration.AssemblyPartAppenderFactory = new DelegateAssemblyPartAppenderFactory(new Func<IAssemblyPartAppenderFactory>(() => factory()));
+            configuration.AssemblyPartAppenderFactory = new DelegateExpressionElementAppenderFactory(new Func<IExpressionElementAppenderFactory>(() => factory()));
             return this;
         }
         #endregion

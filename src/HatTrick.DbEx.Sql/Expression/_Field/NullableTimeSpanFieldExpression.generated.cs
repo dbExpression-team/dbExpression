@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params TimeSpan[] value) => value is object ? new FilterExpression<bool>(new TimeSpanExpressionMediator(this), new NullableTimeSpanExpressionMediator(new InExpression<TimeSpan>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<TimeSpan> value) => value is object ? new FilterExpression<bool>(new TimeSpanExpressionMediator(this), new NullableTimeSpanExpressionMediator(new InExpression<TimeSpan>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params TimeSpan?[] value) => value is object ? new FilterExpression<bool>(new NullableTimeSpanExpressionMediator(this), new NullableTimeSpanExpressionMediator(new InExpression<TimeSpan?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<TimeSpan?> value) => value is object ? new FilterExpression<bool>(new NullableTimeSpanExpressionMediator(this), new NullableTimeSpanExpressionMediator(new InExpression<TimeSpan?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<TimeSpan> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<TimeSpan> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(null)));
+        public virtual AssignmentExpression Set(NullTimeSpanElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

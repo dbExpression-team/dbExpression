@@ -4,20 +4,27 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int16CastFunctionExpression :
         CastFunctionExpression<short>,
+        Int16Element,
+        AnyInt16Element,
         IEquatable<Int16CastFunctionExpression>
     {
         #region constructors
-        public Int16CastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public Int16CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+            : base(expression, convertToDbType, typeof(short))
         {
+
+        }
+
+        protected Int16CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, typeof(short), size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int16CastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int16Element As(string alias)
+            => new Int16CastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

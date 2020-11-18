@@ -3,7 +3,7 @@
     public class SqlStatementAssemblerConfiguration
     {
         public bool IncludeSchemaName { get; set; } = true;
-        public bool PrependCommaOnSelectClauseParts { get; set; } = false;
+        public bool PrependCommaOnSelectClause { get; set; } = false;
         public Delimeters IdentifierDelimiter { get; set; } = new Delimeters('[', ']');
 
         public class Delimeters

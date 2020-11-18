@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int16CeilingFunctionExpression :
         CeilFunctionExpression<short>,
+        Int16Element,
+        AnyInt16Element,
         IEquatable<Int16CeilingFunctionExpression>
     {
         #region constructors
-        public Int16CeilingFunctionExpression(ExpressionMediator<short> expression) : base(expression)
+        public Int16CeilingFunctionExpression(Int16Element expression) : base(expression)
+        {
+
+        }
+
+        protected Int16CeilingFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
         {
 
         }
         #endregion
 
         #region as
-        public new Int16CeilingFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int16Element As(string alias)
+            => new Int16CeilingFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

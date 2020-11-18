@@ -4,22 +4,26 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class EnumIsNullFunctionExpression<TEnum> :
         IsNullFunctionExpression<TEnum>,
-        IEnumExpressionMediator<TEnum>,
+        EnumElement<TEnum>,
+        AnyEnumElement<TEnum>,
         IEquatable<EnumIsNullFunctionExpression<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumIsNullFunctionExpression(EnumExpressionMediator<TEnum> expression, EnumExpressionMediator<TEnum> value) : base(expression, value)
+        public EnumIsNullFunctionExpression(AnyEnumElement<TEnum> expression, EnumElement<TEnum> value) : base(expression, value)
         {
+
+        }
+
+        protected EnumIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new EnumIsNullFunctionExpression<TEnum> As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public EnumElement<TEnum> As(string alias)
+            => new EnumIsNullFunctionExpression<TEnum>(base.Expression, base.Value, alias);
         #endregion
 
         #region equals

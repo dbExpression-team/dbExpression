@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> results = exp.Execute();
+            IList<DateTime?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> results = exp.Execute();
+            IList<DateTime?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);
@@ -65,7 +65,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).From(dbo.Purchase);
 
             //when               
-            IList<DateTime> results = exp.Execute();
+            IList<DateTime?> results = exp.Execute();
 
             //then
             results.Should().HaveCount(expected);

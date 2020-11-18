@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params DateTime[] value) => value is object ? new FilterExpression<bool>(new DateTimeExpressionMediator(this), new NullableDateTimeExpressionMediator(new InExpression<DateTime>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<DateTime> value) => value is object ? new FilterExpression<bool>(new DateTimeExpressionMediator(this), new NullableDateTimeExpressionMediator(new InExpression<DateTime>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params DateTime?[] value) => value is object ? new FilterExpression<bool>(new NullableDateTimeExpressionMediator(this), new NullableDateTimeExpressionMediator(new InExpression<DateTime?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<DateTime?> value) => value is object ? new FilterExpression<bool>(new NullableDateTimeExpressionMediator(this), new NullableDateTimeExpressionMediator(new InExpression<DateTime?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<DateTime> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<DateTime> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(null)));
+        public virtual AssignmentExpression Set(NullDateTimeElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

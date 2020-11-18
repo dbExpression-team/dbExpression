@@ -3,19 +3,25 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableDateTimeOffsetFieldExpression : 
-        NullableFieldExpression<DateTimeOffset>,
+        NullableFieldExpression<DateTimeOffset,DateTimeOffset?>,
+        NullDateTimeOffsetElement,
+        AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetFieldExpression>
     {
         #region constructors
-        protected NullableDateTimeOffsetFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(DateTimeOffset?), entity)
+        protected NullableDateTimeOffsetFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
         {
 
         }
 
-        protected NullableDateTimeOffsetFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(DateTimeOffset?), entity, alias)
+        protected NullableDateTimeOffsetFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract NullDateTimeOffsetElement As(string alias);
         #endregion
 
         #region equals

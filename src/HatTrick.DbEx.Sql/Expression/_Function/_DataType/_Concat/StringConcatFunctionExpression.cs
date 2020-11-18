@@ -5,24 +5,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class StringConcatFunctionExpression :
         ConcatFunctionExpression<string>,
+        StringElement,
+        AnyStringElement,
         IEquatable<StringConcatFunctionExpression>
     {
         #region constructors
-        private StringConcatFunctionExpression()
+        public StringConcatFunctionExpression(IList<AnyStringElement> expressions) : base(expressions)
         {
+
         }
 
-        public StringConcatFunctionExpression(params ExpressionMediator<string>[] expressions) : base(expressions)
+        protected StringConcatFunctionExpression(IList<AnyStringElement> expressions, string alias) : base(expressions, alias)
         {
+
         }
         #endregion
 
         #region as
-        public new StringConcatFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public StringElement As(string alias)
+            => new StringConcatFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

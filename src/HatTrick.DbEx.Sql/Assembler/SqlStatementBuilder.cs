@@ -16,13 +16,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; }
         public QueryExpression Query { get; }
         public Func<QueryExpression, ISqlStatementAssembler> AssemblerFactory { get; }
-        public IAssemblyPartAppenderFactory PartAppenderFactory { get; }
+        public IExpressionElementAppenderFactory ElementAppenderFactory { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
             ISqlDatabaseMetadataProvider databaseMetadata,
-            IAssemblyPartAppenderFactory partAppenderFactory,
+            IExpressionElementAppenderFactory elementAppenderFactory,
             SqlStatementAssemblerConfiguration assemblerConfiguration,
             QueryExpression query,
             Func<QueryExpression, ISqlStatementAssembler> assemblerFactory,
@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             AssemblerConfiguration = assemblerConfiguration ?? throw new ArgumentNullException($"{nameof(assemblerConfiguration)} is required.");
             Query = query ?? throw new ArgumentNullException($"{nameof(query)} is required.");
             AssemblerFactory = assemblerFactory ?? throw new ArgumentNullException($"{nameof(assemblerFactory)} is required.");
-            PartAppenderFactory = partAppenderFactory ?? throw new ArgumentNullException($"{nameof(partAppenderFactory)} is required.");
+            ElementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException($"{nameof(elementAppenderFactory)} is required.");
             Appender = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
             Parameters = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
         }
@@ -54,23 +54,23 @@ namespace HatTrick.DbEx.Sql.Assembler
             return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
         }
 
-        public void AppendPart<T>(T part, AssemblyContext context)
-            where T : class, IExpression
+        public void AppendElement<T>(T element, AssemblyContext context)
+            where T : class, IExpressionElement
         {           
-            var appender = PartAppenderFactory.CreatePartAppender(part);
+            var appender = ElementAppenderFactory.CreateElementAppender(element);
             if (appender is object)
             { 
-                appender.AppendPart(part, this, context);
+                appender.AppendElement(element, this, context);
                 return;
             }
 
-            if (part is QueryExpression query)
+            if (element is QueryExpression query)
             {
                 AssembleStatement(query, context);
                 return;
             }
 
-            throw new DbExpressionConfigurationException($"Could not resolve an appender for part type '{part.GetType()}', please ensure an appender has been registered during startup initialization of DbExpression.");
+            throw new DbExpressionConfigurationException($"Could not resolve an appender for element type '{element.GetType()}', please ensure an appender has been registered during startup initialization of DbExpression.");
         }
 
         public void AssembleStatement(QueryExpression expression, AssemblyContext context)

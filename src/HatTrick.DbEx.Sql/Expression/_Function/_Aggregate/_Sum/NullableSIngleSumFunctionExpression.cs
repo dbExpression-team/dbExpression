@@ -3,21 +3,26 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableSingleSumFunctionExpression :
-        NullableSumFunctionExpression<float>,
+        NullableSumFunctionExpression<float,float?>,
+        NullSingleElement,
+        AnySingleElement,
         IEquatable<NullableSingleSumFunctionExpression>
     {
         #region constructors
-        public NullableSingleSumFunctionExpression(NullableExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleSumFunctionExpression(NullSingleElement expression, bool isDistinct) : base(expression, typeof(float?), isDistinct)
         {
+
+        }
+
+        protected NullableSingleSumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, typeof(float?), isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableSingleSumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullSingleElement As(string alias)
+            => new NullableSingleSumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

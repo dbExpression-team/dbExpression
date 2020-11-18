@@ -15,7 +15,12 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected MaximumFunctionExpression(ExpressionMediator expression, bool isDistinct) : base(expression)
+        protected MaximumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct) : this(expression, declaredType, isDistinct, null)
+        {
+
+        }
+
+        protected MaximumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct, string alias) : base(expression, declaredType, alias)
         {
             IsDistinct = isDistinct;
         }

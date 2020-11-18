@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class DateTimeFieldExpression<TEntity> : 
         DateTimeFieldExpression,
         IEquatable<DateTimeFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public DateTimeFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public DateTimeFieldExpression<TEntity> As(string alias)
+        public override DateTimeElement As(string alias)
             => new DateTimeFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

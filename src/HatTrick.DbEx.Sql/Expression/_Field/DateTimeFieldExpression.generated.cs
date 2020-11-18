@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region set
         public override AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<DateTime> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

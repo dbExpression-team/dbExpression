@@ -1,18 +1,19 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
+﻿using HatTrick.DbEx.MsSql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Data;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlNullableCastFunctionExpressionBuilder : INullableCastFunctionExpressionBuilder
+    public class MsSqlNullableCastFunctionExpressionBuilder : IMsSqlNullableCastFunctionExpressionBuilder
     {
         #region internals
-        public ExpressionMediator Expression { get; private set; }
+        public IExpressionElement Expression { get; private set; }
         #endregion
 
         #region constructors
-        public MsSqlNullableCastFunctionExpressionBuilder(ExpressionMediator expression)
+        public MsSqlNullableCastFunctionExpressionBuilder(IExpressionElement expression)
         {
             Expression = expression;
         }
@@ -33,6 +34,12 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         NullableDecimalCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
             => new NullableDecimalCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Decimal));
+
+        NullableDoubleCastFunctionExpression IMsSqlNullableCastFunctionExpressionBuilder.AsMoney()
+            => new NullableDoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Money));
+
+        NullableDoubleCastFunctionExpression IMsSqlNullableCastFunctionExpressionBuilder.AsSmallMoney()
+            => new NullableDoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallMoney));
 
         NullableSingleCastFunctionExpression INullableCastFunctionExpressionBuilder.AsFloat()
             => new NullableSingleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Float));
@@ -84,6 +91,9 @@ namespace HatTrick.DbEx.MsSql.Builder
             };
             return exp;
         }
+
+        NullableTimeSpanCastFunctionExpression INullableCastFunctionExpressionBuilder.AsTime()
+            => new NullableTimeSpanCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Time));
         #endregion
     }
 }

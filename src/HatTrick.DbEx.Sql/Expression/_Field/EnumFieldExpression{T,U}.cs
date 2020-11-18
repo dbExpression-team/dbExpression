@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class EnumFieldExpression<TEntity, TEnum> : EnumFieldExpression<TEnum>,
         IEquatable<EnumFieldExpression<TEntity, TEnum>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
@@ -20,8 +20,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public EnumFieldExpression<TEntity, TEnum> As(string alias) 
-            => new EnumFieldExpression<TEntity,TEnum>(base.identifier, base.entity, alias);
+        public override EnumElement<TEnum> As(string alias)
+            => new EnumFieldExpression<TEntity, TEnum>(base.identifier, base.entity, alias);
         #endregion
 
         #region in value set
@@ -31,7 +31,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region set
         public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(this, new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<TEnum> value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

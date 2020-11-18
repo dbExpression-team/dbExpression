@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableStringExpressionMediator :
         ExpressionMediator<string>,
+        NullStringElement,
+        AnyStringElement,
         IEquatable<NullableStringExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableStringExpressionMediator(IExpression expression) : base(expression)
+        public NullableStringExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected NullableStringExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableStringExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new NullableStringExpressionMediator As(string alias)
-            => new NullableStringExpressionMediator(this.Expression, alias);
+        public NullStringElement As(string alias)
+            => new NullableStringExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

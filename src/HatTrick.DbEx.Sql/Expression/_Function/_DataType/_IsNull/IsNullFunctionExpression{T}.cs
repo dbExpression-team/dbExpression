@@ -2,16 +2,19 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class IsNullFunctionExpression<TValue> : IsNullFunctionExpression
+    public abstract class IsNullFunctionExpression<TValue> : IsNullFunctionExpression,
+        IExpressionElement<TValue>
         where TValue : IComparable
     {
         #region constructors
-        protected IsNullFunctionExpression(ExpressionMediator<TValue> expression, ExpressionMediator<TValue> value) : base(expression, value)
+        protected IsNullFunctionExpression(IExpressionElement expression, IExpressionElement value) : base(expression, typeof(TValue), value)
         {
+
         }
 
-        protected IsNullFunctionExpression(ExpressionMediator<string> expression, ExpressionMediator<string> value) : base(expression, value)
+        protected IsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, typeof(TValue), value, alias)
         {
+
         }
         #endregion
     }

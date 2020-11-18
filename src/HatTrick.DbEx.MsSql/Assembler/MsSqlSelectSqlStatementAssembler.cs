@@ -1,10 +1,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
@@ -25,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             context.PopAppendStyles();
 
             //add windowing function
-            if (context.Configuration.PrependCommaOnSelectClauseParts)
+            if (context.Configuration.PrependCommaOnSelectClause)
                 builder.Appender.Write(", ");
             builder.Appender.Indentation++.Indent().Write("ROW_NUMBER() OVER (");
 
@@ -35,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 builder.Appender.Indent();
 
                 context.PushAppendStyle(EntityExpressionAppendStyle.None);
-                builder.AppendPart(orderBys[i], context);
+                builder.AppendElement(orderBys[i], context);
                 context.PopAppendStyles();
 
                 if (i < orderBys.Count - 1)
@@ -85,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
             try
             {
-                builder.AppendPart(expression.Select, context);
+                builder.AppendElement(expression.Select, context);
             }
             finally
             {
@@ -107,7 +104,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
             try
             {
-                builder.AppendPart(expression.Select, context);
+                builder.AppendElement(expression.Select, context);
             }
             finally
             {
@@ -122,7 +119,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
             try
             {
-                builder.AppendPart(expression.OrderBy, context);
+                builder.AppendElement(expression.OrderBy, context);
             }
             finally
             {

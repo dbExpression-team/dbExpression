@@ -1,4 +1,6 @@
-﻿namespace ServerSideBlazorApp.Models
+﻿using System.Collections.Generic;
+
+namespace ServerSideBlazorApp.Models
 {
     public class PageRequestModel : PageModel 
     {
@@ -15,6 +17,10 @@
         }
 
         public PageRequestModel(int offset, int limit, string searchPhrase = null, Sort sort = null) : base(offset, limit, searchPhrase, sort)
+        {
+        }
+
+        public PageRequestModel(int offset, int limit, string searchPhrase = null, IEnumerable<Sort> sorting = null) : base(offset, limit, searchPhrase, sorting)
         {
         }
     }

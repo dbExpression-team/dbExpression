@@ -2,17 +2,17 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ExpressionPair : IExpression
+    public class ExpressionPair : IExpressionElement
     {
-        public IExpression LeftPart { get; private set; }
-        public IExpression RightPart { get; private set; }
+        public IExpressionElement LeftPart { get; private set; }
+        public IExpressionElement RightPart { get; private set; }
 
-        public ExpressionPair(IExpression leftPart)
+        public ExpressionPair(IExpressionElement leftPart)
         {
             LeftPart = leftPart ?? throw new ArgumentNullException($"{nameof(leftPart)} is required.");
         }
 
-        public ExpressionPair(IExpression leftPart, IExpression rightPart)
+        public ExpressionPair(IExpressionElement leftPart, IExpressionElement rightPart)
         {
             LeftPart = leftPart ?? throw new ArgumentNullException($"{nameof(leftPart)} is required.");
             RightPart = rightPart ?? throw new ArgumentNullException($"{nameof(rightPart)} is required.");

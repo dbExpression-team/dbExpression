@@ -3,20 +3,20 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class ExpressionMediator : 
-        IExpression,
+        AnyElement,
         IExpressionTypeProvider,
         IExpressionAliasProvider,
         IEquatable<ExpressionMediator>
     {
         #region internals
         private Type declaredType;
-        protected string Alias { get; private set; }
+        private string alias;
         #endregion
 
         #region interface
-        public IExpression Expression { get; set; }
+        public IExpressionElement Expression { get; set; }
         Type IExpressionTypeProvider.DeclaredType => declaredType;
-        string IExpressionAliasProvider.Alias => Alias;
+        string IExpressionAliasProvider.Alias => alias;
         #endregion
 
         #region constructors
@@ -24,16 +24,16 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected ExpressionMediator(IExpression expression, Type declaredType) : this(expression, declaredType, null)
+        protected ExpressionMediator(IExpressionElement expression, Type declaredType) : this(expression, declaredType, null)
         {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+
         }
 
-        protected ExpressionMediator(IExpression expression, Type declaredType, string alias)
+        protected ExpressionMediator(IExpressionElement expression, Type declaredType, string alias)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
             this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
-            Alias = string.IsNullOrWhiteSpace(alias) ? null : alias;
+            this.alias = string.IsNullOrWhiteSpace(alias) ? null : alias;
         }
         #endregion
 
@@ -55,7 +55,8 @@ namespace HatTrick.DbEx.Sql.Expression
             if (Expression is object && obj.Expression is null) return false;
             if (!Expression.Equals(obj.Expression)) return false;
 
-            if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
+            if (declaredType != obj.declaredType) return false;
+            if (!StringComparer.Ordinal.Equals(alias, obj.alias)) return false;
 
             return true;
         }
@@ -72,7 +73,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (alias is object ? alias.GetHashCode() : 0);
                 return hash;
             }
         }

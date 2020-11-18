@@ -12,7 +12,7 @@
             return ConvertToJoinOnExpressionSet(filterSet.LeftArg, filterSet.RightArg, filterSet.ConditionalOperator, filterSet.Negate);
         }
 
-        private static JoinOnExpressionSet ConvertToJoinOnExpressionSet(IExpression leftArg, IExpression rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
+        private static JoinOnExpressionSet ConvertToJoinOnExpressionSet(IExpressionElement leftArg, IExpressionElement rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
         {
             //left
             if (leftArg is FilterExpressionSet leftSet)

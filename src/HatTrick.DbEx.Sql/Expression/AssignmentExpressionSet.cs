@@ -4,7 +4,9 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AssignmentExpressionSet : IExpressionSet<AssignmentExpression>
+    public class AssignmentExpressionSet : 
+        IExpressionElement,
+        IExpressionSet<AssignmentExpression>
     {
         #region interface
         public IEnumerable<AssignmentExpression> Expressions { get; private set; }

@@ -153,6 +153,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
+            db.SelectOne<Person>();
+
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person);
 

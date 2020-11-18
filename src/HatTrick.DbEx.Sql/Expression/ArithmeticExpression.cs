@@ -3,18 +3,18 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ArithmeticExpression : 
-        IExpression,
+    public class ArithmeticExpression :
+        IExpressionElement,
         IEquatable<ArithmeticExpression>
     {
         #region interface
-        public ExpressionMediator LeftArg { get; private set; }
-        public ExpressionMediator RightArg { get; private set; }
+        public IExpressionElement LeftArg { get; private set; }
+        public IExpressionElement RightArg { get; private set; }
         public ArithmeticExpressionOperator ExpressionOperator { get; private set; }
         #endregion
 
         #region constructors
-        public ArithmeticExpression(ExpressionMediator leftArg, ExpressionMediator rightArg, ArithmeticExpressionOperator arithmeticOperator)
+        public ArithmeticExpression(IExpressionElement leftArg, IExpressionElement rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");

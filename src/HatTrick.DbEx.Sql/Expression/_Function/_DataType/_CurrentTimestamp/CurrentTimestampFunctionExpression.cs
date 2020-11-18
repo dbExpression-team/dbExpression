@@ -3,15 +3,28 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class CurrentTimestampFunctionExpression : DataTypeFunctionExpression,
-        IDateFunctionExpression,
+        IExpressionElement<DateTime>,
+        DateTimeElement,
+        AnyDateTimeElement,
         IEquatable<CurrentTimestampFunctionExpression>
     {
-        #region as
-        public new CurrentTimestampFunctionExpression As(string alias)
+        #region constructors
+        public CurrentTimestampFunctionExpression() 
+            : base(null, typeof(DateTime))
         {
-            base.As(alias);
-            return this;
+
         }
+
+        protected CurrentTimestampFunctionExpression(string alias) : base(null, typeof(DateTime), alias)
+        {
+
+        }
+        #endregion
+
+        #region methods
+        #region as
+        public DateTimeElement As(string alias)
+            => new CurrentTimestampFunctionExpression(alias);
         #endregion
 
         #region to string
@@ -27,6 +40,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
+        #endregion
         #endregion
     }
 }

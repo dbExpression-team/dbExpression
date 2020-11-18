@@ -13,7 +13,7 @@ namespace {Namespace}
 
         #region set
         public override AssignmentExpression Set({:fieldExpressionType.Alias} value) => new AssignmentExpression(this, new {:fieldExpressionType.Name}ExpressionMediator(new LiteralExpression<{:fieldExpressionType.Alias}>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<{:fieldExpressionType.Alias}> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set({:fieldExpressionType.Name}Element value) => new AssignmentExpression(this, value);
         #endregion
 
         #region insert

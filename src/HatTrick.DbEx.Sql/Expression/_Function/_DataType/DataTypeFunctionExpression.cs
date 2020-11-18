@@ -1,17 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DataTypeFunctionExpression : FunctionExpression
     {
         #region constructors
-        protected DataTypeFunctionExpression()
-        { 
+        protected DataTypeFunctionExpression(IExpressionElement expression, Type declaredType) 
+            : base(expression, declaredType)
+        {
+
         }
 
-        public DataTypeFunctionExpression(ExpressionMediator expression) : base(expression)
+        protected DataTypeFunctionExpression(IExpressionElement expression, Type declaredType, string alias)
+            : base(expression, declaredType, alias)
         {
+
         }
         #endregion
     }

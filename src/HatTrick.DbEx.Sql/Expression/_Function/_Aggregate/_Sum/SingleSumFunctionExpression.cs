@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SingleSumFunctionExpression :
         SumFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SingleSumFunctionExpression>
     {
         #region constructors
-        public SingleSumFunctionExpression(ExpressionMediator<float> expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleSumFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected SingleSumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new SingleSumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SingleSumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

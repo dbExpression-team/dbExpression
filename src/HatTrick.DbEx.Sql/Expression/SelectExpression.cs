@@ -3,32 +3,41 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpression : 
-        IExpression,
+        IExpressionElement,
         IExpressionTypeProvider,
         IExpressionAliasProvider
     {
         #region internals
-        protected readonly Type declaredType;
         protected string alias;
         protected bool IsDistinct { get; private set; }
         #endregion
 
         #region interface
-        public ExpressionMediator Expression { get; }
-        Type IExpressionTypeProvider.DeclaredType => declaredType;
+        public IExpressionElement Expression { get; }
+        Type IExpressionTypeProvider.DeclaredType => (Expression as IExpressionTypeProvider).DeclaredType;
         string IExpressionAliasProvider.Alias => alias;
         #endregion
 
         #region constructors
-        public SelectExpression(ExpressionMediator expression, Type declaredType) : this(expression, declaredType, null)
+        public SelectExpression(ExpressionMediator expression) : this(expression, null)
         {
 
         }
 
-        protected SelectExpression(ExpressionMediator expression, Type declaredType, string alias)
+        public SelectExpression(IExpressionElement expression) : this(expression, null)
+        {
+
+        }
+
+        protected SelectExpression(ExpressionMediator expression, string alias)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
-            this.declaredType = declaredType;
+            this.alias = alias;
+        }
+
+        protected SelectExpression(IExpressionElement expression, string alias)
+        {
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
             this.alias = alias;
         }
         #endregion

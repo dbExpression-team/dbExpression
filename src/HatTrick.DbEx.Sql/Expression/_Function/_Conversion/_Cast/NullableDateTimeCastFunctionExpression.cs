@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeCastFunctionExpression :
-        NullableCastFunctionExpression<DateTime>,
+        NullableCastFunctionExpression<DateTime,DateTime?>,
+        NullDateTimeElement,
+        AnyDateTimeElement,
         IEquatable<NullableDateTimeCastFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeCastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public NullableDateTimeCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+            : base(expression, convertToDbType)
         {
+
+        }
+
+        protected NullableDateTimeCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDateTimeCastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDateTimeElement As(string alias)
+            => new NullableDateTimeCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

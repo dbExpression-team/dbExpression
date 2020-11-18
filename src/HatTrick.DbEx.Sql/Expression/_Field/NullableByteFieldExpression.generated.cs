@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params byte[] value) => value is object ? new FilterExpression<bool>(new ByteExpressionMediator(this), new NullableByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<byte> value) => value is object ? new FilterExpression<bool>(new ByteExpressionMediator(this), new NullableByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params byte?[] value) => value is object ? new FilterExpression<bool>(new NullableByteExpressionMediator(this), new NullableByteExpressionMediator(new InExpression<byte?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<byte?> value) => value is object ? new FilterExpression<bool>(new NullableByteExpressionMediator(this), new NullableByteExpressionMediator(new InExpression<byte?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(byte value) => new AssignmentExpression(this, new ByteExpressionMediator(new LiteralExpression<byte>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<byte> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(ByteElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(byte? value) => new AssignmentExpression(this, new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<byte> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableByteExpressionMediator(new LiteralExpression<byte?>(null)));
+        public virtual AssignmentExpression Set(NullByteElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

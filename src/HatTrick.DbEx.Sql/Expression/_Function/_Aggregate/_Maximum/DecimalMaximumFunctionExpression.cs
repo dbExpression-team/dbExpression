@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DecimalMaximumFunctionExpression :
         MaximumFunctionExpression<decimal>,
+        DecimalElement,
+        AnyDecimalElement,
         IEquatable<DecimalMaximumFunctionExpression>
     {
         #region constructors
-        public DecimalMaximumFunctionExpression(ExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
+        public DecimalMaximumFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected DecimalMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DecimalMaximumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DecimalElement As(string alias)
+            => new DecimalMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

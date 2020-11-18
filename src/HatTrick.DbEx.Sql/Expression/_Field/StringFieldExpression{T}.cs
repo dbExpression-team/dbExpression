@@ -2,10 +2,11 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class StringFieldExpression<TEntity> : 
+    public partial class StringFieldExpression<TEntity> :
         StringFieldExpression,
+        IExpressionElement<string>,
         IEquatable<StringFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region internals
         public FilterExpression LikePhrase { get; set; }
@@ -22,9 +23,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public StringFieldExpression<TEntity> As(string alias)
+        public override StringElement As(string alias)
             => new StringFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

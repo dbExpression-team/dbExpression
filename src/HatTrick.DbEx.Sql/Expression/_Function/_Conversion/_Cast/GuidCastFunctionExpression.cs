@@ -4,20 +4,27 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class GuidCastFunctionExpression :
         CastFunctionExpression<Guid>,
+        GuidElement,
+        AnyGuidElement,
         IEquatable<GuidCastFunctionExpression>
     {
         #region constructors
-        public GuidCastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public GuidCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+            : base(expression, convertToDbType, typeof(Guid))
         {
+
+        }
+
+        protected GuidCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, typeof(Guid), size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new GuidCastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public GuidElement As(string alias)
+            => new GuidCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

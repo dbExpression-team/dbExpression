@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteArrayExpressionMediator :
         ExpressionMediator<byte[]>,
+        NullByteArrayElement,
+        AnyByteArrayElement,
         IEquatable<NullableByteArrayExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public NullableByteArrayExpressionMediator(IExpression expression) : base(expression)
+        public NullableByteArrayExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected NullableByteArrayExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected NullableByteArrayExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new NullableByteArrayExpressionMediator As(string alias)
-            => new NullableByteArrayExpressionMediator(this.Expression, alias);
+        public NullByteArrayElement As(string alias)
+            => new NullableByteArrayExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

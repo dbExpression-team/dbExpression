@@ -3,21 +3,28 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableTimeSpanMinimumFunctionExpression :
-        NullableMinimumFunctionExpression<TimeSpan>,
+        NullableMinimumFunctionExpression<TimeSpan,TimeSpan?>,
+        NullTimeSpanElement,
+        AnyTimeSpanElement, 
         IEquatable<NullableTimeSpanMinimumFunctionExpression>
     {
         #region constructors
-        public NullableTimeSpanMinimumFunctionExpression(NullableExpressionMediator<TimeSpan> expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableTimeSpanMinimumFunctionExpression(NullTimeSpanElement expression, bool isDistinct) 
+            : base(expression, isDistinct)
         {
+
+        }
+
+        public NullableTimeSpanMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
+            : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableTimeSpanMinimumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullTimeSpanElement As(string alias)
+            => new NullableTimeSpanMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

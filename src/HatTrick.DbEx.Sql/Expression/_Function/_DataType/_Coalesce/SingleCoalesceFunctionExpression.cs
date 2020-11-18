@@ -5,20 +5,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class SingleCoalesceFunctionExpression :
         CoalesceFunctionExpression<float>,
+        SingleElement,
+        AnySingleElement,
         IEquatable<SingleCoalesceFunctionExpression>
     {
         #region constructors
-        public SingleCoalesceFunctionExpression(IList<ExpressionMediator<float>> expressions) : base(expressions)
+        public SingleCoalesceFunctionExpression(IList<AnySingleElement> expressions) : base(expressions)
         {
+
+        }
+
+        protected SingleCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new SingleCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public SingleElement As(string alias)
+            => new SingleCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

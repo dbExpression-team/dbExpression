@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ByteFloorFunctionExpression : 
         FloorFunctionExpression<byte>,
+        ByteElement,
+        AnyByteElement,
         IEquatable<ByteFloorFunctionExpression>
     {
         #region constructors
-        public ByteFloorFunctionExpression(ExpressionMediator<byte> expression) : base(expression)
+        public ByteFloorFunctionExpression(ByteElement expression) : base(expression)
         { 
         
+        }
+
+        protected ByteFloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new ByteFloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public ByteElement As(string alias)
+            => new ByteFloorFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

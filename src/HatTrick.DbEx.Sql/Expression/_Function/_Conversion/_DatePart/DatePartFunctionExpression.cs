@@ -3,7 +3,6 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DatePartFunctionExpression : ConversionFunctionExpression,
-        IDateFunctionExpression,
         IEquatable<DatePartFunctionExpression>
     {
         #region interface
@@ -11,17 +10,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected DatePartFunctionExpression(DatePartsExpression datePart, ExpressionMediator expression) : base(expression)
+        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType) : this(datePart, expression, declaredType, null)
+        {
+
+        }
+
+        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
-        }
-        #endregion
-
-        #region as
-        public new DatePartFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
         }
         #endregion
 
@@ -58,7 +54,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator GroupByExpression(DatePartFunctionExpression datePart) => new GroupByExpression(new Int32ExpressionMediator(datePart));
+        public static implicit operator GroupByExpression(DatePartFunctionExpression datePart) 
+            => new GroupByExpression(new Int32ExpressionMediator(datePart as IExpressionElement));
         #endregion
     }
 }

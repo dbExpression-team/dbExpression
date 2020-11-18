@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class EnumExpressionMediator<TEnum> :
         ExpressionMediator<TEnum>,
+        EnumElement<TEnum>,
+        AnyEnumElement<TEnum>,
         IEquatable<EnumExpressionMediator<TEnum>>
         where TEnum : struct, Enum, IComparable
     {
@@ -12,22 +14,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public EnumExpressionMediator(IExpression expression) : base(expression)
+        public EnumExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected EnumExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected EnumExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
 
-        protected EnumExpressionMediator(IExpression expression, Type declaredType, string alias) : base(expression, declaredType, alias)
+        protected EnumExpressionMediator(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
         }
         #endregion
 
         #region as
-        public new EnumExpressionMediator<TEnum> As(string alias)
-            => new EnumExpressionMediator<TEnum>(this.Expression, alias);
+        public EnumElement<TEnum> As(string alias)
+            => new EnumExpressionMediator<TEnum>(base.Expression, alias);
         #endregion
 
         #region order

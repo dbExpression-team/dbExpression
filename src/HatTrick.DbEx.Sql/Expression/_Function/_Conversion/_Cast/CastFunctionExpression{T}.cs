@@ -2,14 +2,22 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class CastFunctionExpression<TValue> : CastFunctionExpression
+    public abstract class CastFunctionExpression<TValue> : CastFunctionExpression,
+        IExpressionElement<TValue>
         where TValue : IComparable
     {
         #region constructors
-        protected CastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType) 
+            : base(expression, convertToDbType, convertToType)
         {
+
         }
 
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int? size, int? precision, int? scale, string alias) 
+            : base(expression, convertToDbType, convertToType, size, precision, scale, alias)
+        {
+
+        }
         #endregion
     }
 }

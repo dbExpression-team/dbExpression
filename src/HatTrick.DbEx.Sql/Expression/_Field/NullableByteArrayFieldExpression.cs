@@ -5,6 +5,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableByteArrayFieldExpression :
         FieldExpression<byte[]>,
+        NullByteArrayElement,
+        AnyByteArrayElement,
         IEquatable<NullableByteArrayFieldExpression>
     {
         #region constructors
@@ -17,6 +19,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract NullByteArrayElement As(string alias);
         #endregion
 
         #region equals
@@ -37,7 +43,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region set
         public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<byte[]> value) => new AssignmentExpression(this, value);
         public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableByteArrayExpressionMediator(new LiteralExpression<byte[]>(null)));
         #endregion
 

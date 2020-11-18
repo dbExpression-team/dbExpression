@@ -4,32 +4,40 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int32DateDiffFunctionExpression :
         DateDiffFunctionExpression<int>,
+        Int32Element,
+        AnyInt32Element,
         IEquatable<Int32DateDiffFunctionExpression>
     {
         #region constructors
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeElement startDate, DateTimeElement endDate) : base(datePart, startDate, endDate)
         {
+
         }
 
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTime> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeElement startDate, DateTimeOffsetElement endDate) : base(datePart, startDate, endDate)
         {
+
         }
 
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTime> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeOffsetElement startDate, DateTimeElement endDate) : base(datePart, startDate, endDate)
         {
+
         }
 
-        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, ExpressionMediator<DateTimeOffset> startDate, ExpressionMediator<DateTimeOffset> endDate) : base(datePart, startDate, endDate)
+        public Int32DateDiffFunctionExpression(DatePartsExpression datePart, DateTimeOffsetElement startDate, DateTimeOffsetElement endDate) : base(datePart, startDate, endDate)
         {
+
+        }
+
+        protected Int32DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, string alias) : base(datePart, startDate, endDate, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int32DateDiffFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int32Element As(string alias)
+            => new Int32DateDiffFunctionExpression(base.DatePart, base.StartDate, base.EndDate, alias);
         #endregion
 
         #region equals

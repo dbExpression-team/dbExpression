@@ -3,22 +3,22 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpression :
-        IExpression
+        IExpressionElement
     {
         #region interface
-        public IExpression LeftArg { get; private set; }
-        public IExpression RightArg { get; private set; }
+        public IExpressionElement LeftArg { get; private set; }
+        public IExpressionElement RightArg { get; private set; }
         public FilterExpressionOperator ExpressionOperator { get; private set; }
         public bool Negate { get; private set; }
         #endregion
 
         #region constructors
-        public JoinOnExpression(IExpression leftArg, IExpression rightArg, FilterExpressionOperator filterExpressionOperator)
+        public JoinOnExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator)
             : this(leftArg, rightArg, filterExpressionOperator, false)
         {
         }
 
-        public JoinOnExpression(IExpression leftArg, IExpression rightArg, FilterExpressionOperator expresionOperator, bool negate)
+        public JoinOnExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator expresionOperator, bool negate)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");

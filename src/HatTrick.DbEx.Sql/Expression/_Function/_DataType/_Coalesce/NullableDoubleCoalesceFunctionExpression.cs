@@ -5,21 +5,40 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDoubleCoalesceFunctionExpression :
-        NullableCoalesceFunctionExpression<double>,
+        NullableCoalesceFunctionExpression<double,double?>,
+        NullDoubleElement,
+        AnyDoubleElement,
         IEquatable<NullableDoubleCoalesceFunctionExpression>
     {
         #region constructors
-        public NullableDoubleCoalesceFunctionExpression(IList<ExpressionMediator<double>> expressions) : base(expressions)
+        public NullableDoubleCoalesceFunctionExpression(IList<AnyDoubleElement> expressions) 
+            : base(expressions)
         {
+
+        }
+
+        public NullableDoubleCoalesceFunctionExpression(IList<AnyDoubleElement> expressions, DoubleElement termination) 
+            : base(expressions?.Concat(new IExpressionElement[1] { termination }))
+        {
+
+        }
+
+        public NullableDoubleCoalesceFunctionExpression(IList<AnyDoubleElement> expressions, NullDoubleElement termination) 
+            : base(expressions?.Concat(new IExpressionElement[1] { termination }))
+        {
+
+        }
+
+        protected NullableDoubleCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
+            : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new NullableDoubleCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public NullDoubleElement As(string alias)
+            => new NullableDoubleCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

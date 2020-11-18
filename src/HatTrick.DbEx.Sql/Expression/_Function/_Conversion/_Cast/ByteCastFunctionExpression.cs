@@ -4,20 +4,27 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ByteCastFunctionExpression :
         CastFunctionExpression<byte>,
+        ByteElement,
+        AnyByteElement,
         IEquatable<ByteCastFunctionExpression>
     {
         #region constructors
-        public ByteCastFunctionExpression(ExpressionMediator expression, DbTypeExpression convertToDbType) : base(expression, convertToDbType)
+        public ByteCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
+            : base(expression, convertToDbType, typeof(byte))
         {
+
+        }
+
+        protected ByteCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
+            : base(expression, convertToDbType, typeof(byte), size, precision, scale, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new ByteCastFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public ByteElement As(string alias)
+            => new ByteCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
         #endregion
 
         #region equals

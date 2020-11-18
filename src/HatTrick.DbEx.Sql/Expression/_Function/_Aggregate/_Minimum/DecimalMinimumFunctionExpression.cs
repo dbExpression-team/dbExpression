@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DecimalMinimumFunctionExpression :
         MinimumFunctionExpression<decimal>,
+        DecimalElement,
+        AnyDecimalElement,
         IEquatable<DecimalMinimumFunctionExpression>
     {
         #region constructors
-        public DecimalMinimumFunctionExpression(ExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
+        public DecimalMinimumFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected DecimalMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DecimalMinimumFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DecimalElement As(string alias)
+            => new DecimalMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

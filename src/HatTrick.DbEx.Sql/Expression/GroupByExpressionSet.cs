@@ -5,7 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
-        IExpression, 
+        IExpressionElement, 
         IExpressionSet<GroupByExpression>
     {
         #region interface

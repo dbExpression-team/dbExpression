@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ByteArrayExpressionMediator :
         ExpressionMediator<byte[]>,
+        ByteArrayElement,
+        AnyByteArrayElement,
         IEquatable<ByteArrayExpressionMediator>
     {
         #region constructors
@@ -11,18 +13,18 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public ByteArrayExpressionMediator(IExpression expression) : base(expression)
+        public ByteArrayExpressionMediator(IExpressionElement expression) : base(expression)
         {
         }
 
-        protected ByteArrayExpressionMediator(IExpression expression, string alias) : base(expression, alias)
+        protected ByteArrayExpressionMediator(IExpressionElement expression, string alias) : base(expression, alias)
         {
         }
         #endregion
 
         #region as
-        public new ByteArrayExpressionMediator As(string alias)
-            => new ByteArrayExpressionMediator(this.Expression, alias);
+        public ByteArrayElement As(string alias)
+            => new ByteArrayExpressionMediator(base.Expression, alias);
         #endregion
 
         #region equals

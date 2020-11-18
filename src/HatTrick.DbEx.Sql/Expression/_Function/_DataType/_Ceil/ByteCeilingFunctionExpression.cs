@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ByteCeilingFunctionExpression : 
         CeilFunctionExpression<byte>,
+        ByteElement,
+        AnyByteElement,
         IEquatable<ByteCeilingFunctionExpression>
     {
         #region constructors
-        public ByteCeilingFunctionExpression(ExpressionMediator<byte> expression) : base(expression)
+        public ByteCeilingFunctionExpression(ByteElement expression) : base(expression)
         { 
         
+        }
+
+        protected ByteCeilingFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new ByteCeilingFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public ByteElement As(string alias)
+            => new ByteCeilingFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

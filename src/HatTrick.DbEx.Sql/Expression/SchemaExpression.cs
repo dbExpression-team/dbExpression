@@ -1,12 +1,11 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class SchemaExpression : 
-        IExpression,
+        IExpressionElement,
         ISqlMetadataIdentifier,
         IExpressionListProvider<EntityExpression>,
         IExpressionAliasProvider,

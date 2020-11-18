@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DecimalAverageFunctionExpression :
         AverageFunctionExpression<decimal>,
+        DecimalElement,
+        AnyDecimalElement,
         IEquatable<DecimalAverageFunctionExpression>
     {
         #region constructors
-        public DecimalAverageFunctionExpression(ExpressionMediator<decimal> expression, bool isDistinct) : base(expression, isDistinct)
+        public DecimalAverageFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected DecimalAverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DecimalAverageFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DecimalElement As(string alias)
+            => new DecimalAverageFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

@@ -2,8 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AliasExpression : 
-        IExpression,
+    public class AliasExpression :
+        IExpressionElement,
         IEquatable<AliasExpression>
     {
         #region interface

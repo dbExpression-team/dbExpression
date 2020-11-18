@@ -18,13 +18,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("DELETE").LineBreak();
 
             builder.Appender.Indentation++.Indent();
-            builder.AppendPart(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity, context);
             builder.Appender.LineBreak();
 
             builder.Appender.Indentation--.Indent().Write("FROM").LineBreak();
 
             builder.Appender.Indentation++.Indent();
-            builder.AppendPart(expression.BaseEntity, context);
+            builder.AppendElement(expression.BaseEntity, context);
             builder.Appender.LineBreak();
             builder.Appender.Indentation--;
 

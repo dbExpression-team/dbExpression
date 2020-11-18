@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteFieldExpression<TEntity> : 
         ByteFieldExpression,
         IEquatable<ByteFieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public ByteFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public ByteFieldExpression<TEntity> As(string alias)
+        public override ByteElement As(string alias)
             => new ByteFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

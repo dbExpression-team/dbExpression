@@ -3,15 +3,15 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpression : 
-        IExpression
+        IExpressionElement
     {
         #region interface
-        public ExpressionMediator Expression { get; private set; }
+        public IExpressionElement Expression { get; private set; }
         public OrderExpressionDirection Direction { get; private set; }
         #endregion
 
         #region constructors
-        public OrderByExpression(ExpressionMediator orderBy, OrderExpressionDirection direction)
+        public OrderByExpression(IExpressionElement orderBy, OrderExpressionDirection direction)
         {
             Expression = orderBy ?? throw new ArgumentNullException($"{nameof(orderBy)} is required.");
             Direction = direction;

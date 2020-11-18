@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DecimalFloorFunctionExpression :
         FloorFunctionExpression<decimal>,
+        DecimalElement,
+        AnyDecimalElement,
         IEquatable<DecimalFloorFunctionExpression>
     {
         #region constructors
-        public DecimalFloorFunctionExpression(ExpressionMediator<decimal> expression) : base(expression)
+        public DecimalFloorFunctionExpression(DecimalElement expression) : base(expression)
+        {
+
+        }
+
+        protected DecimalFloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
         {
 
         }
         #endregion
 
         #region as
-        public new DecimalFloorFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DecimalElement As(string alias)
+            => new DecimalFloorFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

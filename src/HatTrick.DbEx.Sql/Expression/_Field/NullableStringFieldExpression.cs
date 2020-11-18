@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableStringFieldExpression :
         FieldExpression<string>,
+        NullStringElement,
+        AnyStringElement,
         IEquatable<NullableStringFieldExpression>
     {
         #region constructors
@@ -16,6 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+        #endregion
+
+        #region as
+        public abstract NullStringElement As(string alias);
         #endregion
 
         #region set

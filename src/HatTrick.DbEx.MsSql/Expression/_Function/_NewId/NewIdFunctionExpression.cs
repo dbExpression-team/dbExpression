@@ -1,18 +1,29 @@
-﻿using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class NewIdFunctionExpression : DataTypeFunctionExpression,
+        IExpressionElement<Guid>,
+        GuidElement,
         IEquatable<NewIdFunctionExpression>
     {
-        #region as
-        public new NewIdFunctionExpression As(string alias)
+        #region constructors
+        public NewIdFunctionExpression() : base(null, typeof(Guid))
         {
-            base.As(alias);
-            return this;
+
         }
+
+        protected NewIdFunctionExpression(string alias) : base(null, typeof(Guid), alias)
+        {
+
+        }
+        #endregion
+
+        #region methods
+        #region as
+        public GuidElement As(string alias)
+            => new NewIdFunctionExpression(alias);
         #endregion
 
         #region to string
@@ -28,6 +39,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
+        #endregion
         #endregion
     }
 }

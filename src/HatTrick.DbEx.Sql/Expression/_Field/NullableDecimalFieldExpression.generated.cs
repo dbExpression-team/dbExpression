@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params decimal[] value) => value is object ? new FilterExpression<bool>(new DecimalExpressionMediator(this), new NullableDecimalExpressionMediator(new InExpression<decimal>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<decimal> value) => value is object ? new FilterExpression<bool>(new DecimalExpressionMediator(this), new NullableDecimalExpressionMediator(new InExpression<decimal>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params decimal?[] value) => value is object ? new FilterExpression<bool>(new NullableDecimalExpressionMediator(this), new NullableDecimalExpressionMediator(new InExpression<decimal?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<decimal?> value) => value is object ? new FilterExpression<bool>(new NullableDecimalExpressionMediator(this), new NullableDecimalExpressionMediator(new InExpression<decimal?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<decimal> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<decimal> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(null)));
+        public virtual AssignmentExpression Set(NullDecimalElement value) => new AssignmentExpression(this, value);
 
         #endregion
 

@@ -4,8 +4,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class UpdateFieldDescriptor : FieldDescriptor
     {
-        public ExpressionMediator Assignment { get; private set; }
-        public UpdateFieldDescriptor(FieldExpression field, ExpressionMediator assignment) : base(field)
+        public IExpressionElement Assignment { get; private set; }
+        public UpdateFieldDescriptor(FieldExpression field, IExpressionElement assignment) : base(field)
         {
             Assignment = assignment;
         }

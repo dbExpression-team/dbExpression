@@ -2,29 +2,25 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class ExpressionMediator<TValue> : ExpressionMediator
+    public class ExpressionMediator<TValue> : ExpressionMediator,
+        IExpressionElement<TValue>
     {
         #region constructors
         protected ExpressionMediator()
         {
         }
 
-        public ExpressionMediator(IExpression expression) : base(expression, typeof(TValue))
+        public ExpressionMediator(IExpressionElement expression) : base(expression, expression is IExpressionTypeProvider p ? p.DeclaredType : typeof(TValue))
         {
         }
 
-        protected ExpressionMediator(IExpression expression, string alias) : base(expression, typeof(TValue), alias)
+        protected ExpressionMediator(IExpressionElement expression, string alias) : base(expression, expression is IExpressionTypeProvider p ? p.DeclaredType : typeof(TValue), alias)
         {
         }
 
-        protected ExpressionMediator(IExpression expression, Type declaredType, string alias) : base(expression, declaredType, alias)
+        protected ExpressionMediator(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
         {
         }
-        #endregion
-
-        #region as
-        public ExpressionMediator<TValue> As(string alias) 
-            => new ExpressionMediator<TValue>(Expression, alias);
         #endregion
 
         #region equals

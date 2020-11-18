@@ -5,20 +5,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class StringCoalesceFunctionExpression :
         CoalesceFunctionExpression<string>,
+        StringElement,
+        AnyStringElement,
         IEquatable<StringCoalesceFunctionExpression>
     {
         #region constructors
-        public StringCoalesceFunctionExpression(IList<ExpressionMediator<string>> expressions) : base(expressions)
+        public StringCoalesceFunctionExpression(IList<AnyStringElement> expressions) : base(expressions)
         {
+
+        }
+
+        protected StringCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new StringCoalesceFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public StringElement As(string alias)
+            => new StringCoalesceFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals

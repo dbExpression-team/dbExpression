@@ -9,6 +9,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public DbTypeExpression(TEnum value) : base(value)
         {
+            this.Expression = value;
         }
+
+        public override string ToString() => Expression.ToString();
     }
 }

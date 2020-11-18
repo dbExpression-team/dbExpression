@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int64AverageFunctionExpression :
         AverageFunctionExpression<long>,
+        Int64Element,
+        AnyInt64Element,
         IEquatable<Int64AverageFunctionExpression>
     {
         #region constructors
-        public Int64AverageFunctionExpression(ExpressionMediator<long> expression, bool isDistinct) : base(expression, isDistinct)
+        public Int64AverageFunctionExpression(Int64Element expression, bool isDistinct) : base(expression, isDistinct)
         {
+
+        }
+
+        protected Int64AverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new Int64AverageFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public Int64Element As(string alias)
+            => new Int64AverageFunctionExpression(base.Expression, base.IsDistinct, alias);
         #endregion
 
         #region equals

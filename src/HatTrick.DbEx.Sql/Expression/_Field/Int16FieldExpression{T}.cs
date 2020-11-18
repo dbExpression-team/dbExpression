@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int16FieldExpression<TEntity> : 
         Int16FieldExpression,
         IEquatable<Int16FieldExpression<TEntity>>
-        where TEntity : IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region constructors
         public Int16FieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
@@ -18,9 +18,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
-        
+
         #region as
-        public Int16FieldExpression<TEntity> As(string alias)
+        public override Int16Element As(string alias)
             => new Int16FieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

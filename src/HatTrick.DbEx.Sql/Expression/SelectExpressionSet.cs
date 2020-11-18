@@ -5,7 +5,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpressionSet : 
-        IExpression,
+        IExpressionElement,
         IExpressionSet<SelectExpression>,
         IExpressionIsDistinctProvider,
         IExpressionTopProvider

@@ -4,20 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DateTimeDateAddFunctionExpression :
         DateAddFunctionExpression<DateTime>,
+        DateTimeElement,
+        AnyDateTimeElement,
         IEquatable<DateTimeDateAddFunctionExpression>
     {
         #region constructors
-        public DateTimeDateAddFunctionExpression(DatePartsExpression datePart, ExpressionMediator value, ExpressionMediator<DateTime> expression) : base(datePart, value, expression)
+        public DateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, DateTimeElement expression) : base(datePart, value, expression)
         {
+
+        }
+
+        protected DateTimeDateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, string alias) : base(datePart, value, expression, alias)
+        {
+
         }
         #endregion
 
         #region as
-        public new DateTimeDateAddFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DateTimeElement As(string alias)
+            => new DateTimeDateAddFunctionExpression(base.DatePart, base.Value, base.Expression, alias);
         #endregion
 
         #region equals

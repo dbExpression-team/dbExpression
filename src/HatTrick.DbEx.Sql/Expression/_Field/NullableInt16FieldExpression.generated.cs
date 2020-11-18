@@ -8,14 +8,17 @@ namespace HatTrick.DbEx.Sql.Expression
         #region in value set
         public override FilterExpression<bool> In(params short[] value) => value is object ? new FilterExpression<bool>(new Int16ExpressionMediator(this), new NullableInt16ExpressionMediator(new InExpression<short>(value)), FilterExpressionOperator.None) : null;
         public override FilterExpression<bool> In(IEnumerable<short> value) => value is object ? new FilterExpression<bool>(new Int16ExpressionMediator(this), new NullableInt16ExpressionMediator(new InExpression<short>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(params short?[] value) => value is object ? new FilterExpression<bool>(new NullableInt16ExpressionMediator(this), new NullableInt16ExpressionMediator(new InExpression<short?>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpression<bool> In(IEnumerable<short?> value) => value is object ? new FilterExpression<bool>(new NullableInt16ExpressionMediator(this), new NullableInt16ExpressionMediator(new InExpression<short?>(value)), FilterExpressionOperator.None) : null;
+
         #endregion
 
         #region set
         public override AssignmentExpression Set(short value) => new AssignmentExpression(this, new Int16ExpressionMediator(new LiteralExpression<short>(value)));
-        public override AssignmentExpression Set(ExpressionMediator<short> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(Int16Element value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(short? value) => new AssignmentExpression(this, new NullableInt16ExpressionMediator(new NullableLiteralExpression<short?>(value)));
-        public override AssignmentExpression Set(NullableExpressionMediator<short> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableInt16ExpressionMediator(new LiteralExpression<short?>(null)));
+        public virtual AssignmentExpression Set(NullInt16Element value) => new AssignmentExpression(this, value);
 
         #endregion
 

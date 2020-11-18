@@ -4,21 +4,25 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DoubleCeilingFunctionExpression :
         CeilFunctionExpression<double>,
+        DoubleElement,
+        AnyDoubleElement,
         IEquatable<DoubleCeilingFunctionExpression>
     {
         #region constructors
-        public DoubleCeilingFunctionExpression(ExpressionMediator<double> expression) : base(expression)
+        public DoubleCeilingFunctionExpression(DoubleElement expression) : base(expression)
+        {
+
+        }
+
+        protected DoubleCeilingFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
         {
 
         }
         #endregion
 
         #region as
-        public new DoubleCeilingFunctionExpression As(string alias)
-        {
-            base.As(alias);
-            return this;
-        }
+        public DoubleElement As(string alias)
+            => new DoubleCeilingFunctionExpression(base.Expression, alias);
         #endregion
 
         #region equals
