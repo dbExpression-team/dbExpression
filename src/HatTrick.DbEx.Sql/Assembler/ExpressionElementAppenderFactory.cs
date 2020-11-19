@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 {
     public class ExpressionElementAppenderFactory : IExpressionElementAppenderFactory
     {
-        #region  expression appenders
+        #region internals
         private static readonly SchemaExpressionAppender _schemaAppender = new SchemaExpressionAppender();
         private static readonly EntityExpressionAppender _entityAppender = new EntityExpressionAppender();
         private static readonly FieldExpressionAppender _fieldAppender = new FieldExpressionAppender();
@@ -49,10 +49,11 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly InExpressionAppender _inAppender = new InExpressionAppender();
         private static readonly LikeExpressionAppender _likeAppender = new LikeExpressionAppender();
         private static readonly DbTypeExpressionAppender _dbTypeAppender = new DbTypeExpressionAppender();
-        #endregion
 
         private readonly ConcurrentDictionary<Type, Func<IExpressionElementAppender>> _elementAppenders = new ConcurrentDictionary<Type, Func<IExpressionElementAppender>>();
+        #endregion
 
+        #region methods
         public IExpressionElementAppender CreateElementAppender(IExpressionElement element)
             => ResolveElementAppender(element.GetType());
 
@@ -117,11 +118,11 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         private IExpressionElementAppender ResolveElementAppender(Type current)
         {
-            var factory = ResolveElementAppender(current, current);
+            var factory = ResolveElementAppenderFactory(current, current);
             return factory is object ? factory() : null;
         }
 
-        private Func<IExpressionElementAppender> ResolveElementAppender(Type current, Type original)
+        private Func<IExpressionElementAppender> ResolveElementAppenderFactory(Type current, Type original)
         {
             if (_elementAppenders.TryGetValue(current, out Func<IExpressionElementAppender> factory))
                 return factory;
@@ -129,8 +130,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (current.BaseType is null)
                 return null;
 
-            if (factory is null)
-                factory = ResolveElementAppender(current.BaseType, original);
+            factory = ResolveElementAppenderFactory(current.BaseType, original);
 
             if (factory is object && current == original)
                 //reduce runtime recursion by "registering" the original with the found appender
@@ -138,5 +138,6 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             return factory;
         }
+        #endregion
     }
 }
