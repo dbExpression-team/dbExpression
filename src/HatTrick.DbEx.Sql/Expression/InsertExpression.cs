@@ -2,7 +2,7 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpression :
+    public abstract class InsertExpression :
         IExpression,
         IAssignmentExpressionProvider
     {
@@ -17,11 +17,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public InsertExpression(FieldExpression field, IExpressionElement assignment)
+        protected InsertExpression(FieldExpression field, IExpressionElement assignment)
         {
-            assignee = field ?? throw new ArgumentNullException($"{nameof(field)} is required.");
+            this.assignee = field ?? throw new ArgumentNullException($"{nameof(field)} is required.");
             this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");
         }
         #endregion
-    }    
+    }
 }

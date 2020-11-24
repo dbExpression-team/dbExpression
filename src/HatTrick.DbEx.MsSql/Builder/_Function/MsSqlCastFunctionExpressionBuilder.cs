@@ -1,12 +1,10 @@
-﻿using HatTrick.DbEx.MsSql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
-using System;
 using System.Data;
 
 namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class MsSqlCastFunctionExpressionBuilder : IMsSqlCastFunctionExpressionBuilder
+    public class MsSqlCastFunctionExpressionBuilder : MsSqlCast
     {
         #region internals
         public IExpressionElement Expression { get; private set; }
@@ -20,79 +18,55 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region methods
-        BooleanCastFunctionExpression ICastFunctionExpressionBuilder.AsBit()
+        BooleanCastFunctionExpression Cast.AsBit()
             => new BooleanCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Bit));
 
-        ByteCastFunctionExpression ICastFunctionExpressionBuilder.AsTinyInt()
+        ByteCastFunctionExpression Cast.AsTinyInt()
             => new ByteCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Bit));
 
-        DateTimeCastFunctionExpression ICastFunctionExpressionBuilder.AsDateTime()
+        DateTimeCastFunctionExpression Cast.AsDateTime()
             => new DateTimeCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.DateTime));
 
-        DateTimeOffsetCastFunctionExpression ICastFunctionExpressionBuilder.AsDateTimeOffset()
+        DateTimeOffsetCastFunctionExpression Cast.AsDateTimeOffset()
             => new DateTimeOffsetCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.DateTimeOffset));
 
-        DecimalCastFunctionExpression ICastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
-            => new DecimalCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Decimal));
+        DecimalCastFunctionExpression Cast.AsDecimal(int precision, int scale)
+            => new DecimalCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Decimal), precision, scale);
 
-        DoubleCastFunctionExpression IMsSqlCastFunctionExpressionBuilder.AsMoney()
+        DoubleCastFunctionExpression MsSqlCast.AsMoney()
             => new DoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Money));
 
-        DoubleCastFunctionExpression IMsSqlCastFunctionExpressionBuilder.AsSmallMoney()
+        DoubleCastFunctionExpression MsSqlCast.AsSmallMoney()
             => new DoubleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallMoney));
 
-        SingleCastFunctionExpression ICastFunctionExpressionBuilder.AsFloat()
+        SingleCastFunctionExpression Cast.AsFloat()
             => new SingleCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Float));
 
-        GuidCastFunctionExpression ICastFunctionExpressionBuilder.AsUniqueIdentifier()
+        GuidCastFunctionExpression Cast.AsUniqueIdentifier()
             => new GuidCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.UniqueIdentifier));
 
-        Int16CastFunctionExpression ICastFunctionExpressionBuilder.AsSmallInt()
+        Int16CastFunctionExpression Cast.AsSmallInt()
             => new Int16CastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.SmallInt));
 
-        Int32CastFunctionExpression ICastFunctionExpressionBuilder.AsInt()
+        Int32CastFunctionExpression Cast.AsInt()
             => new Int32CastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Int));
 
-        Int64CastFunctionExpression ICastFunctionExpressionBuilder.AsBigInt()
+        Int64CastFunctionExpression Cast.AsBigInt()
             => new Int64CastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.BigInt));
 
-        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsVarChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.VarChar))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression Cast.AsVarChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.VarChar), size);
 
-        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Char))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression Cast.AsChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Char), size);
 
-        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsNVarChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NVarChar))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression Cast.AsNVarChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NVarChar), size);
 
-        StringCastFunctionExpression ICastFunctionExpressionBuilder.AsNChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NChar))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression Cast.AsNChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.NChar), size);
 
-        TimeSpanCastFunctionExpression ICastFunctionExpressionBuilder.AsTime()
+        TimeSpanCastFunctionExpression Cast.AsTime()
             => new TimeSpanCastFunctionExpression(Expression, new DbTypeExpression<SqlDbType>(SqlDbType.Time));
 
         #endregion

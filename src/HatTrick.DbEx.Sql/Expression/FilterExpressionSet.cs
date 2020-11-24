@@ -2,27 +2,29 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class FilterExpressionSet : 
-        IExpressionElement
+    public class FilterExpressionSet :
+        AnyWhereClause,
+        AnyJoinOnClause,
+        AnyHavingClause
     {
         #region interface
         public ConditionalExpressionOperator ConditionalOperator { get; private set; }
         public bool Negate { get; private set; }
-        public IExpressionElement LeftArg { get; private set; }
-        public IExpressionElement RightArg { get; private set; }
-        public bool IsSingleFilter => RightArg is null;
-        public object SingleFilter => RightArg is null ? LeftArg : null;
+        public IFilterExpressionElement LeftArg { get; private set; }
+        public IFilterExpressionElement RightArg { get; private set; }
+        public bool IsSingleArg => RightArg is null;
+        public bool IsEmpty => LeftArg is null && RightArg is null;
         #endregion
 
         #region constructors
-        internal FilterExpressionSet()
+        private FilterExpressionSet()
         { 
         
         }        
         
-        public FilterExpressionSet(FilterExpression singleFilter)
+        public FilterExpressionSet(FilterExpression singleArg)
         {
-            LeftArg = singleFilter ?? throw new ArgumentNullException($"{nameof(singleFilter)} is required.");
+            LeftArg = singleArg ?? throw new ArgumentNullException($"{nameof(singleArg)} is required.");
         }
 
         public FilterExpressionSet(FilterExpression leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
@@ -32,19 +34,20 @@ namespace HatTrick.DbEx.Sql.Expression
             ConditionalOperator = conditionalOperator;
         }
 
-        protected FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
+        public FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
 
-        protected FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
+        private FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
+
         #endregion
 
         #region to string

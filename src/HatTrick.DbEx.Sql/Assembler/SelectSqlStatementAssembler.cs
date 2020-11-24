@@ -29,12 +29,12 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender
                 .Indent().Write("SELECT");
 
-            if (expression.Select is IExpressionTopProvider t && t.Top.HasValue)
+            if (expression.Top.HasValue)
             {
-                builder.Appender.Write(" TOP(").Write(t.Top.ToString()).Write(")");
+                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
             }
 
-            if (expression.Select is IExpressionIsDistinctProvider d && d.IsDistinct)
+            if (expression.Distinct == true)
             {
                 builder.Appender.Write(" DISTINCT");
             }
@@ -72,7 +72,35 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .LineBreak();
         }
 
-        protected virtual void AppendGroupByClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendJoinClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
+                return;
+
+            builder.Appender
+                .Indentation++;
+
+            builder.AppendElement(expression.Joins, context);
+
+            builder.Appender
+                .Indentation--;
+        }
+
+        protected virtual void AppendWhereClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
+                return;
+
+            builder.Appender.Indent().Write("WHERE")
+                .Indentation++;
+
+            builder.AppendElement(expression.Where, context);
+
+            builder.Appender.LineBreak()
+                .Indentation--;
+        }
+
+        protected virtual void AppendGroupByClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.GroupBy?.Expressions is null || !expression.GroupBy.Expressions.Any())
                 return;
@@ -94,7 +122,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendHavingClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendHavingClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.Having?.Expression is null || expression.Having.Expression is null)
                 return;
@@ -116,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Indentation--;
         }
 
-        protected virtual void AppendOrderByClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendOrderByClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (expression.OrderBy?.Expressions is null || !expression.OrderBy.Expressions.Any())
                 return;

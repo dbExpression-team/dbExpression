@@ -19,10 +19,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public abstract FilterExpression<bool> In(params TValue[] value);
-        public abstract FilterExpression<bool> In(IEnumerable<TValue> value);
-        public abstract FilterExpression<bool> In(params TNullableValue[] value);
-        public abstract FilterExpression<bool> In(IEnumerable<TNullableValue> value);
+        public abstract FilterExpressionSet In(params TValue[] value);
+        public abstract FilterExpressionSet In(IEnumerable<TValue> value);
+        public abstract FilterExpressionSet In(params TNullableValue[] value);
+        public abstract FilterExpressionSet In(IEnumerable<TNullableValue> value);
         #endregion
 
         #region set
@@ -30,11 +30,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public abstract AssignmentExpression Set(TNullableValue value);
         public abstract AssignmentExpression Set(DBNull value);
-        #endregion
-
-        #region insert value
-        public abstract InsertExpression Insert(TValue value);
-        public abstract InsertExpression Insert(TNullableValue value);
         #endregion
     }
 }

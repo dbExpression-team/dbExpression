@@ -10,12 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType) : this(datePart, expression, declaredType, null)
-        {
-
-        }
-
-        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
+        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType) : base(expression, declaredType)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
         }
@@ -55,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator GroupByExpression(DatePartFunctionExpression datePart) 
-            => new GroupByExpression(new Int32ExpressionMediator(datePart as IExpressionElement));
+            => new GroupByExpression(new Int32ExpressionMediator(datePart));
         #endregion
     }
 }

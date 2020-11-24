@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DoubleMaximumFunctionExpression>
     {
         #region constructors
-        public DoubleMaximumFunctionExpression(DoubleElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected DoubleMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public DoubleMaximumFunctionExpression(DoubleElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DoubleElement As(string alias)
-            => new DoubleMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public DoubleMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

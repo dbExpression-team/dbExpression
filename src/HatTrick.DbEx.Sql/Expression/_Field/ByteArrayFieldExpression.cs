@@ -38,10 +38,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public virtual AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
         #endregion
 
-        #region insert
-        public override InsertExpression Insert(byte[] value) => new InsertExpression(this, new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(value)));
-        #endregion
-
         #region order
         public override OrderByExpression Asc => new OrderByExpression(new ByteArrayExpressionMediator(this), OrderExpressionDirection.ASC);
         public override OrderByExpression Desc => new OrderByExpression(new ByteArrayExpressionMediator(this), OrderExpressionDirection.DESC);

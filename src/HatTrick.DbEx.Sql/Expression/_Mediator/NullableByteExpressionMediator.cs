@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteExpressionMediator :
         NullableExpressionMediator<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteExpressionMediator>
     {
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullByteElement As(string alias)
+        public NullableByteElement As(string alias)
             => new NullableByteExpressionMediator(base.Expression, alias);
         #endregion
 

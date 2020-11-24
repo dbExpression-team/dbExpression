@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableDateTimeOffsetFieldExpression : 
         NullableFieldExpression<DateTimeOffset,DateTimeOffset?>,
-        NullDateTimeOffsetElement,
+        NullableDateTimeOffsetElement,
         AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetFieldExpression>
     {
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public abstract NullDateTimeOffsetElement As(string alias);
+        public abstract NullableDateTimeOffsetElement As(string alias);
         #endregion
 
         #region equals

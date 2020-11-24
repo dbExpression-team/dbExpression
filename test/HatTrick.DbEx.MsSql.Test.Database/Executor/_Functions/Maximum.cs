@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Max(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("max_amount")
+                    db.fx.Max(dbo.Purchase.TotalPurchaseAmount).Distinct().As("max_amount")
                 ).From(dbo.Purchase);
 
             //when               

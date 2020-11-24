@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableByteFieldExpression : 
         NullableFieldExpression<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteFieldExpression>
     {
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public abstract NullByteElement As(string alias);
+        public abstract NullableByteElement As(string alias);
         #endregion
 
         #region equals

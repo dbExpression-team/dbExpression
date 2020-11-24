@@ -4,35 +4,41 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt32AverageFunctionExpression :
         NullableAverageFunctionExpression<int,int?>,
-        NullInt32Element,
+        NullableInt32Element,
         AnyInt32Element,
         IEquatable<NullableInt32AverageFunctionExpression>
     {
         #region constructors
-        public NullableInt32AverageFunctionExpression(NullByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32AverageFunctionExpression(NullableByteElement expression) : base(expression)
         {
 
         }
 
-        public NullableInt32AverageFunctionExpression(NullInt16Element expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableInt32AverageFunctionExpression(NullableInt16Element expression) : base(expression)
         {
 
         }
 
-        public NullableInt32AverageFunctionExpression(NullInt32Element expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableInt32AverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public NullableInt32AverageFunctionExpression(NullableInt32Element expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullInt32Element As(string alias)
-            => new NullableInt32AverageFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableInt32Element As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableInt32AverageFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

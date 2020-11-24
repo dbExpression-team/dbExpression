@@ -7,14 +7,8 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableMinimumFunctionExpression(IExpressionElement expression, bool isDistinct)
-            : base(expression, typeof(TNullableValue), isDistinct, null)
-        {
-
-        }
-
-        protected NullableMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias)
-            : base(expression, typeof(TNullableValue), isDistinct, alias)
+        protected NullableMinimumFunctionExpression(IExpressionElement expression)
+            : base(expression, typeof(TNullableValue))
         {
 
         }

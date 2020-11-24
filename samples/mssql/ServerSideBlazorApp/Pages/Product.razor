@@ -11,7 +11,10 @@
     <Row Margin="Margin.Is3.FromTop">
         <Column ColumnSize="ColumnSize.Is4">
             <Card>
+                @if (!string.IsNullOrWhiteSpace(Model.Image))
+                {
                 <CardImage Source="@($"data:image/png;base64,{Model.Image}")"></CardImage>
+                }
                 <CardBody>
                     <CardTitle>Details</CardTitle>
                     <Divider Type="DividerType.Dotted"></Divider>

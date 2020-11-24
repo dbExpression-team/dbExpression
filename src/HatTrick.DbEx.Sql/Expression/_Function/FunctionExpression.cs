@@ -4,6 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FunctionExpression :
         AnyElement,
+        AnyOrderByClause,
         IFunctionExpression,
         IExpressionAliasProvider,
         IExpressionTypeProvider,
@@ -11,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region internals
         protected Type DeclaredType { get; private set; }
-        protected string Alias { get; private set; }
+        protected string Alias { get; set; }
         #endregion
 
         #region interface
@@ -26,16 +27,9 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         protected FunctionExpression(IExpressionElement expression, Type declaredType)
-            : this(expression, declaredType, null)
-        {
-
-        }
-
-        protected FunctionExpression(IExpressionElement expression, Type declaredType, string alias)
         {
             Expression = expression; //expression may be fully managed in subclass
             DeclaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
-            Alias = alias;
         }
         #endregion
 

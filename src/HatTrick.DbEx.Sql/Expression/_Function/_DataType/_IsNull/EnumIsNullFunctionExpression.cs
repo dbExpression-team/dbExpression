@@ -14,16 +14,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected EnumIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public EnumElement<TEnum> As(string alias)
-            => new EnumIsNullFunctionExpression<TEnum>(base.Expression, base.Value, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

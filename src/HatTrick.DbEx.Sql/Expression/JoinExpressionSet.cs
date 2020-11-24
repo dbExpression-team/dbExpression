@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal JoinExpressionSet()
+        private JoinExpressionSet()
         { 
         
         }

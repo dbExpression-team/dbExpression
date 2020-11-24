@@ -9,22 +9,17 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int32SumFunctionExpression>
     {
         #region constructors
-        public Int32SumFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32SumFunctionExpression(ByteElement expression) : base(expression)
         {
 
         }
 
-        public Int32SumFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
+        public Int32SumFunctionExpression(Int16Element expression) : base(expression)
         {
 
         }
 
-        public Int32SumFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected Int32SumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public Int32SumFunctionExpression(Int32Element expression) : base(expression)
         {
 
         }
@@ -32,7 +27,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int32Element As(string alias)
-            => new Int32SumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public Int32SumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

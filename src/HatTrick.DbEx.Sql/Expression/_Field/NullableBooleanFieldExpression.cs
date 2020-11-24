@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableBooleanFieldExpression : 
         NullableFieldExpression<bool,bool?>,
-        NullBooleanElement,
+        NullableBooleanElement,
         AnyBooleanElement,
         IEquatable<NullableBooleanFieldExpression>
     {
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public abstract NullBooleanElement As(string alias);
+        public abstract NullableBooleanElement As(string alias);
         #endregion
 
         #region equals

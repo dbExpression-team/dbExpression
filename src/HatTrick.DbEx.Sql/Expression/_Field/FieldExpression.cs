@@ -4,6 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class FieldExpression : 
         AnyElement,
+        AnyOrderByClause,
+        AnyGroupByClause,
         IExpressionTypeProvider,
         ISqlMetadataIdentifier,
         IExpressionProvider<EntityExpression>,

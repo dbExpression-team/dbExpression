@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
@@ -13,9 +14,6 @@ namespace HatTrick.DbEx.Sql.Converter
 
         public virtual (Type, object) ConvertToDatabase(object value)
         {
-            if (value is null)
-                return (type, default);
-
             if (type == value.GetType())
                 return (type, value);
 
@@ -25,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual object ConvertFromDatabase(object value)
         {
             if (value is null)
-                return default;
+                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
 
             if (type == value.GetType())
                 return value;
@@ -36,11 +34,11 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual T ConvertFromDatabase<T>(object value)
         {
             if (value is null)
-                return default;
+                throw new DbExpressionException("Expected a non-null value from the database, but received a null value.");
 
             if (typeof(T) == value.GetType())
                 return (T)value;
-
+            
             return (T)Convert.ChangeType(value, typeof(T));
         }
     }

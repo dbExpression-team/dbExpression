@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDecimalCoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<decimal,decimal?>,
-        NullDecimalElement,
+        NullableDecimalElement,
         AnyDecimalElement,
         IEquatable<NullableDecimalCoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableDecimalCoalesceFunctionExpression(IList<AnyDecimalElement> expressions, NullDecimalElement termination) 
+        public NullableDecimalCoalesceFunctionExpression(IList<AnyDecimalElement> expressions, NullableDecimalElement termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableDecimalCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullDecimalElement As(string alias)
-            => new NullableDecimalCoalesceFunctionExpression(base.Expression, alias);
+        public NullableDecimalElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

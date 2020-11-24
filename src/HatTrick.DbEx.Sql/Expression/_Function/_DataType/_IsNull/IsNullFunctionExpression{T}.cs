@@ -11,11 +11,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected IsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, typeof(TValue), value, alias)
-        {
-
-        }
         #endregion
     }
 }

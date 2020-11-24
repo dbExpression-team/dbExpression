@@ -55,9 +55,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++
                     .Write("[__index] BETWEEN ")
-                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName)
+                    .Write(builder.Parameters.Add((expression.Skip ?? 0) + 1).ParameterName)
                     .Write(" AND ")
-                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0 + expression.LimitValue ?? expression.SkipValue ?? -1) + 1).ParameterName)
+                    .Write(builder.Parameters.Add((expression.Skip ?? 0 + expression.Limit ?? expression.Skip ?? -1) + 1).ParameterName)
                     .LineBreak()
                 .Indentation--.Indent().Write("ORDER BY").LineBreak()
                 .Indentation++.Indent().Write("[__index]");
@@ -150,13 +150,13 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++.Indent().Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(".").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).Write(" BETWEEN ")
-                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + 1).ParameterName);
+                    .Write(builder.Parameters.Add((expression.Skip ?? 0) + 1).ParameterName);
 
-            if (expression.LimitValue.HasValue)
+            if (expression.Limit.HasValue)
             {
                 builder.Appender
                     .Write(" AND ")
-                    .Write(builder.Parameters.Add((expression.SkipValue ?? 0) + expression.LimitValue.Value + 1).ParameterName)
+                    .Write(builder.Parameters.Add((expression.Skip ?? 0) + expression.Limit.Value + 1).ParameterName)
                     .LineBreak();
             }
             builder.Appender

@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableInt64FieldExpression : 
         NullableFieldExpression<long,long?>,
-        NullInt64Element,
+        NullableInt64Element,
         AnyInt64Element,
         IEquatable<NullableInt64FieldExpression>
     {
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public abstract NullInt64Element As(string alias);
+        public abstract NullableInt64Element As(string alias);
         #endregion
 
         #region equals

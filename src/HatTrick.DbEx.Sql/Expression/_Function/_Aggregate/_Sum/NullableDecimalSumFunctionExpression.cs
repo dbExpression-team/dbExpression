@@ -4,25 +4,31 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDecimalSumFunctionExpression :
         NullableSumFunctionExpression<decimal,decimal?>,
-        NullDecimalElement,
+        NullableDecimalElement,
         AnyDecimalElement,
         IEquatable<NullableDecimalSumFunctionExpression>
     {
         #region constructors
-        public NullableDecimalSumFunctionExpression(NullDecimalElement expression, bool isDistinct) : base(expression, typeof(decimal?), isDistinct)
-        {
-
-        }
-
-        public NullableDecimalSumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, typeof(decimal?), isDistinct, alias)
+        public NullableDecimalSumFunctionExpression(NullableDecimalElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullDecimalElement As(string alias)
-            => new NullableDecimalSumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableDecimalElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableDecimalSumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

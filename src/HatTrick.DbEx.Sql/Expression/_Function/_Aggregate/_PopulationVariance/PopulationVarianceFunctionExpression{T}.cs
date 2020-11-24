@@ -7,12 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected PopulationVarianceFunctionExpression(IExpressionElement expression, bool isDistinct) : base(expression, typeof(TValue), isDistinct)
-        {
-
-        }
-
-        protected PopulationVarianceFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, typeof(TValue), isDistinct, alias)
+        protected PopulationVarianceFunctionExpression(IExpressionElement expression) : base(expression, typeof(TValue))
         {
 
         }

@@ -2,7 +2,7 @@
 using DbEx.secData;
 using DbEx.secDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
 
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person);
 
-            expressionSet = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            expressionSet = exp.Expression as SelectQueryExpression;
 
             //then
             expressionSet.Select.Expressions.Should().ContainSingle()
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             exp = db.SelectOne(sec.Person.Id, sec.Person.DateCreated)
                .From(sec.Person);
 
-            expressionSet = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            expressionSet = exp.Expression as SelectQueryExpression;
 
             //then
             expressionSet.Select.Expressions.Should().HaveCount(2);

@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<ByteMinimumFunctionExpression>
     {
         #region constructors
-        public ByteMinimumFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected ByteMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public ByteMinimumFunctionExpression(ByteElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public ByteElement As(string alias)
-            => new ByteMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public ByteMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DecimalAverageFunctionExpression>
     {
         #region constructors
-        public DecimalAverageFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected DecimalAverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public DecimalAverageFunctionExpression(DecimalElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DecimalElement As(string alias)
-            => new DecimalAverageFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public DecimalAverageFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

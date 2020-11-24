@@ -14,16 +14,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected BooleanCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public BooleanElement As(string alias)
-            => new BooleanCoalesceFunctionExpression(base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

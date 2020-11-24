@@ -4,29 +4,33 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDoubleMaximumFunctionExpression :
         NullableMaximumFunctionExpression<double,double?>,
-        NullDoubleElement,
+        NullableDoubleElement,
         AnyDoubleElement,
         IEquatable<NullableDoubleMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDoubleMaximumFunctionExpression(NullDoubleElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableDoubleMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias)
-            : base(expression, isDistinct, alias)
+        public NullableDoubleMaximumFunctionExpression(NullableDoubleElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullDoubleElement As(string alias)
-            => new NullableDoubleMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableDoubleElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
+        #region distinct
+        public NullableDoubleMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
+        #endregion
         #region equals
         public bool Equals(NullableDoubleMaximumFunctionExpression obj)
             => obj is NullableDoubleMaximumFunctionExpression && base.Equals(obj);

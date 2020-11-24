@@ -8,24 +8,24 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2016
         protected override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             base.AssembleStatement(expression, builder, context);
-            if (expression.SkipValue.HasValue)
+            if (expression.Skip.HasValue)
             {
                 builder.Appender
                     .Indentation++
                     .Indent()
                     .Write("OFFSET ")
-                    .Write(builder.Parameters.Add(expression.SkipValue.Value).ParameterName)
+                    .Write(builder.Parameters.Add(expression.Skip.Value).ParameterName)
                     .Indent().Write(" ROWS")
                     .LineBreak()
                     .Indentation--;
             }
-            if (expression.LimitValue.HasValue)
+            if (expression.Limit.HasValue)
             {
                 builder.Appender
                     .Indentation++
                     .Indent()
                     .Write("FETCH NEXT ")
-                    .Write(builder.Parameters.Add(expression.LimitValue.Value).ParameterName)
+                    .Write(builder.Parameters.Add(expression.Limit.Value).ParameterName)
                     .Indent()
                     .Write(" ROWS ONLY")
                     .LineBreak()

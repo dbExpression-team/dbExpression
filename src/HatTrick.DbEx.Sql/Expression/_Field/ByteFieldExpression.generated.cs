@@ -6,17 +6,13 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class ByteFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params byte[] value) => value is object ? new FilterExpression<bool>(new ByteExpressionMediator(this), new ByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<byte> value) => value is object ? new FilterExpression<bool>(new ByteExpressionMediator(this), new ByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params byte[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(this), new ByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<byte> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(this), new ByteExpressionMediator(new InExpression<byte>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region set
         public override AssignmentExpression Set(byte value) => new AssignmentExpression(this, new ByteExpressionMediator(new LiteralExpression<byte>(value)));
         public virtual AssignmentExpression Set(ByteElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region insert
-        public override InsertExpression Insert(byte value) => new InsertExpression(this, new ByteExpressionMediator(new LiteralExpression<byte>(value)));
         #endregion
 
         #region order
@@ -384,56 +380,56 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpression<bool?> operator ==(ByteFieldExpression a, DBNull b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(ByteFieldExpression a, DBNull b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator ==(DBNull a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), new ByteExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DBNull a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(ByteFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), new ByteExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>()), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region byte
-        public static FilterExpression<bool> operator ==(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(ByteFieldExpression a, byte b) => new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(ByteFieldExpression a, byte b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteFieldExpression a, byte b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ByteFieldExpression a, byte b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(ByteFieldExpression a, byte b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(ByteFieldExpression a, byte b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(ByteFieldExpression a, byte b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), new ByteExpressionMediator(new LiteralExpression<byte>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(byte a, ByteFieldExpression b) => new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(byte a, ByteFieldExpression b) => new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(byte a, ByteFieldExpression b) => new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(byte a, ByteFieldExpression b) => new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(byte a, ByteFieldExpression b) => new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(byte a, ByteFieldExpression b) => new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(byte a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(byte a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(byte a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(byte a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(byte a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(byte a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(new LiteralExpression<byte>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(ByteFieldExpression a, byte? b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(ByteFieldExpression a, byte? b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(ByteFieldExpression a, byte? b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(ByteFieldExpression a, byte? b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(ByteFieldExpression a, byte? b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(ByteFieldExpression a, byte? b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(ByteFieldExpression a, byte? b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteFieldExpression a, byte? b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ByteFieldExpression a, byte? b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(ByteFieldExpression a, byte? b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(ByteFieldExpression a, byte? b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(ByteFieldExpression a, byte? b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), new NullableByteExpressionMediator(new LiteralExpression<byte?>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(byte? a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(byte? a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(byte? a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(byte? a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(byte? a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(byte? a, ByteFieldExpression b) => new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(byte? a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(byte? a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(byte? a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(byte? a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(byte? a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(byte? a, ByteFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableByteExpressionMediator(new LiteralExpression<byte?>(a)), new ByteExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         
         #region mediator
-        public static FilterExpression<bool> operator ==(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(ByteFieldExpression a, ByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(ByteFieldExpression a, NullableByteExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new ByteExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

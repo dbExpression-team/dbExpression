@@ -13,16 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected ByteIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public ByteElement As(string alias)
-            => new ByteIsNullFunctionExpression(base.Expression, base.Value, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

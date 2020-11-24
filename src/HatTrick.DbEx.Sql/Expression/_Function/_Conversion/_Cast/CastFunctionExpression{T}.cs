@@ -7,14 +7,20 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType) 
-            : base(expression, convertToDbType, convertToType)
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType) 
+            : base(expression, convertToDbType, typeof(TValue))
         {
 
         }
 
-        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int? size, int? precision, int? scale, string alias) 
-            : base(expression, convertToDbType, convertToType, size, precision, scale, alias)
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int size)
+            : base(expression, convertToDbType, typeof(TValue), size)
+        {
+
+        }
+
+        protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int precision, int? scale)
+            : base(expression, convertToDbType, typeof(TValue), precision, scale)
         {
 
         }

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         #region as
-        public override NullEnumElement<TEnum> As(string alias)
+        public override NullableEnumElement<TEnum> As(string alias)
             => new NullableEnumFieldExpression<TEntity, TEnum>(base.identifier, base.entity, alias);
         #endregion
 
@@ -26,20 +26,15 @@ namespace HatTrick.DbEx.Sql.Expression
         public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(this, new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
         public override AssignmentExpression Set(TEnum? value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)));
         public virtual AssignmentExpression Set(EnumElement<TEnum> value) => new AssignmentExpression(this, value);
-        public virtual AssignmentExpression Set(NullEnumElement<TEnum> value) => new AssignmentExpression(this, value);
+        public virtual AssignmentExpression Set(NullableEnumElement<TEnum> value) => new AssignmentExpression(this, value);
         public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(null)));
         #endregion
 
-        #region insert
-        public override InsertExpression Insert(TEnum value) => new InsertExpression(this, new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(value)));
-        public override InsertExpression Insert(TEnum? value) => new InsertExpression(this, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)));
-        #endregion
-
         #region in value set
-        public override FilterExpression<bool> In(params TEnum?[] value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum?>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<TEnum?> value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum?>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(params TEnum[] value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<TEnum> value) => value is object ? new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params TEnum?[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum?>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<TEnum?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum?>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params TEnum[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<TEnum> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new NullableEnumExpressionMediator<TEnum>(this), new EnumExpressionMediator<TEnum>(new InExpression<TEnum>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region order
@@ -67,32 +62,32 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpression<TEnum> operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, DBNull b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, DBNull b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<TEnum> operator ==(DBNull a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(DBNull a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, DBNull b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, DBNull b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>()), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region TEnum
-        public static FilterExpression<TEnum> operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new EnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum>(b)), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpression<TEnum> operator ==(TEnum a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(TEnum a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(TEnum a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(TEnum a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new EnumExpressionMediator<TEnum>(new LiteralExpression<TEnum>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpression<TEnum> operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum? b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum? b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum? b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, TEnum? b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(b)), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpression<TEnum> operator ==(TEnum? a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(TEnum? a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(TEnum? a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(TEnum? a, NullableEnumFieldExpression<TEntity, TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(a)), new NullableEnumExpressionMediator<TEnum>(b), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region mediator
-        public static FilterExpression<TEnum> operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.NotEqual));
 
-        public static FilterExpression<TEnum> operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<TEnum> operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(NullableEnumFieldExpression<TEntity, TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableEnumFieldExpression<TEntity, TEnum> a, NullableEnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a), b, FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
     }

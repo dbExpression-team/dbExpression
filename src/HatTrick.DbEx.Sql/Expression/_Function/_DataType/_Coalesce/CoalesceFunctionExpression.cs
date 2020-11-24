@@ -13,13 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region constructors
         protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, Type declaredType) 
-            : this(expressions, declaredType, null)
-        {
-
-        }
-
-        protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, Type declaredType, string alias) 
-            : base(null, declaredType, alias)
+            : base(null, declaredType)
         {
             Expression = expressions.ToList();
         }

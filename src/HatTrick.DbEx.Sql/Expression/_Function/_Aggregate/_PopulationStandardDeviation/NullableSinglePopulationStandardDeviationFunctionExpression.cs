@@ -4,52 +4,59 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableSinglePopulationStandardDeviationFunctionExpression :
         NullablePopulationStandardDeviationFunctionExpression<float,float?>,
-        NullSingleElement,
+        NullableSingleElement,
         AnySingleElement,
         IEquatable<NullableSinglePopulationStandardDeviationFunctionExpression>
     {
         #region constructors
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableByteElement expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullInt16Element expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableInt16Element expression) : base(expression)
         {
 
         }
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullInt32Element expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableInt32Element expression) : base(expression)
         {
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullInt64Element expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullDoubleElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableInt64Element expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullDecimalElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableDoubleElement expression) : base(expression)
         {
 
         }
 
-        public NullableSinglePopulationStandardDeviationFunctionExpression(NullSingleElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableDecimalElement expression) : base(expression)
         {
 
         }
-        protected NullableSinglePopulationStandardDeviationFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+
+        public NullableSinglePopulationStandardDeviationFunctionExpression(NullableSingleElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullSingleElement As(string alias)
-            => new NullableSinglePopulationStandardDeviationFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableSingleElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableSinglePopulationStandardDeviationFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

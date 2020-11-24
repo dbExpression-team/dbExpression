@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public override NullDoubleElement As(string alias)
+        public override NullableDoubleElement As(string alias)
             => new NullableDoubleFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

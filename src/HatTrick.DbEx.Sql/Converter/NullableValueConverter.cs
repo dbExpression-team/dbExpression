@@ -50,10 +50,10 @@ namespace HatTrick.DbEx.Sql.Converter
                 return (T)value;
 
             var underlying = Nullable.GetUnderlyingType(typeof(T));
-            if (underlying == typeof(T))
+            if (underlying == value.GetType())
                 return (T)value;
 
-            return (T)Convert.ChangeType(value, underlying);
+            return (T)Convert.ChangeType(value, underlying ?? typeof(T));
         }
     }
 }

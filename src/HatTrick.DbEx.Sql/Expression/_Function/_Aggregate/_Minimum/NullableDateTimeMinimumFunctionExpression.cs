@@ -4,27 +4,32 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeMinimumFunctionExpression :
         NullableMinimumFunctionExpression<DateTime,DateTime?>,
-        NullDateTimeElement,
+        NullableDateTimeElement,
         AnyDateTimeElement,
         IEquatable<NullableDateTimeMinimumFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeMinimumFunctionExpression(NullDateTimeElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableDateTimeMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
-            : base(expression, isDistinct, alias)
+        public NullableDateTimeMinimumFunctionExpression(NullableDateTimeElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullDateTimeElement As(string alias)
-            => new NullableDateTimeMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableDateTimeElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableDateTimeMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

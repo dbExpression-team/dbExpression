@@ -9,11 +9,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected AggregateFunctionExpression(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
-        {
-
-        }
         #endregion
     }
 }

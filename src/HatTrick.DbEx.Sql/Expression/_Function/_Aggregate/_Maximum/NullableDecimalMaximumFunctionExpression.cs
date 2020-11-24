@@ -4,27 +4,32 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDecimalMaximumFunctionExpression :
         NullableMaximumFunctionExpression<decimal,decimal?>,
-        NullDecimalElement,
+        NullableDecimalElement,
         AnyDecimalElement,
         IEquatable<NullableDecimalMaximumFunctionExpression>
     {
         #region constructors
-        public NullableDecimalMaximumFunctionExpression(NullDecimalElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableDecimalMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias)
-            : base(expression, isDistinct, alias)
+        public NullableDecimalMaximumFunctionExpression(NullableDecimalElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullDecimalElement As(string alias)
-            => new NullableDecimalMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableDecimalElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableDecimalMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

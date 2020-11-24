@@ -4,27 +4,32 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteMaximumFunctionExpression :
         NullableMaximumFunctionExpression<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteMaximumFunctionExpression>
     {
         #region constructors
-        public NullableByteMaximumFunctionExpression(NullByteElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableByteMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias)
-            : base(expression, isDistinct, alias)
+        public NullableByteMaximumFunctionExpression(NullableByteElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullByteElement As(string alias)
-            => new NullableByteMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableByteElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableByteMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

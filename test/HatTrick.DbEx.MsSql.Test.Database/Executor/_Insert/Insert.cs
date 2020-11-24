@@ -40,6 +40,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             var t1 = dbo.Address.As("a");
+            var last_insert = db.alias("last_insert", "identity").AsInt32();
             var address = db.SelectOne<Address>()
                 .From(t1)
                 .InnerJoin(
@@ -47,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         db.fx.Max(dbo.Address.Id).As("identity")
                     )
                     .From(dbo.Address)
-                ).As("last_insert").On(t1.Id == db.alias("last_insert", "identity").ToInt())
+                ).As("last_insert").On(t1.Id == last_insert)
                 .Execute();
 
             address.Should().NotBeNull();
@@ -236,7 +237,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                         db.fx.Max(dbo.Product.Id).As("identity")
                     )
                     .From(dbo.Product)
-                ).As("last_insert").On(t1.Id == db.alias("last_insert","identity").ToInt())
+                ).As("last_insert").On(t1.Id == db.alias("last_insert","identity").AsInt32())
                 .Execute();
 
             product.Should().NotBeNull();

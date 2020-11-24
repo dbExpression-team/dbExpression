@@ -4,25 +4,23 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteFloorFunctionExpression :
         NullableFloorFunctionExpression<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteFloorFunctionExpression>
     {
         #region constructors
-        public NullableByteFloorFunctionExpression(NullByteElement expression) : base(expression)
-        {
-
-        }
-
-        public NullableByteFloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
+        public NullableByteFloorFunctionExpression(NullableByteElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullByteElement As(string alias)
-            => new NullableByteFloorFunctionExpression(base.Expression, alias);
+        public NullableByteElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

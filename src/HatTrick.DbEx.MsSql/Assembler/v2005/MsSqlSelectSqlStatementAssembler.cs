@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
     {
         protected override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!expression.SkipValue.HasValue && !expression.LimitValue.HasValue)
+            if (!expression.Skip.HasValue && !expression.Limit.HasValue)
             {
                 //no  paging, so no special handling required
                 base.AssembleStatement(expression, builder, context);

@@ -28,8 +28,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region like
-        public FilterExpression Like(string phrase)
-            => new FilterExpression(this, new StringExpressionMediator(new LikeExpression(phrase)), FilterExpressionOperator.None);
+        public FilterExpressionSet Like(string phrase)
+            => new FilterExpressionSet(new FilterExpression(this, new StringExpressionMediator(new LikeExpression(phrase)), FilterExpressionOperator.None, false));
         #endregion
 
         #region equals

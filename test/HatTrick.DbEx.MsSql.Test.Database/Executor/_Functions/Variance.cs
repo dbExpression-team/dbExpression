@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Var(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("s")
+                    db.fx.Var(dbo.Purchase.TotalPurchaseAmount).Distinct().As("s")
                 ).From(dbo.Purchase);
 
             //when               

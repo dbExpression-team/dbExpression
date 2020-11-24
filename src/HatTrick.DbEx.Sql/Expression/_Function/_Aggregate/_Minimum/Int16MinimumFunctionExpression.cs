@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<Int16MinimumFunctionExpression>
     {
         #region constructors
-        public Int16MinimumFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected Int16MinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public Int16MinimumFunctionExpression(Int16Element expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int16Element As(string alias)
-            => new Int16MinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public Int16MinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

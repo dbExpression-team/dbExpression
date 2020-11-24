@@ -4,7 +4,13 @@
     {
         #region constructors
         public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator expressionOperator)
-            : base(leftArg, rightArg, expressionOperator)
+            : base(leftArg, rightArg, expressionOperator, false)
+        {
+
+        }
+
+        public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator expressionOperator, bool negate)
+            : base(leftArg, rightArg, expressionOperator, negate)
         {
 
         }

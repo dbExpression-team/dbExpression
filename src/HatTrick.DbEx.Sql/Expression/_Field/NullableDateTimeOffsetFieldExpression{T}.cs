@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public override NullDateTimeOffsetElement As(string alias)
+        public override NullableDateTimeOffsetElement As(string alias)
             => new NullableDateTimeOffsetFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

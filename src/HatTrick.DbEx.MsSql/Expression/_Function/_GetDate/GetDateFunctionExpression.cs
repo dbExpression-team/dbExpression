@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Expression
@@ -14,17 +15,15 @@ namespace HatTrick.DbEx.MsSql.Expression
         { 
         
         }
-
-        protected GetDateFunctionExpression(string alias) : base(null, typeof(DateTime), alias)
-        {
-
-        }
         #endregion
 
         #region methods
         #region as
         public DateTimeElement As(string alias)
-            => new GetDateFunctionExpression(alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string

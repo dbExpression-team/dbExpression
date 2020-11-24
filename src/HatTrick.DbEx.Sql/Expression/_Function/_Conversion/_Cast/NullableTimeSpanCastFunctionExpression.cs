@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableTimeSpanCastFunctionExpression :
         NullableCastFunctionExpression<TimeSpan,TimeSpan?>,
-        NullTimeSpanElement,
+        NullableTimeSpanElement,
         AnyTimeSpanElement,
         IEquatable<NullableTimeSpanCastFunctionExpression>
     {
@@ -14,17 +14,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected NullableTimeSpanCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
-            : base(expression, convertToDbType, size, precision, scale, alias)
-        {
-
-        }
         #endregion
 
         #region as
-        public NullTimeSpanElement As(string alias)
-            => new NullableTimeSpanCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
+        public NullableTimeSpanElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

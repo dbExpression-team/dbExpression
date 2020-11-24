@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteCastFunctionExpression :
         NullableCastFunctionExpression<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteCastFunctionExpression>
     {
@@ -14,17 +14,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected NullableByteCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
-            : base(expression, convertToDbType, size, precision, scale, alias)
-        {
-
-        }
         #endregion
 
         #region as
-        public NullByteElement As(string alias)
-            => new NullableByteCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
+        public NullableByteElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

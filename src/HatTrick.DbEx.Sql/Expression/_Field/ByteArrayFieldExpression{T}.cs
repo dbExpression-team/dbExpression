@@ -26,13 +26,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
         #endregion
 
-        #region insert
-        public override InsertExpression Insert(byte[] value) => new InsertExpression(this, new ByteExpressionMediator(new LiteralExpression<byte[]>(value)));
-        #endregion
-
         #region in value set
-        public override FilterExpression<bool> In(params byte[][] value) => value is object ? new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new ByteArrayExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<byte[]> value) => value is object ? new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new ByteArrayExpressionMediator(new LiteralExpression<IEnumerable<byte[]>>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params byte[][] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new ByteArrayExpressionMediator(new LiteralExpression<byte[][]>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<byte[]> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new ByteArrayExpressionMediator(new LiteralExpression<IEnumerable<byte[]>>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region order

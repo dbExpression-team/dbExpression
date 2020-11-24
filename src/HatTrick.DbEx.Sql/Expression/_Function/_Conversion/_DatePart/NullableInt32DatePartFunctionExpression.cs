@@ -4,30 +4,28 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt32DatePartFunctionExpression :
         NullableDatePartFunctionExpression<int,int?>,
-        NullInt32Element,
+        NullableInt32Element,
         AnyInt32Element,
         IEquatable<NullableInt32DatePartFunctionExpression>
     {
         #region constructors
-        public NullableInt32DatePartFunctionExpression(DatePartsExpression datePart, NullDateTimeElement expression) : base(datePart, expression)
+        public NullableInt32DatePartFunctionExpression(DatePartsExpression datePart, NullableDateTimeElement expression) : base(datePart, expression)
         {
 
         }
 
-        public NullableInt32DatePartFunctionExpression(DatePartsExpression datePart, NullDateTimeOffsetElement expression) : base(datePart, expression)
-        {
-
-        }
-
-        protected NullableInt32DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, string alias) : base(datePart, expression, alias)
+        public NullableInt32DatePartFunctionExpression(DatePartsExpression datePart, NullableDateTimeOffsetElement expression) : base(datePart, expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullInt32Element As(string alias)
-            => new NullableInt32DatePartFunctionExpression(base.DatePart, base.Expression, alias);
+        public NullableInt32Element As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

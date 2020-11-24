@@ -13,16 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected DoubleIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public DoubleElement As(string alias)
-            => new DoubleIsNullFunctionExpression(base.Expression, base.Value, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

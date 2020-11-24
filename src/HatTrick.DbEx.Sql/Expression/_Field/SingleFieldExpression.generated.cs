@@ -6,17 +6,13 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params float[] value) => value is object ? new FilterExpression<bool>(new SingleExpressionMediator(this), new SingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<float> value) => value is object ? new FilterExpression<bool>(new SingleExpressionMediator(this), new SingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params float[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(this), new SingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<float> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(this), new SingleExpressionMediator(new InExpression<float>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region set
         public override AssignmentExpression Set(float value) => new AssignmentExpression(this, new SingleExpressionMediator(new LiteralExpression<float>(value)));
         public virtual AssignmentExpression Set(SingleElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region insert
-        public override InsertExpression Insert(float value) => new InsertExpression(this, new SingleExpressionMediator(new LiteralExpression<float>(value)));
         #endregion
 
         #region order
@@ -384,56 +380,56 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpression<bool?> operator ==(SingleFieldExpression a, DBNull b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(SingleFieldExpression a, DBNull b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator ==(DBNull a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), new SingleExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DBNull a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), new SingleExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>()), new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region float
-        public static FilterExpression<bool> operator ==(SingleFieldExpression a, float b) => new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(SingleFieldExpression a, float b) => new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(SingleFieldExpression a, float b) => new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(SingleFieldExpression a, float b) => new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(SingleFieldExpression a, float b) => new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(SingleFieldExpression a, float b) => new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), new SingleExpressionMediator(new LiteralExpression<float>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(float a, SingleFieldExpression b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(float a, SingleFieldExpression b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(float a, SingleFieldExpression b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(float a, SingleFieldExpression b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(float a, SingleFieldExpression b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(float a, SingleFieldExpression b) => new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(new LiteralExpression<float>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(SingleFieldExpression a, float? b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(SingleFieldExpression a, float? b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(SingleFieldExpression a, float? b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(SingleFieldExpression a, float? b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(SingleFieldExpression a, float? b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(SingleFieldExpression a, float? b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), new NullableSingleExpressionMediator(new LiteralExpression<float?>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(float? a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(float? a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(float? a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(float? a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(float? a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(float? a, SingleFieldExpression b) => new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableSingleExpressionMediator(new LiteralExpression<float?>(a)), new SingleExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         
         #region mediator
-        public static FilterExpression<bool> operator ==(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(SingleFieldExpression a, SingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(SingleFieldExpression a, NullableSingleExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new SingleExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

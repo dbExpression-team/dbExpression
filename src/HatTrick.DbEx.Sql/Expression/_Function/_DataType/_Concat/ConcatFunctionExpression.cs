@@ -12,12 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, Type declaredType) : this(expressions, declaredType, null)
-        {
-
-        }
-
-        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, Type declaredType, string alias) : base(null, declaredType, alias)
+        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, Type declaredType) : base(null, declaredType)
         {
             Expression = expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required.");
             if (!expressions.Any())

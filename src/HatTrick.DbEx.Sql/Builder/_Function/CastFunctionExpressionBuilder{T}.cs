@@ -1,7 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Data;
+﻿using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql.Builder
 {

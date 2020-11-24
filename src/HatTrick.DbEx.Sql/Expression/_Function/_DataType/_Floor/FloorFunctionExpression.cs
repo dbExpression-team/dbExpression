@@ -11,11 +11,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected FloorFunctionExpression(IExpressionElement expression, Type declaredType, string alias) : base(expression, declaredType, alias)
-        {
-
-        }
         #endregion
 
         #region to string

@@ -4,25 +4,31 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableSingleAverageFunctionExpression :
         NullableAverageFunctionExpression<float,float?>,
-        NullSingleElement,
+        NullableSingleElement,
         AnySingleElement,
         IEquatable<NullableSingleAverageFunctionExpression>
     {
         #region constructors
-        public NullableSingleAverageFunctionExpression(NullSingleElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableSingleAverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public NullableSingleAverageFunctionExpression(NullableSingleElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullSingleElement As(string alias)
-            => new NullableSingleAverageFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableSingleElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableSingleAverageFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

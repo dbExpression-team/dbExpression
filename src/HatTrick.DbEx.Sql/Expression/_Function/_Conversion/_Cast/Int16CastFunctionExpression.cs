@@ -10,13 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region constructors
         public Int16CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
-            : base(expression, convertToDbType, typeof(short))
-        {
-
-        }
-
-        protected Int16CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
-            : base(expression, convertToDbType, typeof(short), size, precision, scale, alias)
+            : base(expression, convertToDbType)
         {
 
         }
@@ -24,7 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int16Element As(string alias)
-            => new Int16CastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

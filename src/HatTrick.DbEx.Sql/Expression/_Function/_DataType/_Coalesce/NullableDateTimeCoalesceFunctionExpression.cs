@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeCoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<DateTime,DateTime?>,
-        NullDateTimeElement,
+        NullableDateTimeElement,
         AnyDateTimeElement,
         IEquatable<NullableDateTimeCoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableDateTimeCoalesceFunctionExpression(IList<AnyDateTimeElement> expressions, NullDateTimeElement termination) 
+        public NullableDateTimeCoalesceFunctionExpression(IList<AnyDateTimeElement> expressions, NullableDateTimeElement termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableDateTimeCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullDateTimeElement As(string alias)
-            => new NullableDateTimeCoalesceFunctionExpression(base.Expression, alias);
+        public NullableDateTimeElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

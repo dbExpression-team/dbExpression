@@ -6,17 +6,13 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class GuidFieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params Guid[] value) => value is object ? new FilterExpression<bool>(new GuidExpressionMediator(this), new GuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(new GuidExpressionMediator(this), new GuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params Guid[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(this), new GuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<Guid> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(this), new GuidExpressionMediator(new InExpression<Guid>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region set
         public override AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new GuidExpressionMediator(new LiteralExpression<Guid>(value)));
         public virtual AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region insert
-        public override InsertExpression Insert(Guid value) => new InsertExpression(this, new GuidExpressionMediator(new LiteralExpression<Guid>(value)));
         #endregion
 
         #region order
@@ -41,56 +37,56 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpression<bool?> operator ==(GuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(GuidFieldExpression a, DBNull b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator ==(DBNull a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new GuidExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DBNull a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(GuidFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(GuidFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new GuidExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>()), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region Guid
-        public static FilterExpression<bool> operator ==(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(GuidFieldExpression a, Guid b) => new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(GuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(GuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(GuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(GuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(GuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(GuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), new GuidExpressionMediator(new LiteralExpression<Guid>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(Guid a, GuidFieldExpression b) => new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Guid a, GuidFieldExpression b) => new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Guid a, GuidFieldExpression b) => new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Guid a, GuidFieldExpression b) => new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Guid a, GuidFieldExpression b) => new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Guid a, GuidFieldExpression b) => new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Guid a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Guid a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Guid a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Guid a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Guid a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Guid a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(new LiteralExpression<Guid>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(GuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(GuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(GuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(GuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(GuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(GuidFieldExpression a, Guid? b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(GuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(GuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(GuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(GuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(GuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(GuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(Guid? a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Guid? a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Guid? a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Guid? a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Guid? a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Guid? a, GuidFieldExpression b) => new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Guid? a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Guid? a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Guid? a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Guid? a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Guid? a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Guid? a, GuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(a)), new GuidExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         
         #region mediator
-        public static FilterExpression<bool> operator ==(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(GuidFieldExpression a, GuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(GuidFieldExpression a, NullableGuidExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new GuidExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

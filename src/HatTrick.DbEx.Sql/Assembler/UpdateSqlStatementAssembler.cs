@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -14,9 +15,16 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
         
         protected virtual void AssembleStatement(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-        {            
+        {
             builder.Appender
-                .Indent().Write("UPDATE").LineBreak()
+                .Indent().Write("UPDATE");
+
+            if (expression.Top.HasValue)
+            {
+                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
+            }
+
+            builder.Appender.LineBreak()
                 .Indentation++.Indent();
 
             context.PushAppendStyle(EntityExpressionAppendStyle.None);
@@ -38,10 +46,39 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.AppendElement(expression.BaseEntity, context);
             context.PopAppendStyles();
 
-            builder.Appender.Indentation--;
+            builder.Appender.LineBreak()
+                .Indentation--;
             
             AppendJoinClause(expression, builder, context);
             AppendWhereClause(expression, builder, context);
+        }
+
+        protected virtual void AppendJoinClause(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
+                return;
+
+            builder.Appender
+                .Indentation++;
+
+            builder.AppendElement(expression.Joins, context);
+
+            builder.Appender
+                .Indentation--;
+        }
+
+        protected virtual void AppendWhereClause(UpdateQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
+                return;
+
+            builder.Appender.Indent().Write("WHERE")
+                .Indentation++;
+
+            builder.AppendElement(expression.Where, context);
+
+            builder.Appender.LineBreak()
+                .Indentation--;
         }
         #endregion
     }

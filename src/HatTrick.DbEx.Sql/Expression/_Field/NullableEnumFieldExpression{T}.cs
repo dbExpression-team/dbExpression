@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class NullableEnumFieldExpression<TEnum> : 
         NullableFieldExpression<TEnum,TEnum?>,
         INullableEnumExpressionMediator<TEnum>,
-        NullEnumElement<TEnum>,
+        NullableEnumElement<TEnum>,
         AnyEnumElement<TEnum>,
         IEquatable<NullableFieldExpression<TEnum,TEnum?>>
         where TEnum : struct, Enum, IComparable
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public abstract NullEnumElement<TEnum> As(string alias);
+        public abstract NullableEnumElement<TEnum> As(string alias);
         #endregion
 
         #region equals

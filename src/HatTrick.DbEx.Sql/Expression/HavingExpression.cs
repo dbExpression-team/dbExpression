@@ -3,21 +3,17 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class HavingExpression :
-        IExpressionElement
+        AnyHavingClause,
+        IFilterExpressionElement
     {
         #region interface
-        public IExpressionElement Expression { get; private set; }
+        public FilterExpressionSet Expression { get; private set; }
         #endregion
 
         #region constructors
-        internal HavingExpression()
+        private HavingExpression()
         { 
         
-        }
-
-        public HavingExpression(FilterExpression havingCondition)
-        {
-            Expression = havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required.");
         }
 
         public HavingExpression(FilterExpressionSet havingCondition)
@@ -33,12 +29,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #region conditional & operator
         public static HavingExpression operator &(HavingExpression a, HavingExpression b)
         {
-            if (a?.Expression == default)
-            {
-                a.Expression = b.Expression;
+            if (a?.Expression is null)
+                return b;
+
+            if (b?.Expression is null)
                 return a;
-            }
-            a.Expression = new ExpressionPair(a.Expression, b.Expression);
+
+            a.Expression &= new FilterExpressionSet(a.Expression, b.Expression, ConditionalExpressionOperator.And);
             return a;
         }
         #endregion

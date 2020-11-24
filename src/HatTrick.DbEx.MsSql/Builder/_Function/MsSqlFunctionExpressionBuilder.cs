@@ -1,7 +1,6 @@
 ﻿using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
@@ -11,117 +10,117 @@ namespace HatTrick.DbEx.MsSql.Builder
     {
         #region cast
         #region bool
-        public static ICastFunctionExpressionBuilder Cast(BooleanElement field)
+        public static Cast Cast(BooleanElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullBooleanElement field)
+        public static NullableCast Cast(NullableBooleanElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region byte
-        public static ICastFunctionExpressionBuilder Cast(ByteElement field)
+        public static Cast Cast(ByteElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullByteElement field)
+        public static NullableCast Cast(NullableByteElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region DateTime
-        public static ICastFunctionExpressionBuilder Cast(DateTimeElement field)
+        public static Cast Cast(DateTimeElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullDateTimeElement field)
+        public static NullableCast Cast(NullableDateTimeElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region DateTimeOffset
-        public static ICastFunctionExpressionBuilder Cast(DateTimeOffsetElement field)
+        public static Cast Cast(DateTimeOffsetElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullDateTimeOffsetElement field)
+        public static NullableCast Cast(NullableDateTimeOffsetElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region decimal
-        public static ICastFunctionExpressionBuilder Cast(DecimalElement field)
+        public static Cast Cast(DecimalElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullDecimalElement field)
+        public static NullableCast Cast(NullableDecimalElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region double
-        public static ICastFunctionExpressionBuilder Cast(DoubleElement field)
+        public static Cast Cast(DoubleElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullDoubleElement field)
+        public static NullableCast Cast(NullableDoubleElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region enum
-        public static ICastFunctionExpressionBuilder Cast<TEnum>(EnumElement<TEnum> field)
+        public static Cast Cast<TEnum>(EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
             => new MsSqlCastFunctionExpressionBuilder(new NullableEnumExpressionMediator<TEnum>(field));
 
-        public static INullableCastFunctionExpressionBuilder Cast<TEnum>(NullEnumElement<TEnum> field)
+        public static NullableCast Cast<TEnum>(NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
             => new MsSqlNullableCastFunctionExpressionBuilder(new NullableEnumExpressionMediator<TEnum>(field));
         #endregion
 
         #region float
-        public static ICastFunctionExpressionBuilder Cast(SingleElement field)
+        public static Cast Cast(SingleElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullSingleElement field)
+        public static NullableCast Cast(NullableSingleElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region Guid
-        public static ICastFunctionExpressionBuilder Cast(GuidElement field)
+        public static Cast Cast(GuidElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullGuidElement field)
+        public static NullableCast Cast(NullableGuidElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region short
-        public static ICastFunctionExpressionBuilder Cast(Int16Element field)
+        public static Cast Cast(Int16Element field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullInt16Element field)
+        public static NullableCast Cast(NullableInt16Element field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region int
-        public static ICastFunctionExpressionBuilder Cast(Int32Element field)
+        public static Cast Cast(Int32Element field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullInt32Element field)
+        public static NullableCast Cast(NullableInt32Element field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region long
-        public static ICastFunctionExpressionBuilder Cast(Int64Element field)
+        public static Cast Cast(Int64Element field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullInt64Element field)
+        public static NullableCast Cast(NullableInt64Element field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region string
-        public static ICastFunctionExpressionBuilder Cast(StringElement field)
+        public static Cast Cast(StringElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullStringElement field)
+        public static NullableCast Cast(NullableStringElement field)
             => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
 
         #region TimeSpan
-        public static ICastFunctionExpressionBuilder Cast(TimeSpanElement field)
+        public static Cast Cast(TimeSpanElement field)
             => new MsSqlCastFunctionExpressionBuilder(field);
 
-        public static INullableCastFunctionExpressionBuilder Cast(NullTimeSpanElement field)
+        public static NullableCast Cast(NullableTimeSpanElement field)
            => new MsSqlNullableCastFunctionExpressionBuilder(field);
         #endregion
         #endregion
@@ -130,37 +129,37 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, DateTimeElement field)
             => new DateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullDateTimeElement field)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullableDateTimeElement field)
             => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
         public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, DateTimeOffsetElement field)
             => new DateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullDateTimeOffsetElement field)
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, int value, NullableDateTimeOffsetElement field)
             => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), new Int32ExpressionMediator(new LiteralExpression<int>(value)), field);
 
         public static DateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, DateTimeElement field)
             => new DateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullDateTimeElement field)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullableDateTimeElement field)
             => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static DateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, DateTimeOffsetElement field)
             => new DateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullDateTimeOffsetElement field)
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, Int32ExpressionMediator value, NullableDateTimeOffsetElement field)
             => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, DateTimeElement field)
             => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
-        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullDateTimeElement field)
+        public static NullableDateTimeDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullableDateTimeElement field)
             => new NullableDateTimeDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
         public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, DateTimeOffsetElement field)
             => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
 
-        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullDateTimeOffsetElement field)
+        public static NullableDateTimeOffsetDateAddFunctionExpression DateAdd(DateParts datePart, NullableInt32ExpressionMediator value, NullableDateTimeOffsetElement field)
             => new NullableDateTimeOffsetDateAddFunctionExpression(new DatePartsExpression<DateParts>(datePart), value, field);
         #endregion
 
@@ -168,13 +167,13 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static Int32DatePartFunctionExpression DatePart(DateParts datePart, DateTimeElement field)
             => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
 
-        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullDateTimeElement field)
+        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullableDateTimeElement field)
             => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
 
         public static Int32DatePartFunctionExpression DatePart(DateParts datePart, DateTimeOffsetElement field)
             => new Int32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
 
-        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullDateTimeOffsetElement field)
+        public static NullableInt32DatePartFunctionExpression DatePart(DateParts datePart, NullableDateTimeOffsetElement field)
             => new NullableInt32DatePartFunctionExpression(new DatePartsExpression<DateParts>(datePart), field);
         #endregion
 
@@ -183,19 +182,19 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, DateTimeElement endDate)
             => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(startDate)), endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, NullDateTimeElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime startDate, NullableDateTimeElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeExpressionMediator(new LiteralExpression<DateTime>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, DateTimeElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(startDate)), endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, NullDateTimeElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTime? startDate, NullableDateTimeElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(startDate)), endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeElement startDate, DateTime endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeElement startDate, DateTime endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(endDate)));
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeElement startDate, DateTime? endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeElement startDate, DateTime? endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeElement startDate, DateTime endDate)
@@ -207,13 +206,13 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeElement startDate, DateTimeElement endDate)
             => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeElement startDate, NullDateTimeElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeElement startDate, NullableDateTimeElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeElement startDate, DateTimeElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeElement startDate, DateTimeElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeElement startDate, NullDateTimeElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeElement startDate, NullableDateTimeElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
         #endregion
 
@@ -221,19 +220,19 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, DateTimeOffsetElement endDate)
             => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(startDate)), endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, NullDateTimeOffsetElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset startDate, NullableDateTimeOffsetElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(startDate)), endDate);
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, DateTimeOffsetElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(startDate)), endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, NullDateTimeOffsetElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffset? startDate, NullableDateTimeOffsetElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(startDate)), endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeOffsetElement startDate, DateTimeOffset endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetElement startDate, DateTimeOffset endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(endDate)));
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeOffsetElement startDate, DateTimeOffset? endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetElement startDate, DateTimeOffset? endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(endDate)));
 
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetElement startDate, DateTimeOffset endDate)
@@ -245,13 +244,13 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static Int32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetElement startDate, DateTimeOffsetElement endDate)
             => new Int32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetElement startDate, NullDateTimeOffsetElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, DateTimeOffsetElement startDate, NullableDateTimeOffsetElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeOffsetElement startDate, DateTimeOffsetElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetElement startDate, DateTimeOffsetElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
 
-        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullDateTimeOffsetElement startDate, NullDateTimeOffsetElement endDate)
+        public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetElement startDate, NullableDateTimeOffsetElement endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, endDate);
         #endregion
         #endregion

@@ -6,19 +6,10 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpressionSet : 
         IExpressionElement,
-        IExpressionSet<SelectExpression>,
-        IExpressionIsDistinctProvider,
-        IExpressionTopProvider
+        IExpressionSet<SelectExpression>
     {
-        #region internals
-        protected bool _isDistinct;
-        protected int? _top;
-        #endregion
-
         #region interface
         public IEnumerable<SelectExpression> Expressions { get; private set; } = new List<SelectExpression>();
-        bool IExpressionIsDistinctProvider.IsDistinct => _isDistinct;
-        int? IExpressionTopProvider.Top => _top;
         #endregion
 
         #region constructor
@@ -53,22 +44,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 aSelectExpression ?? throw new ArgumentNullException($"{nameof(aSelectExpression)} is required"),
                 bSelectExpression ?? throw new ArgumentNullException($"{nameof(bSelectExpression)} is required")
             };
-        }
-        #endregion
-
-        #region distinct
-        public SelectExpressionSet Distinct(bool distinct = true)
-        {
-            _isDistinct = distinct & true;
-            return this;
-        }
-        #endregion
-
-        #region top
-        public SelectExpressionSet Top(int? count)
-        {
-            _top = count;
-            return this;
         }
         #endregion
 

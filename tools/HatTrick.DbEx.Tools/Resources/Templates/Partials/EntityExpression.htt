@@ -52,28 +52,27 @@
 		
         protected override InsertExpressionSet<{($) => ResolveName}> GetInclusiveInsertExpression({($) => ResolveName} {($) => ToCamelCase})
         {{
-            return new InsertExpressionSet<{($) => ResolveName}>(
-				{(:table) => ToCamelCase},
-                {#each Columns.Values}
+            return new InsertExpressionSet<{($) => ResolveName}>({(:table) => ToCamelCase}, 
+				{#each Columns.Values}
 				{#if !($) => IsIgnored}
-                {($) => ResolveName}.Insert({(:table) => ToCamelCase}.{($) => ResolveName}){#if !(:columns, $) => IsLast},{/if+}
+                new InsertExpression<{($, $.IsNullable) => ResolveClrTypeName}>({($) => ResolveName}, {(:table) => ToCamelCase}.{($) => ResolveName}){#if !(:columns, $) => IsLast},{/if+}
 				{/if}
-				{/each}
+				{/each}                
             );
         }}
 
-        protected override AssignmentExpressionSet GetAssignmentExpression({($) => ResolveName} from, {($) => ResolveName} to)
+        protected override AssignmentExpressionSet GetAssignmentExpression({($) => ResolveName} target, {($) => ResolveName} source)
         {{
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			{#each Columns.Values}
-			{#if !($) => IsIgnored}
-			{#if !$.IsIdentity}
-			if (from.{($) => ResolveName} != to.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(to.{($) => ResolveName}); }}; 
-			{/if}
-			{/if}
-			{/each}
-			
+            {#each Columns.Values}
+            {#if !($) => IsIgnored}
+            {#if !$.IsIdentity}
+            if (target.{($) => ResolveName} != source.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(source.{($) => ResolveName}); }}; 
+            {/if}
+            {/if}
+            {/each}
+
             return expr;
         }}
 

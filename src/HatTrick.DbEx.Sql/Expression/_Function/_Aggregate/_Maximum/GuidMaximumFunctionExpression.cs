@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<GuidMaximumFunctionExpression>
     {
         #region constructors
-        public GuidMaximumFunctionExpression(GuidElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        public GuidMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public GuidMaximumFunctionExpression(GuidElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public GuidElement As(string alias)
-            => new GuidMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public GuidMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

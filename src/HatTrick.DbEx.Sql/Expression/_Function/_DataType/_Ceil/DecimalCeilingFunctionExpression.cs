@@ -13,16 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected DecimalCeilingFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public DecimalElement As(string alias)
-            => new DecimalCeilingFunctionExpression(base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

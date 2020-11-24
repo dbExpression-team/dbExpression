@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeMinimumFunctionExpression>
     {
         #region constructors
-        public DateTimeMinimumFunctionExpression(DateTimeElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected DateTimeMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public DateTimeMinimumFunctionExpression(DateTimeElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DateTimeElement As(string alias)
-            => new DateTimeMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public DateTimeMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

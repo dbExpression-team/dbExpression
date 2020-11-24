@@ -2,7 +2,7 @@
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using Xunit;
@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = exp.Expression as SelectQueryExpression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne(dbo.Person.FirstName.As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = exp.Expression as SelectQueryExpression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                 db.SelectOne((dbo.Person.FirstName + " " + dbo.Person.LastName).As(alias))
                     .From(dbo.Person);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = exp.Expression as SelectQueryExpression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
@@ -106,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .From(table)
                     .GroupBy(table.FirstName);
 
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider<SelectQueryExpression>).Expression;
+            SelectQueryExpression queryExpression = exp.Expression as SelectQueryExpression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);

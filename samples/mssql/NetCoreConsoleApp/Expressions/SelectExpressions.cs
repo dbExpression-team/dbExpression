@@ -300,9 +300,9 @@ namespace NetCoreConsoleApp
                 .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
                 .InnerJoin(dbo.Address).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
 				.Where(dbo.Person.BirthDate < DateTime.Now.AddYears(-18).Date & dbo.Address.Zip.In(zipCodes))
+				.OrderBy(dbo.Person.LastName.Desc)
 				.Skip(pageIndex * pageCount)
 				.Limit(pageCount)
-				.OrderBy(dbo.Person.LastName.Desc)
 				.Execute();
 
 			return pageOfPeopleOver18;
@@ -516,7 +516,7 @@ namespace NetCoreConsoleApp
 			var rpt = db.SelectMany(
 					dbo.Person.Id.As("PersonId"),
 					db.fx.Concat(dbo.Person.LastName, ", ", dbo.Person.FirstName).As("FullName"),
-					db.fx.IsNull(db.alias("t0", "TotalPurchaseAmount").ToNullableInt(), 0).As("TotalPurchaseAmount"),
+					db.fx.IsNull(db.alias("t0", "TotalPurchaseAmount").AsNullableInt32(), 0).As("TotalPurchaseAmount"),
 					dbo.Person.YearOfLastCreditLimitReview,
 					dbo.Person.CreditLimit
 				).From(dbo.Person)
@@ -528,7 +528,7 @@ namespace NetCoreConsoleApp
 					.From(dbo.Purchase)
 					.GroupBy(dbo.Purchase.PersonId))
 					.As("t0")
-				.On(db.alias("t0", "PersonId").ToInt() == dbo.Person.Id)
+				.On(db.alias("t0", "PersonId").AsInt32() == dbo.Person.Id)
 				.OrderBy(dbo.Person.LastName.Asc)
 				.Execute();
 
@@ -561,8 +561,8 @@ namespace NetCoreConsoleApp
 
 			var vip = db.SelectMany(
 				dbo.Person.Id.As("PersonId"), 
-				db.alias("vips", "PurchaseCount").ToInt(), 
-				db.alias("vips", "PurchaseYear").ToInt(), 
+				db.alias("vips", "PurchaseCount").AsInt32(), 
+				db.alias("vips", "PurchaseYear").AsInt32(), 
 				(dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName"))
 				.From(dbo.Person)
 				.InnerJoin(
@@ -577,8 +577,8 @@ namespace NetCoreConsoleApp
 							db.fx.Count(dbo.Purchase.Id) >= purchaseCount 
 							& db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year)
 					).As("vips")
-				.On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
-				.OrderBy(dbo.Person.Id.Asc, db.alias("vips", "PurchaseCount").ToInt().Desc)
+				.On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
+				.OrderBy(dbo.Person.Id.Asc, db.alias("vips", "PurchaseCount").AsInt32().Desc)
 				.Execute();
 
 			return vip;

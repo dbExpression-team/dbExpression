@@ -1,5 +1,4 @@
 ﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Builder.Syntax;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -12,285 +11,296 @@ namespace HatTrick.DbEx.MsSql.Builder
     public class MsSqlQueryExpressionBuilderFactory
     {
         #region select one
-        public IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> CreateSelectOneExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
+        public SelectEntity<TEntity> CreateSelectEntityBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
             where TEntity : class, IDbEntity
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select.Top(1);
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Top = 1;
+            expression.Select = new SelectExpressionSet();
+            return new MsSqlSelectEntityQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
-        public IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
+        public SelectValue<ExpandoObject> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
             {
                 new SelectExpression(field1),
                 new SelectExpression(field2)
             };
             expressions.AddRange(fields.Select(field => new SelectExpression(field)));
-            builder.Expression.Select = new SelectExpressionSet(expressions);
-            builder.Expression.Select.Top(1);
-            return builder;
+            expression.Top = 1;
+            expression.Select = new SelectExpressionSet(expressions);
+            return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
 
-        public IFromExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>> CreateSelectOneExpressionBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
+        public SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select = new SelectExpressionSet(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
-            builder.Expression.Select.Top(1);
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Top = 1;
+            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
+            return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
-        public IFromExpressionBuilder<TEnum?, IValueContinuationExpressionBuilder<TEnum?>, IValueContinuationExpressionBuilder<TEnum?, IValueContinuationExpressionBuilder<TEnum?>>> CreateSelectOneExpressionBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullEnumElement<TEnum> field)
+        public SelectValue<TEnum?> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TEnum?, IValueContinuationExpressionBuilder<TEnum?>, IValueContinuationExpressionBuilder<TEnum?, IValueContinuationExpressionBuilder<TEnum?>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select = new SelectExpressionSet(new SelectExpression<TEnum?>(new EnumExpressionMediator<TEnum>(field)));
-            builder.Expression.Select.Top(1);
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Top = 1;
+            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum?>(new EnumExpressionMediator<TEnum>(field)));
+            return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
-        public IFromExpressionBuilder<bool, IValueContinuationExpressionBuilder<bool>, IValueContinuationExpressionBuilder<bool, IValueContinuationExpressionBuilder<bool>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
-            => CreateSelectOneExpressionBuilder<bool>(configuration, field);
+        public SelectValue<bool> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
+            => CreateSelectValueBuilder<bool>(configuration, field);
 
-        public IFromExpressionBuilder<bool?, IValueContinuationExpressionBuilder<bool?>, IValueContinuationExpressionBuilder<bool?, IValueContinuationExpressionBuilder<bool?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullBooleanElement field)
-            => CreateSelectOneExpressionBuilder<bool?>(configuration, field);
+        public SelectValue<bool?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableBooleanElement field)
+            => CreateSelectValueBuilder<bool?>(configuration, field);
 
-        public IFromExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>, IValueContinuationExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteElement field)
-            => CreateSelectOneExpressionBuilder<byte>(configuration, field);
+        public SelectValue<byte> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteElement field)
+            => CreateSelectValueBuilder<byte>(configuration, field);
 
-        public IFromExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>, IValueContinuationExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullByteElement field)
-            => CreateSelectOneExpressionBuilder<byte?>(configuration, field);
+        public SelectValue<byte?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteElement field)
+            => CreateSelectValueBuilder<byte?>(configuration, field);
 
-        public IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteArrayElement field)
-            => CreateSelectOneExpressionBuilder<byte[]>(configuration, field);
+        public SelectValue<byte[]> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteArrayElement field)
+            => CreateSelectValueBuilder<byte[]>(configuration, field);
 
-        public IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullByteArrayElement field)
-            => CreateSelectOneExpressionBuilder<byte[]>(configuration, field);
+        public SelectValue<byte[]> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteArrayElement field)
+            => CreateSelectValueBuilder<byte[]>(configuration, field);
 
-        public IFromExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>, IValueContinuationExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeElement field)
-            => CreateSelectOneExpressionBuilder<DateTime>(configuration, field);
+        public SelectValue<DateTime> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeElement field)
+            => CreateSelectValueBuilder<DateTime>(configuration, field);
 
-        public IFromExpressionBuilder<DateTime?, IValueContinuationExpressionBuilder<DateTime?>, IValueContinuationExpressionBuilder<DateTime?, IValueContinuationExpressionBuilder<DateTime?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDateTimeElement field)
-            => CreateSelectOneExpressionBuilder<DateTime?>(configuration, field);
+        public SelectValue<DateTime?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeElement field)
+            => CreateSelectValueBuilder<DateTime?>(configuration, field);
 
-        public IFromExpressionBuilder<DateTimeOffset, IValueContinuationExpressionBuilder<DateTimeOffset>, IValueContinuationExpressionBuilder<DateTimeOffset, IValueContinuationExpressionBuilder<DateTimeOffset>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeOffsetElement field)
-            => CreateSelectOneExpressionBuilder<DateTimeOffset>(configuration, field);
+        public SelectValue<DateTimeOffset> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeOffsetElement field)
+            => CreateSelectValueBuilder<DateTimeOffset>(configuration, field);
 
-        public IFromExpressionBuilder<DateTimeOffset?, IValueContinuationExpressionBuilder<DateTimeOffset?>, IValueContinuationExpressionBuilder<DateTimeOffset?, IValueContinuationExpressionBuilder<DateTimeOffset?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDateTimeOffsetElement field)
-            => CreateSelectOneExpressionBuilder<DateTimeOffset?>(configuration, field);
+        public SelectValue<DateTimeOffset?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeOffsetElement field)
+            => CreateSelectValueBuilder<DateTimeOffset?>(configuration, field);
 
-        public IFromExpressionBuilder<decimal, IValueContinuationExpressionBuilder<decimal>, IValueContinuationExpressionBuilder<decimal, IValueContinuationExpressionBuilder<decimal>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DecimalElement field)
-            => CreateSelectOneExpressionBuilder<decimal>(configuration, field);
+        public SelectValue<decimal> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DecimalElement field)
+            => CreateSelectValueBuilder<decimal>(configuration, field);
 
-        public IFromExpressionBuilder<decimal?, IValueContinuationExpressionBuilder<decimal?>, IValueContinuationExpressionBuilder<decimal?, IValueContinuationExpressionBuilder<decimal?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDecimalElement field)
-            => CreateSelectOneExpressionBuilder<decimal?>(configuration, field);
+        public SelectValue<decimal?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDecimalElement field)
+            => CreateSelectValueBuilder<decimal?>(configuration, field);
 
-        public IFromExpressionBuilder<double, IValueContinuationExpressionBuilder<double>, IValueContinuationExpressionBuilder<double, IValueContinuationExpressionBuilder<double>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DoubleElement field)
-            => CreateSelectOneExpressionBuilder<double>(configuration, field);
+        public SelectValue<double> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, DoubleElement field)
+            => CreateSelectValueBuilder<double>(configuration, field);
 
-        public IFromExpressionBuilder<double?, IValueContinuationExpressionBuilder<double?>, IValueContinuationExpressionBuilder<double?, IValueContinuationExpressionBuilder<double?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDoubleElement field)
-            => CreateSelectOneExpressionBuilder<double?>(configuration, field);
+        public SelectValue<double?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDoubleElement field)
+            => CreateSelectValueBuilder<double?>(configuration, field);
 
-        public IFromExpressionBuilder<Guid, IValueContinuationExpressionBuilder<Guid>, IValueContinuationExpressionBuilder<Guid, IValueContinuationExpressionBuilder<Guid>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, GuidElement field)
-            => CreateSelectOneExpressionBuilder<Guid>(configuration, field);
+        public SelectValue<Guid> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, GuidElement field)
+            => CreateSelectValueBuilder<Guid>(configuration, field);
 
-        public IFromExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>, IValueContinuationExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullGuidElement field)
-            => CreateSelectOneExpressionBuilder<Guid?>(configuration, field);
+        public SelectValue<Guid?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableGuidElement field)
+            => CreateSelectValueBuilder<Guid?>(configuration, field);
 
-        public IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, Int16Element field)
-            => CreateSelectOneExpressionBuilder<short>(configuration, field);
+        public SelectValue<short> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, Int16Element field)
+            => CreateSelectValueBuilder<short>(configuration, field);
 
-        public IFromExpressionBuilder<short?, IValueContinuationExpressionBuilder<short?>, IValueContinuationExpressionBuilder<short?, IValueContinuationExpressionBuilder<short?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullInt16Element field)
-            => CreateSelectOneExpressionBuilder<short?>(configuration, field);
+        public SelectValue<short?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt16Element field)
+            => CreateSelectValueBuilder<short?>(configuration, field);
 
-        public IFromExpressionBuilder<int, IValueContinuationExpressionBuilder<int>, IValueContinuationExpressionBuilder<int, IValueContinuationExpressionBuilder<int>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, Int32Element field)
-            => CreateSelectOneExpressionBuilder<int>(configuration, field);
+        public SelectValue<int> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, Int32Element field)
+            => CreateSelectValueBuilder<int>(configuration, field);
 
-        public IFromExpressionBuilder<int?, IValueContinuationExpressionBuilder<int?>, IValueContinuationExpressionBuilder<int?, IValueContinuationExpressionBuilder<int?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullInt32Element field)
-            => CreateSelectOneExpressionBuilder<int?>(configuration, field);
+        public SelectValue<int?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt32Element field)
+            => CreateSelectValueBuilder<int?>(configuration, field);
 
-        public IFromExpressionBuilder<long, IValueContinuationExpressionBuilder<long>, IValueContinuationExpressionBuilder<long, IValueContinuationExpressionBuilder<long>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, Int64Element field)
-            => CreateSelectOneExpressionBuilder<long>(configuration, field);
+        public SelectValue<long> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, Int64Element field)
+            => CreateSelectValueBuilder<long>(configuration, field);
 
-        public IFromExpressionBuilder<long?, IValueContinuationExpressionBuilder<long?>, IValueContinuationExpressionBuilder<long?, IValueContinuationExpressionBuilder<long?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullInt64Element field)
-            => CreateSelectOneExpressionBuilder<long?>(configuration, field);
+        public SelectValue<long?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt64Element field)
+            => CreateSelectValueBuilder<long?>(configuration, field);
 
-        public IFromExpressionBuilder<float, IValueContinuationExpressionBuilder<float>, IValueContinuationExpressionBuilder<float, IValueContinuationExpressionBuilder<float>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SingleElement field)
-            => CreateSelectOneExpressionBuilder<float>(configuration, field);
+        public SelectValue<float> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, SingleElement field)
+            => CreateSelectValueBuilder<float>(configuration, field);
 
-        public IFromExpressionBuilder<float?, IValueContinuationExpressionBuilder<float?>, IValueContinuationExpressionBuilder<float?, IValueContinuationExpressionBuilder<float?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullSingleElement field)
-            => CreateSelectOneExpressionBuilder<float?>(configuration, field);
+        public SelectValue<float?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableSingleElement field)
+            => CreateSelectValueBuilder<float?>(configuration, field);
 
-        public IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
-            => CreateSelectOneExpressionBuilder<string>(configuration, field);
+        public SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
+            => CreateSelectValueBuilder<string>(configuration, field);
 
-        public IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullStringElement field)
-            => CreateSelectOneExpressionBuilder<string>(configuration, field);
+        public SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
+            => CreateSelectValueBuilder<string>(configuration, field);
 
-        public IFromExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>, IValueContinuationExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
-            => CreateSelectOneExpressionBuilder<TimeSpan>(configuration, field);
+        public SelectValue<TimeSpan> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
+            => CreateSelectValueBuilder<TimeSpan>(configuration, field);
 
-        public IFromExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>, IValueContinuationExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>>> CreateSelectOneExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullTimeSpanElement field)
-            => CreateSelectOneExpressionBuilder<TimeSpan?>(configuration, field);
+        public SelectValue<TimeSpan?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableTimeSpanElement field)
+            => CreateSelectValueBuilder<TimeSpan?>(configuration, field);
 
-        private IFromExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>> CreateSelectOneExpressionBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
+        private SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>, IValueContinuationExpressionBuilder<TValue, IValueContinuationExpressionBuilder<TValue>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select = new SelectExpressionSet(new SelectExpression<TValue>(field));
-            builder.Expression.Select.Top(1);
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Top = 1;
+            expression.Select = new SelectExpressionSet(new SelectExpression<TValue>(field));
+            return new MsSqlSelectValueSelectQueryExpressionBuilder<TValue>(configuration, expression);
         }
         #endregion
 
         #region select many
-        public IListFromExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>> CreateSelectManyExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
-            where TEntity : IDbEntity
-            => new MsSqlSelectQueryExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-
-        public IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
+        public SelectEntities<TEntity> CreateSelectEntitiesBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
+            where TEntity : class, IDbEntity
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet();
+            return new MsSqlSelectEntitiesSelectQueryExpressionBuilder<TEntity>(configuration, expression);
+        }
+
+        public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
+        {
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
             {
                 new SelectExpression(field1),
                 new SelectExpression(field2)
             };
             expressions.AddRange(fields.Select(field => new SelectExpression(field)));
-            builder.Expression.Select = new SelectExpressionSet(expressions);
-            return builder;
+            expression.Select = new SelectExpressionSet(expressions);
+            return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
 
-        public IListFromExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>> CreateSelectManyExpressionBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
+        public SelectValues<TEnum> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select = new SelectExpressionSet(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
+            return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
-        public IListFromExpressionBuilder<TEnum?, IValueListContinuationExpressionBuilder<TEnum?>, IValueListContinuationExpressionBuilder<TEnum?, IValueListContinuationExpressionBuilder<TEnum?>>> CreateSelectManyExpressionBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullEnumElement<TEnum> field)
+        public SelectValues<TEnum?> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TEnum?, IValueListContinuationExpressionBuilder<TEnum?>, IValueListContinuationExpressionBuilder<TEnum?, IValueListContinuationExpressionBuilder<TEnum?>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select = new SelectExpressionSet(new SelectExpression<TEnum?>(new NullableEnumExpressionMediator<TEnum>(field)));
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum?>(new NullableEnumExpressionMediator<TEnum>(field)));
+            return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
-        public IListFromExpressionBuilder<bool, IValueListContinuationExpressionBuilder<bool>, IValueListContinuationExpressionBuilder<bool, IValueListContinuationExpressionBuilder<bool>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
-            => CreateSelectManyExpressionBuilder<bool>(configuration, field);
+        public SelectValues<bool> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
+            => CreateSelectValuesBuilder<bool>(configuration, field);
 
-        public IListFromExpressionBuilder<bool?, IValueListContinuationExpressionBuilder<bool?>, IValueListContinuationExpressionBuilder<bool?, IValueListContinuationExpressionBuilder<bool?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullBooleanElement field)
-            => CreateSelectManyExpressionBuilder<bool?>(configuration, field);
+        public SelectValues<bool?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableBooleanElement field)
+            => CreateSelectValuesBuilder<bool?>(configuration, field);
 
-        public IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteElement field)
-            => CreateSelectManyExpressionBuilder<byte>(configuration, field);
+        public SelectValues<byte> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteElement field)
+            => CreateSelectValuesBuilder<byte>(configuration, field);
 
-        public IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullByteElement field)
-            => CreateSelectManyExpressionBuilder<byte?>(configuration, field);
+        public SelectValues<byte?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteElement field)
+            => CreateSelectValuesBuilder<byte?>(configuration, field);
 
-        public IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteArrayElement field)
-            => CreateSelectManyExpressionBuilder<byte[]>(configuration, field);
+        public SelectValues<byte[]> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ByteArrayElement field)
+            => CreateSelectValuesBuilder<byte[]>(configuration, field);
 
-        public IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullByteArrayElement field)
-            => CreateSelectManyExpressionBuilder<byte[]>(configuration, field);
+        public SelectValues<byte[]> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableByteArrayElement field)
+            => CreateSelectValuesBuilder<byte[]>(configuration, field);
 
-        public IListFromExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>, IValueListContinuationExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeElement field)
-            => CreateSelectManyExpressionBuilder<DateTime>(configuration, field);
+        public SelectValues<DateTime> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeElement field)
+            => CreateSelectValuesBuilder<DateTime>(configuration, field);
 
-        public IListFromExpressionBuilder<DateTime?, IValueListContinuationExpressionBuilder<DateTime?>, IValueListContinuationExpressionBuilder<DateTime?, IValueListContinuationExpressionBuilder<DateTime?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDateTimeElement field)
-            => CreateSelectManyExpressionBuilder<DateTime?>(configuration, field);
+        public SelectValues<DateTime?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeElement field)
+            => CreateSelectValuesBuilder<DateTime?>(configuration, field);
 
-        public IListFromExpressionBuilder<DateTimeOffset, IValueListContinuationExpressionBuilder<DateTimeOffset>, IValueListContinuationExpressionBuilder<DateTimeOffset, IValueListContinuationExpressionBuilder<DateTimeOffset>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeOffsetElement field)
-            => CreateSelectManyExpressionBuilder<DateTimeOffset>(configuration, field);
+        public SelectValues<DateTimeOffset> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DateTimeOffsetElement field)
+            => CreateSelectValuesBuilder<DateTimeOffset>(configuration, field);
 
-        public IListFromExpressionBuilder<DateTimeOffset?, IValueListContinuationExpressionBuilder<DateTimeOffset?>, IValueListContinuationExpressionBuilder<DateTimeOffset?, IValueListContinuationExpressionBuilder<DateTimeOffset?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDateTimeOffsetElement field)
-            => CreateSelectManyExpressionBuilder<DateTimeOffset?>(configuration, field);
+        public SelectValues<DateTimeOffset?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDateTimeOffsetElement field)
+            => CreateSelectValuesBuilder<DateTimeOffset?>(configuration, field);
 
-        public IListFromExpressionBuilder<decimal, IValueListContinuationExpressionBuilder<decimal>, IValueListContinuationExpressionBuilder<decimal, IValueListContinuationExpressionBuilder<decimal>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DecimalElement field)
-            => CreateSelectManyExpressionBuilder<decimal>(configuration, field);
+        public SelectValues<decimal> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DecimalElement field)
+            => CreateSelectValuesBuilder<decimal>(configuration, field);
 
-        public IListFromExpressionBuilder<decimal?, IValueListContinuationExpressionBuilder<decimal?>, IValueListContinuationExpressionBuilder<decimal?, IValueListContinuationExpressionBuilder<decimal?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDecimalElement field)
-            => CreateSelectManyExpressionBuilder<decimal?>(configuration, field);
+        public SelectValues<decimal?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDecimalElement field)
+            => CreateSelectValuesBuilder<decimal?>(configuration, field);
 
-        public IListFromExpressionBuilder<double, IValueListContinuationExpressionBuilder<double>, IValueListContinuationExpressionBuilder<double, IValueListContinuationExpressionBuilder<double>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DoubleElement field)
-            => CreateSelectManyExpressionBuilder<double>(configuration, field);
+        public SelectValues<double> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, DoubleElement field)
+            => CreateSelectValuesBuilder<double>(configuration, field);
 
-        public IListFromExpressionBuilder<double?, IValueListContinuationExpressionBuilder<double?>, IValueListContinuationExpressionBuilder<double?, IValueListContinuationExpressionBuilder<double?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullDoubleElement field)
-            => CreateSelectManyExpressionBuilder<double?>(configuration, field);
+        public SelectValues<double?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableDoubleElement field)
+            => CreateSelectValuesBuilder<double?>(configuration, field);
 
-        public IListFromExpressionBuilder<Guid, IValueListContinuationExpressionBuilder<Guid>, IValueListContinuationExpressionBuilder<Guid, IValueListContinuationExpressionBuilder<Guid>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, GuidElement field)
-            => CreateSelectManyExpressionBuilder<Guid>(configuration, field);
+        public SelectValues<Guid> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, GuidElement field)
+            => CreateSelectValuesBuilder<Guid>(configuration, field);
 
-        public IListFromExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>, IValueListContinuationExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullGuidElement field)
-            => CreateSelectManyExpressionBuilder<Guid?>(configuration, field);
+        public SelectValues<Guid?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableGuidElement field)
+            => CreateSelectValuesBuilder<Guid?>(configuration, field);
 
-        public IListFromExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>, IValueListContinuationExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, Int16Element field)
-            => CreateSelectManyExpressionBuilder<short>(configuration, field);
+        public SelectValues<short> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, Int16Element field)
+            => CreateSelectValuesBuilder<short>(configuration, field);
 
-        public IListFromExpressionBuilder<short?, IValueListContinuationExpressionBuilder<short?>, IValueListContinuationExpressionBuilder<short?, IValueListContinuationExpressionBuilder<short?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullInt16Element field)
-            => CreateSelectManyExpressionBuilder<short?>(configuration, field);
+        public SelectValues<short?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt16Element field)
+            => CreateSelectValuesBuilder<short?>(configuration, field);
 
-        public IListFromExpressionBuilder<int, IValueListContinuationExpressionBuilder<int>, IValueListContinuationExpressionBuilder<int, IValueListContinuationExpressionBuilder<int>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, Int32Element field)
-            => CreateSelectManyExpressionBuilder<int>(configuration, field);
+        public SelectValues<int> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, Int32Element field)
+            => CreateSelectValuesBuilder<int>(configuration, field);
 
-        public IListFromExpressionBuilder<int?, IValueListContinuationExpressionBuilder<int?>, IValueListContinuationExpressionBuilder<int?, IValueListContinuationExpressionBuilder<int?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullInt32Element field)
-            => CreateSelectManyExpressionBuilder<int?>(configuration, field);
+        public SelectValues<int?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt32Element field)
+            => CreateSelectValuesBuilder<int?>(configuration, field);
 
-        public IListFromExpressionBuilder<long, IValueListContinuationExpressionBuilder<long>, IValueListContinuationExpressionBuilder<long, IValueListContinuationExpressionBuilder<long>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, Int64Element field)
-            => CreateSelectManyExpressionBuilder<long>(configuration, field);
+        public SelectValues<long> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, Int64Element field)
+            => CreateSelectValuesBuilder<long>(configuration, field);
 
-        public IListFromExpressionBuilder<long?, IValueListContinuationExpressionBuilder<long?>, IValueListContinuationExpressionBuilder<long?, IValueListContinuationExpressionBuilder<long?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullInt64Element field)
-            => CreateSelectManyExpressionBuilder<long?>(configuration, field);
+        public SelectValues<long?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableInt64Element field)
+            => CreateSelectValuesBuilder<long?>(configuration, field);
 
-        public IListFromExpressionBuilder<float, IValueListContinuationExpressionBuilder<float>, IValueListContinuationExpressionBuilder<float, IValueListContinuationExpressionBuilder<float>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, SingleElement field)
-            => CreateSelectManyExpressionBuilder<float>(configuration, field);
+        public SelectValues<float> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, SingleElement field)
+            => CreateSelectValuesBuilder<float>(configuration, field);
 
-        public IListFromExpressionBuilder<float?, IValueListContinuationExpressionBuilder<float?>, IValueListContinuationExpressionBuilder<float?, IValueListContinuationExpressionBuilder<float?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullSingleElement field)
-            => CreateSelectManyExpressionBuilder<float?>(configuration, field); 
-        
-        public IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
-            => CreateSelectManyExpressionBuilder<string>(configuration, field);
+        public SelectValues<float?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableSingleElement field)
+            => CreateSelectValuesBuilder<float?>(configuration, field);
 
-        public IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullStringElement field)
-            => CreateSelectManyExpressionBuilder<string>(configuration, field);
+        public SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, StringElement field)
+            => CreateSelectValuesBuilder<string>(configuration, field);
 
-        public IListFromExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>, IValueListContinuationExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
-            => CreateSelectManyExpressionBuilder<TimeSpan>(configuration, field);
+        public SelectValues<string> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
+            => CreateSelectValuesBuilder<string>(configuration, field);
 
-        public IListFromExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>, IValueListContinuationExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>>> CreateSelectManyExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, NullTimeSpanElement field)
-            => CreateSelectManyExpressionBuilder<TimeSpan?>(configuration, field);
+        public SelectValues<TimeSpan> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
+            => CreateSelectValuesBuilder<TimeSpan>(configuration, field);
 
-        private IListFromExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>> CreateSelectManyExpressionBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
+        public SelectValues<TimeSpan?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableTimeSpanElement field)
+            => CreateSelectValuesBuilder<TimeSpan?>(configuration, field);
+
+        private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
         {
-            var builder = new MsSqlSelectQueryExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>, IValueListContinuationExpressionBuilder<TValue, IValueListContinuationExpressionBuilder<TValue>>>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>());
-            builder.Expression.Select.Top(1);
-            builder.Expression.Select = new SelectExpressionSet(new SelectExpression<TValue>(field));
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(new SelectExpression<TValue>(field));
+            return new MsSqlSelectValuesSelectQueryExpressionBuilder<TValue>(configuration, expression);
         }
         #endregion
-        public IUpdateFromExpressionBuilder CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, params AssignmentExpression[] fields)
+
+        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IList<EntityFieldAssignment> fields)
         {
-            var builder = new MsSqlUpdateQueryExpressionBuilder(configuration);
-            builder.Expression.Assign = new AssignmentExpressionSet(builder.Expression.Assign.Expressions.Concat(fields));
-            return builder;
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Assign = new AssignmentExpressionSet(expression.Assign.Expressions.Concat(fields?.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(fields)} to be assignable to {typeof(AssignmentExpression)}."))));
+            return new MsSqlUpdateQueryExpressionBuilder(configuration, expression);
         }
 
-        public IUpdateFromExpressionBuilder<TEntity> CreateUpdateExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity target, TEntity source)
+        public UpdateEntities<TEntity> CreateUpdateExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity target, TEntity source)
             where TEntity : class, IDbEntity
-            => new MsSqlUpdateQueryExpressionBuilder<TEntity>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>(), target, source);
+        {
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            return new UpdateEntitiesUpdateQueryExpressionBuilder<TEntity>(configuration, expression, target, source);
+        }
 
-        public IDeleteFromExpressionBuilder CreateDeleteExpressionBulder(RuntimeSqlDatabaseConfiguration configuration)
-            =>  new MsSqlDeleteQueryExpressionBuilder(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<DeleteQueryExpression>());
+        public DeleteEntities CreateDeleteExpressionBulder(RuntimeSqlDatabaseConfiguration configuration)
+        {
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<DeleteQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            return new MsSqlDeleteEntitiesBuilder(configuration, expression);
+        }
 
-        public IInsertExpressionBuilder<T> CreateInsertExpressionBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, T instance)
-            where T : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<T>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>(), new List<T> { instance });
+        public InsertEntity<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity instance)
+            where TEntity : class, IDbEntity
+            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), new List<TEntity> { instance });
 
-        public IInsertExpressionBuilder<T> CreateInsertExpressionBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, IList<T> instances)
-            where T : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<T>(configuration, configuration.QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>(), instances);
+        public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, IList<TEntity> instances)
+            where TEntity : class, IDbEntity
+            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), instances);
     }
 }

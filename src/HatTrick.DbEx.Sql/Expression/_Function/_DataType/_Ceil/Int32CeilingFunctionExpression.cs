@@ -13,16 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected Int32CeilingFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public Int32Element As(string alias)
-            => new Int32CeilingFunctionExpression(base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

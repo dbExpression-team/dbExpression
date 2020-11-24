@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_an_personaddress_be_deleted(int version, int expected = 14)
+        public void Can_a_personaddress_be_deleted(int version, int expected = 14)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_an_personaddress_be_deleted_joining_thru_address(int version, int expected = 14)
+        public void Can_a_personaddress_be_deleted_joining_thru_address(int version, int expected = 14)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -49,7 +49,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_an_personaddress_be_deleted_for_person_lastname(int version, string lastName = "Broflovski", int expected = 6)
+        public void Can_a_personaddress_be_deleted_for_person_lastname(int version, string lastName = "Broflovski", int expected = 6)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -63,6 +63,42 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var recordsAffected = exp.Execute();
 
             //then
+            recordsAffected.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_records_affected(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.Delete()
+                .Top(1)
+                .From(dbo.PurchaseLine);
+
+            //when               
+            var recordsAffected = exp.Execute();
+
+            //then
+            recordsAffected.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_a_purchaseline_be_deleted_using_top_be_deleted_and_return_correct_record_count(int version, int expected = 17)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            db.Delete()
+                .Top(1)
+                .From(dbo.PurchaseLine)
+                .Execute();
+
+            //then
+            var recordsAffected = db.SelectOne(db.fx.Count()).From(dbo.PurchaseLine).Execute();
             recordsAffected.Should().Be(expected);
         }
 
