@@ -75,15 +75,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var exp = db.SelectMany(dbo.Purchase.PersonId)
                 .Distinct()
                 .From(dbo.Purchase)
+                .OrderBy(dbo.Purchase.PersonId)
                 .Skip(5)
-                .Limit(1000)
-                .OrderBy(dbo.Purchase.PersonId);
+                .Limit(1000);
 
             //when               
-            var purchases = exp.Execute();
+            var ids = exp.Execute();
 
             //then
-            purchases.Should().HaveCount(expected);
+            ids.Should().HaveCount(expected);
         }
 
         [Theory]

@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteCoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteCoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableByteCoalesceFunctionExpression(IList<AnyByteElement> expressions, NullByteElement termination) 
+        public NullableByteCoalesceFunctionExpression(IList<AnyByteElement> expressions, NullableByteElement termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableByteCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullByteElement As(string alias)
-            => new NullableByteCoalesceFunctionExpression(base.Expression, alias);
+        public NullableByteElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

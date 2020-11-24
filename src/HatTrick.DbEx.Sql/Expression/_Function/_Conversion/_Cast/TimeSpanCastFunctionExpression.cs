@@ -10,13 +10,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region constructors
         public TimeSpanCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
-            : base(expression, convertToDbType, typeof(TimeSpan))
-        {
-
-        }
-
-        protected TimeSpanCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
-            : base(expression, convertToDbType, typeof(TimeSpan), size, precision, scale, alias)
+            : base(expression, convertToDbType)
         {
 
         }
@@ -24,7 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public TimeSpanElement As(string alias)
-            => new TimeSpanCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

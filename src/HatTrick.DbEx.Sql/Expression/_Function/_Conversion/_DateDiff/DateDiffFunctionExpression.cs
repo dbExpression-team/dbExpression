@@ -13,13 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region constructors
         protected DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, Type convertToType)
-            : this(datePart, startDate, endDate, convertToType, null)
-        {
-
-        }
-
-        protected DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, Type convertToType, string alias)
-            : base(startDate, convertToType, alias)
+            : base(startDate, convertToType)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
             EndDate = endDate ?? throw new ArgumentNullException($"{nameof(endDate)} is required.");

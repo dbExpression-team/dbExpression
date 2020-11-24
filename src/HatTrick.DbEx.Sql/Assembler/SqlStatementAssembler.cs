@@ -7,34 +7,6 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         #region methods
         public abstract void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
-
-        protected virtual void AppendJoinClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
-                return;
-
-            builder.Appender
-                .Indentation++;
-
-            builder.AppendElement(expression.Joins, context);
-
-            builder.Appender
-                .Indentation--;
-        }
-
-        protected virtual void AppendWhereClause(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
-                return;
-
-            builder.Appender.Indent().Write("WHERE")
-                .Indentation++;
-
-            builder.AppendElement(expression.Where, context);
-
-            builder.Appender.LineBreak()
-                .Indentation--;
-        }
         #endregion
     }
 }

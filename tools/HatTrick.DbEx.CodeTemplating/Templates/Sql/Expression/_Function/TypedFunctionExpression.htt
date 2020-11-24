@@ -78,20 +78,20 @@ namespace {Namespace}
         #region TValue
         #region {:dataType.Alias}
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Alias} b) => new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(a), new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.Alias}>(b)), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.Alias} b) => new FilterExpressionSet(new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(a), new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.Alias}>(b)), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:dataType.Alias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.Alias}>(a)), new {:dataType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Alias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.Alias}>(a)), new {:dataType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if :dataType.IsNullable-}
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.NullableAlias} b) => new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(a), new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.NullableAlias}>(b)), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{:functionName}FunctionExpression a, {:dataType.NullableAlias} b) => new FilterExpressionSet(new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(a), new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.NullableAlias}>(b)), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:dataType.NullableAlias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.NullableAlias}>(a)), new {:dataType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.NullableAlias} a, {:dataType.Name}{:functionName}FunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(new LiteralExpression<{:dataType.NullableAlias}>(a)), new {:dataType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         #endregion
@@ -99,12 +99,12 @@ namespace {Namespace}
 
         #region mediator
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:dataType.Name}{..\$.FunctionName}FunctionExpression a, {:dataType.Name}ExpressionMediator b) => new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(a), b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{..\$.FunctionName}FunctionExpression a, {:dataType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new {:dataType.Name}ExpressionMediator(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if Type.IsNullable-}
         {-#each FilterOperations-}
-        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:dataType.Name}{..\$.FunctionName}FunctionExpression a, Nullable{:dataType.Name}ExpressionMediator b) => new FilterExpression<bool?>(new {:dataType.Name}ExpressionMediator(a), b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:dataType.Name}{..\$.FunctionName}FunctionExpression a, Nullable{:dataType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new {:dataType.Name}ExpressionMediator(a), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         #endregion

@@ -4,27 +4,32 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableTimeSpanMaximumFunctionExpression :
         NullableMaximumFunctionExpression<TimeSpan,TimeSpan?>,
-        NullTimeSpanElement,
+        NullableTimeSpanElement,
         AnyTimeSpanElement,
         IEquatable<NullableTimeSpanMaximumFunctionExpression>
     {
         #region constructors
-        public NullableTimeSpanMaximumFunctionExpression(NullTimeSpanElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableTimeSpanMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
-            : base(expression, isDistinct, alias)
+        public NullableTimeSpanMaximumFunctionExpression(NullableTimeSpanElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullTimeSpanElement As(string alias)
-            => new NullableTimeSpanMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableTimeSpanElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableTimeSpanMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

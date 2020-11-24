@@ -27,8 +27,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").ToInt(),
-                db.alias("vips", "PurchaseYear").ToInt(),
+                db.alias("vips", "PurchaseCount").AsInt32(),
+                db.alias("vips", "PurchaseYear").AsInt32(),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -47,10 +47,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").ToInt().Desc
+                db.alias("vips", "PurchaseCount").AsInt32().Desc
             )
             .Execute();
 
@@ -77,8 +77,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                (db.alias("vips", "PurchaseCount").ToInt() + dbo.Person.Id).As("PurchaseCount"),
-                db.alias("vips", "PurchaseYear").ToInt(),
+                (db.alias("vips", "PurchaseCount").AsInt32() + dbo.Person.Id).As("PurchaseCount"),
+                db.alias("vips", "PurchaseYear").AsInt32(),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -97,10 +97,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").ToInt().Desc
+                db.alias("vips", "PurchaseCount").AsInt32().Desc
             )
             .Execute();
 
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").ToInt(),
+                db.alias("vips", "PurchaseCount").AsInt32(),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -146,10 +146,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").ToInt().Desc
+                db.alias("vips", "PurchaseCount").AsInt32().Desc
             )
             .Execute();
 
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.fx.Coalesce(db.alias("vips", "PurchaseCount").ToNullableInt(), db.alias("not_vips", "PurchaseCount").ToNullableInt(), 1).As("PurchaseCount"),
+                db.fx.Coalesce(db.alias("vips", "PurchaseCount").AsNullableInt32(), db.alias("not_vips", "PurchaseCount").AsNullableInt32(), 1).As("PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -193,7 +193,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
             .LeftJoin(
                 db.SelectMany(
                     dbo.Purchase.PersonId,
@@ -209,10 +209,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId").ToInt())
+            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId").AsInt32())
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").ToInt().Desc
+                db.alias("vips", "PurchaseCount").AsInt32().Desc
             )
             .Execute();
 
@@ -231,7 +231,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectOne(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").ToInt().As("Result")
+                db.alias("vips", "PurchaseCount").AsInt32().As("Result")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -243,8 +243,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(
                     dbo.Purchase.PersonId
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").ToInt())
-            .Where(db.alias("vips", "PurchaseCount").ToInt() == expected)
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
+            .Where(db.alias("vips", "PurchaseCount").AsInt32() == expected)
             .Execute();
 
             //then

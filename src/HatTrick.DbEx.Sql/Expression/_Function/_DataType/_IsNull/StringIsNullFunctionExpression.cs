@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringIsNullFunctionExpression>
     {
         #region constructors
-        public StringIsNullFunctionExpression(AnyStringElement expression, StringElement value) : base(expression, value, null)
-        {
-
-        }
-
-        protected StringIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias) : base(expression, value, alias)
+        public StringIsNullFunctionExpression(AnyStringElement expression, StringElement value) : base(expression, value)
         {
 
         }
@@ -22,7 +17,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public StringElement As(string alias)
-            => new StringIsNullFunctionExpression(base.Expression, base.Value, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

@@ -9,42 +9,37 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SingleVarianceFunctionExpression>
     {
         #region constructors
-        public SingleVarianceFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleVarianceFunctionExpression(ByteElement expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleVarianceFunctionExpression(Int16Element expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleVarianceFunctionExpression(Int32Element expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(Int64Element expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleVarianceFunctionExpression(Int64Element expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(DoubleElement expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleVarianceFunctionExpression(DoubleElement expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
+        public SingleVarianceFunctionExpression(DecimalElement expression) : base(expression)
         {
 
         }
 
-        public SingleVarianceFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected SingleVarianceFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public SingleVarianceFunctionExpression(SingleElement expression) : base(expression)
         {
 
         }
@@ -52,7 +47,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public SingleElement As(string alias)
-            => new SingleVarianceFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public SingleVarianceFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

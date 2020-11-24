@@ -6,17 +6,13 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class Int32FieldExpression
     {
         #region in value set
-        public override FilterExpression<bool> In(params int[] value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new Int32ExpressionMediator(new InExpression<int>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<int> value) => value is object ? new FilterExpression<bool>(new Int32ExpressionMediator(this), new Int32ExpressionMediator(new InExpression<int>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params int[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(this), new Int32ExpressionMediator(new InExpression<int>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<int> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(this), new Int32ExpressionMediator(new InExpression<int>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region set
         public override AssignmentExpression Set(int value) => new AssignmentExpression(this, new Int32ExpressionMediator(new LiteralExpression<int>(value)));
         public virtual AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region insert
-        public override InsertExpression Insert(int value) => new InsertExpression(this, new Int32ExpressionMediator(new LiteralExpression<int>(value)));
         #endregion
 
         #region order
@@ -384,56 +380,56 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpression<bool?> operator ==(Int32FieldExpression a, DBNull b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int32FieldExpression a, DBNull b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator ==(DBNull a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), new Int32ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DBNull a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), new Int32ExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpressionSet operator ==(Int32FieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int32FieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), new Int32ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>()), new Int32ExpressionMediator(b), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region int
-        public static FilterExpression<bool> operator ==(Int32FieldExpression a, int b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int32FieldExpression a, int b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int32FieldExpression a, int b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int32FieldExpression a, int b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int32FieldExpression a, int b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int32FieldExpression a, int b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int32FieldExpression a, int b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int32FieldExpression a, int b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int32FieldExpression a, int b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int32FieldExpression a, int b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int32FieldExpression a, int b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int32FieldExpression a, int b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), new Int32ExpressionMediator(new LiteralExpression<int>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(int a, Int32FieldExpression b) => new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(int a, Int32FieldExpression b) => new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(int a, Int32FieldExpression b) => new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(int a, Int32FieldExpression b) => new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(int a, Int32FieldExpression b) => new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(int a, Int32FieldExpression b) => new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(int a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(int a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(int a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(int a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(int a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(int a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(new LiteralExpression<int>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(Int32FieldExpression a, int? b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int32FieldExpression a, int? b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Int32FieldExpression a, int? b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Int32FieldExpression a, int? b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Int32FieldExpression a, int? b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Int32FieldExpression a, int? b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int32FieldExpression a, int? b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int32FieldExpression a, int? b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int32FieldExpression a, int? b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int32FieldExpression a, int? b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int32FieldExpression a, int? b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int32FieldExpression a, int? b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), new NullableInt32ExpressionMediator(new LiteralExpression<int?>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(int? a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(int? a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(int? a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(int? a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(int? a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(int? a, Int32FieldExpression b) => new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(int? a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(int? a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(int? a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(int? a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(int? a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(int? a, Int32FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableInt32ExpressionMediator(new LiteralExpression<int?>(a)), new Int32ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
-        
-        #region mediator
-        public static FilterExpression<bool> operator ==(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
 
-        public static FilterExpression<bool?> operator ==(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual);
+        #region mediator
+        public static FilterExpressionSet operator ==(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int32FieldExpression a, Int32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+
+        public static FilterExpressionSet operator ==(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int32FieldExpression a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new Int32ExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

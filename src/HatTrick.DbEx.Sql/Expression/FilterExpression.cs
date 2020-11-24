@@ -2,8 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class FilterExpression : 
-        IExpressionElement
+    public class FilterExpression :
+        IFilterExpressionElement
     {
         #region interface
         public IExpressionElement LeftArg { get; private set; }
@@ -13,9 +13,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator)
-            : this(leftArg, rightArg, filterExpressionOperator, false)
+        public FilterExpression(IExpressionElement leftArg)
         {
+            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
         }
 
         public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator, bool negate)

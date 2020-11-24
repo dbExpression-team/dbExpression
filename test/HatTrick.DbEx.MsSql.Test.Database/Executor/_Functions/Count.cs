@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Count(dbo.Purchase.PersonId, distinct: true).As("count")
+                    db.fx.Count(dbo.Purchase.PersonId).Distinct().As("count")
                 ).From(dbo.Purchase);
 
             //when               
@@ -74,9 +74,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true)
+                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true));
+                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct());
 
             //when               
             int count = exp.Execute();
@@ -94,9 +94,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true)
+                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct()
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true).Desc);
+                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
 
             //when               
             int count = exp.Execute();
@@ -114,9 +114,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("alias")
+                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true));
+                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct());
 
             //when               
             int count = exp.Execute();
@@ -134,9 +134,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("alias")
+                    db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount, distinct: true).Desc);
+                .OrderBy(db.fx.Count(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
 
             //when               
             int count = exp.Execute();

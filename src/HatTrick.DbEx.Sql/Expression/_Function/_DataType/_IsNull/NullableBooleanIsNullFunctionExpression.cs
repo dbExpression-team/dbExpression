@@ -4,27 +4,24 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableBooleanIsNullFunctionExpression :
         NullableIsNullFunctionExpression<bool,bool?>,
-        NullBooleanElement,
+        NullableBooleanElement,
         AnyBooleanElement,
         IEquatable<NullableBooleanIsNullFunctionExpression>
     {
         #region constructors
-        public NullableBooleanIsNullFunctionExpression(AnyBooleanElement expression, NullBooleanElement value)
+        public NullableBooleanIsNullFunctionExpression(AnyBooleanElement expression, NullableBooleanElement value)
             : base(expression, value)
-        {
-
-        }
-
-        protected NullableBooleanIsNullFunctionExpression(IExpressionElement expression, IExpressionElement value, string alias)
-            : base(expression, value, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullBooleanElement As(string alias)
-            => new NullableBooleanIsNullFunctionExpression(base.Expression, base.Value, alias);
+        public NullableBooleanElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

@@ -16,11 +16,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, string alias) : base(datePart, startDate, typeof(TValue), alias)
-        {
-
-        }
         #endregion
     }
 }

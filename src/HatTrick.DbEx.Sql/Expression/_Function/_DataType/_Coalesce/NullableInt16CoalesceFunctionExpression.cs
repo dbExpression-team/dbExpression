@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt16CoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<short,short?>,
-        NullInt16Element,
+        NullableInt16Element,
         AnyInt16Element,
         IEquatable<NullableInt16CoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableInt16CoalesceFunctionExpression(IList<AnyInt16Element> expressions, NullInt16Element termination) 
+        public NullableInt16CoalesceFunctionExpression(IList<AnyInt16Element> expressions, NullableInt16Element termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableInt16CoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullInt16Element As(string alias)
-            => new NullableInt16CoalesceFunctionExpression(base.Expression, alias);
+        public NullableInt16Element As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

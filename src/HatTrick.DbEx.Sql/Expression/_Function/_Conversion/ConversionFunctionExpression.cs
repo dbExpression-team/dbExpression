@@ -2,11 +2,12 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class ConversionFunctionExpression : FunctionExpression
+    public abstract class ConversionFunctionExpression : FunctionExpression,
+        AnyGroupByClause
     {
         #region constructors
-        protected ConversionFunctionExpression(IExpressionElement expression, Type convertToType, string alias) 
-            : base(expression, convertToType, alias)
+        protected ConversionFunctionExpression(IExpressionElement expression, Type convertToType) 
+            : base(expression, convertToType)
         {
 
         }

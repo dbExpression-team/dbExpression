@@ -490,6 +490,23 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 purchases.Should().HaveCount(expectedCount);
                 ((int)purchases.First()).Should().Be(expectedId);
             }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Does_non_null_field_cause_exception_when_using_left_join_pattern_which_returns_null_value_from_database(int version)
+            {
+                //given
+                ConfigureForMsSqlVersion(version);
+
+                Action execute = () => db.SelectMany(dbo.PersonAddress.Id)
+                   .From(dbo.Person)
+                   .LeftJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+                   .Where(dbo.PersonAddress.AddressId == DBNull.Value)
+                   .Execute();
+
+                //when & then
+                execute.Should().Throw<DbExpressionException>();
+            }
             #endregion
         }
     }

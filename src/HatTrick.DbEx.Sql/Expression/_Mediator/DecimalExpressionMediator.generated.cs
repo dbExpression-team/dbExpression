@@ -431,51 +431,51 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region decimal
-        public static FilterExpression<bool> operator ==(DecimalExpressionMediator a, decimal b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(DecimalExpressionMediator a, decimal b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(DecimalExpressionMediator a, decimal b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(DecimalExpressionMediator a, decimal b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(DecimalExpressionMediator a, decimal b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(DecimalExpressionMediator a, decimal b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(DecimalExpressionMediator a, decimal b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DecimalExpressionMediator a, decimal b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DecimalExpressionMediator a, decimal b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(DecimalExpressionMediator a, decimal b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(DecimalExpressionMediator a, decimal b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(DecimalExpressionMediator a, decimal b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(new LiteralExpression<decimal>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(decimal a, DecimalExpressionMediator b) => new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(decimal a, DecimalExpressionMediator b) => new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(decimal a, DecimalExpressionMediator b) => new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(decimal a, DecimalExpressionMediator b) => new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(decimal a, DecimalExpressionMediator b) => new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(decimal a, DecimalExpressionMediator b) => new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(decimal a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(decimal a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(decimal a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(decimal a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(decimal a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(decimal a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new DecimalExpressionMediator(new LiteralExpression<decimal>(a)), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #region fields
-        public static FilterExpression<bool> operator ==(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(DecimalExpressionMediator a, DecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new DecimalExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(DecimalExpressionMediator a, NullableDecimalFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableDecimalExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #region mediators
-        public static FilterExpression<bool> operator ==(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(DecimalExpressionMediator a, DecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(DecimalExpressionMediator a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

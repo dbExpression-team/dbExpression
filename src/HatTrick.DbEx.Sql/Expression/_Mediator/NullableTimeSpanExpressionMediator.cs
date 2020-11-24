@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableTimeSpanExpressionMediator :
         NullableExpressionMediator<TimeSpan,TimeSpan?>,
-        NullTimeSpanElement,
+        NullableTimeSpanElement,
         AnyTimeSpanElement,
         IEquatable<NullableTimeSpanExpressionMediator>
     {
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullTimeSpanElement As(string alias)
+        public NullableTimeSpanElement As(string alias)
             => new NullableTimeSpanExpressionMediator(base.Expression, alias);
         #endregion
 

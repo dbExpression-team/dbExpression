@@ -4,55 +4,61 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableSingleVarianceFunctionExpression :
         NullableVarianceFunctionExpression<float,float?>,
-        NullSingleElement,
+        NullableSingleElement,
         AnySingleElement,
         IEquatable<NullableSingleVarianceFunctionExpression>
     {
         #region constructors
-        public NullableSingleVarianceFunctionExpression(NullByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableByteElement expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullInt16Element expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableInt16Element expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullInt32Element expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableInt32Element expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullInt64Element expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableInt64Element expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullDoubleElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableDoubleElement expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullDecimalElement expression, bool isDistinct) : base(expression, isDistinct)
+        public NullableSingleVarianceFunctionExpression(NullableDecimalElement expression) : base(expression)
         {
 
         }
 
-        public NullableSingleVarianceFunctionExpression(NullSingleElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableSingleVarianceFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public NullableSingleVarianceFunctionExpression(NullableSingleElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullSingleElement As(string alias)
-            => new NullableSingleVarianceFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableSingleElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableSingleVarianceFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

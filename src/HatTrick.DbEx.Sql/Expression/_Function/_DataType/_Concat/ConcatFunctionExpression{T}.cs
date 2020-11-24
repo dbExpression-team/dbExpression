@@ -12,11 +12,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected ConcatFunctionExpression(IList<AnyStringElement> expressions, string alias) : base(expressions, typeof(TValue), alias)
-        {
-
-        }
         #endregion
     }
 }

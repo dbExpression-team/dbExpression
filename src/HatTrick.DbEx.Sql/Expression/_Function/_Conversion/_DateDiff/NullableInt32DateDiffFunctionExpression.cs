@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableInt32DateDiffFunctionExpression :
         NullableDateDiffFunctionExpression<int,int?>,
-        NullInt32Element,
+        NullableInt32Element,
         AnyInt32Element,
         IEquatable<NullableInt32DateDiffFunctionExpression>
     {
@@ -14,17 +14,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected NullableInt32DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, string alias)
-            : base(datePart, startDate, endDate, alias)
-        {
-
-        }
         #endregion
 
         #region as
-        public NullInt32Element As(string alias)
-            => new NullableInt32DateDiffFunctionExpression(base.DatePart, base.StartDate, base.EndDate, alias);
+        public NullableInt32Element As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

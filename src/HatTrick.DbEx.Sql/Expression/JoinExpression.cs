@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionAliasProvider
     {
         #region interface
-        public JoinOnExpressionSet JoinOnExpression { get; private set; }
+        public AnyJoinOnClause JoinOnExpression { get; private set; }
         public IExpressionElement JoinToo { get; private set; }
         public JoinOperationExpressionOperator JoinType { get; private set; }
         private string Alias { get; set; }
@@ -15,13 +15,24 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, JoinOnExpressionSet onCondition, string alias)
+        public JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause onCondition)
+            : this(joinToo, joinType, onCondition, null)
+        {
+
+        }
+
+        protected JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause onCondition, string alias)
         {
             JoinToo = joinToo ?? throw new ArgumentNullException($"{nameof(joinToo)} is required.");
             JoinType = joinType;
             JoinOnExpression = onCondition ?? throw new ArgumentNullException($"{nameof(onCondition)} is required.");
             Alias = alias;
         }
+        #endregion
+
+        #region as
+        public JoinExpression As(string alias)
+            => new JoinExpression(this.JoinToo, this.JoinType, this.JoinOnExpression, alias);
         #endregion
 
         #region to string

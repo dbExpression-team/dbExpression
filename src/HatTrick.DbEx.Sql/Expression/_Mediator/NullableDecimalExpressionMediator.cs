@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDecimalExpressionMediator :
         NullableExpressionMediator<decimal,decimal?>,
-        NullDecimalElement,
+        NullableDecimalElement,
         AnyDecimalElement,
         IEquatable<NullableDecimalExpressionMediator>
     {
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullDecimalElement As(string alias)
+        public NullableDecimalElement As(string alias)
             => new NullableDecimalExpressionMediator(base.Expression, alias);
         #endregion
 

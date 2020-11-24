@@ -4,27 +4,32 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableByteMinimumFunctionExpression :
         NullableMinimumFunctionExpression<byte,byte?>,
-        NullByteElement,
+        NullableByteElement,
         AnyByteElement,
         IEquatable<NullableByteMinimumFunctionExpression>
     {
         #region constructors
-        public NullableByteMinimumFunctionExpression(NullByteElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        protected NullableByteMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
-            : base(expression, isDistinct, alias)
+        public NullableByteMinimumFunctionExpression(NullableByteElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullByteElement As(string alias)
-            => new NullableByteMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableByteElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableByteMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

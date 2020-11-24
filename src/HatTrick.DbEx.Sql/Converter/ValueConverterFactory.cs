@@ -8,32 +8,34 @@ namespace HatTrick.DbEx.Sql.Converter
     {
         #region internals
         private static readonly IValueConverter boolConverter = new ValueConverter(typeof(bool));
-        private static readonly IValueConverter nullableBoolConverter = new NullableValueConverter(typeof(bool?));
         private static readonly IValueConverter byteConverter = new ValueConverter(typeof(byte));
-        private static readonly IValueConverter nullableByteConverter = new NullableValueConverter(typeof(byte?));
-        private static readonly IValueConverter shortConverter = new ValueConverter(typeof(short));
-        private static readonly IValueConverter nullableShortConverter = new NullableValueConverter(typeof(short?));
-        private static readonly IValueConverter intConverter = new ValueConverter(typeof(int));
-        private static readonly IValueConverter nullableIntConverter = new NullableValueConverter(typeof(int?));
-        private static readonly IValueConverter longConverter = new ValueConverter(typeof(long));
-        private static readonly IValueConverter nullableLongConverter = new NullableValueConverter(typeof(long?));
-        private static readonly IValueConverter doubleConverter = new ValueConverter(typeof(double));
-        private static readonly IValueConverter nullableDoubleConverter = new NullableValueConverter(typeof(double?));
-        private static readonly IValueConverter decimalConverter = new ValueConverter(typeof(decimal));
-        private static readonly IValueConverter nullableDecimalConverter = new NullableValueConverter(typeof(decimal?));
-        private static readonly IValueConverter floatConverter = new ValueConverter(typeof(float));
-        private static readonly IValueConverter nullableFloatConverter = new NullableValueConverter(typeof(float?));
         private static readonly IValueConverter dateTimeConverter = new ValueConverter(typeof(DateTime));
-        private static readonly IValueConverter nullableDateTimeConverter = new NullableValueConverter(typeof(DateTime?));
         private static readonly IValueConverter dateTimeOffsetConverter = new ValueConverter(typeof(DateTimeOffset));
-        private static readonly IValueConverter nullableDateTimeOffsetConverter = new NullableValueConverter(typeof(DateTimeOffset?));
+        private static readonly IValueConverter decimalConverter = new ValueConverter(typeof(decimal));
+        private static readonly IValueConverter doubleConverter = new ValueConverter(typeof(double));
+        private static readonly IValueConverter floatConverter = new ValueConverter(typeof(float));
         private static readonly IValueConverter guidConverter = new ValueConverter(typeof(Guid));
-        private static readonly IValueConverter nullableGuidConverter = new NullableValueConverter(typeof(Guid?));
-        private static readonly IValueConverter stringConverter = new ValueConverter(typeof(string));
-        private static readonly IValueConverter byteArrayConverter = new ValueConverter(typeof(byte[]));
-        private static readonly IValueConverter objectConverter = new ValueConverter(typeof(object));
+        private static readonly IValueConverter intConverter = new ValueConverter(typeof(int));
+        private static readonly IValueConverter longConverter = new ValueConverter(typeof(long));
+        private static readonly IValueConverter shortConverter = new ValueConverter(typeof(short));
         private static readonly IValueConverter timeSpanConverter = new ValueConverter(typeof(TimeSpan));
-        private static readonly IValueConverter nullableTimeSpanConverter = new ValueConverter(typeof(TimeSpan?));
+
+        private static readonly IValueConverter nullableBoolConverter = new NullableValueConverter(typeof(bool?));
+        private static readonly IValueConverter nullableByteConverter = new NullableValueConverter(typeof(byte?));
+        private static readonly IValueConverter nullableDateTimeConverter = new NullableValueConverter(typeof(DateTime?));
+        private static readonly IValueConverter nullableDateTimeOffsetConverter = new NullableValueConverter(typeof(DateTimeOffset?));
+        private static readonly IValueConverter nullableDecimalConverter = new NullableValueConverter(typeof(decimal?));
+        private static readonly IValueConverter nullableDoubleConverter = new NullableValueConverter(typeof(double?));
+        private static readonly IValueConverter nullableFloatConverter = new NullableValueConverter(typeof(float?));
+        private static readonly IValueConverter nullableGuidConverter = new NullableValueConverter(typeof(Guid?));
+        private static readonly IValueConverter nullableIntConverter = new NullableValueConverter(typeof(int?));
+        private static readonly IValueConverter nullableLongConverter = new NullableValueConverter(typeof(long?));
+        private static readonly IValueConverter nullableShortConverter = new NullableValueConverter(typeof(short?));
+        private static readonly IValueConverter nullableTimeSpanConverter = new NullableValueConverter(typeof(TimeSpan?));
+        
+        private static readonly IValueConverter stringConverter = new NullableValueConverter(typeof(string));
+        private static readonly IValueConverter byteArrayConverter = new NullableValueConverter(typeof(byte[]));
+        private static readonly IValueConverter objectConverter = new NullableValueConverter(typeof(object));
 
         private readonly ConcurrentDictionary<Type, Func<IValueConverter>> _valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
         #endregion

@@ -15,16 +15,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected EnumCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) : base(expressions, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public EnumElement<TEnum> As(string alias)
-            => new EnumCoalesceFunctionExpression<TEnum>(base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

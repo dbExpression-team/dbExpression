@@ -28,16 +28,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected Int32DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, string alias) : base(datePart, startDate, endDate, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public Int32Element As(string alias)
-            => new Int32DateDiffFunctionExpression(base.DatePart, base.StartDate, base.EndDate, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

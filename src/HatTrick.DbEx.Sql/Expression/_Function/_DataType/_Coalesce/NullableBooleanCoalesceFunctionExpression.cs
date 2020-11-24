@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableBooleanCoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<bool,bool?>,
-        NullBooleanElement,
+        NullableBooleanElement,
         AnyBooleanElement,
         IEquatable<NullableBooleanCoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableBooleanCoalesceFunctionExpression(IList<AnyBooleanElement> expressions, NullBooleanElement termination) 
+        public NullableBooleanCoalesceFunctionExpression(IList<AnyBooleanElement> expressions, NullableBooleanElement termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableBooleanCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullBooleanElement As(string alias)
-            => new NullableBooleanCoalesceFunctionExpression(base.Expression, alias);
+        public NullableBooleanElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

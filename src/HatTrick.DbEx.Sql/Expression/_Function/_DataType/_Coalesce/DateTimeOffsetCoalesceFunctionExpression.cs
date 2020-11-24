@@ -13,15 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         public DateTimeOffsetCoalesceFunctionExpression(IEnumerable<AnyDateTimeOffsetElement> expressions) : base(expressions)
         {
         }
-
-        protected DateTimeOffsetCoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, string alias) : base(expressions, alias)
-        {
-        }
         #endregion
 
         #region as
         public DateTimeOffsetElement As(string alias)
-            => new DateTimeOffsetCoalesceFunctionExpression(base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

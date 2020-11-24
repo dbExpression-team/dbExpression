@@ -7,17 +7,12 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableDatePartFunctionExpression(DatePartsExpression datePart, NullDateTimeElement expression) : base(datePart, expression, typeof(TNullableValue))
+        protected NullableDatePartFunctionExpression(DatePartsExpression datePart, NullableDateTimeElement expression) : base(datePart, expression, typeof(TNullableValue))
         {
 
         }
 
-        protected NullableDatePartFunctionExpression(DatePartsExpression datePart, NullDateTimeOffsetElement expression) : base(datePart, expression, typeof(TNullableValue))
-        {
-
-        }
-
-        protected NullableDatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, string alias) : base(datePart, expression, typeof(TNullableValue), alias)
+        protected NullableDatePartFunctionExpression(DatePartsExpression datePart, NullableDateTimeOffsetElement expression) : base(datePart, expression, typeof(TNullableValue))
         {
 
         }

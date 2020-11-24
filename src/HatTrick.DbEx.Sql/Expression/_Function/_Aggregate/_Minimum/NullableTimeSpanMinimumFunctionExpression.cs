@@ -4,27 +4,32 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableTimeSpanMinimumFunctionExpression :
         NullableMinimumFunctionExpression<TimeSpan,TimeSpan?>,
-        NullTimeSpanElement,
+        NullableTimeSpanElement,
         AnyTimeSpanElement, 
         IEquatable<NullableTimeSpanMinimumFunctionExpression>
     {
         #region constructors
-        public NullableTimeSpanMinimumFunctionExpression(NullTimeSpanElement expression, bool isDistinct) 
-            : base(expression, isDistinct)
-        {
-
-        }
-
-        public NullableTimeSpanMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
-            : base(expression, isDistinct, alias)
+        public NullableTimeSpanMinimumFunctionExpression(NullableTimeSpanElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullTimeSpanElement As(string alias)
-            => new NullableTimeSpanMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        public NullableTimeSpanElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public NullableTimeSpanMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

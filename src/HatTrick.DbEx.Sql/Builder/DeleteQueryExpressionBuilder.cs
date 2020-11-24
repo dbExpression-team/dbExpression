@@ -1,28 +1,53 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Configuration;
+﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
     public abstract class DeleteQueryExpressionBuilder : QueryExpressionBuilder,
-        IDeleteFromExpressionBuilder
+        DeleteEntities
     {
-        #region constructors
-        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression) : base(configuration, expression)
+        protected DeleteQueryExpression Expression { get; private set; }
+
+        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression)
+            : base(config, expression)
         {
+            Expression = expression;
         }
 
-        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression entity) : base(configuration, expression)
+        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression, EntityExpression entity)
+            : base(config, expression)
         {
-            Expression.BaseEntity = entity;
-        }
-        #endregion
-
-        IDeleteContinuationExpressionBuilder<T> IDeleteFromExpressionBuilder.From<T>(EntityExpression<T> entity)
-        {
-            return CreateTypedBuilder(Configuration, Expression as DeleteQueryExpression, entity);
+            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            Expression.BaseEntity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
         }
 
-        protected abstract IDeleteContinuationExpressionBuilder<T> CreateTypedBuilder<T>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<T> entity) where T : class, IDbEntity;
+
+
+        DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Entity<TEntity> entity)
+            => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
+
+        DeleteEntities DeleteEntities.Top(int value)
+        {
+            Expression.Top = value;
+            return this;
+        }
+
+        protected abstract DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<TEntity> entity) 
+            where TEntity : class, IDbEntity;
+
+        protected void Where(AnyWhereClause expression)
+        {
+            if (expression is null)
+                return;
+
+            if (!(expression is FilterExpressionSet set))
+                throw new DbExpressionException($"Expected {nameof(expression)} to be of type {nameof(FilterExpressionSet)}.");
+
+            if (Expression.Where is null || Expression.Where.IsEmpty)
+                Expression.Where = set;
+            else
+                Expression.Where &= set;
+        }
     }
 }

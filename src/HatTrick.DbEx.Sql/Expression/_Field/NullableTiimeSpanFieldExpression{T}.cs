@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public override NullTimeSpanElement As(string alias)
+        public override NullableTimeSpanElement As(string alias)
             => new NullableTimeSpanFieldExpression<TEntity>(base.identifier, base.entity, alias);
         #endregion
 

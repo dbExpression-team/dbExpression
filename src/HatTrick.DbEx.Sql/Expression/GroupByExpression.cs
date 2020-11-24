@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpression :
-        IExpressionElement
+        AnyGroupByClause
     {
         #region interface
         public IExpressionElement Expression { get; private set; }

@@ -2,8 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AssignmentExpression : 
-        IExpressionElement,
+    public class AssignmentExpression :
+        EntityFieldAssignment,
         IAssignmentExpressionProvider
     {
         #region internals

@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<GuidMinimumFunctionExpression>
     {
         #region constructors
-        public GuidMinimumFunctionExpression(GuidElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected GuidMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public GuidMinimumFunctionExpression(GuidElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public GuidElement As(string alias)
-            => new GuidMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public GuidMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

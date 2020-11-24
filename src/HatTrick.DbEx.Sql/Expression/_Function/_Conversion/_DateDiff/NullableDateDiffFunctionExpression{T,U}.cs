@@ -12,12 +12,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected NullableDateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, string alias)
-            : base(datePart, startDate, endDate, typeof(TNullableValue), alias)
-        {
-
-        }
         #endregion
     }
 }

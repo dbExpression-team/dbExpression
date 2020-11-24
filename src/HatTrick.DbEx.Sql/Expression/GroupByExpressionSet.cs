@@ -6,10 +6,10 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
         IExpressionElement, 
-        IExpressionSet<GroupByExpression>
+        IExpressionSet<AnyGroupByClause>
     {
         #region interface
-        public IEnumerable<GroupByExpression> Expressions { get; private set; } = new List<GroupByExpression>();
+        public IEnumerable<AnyGroupByClause> Expressions { get; private set; } = new List<AnyGroupByClause>();
         #endregion
 
         #region constructors
@@ -18,21 +18,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public GroupByExpressionSet(GroupByExpression groupByExpression)
+        public GroupByExpressionSet(AnyGroupByClause groupByExpression)
         {
-            Expressions = Expressions.Concat(new GroupByExpression[1] { groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.") });
+            Expressions = Expressions.Concat(new AnyGroupByClause[1] { groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.") });
         }
 
-        public GroupByExpressionSet(GroupByExpression aGroupByExpression, GroupByExpression bGroupByExpression)
+        public GroupByExpressionSet(AnyGroupByClause aGroupByExpression, AnyGroupByClause bGroupByExpression)
         {
-            Expressions = new List<GroupByExpression>
+            Expressions = new List<AnyGroupByClause>
             {
                 aGroupByExpression ?? throw new ArgumentNullException($"{nameof(aGroupByExpression)} is required."),
                 bGroupByExpression ?? throw new ArgumentNullException($"{nameof(bGroupByExpression)} is required.")
             };
         }
 
-        public GroupByExpressionSet(IEnumerable<GroupByExpression> groupByExpression)
+        public GroupByExpressionSet(IEnumerable<AnyGroupByClause> groupByExpression)
         {
             Expressions = groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.");
         }
@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Expression
             }
             else
             {
-                aSet.Expressions = aSet.Expressions.Concat(new GroupByExpression[1] { b });
+                aSet.Expressions = aSet.Expressions.Concat(new AnyGroupByClause[1] { b });
             }
             return aSet;
         }

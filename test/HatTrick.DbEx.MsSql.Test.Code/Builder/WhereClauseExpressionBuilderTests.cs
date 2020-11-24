@@ -2,7 +2,7 @@
 using DbEx.secData;
 using DbEx.secDataService;
 using FluentAssertions;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp;
-            QueryExpression expressionSet;
+            FilterExpressionSet filterSet;
             FilterExpression idFilter;
 
             //when
@@ -29,8 +29,9 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0);
 
-            expressionSet = (exp as IQueryExpressionProvider).Expression;
-            idFilter = (FilterExpression)expressionSet.Where.LeftArg;
+            filterSet = (exp.Expression as SelectQueryExpression).Where;
+
+            idFilter = filterSet.LeftArg as FilterExpression;
 
             //then
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
@@ -55,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             ConfigureForMsSqlVersion(version);
 
             ITerminationExpressionBuilder exp;
-            QueryExpression expressionSet;
+            FilterExpressionSet filterSet;
             FilterExpression idFilter;
             FilterExpression ssnFilter;
 
@@ -64,12 +65,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX");
 
-            expressionSet = (exp as IQueryExpressionProvider).Expression;
-            idFilter = (FilterExpression)expressionSet.Where.LeftArg;
-            ssnFilter = (FilterExpression)expressionSet.Where.RightArg;
+
+            filterSet = (exp.Expression as SelectQueryExpression).Where;
+            idFilter = (filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
+            ssnFilter = (filterSet.RightArg as FilterExpressionSet).LeftArg as FilterExpression;
 
             //then
-            expressionSet.Where.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
+            filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
 
             idFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.GreaterThan);
 
@@ -118,11 +120,11 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != now);
 
-            filterSet = (exp as IQueryExpressionProvider).Expression.Where;
+            filterSet = (exp.Expression as SelectQueryExpression).Where;
 
-            idFilter = (filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
-            ssnFilter = (filterSet.LeftArg as FilterExpressionSet).RightArg as FilterExpression;
-            dateCreatedFilter = filterSet.RightArg as FilterExpression;
+            idFilter = ((filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
+            ssnFilter = ((filterSet.LeftArg as FilterExpressionSet).RightArg as FilterExpressionSet).LeftArg as FilterExpression;
+            dateCreatedFilter = (filterSet.RightArg as FilterExpressionSet).LeftArg as FilterExpression;
 
             //then
             filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);

@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Builder\DeleteQueryExpressionBuilder{T}.cs" />
+    <Compile Remove="Builder\JoinExpressionBuilder{T,U}.cs" />
+    <Compile Remove="Builder\QueryExpressionBuilder{T}.cs" />
+    <Compile Remove="Builder\SelectQueryExpressionBuilder{T,U,V}.cs" />
+    <Compile Remove="Builder\SelectQueryExpressionBuilder{T,U}.cs" />
+    <Compile Remove="Builder\SelectQueryExpressionBuilder{T}.cs" />
+    <Compile Remove="Builder\UpdateQueryExpressionBuilder{T}.cs" />
+    <Compile Remove="Expression\IExpressionTopProvider.cs" />
     <Compile Remove="Expression\_Function\_Aggregate\_Average\NullableAverageFunctionExpression.cs" />
   </ItemGroup>
 

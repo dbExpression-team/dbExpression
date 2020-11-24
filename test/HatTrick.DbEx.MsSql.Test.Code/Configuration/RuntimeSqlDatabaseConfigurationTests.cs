@@ -30,10 +30,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             static Person exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
 
             //when
-            var ex = Assert.Throws<ArgumentNullException>(exec);
+            var ex = Assert.Throws<DbExpressionConfigurationException>(exec);
 
             //then
-            ex.Should().BeOfType<ArgumentNullException>();
+            ex.Should().BeOfType<DbExpressionConfigurationException>();
         }
 
         [Theory]
@@ -46,10 +46,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             static Person exec() => db.SelectOne<Person>().From(dbo.Person).Execute();
 
             //when
-            var ex = Assert.Throws<ArgumentNullException>(exec);
+            var ex = Assert.Throws<DbExpressionConfigurationException>(exec);
 
             //then
-            ex.Should().BeOfType<ArgumentNullException>();
+            ex.Should().BeOfType<DbExpressionConfigurationException>();
         }
 
         [Theory]

@@ -7,7 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<MinimumFunctionExpression>
     {
         #region internals
-        protected bool IsDistinct { get; private set; }
+        protected bool IsDistinct { get; set; }
         #endregion
 
         #region interface
@@ -15,14 +15,9 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected MinimumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct) : this(expression, declaredType, isDistinct, null)
+        protected MinimumFunctionExpression(IExpressionElement expression, Type declaredType) : base(expression, declaredType)
         {
 
-        }
-
-        protected MinimumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct, string alias) : base(expression, declaredType, alias)
-        {
-            IsDistinct = isDistinct;
         }
         #endregion
 

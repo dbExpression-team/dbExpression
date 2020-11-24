@@ -14,17 +14,15 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected CurrentTimestampFunctionExpression(string alias) : base(null, typeof(DateTime), alias)
-        {
-
-        }
         #endregion
 
         #region methods
         #region as
         public DateTimeElement As(string alias)
-            => new CurrentTimestampFunctionExpression(alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string

@@ -13,16 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected DateTimeDateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, string alias) : base(datePart, value, expression, alias)
-        {
-
-        }
         #endregion
 
         #region as
         public DateTimeElement As(string alias)
-            => new DateTimeDateAddFunctionExpression(base.DatePart, base.Value, base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

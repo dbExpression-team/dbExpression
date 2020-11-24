@@ -1,10 +1,9 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class AliasExpressionBuilder : IAliasExpressionContinuationBuilder
+    public class AliasExpressionBuilder : Alias
     {
         #region internals
         private readonly AliasExpression expression;
@@ -18,55 +17,55 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        BooleanExpressionMediator IAliasExpressionContinuationBuilder.ToBool() => new BooleanExpressionMediator(expression);
+        BooleanExpressionMediator Alias.AsBoolean() => new BooleanExpressionMediator(expression);
 
-        ByteExpressionMediator IAliasExpressionContinuationBuilder.ToByte() => new ByteExpressionMediator(expression);
+        ByteExpressionMediator Alias.AsByte() => new ByteExpressionMediator(expression);
 
-        DateTimeExpressionMediator IAliasExpressionContinuationBuilder.ToDateTime() => new DateTimeExpressionMediator(expression);
+        DateTimeExpressionMediator Alias.AsDateTime() => new DateTimeExpressionMediator(expression);
 
-        DateTimeOffsetExpressionMediator IAliasExpressionContinuationBuilder.ToDateTimeOffset() => new DateTimeOffsetExpressionMediator(expression);
+        DateTimeOffsetExpressionMediator Alias.AsDateTimeOffset() => new DateTimeOffsetExpressionMediator(expression);
 
-        DecimalExpressionMediator IAliasExpressionContinuationBuilder.ToDecimal() => new DecimalExpressionMediator(expression);
+        DecimalExpressionMediator Alias.AsDecimal() => new DecimalExpressionMediator(expression);
 
-        DoubleExpressionMediator IAliasExpressionContinuationBuilder.ToDouble() => new DoubleExpressionMediator(expression);
+        DoubleExpressionMediator Alias.AsDouble() => new DoubleExpressionMediator(expression);
 
-        SingleExpressionMediator IAliasExpressionContinuationBuilder.ToFloat() => new SingleExpressionMediator(expression);
+        SingleExpressionMediator Alias.AsSingle() => new SingleExpressionMediator(expression);
 
-        GuidExpressionMediator IAliasExpressionContinuationBuilder.ToGuid() => new GuidExpressionMediator(expression);
+        GuidExpressionMediator Alias.AsGuid() => new GuidExpressionMediator(expression);
 
-        Int32ExpressionMediator IAliasExpressionContinuationBuilder.ToInt() => new Int32ExpressionMediator(expression);
+        Int32ExpressionMediator Alias.AsInt32() => new Int32ExpressionMediator(expression);
 
-        Int64ExpressionMediator IAliasExpressionContinuationBuilder.ToLong() => new Int64ExpressionMediator(expression);
+        Int64ExpressionMediator Alias.AsInt64() => new Int64ExpressionMediator(expression);
 
-        NullableBooleanExpressionMediator IAliasExpressionContinuationBuilder.ToNullableBool() => new NullableBooleanExpressionMediator(expression);
+        NullableBooleanExpressionMediator Alias.AsNullableBoolean() => new NullableBooleanExpressionMediator(expression);
 
-        NullableByteExpressionMediator IAliasExpressionContinuationBuilder.ToNullableByte() => new NullableByteExpressionMediator(expression);
+        NullableByteExpressionMediator Alias.AsNullableByte() => new NullableByteExpressionMediator(expression);
 
-        NullableDateTimeExpressionMediator IAliasExpressionContinuationBuilder.ToNullableDateTime() => new NullableDateTimeExpressionMediator(expression);
+        NullableDateTimeExpressionMediator Alias.AsNullableDateTime() => new NullableDateTimeExpressionMediator(expression);
 
-        NullableDateTimeOffsetExpressionMediator IAliasExpressionContinuationBuilder.ToNullableDateTimeOffset() => new NullableDateTimeOffsetExpressionMediator(expression);
+        NullableDateTimeOffsetExpressionMediator Alias.AsNullableDateTimeOffset() => new NullableDateTimeOffsetExpressionMediator(expression);
 
-        NullableDecimalExpressionMediator IAliasExpressionContinuationBuilder.ToNullableDecimal() => new NullableDecimalExpressionMediator(expression);
+        NullableDecimalExpressionMediator Alias.AsNullableDecimal() => new NullableDecimalExpressionMediator(expression);
 
-        NullableDoubleExpressionMediator IAliasExpressionContinuationBuilder.ToNullableDouble() => new NullableDoubleExpressionMediator(expression);
+        NullableDoubleExpressionMediator Alias.AsNullableDouble() => new NullableDoubleExpressionMediator(expression);
 
-        NullableSingleExpressionMediator IAliasExpressionContinuationBuilder.ToNullableFloat() => new NullableSingleExpressionMediator(expression);
+        NullableSingleExpressionMediator Alias.AsNullableSingle() => new NullableSingleExpressionMediator(expression);
 
-        NullableGuidExpressionMediator IAliasExpressionContinuationBuilder.ToNullableGuid() => new NullableGuidExpressionMediator(expression);
+        NullableGuidExpressionMediator Alias.AsNullableGuid() => new NullableGuidExpressionMediator(expression);
 
-        NullableInt32ExpressionMediator IAliasExpressionContinuationBuilder.ToNullableInt() => new NullableInt32ExpressionMediator(expression);
+        NullableInt32ExpressionMediator Alias.AsNullableInt32() => new NullableInt32ExpressionMediator(expression);
 
-        NullableInt64ExpressionMediator IAliasExpressionContinuationBuilder.ToNullableLong() => new NullableInt64ExpressionMediator(expression);
+        NullableInt64ExpressionMediator Alias.AsNullableInt64() => new NullableInt64ExpressionMediator(expression);
 
-        NullableInt16ExpressionMediator IAliasExpressionContinuationBuilder.ToNullableShort() => new NullableInt16ExpressionMediator(expression);
+        NullableInt16ExpressionMediator Alias.AsNullable16() => new NullableInt16ExpressionMediator(expression);
 
-        Int16ExpressionMediator IAliasExpressionContinuationBuilder.ToShort() => new Int16ExpressionMediator(expression);
+        Int16ExpressionMediator Alias.AsInt16() => new Int16ExpressionMediator(expression);
 
-        StringExpressionMediator IAliasExpressionContinuationBuilder.ToString() => new StringExpressionMediator(expression);
+        StringExpressionMediator Alias.AsString() => new StringExpressionMediator(expression);
 
-        EnumExpressionMediator<TEnum> IAliasExpressionContinuationBuilder.ToEnum<TEnum>() => new EnumExpressionMediator<TEnum>(expression);
+        EnumExpressionMediator<TEnum> Alias.AsEnum<TEnum>() => new EnumExpressionMediator<TEnum>(expression);
 
-        NullableEnumExpressionMediator<TEnum> IAliasExpressionContinuationBuilder.ToNullableEnum<TEnum>() => new NullableEnumExpressionMediator<TEnum>(expression);
+        NullableEnumExpressionMediator<TEnum> Alias.AsNullableEnum<TEnum>() => new NullableEnumExpressionMediator<TEnum>(expression);
         #endregion
     }
 }

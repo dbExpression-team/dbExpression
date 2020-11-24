@@ -12,13 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region constructors
         protected DateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, Type declaredType) 
-            : this(datePart, value, expression, declaredType, null)
-        {
-
-        }
-
-        protected DateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, Type declaredType, string alias) 
-            : base(expression, declaredType, alias)
+            : base(expression, declaredType)
         {
             DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
             Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");

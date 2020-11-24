@@ -10,11 +10,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, string alias) : base(expressions, typeof(TValue), alias)
-        {
-
-        }
         #endregion
     }
 }

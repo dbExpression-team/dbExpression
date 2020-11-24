@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract partial class NullableByteArrayFieldExpression :
         FieldExpression<byte[]>,
-        NullByteArrayElement,
+        NullableByteArrayElement,
         AnyByteArrayElement,
         IEquatable<NullableByteArrayFieldExpression>
     {
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public abstract NullByteArrayElement As(string alias);
+        public abstract NullableByteArrayElement As(string alias);
         #endregion
 
         #region equals
@@ -37,17 +37,13 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region in value set
-        public override FilterExpression<bool> In(params byte[][] value) => value is object ? new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new NullableByteArrayExpressionMediator(new InExpression<byte[]>(value)), FilterExpressionOperator.None) : null;
-        public override FilterExpression<bool> In(IEnumerable<byte[]> value) => value is object ? new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new NullableByteArrayExpressionMediator(new InExpression<byte[]>(value)), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params byte[][] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new NullableByteArrayExpressionMediator(new InExpression<byte[]>(value)), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<byte[]> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(new ByteArrayExpressionMediator(this), new NullableByteArrayExpressionMediator(new InExpression<byte[]>(value)), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region set
         public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(value)));
         public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableByteArrayExpressionMediator(new LiteralExpression<byte[]>(null)));
-        #endregion
-
-        #region insert
-        public override InsertExpression Insert(byte[] value) => new InsertExpression(this, new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(value)));
         #endregion
 
         #region order

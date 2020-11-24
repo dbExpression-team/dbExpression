@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinOnExpressionSet :
-        IExpressionElement
+        AnyJoinOnClause
     {
         #region interface
         public readonly ConditionalExpressionOperator ConditionalOperator;

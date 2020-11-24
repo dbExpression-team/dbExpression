@@ -9,42 +9,37 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<SinglePopulationVarianceFunctionExpression>
     {
         #region constructors
-        public SinglePopulationVarianceFunctionExpression(ByteElement expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(ByteElement expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationVarianceFunctionExpression(Int16Element expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(Int16Element expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationVarianceFunctionExpression(Int32Element expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(Int32Element expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationVarianceFunctionExpression(Int64Element expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(Int64Element expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationVarianceFunctionExpression(DoubleElement expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(DoubleElement expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationVarianceFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
+        public SinglePopulationVarianceFunctionExpression(DecimalElement expression) : base(expression)
         {
 
         }
 
-        public SinglePopulationVarianceFunctionExpression(SingleElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected SinglePopulationVarianceFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public SinglePopulationVarianceFunctionExpression(SingleElement expression) : base(expression)
         {
 
         }
@@ -52,7 +47,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public SingleElement As(string alias)
-            => new SinglePopulationVarianceFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public SinglePopulationVarianceFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

@@ -2,8 +2,8 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class OrderByExpression : 
-        IExpressionElement
+    public class OrderByExpression :
+        AnyOrderByClause
     {
         #region interface
         public IExpressionElement Expression { get; private set; }

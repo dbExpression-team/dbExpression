@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DecimalSumFunctionExpression>
     {
         #region constructors
-        public DecimalSumFunctionExpression(DecimalElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected DecimalSumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public DecimalSumFunctionExpression(DecimalElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DecimalElement As(string alias)
-            => new DecimalSumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public DecimalSumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

@@ -1,11 +1,9 @@
-﻿using HatTrick.DbEx.Sql.Builder.Syntax;
-using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using HatTrick.DbEx.Sql.Expression;
 using System.Data;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class NullableCastFunctionExpressionBuilder : INullableCastFunctionExpressionBuilder
+    public class NullableCastFunctionExpressionBuilder : NullableCast
     {
         #region internals
         public ExpressionMediator Expression { get; private set; }
@@ -19,73 +17,49 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        NullableBooleanCastFunctionExpression INullableCastFunctionExpressionBuilder.AsBit()
+        NullableBooleanCastFunctionExpression NullableCast.AsBit()
            => new NullableBooleanCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Boolean));
 
-        NullableByteCastFunctionExpression INullableCastFunctionExpressionBuilder.AsTinyInt()
+        NullableByteCastFunctionExpression NullableCast.AsTinyInt()
             => new NullableByteCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Byte));
 
-        NullableDateTimeCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDateTime()
+        NullableDateTimeCastFunctionExpression NullableCast.AsDateTime()
             => new NullableDateTimeCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.DateTime));
 
-        NullableDateTimeOffsetCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDateTimeOffset()
+        NullableDateTimeOffsetCastFunctionExpression NullableCast.AsDateTimeOffset()
             => new NullableDateTimeOffsetCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.DateTimeOffset));
 
-        NullableDecimalCastFunctionExpression INullableCastFunctionExpressionBuilder.AsDecimal(int precision, int scale)
+        NullableDecimalCastFunctionExpression NullableCast.AsDecimal(int precision, int scale)
             => new NullableDecimalCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Decimal));
 
-        NullableSingleCastFunctionExpression INullableCastFunctionExpressionBuilder.AsFloat()
+        NullableSingleCastFunctionExpression NullableCast.AsFloat()
             => new NullableSingleCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Single));
 
-        NullableGuidCastFunctionExpression INullableCastFunctionExpressionBuilder.AsUniqueIdentifier()
+        NullableGuidCastFunctionExpression NullableCast.AsUniqueIdentifier()
             => new NullableGuidCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Guid));
 
-        NullableInt16CastFunctionExpression INullableCastFunctionExpressionBuilder.AsSmallInt()
+        NullableInt16CastFunctionExpression NullableCast.AsSmallInt()
             => new NullableInt16CastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Int16));
 
-        NullableInt32CastFunctionExpression INullableCastFunctionExpressionBuilder.AsInt()
+        NullableInt32CastFunctionExpression NullableCast.AsInt()
             => new NullableInt32CastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Int32));
 
-        NullableInt64CastFunctionExpression INullableCastFunctionExpressionBuilder.AsBigInt()
+        NullableInt64CastFunctionExpression NullableCast.AsBigInt()
             => new NullableInt64CastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Int64));
 
-        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsVarChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.String))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression NullableCast.AsVarChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.String), size);
 
-        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.String))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression NullableCast.AsChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.String), size);
 
-        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsNVarChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.AnsiString))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression NullableCast.AsNVarChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.AnsiString), size);
 
-        StringCastFunctionExpression INullableCastFunctionExpressionBuilder.AsNChar(int size)
-        {
-            var exp = new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.AnsiString))
-            {
-                Size = size
-            };
-            return exp;
-        }
+        StringCastFunctionExpression NullableCast.AsNChar(int size)
+            => new StringCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.AnsiString), size);
 
-        NullableTimeSpanCastFunctionExpression INullableCastFunctionExpressionBuilder.AsTime()
+        NullableTimeSpanCastFunctionExpression NullableCast.AsTime()
          => new NullableTimeSpanCastFunctionExpression(Expression, new DbTypeExpression<DbType>(DbType.Time));
         #endregion
     }

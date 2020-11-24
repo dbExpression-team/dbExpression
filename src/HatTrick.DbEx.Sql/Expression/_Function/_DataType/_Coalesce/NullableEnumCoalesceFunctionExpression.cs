@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableEnumCoalesceFunctionExpression<TEnum> :
         NullableCoalesceFunctionExpression<TEnum,TEnum?>,
-        NullEnumElement<TEnum>,
+        NullableEnumElement<TEnum>,
         AnyEnumElement<TEnum>,
         IEquatable<NullableEnumCoalesceFunctionExpression<TEnum>>
         where TEnum : struct, Enum, IComparable
@@ -24,22 +24,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableEnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions, NullEnumElement<TEnum> termination) 
+        public NullableEnumCoalesceFunctionExpression(IList<AnyEnumElement<TEnum>> expressions, NullableEnumElement<TEnum> termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableEnumCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullEnumElement<TEnum> As(string alias)
-            => new NullableEnumCoalesceFunctionExpression<TEnum>(base.Expression, alias);
+        public NullableEnumElement<TEnum> As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

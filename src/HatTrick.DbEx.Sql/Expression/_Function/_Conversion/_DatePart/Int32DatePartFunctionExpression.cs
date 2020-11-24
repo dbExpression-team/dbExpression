@@ -13,12 +13,8 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
         public Int32DatePartFunctionExpression(DatePartsExpression datePart, DateTimeOffsetElement expression) : base(datePart, expression)
-        {
-
-        }
-
-        protected Int32DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, string alias) : base(datePart, expression, alias)
         {
 
         }
@@ -26,7 +22,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int32Element As(string alias)
-            => new Int32DatePartFunctionExpression(base.DatePart, base.Expression, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

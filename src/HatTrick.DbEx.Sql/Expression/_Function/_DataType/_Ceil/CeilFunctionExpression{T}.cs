@@ -11,11 +11,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected CeilFunctionExpression(IExpressionElement expression, string alias) : base(expression, typeof(TValue), alias)
-        {
-
-        }
         #endregion
     }
 }

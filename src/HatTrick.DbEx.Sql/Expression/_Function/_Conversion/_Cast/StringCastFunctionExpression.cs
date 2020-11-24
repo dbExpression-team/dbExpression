@@ -9,14 +9,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringCastFunctionExpression>
     {
         #region constructors
-        public StringCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
-            : base(expression, convertToDbType, typeof(string))
-        {
-
-        }
-
-        protected StringCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias) 
-            : base(expression, convertToDbType, typeof(string), size, precision, scale, alias)
+        public StringCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int size)
+            : base(expression, convertToDbType, size)
         {
 
         }
@@ -24,7 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public StringElement As(string alias)
-            => new StringCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

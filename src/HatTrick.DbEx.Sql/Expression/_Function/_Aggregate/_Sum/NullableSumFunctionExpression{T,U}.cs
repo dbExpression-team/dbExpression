@@ -7,14 +7,8 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableSumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct) 
-            : base(expression, declaredType, isDistinct)
-        {
-
-        }
-
-        protected NullableSumFunctionExpression(IExpressionElement expression, Type declaredType, bool isDistinct, string alias) 
-            : base(expression, declaredType, isDistinct, alias)
+        protected NullableSumFunctionExpression(IExpressionElement expression) 
+            : base(expression, typeof(TNullableValue))
         {
 
         }

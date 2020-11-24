@@ -14,12 +14,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public Int32CountFunctionExpression(IExpressionElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected Int32CountFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public Int32CountFunctionExpression(IExpressionElement expression) : base(expression)
         {
 
         }
@@ -27,7 +22,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int32Element As(string alias)
-            => new Int32CountFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public Int32CountFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

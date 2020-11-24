@@ -82,34 +82,34 @@ namespace {Namespace}
         #region filter operators
         #region {Type.Alias}
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Alias} b) => new FilterExpression<bool>(a, new {:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}>(b)), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Alias} b) => new FilterExpressionSet(new FilterExpression<bool>(a, new {:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}>(b)), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:mediatorType.Alias} a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool>(new {:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}>(a)), b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Alias} a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new {:mediatorType.Name}ExpressionMediator(new LiteralExpression<{:mediatorType.Alias}>(a)), b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         #endregion
 
         #region fields
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}FieldExpression b) => new FilterExpression<bool>(a, new {:mediatorType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new {:mediatorType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if Type.IsNullable-}
         {-#each FilterOperations-}
-        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}FieldExpression b) => new FilterExpression<bool?>(a, new Nullable{:mediatorType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new Nullable{:mediatorType.Name}ExpressionMediator(b), FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         #endregion
 
         #region mediators
         {-#each FilterOperations-}
-        public static FilterExpression<bool> operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, {:mediatorType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
 
         {-#if Type.IsNullable-}
         {-#each FilterOperations-}
-        public static FilterExpression<bool?> operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName});
+        public static FilterExpressionSet operator {FilterOperatorSymbol}({:mediatorType.Name}ExpressionMediator a, Nullable{:mediatorType.Name}ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
         {-/if-}
         #endregion

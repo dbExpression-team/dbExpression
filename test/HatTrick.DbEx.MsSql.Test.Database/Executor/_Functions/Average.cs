@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("avg_amount")
+                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("avg_amount")
                 ).From(dbo.Purchase);
 
             //when               
@@ -56,9 +56,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true)
+                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct()
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true));
+                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct());
 
             //when               
             double average = exp.Execute();
@@ -76,9 +76,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true)
+                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct()
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).Desc);
+                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
 
             //when               
             double average = exp.Execute();
@@ -96,9 +96,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("alias")
+                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true));
+                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct());
 
             //when               
             double average = exp.Execute();
@@ -116,9 +116,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).As("alias")
+                    db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().As("alias")
                 ).From(dbo.Purchase)
-                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount, distinct: true).Desc);
+                .OrderBy(db.fx.Avg(dbo.Purchase.TotalPurchaseAmount).Distinct().Desc);
 
             //when               
             double average = exp.Execute();

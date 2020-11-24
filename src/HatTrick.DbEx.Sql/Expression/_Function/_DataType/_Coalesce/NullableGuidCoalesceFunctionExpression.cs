@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableGuidCoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<Guid,Guid?>,
-        NullGuidElement,
+        NullableGuidElement,
         AnyGuidElement,
         IEquatable<NullableGuidCoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableGuidCoalesceFunctionExpression(IList<AnyGuidElement> expressions, NullGuidElement termination) 
+        public NullableGuidCoalesceFunctionExpression(IList<AnyGuidElement> expressions, NullableGuidElement termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableGuidCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullGuidElement As(string alias)
-            => new NullableGuidCoalesceFunctionExpression(base.Expression, alias);
+        public NullableGuidElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

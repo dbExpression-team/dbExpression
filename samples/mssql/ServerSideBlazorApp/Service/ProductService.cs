@@ -89,7 +89,7 @@ namespace ServerSideBlazorApp.Service
                         Depth = row.ReadField().GetValue<decimal?>(),
                         Weight = row.ReadField().GetValue<decimal?>(),
                         ShippingWeight = row.ReadField().GetValue<decimal>(),
-                        Image = Convert.ToBase64String(row.ReadField().GetValue<byte[]>())
+                        Image = Convert.ToBase64String(row.ReadField().GetValue<byte[]>() ?? new byte[0])
                     }
                 );
         }

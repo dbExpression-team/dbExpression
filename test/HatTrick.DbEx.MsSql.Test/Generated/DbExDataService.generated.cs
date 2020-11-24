@@ -1,11 +1,10 @@
-using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.MsSql.Builder;
-using HatTrick.DbEx.Sql.Builder.Syntax;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Connection;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -24,236 +23,238 @@ namespace DbEx.DataService
         RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
         #endregion
 
+        #region methods
         #region select one
-        public static IFromExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>, ITypeContinuationExpressionBuilder<TEntity, ITypeContinuationExpressionBuilder<TEntity>>> SelectOne<TEntity>()
+        public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TEntity>(config);
+            => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config);
 
-        public static IFromExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>, IValueContinuationExpressionBuilder<TEnum, IValueContinuationExpressionBuilder<TEnum>>> SelectOne<TEnum>(EnumElement<TEnum> field)
+        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
 
-        public static IFromExpressionBuilder<TEnum?, IValueContinuationExpressionBuilder<TEnum?>, IValueContinuationExpressionBuilder<TEnum?, IValueContinuationExpressionBuilder<TEnum?>>> SelectOne<TEnum>(NullEnumElement<TEnum> field)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
 
-        public static IFromExpressionBuilder<bool, IValueContinuationExpressionBuilder<bool>, IValueContinuationExpressionBuilder<bool, IValueContinuationExpressionBuilder<bool>>> SelectOne(BooleanElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<bool> SelectOne(BooleanElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<bool?, IValueContinuationExpressionBuilder<bool?>, IValueContinuationExpressionBuilder<bool?, IValueContinuationExpressionBuilder<bool?>>> SelectOne(NullBooleanElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<bool?> SelectOne(NullableBooleanElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>, IValueContinuationExpressionBuilder<byte, IValueContinuationExpressionBuilder<byte>>> SelectOne(ByteElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<byte> SelectOne(ByteElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>, IValueContinuationExpressionBuilder<byte?, IValueContinuationExpressionBuilder<byte?>>> SelectOne(NullByteElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<byte?> SelectOne(NullableByteElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(ByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<byte[]> SelectOne(ByteArrayElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>, IValueContinuationExpressionBuilder<byte[], IValueContinuationExpressionBuilder<byte[]>>> SelectOne(NullByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>, IValueContinuationExpressionBuilder<DateTime, IValueContinuationExpressionBuilder<DateTime>>> SelectOne(DateTimeElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<DateTime> SelectOne(DateTimeElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<DateTime?, IValueContinuationExpressionBuilder<DateTime?>, IValueContinuationExpressionBuilder<DateTime?, IValueContinuationExpressionBuilder<DateTime?>>> SelectOne(NullDateTimeElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<DateTimeOffset, IValueContinuationExpressionBuilder<DateTimeOffset>, IValueContinuationExpressionBuilder<DateTimeOffset, IValueContinuationExpressionBuilder<DateTimeOffset>>> SelectOne(DateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<DateTimeOffset?, IValueContinuationExpressionBuilder<DateTimeOffset?>, IValueContinuationExpressionBuilder<DateTimeOffset?, IValueContinuationExpressionBuilder<DateTimeOffset?>>> SelectOne(NullDateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<decimal, IValueContinuationExpressionBuilder<decimal>, IValueContinuationExpressionBuilder<decimal, IValueContinuationExpressionBuilder<decimal>>> SelectOne(DecimalElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<decimal> SelectOne(DecimalElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<decimal?, IValueContinuationExpressionBuilder<decimal?>, IValueContinuationExpressionBuilder<decimal?, IValueContinuationExpressionBuilder<decimal?>>> SelectOne(NullDecimalElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<decimal?> SelectOne(NullableDecimalElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<double, IValueContinuationExpressionBuilder<double>, IValueContinuationExpressionBuilder<double, IValueContinuationExpressionBuilder<double>>> SelectOne(DoubleElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<double> SelectOne(DoubleElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<double?, IValueContinuationExpressionBuilder<double?>, IValueContinuationExpressionBuilder<double?, IValueContinuationExpressionBuilder<double?>>> SelectOne(NullDoubleElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<double?> SelectOne(NullableDoubleElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<Guid, IValueContinuationExpressionBuilder<Guid>, IValueContinuationExpressionBuilder<Guid, IValueContinuationExpressionBuilder<Guid>>> SelectOne(GuidElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<Guid> SelectOne(GuidElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>, IValueContinuationExpressionBuilder<Guid?, IValueContinuationExpressionBuilder<Guid?>>> SelectOne(NullGuidElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<Guid?> SelectOne(NullableGuidElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<short, IValueContinuationExpressionBuilder<short>, IValueContinuationExpressionBuilder<short, IValueContinuationExpressionBuilder<short>>> SelectOne(Int16Element field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<short> SelectOne(Int16Element field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<short?, IValueContinuationExpressionBuilder<short?>, IValueContinuationExpressionBuilder<short?, IValueContinuationExpressionBuilder<short?>>> SelectOne(NullInt16Element field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<short?> SelectOne(NullableInt16Element field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<int, IValueContinuationExpressionBuilder<int>, IValueContinuationExpressionBuilder<int, IValueContinuationExpressionBuilder<int>>> SelectOne(Int32Element field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<int> SelectOne(Int32Element field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<int?, IValueContinuationExpressionBuilder<int?>, IValueContinuationExpressionBuilder<int?, IValueContinuationExpressionBuilder<int?>>> SelectOne(NullInt32Element field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<int?> SelectOne(NullableInt32Element field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<long, IValueContinuationExpressionBuilder<long>, IValueContinuationExpressionBuilder<long, IValueContinuationExpressionBuilder<long>>> SelectOne(Int64Element field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<long> SelectOne(Int64Element field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<long?, IValueContinuationExpressionBuilder<long?>, IValueContinuationExpressionBuilder<long?, IValueContinuationExpressionBuilder<long?>>> SelectOne(NullInt64Element field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<long?> SelectOne(NullableInt64Element field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<float, IValueContinuationExpressionBuilder<float>, IValueContinuationExpressionBuilder<float, IValueContinuationExpressionBuilder<float>>> SelectOne(SingleElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<float> SelectOne(SingleElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<float?, IValueContinuationExpressionBuilder<float?>, IValueContinuationExpressionBuilder<float?, IValueContinuationExpressionBuilder<float?>>> SelectOne(NullSingleElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<float?> SelectOne(NullableSingleElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(StringElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<string> SelectOne(StringElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<string, IValueContinuationExpressionBuilder<string>, IValueContinuationExpressionBuilder<string, IValueContinuationExpressionBuilder<string>>> SelectOne(NullStringElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<string> SelectOne(NullableStringElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>, IValueContinuationExpressionBuilder<TimeSpan, IValueContinuationExpressionBuilder<TimeSpan>>> SelectOne(TimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>, IValueContinuationExpressionBuilder<TimeSpan?, IValueContinuationExpressionBuilder<TimeSpan?>>> SelectOne(NullTimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field);
+        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static IFromExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>, IValueContinuationExpressionBuilder<ExpandoObject, IValueContinuationExpressionBuilder<ExpandoObject>>> SelectOne(IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
-            => expressionBuilderFactory.CreateSelectOneExpressionBuilder(config, field1, field2, fields);
+        public static SelectValue<ExpandoObject> SelectOne(IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field1, field2, fields);
         #endregion
 
         #region select many
-        public static IListFromExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>, ITypeListContinuationExpressionBuilder<TEntity, ITypeListContinuationExpressionBuilder<TEntity>>> SelectMany<TEntity>()
-            where TEntity : IDbEntity
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TEntity>(config);
+        public static SelectEntities<TEntity> SelectMany<TEntity>()
+           where TEntity : class, IDbEntity
+           => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config);
 
-        public static IListFromExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>, IValueListContinuationExpressionBuilder<TEnum, IValueListContinuationExpressionBuilder<TEnum>>> SelectMany<TEnum>(EnumElement<TEnum> field)
+        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
 
-        public static IListFromExpressionBuilder<TEnum?, IValueListContinuationExpressionBuilder<TEnum?>, IValueListContinuationExpressionBuilder<TEnum?, IValueListContinuationExpressionBuilder<TEnum?>>> SelectMany<TEnum>(NullEnumElement<TEnum> field)
+        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
 
-        public static IListFromExpressionBuilder<bool, IValueListContinuationExpressionBuilder<bool>, IValueListContinuationExpressionBuilder<bool, IValueListContinuationExpressionBuilder<bool>>> SelectMany(BooleanElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<bool> SelectMany(BooleanElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<bool?, IValueListContinuationExpressionBuilder<bool?>, IValueListContinuationExpressionBuilder<bool?, IValueListContinuationExpressionBuilder<bool?>>> SelectMany(NullBooleanElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<bool?> SelectMany(NullableBooleanElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>, IValueListContinuationExpressionBuilder<byte, IValueListContinuationExpressionBuilder<byte>>> SelectMany(ByteElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<byte> SelectMany(ByteElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>, IValueListContinuationExpressionBuilder<byte?, IValueListContinuationExpressionBuilder<byte?>>> SelectMany(NullByteElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<byte?> SelectMany(NullableByteElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(NullByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<byte[]> SelectMany(ByteArrayElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>, IValueListContinuationExpressionBuilder<byte[], IValueListContinuationExpressionBuilder<byte[]>>> SelectMany(ByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>, IValueListContinuationExpressionBuilder<DateTime, IValueListContinuationExpressionBuilder<DateTime>>> SelectMany(DateTimeElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<DateTime> SelectMany(DateTimeElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<DateTime?, IValueListContinuationExpressionBuilder<DateTime?>, IValueListContinuationExpressionBuilder<DateTime?, IValueListContinuationExpressionBuilder<DateTime?>>> SelectMany(NullDateTimeElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<DateTimeOffset, IValueListContinuationExpressionBuilder<DateTimeOffset>, IValueListContinuationExpressionBuilder<DateTimeOffset, IValueListContinuationExpressionBuilder<DateTimeOffset>>> SelectMany(DateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<DateTimeOffset?, IValueListContinuationExpressionBuilder<DateTimeOffset?>, IValueListContinuationExpressionBuilder<DateTimeOffset?, IValueListContinuationExpressionBuilder<DateTimeOffset?>>> SelectMany(NullDateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<decimal, IValueListContinuationExpressionBuilder<decimal>, IValueListContinuationExpressionBuilder<decimal, IValueListContinuationExpressionBuilder<decimal>>> SelectMany(DecimalElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<decimal> SelectMany(DecimalElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<decimal?, IValueListContinuationExpressionBuilder<decimal?>, IValueListContinuationExpressionBuilder<decimal?, IValueListContinuationExpressionBuilder<decimal?>>> SelectMany(NullDecimalElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<decimal?> SelectMany(NullableDecimalElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<double, IValueListContinuationExpressionBuilder<double>, IValueListContinuationExpressionBuilder<double, IValueListContinuationExpressionBuilder<double>>> SelectMany(DoubleElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<double> SelectMany(DoubleElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<double?, IValueListContinuationExpressionBuilder<double?>, IValueListContinuationExpressionBuilder<double?, IValueListContinuationExpressionBuilder<double?>>> SelectMany(NullDoubleElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<double?> SelectMany(NullableDoubleElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<Guid, IValueListContinuationExpressionBuilder<Guid>, IValueListContinuationExpressionBuilder<Guid, IValueListContinuationExpressionBuilder<Guid>>> SelectMany(GuidElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<Guid> SelectMany(GuidElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>, IValueListContinuationExpressionBuilder<Guid?, IValueListContinuationExpressionBuilder<Guid?>>> SelectMany(NullGuidElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<Guid?> SelectMany(NullableGuidElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>, IValueListContinuationExpressionBuilder<short, IValueListContinuationExpressionBuilder<short>>> SelectMany(Int16Element field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<short> SelectMany(Int16Element field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<short?, IValueListContinuationExpressionBuilder<short?>, IValueListContinuationExpressionBuilder<short?, IValueListContinuationExpressionBuilder<short?>>> SelectMany(NullInt16Element field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<short?> SelectMany(NullableInt16Element field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<int, IValueListContinuationExpressionBuilder<int>, IValueListContinuationExpressionBuilder<int, IValueListContinuationExpressionBuilder<int>>> SelectMany(Int32Element field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<int> SelectMany(Int32Element field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<int?, IValueListContinuationExpressionBuilder<int?>, IValueListContinuationExpressionBuilder<int?, IValueListContinuationExpressionBuilder<int?>>> SelectMany(NullInt32Element field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<int?> SelectMany(NullableInt32Element field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<long, IValueListContinuationExpressionBuilder<long>, IValueListContinuationExpressionBuilder<long, IValueListContinuationExpressionBuilder<long>>> SelectMany(Int64Element field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<long> SelectMany(Int64Element field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<long?, IValueListContinuationExpressionBuilder<long?>, IValueListContinuationExpressionBuilder<long?, IValueListContinuationExpressionBuilder<long?>>> SelectMany(NullInt64Element field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<long?> SelectMany(NullableInt64Element field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<float, IValueListContinuationExpressionBuilder<float>, IValueListContinuationExpressionBuilder<float, IValueListContinuationExpressionBuilder<float>>> SelectMany(SingleElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<float> SelectMany(SingleElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<float?, IValueListContinuationExpressionBuilder<float?>, IValueListContinuationExpressionBuilder<float?, IValueListContinuationExpressionBuilder<float?>>> SelectMany(NullSingleElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<float?> SelectMany(NullableSingleElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(StringElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<string> SelectMany(StringElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>, IValueListContinuationExpressionBuilder<string, IValueListContinuationExpressionBuilder<string>>> SelectMany(NullStringElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<string> SelectMany(NullableStringElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>, IValueListContinuationExpressionBuilder<TimeSpan, IValueListContinuationExpressionBuilder<TimeSpan>>> SelectMany(TimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>, IValueListContinuationExpressionBuilder<TimeSpan?, IValueListContinuationExpressionBuilder<TimeSpan?>>> SelectMany(NullTimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field);
+        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static IListFromExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>, IValueListContinuationExpressionBuilder<ExpandoObject, IValueListContinuationExpressionBuilder<ExpandoObject>>> SelectMany(IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
-            => expressionBuilderFactory.CreateSelectManyExpressionBuilder(config, field1, field2, fields);
+        public static SelectValues<ExpandoObject> SelectMany(AnyElement field1, AnyElement field2, params AnyElement[] fields)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field1, field2, fields);
         #endregion
 
         #region update
-        public static IUpdateFromExpressionBuilder Update(params AssignmentExpression[] fields)
+        public static UpdateEntities Update(params EntityFieldAssignment[] fields)
             => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
 
-        public static IUpdateFromExpressionBuilder<TEntity> Update<TEntity>(TEntity updateValuesInThisEntity, TEntity fromValuesInThisEntity)
+        public static UpdateEntities Update(IList<EntityFieldAssignment> fields)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+
+        public static UpdateEntities<TEntity> Update<TEntity>(TEntity updateValuesInThisEntity, TEntity fromValuesInThisEntity)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, updateValuesInThisEntity, fromValuesInThisEntity);     
         #endregion
 
         #region delete
-        public static IDeleteFromExpressionBuilder Delete()
+        public static DeleteEntities Delete()
             => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
         #endregion
 
         #region insert
-        public static IInsertExpressionBuilder<T> Insert<T>(T instance)
-            where T : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instance);
-        #endregion
+        public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
+            where TEntity : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entity);
 
-        #region insert many
-        public static IInsertExpressionBuilder<T> InsertMany<T>(IList<T> instances)
-            where T : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
+        public static InsertEntities<TEntity> InsertMany<TEntity>(params TEntity[] entities)
+            where TEntity : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
 
-        public static IInsertExpressionBuilder<T> InsertMany<T>(params T[] instances)
-            where T : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, instances);
+        public static InsertEntities<TEntity> InsertMany<TEntity>(IList<TEntity> entities)
+            where TEntity : class, IDbEntity
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
         #endregion
 
         #region get connection
@@ -261,6 +262,7 @@ namespace DbEx.DataService
             => new SqlConnector(config.ConnectionFactory);
         #pragma warning disable IDE1006 // Naming Styles
         #pragma warning restore IDE1006 // Naming Styles
+        #endregion
         #endregion
 
         #region fx
@@ -274,12 +276,8 @@ namespace DbEx.DataService
         #endregion
 
         #region alias
-#pragma warning disable IDE1006 // Naming Styles
-        public static IAliasExpressionContinuationBuilder alias(string tableName, string fieldName)
-#pragma warning restore IDE1006 // Naming Styles
-        {
-            return new AliasExpressionBuilder(new AliasExpression(tableName, fieldName));
-        }
+        public static Alias alias(string tableName, string fieldName)
+            => new AliasExpressionBuilder(new AliasExpression(tableName, fieldName));
         #endregion
     }
     #endregion
@@ -397,33 +395,32 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address address)
         {
-            return new InsertExpressionSet<Address>(
-				address,
-                Id.Insert(address.Id),
-                AddressType.Insert(address.AddressType),
-                Line1.Insert(address.Line1),
-                Line2.Insert(address.Line2),
-                City.Insert(address.City),
-                State.Insert(address.State),
-                Zip.Insert(address.Zip),
-                DateCreated.Insert(address.DateCreated),
-                DateUpdated.Insert(address.DateUpdated)
+            return new InsertExpressionSet<Address>(address, 
+                new InsertExpression<int>(Id, address.Id),
+                new InsertExpression<DbEx.Data.AddressType?>(AddressType, address.AddressType),
+                new InsertExpression<string>(Line1, address.Line1),
+                new InsertExpression<string>(Line2, address.Line2),
+                new InsertExpression<string>(City, address.City),
+                new InsertExpression<string>(State, address.State),
+                new InsertExpression<string>(Zip, address.Zip),
+                new InsertExpression<DateTime>(DateCreated, address.DateCreated),
+                new InsertExpression<DateTime>(DateUpdated, address.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Address from, Address to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Address target, Address source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.AddressType != to.AddressType) { expr &= AddressType.Set(to.AddressType); }; 
-			if (from.Line1 != to.Line1) { expr &= Line1.Set(to.Line1); }; 
-			if (from.Line2 != to.Line2) { expr &= Line2.Set(to.Line2); }; 
-			if (from.City != to.City) { expr &= City.Set(to.City); }; 
-			if (from.State != to.State) { expr &= State.Set(to.State); }; 
-			if (from.Zip != to.Zip) { expr &= Zip.Set(to.Zip); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
-			
+            if (target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }; 
+            if (target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }; 
+            if (target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }; 
+            if (target.City != source.City) { expr &= City.Set(source.City); }; 
+            if (target.State != source.State) { expr &= State.Set(source.State); }; 
+            if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+
             return expr;
         }
 
@@ -504,33 +501,32 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
         {
-            return new InsertExpressionSet<Person>(
-				person,
-                Id.Insert(person.Id),
-                FirstName.Insert(person.FirstName),
-                LastName.Insert(person.LastName),
-                BirthDate.Insert(person.BirthDate),
-                GenderType.Insert(person.GenderType),
-                CreditLimit.Insert(person.CreditLimit),
-                YearOfLastCreditLimitReview.Insert(person.YearOfLastCreditLimitReview),
-                DateCreated.Insert(person.DateCreated),
-                DateUpdated.Insert(person.DateUpdated)
+            return new InsertExpressionSet<Person>(person, 
+                new InsertExpression<int>(Id, person.Id),
+                new InsertExpression<string>(FirstName, person.FirstName),
+                new InsertExpression<string>(LastName, person.LastName),
+                new InsertExpression<DateTime?>(BirthDate, person.BirthDate),
+                new InsertExpression<DbEx.Data.GenderType>(GenderType, person.GenderType),
+                new InsertExpression<int?>(CreditLimit, person.CreditLimit),
+                new InsertExpression<int?>(YearOfLastCreditLimitReview, person.YearOfLastCreditLimitReview),
+                new InsertExpression<DateTime>(DateCreated, person.DateCreated),
+                new InsertExpression<DateTime>(DateUpdated, person.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person from, Person to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.FirstName != to.FirstName) { expr &= FirstName.Set(to.FirstName); }; 
-			if (from.LastName != to.LastName) { expr &= LastName.Set(to.LastName); }; 
-			if (from.BirthDate != to.BirthDate) { expr &= BirthDate.Set(to.BirthDate); }; 
-			if (from.GenderType != to.GenderType) { expr &= GenderType.Set(to.GenderType); }; 
-			if (from.CreditLimit != to.CreditLimit) { expr &= CreditLimit.Set(to.CreditLimit); }; 
-			if (from.YearOfLastCreditLimitReview != to.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(to.YearOfLastCreditLimitReview); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
-			
+            if (target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }; 
+            if (target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }; 
+            if (target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }; 
+            if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }; 
+            if (target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }; 
+            if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+
             return expr;
         }
 
@@ -596,23 +592,22 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<PersonAddress> GetInclusiveInsertExpression(PersonAddress personAddress)
         {
-            return new InsertExpressionSet<PersonAddress>(
-				personAddress,
-                Id.Insert(personAddress.Id),
-                PersonId.Insert(personAddress.PersonId),
-                AddressId.Insert(personAddress.AddressId),
-                DateCreated.Insert(personAddress.DateCreated)
+            return new InsertExpressionSet<PersonAddress>(personAddress, 
+                new InsertExpression<int>(Id, personAddress.Id),
+                new InsertExpression<int>(PersonId, personAddress.PersonId),
+                new InsertExpression<int>(AddressId, personAddress.AddressId),
+                new InsertExpression<DateTime>(DateCreated, personAddress.DateCreated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress from, PersonAddress to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonAddress target, PersonAddress source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); }; 
-			if (from.AddressId != to.AddressId) { expr &= AddressId.Set(to.AddressId); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			
+            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }; 
+            if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+
             return expr;
         }
 
@@ -712,49 +707,48 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product product)
         {
-            return new InsertExpressionSet<Product>(
-				product,
-                Id.Insert(product.Id),
-                ProductCategoryType.Insert(product.ProductCategoryType),
-                Name.Insert(product.Name),
-                Description.Insert(product.Description),
-                ListPrice.Insert(product.ListPrice),
-                Price.Insert(product.Price),
-                Quantity.Insert(product.Quantity),
-                Image.Insert(product.Image),
-                Height.Insert(product.Height),
-                Width.Insert(product.Width),
-                Depth.Insert(product.Depth),
-                Weight.Insert(product.Weight),
-                ShippingWeight.Insert(product.ShippingWeight),
-                ValidStartTimeOfDayForPurchase.Insert(product.ValidStartTimeOfDayForPurchase),
-                ValidEndTimeOfDayForPurchase.Insert(product.ValidEndTimeOfDayForPurchase),
-                DateCreated.Insert(product.DateCreated),
-                DateUpdated.Insert(product.DateUpdated)
+            return new InsertExpressionSet<Product>(product, 
+                new InsertExpression<int>(Id, product.Id),
+                new InsertExpression<DbEx.Data.ProductCategoryType?>(ProductCategoryType, product.ProductCategoryType),
+                new InsertExpression<string>(Name, product.Name),
+                new InsertExpression<string>(Description, product.Description),
+                new InsertExpression<double>(ListPrice, product.ListPrice),
+                new InsertExpression<double>(Price, product.Price),
+                new InsertExpression<int>(Quantity, product.Quantity),
+                new InsertExpression<byte[]>(Image, product.Image),
+                new InsertExpression<decimal?>(Height, product.Height),
+                new InsertExpression<decimal?>(Width, product.Width),
+                new InsertExpression<decimal?>(Depth, product.Depth),
+                new InsertExpression<decimal?>(Weight, product.Weight),
+                new InsertExpression<decimal>(ShippingWeight, product.ShippingWeight),
+                new InsertExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, product.ValidStartTimeOfDayForPurchase),
+                new InsertExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, product.ValidEndTimeOfDayForPurchase),
+                new InsertExpression<DateTime>(DateCreated, product.DateCreated),
+                new InsertExpression<DateTime>(DateUpdated, product.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Product from, Product to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Product target, Product source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.ProductCategoryType != to.ProductCategoryType) { expr &= ProductCategoryType.Set(to.ProductCategoryType); }; 
-			if (from.Name != to.Name) { expr &= Name.Set(to.Name); }; 
-			if (from.Description != to.Description) { expr &= Description.Set(to.Description); }; 
-			if (from.ListPrice != to.ListPrice) { expr &= ListPrice.Set(to.ListPrice); }; 
-			if (from.Price != to.Price) { expr &= Price.Set(to.Price); }; 
-			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity); }; 
-			if (from.Image != to.Image) { expr &= Image.Set(to.Image); }; 
-			if (from.Height != to.Height) { expr &= Height.Set(to.Height); }; 
-			if (from.Width != to.Width) { expr &= Width.Set(to.Width); }; 
-			if (from.Depth != to.Depth) { expr &= Depth.Set(to.Depth); }; 
-			if (from.Weight != to.Weight) { expr &= Weight.Set(to.Weight); }; 
-			if (from.ShippingWeight != to.ShippingWeight) { expr &= ShippingWeight.Set(to.ShippingWeight); }; 
-			if (from.ValidStartTimeOfDayForPurchase != to.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(to.ValidStartTimeOfDayForPurchase); }; 
-			if (from.ValidEndTimeOfDayForPurchase != to.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(to.ValidEndTimeOfDayForPurchase); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
-			
+            if (target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }; 
+            if (target.Name != source.Name) { expr &= Name.Set(source.Name); }; 
+            if (target.Description != source.Description) { expr &= Description.Set(source.Description); }; 
+            if (target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }; 
+            if (target.Price != source.Price) { expr &= Price.Set(source.Price); }; 
+            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }; 
+            if (target.Image != source.Image) { expr &= Image.Set(source.Image); }; 
+            if (target.Height != source.Height) { expr &= Height.Set(source.Height); }; 
+            if (target.Width != source.Width) { expr &= Width.Set(source.Width); }; 
+            if (target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }; 
+            if (target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }; 
+            if (target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }; 
+            if (target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }; 
+            if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+
             return expr;
         }
 
@@ -855,41 +849,40 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
         {
-            return new InsertExpressionSet<Purchase>(
-				purchase,
-                Id.Insert(purchase.Id),
-                PersonId.Insert(purchase.PersonId),
-                OrderNumber.Insert(purchase.OrderNumber),
-                TotalPurchaseQuantity.Insert(purchase.TotalPurchaseQuantity),
-                TotalPurchaseAmount.Insert(purchase.TotalPurchaseAmount),
-                PurchaseDate.Insert(purchase.PurchaseDate),
-                ShipDate.Insert(purchase.ShipDate),
-                ExpectedDeliveryDate.Insert(purchase.ExpectedDeliveryDate),
-                TrackingIdentifier.Insert(purchase.TrackingIdentifier),
-                PaymentMethodType.Insert(purchase.PaymentMethodType),
-                PaymentSourceType.Insert(purchase.PaymentSourceType),
-                DateCreated.Insert(purchase.DateCreated),
-                DateUpdated.Insert(purchase.DateUpdated)
+            return new InsertExpressionSet<Purchase>(purchase, 
+                new InsertExpression<int>(Id, purchase.Id),
+                new InsertExpression<int>(PersonId, purchase.PersonId),
+                new InsertExpression<string>(OrderNumber, purchase.OrderNumber),
+                new InsertExpression<string>(TotalPurchaseQuantity, purchase.TotalPurchaseQuantity),
+                new InsertExpression<double>(TotalPurchaseAmount, purchase.TotalPurchaseAmount),
+                new InsertExpression<DateTime>(PurchaseDate, purchase.PurchaseDate),
+                new InsertExpression<DateTime?>(ShipDate, purchase.ShipDate),
+                new InsertExpression<DateTime?>(ExpectedDeliveryDate, purchase.ExpectedDeliveryDate),
+                new InsertExpression<Guid?>(TrackingIdentifier, purchase.TrackingIdentifier),
+                new InsertExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType, purchase.PaymentMethodType),
+                new InsertExpression<DbEx.Data.PaymentSourceType?>(PaymentSourceType, purchase.PaymentSourceType),
+                new InsertExpression<DateTime>(DateCreated, purchase.DateCreated),
+                new InsertExpression<DateTime>(DateUpdated, purchase.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Purchase from, Purchase to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Purchase target, Purchase source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.PersonId != to.PersonId) { expr &= PersonId.Set(to.PersonId); }; 
-			if (from.OrderNumber != to.OrderNumber) { expr &= OrderNumber.Set(to.OrderNumber); }; 
-			if (from.TotalPurchaseQuantity != to.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(to.TotalPurchaseQuantity); }; 
-			if (from.TotalPurchaseAmount != to.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(to.TotalPurchaseAmount); }; 
-			if (from.PurchaseDate != to.PurchaseDate) { expr &= PurchaseDate.Set(to.PurchaseDate); }; 
-			if (from.ShipDate != to.ShipDate) { expr &= ShipDate.Set(to.ShipDate); }; 
-			if (from.ExpectedDeliveryDate != to.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(to.ExpectedDeliveryDate); }; 
-			if (from.TrackingIdentifier != to.TrackingIdentifier) { expr &= TrackingIdentifier.Set(to.TrackingIdentifier); }; 
-			if (from.PaymentMethodType != to.PaymentMethodType) { expr &= PaymentMethodType.Set(to.PaymentMethodType); }; 
-			if (from.PaymentSourceType != to.PaymentSourceType) { expr &= PaymentSourceType.Set(to.PaymentSourceType); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
-			
+            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }; 
+            if (target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }; 
+            if (target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }; 
+            if (target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }; 
+            if (target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }; 
+            if (target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }; 
+            if (target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }; 
+            if (target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }; 
+            if (target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }; 
+            if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+
             return expr;
         }
 
@@ -968,29 +961,28 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine purchaseLine)
         {
-            return new InsertExpressionSet<PurchaseLine>(
-				purchaseLine,
-                Id.Insert(purchaseLine.Id),
-                PurchaseId.Insert(purchaseLine.PurchaseId),
-                ProductId.Insert(purchaseLine.ProductId),
-                PurchasePrice.Insert(purchaseLine.PurchasePrice),
-                Quantity.Insert(purchaseLine.Quantity),
-                DateCreated.Insert(purchaseLine.DateCreated),
-                DateUpdated.Insert(purchaseLine.DateUpdated)
+            return new InsertExpressionSet<PurchaseLine>(purchaseLine, 
+                new InsertExpression<int>(Id, purchaseLine.Id),
+                new InsertExpression<int>(PurchaseId, purchaseLine.PurchaseId),
+                new InsertExpression<int>(ProductId, purchaseLine.ProductId),
+                new InsertExpression<decimal>(PurchasePrice, purchaseLine.PurchasePrice),
+                new InsertExpression<int>(Quantity, purchaseLine.Quantity),
+                new InsertExpression<DateTime>(DateCreated, purchaseLine.DateCreated),
+                new InsertExpression<DateTime>(DateUpdated, purchaseLine.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine from, PurchaseLine to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PurchaseLine target, PurchaseLine source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.PurchaseId != to.PurchaseId) { expr &= PurchaseId.Set(to.PurchaseId); }; 
-			if (from.ProductId != to.ProductId) { expr &= ProductId.Set(to.ProductId); }; 
-			if (from.PurchasePrice != to.PurchasePrice) { expr &= PurchasePrice.Set(to.PurchasePrice); }; 
-			if (from.Quantity != to.Quantity) { expr &= Quantity.Set(to.Quantity); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
-			
+            if (target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }; 
+            if (target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }; 
+            if (target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }; 
+            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+
             return expr;
         }
 
@@ -1051,22 +1043,21 @@ namespace DbEx.dboDataService
 		
         protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView personTotalPurchasesView)
         {
-            return new InsertExpressionSet<PersonTotalPurchasesView>(
-				personTotalPurchasesView,
-                Id.Insert(personTotalPurchasesView.Id),
-                TotalAmount.Insert(personTotalPurchasesView.TotalAmount),
-                TotalCount.Insert(personTotalPurchasesView.TotalCount)
+            return new InsertExpressionSet<PersonTotalPurchasesView>(personTotalPurchasesView, 
+                new InsertExpression<int>(Id, personTotalPurchasesView.Id),
+                new InsertExpression<double?>(TotalAmount, personTotalPurchasesView.TotalAmount),
+                new InsertExpression<int?>(TotalCount, personTotalPurchasesView.TotalCount)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView from, PersonTotalPurchasesView to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(PersonTotalPurchasesView target, PersonTotalPurchasesView source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.Id != to.Id) { expr &= Id.Set(to.Id); }; 
-			if (from.TotalAmount != to.TotalAmount) { expr &= TotalAmount.Set(to.TotalAmount); }; 
-			if (from.TotalCount != to.TotalCount) { expr &= TotalCount.Set(to.TotalCount); }; 
-			
+            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }; 
+            if (target.TotalAmount != source.TotalAmount) { expr &= TotalAmount.Set(source.TotalAmount); }; 
+            if (target.TotalCount != source.TotalCount) { expr &= TotalCount.Set(source.TotalCount); }; 
+
             return expr;
         }
 
@@ -1176,23 +1167,22 @@ namespace DbEx.secDataService
 		
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
         {
-            return new InsertExpressionSet<Person>(
-				person,
-                Id.Insert(person.Id),
-                SSN.Insert(person.SSN),
-                DateCreated.Insert(person.DateCreated),
-                DateUpdated.Insert(person.DateUpdated)
+            return new InsertExpressionSet<Person>(person, 
+                new InsertExpression<int>(Id, person.Id),
+                new InsertExpression<string>(SSN, person.SSN),
+                new InsertExpression<DateTimeOffset>(DateCreated, person.DateCreated),
+                new InsertExpression<DateTimeOffset>(DateUpdated, person.DateUpdated)
             );
         }
 
-        protected override AssignmentExpressionSet GetAssignmentExpression(Person from, Person to)
+        protected override AssignmentExpressionSet GetAssignmentExpression(Person target, Person source)
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-			if (from.SSN != to.SSN) { expr &= SSN.Set(to.SSN); }; 
-			if (from.DateCreated != to.DateCreated) { expr &= DateCreated.Set(to.DateCreated); }; 
-			if (from.DateUpdated != to.DateUpdated) { expr &= DateUpdated.Set(to.DateUpdated); }; 
-			
+            if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }; 
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+
             return expr;
         }
 

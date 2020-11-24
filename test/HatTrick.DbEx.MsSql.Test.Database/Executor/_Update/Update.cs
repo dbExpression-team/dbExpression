@@ -122,6 +122,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
+        public void Can_update_persons_firstname_where_lastname_and_top_result_in_correct_records_affected(int version, string appendToFirstName = "]", int expectedRecordsAffected = 2)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.Update(
+                    dbo.Person.FirstName.Set(dbo.Person.FirstName + appendToFirstName)
+                )
+                .Top(expectedRecordsAffected)
+                .From(dbo.Person);
+
+            //when               
+            var recordsAffected = exp.Execute();
+
+            //then
+            recordsAffected.Should().Be(expectedRecordsAffected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
         public void Can_update_product_image_to_the_same_as_another_product(int version)
         {
             //given
@@ -194,7 +215,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             target.LastName = $"x{source.LastName}";
             target.FirstName = $"x{target.FirstName}";
 
-            var exp = db.Update<Person>(
+            var exp = db.Update(
                    target,
                    source
                 )
@@ -209,6 +230,33 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             recordsAffected.Should().Be(expectedRecordsAffected);
             updated.LastName.Should().Be($"x{source.LastName}");
             updated.FirstName.Should().Be($"x{source.FirstName}");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_and_top_result_in_correct_records_affected(int version, string lastName = "Biggle", int expectedRecordsAffected = 2)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+            var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+
+            target.LastName = $"x{source.LastName}";
+            target.FirstName = $"x{target.FirstName}";
+
+            //when
+            db.Update(
+                   target,
+                   source
+                ).Top(expectedRecordsAffected)
+               .From(dbo.Person)
+               .Execute();
+
+            //then
+            var recordsAffected = db.SelectOne(db.fx.Count()).From(dbo.Person).Where(dbo.Person.LastName == $"x{source.LastName}").Execute();
+            recordsAffected.Should().Be(expectedRecordsAffected);
         }
     }
 }

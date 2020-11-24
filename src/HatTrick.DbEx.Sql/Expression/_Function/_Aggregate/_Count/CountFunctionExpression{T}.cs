@@ -7,36 +7,19 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region internals
-        private static readonly StringExpressionMediator STAR = new StringExpressionMediator(new LiteralExpression<string>("*"));
+        private static readonly LiteralExpression<string> STAR = new LiteralExpression<string>("*");
         #endregion
 
         #region constructors
-        protected CountFunctionExpression() : this(STAR, false, null)
+        protected CountFunctionExpression() : base(STAR, typeof(TValue))
         {
 
         }
 
-        protected CountFunctionExpression(bool isDistinct) : this(STAR, isDistinct, null)
+        protected CountFunctionExpression(IExpressionElement expression) : base(expression, typeof(TValue))
         {
 
         }
-
-        protected CountFunctionExpression(IExpressionElement expression, bool isDistinct) : this(expression, isDistinct, null)
-        {
-
-        }
-
-        protected CountFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, typeof(int), isDistinct, alias)
-        {
-
-        }
-        #endregion
-
-        #region as
-        //public virtual IExpressionElement<TValue> As(string alias)
-        //    => AliasAs(alias);
-
-        //protected abstract IExpressionElement<TValue> AliasAs(string alias);
         #endregion
     }
 }

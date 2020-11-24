@@ -79,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Expression
             ConfigureForMsSqlVersion(version);
 
             var exp1 = db.fx.Avg(dbo.Person.Id);
-            var exp2 = db.fx.Avg(dbo.Person.Id, true);
+            var exp2 = db.fx.Avg(dbo.Person.Id).Distinct();
 
             //when
             var hc1 = exp1.GetHashCode();

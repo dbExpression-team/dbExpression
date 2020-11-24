@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -15,21 +16,56 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         protected virtual void AssembleStatement(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            builder.Appender.Write("DELETE").LineBreak();
+            builder.Appender.Indent().Write("DELETE");
 
-            builder.Appender.Indentation++.Indent();
+            if (expression.Top.HasValue)
+            {
+                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
+            }
+            builder.Appender.LineBreak()
+                .Indentation++.Indent();
+
             builder.AppendElement(expression.BaseEntity, context);
-            builder.Appender.LineBreak();
 
-            builder.Appender.Indentation--.Indent().Write("FROM").LineBreak();
+            builder.Appender.LineBreak()
+                .Indentation--.Indent().Write("FROM").LineBreak()
+                .Indentation++.Indent();
 
-            builder.Appender.Indentation++.Indent();
             builder.AppendElement(expression.BaseEntity, context);
-            builder.Appender.LineBreak();
-            builder.Appender.Indentation--;
+
+            builder.Appender.LineBreak()
+                .Indentation--;
 
             AppendJoinClause(expression, builder, context);
             AppendWhereClause(expression, builder, context);
+        }
+
+        protected virtual void AppendJoinClause(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Joins?.Expressions is null || !expression.Joins.Expressions.Any())
+                return;
+
+            builder.Appender
+                .Indentation++;
+
+            builder.AppendElement(expression.Joins, context);
+
+            builder.Appender
+                .Indentation--;
+        }
+
+        protected virtual void AppendWhereClause(DeleteQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (expression.Where?.LeftArg is null && expression.Where?.RightArg is null)
+                return;
+
+            builder.Appender.Indent().Write("WHERE")
+                .Indentation++;
+
+            builder.AppendElement(expression.Where, context);
+
+            builder.Appender.LineBreak()
+                .Indentation--;
         }
         #endregion
     }

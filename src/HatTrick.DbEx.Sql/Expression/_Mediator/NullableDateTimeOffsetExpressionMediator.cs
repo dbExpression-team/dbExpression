@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDateTimeOffsetExpressionMediator :
         NullableExpressionMediator<DateTimeOffset,DateTimeOffset?>,
-        NullDateTimeOffsetElement,
+        NullableDateTimeOffsetElement,
         AnyDateTimeOffsetElement,
         IEquatable<NullableDateTimeOffsetExpressionMediator>
     {
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullDateTimeOffsetElement As(string alias)
+        public NullableDateTimeOffsetElement As(string alias)
             => new NullableDateTimeOffsetExpressionMediator(base.Expression, alias);
         #endregion
 

@@ -4,25 +4,23 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableDecimalFloorFunctionExpression :
         NullableFloorFunctionExpression<decimal,decimal?>,
-        NullDecimalElement,
+        NullableDecimalElement,
         AnyDecimalElement,
         IEquatable<NullableDecimalFloorFunctionExpression>
     {
         #region constructors
-        public NullableDecimalFloorFunctionExpression(NullDecimalElement expression) : base(expression)
-        {
-
-        }
-
-        public NullableDecimalFloorFunctionExpression(IExpressionElement expression, string alias) : base(expression, alias)
+        public NullableDecimalFloorFunctionExpression(NullableDecimalElement expression) : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public NullDecimalElement As(string alias)
-            => new NullableDecimalFloorFunctionExpression(base.Expression, alias);
+        public NullableDecimalElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeMaximumFunctionExpression>
     {
         #region constructors
-        public DateTimeMaximumFunctionExpression(DateTimeElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected DateTimeMaximumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public DateTimeMaximumFunctionExpression(DateTimeElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DateTimeElement As(string alias)
-            => new DateTimeMaximumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public DateTimeMaximumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

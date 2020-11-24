@@ -7,14 +7,8 @@ namespace HatTrick.DbEx.Sql.Expression
         where TValue : IComparable
     {
         #region constructors
-        protected NullableAverageFunctionExpression(IExpressionElement expression, bool isDistinct) 
-            : base(expression, typeof(TNullableValue), isDistinct)
-        {
-
-        }
-
-        protected NullableAverageFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) 
-            : base(expression, typeof(TNullableValue), isDistinct, alias)
+        protected NullableAverageFunctionExpression(IExpressionElement expression) 
+            : base(expression, typeof(TNullableValue))
         {
 
         }

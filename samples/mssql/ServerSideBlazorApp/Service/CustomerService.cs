@@ -16,7 +16,7 @@ namespace ServerSideBlazorApp.Service
 {
     public class CustomerService : ServiceBase
     {
-        private static NullInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
+        private static NullableInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
 
         private IDictionary<string, AnyElement> SortConversion = new Dictionary<string, AnyElement>
         {
@@ -98,8 +98,7 @@ namespace ServerSideBlazorApp.Service
         public async Task<CustomerDetailModel> GetCustomerAsync(int customerId)
         {
             static AddressModel mapAddress(AddressType addressType, ISqlRow sqlRow)
-            {
-                return new AddressModel
+                =>  new AddressModel
                 {
                     Type = addressType,
                     Line1 = sqlRow.ReadField().GetValue<string>(),
@@ -108,7 +107,11 @@ namespace ServerSideBlazorApp.Service
                     State = sqlRow.ReadField().GetValue<string>(),
                     ZIP = sqlRow.ReadField().GetValue<string>()
                 };
-            };
+
+            var mailingAddress = nameof(CustomerDetailModel.MailingAddress);
+            var billingAddress = nameof(CustomerDetailModel.BillingAddress);
+            var shippingAddress = nameof(CustomerDetailModel.ShippingAddress);
+            static StringElement string_alias(string table, string field) => db.alias(table, field).AsString();
 
             var customer = new CustomerDetailModel();
 
@@ -122,21 +125,21 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.YearOfLastCreditLimitReview,
                     dbo.Customer.BirthDate,
                     db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge"),
-                    db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.Address.Line1)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.Address.Line2)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.Address.City)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.Address.State)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.Address.Zip)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.Address.Line1)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.Address.Line2)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.Address.City)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.Address.State)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.Address.Zip)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.Address.Line1)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.Address.Line2)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.Address.City)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.Address.State)).ToString(),
-                    db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.Address.Zip)).ToString()
+                    string_alias(mailingAddress, nameof(dbo.Address.Line1)),
+                    string_alias(mailingAddress, nameof(dbo.Address.Line2)),
+                    string_alias(mailingAddress, nameof(dbo.Address.City)),
+                    string_alias(mailingAddress, nameof(dbo.Address.State)),
+                    string_alias(mailingAddress, nameof(dbo.Address.Zip)),
+                    string_alias(billingAddress, nameof(dbo.Address.Line1)),
+                    string_alias(billingAddress, nameof(dbo.Address.Line2)),
+                    string_alias(billingAddress, nameof(dbo.Address.City)),
+                    string_alias(billingAddress, nameof(dbo.Address.State)),
+                    string_alias(billingAddress, nameof(dbo.Address.Zip)),
+                    string_alias(shippingAddress, nameof(dbo.Address.Line1)),
+                    string_alias(shippingAddress, nameof(dbo.Address.Line2)),
+                    string_alias(shippingAddress, nameof(dbo.Address.City)),
+                    string_alias(shippingAddress, nameof(dbo.Address.State)),
+                    string_alias(shippingAddress, nameof(dbo.Address.Zip))
                 )
                 .From(dbo.Customer)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
@@ -152,7 +155,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(nameof(CustomerDetailModel.MailingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)).ToInt())
+                ).As(nameof(CustomerDetailModel.MailingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)).AsInt32())
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.PersonId,
@@ -165,7 +168,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(nameof(CustomerDetailModel.BillingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)).ToInt())
+                ).As(nameof(CustomerDetailModel.BillingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)).AsInt32())
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.PersonId,
@@ -178,7 +181,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(nameof(CustomerDetailModel.ShippingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)).ToInt())
+                ).As(nameof(CustomerDetailModel.ShippingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)).AsInt32())
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     sqlRow => 
@@ -216,9 +219,9 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(customer)
                 .LeftJoin(ptpv).On(ptpv.Id == customer.Id)
-                .Skip(0).Limit(length)
                 .Where(ptpv.TotalAmount >= LifetimeValueAmountToBeAVIPCustomer) //Lifetime spend > $1,500 is a VIP
                 .OrderBy(ptpv.TotalAmount.Desc)
+                .Skip(0).Limit(length)
                 .ExecuteAsync(row =>
                     new CustomerSummaryModel
                     {

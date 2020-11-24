@@ -13,12 +13,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
-
-        protected NullableCoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, string alias) 
-            : base(expressions, typeof(TNullableValue), alias)
-        {
-
-        }
         #endregion
     }
 }

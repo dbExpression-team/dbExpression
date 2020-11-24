@@ -431,51 +431,51 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region long
-        public static FilterExpression<bool> operator ==(Int64ExpressionMediator a, long b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int64ExpressionMediator a, long b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int64ExpressionMediator a, long b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int64ExpressionMediator a, long b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int64ExpressionMediator a, long b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int64ExpressionMediator a, long b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int64ExpressionMediator a, long b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int64ExpressionMediator a, long b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int64ExpressionMediator a, long b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int64ExpressionMediator a, long b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int64ExpressionMediator a, long b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int64ExpressionMediator a, long b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(new LiteralExpression<long>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(long a, Int64ExpressionMediator b) => new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(long a, Int64ExpressionMediator b) => new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(long a, Int64ExpressionMediator b) => new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(long a, Int64ExpressionMediator b) => new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(long a, Int64ExpressionMediator b) => new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(long a, Int64ExpressionMediator b) => new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(long a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(long a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(long a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(long a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(long a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(long a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int64ExpressionMediator(new LiteralExpression<long>(a)), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #region fields
-        public static FilterExpression<bool> operator ==(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int64ExpressionMediator a, Int64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int64ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int64ExpressionMediator a, NullableInt64FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt64ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #region mediators
-        public static FilterExpression<bool> operator ==(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int64ExpressionMediator a, Int64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int64ExpressionMediator a, NullableInt64ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

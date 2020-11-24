@@ -4,6 +4,9 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class ExpressionMediator : 
         AnyElement,
+        IFilterExpressionElement,
+        AnyOrderByClause,
+        AnyGroupByClause,
         IExpressionTypeProvider,
         IExpressionAliasProvider,
         IEquatable<ExpressionMediator>

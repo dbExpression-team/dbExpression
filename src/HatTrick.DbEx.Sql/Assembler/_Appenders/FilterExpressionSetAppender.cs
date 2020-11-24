@@ -32,8 +32,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             try
             {
                 //implicit conversion will create a FilterExpressionSet for a single filter, evaluate whether each arg is "simple" or "complex" for the current
-                var leftIsAComplexExpression = !(expression.LeftArg is FilterExpression || expression.LeftArg is FilterExpressionSet leftSet && leftSet.IsSingleFilter);
-                var rightIsAComplexExpression = !(expression.RightArg is FilterExpression || expression.RightArg is FilterExpressionSet rightSet && rightSet.IsSingleFilter);
+                var leftIsAComplexExpression = !(expression.LeftArg is FilterExpression || expression.LeftArg is FilterExpressionSet leftSet && leftSet.IsSingleArg);
+                var rightIsAComplexExpression = !(expression.RightArg is FilterExpression || expression.RightArg is FilterExpressionSet rightSet && rightSet.IsSingleArg);
 
                 //if the expression set is negated, render "NOT"
                 ifAppend(expression.Negate, AppendNegateStart);

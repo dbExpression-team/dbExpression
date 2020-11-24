@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Expression
@@ -14,17 +15,14 @@ namespace HatTrick.DbEx.MsSql.Expression
         {
 
         }
-
-        protected SysDateTimeOffsetFunctionExpression(string alias) : base(null, typeof(DateTimeOffset), alias)
-        {
-
-        }
         #endregion
 
-        #region methods
         #region as
         public DateTimeElement As(string alias)
-            => new SysDateTimeOffsetFunctionExpression(alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region to string
@@ -40,7 +38,6 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
         #endregion
     }
 }

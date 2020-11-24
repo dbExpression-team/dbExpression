@@ -431,51 +431,51 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region short
-        public static FilterExpression<bool> operator ==(Int16ExpressionMediator a, short b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int16ExpressionMediator a, short b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int16ExpressionMediator a, short b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int16ExpressionMediator a, short b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int16ExpressionMediator a, short b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int16ExpressionMediator a, short b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int16ExpressionMediator a, short b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int16ExpressionMediator a, short b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int16ExpressionMediator a, short b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int16ExpressionMediator a, short b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int16ExpressionMediator a, short b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int16ExpressionMediator a, short b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(new LiteralExpression<short>(b)), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool> operator ==(short a, Int16ExpressionMediator b) => new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(short a, Int16ExpressionMediator b) => new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(short a, Int16ExpressionMediator b) => new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(short a, Int16ExpressionMediator b) => new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(short a, Int16ExpressionMediator b) => new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(short a, Int16ExpressionMediator b) => new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(short a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(short a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(short a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(short a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(short a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(short a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new Int16ExpressionMediator(new LiteralExpression<short>(a)), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #region fields
-        public static FilterExpression<bool> operator ==(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int16ExpressionMediator a, Int16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, new Int16ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int16ExpressionMediator a, NullableInt16FieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new NullableInt16ExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
 
         #region mediators
-        public static FilterExpression<bool> operator ==(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool> operator <(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool> operator <=(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool> operator >(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool> operator >=(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int16ExpressionMediator a, Int16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpression<bool?> operator ==(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool?> operator !=(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual);
-        public static FilterExpression<bool?> operator <(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan);
-        public static FilterExpression<bool?> operator <=(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual);
-        public static FilterExpression<bool?> operator >(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan);
-        public static FilterExpression<bool?> operator >=(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual);
+        public static FilterExpressionSet operator ==(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator <=(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator >=(Int16ExpressionMediator a, NullableInt16ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

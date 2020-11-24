@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<TimeSpanMinimumFunctionExpression>
     {
         #region constructors
-        public TimeSpanMinimumFunctionExpression(TimeSpanElement expression, bool isDistinct) : base(expression, isDistinct)
-        {
-
-        }
-
-        protected TimeSpanMinimumFunctionExpression(IExpressionElement expression, bool isDistinct, string alias) : base(expression, isDistinct, alias)
+        public TimeSpanMinimumFunctionExpression(TimeSpanElement expression) : base(expression)
         {
 
         }
@@ -22,7 +17,18 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public TimeSpanElement As(string alias)
-            => new TimeSpanMinimumFunctionExpression(base.Expression, base.IsDistinct, alias);
+        {
+            Alias = alias;
+            return this;
+        }
+        #endregion
+
+        #region distinct
+        public TimeSpanMinimumFunctionExpression Distinct()
+        {
+            IsDistinct = true;
+            return this;
+        }
         #endregion
 
         #region equals

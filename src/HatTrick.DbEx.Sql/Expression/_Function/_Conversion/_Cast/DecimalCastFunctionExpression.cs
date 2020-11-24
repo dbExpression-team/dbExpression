@@ -9,14 +9,8 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DecimalCastFunctionExpression>
     {
         #region constructors
-        public DecimalCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType)
-            : base(expression, convertToDbType, typeof(decimal))
-        {
-
-        }
-
-        protected DecimalCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int? size, int? precision, int? scale, string alias)
-            : base(expression, convertToDbType, typeof(decimal), size, precision, scale, alias)
+        public DecimalCastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, int precision, int? scale)
+            : base(expression, convertToDbType, precision, scale)
         {
 
         }
@@ -24,7 +18,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DecimalElement As(string alias)
-            => new DecimalCastFunctionExpression(base.Expression, base.ConvertToDbType, base.Size, base.Precision, base.Scale, alias);
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

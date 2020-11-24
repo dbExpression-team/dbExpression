@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableTimeSpanCoalesceFunctionExpression :
         NullableCoalesceFunctionExpression<TimeSpan,TimeSpan?>,
-        NullTimeSpanElement,
+        NullableTimeSpanElement,
         AnyTimeSpanElement,
         IEquatable<NullableTimeSpanCoalesceFunctionExpression>
     {
@@ -23,22 +23,19 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        public NullableTimeSpanCoalesceFunctionExpression(IList<AnyTimeSpanElement> expressions, NullTimeSpanElement termination) 
+        public NullableTimeSpanCoalesceFunctionExpression(IList<AnyTimeSpanElement> expressions, NullableTimeSpanElement termination) 
             : base(expressions?.Concat(new IExpressionElement[1] { termination }))
-        {
-
-        }
-
-        protected NullableTimeSpanCoalesceFunctionExpression(IList<IExpressionElement> expressions, string alias) 
-            : base(expressions, alias)
         {
 
         }
         #endregion
 
         #region as
-        public NullTimeSpanElement As(string alias)
-            => new NullableTimeSpanCoalesceFunctionExpression(base.Expression, alias);
+        public NullableTimeSpanElement As(string alias)
+        {
+            Alias = alias;
+            return this;
+        }
         #endregion
 
         #region equals

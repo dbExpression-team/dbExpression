@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableBooleanExpressionMediator :
         NullableExpressionMediator<bool,bool?>,
-        NullBooleanElement,
+        NullableBooleanElement,
         AnyBooleanElement,
         IEquatable<NullableBooleanExpressionMediator>
     {
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region as
-        public NullBooleanElement As(string alias)
+        public NullableBooleanElement As(string alias)
             => new NullableBooleanExpressionMediator(base.Expression, alias);
         #endregion
 
