@@ -40,7 +40,8 @@ stages:
       - task: NuGetToolInstaller@0
         displayName: Install NuGet
         inputs:
-          versionSpec: '5.8.0'
+          versionSpec:
+          checkLatest: true
       - task: DockerInstaller@0
         displayName: Install Docker CLI
         inputs:
