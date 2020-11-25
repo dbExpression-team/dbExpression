@@ -2,6 +2,6 @@
 {
     public class QueryExpressionFactory : IQueryExpressionFactory
     {
-        public T CreateQueryExpression<T>() where T : QueryExpression, new() => new T();
+        public virtual T CreateQueryExpression<T>() where T : QueryExpression, new() => new T();
     }
 }

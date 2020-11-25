@@ -1,53 +1,60 @@
 ﻿using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
         private static readonly ISqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
-
-        protected IDictionary<Type, Func<ISqlStatementExecutor>> Executors { get; } = new Dictionary<Type, Func<ISqlStatementExecutor>>();
+        private readonly ConcurrentDictionary<Type, Func<ISqlStatementExecutor>> _statementExecutors = new ConcurrentDictionary<Type, Func<ISqlStatementExecutor>>();
 
         public virtual void RegisterDefaultExecutors()
         {
-            Executors.Add(typeof(SelectQueryExpression), () => sqlStatementExecutor);
-            Executors.Add(typeof(InsertQueryExpression), () => sqlStatementExecutor);
-            Executors.Add(typeof(UpdateQueryExpression), () => sqlStatementExecutor);
-            Executors.Add(typeof(DeleteQueryExpression), () => sqlStatementExecutor);
+            _statementExecutors.TryAdd(typeof(SelectQueryExpression), () => sqlStatementExecutor);
+            _statementExecutors.TryAdd(typeof(InsertQueryExpression), () => sqlStatementExecutor);
+            _statementExecutors.TryAdd(typeof(UpdateQueryExpression), () => sqlStatementExecutor);
+            _statementExecutors.TryAdd(typeof(DeleteQueryExpression), () => sqlStatementExecutor);
         }
 
         protected void RegisterQueryExpressionWithDefaultExecutor<T>()
             where T : QueryExpression
-        {
-            Executors[typeof(T)] = () => sqlStatementExecutor;
-        }
+            => _statementExecutors.AddOrUpdate(typeof(T), () => sqlStatementExecutor, (t, f) => () => sqlStatementExecutor);
 
         public void RegisterExecutor<T, U>()
             where T : QueryExpression
             where U : class, ISqlStatementExecutor, new()
-        {
-            Executors[typeof(T)] = () => new U();
-        }
+            => _statementExecutors.AddOrUpdate(typeof(T), () => new U(), (t, f) => () => new U());
 
         public void RegisterExecutor<T>(ISqlStatementExecutor executor)
             where T : QueryExpression
-        {
-            Executors[typeof(T)] = () => executor;
-        }
+            => RegisterExecutor<T>(() => executor);
 
         public void RegisterExecutor<T>(Func<ISqlStatementExecutor> executorFactory)
             where T : QueryExpression
-        {
-            Executors[typeof(T)] = executorFactory;
-        }
+            => _statementExecutors.AddOrUpdate(typeof(T), executorFactory, (t, f) => executorFactory);
 
         public ISqlStatementExecutor CreateSqlStatementExecutor(QueryExpression expression)
         {
-            if (Executors.TryGetValue(expression.GetType(), out var executor))
-                return executor();
-            throw new DbExpressionConfigurationException($"Could not resolve a sql statement executor, please ensure an executor has been registered for expression type '{expression.GetType()}'");
+            var factory = ResolveElementAppenderFactory(expression.GetType(), expression.GetType());
+            return factory is object ? factory() : null;
+        }
+
+        private Func<ISqlStatementExecutor> ResolveElementAppenderFactory(Type current, Type original)
+        {
+            if (_statementExecutors.TryGetValue(current, out Func<ISqlStatementExecutor> factory))
+                return factory;
+
+            if (current.BaseType is null)
+                return null;
+
+            factory = ResolveElementAppenderFactory(current.BaseType, original);
+
+            if (factory is object && current == original)
+                //reduce runtime recursion by "registering" the original with the found appender
+                _statementExecutors.TryAdd(original, factory);
+
+            return factory;
         }
     }
 }
