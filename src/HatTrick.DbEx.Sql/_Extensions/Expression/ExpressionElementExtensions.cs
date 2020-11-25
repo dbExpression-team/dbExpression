@@ -9,6 +9,9 @@ namespace HatTrick.DbEx.Sql.Expression
             if (expression is LiteralExpression literal)
                 return literal.Expression is DBNull;
 
+            if (expression is SelectExpression select)
+                return IsDBNull(select.Expression);
+
             if (expression is ExpressionMediator mediator)
                 return IsDBNull(mediator.Expression);
 
@@ -19,6 +22,9 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (expression is FieldExpression field)
                 return field;
+
+            if (expression is SelectExpression select)
+                return AsFieldExpression(select.Expression);
 
             if (expression is ExpressionMediator mediator)
                 return AsFieldExpression(mediator.Expression);

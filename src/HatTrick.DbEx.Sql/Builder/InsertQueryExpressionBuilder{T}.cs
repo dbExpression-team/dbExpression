@@ -38,12 +38,13 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        private void Into(EntityExpression<TEntity> entity)
+        protected virtual void Into(EntityExpression<TEntity> entity)
         {
             var i = 0;
             var insertEntity = entity as IExpressionEntity<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}.");
             expression.BaseEntity = entity;
             expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, insertEntity.BuildInclusiveInsertExpression(x).Expressions));
+            expression.Outputs = insertEntity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).ToList();
         }
         #endregion
     }

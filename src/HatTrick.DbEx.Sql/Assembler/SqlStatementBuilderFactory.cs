@@ -17,8 +17,10 @@ namespace HatTrick.DbEx.Sql.Assembler
         public virtual Func<Type, ISqlStatementAssembler> AssemblerFactory
             => _statementAssemblerFactory ?? (_statementAssemblerFactory = new Func<Type, ISqlStatementAssembler>(sqlExecutionType =>
                 {
-                    if (_statementAssemblers.TryGetValue(sqlExecutionType, out var assemblerFactory))
-                        return assemblerFactory();
+                    var factory = ResolveAssemblerFactory(sqlExecutionType, sqlExecutionType);
+
+                    if (factory is object)
+                        return factory();
 
                     throw new DbExpressionConfigurationException($"Could not resolve an assembler, please ensure an executor has been registered for sql statement execution type of '{sqlExecutionType}'");
                 }));
@@ -55,6 +57,23 @@ namespace HatTrick.DbEx.Sql.Assembler
                 appender, 
                 parameterBuilder
             );
+
+        private Func<ISqlStatementAssembler> ResolveAssemblerFactory(Type current, Type original)
+        {
+            if (_statementAssemblers.TryGetValue(current, out Func<ISqlStatementAssembler> factory))
+                return factory;
+
+            if (current.BaseType is null)
+                return null;
+
+            factory = ResolveAssemblerFactory(current.BaseType, original);
+
+            if (factory is object && current == original)
+                //reduce runtime recursion by "registering" the original with the found factory
+                _statementAssemblers.TryAdd(original, factory);
+
+            return ResolveAssemblerFactory(current.BaseType, original);
+        }
         #endregion
     }
 }

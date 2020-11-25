@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql;
+﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System.Linq;
@@ -158,15 +159,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Write(", ").LineBreak();
 
             //write out all fields for the select from INSERTED table
-            for (var i = 0; i < templateInserts.Count; i++)
+            for (var i = 0; i < expression.Outputs.Count; i++)
             {
                 builder.Appender.Indent();
                 builder.Appender.Write("INSERTED.");
                 builder.AppendElement(
-                    (templateInserts[i] as IAssignmentExpressionProvider).Assignee,
+                    expression.Outputs[i],
                     context
                 );
-                if (i < templateInserts.Count - 1)
+                if (i < expression.Outputs.Count - 1)
                     builder.Appender.Write(", ").LineBreak();
             }
         }

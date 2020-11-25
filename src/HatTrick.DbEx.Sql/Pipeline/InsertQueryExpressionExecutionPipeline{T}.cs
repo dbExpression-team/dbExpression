@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     beforeInsert?.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert, appender, parameterBuilder)));
             }
 
-            var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();
+            var fields = new List<FieldExpression> { null }.Concat(expression.Outputs).ToList();
 
             var reader = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             }
         }
 
-        public async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -125,7 +125,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     await beforeInsert.InvokeAsync(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert, appender, parameterBuilder)), ct).ConfigureAwait(false);
             }
 
-            var fields = new List<FieldExpression> { null }.Concat(expression.Inserts.Values.First().Expressions.Select(x => (x as IAssignmentExpressionProvider).Assignee)).ToList();            
+            var fields = new List<FieldExpression> { null }.Concat(expression.Outputs).ToList();
 
             var reader = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
                 statement,
