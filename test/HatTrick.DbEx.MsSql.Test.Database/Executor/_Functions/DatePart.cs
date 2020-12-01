@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
@@ -168,6 +169,30 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             int result = exp.Execute();
+
+            //then
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Can_datepart_of_aliased_field_succeed(int version, int expected = 4)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.DatePart(DateParts.Day, db.alias("lines", "DateCreated")).As("alias")
+                ).From(dbo.Purchase)
+                .InnerJoin(
+                    db.SelectMany<PurchaseLine>().Top(100)
+                    .From(dbo.PurchaseLine)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+
+            //when               
+            int? result = exp.Execute();
 
             //then
             result.Should().Be(expected);

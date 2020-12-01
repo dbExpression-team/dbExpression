@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
                 //can't do math on bools or guids
                 models = new List<ArithmeticOperationTemplateModel>();
             }
-            else if (targetType.Type == typeof(string) && sourceType.Type == typeof(string))
+            else if (targetType.Type == typeof(string) && sourceType.Type.In(typeof(string), typeof(object)))
             {
                 //can add strings
                 models = new List<ArithmeticOperationTemplateModel>

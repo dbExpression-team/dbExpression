@@ -119,8 +119,6 @@ namespace ServerSideBlazorApp.Service
         {
             var billingAddress = nameof(OrderDetailModel.BillingAddress);
             var shippingAddress = nameof(OrderDetailModel.ShippingAddress);
-            static Int32ExpressionMediator int_alias(string table, string field) => db.alias(table, field).AsInt32();
-            static StringElement string_alias(string table, string field) => db.alias(table, field).AsString();
 
             //get the root order, passing a mapping function to execute
             var order = await db.SelectOne(
@@ -135,16 +133,16 @@ namespace ServerSideBlazorApp.Service
                 dbo.Purchase.PaymentMethodType,
                 dbo.Purchase.ExpectedDeliveryDate,
                 dbo.Purchase.TrackingIdentifier,
-                string_alias(billingAddress, nameof(dbo.Address.Line1)),
-                string_alias(billingAddress, nameof(dbo.Address.Line2)),
-                string_alias(billingAddress, nameof(dbo.Address.City)),
-                string_alias(billingAddress, nameof(dbo.Address.State)),
-                string_alias(billingAddress, nameof(dbo.Address.Zip)),
-                string_alias(shippingAddress, nameof(dbo.Address.Line1)),
-                string_alias(shippingAddress, nameof(dbo.Address.Line2)),
-                string_alias(shippingAddress, nameof(dbo.Address.City)),
-                string_alias(shippingAddress, nameof(dbo.Address.State)),
-                string_alias(shippingAddress, nameof(dbo.Address.Zip))
+                db.alias(billingAddress, nameof(dbo.Address.Line1)),
+                db.alias(billingAddress, nameof(dbo.Address.Line2)),
+                db.alias(billingAddress, nameof(dbo.Address.City)),
+                db.alias(billingAddress, nameof(dbo.Address.State)),
+                db.alias(billingAddress, nameof(dbo.Address.Zip)),
+                db.alias(shippingAddress, nameof(dbo.Address.Line1)),
+                db.alias(shippingAddress, nameof(dbo.Address.Line2)),
+                db.alias(shippingAddress, nameof(dbo.Address.City)),
+                db.alias(shippingAddress, nameof(dbo.Address.State)),
+                db.alias(shippingAddress, nameof(dbo.Address.Zip))
             )
             .From(dbo.Purchase)
             .InnerJoin(dbo.Customer).On(dbo.Purchase.PersonId == dbo.Customer.Id)
@@ -162,7 +160,7 @@ namespace ServerSideBlazorApp.Service
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                 .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.PersonId == dbo.Purchase.PersonId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Billing)
-            ).As(billingAddress).On(dbo.Customer.Id == int_alias(billingAddress, nameof(dbo.CustomerAddress.PersonId)))
+            ).As(billingAddress).On(dbo.Customer.Id == db.alias(billingAddress, nameof(dbo.CustomerAddress.PersonId)))
             .LeftJoin(
                 db.SelectOne(
                     dbo.CustomerAddress.PersonId,
@@ -176,7 +174,7 @@ namespace ServerSideBlazorApp.Service
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                 .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.PersonId == dbo.Purchase.PersonId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Shipping)
-            ).As(shippingAddress).On(dbo.Customer.Id == int_alias(shippingAddress, nameof(dbo.CustomerAddress.PersonId)))
+            ).As(shippingAddress).On(dbo.Customer.Id == db.alias(shippingAddress, nameof(dbo.CustomerAddress.PersonId)))
             .Where(dbo.Purchase.Id == orderId)
             .ExecuteAsync(
                 row => new OrderDetailModel

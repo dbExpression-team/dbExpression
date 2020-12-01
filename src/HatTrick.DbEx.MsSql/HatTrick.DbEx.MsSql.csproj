@@ -1,17 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>7.3</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Builder\MsSqlSelectQueryExpressionBuilder.cs" />
-    <Compile Remove="Builder\MsSqlSelectQueryExpressionBuilder{T,U,V}.cs" />
-    <Compile Remove="Builder\MsSqlSelectQueryExpressionBuilder{T,U}.cs" />
-    <Compile Remove="Builder\MsSqlSelectQueryExpressionBuilder{T}.cs" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
   </ItemGroup>
+  
 </Project>

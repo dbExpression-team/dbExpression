@@ -21,51 +21,33 @@ namespace HatTrick.DbEx.Sql.Assembler
             //helper action used to conditionally append text to the appender
             void ifAppend(bool condition, Action<IAppender> trueAction, Action<IAppender> falseAction = null) { if (condition) trueAction(builder.Appender); else if (falseAction is object) falseAction(builder.Appender); }
 
-            //set assembly state to use in recursive calls to this appender
-            var thisIsTheRoot = context.GetState<FilterExpressionSetContext>() is null;
-            if (thisIsTheRoot)
+            //implicit conversion will create a FilterExpressionSet for a single filter, evaluate whether each arg is "simple" or "complex" for the current
+            var leftIsAComplexExpression = !(expression.LeftArg is FilterExpression || expression.LeftArg is FilterExpressionSet leftSet && leftSet.IsSingleArg);
+            var rightIsAComplexExpression = !(expression.RightArg is FilterExpression || expression.RightArg is FilterExpressionSet rightSet && rightSet.IsSingleArg);
+
+            //if the expression set is negated, render "NOT"
+            ifAppend(expression.Negate, AppendNegateStart);
+
+            if (expression.LeftArg is object)
             {
-                context.SetState<FilterExpressionSetContext>();
-                builder.Appender.LineBreak().Indent();
+                ifAppend(leftIsAComplexExpression, AppendParensStart);
+
+                builder.AppendElement(expression.LeftArg, context);
+
+                ifAppend(leftIsAComplexExpression, AppendParensEnd);
+            }
+            if (expression.RightArg is object)
+            {
+                AppendConditionalOperator(builder.Appender, expression.ConditionalOperator);
+
+                ifAppend(rightIsAComplexExpression, AppendParensStart);
+
+                builder.AppendElement(expression.RightArg, context);
+
+                ifAppend(rightIsAComplexExpression, AppendParensEnd);
             }
 
-            try
-            {
-                //implicit conversion will create a FilterExpressionSet for a single filter, evaluate whether each arg is "simple" or "complex" for the current
-                var leftIsAComplexExpression = !(expression.LeftArg is FilterExpression || expression.LeftArg is FilterExpressionSet leftSet && leftSet.IsSingleArg);
-                var rightIsAComplexExpression = !(expression.RightArg is FilterExpression || expression.RightArg is FilterExpressionSet rightSet && rightSet.IsSingleArg);
-
-                //if the expression set is negated, render "NOT"
-                ifAppend(expression.Negate, AppendNegateStart);
-
-                if (expression.LeftArg is object)
-                {
-                    ifAppend(leftIsAComplexExpression, AppendParensStart);
-
-                    builder.AppendElement(expression.LeftArg, context);
-
-                    ifAppend(leftIsAComplexExpression, AppendParensEnd);
-                }
-                if (expression.RightArg is object)
-                {
-                    AppendConditionalOperator(builder.Appender, expression.ConditionalOperator);
-
-                    ifAppend(rightIsAComplexExpression, AppendParensStart);
-
-                    builder.AppendElement(expression.RightArg, context);
-
-                    ifAppend(rightIsAComplexExpression, AppendParensEnd);
-                }
-
-                ifAppend(expression.Negate, AppendNegateEnd);
-            }
-            finally
-            {
-                if (thisIsTheRoot)
-                {
-                    context.RemoveState<FilterExpressionSetContext>();
-                }
-            }
+            ifAppend(expression.Negate, AppendNegateEnd);
         }
 
         private static void AppendNegateStart(IAppender appender)
@@ -107,7 +89,5 @@ namespace HatTrick.DbEx.Sql.Assembler
                     .LineBreak()
                     .Indent();
         #endregion
-
-        private class FilterExpressionSetContext { }
     }
 }

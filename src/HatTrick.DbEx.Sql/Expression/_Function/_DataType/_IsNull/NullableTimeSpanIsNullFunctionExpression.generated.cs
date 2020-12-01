@@ -6,17 +6,17 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region implicit operators
         public static implicit operator NullableTimeSpanExpressionMediator(NullableTimeSpanIsNullFunctionExpression a) => new NullableTimeSpanExpressionMediator(a);
-        public static implicit operator OrderByExpression(NullableTimeSpanIsNullFunctionExpression a) => new OrderByExpression(new TimeSpanExpressionMediator(a), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableTimeSpanIsNullFunctionExpression a) => new GroupByExpression(new TimeSpanExpressionMediator(a));
+        public static implicit operator OrderByExpression(NullableTimeSpanIsNullFunctionExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(NullableTimeSpanIsNullFunctionExpression a) => new GroupByExpression(a);
         #endregion
 
         #region order
-        public override OrderByExpression Asc => new OrderByExpression(new TimeSpanExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new TimeSpanExpressionMediator(this), OrderExpressionDirection.DESC);
+        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data types
         #region bool
 
 
@@ -107,6 +107,48 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
         
+        #endregion
+
+        #region fields
+        #region bool
+
+        #endregion        
+        #region byte
+
+        #endregion        
+        #region decimal
+
+        #endregion        
+        #region DateTime
+
+        #endregion        
+        #region DateTimeOffset
+
+        #endregion        
+        #region double
+
+        #endregion        
+        #region float
+
+        #endregion        
+        #region Guid
+
+        #endregion        
+        #region short
+
+        #endregion        
+        #region int
+
+        #endregion        
+        #region long
+
+        #endregion        
+        #region string
+
+        #endregion        
+        #region TimeSpan
+
+        #endregion        
         #endregion
 
         #region mediator
@@ -162,57 +204,94 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #endregion
         
+        #endregion
+
+        #region alias
         #endregion
         #endregion
 
         #region filter operators
-        #region TValue
+        #region DBNull
+        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(DBNull.Value), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(DBNull.Value), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(DBNull.Value), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        #endregion
+
+        #region data type
         #region TimeSpan
-        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(b)), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(b)), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(b)), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(b)), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(b)), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(b)), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan>(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan>(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan>(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan>(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(TimeSpan a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(b)), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(b)), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(b)), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(b)), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(b)), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(a), new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(b)), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, TimeSpan? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(a)), new NullableTimeSpanExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(TimeSpan? a, NullableTimeSpanIsNullFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
 
-        #region mediator
+        #region fields
+        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, TimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, TimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, TimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        
+        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+
+        #endregion
+
+        #region mediators
         public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
         public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
         public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, TimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
 
         public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
         public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
         public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
+
+        #region alias
+        public static FilterExpressionSet operator ==(NullableTimeSpanIsNullFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanIsNullFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableTimeSpanIsNullFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableTimeSpanIsNullFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableTimeSpanIsNullFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableTimeSpanIsNullFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        #endregion
+
         #endregion
     }
 }

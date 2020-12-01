@@ -317,21 +317,21 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             await db.SelectOne(
                     dbo.Person.Id,
                     dbo.Person.GenderType,
-                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Line1)).AsString(),
-                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Line2)).AsString(),
-                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.City)).AsString(),
-                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.State)).AsString(),
-                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Zip)).AsString(),
-                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Line1)).AsString(),
-                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Line2)).AsString(),
-                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.City)).AsString(),
-                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.State)).AsString(),
-                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Zip)).AsString(),
-                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Line1)).AsString(),
-                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Line2)).AsString(),
-                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.City)).AsString(),
-                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.State)).AsString(),
-                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Zip)).AsString()
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Line1)),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Line2)),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.City)),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.State)),
+                    db.alias(nameof(Customer.MailingAddress), nameof(dbo.Address.Zip)),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Line1)),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Line2)),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.City)),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.State)),
+                    db.alias(nameof(Customer.BillingAddress), nameof(dbo.Address.Zip)),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Line1)),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Line2)),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.City)),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.State)),
+                    db.alias(nameof(Customer.ShippingAddress), nameof(dbo.Address.Zip))
                 )
                 .From(dbo.Person)
                 .LeftJoin(
@@ -346,7 +346,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     .From(dbo.Address)
                     .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(nameof(Customer.MailingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.MailingAddress), nameof(dbo.PersonAddress.PersonId)).AsInt32())
+                ).As(nameof(Customer.MailingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.MailingAddress), nameof(dbo.PersonAddress.PersonId)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.PersonAddress.PersonId,
@@ -359,7 +359,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     .From(dbo.Address)
                     .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(nameof(Customer.BillingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.BillingAddress), nameof(dbo.PersonAddress.PersonId)).AsInt32())
+                ).As(nameof(Customer.BillingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.BillingAddress), nameof(dbo.PersonAddress.PersonId)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.PersonAddress.PersonId,
@@ -372,7 +372,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     .From(dbo.Address)
                     .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.PersonAddress.PersonId == personId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(nameof(Customer.ShippingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.ShippingAddress), nameof(dbo.PersonAddress.PersonId)).AsInt32())
+                ).As(nameof(Customer.ShippingAddress)).On(dbo.Person.Id == db.alias(nameof(Customer.ShippingAddress), nameof(dbo.PersonAddress.PersonId)))
                 .Where(dbo.Person.Id == personId)
                 .ExecuteAsync(
                     sqlRow =>

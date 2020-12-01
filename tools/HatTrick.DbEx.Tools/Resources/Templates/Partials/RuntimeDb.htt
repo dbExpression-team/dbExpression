@@ -20,92 +20,95 @@
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
 
-        public static SelectValue<TEnum?> SelectOne<TEnum>(NullEnumElement<TEnum> field)
+        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
+
+        public static SelectValue<object> SelectOne(AnyObjectElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<bool> SelectOne(BooleanElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<bool?> SelectOne(NullBooleanElement field)
+        public static SelectValue<bool?> SelectOne(NullableBooleanElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<byte> SelectOne(ByteElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<byte?> SelectOne(NullByteElement field)
+        public static SelectValue<byte?> SelectOne(NullableByteElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<byte[]> SelectOne(ByteArrayElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<byte[]> SelectOne(NullByteArrayElement field)
+        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<DateTime> SelectOne(DateTimeElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<DateTime?> SelectOne(NullDateTimeElement field)
+        public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<DateTimeOffset?> SelectOne(NullDateTimeOffsetElement field)
+        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<decimal> SelectOne(DecimalElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<decimal?> SelectOne(NullDecimalElement field)
+        public static SelectValue<decimal?> SelectOne(NullableDecimalElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<double> SelectOne(DoubleElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<double?> SelectOne(NullDoubleElement field)
+        public static SelectValue<double?> SelectOne(NullableDoubleElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<Guid> SelectOne(GuidElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<Guid?> SelectOne(NullGuidElement field)
+        public static SelectValue<Guid?> SelectOne(NullableGuidElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<short> SelectOne(Int16Element field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<short?> SelectOne(NullInt16Element field)
+        public static SelectValue<short?> SelectOne(NullableInt16Element field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<int> SelectOne(Int32Element field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<int?> SelectOne(NullInt32Element field)
+        public static SelectValue<int?> SelectOne(NullableInt32Element field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<long> SelectOne(Int64Element field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<long?> SelectOne(NullInt64Element field)
+        public static SelectValue<long?> SelectOne(NullableInt64Element field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<float> SelectOne(SingleElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<float?> SelectOne(NullSingleElement field)
+        public static SelectValue<float?> SelectOne(NullableSingleElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<string> SelectOne(StringElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<string> SelectOne(NullStringElement field)
+        public static SelectValue<string> SelectOne(NullableStringElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<TimeSpan> SelectOne(TimeSpanElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<TimeSpan?> SelectOne(NullTimeSpanElement field)
+        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
         public static SelectValue<ExpandoObject> SelectOne(IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
@@ -121,92 +124,95 @@
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
 
-        public static SelectValues<TEnum?> SelectMany<TEnum>(NullEnumElement<TEnum> field)
+        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
+
+        public static SelectValues<object> SelectMany(AnyObjectElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<bool> SelectMany(BooleanElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<bool?> SelectMany(NullBooleanElement field)
+        public static SelectValues<bool?> SelectMany(NullableBooleanElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<byte> SelectMany(ByteElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<byte?> SelectMany(NullByteElement field)
+        public static SelectValues<byte?> SelectMany(NullableByteElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<byte[]> SelectMany(ByteArrayElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<byte[]> SelectMany(NullByteArrayElement field)
+        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<DateTime> SelectMany(DateTimeElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<DateTime?> SelectMany(NullDateTimeElement field)
+        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<DateTimeOffset?> SelectMany(NullDateTimeOffsetElement field)
+        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<decimal> SelectMany(DecimalElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<decimal?> SelectMany(NullDecimalElement field)
+        public static SelectValues<decimal?> SelectMany(NullableDecimalElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<double> SelectMany(DoubleElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<double?> SelectMany(NullDoubleElement field)
+        public static SelectValues<double?> SelectMany(NullableDoubleElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<Guid> SelectMany(GuidElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<Guid?> SelectMany(NullGuidElement field)
+        public static SelectValues<Guid?> SelectMany(NullableGuidElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<short> SelectMany(Int16Element field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<short?> SelectMany(NullInt16Element field)
+        public static SelectValues<short?> SelectMany(NullableInt16Element field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<int> SelectMany(Int32Element field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<int?> SelectMany(NullInt32Element field)
+        public static SelectValues<int?> SelectMany(NullableInt32Element field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<long> SelectMany(Int64Element field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<long?> SelectMany(NullInt64Element field)
+        public static SelectValues<long?> SelectMany(NullableInt64Element field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<float> SelectMany(SingleElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<float?> SelectMany(NullSingleElement field)
+        public static SelectValues<float?> SelectMany(NullableSingleElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<string> SelectMany(StringElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<string> SelectMany(NullStringElement field)
+        public static SelectValues<string> SelectMany(NullableStringElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<TimeSpan> SelectMany(TimeSpanElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
-        public static SelectValues<TimeSpan?> SelectMany(NullTimeSpanElement field)
+        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<ExpandoObject> SelectMany(AnyElement field1, AnyElement field2, params AnyElement[] fields)

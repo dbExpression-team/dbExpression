@@ -18,6 +18,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public NullableInt32DatePartFunctionExpression(DatePartsExpression datePart, AnyObjectElement expression) : base(datePart, expression)
+        {
+
+        }
         #endregion
 
         #region as

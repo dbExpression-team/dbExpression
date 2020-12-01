@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class Int64CeilingFunctionExpression :
-        CeilFunctionExpression<long>,
+        CeilingFunctionExpression<long>,
         Int64Element,
         AnyInt64Element,
         IEquatable<Int64CeilingFunctionExpression>

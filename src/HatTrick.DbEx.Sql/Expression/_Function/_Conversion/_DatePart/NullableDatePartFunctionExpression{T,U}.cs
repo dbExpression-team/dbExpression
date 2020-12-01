@@ -16,6 +16,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        protected NullableDatePartFunctionExpression(DatePartsExpression datePart, AnyObjectElement expression) : base(datePart, expression, typeof(TNullableValue))
+        {
+
+        }
         #endregion
     }
 }

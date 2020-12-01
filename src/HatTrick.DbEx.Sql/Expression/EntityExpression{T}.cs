@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
         }
         #endregion
 
-        #region IExpressionEntity implementation
+        #region interface
         SelectExpressionSet IExpressionEntity.BuildInclusiveSelectExpression()
             => GetInclusiveSelectExpression();
         InsertExpressionSet<T> IExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
@@ -32,15 +32,9 @@ namespace HatTrick.DbEx.Sql.Expression
             => HydrateEntity(entity, reader);
         #endregion
 
-        #region get inclusive insert expression
+        #region methods
         protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
-        #endregion
-
-        #region get inclusive assignment expression
         protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
-        #endregion
-
-        #region fill object
         protected abstract void HydrateEntity(T entity, ISqlFieldReader reader);
         #endregion
     }

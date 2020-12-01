@@ -4,7 +4,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CastFunctionExpression<TValue> : CastFunctionExpression,
         IExpressionElement<TValue>
-        where TValue : IComparable
     {
         #region constructors
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType) 

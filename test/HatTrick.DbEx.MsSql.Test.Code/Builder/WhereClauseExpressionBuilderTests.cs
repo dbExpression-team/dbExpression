@@ -38,13 +38,11 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             idFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<Int32ExpressionMediator>()
-                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>()
+                .And.BeOfType<Int32FieldExpression<Person>>()
                 .And.Be(sec.Person.Id);
 
             idFilter.RightArg
-                .Should().BeOfType<Int32ExpressionMediator>()
-                .Which.Expression.Should().BeOfType<LiteralExpression<int>>()
+                .Should().BeOfType<LiteralExpression<int>>()
                 .Which.Expression.Should().Be(0);
         }
 
@@ -65,10 +63,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                .From(sec.Person)
                .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX");
 
-
             filterSet = (exp.Expression as SelectQueryExpression).Where;
-            idFilter = (filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
-            ssnFilter = (filterSet.RightArg as FilterExpressionSet).LeftArg as FilterExpression;
+
+            idFilter = filterSet.LeftArg as FilterExpression;
+            ssnFilter = filterSet.RightArg as FilterExpression;
 
             //then
             filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
@@ -77,26 +75,22 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             idFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<Int32ExpressionMediator>()
-                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>()
+                .And.BeOfType<Int32FieldExpression<Person>>()
                 .And.Be(sec.Person.Id);
 
             idFilter.RightArg
-                .Should().BeOfType<Int32ExpressionMediator>()
-                .Which.Expression.Should().BeOfType<LiteralExpression<int>>()
+                .Should().BeOfType<LiteralExpression<int>>()
                 .Which.Expression.Should().Be(0);
 
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
 
             ssnFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<StringExpressionMediator>()
-                .Which.Expression.Should().BeOfType<StringFieldExpression<Person>>()
+                .And.BeOfType<StringFieldExpression<Person>>()
                 .And.Be(sec.Person.SSN);
 
             ssnFilter.RightArg
-                .Should().BeOfType<StringExpressionMediator>()
-                .Which.Expression.Should().BeOfType<LiteralExpression<string>>()
+                .Should().BeOfType<LiteralExpression<string>>()
                 .Which.Expression.Should().Be("XXX");
         }
 
@@ -122,9 +116,9 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             filterSet = (exp.Expression as SelectQueryExpression).Where;
 
-            idFilter = ((filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
-            ssnFilter = ((filterSet.LeftArg as FilterExpressionSet).RightArg as FilterExpressionSet).LeftArg as FilterExpression;
-            dateCreatedFilter = (filterSet.RightArg as FilterExpressionSet).LeftArg as FilterExpression;
+            idFilter = (filterSet.LeftArg as FilterExpressionSet).LeftArg as FilterExpression;
+            ssnFilter = (filterSet.LeftArg as FilterExpressionSet).RightArg as FilterExpression;
+            dateCreatedFilter = filterSet.RightArg as FilterExpression;
 
             //then
             filterSet.ConditionalOperator.Should().Be(ConditionalExpressionOperator.And);
@@ -133,39 +127,33 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             idFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<Int32ExpressionMediator>()
-                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>()
+                .And.BeOfType<Int32FieldExpression<Person>>()
                 .And.Be(sec.Person.Id);
 
             idFilter.RightArg
-                .Should().BeOfType<Int32ExpressionMediator>()
-                .Which.Expression.Should().BeOfType<LiteralExpression<int>>()
+                .Should().BeOfType<LiteralExpression<int>>()
                 .Which.Expression.Should().Be(0);
 
             ssnFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.Equal);
 
             ssnFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<StringExpressionMediator>()
-                .Which.Expression.Should().BeOfType<StringFieldExpression<Person>>()
+                .And.BeOfType<StringFieldExpression<Person>>()
                 .And.Be(sec.Person.SSN);
 
             ssnFilter.RightArg
-                .Should().BeOfType<StringExpressionMediator>()
-                .Which.Expression.Should().BeOfType<LiteralExpression<string>>()
+                .Should().BeOfType<LiteralExpression<string>>()
                 .Which.Expression.Should().Be("XXX");
 
             dateCreatedFilter.ExpressionOperator.Should().Be(FilterExpressionOperator.NotEqual);
 
             dateCreatedFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<DateTimeOffsetExpressionMediator>()
-                .Which.Expression.Should().BeOfType<DateTimeOffsetFieldExpression<Person>>()
+                .And.BeOfType<DateTimeOffsetFieldExpression<Person>>()
                 .And.Be(sec.Person.DateCreated);
 
             dateCreatedFilter.RightArg
-                .Should().BeOfType<DateTimeOffsetExpressionMediator>()
-                .Which.Expression.Should().BeOfType<LiteralExpression<DateTimeOffset>>()
+                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
                 .Which.Expression.Should().Be((DateTimeOffset)now);
         }
     }

@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             base.PopulateModel(model, @namespace, typeModel);
             model.FunctionName = functionName;
-            model.IsGroupBySupported = false;
+            model.IsAggregateFunction = true;
             model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddNumericTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,

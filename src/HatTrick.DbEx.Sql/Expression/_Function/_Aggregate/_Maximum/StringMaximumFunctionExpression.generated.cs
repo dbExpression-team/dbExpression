@@ -6,16 +6,16 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region implicit operators
         public static implicit operator StringExpressionMediator(StringMaximumFunctionExpression a) => new StringExpressionMediator(a);
-        public static implicit operator OrderByExpression(StringMaximumFunctionExpression a) => new OrderByExpression(new StringExpressionMediator(a), OrderExpressionDirection.ASC);
+        public static implicit operator OrderByExpression(StringMaximumFunctionExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
         #endregion
 
         #region order
-        public override OrderByExpression Asc => new OrderByExpression(new StringExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new StringExpressionMediator(this), OrderExpressionDirection.DESC);
+        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region arithmetic operators
-        #region TValue
+        #region data types
         #region byte
 
 
@@ -60,66 +60,106 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #endregion
 
-        #region mediator
+        #region fields
         #region byte
 
-        #endregion
-        
+        #endregion        
         #region decimal
 
-        #endregion
-        
+        #endregion        
         #region double
 
-        #endregion
-        
+        #endregion        
         #region float
 
-        #endregion
-        
+        #endregion        
         #region short
 
-        #endregion
-        
+        #endregion        
         #region int
 
-        #endregion
-        
+        #endregion        
         #region long
 
+        #endregion        
         #endregion
-        
+
+        #region mediators
+        #region byte
+
+        #endregion        
+        #region decimal
+
+        #endregion        
+        #region double
+
+        #endregion        
+        #region float
+
+        #endregion        
+        #region short
+
+        #endregion        
+        #region int
+
+        #endregion        
+        #region long
+
+        #endregion        
+        #endregion
+
+        #region alias
         #endregion
         #endregion
 
         #region filter operators
-        #region TValue
+        #region data types
         #region string
-        public static FilterExpressionSet operator ==(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), new StringExpressionMediator(new LiteralExpression<string>(b)), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(StringMaximumFunctionExpression a, string b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<string>(b), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(new LiteralExpression<string>(a)), new StringExpressionMediator(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(string a, StringMaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<string>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
 
         #endregion
         #endregion
 
-        #region mediator
-        public static FilterExpressionSet operator ==(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator <=(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator >=(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(new StringExpressionMediator(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        #region fields
+        public static FilterExpressionSet operator ==(StringMaximumFunctionExpression a, StringFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(StringMaximumFunctionExpression a, StringFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(StringMaximumFunctionExpression a, StringFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(StringMaximumFunctionExpression a, StringFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(StringMaximumFunctionExpression a, StringFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(StringMaximumFunctionExpression a, StringFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        
 
+        #endregion
+
+        #region mediators
+        public static FilterExpressionSet operator ==(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(StringMaximumFunctionExpression a, StringExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+
+        #endregion
+
+        #region alias
+        public static FilterExpressionSet operator ==(StringMaximumFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(StringMaximumFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(StringMaximumFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(StringMaximumFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(StringMaximumFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(StringMaximumFunctionExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

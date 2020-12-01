@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DoubleCeilingFunctionExpression :
-        CeilFunctionExpression<double>,
+        CeilingFunctionExpression<double>,
         DoubleElement,
         AnyDoubleElement,
         IEquatable<DoubleCeilingFunctionExpression>

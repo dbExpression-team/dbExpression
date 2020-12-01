@@ -91,62 +91,62 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(connection, null);
         }
 
-        public static void Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout)
+        public static int Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
-                builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
+                return builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
         }
 
-        public static void Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection)
+        public static int Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
             => builder.ExecutePipeline(connection, null);
 
-        public static void Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
+        public static int Execute<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
             where T : class, IDbEntity
             => builder.ExecutePipeline(connection, command => command.CommandTimeout = commandTimeout);
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder)
             where T : class, IDbEntity
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
-                await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
+                return await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection)
             where T : class, IDbEntity
             => await builder.ExecutePipelineAsync(connection, null, CancellationToken.None).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, CancellationToken ct)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, CancellationToken ct)
             where T : class, IDbEntity
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
-                await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
+                return await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
         }
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, CancellationToken ct)
             where T : class, IDbEntity
             => await builder.ExecutePipelineAsync(connection, null, ct).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout)
             where T : class, IDbEntity
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
-                await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
         }
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout)
             where T : class, IDbEntity
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, CancellationToken.None).ConfigureAwait(false);
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
         {
             using (var connection = new SqlConnector(builder.GetDatabaseConfiguration().ConnectionFactory))
-                await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
+                return await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
         }
 
-        public static async Task ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
+        public static async Task<int> ExecuteAsync<T>(this IUpdateTerminationExpressionBuilder<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken ct)
             where T : class, IDbEntity
             => await builder.ExecutePipelineAsync(connection, command => command.CommandTimeout = commandTimeout, ct).ConfigureAwait(false);
         #endregion

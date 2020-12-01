@@ -9,13 +9,49 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDateTimeDateAddFunctionExpression>
     {
         #region constructors
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyInt32Element value, NullableDateTimeElement expression)
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, NullableDateTimeElement expression)
             : base(datePart, value, expression)
         {
 
         }
 
-        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyInt32Element value, DateTimeElement expression) 
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, DateTimeElement expression) 
+            : base(datePart, value, expression)
+        {
+
+        }
+
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, NullableDateTimeElement expression)
+            : base(datePart, value, expression)
+        {
+
+        }
+
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, DateTimeElement expression)
+            : base(datePart, value, expression)
+        {
+
+        }
+
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyObjectElement value, NullableDateTimeElement expression) 
+            : base(datePart, value, expression)
+        {
+
+        }
+
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, AnyObjectElement value, DateTimeElement expression)
+            : base(datePart, value, expression)
+        {
+
+        }
+
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, Int32Element value, AnyObjectElement expression) 
+            : base(datePart, value, expression)
+        {
+
+        }
+
+        public NullableDateTimeDateAddFunctionExpression(DatePartsExpression datePart, NullableInt32Element value, AnyObjectElement expression)
             : base(datePart, value, expression)
         {
 

@@ -109,7 +109,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database
 
             SelectEntity<Person> next = new MsSqlSelectEntityQueryExpressionBuilder<Person>(config, new SelectQueryExpression());
             person = next.From(dbo.Person)
-                .InnerJoin(db.SelectOne<Person>().From(dbo.Person)).As("foo").On(dbo.Person.Id == db.alias("foo", "Id").AsInt32())
+                .InnerJoin(db.SelectOne<Person>().From(dbo.Person)).As("foo").On(dbo.Person.Id == db.alias("foo", "Id"))
                 .Where(dbo.Person.Id == 1)
                 .OrderBy(dbo.Person.FirstName)
                 .Execute();

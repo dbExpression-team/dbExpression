@@ -82,7 +82,6 @@ namespace ServerSideBlazorApp.Service
                     db.fx.Count()
                 )
                 .From(dbo.Customer)
-                .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .Where(string.IsNullOrWhiteSpace(model.SearchPhrase) ? null : (dbo.Customer.FirstName + " " + dbo.Customer.LastName).Like(model.SearchPhrase + '%'))
                 .ExecuteAsync();
 
@@ -111,7 +110,6 @@ namespace ServerSideBlazorApp.Service
             var mailingAddress = nameof(CustomerDetailModel.MailingAddress);
             var billingAddress = nameof(CustomerDetailModel.BillingAddress);
             var shippingAddress = nameof(CustomerDetailModel.ShippingAddress);
-            static StringElement string_alias(string table, string field) => db.alias(table, field).AsString();
 
             var customer = new CustomerDetailModel();
 
@@ -125,21 +123,21 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.YearOfLastCreditLimitReview,
                     dbo.Customer.BirthDate,
                     db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25).As("CurrentAge"),
-                    string_alias(mailingAddress, nameof(dbo.Address.Line1)),
-                    string_alias(mailingAddress, nameof(dbo.Address.Line2)),
-                    string_alias(mailingAddress, nameof(dbo.Address.City)),
-                    string_alias(mailingAddress, nameof(dbo.Address.State)),
-                    string_alias(mailingAddress, nameof(dbo.Address.Zip)),
-                    string_alias(billingAddress, nameof(dbo.Address.Line1)),
-                    string_alias(billingAddress, nameof(dbo.Address.Line2)),
-                    string_alias(billingAddress, nameof(dbo.Address.City)),
-                    string_alias(billingAddress, nameof(dbo.Address.State)),
-                    string_alias(billingAddress, nameof(dbo.Address.Zip)),
-                    string_alias(shippingAddress, nameof(dbo.Address.Line1)),
-                    string_alias(shippingAddress, nameof(dbo.Address.Line2)),
-                    string_alias(shippingAddress, nameof(dbo.Address.City)),
-                    string_alias(shippingAddress, nameof(dbo.Address.State)),
-                    string_alias(shippingAddress, nameof(dbo.Address.Zip))
+                    db.alias(mailingAddress, nameof(dbo.Address.Line1)),
+                    db.alias(mailingAddress, nameof(dbo.Address.Line2)),
+                    db.alias(mailingAddress, nameof(dbo.Address.City)),
+                    db.alias(mailingAddress, nameof(dbo.Address.State)),
+                    db.alias(mailingAddress, nameof(dbo.Address.Zip)),
+                    db.alias(billingAddress, nameof(dbo.Address.Line1)),
+                    db.alias(billingAddress, nameof(dbo.Address.Line2)),
+                    db.alias(billingAddress, nameof(dbo.Address.City)),
+                    db.alias(billingAddress, nameof(dbo.Address.State)),
+                    db.alias(billingAddress, nameof(dbo.Address.Zip)),
+                    db.alias(shippingAddress, nameof(dbo.Address.Line1)),
+                    db.alias(shippingAddress, nameof(dbo.Address.Line2)),
+                    db.alias(shippingAddress, nameof(dbo.Address.City)),
+                    db.alias(shippingAddress, nameof(dbo.Address.State)),
+                    db.alias(shippingAddress, nameof(dbo.Address.Zip))
                 )
                 .From(dbo.Customer)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
@@ -155,7 +153,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(nameof(CustomerDetailModel.MailingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)).AsInt32())
+                ).As(nameof(CustomerDetailModel.MailingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.PersonId,
@@ -168,7 +166,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(nameof(CustomerDetailModel.BillingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)).AsInt32())
+                ).As(nameof(CustomerDetailModel.BillingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.PersonId,
@@ -181,7 +179,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(nameof(CustomerDetailModel.ShippingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)).AsInt32())
+                ).As(nameof(CustomerDetailModel.ShippingAddress)).On(dbo.Customer.Id == db.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     sqlRow => 
@@ -236,66 +234,66 @@ namespace ServerSideBlazorApp.Service
 
         public async Task<AddressModel> SaveAddressAsync(int customerId, AddressModel address)
         {
-            if (await GetAddressAsync(customerId, address.Type) is object)
+            var @new = new Address
             {
-                return await UpdateAddressAsync(customerId, address);
-            }
-            else
-            {
-                return await InsertAddressAsync(customerId, address);
-            }
-        }
-
-        public async Task<AddressModel> GetAddressAsync(int customerId, AddressType addressType)
-        {
-            var address = await db.SelectOne<Address>()
-                .From(dbo.Address)
-                .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
-                .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == addressType)
-                .ExecuteAsync();
-
-            return address is object ? new AddressModel
-            {
-                Line1 = address.Line1,
-                Line2 = address.Line2,
-                City = address.City,
-                State = address.State,
-                ZIP = address.Zip
-            } : null;
-        }
-
-        public async Task<AddressModel> UpdateAddressAsync(int customerId, AddressModel address)
-        {
-            await db.Update(
-                dbo.Address.Line1.Set(address.Line1),
-                dbo.Address.Line2.Set(address.Line2),
-                dbo.Address.City.Set(address.City),
-                dbo.Address.State.Set(address.State),
-                dbo.Address.Zip.Set(address.ZIP),
-                dbo.Address.DateUpdated.Set(DateTime.UtcNow)
-            )
-            .From(dbo.Address)
-            .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
-            .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == address.Type)
-            .ExecuteAsync();
-
-            return await GetAddressAsync(customerId, address.Type);
-        }
-
-        public async Task<AddressModel> InsertAddressAsync(int customerId, AddressModel address)
-        {
-            var insertAddress = new Address
-            {
-                AddressType = address.Type,
                 Line1 = address.Line1,
                 Line2 = address.Line2,
                 City = address.City,
                 State = address.State,
                 Zip = address.ZIP,
-                DateCreated = DateTime.UtcNow,
-                DateUpdated = DateTime.UtcNow
+                AddressType = address.Type
             };
 
+            if (await GetAddressAsync(customerId, address.Type) is Address persisted)
+            {
+                @new.DateCreated = persisted.DateCreated;
+                @new.DateUpdated = DateTime.UtcNow;
+
+                await UpdateAddressAsync(persisted, @new);
+                var updated = await GetAddressAsync(customerId, address.Type);
+                return new AddressModel
+                {
+                    Line1 = updated.Line1,
+                    Line2 = updated.Line2,
+                    City = updated.City,
+                    State = updated.State,
+                    ZIP = updated.Zip,
+                    Type = address.Type
+                };
+            }
+            else
+            {
+                await InsertAddressAsync(customerId, @new);
+                return new AddressModel
+                {
+                    Line1 = @new.Line1,
+                    Line2 = @new.Line2,
+                    City = @new.City,
+                    State = @new.State,
+                    ZIP = @new.Zip,
+                    Type = address.Type
+                };
+            }
+        }
+
+        private async Task<Address> GetAddressAsync(int customerId, AddressType addressType)
+            => await db.SelectOne<Address>()
+                .From(dbo.Address)
+                .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
+                .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == addressType)
+                .ExecuteAsync();
+
+        private async Task UpdateAddressAsync(Address persisted, Address @new)
+            => await db.Update(
+                persisted,
+                @new
+            )
+            .From(dbo.Address)
+            .Where(dbo.Address.Id == persisted.Id)
+            .ExecuteAsync();
+
+        private async Task InsertAddressAsync(int customerId, Address address)
+        {
             using (var conn = db.GetConnection())
             {
                 conn.Open();
@@ -303,7 +301,7 @@ namespace ServerSideBlazorApp.Service
                 {
                     conn.BeginTransaction();
 
-                    await db.Insert(insertAddress)
+                    await db.Insert(address)
                         .Into(dbo.Address)
                         .ExecuteAsync(conn);
 
@@ -311,7 +309,7 @@ namespace ServerSideBlazorApp.Service
                             new CustomerAddress
                             {
                                 PersonId = customerId,
-                                AddressId = insertAddress.Id,
+                                AddressId = address.Id,
                                 DateCreated = DateTime.UtcNow
                             }
                         )
@@ -326,15 +324,6 @@ namespace ServerSideBlazorApp.Service
                     throw;
                 }
             }
-
-            return new AddressModel
-            {
-                Line1 = insertAddress.Line1,
-                Line2 = insertAddress.Line2,
-                City = insertAddress.City,
-                State = address.State,
-                ZIP = insertAddress.Zip
-            };
         }
     }
 }

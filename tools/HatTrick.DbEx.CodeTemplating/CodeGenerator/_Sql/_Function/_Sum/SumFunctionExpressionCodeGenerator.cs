@@ -1,9 +1,6 @@
 ﻿using HatTrick.DbEx.CodeTemplating.Builder;
 using HatTrick.DbEx.CodeTemplating.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 {
@@ -15,7 +12,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             base.PopulateModel(model, @namespace, typeModel);
             model.FunctionName = functionName;
-            model.IsGroupBySupported = false;
+            model.IsAggregateFunction = true;
             model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddNumericTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,
@@ -26,7 +23,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
         public override void Generate(string templatePath, string outputSubdirectory)
         {
-            foreach (var @type in TypeBuilder.CreateBuilder().AddNumericTypes().Except(typeof(byte), typeof(short)).ToList())
+            foreach (var @type in TypeBuilder.CreateBuilder().AddNumericTypes().Add<object>().Except(typeof(byte), typeof(short)).ToList())
                 Generate(templatePath, outputSubdirectory, $"{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
         }
     }

@@ -3,7 +3,7 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class ByteCeilingFunctionExpression : 
-        CeilFunctionExpression<byte>,
+        CeilingFunctionExpression<byte>,
         ByteElement,
         AnyByteElement,
         IEquatable<ByteCeilingFunctionExpression>

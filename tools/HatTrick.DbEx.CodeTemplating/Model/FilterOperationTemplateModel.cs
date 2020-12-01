@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HatTrick.DbEx.CodeTemplating
+﻿namespace HatTrick.DbEx.CodeTemplating
 {
     public class FilterOperationTemplateModel
     {

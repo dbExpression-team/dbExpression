@@ -1,8 +1,10 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -305,6 +307,53 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             average.Should().Be(expected);
+        }
+
+        [Theory]
+        [Trait("Operation", "GROUP BY")]
+        [Trait("Operation", "HAVING")]
+        [MsSqlVersions.AllVersions]
+        public void Does_average_of_credit_limit_grouped_by_lastname_and_having_null_average_succeed(int version, int expected = 2)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var averages = db.SelectMany(
+                    dbo.Person.LastName,
+                    db.fx.Avg(dbo.Person.CreditLimit).As("avg_amount")
+                ).From(dbo.Person)
+                .GroupBy(
+                    dbo.Person.LastName
+                ).Having(
+                    db.fx.Avg(dbo.Person.CreditLimit) == DBNull.Value
+                )
+                .Execute();
+
+            //then
+            averages.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_averaged_of_aliased_field_succeed(int version, decimal expected = 13.268m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Avg(db.alias("lines", "PurchasePrice")).Distinct().As("alias")
+                ).From(dbo.Purchase)
+                .InnerJoin(
+                    db.SelectMany<PurchaseLine>()
+                    .From(dbo.PurchaseLine)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+
+            //when               
+            object avg = exp.Execute();
+
+            //then
+            avg.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.001m, "Rounding errors in averaging");
         }
     }
 }

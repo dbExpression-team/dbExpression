@@ -1,7 +1,6 @@
-﻿using System;
+﻿using HatTrick.DbEx.CodeTemplating.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace HatTrick.DbEx.CodeTemplating.Builder
 {
@@ -73,5 +72,31 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
 
         public static FilterBuilder CreateBuilder()
             => new FilterBuilder();
+
+        public FilterBuilder InferFilterOperations(TypeModel sourceType, TypeModel targetType)
+        {
+            if (targetType.Type.In(typeof(bool), typeof(Guid)) || sourceType.Type.In(typeof(bool), typeof(Guid)))
+            {
+                operations = new List<FilterOperationTemplateModel>
+                { 
+                    equal,
+                    notEqual
+                };
+
+                return this;
+            }
+
+            operations = new List<FilterOperationTemplateModel>
+            {
+                equal,
+                notEqual,
+                lessThan,
+                greaterThan,
+                lessThanOrEqual,
+                greaterThanOrEqual
+            };
+
+            return this;
+        }
     }
 }

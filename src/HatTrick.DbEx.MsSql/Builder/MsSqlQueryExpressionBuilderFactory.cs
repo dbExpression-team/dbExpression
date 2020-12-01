@@ -52,6 +52,9 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
+        public SelectValue<object> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyObjectElement field)
+            => CreateSelectValueBuilder<object>(configuration, field);
+
         public SelectValue<bool> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
             => CreateSelectValueBuilder<bool>(configuration, field);
 
@@ -183,6 +186,9 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
+        public SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyObjectElement field)
+            => CreateSelectValuesBuilder<object>(configuration, field);
+
         public SelectValues<bool> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, BooleanElement field)
             => CreateSelectValuesBuilder<bool>(configuration, field);
 
@@ -266,6 +272,9 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public SelectValues<TimeSpan?> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableTimeSpanElement field)
             => CreateSelectValuesBuilder<TimeSpan?>(configuration, field);
+
+        public SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ObjectElement field)
+            => CreateSelectValuesBuilder<object>(configuration, field);
 
         private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
         {

@@ -1,9 +1,6 @@
 ﻿using HatTrick.DbEx.CodeTemplating.Builder;
 using HatTrick.DbEx.CodeTemplating.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 {

@@ -21,6 +21,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         private static readonly TypeModel _long = new TypeModel<long>("long");
         private static readonly TypeModel _string = new TypeModel<string>("string");
         private static readonly TypeModel _timeSpan = new TypeModel<TimeSpan>("TimeSpan");
+        private static readonly TypeModel _object = new TypeModel<object>("object");
 
         private static readonly Dictionary<Type, TypeModel> allTypes = new Dictionary<Type, TypeModel>()
         {
@@ -36,7 +37,8 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
             { typeof(int), _int },
             { typeof(long), _long },
             { typeof(string), _string },
-            { typeof(TimeSpan), _timeSpan }
+            { typeof(TimeSpan), _timeSpan },
+            { typeof(object), _object }
        };
 
         private static readonly Dictionary<Type, TypeModel> numericTypes = new Dictionary<Type, TypeModel>()
@@ -84,16 +86,20 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
         }
 
         public TypeBuilder Add<T>()
-            where T : IComparable
         {
-            var t = typeof(T);
             if (!@types.Contains(allTypes[typeof(T)]))
                 @types.Add(allTypes[typeof(T)]);
             return this;
         }
 
+        public TypeBuilder Add(TypeModel type)
+        {
+            if (!@types.Contains(type))
+                @types.Add(type);
+            return this;
+        }
+
         public TypeBuilder Except<T>()
-            where T : IComparable
         {
             var t = typeof(T);
             if (!exceptTypes.Contains(allTypes[typeof(T)]))
@@ -132,7 +138,7 @@ namespace HatTrick.DbEx.CodeTemplating.Builder
 
         public static TypeModel InferReturnType(TypeModel sourceType, TypeModel targetType)
         {
-            if (sourceType == Get<byte>())
+            if (sourceType == Get<byte>() || sourceType == Get<object>())
             {
                 return targetType;
             }

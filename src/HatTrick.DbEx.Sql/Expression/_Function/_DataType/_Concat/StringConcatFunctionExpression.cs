@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
@@ -10,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringConcatFunctionExpression>
     {
         #region constructors
-        public StringConcatFunctionExpression(IList<AnyStringElement> expressions) : base(expressions)
+        public StringConcatFunctionExpression(IList<AnyElement> expressions) : base(expressions?.Cast<IExpressionElement>()?.ToList())
         {
 
         }

@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -107,6 +108,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_ceiling_of_aliased_field_succeed(int version, decimal expected = 8m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Ceiling(db.alias("lines", "PurchasePrice")).As("alias")
+                ).From(dbo.Purchase)
+                .InnerJoin(
+                    db.SelectMany<PurchaseLine>()
+                    .From(dbo.PurchaseLine)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+
+            //when               
+            object value = exp.Execute();
+
+            //then
+            value.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.1m, "Rounding errors in ceiling");
         }
     }
 }
