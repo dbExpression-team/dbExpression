@@ -18,6 +18,12 @@ namespace HatTrick.DbEx.Sql.Expression
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
         }
 
+        public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator)
+            : this(leftArg, rightArg, filterExpressionOperator, false)
+        {
+
+        }
+
         public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator, bool negate)
         {
             LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");

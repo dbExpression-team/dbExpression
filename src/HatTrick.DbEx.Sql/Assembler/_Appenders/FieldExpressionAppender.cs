@@ -41,5 +41,19 @@ namespace HatTrick.DbEx.Sql.Assembler
                 context.PopField();
             }
         }
+
+        protected override void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (string.IsNullOrWhiteSpace(aliasable.Alias))
+                return;
+
+            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.None)
+                return;
+
+            builder.Appender.Write(" AS ")
+                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(aliasable.Alias)
+                .Write(context.Configuration.IdentifierDelimiter.End);
+        }
     }
 }

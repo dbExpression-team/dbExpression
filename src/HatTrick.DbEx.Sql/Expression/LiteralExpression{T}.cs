@@ -9,6 +9,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public LiteralExpression(DBNull value) : base(value)
+        {
+
+        }
         #endregion
     }
 }

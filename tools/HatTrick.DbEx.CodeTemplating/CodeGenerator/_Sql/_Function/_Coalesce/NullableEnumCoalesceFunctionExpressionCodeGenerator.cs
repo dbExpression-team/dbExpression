@@ -1,9 +1,4 @@
-﻿using HatTrick.DbEx.CodeTemplating.Builder;
-using HatTrick.DbEx.CodeTemplating.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using HatTrick.DbEx.CodeTemplating.Model;
 
 namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 {
@@ -16,8 +11,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.FunctionName = functionName;
             model.Namespace = @namespace;
             model.Type = typeModel;
-            model.IsGroupBySupported = true;
-            model.FilterOperations = FilterBuilder.CreateBuilder().AddEqual().AddNotEqual().ToList();
+            model.IsAggregateFunction = false;
         }
 
         public override void Generate(string templatePath, string outputSubdirectory)

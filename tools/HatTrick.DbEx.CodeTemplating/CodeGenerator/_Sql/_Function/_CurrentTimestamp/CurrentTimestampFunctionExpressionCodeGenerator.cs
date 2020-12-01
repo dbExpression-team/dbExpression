@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             model.FunctionName = functionName;
 
             model.Namespace = @namespace;
-            model.ArithmeticOperations = new List<ArithmeticOperationsTemplateModel>()
+            model.ArithmeticOperations = new List<ArithmeticOperationsTemplateModel>
             {
                 new ArithmeticOperationsTemplateModel
                 {
@@ -26,7 +26,15 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                     Operations = ArithmeticBuilder.CreateBuilder().AddArithmeticAdd().ToList()
                 }
             };
-            model.FilterOperations = FilterBuilder.CreateBuilder().AddAll().ToList();
+            model.Filters = new List<FilterOperationsTemplateModel>
+            { 
+                new FilterOperationsTemplateModel 
+                {
+                    Type = @type,
+                    Operations = FilterBuilder.CreateBuilder().InferFilterOperations(@type, TypeBuilder.Get<DateTime>()).ToList()
+                } 
+            };
+
             return model;
         }
 

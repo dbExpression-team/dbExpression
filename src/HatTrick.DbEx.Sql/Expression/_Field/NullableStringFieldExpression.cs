@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set
-        public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new NullableStringExpressionMediator(new LiteralExpression<string>(null)));
+        public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(DBNull.Value));
         #endregion
 
         #region equals

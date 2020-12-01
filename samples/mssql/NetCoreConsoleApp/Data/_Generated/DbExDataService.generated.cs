@@ -37,6 +37,9 @@ namespace SimpleConsole.DataService
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
 
+        public static SelectValue<object> SelectOne(AnyObjectElement field)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+
         public static SelectValue<bool> SelectOne(BooleanElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
@@ -137,6 +140,9 @@ namespace SimpleConsole.DataService
         public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
+
+        public static SelectValues<object> SelectMany(AnyObjectElement field)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
 
         public static SelectValues<bool> SelectMany(BooleanElement field)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
@@ -276,8 +282,8 @@ namespace SimpleConsole.DataService
         #endregion
 
         #region alias
-        public static Alias alias(string tableName, string fieldName)
-            => new AliasExpressionBuilder(new AliasExpression(tableName, fieldName));
+        public static AliasExpression alias(string tableName, string fieldName)
+            => new AliasExpression(tableName, fieldName);
         #endregion
     }
     #endregion
@@ -412,14 +418,14 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }; 
-            if (target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }; 
-            if (target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }; 
-            if (target.City != source.City) { expr &= City.Set(source.City); }; 
-            if (target.State != source.State) { expr &= State.Set(source.State); }; 
-            if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+            if (target.AddressType != source.AddressType) { expr &= AddressType.Set(source.AddressType); }
+            if (target.Line1 != source.Line1) { expr &= Line1.Set(source.Line1); }
+            if (target.Line2 != source.Line2) { expr &= Line2.Set(source.Line2); }
+            if (target.City != source.City) { expr &= City.Set(source.City); }
+            if (target.State != source.State) { expr &= State.Set(source.State); }
+            if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
 
             return expr;
         }
@@ -518,14 +524,14 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }; 
-            if (target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }; 
-            if (target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }; 
-            if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }; 
-            if (target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }; 
-            if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+            if (target.FirstName != source.FirstName) { expr &= FirstName.Set(source.FirstName); }
+            if (target.LastName != source.LastName) { expr &= LastName.Set(source.LastName); }
+            if (target.BirthDate != source.BirthDate) { expr &= BirthDate.Set(source.BirthDate); }
+            if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
+            if (target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }
+            if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
 
             return expr;
         }
@@ -604,9 +610,9 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }; 
-            if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
+            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
 
             return expr;
         }
@@ -732,22 +738,22 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }; 
-            if (target.Name != source.Name) { expr &= Name.Set(source.Name); }; 
-            if (target.Description != source.Description) { expr &= Description.Set(source.Description); }; 
-            if (target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }; 
-            if (target.Price != source.Price) { expr &= Price.Set(source.Price); }; 
-            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }; 
-            if (target.Image != source.Image) { expr &= Image.Set(source.Image); }; 
-            if (target.Height != source.Height) { expr &= Height.Set(source.Height); }; 
-            if (target.Width != source.Width) { expr &= Width.Set(source.Width); }; 
-            if (target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }; 
-            if (target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }; 
-            if (target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }; 
-            if (target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }; 
-            if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+            if (target.ProductCategoryType != source.ProductCategoryType) { expr &= ProductCategoryType.Set(source.ProductCategoryType); }
+            if (target.Name != source.Name) { expr &= Name.Set(source.Name); }
+            if (target.Description != source.Description) { expr &= Description.Set(source.Description); }
+            if (target.ListPrice != source.ListPrice) { expr &= ListPrice.Set(source.ListPrice); }
+            if (target.Price != source.Price) { expr &= Price.Set(source.Price); }
+            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
+            if (target.Image != source.Image) { expr &= Image.Set(source.Image); }
+            if (target.Height != source.Height) { expr &= Height.Set(source.Height); }
+            if (target.Width != source.Width) { expr &= Width.Set(source.Width); }
+            if (target.Depth != source.Depth) { expr &= Depth.Set(source.Depth); }
+            if (target.Weight != source.Weight) { expr &= Weight.Set(source.Weight); }
+            if (target.ShippingWeight != source.ShippingWeight) { expr &= ShippingWeight.Set(source.ShippingWeight); }
+            if (target.ValidStartTimeOfDayForPurchase != source.ValidStartTimeOfDayForPurchase) { expr &= ValidStartTimeOfDayForPurchase.Set(source.ValidStartTimeOfDayForPurchase); }
+            if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
 
             return expr;
         }
@@ -870,18 +876,18 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }; 
-            if (target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }; 
-            if (target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }; 
-            if (target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }; 
-            if (target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }; 
-            if (target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }; 
-            if (target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }; 
-            if (target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }; 
-            if (target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }; 
-            if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }
+            if (target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }
+            if (target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }
+            if (target.PurchaseDate != source.PurchaseDate) { expr &= PurchaseDate.Set(source.PurchaseDate); }
+            if (target.ShipDate != source.ShipDate) { expr &= ShipDate.Set(source.ShipDate); }
+            if (target.ExpectedDeliveryDate != source.ExpectedDeliveryDate) { expr &= ExpectedDeliveryDate.Set(source.ExpectedDeliveryDate); }
+            if (target.TrackingIdentifier != source.TrackingIdentifier) { expr &= TrackingIdentifier.Set(source.TrackingIdentifier); }
+            if (target.PaymentMethodType != source.PaymentMethodType) { expr &= PaymentMethodType.Set(source.PaymentMethodType); }
+            if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
 
             return expr;
         }
@@ -976,12 +982,12 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }; 
-            if (target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }; 
-            if (target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }; 
-            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+            if (target.PurchaseId != source.PurchaseId) { expr &= PurchaseId.Set(source.PurchaseId); }
+            if (target.ProductId != source.ProductId) { expr &= ProductId.Set(source.ProductId); }
+            if (target.PurchasePrice != source.PurchasePrice) { expr &= PurchasePrice.Set(source.PurchasePrice); }
+            if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
 
             return expr;
         }
@@ -1054,9 +1060,9 @@ namespace SimpleConsole.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }; 
-            if (target.TotalAmount != source.TotalAmount) { expr &= TotalAmount.Set(source.TotalAmount); }; 
-            if (target.TotalCount != source.TotalCount) { expr &= TotalCount.Set(source.TotalCount); }; 
+            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
+            if (target.TotalAmount != source.TotalAmount) { expr &= TotalAmount.Set(source.TotalAmount); }
+            if (target.TotalCount != source.TotalCount) { expr &= TotalCount.Set(source.TotalCount); }
 
             return expr;
         }
@@ -1179,9 +1185,9 @@ namespace SimpleConsole.secDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }; 
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }; 
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }; 
+            if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
+            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
+            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
 
             return expr;
         }

@@ -212,8 +212,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
             var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
 
-            target.LastName = $"x{source.LastName}";
-            target.FirstName = $"x{target.FirstName}";
+            source.LastName = "x";
+            source.FirstName = "x";
 
             var exp = db.Update(
                    target,
@@ -224,12 +224,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var recordsAffected = exp.Execute();
-            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == $"x{source.LastName}").Execute();
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == "x").Execute();
 
             //then
             recordsAffected.Should().Be(expectedRecordsAffected);
-            updated.LastName.Should().Be($"x{source.LastName}");
-            updated.FirstName.Should().Be($"x{source.FirstName}");
+            updated.LastName.Should().Be("x");
+            updated.FirstName.Should().Be("x");
         }
 
         [Theory]
@@ -243,8 +243,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
             var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
 
-            target.LastName = $"x{source.LastName}";
-            target.FirstName = $"x{target.FirstName}";
+            source.LastName = "x";
+            source.FirstName = "x";
 
             //when
             db.Update(
@@ -255,7 +255,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                .Execute();
 
             //then
-            var recordsAffected = db.SelectOne(db.fx.Count()).From(dbo.Person).Where(dbo.Person.LastName == $"x{source.LastName}").Execute();
+            var recordsAffected = db.SelectOne(db.fx.Count()).From(dbo.Person).Where(dbo.Person.LastName == "x").Execute();
             recordsAffected.Should().Be(expectedRecordsAffected);
         }
     }

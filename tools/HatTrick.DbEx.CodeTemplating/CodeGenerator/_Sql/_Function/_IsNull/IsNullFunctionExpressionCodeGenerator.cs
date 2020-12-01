@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             base.PopulateModel(model, @namespace, typeModel);
             model.FunctionName = functionName;
-            model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
+            model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except<object>().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,
                 ReturnType = ArithmeticBuilder.InferReturnTypeByPrecedence(typeModel, @type),

@@ -8,7 +8,7 @@ namespace HatTrick.DbEx.CodeTemplating.Model
         public string Name { get; private set; }
         public string Alias { get; private set; }
         public string NullableAlias => IsNullable ? $"{Alias}?" : Alias;
-        public bool IsNullable => Type != typeof(string) && Type != typeof(byte[]);
+        public bool IsNullable => Type != typeof(string) && Type != typeof(byte[]) && Type != typeof(object);
 
         public TypeModel(Type type, string alias)
         {

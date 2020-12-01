@@ -27,6 +27,9 @@ namespace HatTrick.DbEx.CodeTemplating
                 .Generate<FieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\TypedFieldExpression.htt", $@"{sqlSrcDirectory}\_Field")
                 .Generate<NullableFieldExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\_Field\NullableTypedFieldExpression.htt", $@"{sqlSrcDirectory}\_Field")
 
+                //alias
+                .Generate<AliasExpressionCodeGenerator, TemplateModel>($@"{templateDirectory}\AliasExpression.htt", $@"{sqlSrcDirectory}")
+
                 //aggregate function
                 .Generate<AverageFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_Aggregate\_Average")
                 .Generate<NullableAverageFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_Aggregate\_Average")

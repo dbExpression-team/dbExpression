@@ -13,12 +13,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write("DISTINCT ");
         }
 
-        protected static void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        protected virtual void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (string.IsNullOrWhiteSpace(aliasable.Alias))
-                return;
-
-            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.None)
                 return;
 
             builder.Appender.Write(" AS ")

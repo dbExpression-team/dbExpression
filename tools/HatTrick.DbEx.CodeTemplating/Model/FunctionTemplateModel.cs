@@ -3,6 +3,6 @@
     public class FunctionTemplateModel : TemplateModel
     {
         public string FunctionName { get; set; }
-        public bool IsGroupBySupported { get; set; } = true;
+        public bool IsAggregateFunction { get; set; } = false;
     }
 }

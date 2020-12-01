@@ -1,5 +1,6 @@
 ﻿using DbEx.Data;
 using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -209,6 +210,30 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             result.Should().NotBeNull();
             result.Should().Be(((int)ProductCategoryType.Books).ToString());
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Can_cast_of_aliased_field_succeed(int version, string expected = "30.00")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Cast(db.alias("lines", "PurchasePrice")).AsVarChar(50).As("alias")
+                ).From(dbo.Purchase)
+                .InnerJoin(
+                    db.SelectMany<PurchaseLine>().Top(100)
+                    .From(dbo.PurchaseLine)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<string>().Which.Should().StartWith(expected);
         }
     }
 }

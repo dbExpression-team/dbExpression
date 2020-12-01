@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -13,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_varp_of_total_purchase_amount_succeed(int version, float expected = 243.331f)
+        public void Does_populationvariance_of_total_purchase_amount_succeed(int version, float expected = 243.331f)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -31,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_varp_of_distinct_total_purchase_amount_succeed(int version, float expected = 250.515f)
+        public void Does_populationvariance_of_distinct_total_purchase_amount_succeed(int version, float expected = 250.515f)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -125,6 +126,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().BeApproximately(expected, 0.001f, "Rounding errors in calculation of population variance");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Can_populationvariance_of_aliased_field_succeed(int version, double expected = 18.6667)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.VarP(db.alias("lines", "PurchaseId")).Distinct().As("alias")
+                ).From(dbo.Purchase)
+                .InnerJoin(
+                    db.SelectMany<PurchaseLine>()
+                    .From(dbo.PurchaseLine)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<double>().Which.Should().BeApproximately(expected, 0.0001, "Rounding errors in population standard deviation");
         }
     }
 }

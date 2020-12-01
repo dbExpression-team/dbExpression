@@ -47,7 +47,6 @@ namespace HatTrick.DbEx.Sql.Expression
             RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
             ConditionalOperator = conditionalOperator;
         }
-
         #endregion
 
         #region to string
@@ -61,6 +60,15 @@ namespace HatTrick.DbEx.Sql.Expression
             if (a is object && b is null) { return a; }
             if (a is null && b is null) { return null; }
 
+            if (a.IsSingleArg && a.LeftArg is FilterExpression aFilter)
+            {
+                aFilter.Negate = a.Negate;
+                a.Negate = false;
+                a.RightArg = b;
+                a.ConditionalOperator = ConditionalExpressionOperator.And;
+                return a;
+            }
+
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.And);
         }
 
@@ -69,6 +77,42 @@ namespace HatTrick.DbEx.Sql.Expression
             if (a is null && b is object) { return b; }
             if (a is object && b is null) { return a; }
             if (a is null && b is null) { return null; }
+
+            if (a.IsSingleArg && a.LeftArg is FilterExpression aFilter)
+            {
+                aFilter.Negate = a.Negate;
+                a.Negate = false;
+                if (b.IsSingleArg && b.LeftArg is FilterExpression inner_bFilter)
+                {
+                    inner_bFilter.Negate = b.Negate;
+                    a.RightArg = inner_bFilter;
+                }
+                else
+                {
+                    a.RightArg = b;
+                }
+                a.ConditionalOperator = ConditionalExpressionOperator.And;
+                return a;
+            }
+
+            if (b.IsSingleArg && b.LeftArg is FilterExpression bFilter)
+            {
+                bFilter.Negate = b.Negate;
+                b.Negate = false;
+                if (a.IsSingleArg && a.LeftArg is FilterExpression inner_aFilter)
+                {
+                    inner_aFilter.Negate = a.Negate;
+                    b.RightArg = b.LeftArg;
+                    b.LeftArg = inner_aFilter;
+                }
+                else
+                {
+                    b.RightArg = b.LeftArg;
+                    b.LeftArg = a;
+                }
+                b.ConditionalOperator = ConditionalExpressionOperator.And;
+                return b;
+            }
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.And);
         }
@@ -79,6 +123,15 @@ namespace HatTrick.DbEx.Sql.Expression
             if (a is object && b is null) { return a; }
             if (a is null && b is null) { return null; }
 
+            if (a.IsSingleArg && a.LeftArg is FilterExpression aFilter)
+            {
+                aFilter.Negate = a.Negate;
+                a.Negate = false;
+                a.RightArg = b;
+                a.ConditionalOperator = ConditionalExpressionOperator.Or;
+                return a;
+            }
+
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }
 
@@ -87,6 +140,42 @@ namespace HatTrick.DbEx.Sql.Expression
             if (a is null && b is object) { return b; }
             if (a is object && b is null) { return a; }
             if (a is null && b is null) { return null; }
+
+            if (a.IsSingleArg && a.LeftArg is FilterExpression aFilter)
+            {
+                aFilter.Negate = a.Negate;
+                a.Negate = false;
+                if (b.IsSingleArg && b.LeftArg is FilterExpression inner_bFilter)
+                {
+                    inner_bFilter.Negate = b.Negate;
+                    a.RightArg = inner_bFilter;
+                }
+                else
+                {
+                    a.RightArg = b;
+                }
+                a.ConditionalOperator = ConditionalExpressionOperator.Or;
+                return a;
+            }
+
+            if (b.IsSingleArg && b.LeftArg is FilterExpression bFilter)
+            {
+                bFilter.Negate = b.Negate;
+                b.Negate = false;
+                if (a.IsSingleArg && a.LeftArg is FilterExpression inner_aFilter)
+                {
+                    inner_aFilter.Negate = a.Negate;
+                    b.RightArg = b.LeftArg;
+                    b.LeftArg = inner_aFilter;
+                }
+                else
+                {
+                    b.RightArg = b.LeftArg;
+                    b.LeftArg = a;
+                }
+                b.ConditionalOperator = ConditionalExpressionOperator.Or;
+                return b;
+            }
 
             return new FilterExpressionSet(a, b, ConditionalExpressionOperator.Or);
         }

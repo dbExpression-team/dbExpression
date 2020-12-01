@@ -19,14 +19,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region interface
         public SqlStatementAssemblerConfiguration Configuration { get; set; } = new SqlStatementAssemblerConfiguration();
         public FieldExpression Field => fields.FirstOrDefault(f => f is object);
-        public FieldExpressionAppendStyle FieldExpressionAppendStyle { get; private set; }
-        public EntityExpressionAppendStyle EntityExpressionAppendStyle { get; private set; }
+        public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
+        public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();
         #endregion
 
         #region constructors
         public AssemblyContext(SqlStatementAssemblerConfiguration configuration)
         {
-            //set default styles
+            //set defaults
             fieldStyles.Push(FieldExpressionAppendStyle.None);
             entityStyles.Push(EntityExpressionAppendStyle.None);
             Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
@@ -36,25 +36,25 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public void PushAppendStyles(EntityExpressionAppendStyle entityAppendStyle, FieldExpressionAppendStyle fieldAppendStyle)
         {
-            EntityExpressionAppendStyle = entityAppendStyle;
             entityStyles.Push(entityAppendStyle);
-            FieldExpressionAppendStyle = fieldAppendStyle;
             fieldStyles.Push(fieldAppendStyle);
         }
 
         public void PushAppendStyle(FieldExpressionAppendStyle fieldAppendStyle)
-            => PushAppendStyles(EntityExpressionAppendStyle, fieldAppendStyle);
+            => fieldStyles.Push(fieldAppendStyle);
 
         public void PushAppendStyle(EntityExpressionAppendStyle entityAppendStyle)
-            => PushAppendStyles(entityAppendStyle, FieldExpressionAppendStyle);
+            => entityStyles.Push(entityAppendStyle);
 
         public void PushField(FieldExpression field)
             => fields.Push(field);
 
         public void PopAppendStyles()
         {
-            entityStyles.Pop();
-            fieldStyles.Pop();
+            if (entityStyles.Any())
+                entityStyles.Pop();
+            if (fieldStyles.Any())
+                fieldStyles.Pop();
         }
 
         public void PopField()

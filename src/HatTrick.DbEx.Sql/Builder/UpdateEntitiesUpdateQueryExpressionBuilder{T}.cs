@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Builder
         UpdateEntitiesContinuation<TEntity> UpdateEntities<TEntity>.From(Entity<TEntity> entity)
         {
             var builder = CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}."));
-            Expression.Assign = entity.BuildAssignmentExpression(Source, Target);
+            Expression.Assign = entity.BuildAssignmentExpression(Target, Source);
             return builder;
         }
         #endregion

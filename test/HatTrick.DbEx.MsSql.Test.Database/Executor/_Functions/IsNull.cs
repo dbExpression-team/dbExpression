@@ -1,5 +1,6 @@
 ﻿using DbEx.Data;
 using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -298,6 +299,31 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Can_isnull_of_aliased_field_succeed(int version, decimal expected = 0m)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.IsNull(db.alias("lines", "PurchasePrice"), 0).As("alias")
+                ).From(dbo.Purchase)
+                .LeftJoin(
+                    db.SelectOne<PurchaseLine>()
+                    .From(dbo.PurchaseLine)
+                    .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"))
+                .Where(dbo.Purchase.Id == 1);
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<decimal>().Which.Should().BeApproximately(expected, 0.001m, "Rounding errors in isnull");
         }
     }
 }

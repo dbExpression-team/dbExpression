@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -9,11 +10,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     [Trait("Statement", "SELECT")]
     [Trait("Function", "VAR")]
-    public partial class Var : ExecutorTestBase
+    public partial class Variance : ExecutorTestBase
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_var_of_total_purchase_amount_succeed(int version, float expected = 260.712f)
+        public void Does_variance_of_total_purchase_amount_succeed(int version, float expected = 260.712f)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -31,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_var_of_distinct_total_purchase_amount_succeed(int version, float expectedValue = 269.785f)
+        public void Does_variance_of_distinct_total_purchase_amount_succeed(int version, float expectedValue = 269.785f)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -125,6 +126,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().BeApproximately(expected, 0.001f, "Rounding errors in calculation of variance");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Can_variance_of_aliased_field_succeed(int version, double expected = 16.5752)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Var(db.alias("lines", "PurchaseId")).As("alias")
+                ).From(dbo.Purchase)
+                .InnerJoin(
+                    db.SelectMany<PurchaseLine>()
+                    .From(dbo.PurchaseLine)
+                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<double>().Which.Should().BeApproximately(expected, 0.0001, "Rounding errors in population standard deviation");
         }
     }
 }

@@ -20,6 +20,8 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             {
                 TrimWhitespace = false //global flag for whitespace control...                
             };
+            ngin.LambdaRepo.Register("GetArithmeticOperationsForType", (Func<IList<ArithmeticOperationsTemplateModel>, Type, IList<ArithmeticOperationTemplateModel>>)((operations, type) => operations.SingleOrDefault(x => x.OperationType.Type == type)?.Operations ?? new List<ArithmeticOperationTemplateModel>()));
+            ngin.LambdaRepo.Register("IsTypeOfObject", (Func<Type, bool>)((type) => type == typeof(object)));
             //ngin.ProgressListener = (i, s) => Console.WriteLine($"{i}: {s}");
             var output = ngin.Merge(data);
             fileService.WriteFile(fileService.GetOutputPath(fileName), output);
@@ -43,7 +45,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             }
             else if (typeModel == TypeBuilder.Get<string>()) //String only supports concatenation
             {
-                model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
+                model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except<object>().ToList().Select(@type => new ArithmeticOperationsTemplateModel
                 {
                     OperationType = @type,
                     ReturnType = TypeBuilder.Get<string>(),
@@ -52,7 +54,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
             }
             else
             {
-                model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except(typeof(Guid), typeof(bool)).ToList().Select(@type => new ArithmeticOperationsTemplateModel
+                model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except(typeof(Guid), typeof(bool), typeof(object)).ToList().Select(@type => new ArithmeticOperationsTemplateModel
                 {
                     OperationType = @type,
                     ReturnType = TypeBuilder.InferReturnType(typeModel, @type),
@@ -60,7 +62,11 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                 }).ToList();
             }
 
-            model.FilterOperations = FilterBuilder.CreateBuilder().AddAll().ToList();
+            model.Filters = TypeBuilder.CreateBuilder().Add(typeModel).ToList().Select(@type => new FilterOperationsTemplateModel
+            {
+                Type = type,
+                Operations = FilterBuilder.CreateBuilder().InferFilterOperations(typeModel, @type).ToList()
+            }).ToList();
         }
 
         public abstract void Generate(string templatePath, string outputSubdirectory);

@@ -24,10 +24,18 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
                 {
                     OperationType = TypeBuilder.Get<DateTime>(),
                     ReturnType = TypeBuilder.Get<DateTime>(),
-                    Operations = ArithmeticBuilder.CreateBuilder().AddArithmeticAdd().ToList()
+                    Operations = ArithmeticBuilder.CreateBuilder().InferArithmeticOperations(@type, TypeBuilder.Get<DateTime>()).ToList()
                 }
             };
-            model.FilterOperations = FilterBuilder.CreateBuilder().AddAll().ToList();
+            model.Filters = new List<FilterOperationsTemplateModel>
+            {
+                new FilterOperationsTemplateModel
+                {
+                    Type = @type,
+                    Operations = FilterBuilder.CreateBuilder().InferFilterOperations(@type, TypeBuilder.Get<DateTime>()).ToList()
+                }
+            };
+            
             return model;
         }
 

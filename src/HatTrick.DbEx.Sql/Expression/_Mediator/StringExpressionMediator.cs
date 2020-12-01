@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region like
         public FilterExpressionSet Like(string phrase)
-            => new FilterExpressionSet(new FilterExpression(this, new StringExpressionMediator(new LikeExpression(phrase)), FilterExpressionOperator.None, false));
+            => new FilterExpressionSet(new FilterExpression(this, new StringExpressionMediator(new LikeExpression(phrase)), FilterExpressionOperator.None));
         #endregion
 
         #region equals
@@ -41,12 +41,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region arithmetic operators
-        #region mediators
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-        #endregion
         #endregion
     }
 }

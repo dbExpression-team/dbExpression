@@ -2,24 +2,45 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class AliasExpression :
-        IExpressionElement,
+    public partial class AliasExpression :
+        ObjectElement,
+        IExpressionAliasProvider,
+        IExpressionTypeProvider,
         IEquatable<AliasExpression>
     {
+        private string alias;
+
         #region interface
         public string TableAlias { get; private set; }
         public string FieldAlias { get; private set; }
+        string IExpressionAliasProvider.Alias => alias;
+        Type IExpressionTypeProvider.DeclaredType => typeof(object);
+
         #endregion
 
         #region constructors
-        public AliasExpression(string tableAlias, string fieldAlias)
+        public AliasExpression(string tableAlias, string fieldAlias) : this(tableAlias, fieldAlias, null)
         {
+
+        }
+
+        private AliasExpression(string tableAlias, string fieldAlias, string alias)
+        {
+            if (string.IsNullOrWhiteSpace(tableAlias))
+                throw new ArgumentException($"{nameof(tableAlias)} is required.");
+            if (string.IsNullOrWhiteSpace(fieldAlias))
+                throw new ArgumentException($"{nameof(tableAlias)} is required.");
+
             TableAlias = tableAlias;
             FieldAlias = fieldAlias;
+            this.alias = alias;
         }
         #endregion
 
-        #region methods
+        #region as
+        public ObjectElement As(string alias)
+            => new AliasExpression(TableAlias, FieldAlias, alias);
+        #endregion
 
         #region to string
         public override string ToString()
@@ -54,7 +75,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 return hash;
             }
         }
-        #endregion
         #endregion
     }
 }

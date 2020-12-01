@@ -1,5 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Converter;
-using HatTrick.DbEx.Sql.Executor;
+﻿using HatTrick.DbEx.Sql.Executor;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
@@ -20,7 +20,14 @@ namespace HatTrick.DbEx.Sql.Mapper
                 var converter = finder.FindConverter(field.Index) ?? finder.FindConverter(field.DataType);
                 if (converter is object)
                 {
-                    expando.Add(field.Name, converter.ConvertFromDatabase(field.Value));
+                    try
+                    {
+                        expando.Add(field.Name, converter.ConvertFromDatabase(field.Value));
+                    }
+                    catch (ArgumentException e)
+                    {
+                        throw new DbExpressionException(e.Message, e);
+                    }
                 }
                 else
                 {

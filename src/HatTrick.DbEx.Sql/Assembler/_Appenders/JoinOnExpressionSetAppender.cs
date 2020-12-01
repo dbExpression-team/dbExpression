@@ -27,7 +27,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                 context.SetState<JoinOnExpressionSetContext>();
             }
 
-
             try
             {
                 //implicit conversion will create a FilterExpressionSet for a single filter, evaluate whether each arg is "simple" or "complex" for the current

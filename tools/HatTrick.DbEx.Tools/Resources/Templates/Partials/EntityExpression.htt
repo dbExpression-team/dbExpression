@@ -68,7 +68,7 @@
             {#each Columns.Values}
             {#if !($) => IsIgnored}
             {#if !$.IsIdentity}
-            if (target.{($) => ResolveName} != source.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(source.{($) => ResolveName}); }}; 
+            if (target.{($) => ResolveName} != source.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(source.{($) => ResolveName}); }}
             {/if}
             {/if}
             {/each}

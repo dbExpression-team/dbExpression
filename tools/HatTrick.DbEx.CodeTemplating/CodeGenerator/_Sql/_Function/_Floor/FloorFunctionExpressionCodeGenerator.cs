@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             base.PopulateModel(model, @namespace, typeModel);
             model.FunctionName = functionName;
-            model.IsGroupBySupported = true;
+            model.IsAggregateFunction = false;
             model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddNumericTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,
@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
         public override void Generate(string templatePath, string outputSubdirectory)
         {
-            foreach (var @type in TypeBuilder.CreateBuilder().AddNumericTypes().ToList())
+            foreach (var @type in TypeBuilder.CreateBuilder().AddNumericTypes().Add<object>().ToList())
                 Generate(templatePath, outputSubdirectory, $"{@type.Name}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", @type));
         }
     }

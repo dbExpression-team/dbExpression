@@ -34,34 +34,39 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region set
-        public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(value)));
+        public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value));
         public virtual AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
         #endregion
 
         #region order
-        public override OrderByExpression Asc => new OrderByExpression(new ByteArrayExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new ByteArrayExpressionMediator(this), OrderExpressionDirection.DESC);
+        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<byte[]>(ByteArrayFieldExpression a) => new SelectExpression<byte[]>(new ByteArrayExpressionMediator(a));
+        public static implicit operator SelectExpression<byte[]>(ByteArrayFieldExpression a) => new SelectExpression<byte[]>(a);
         public static implicit operator ByteArrayExpressionMediator(ByteArrayFieldExpression a) => new ByteArrayExpressionMediator(a);
-        public static implicit operator OrderByExpression(ByteArrayFieldExpression a) => new OrderByExpression(new ByteArrayExpressionMediator(a), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(ByteArrayFieldExpression a) => new GroupByExpression(new ByteArrayExpressionMediator(a));
+        public static implicit operator OrderByExpression(ByteArrayFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(ByteArrayFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region filter operators
         #region byte[]
-        public static FilterExpression<bool> operator ==(ByteArrayFieldExpression a, byte[] b) => new FilterExpression<bool>(new ByteArrayExpressionMediator(a), new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(b)), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(ByteArrayFieldExpression a, byte[] b) => new FilterExpression<bool>(new ByteArrayExpressionMediator(a), new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(b)), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator ==(ByteArrayFieldExpression a, byte[] b) => new FilterExpression<bool>(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(ByteArrayFieldExpression a, byte[] b) => new FilterExpression<bool>(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.NotEqual);
 
-        public static FilterExpression<bool> operator ==(byte[] a, ByteArrayFieldExpression b) => new FilterExpression<bool>(new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(a)), new ByteArrayExpressionMediator(b), FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(byte[] a, ByteArrayFieldExpression b) => new FilterExpression<bool>(new ByteArrayExpressionMediator(new LiteralExpression<byte[]>(a)), new ByteArrayExpressionMediator(b), FilterExpressionOperator.NotEqual);
+        public static FilterExpression<bool> operator ==(byte[] a, ByteArrayFieldExpression b) => new FilterExpression<bool>(new LiteralExpression<byte[]>(a), b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(byte[] a, ByteArrayFieldExpression b) => new FilterExpression<bool>(new LiteralExpression<byte[]>(a), b, FilterExpressionOperator.NotEqual);
         #endregion
 
-        #region mediator
-        public static FilterExpression<bool> operator ==(ByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(new ByteArrayExpressionMediator(a), b, FilterExpressionOperator.Equal);
-        public static FilterExpression<bool> operator !=(ByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(new ByteArrayExpressionMediator(a), b, FilterExpressionOperator.NotEqual);
+        #region mediators
+        public static FilterExpression<bool> operator ==(ByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal);
+        public static FilterExpression<bool> operator !=(ByteArrayFieldExpression a, ByteArrayExpressionMediator b) => new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual);
+        #endregion
+
+        #region alias
+        public static FilterExpressionSet operator ==(ByteArrayFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(ByteArrayFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
     }

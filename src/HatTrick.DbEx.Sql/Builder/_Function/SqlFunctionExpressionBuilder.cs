@@ -8,6 +8,27 @@ namespace HatTrick.DbEx.Sql.Builder
     public partial class SqlFunctionExpressionBuilder
     {
         #region concat
+        #region object
+        public static StringConcatFunctionExpression Concat(params AnyObjectElement[] elements)
+            => new StringConcatFunctionExpression(elements);
+
+        public static StringConcatFunctionExpression Concat(string value, params AnyObjectElement[] elements)
+            => new StringConcatFunctionExpression(new List<AnyElement> { new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(elements).ToArray());
+
+        public static StringConcatFunctionExpression Concat(AnyObjectElement element1, string value, params AnyStringElement[] elements)
+            => new StringConcatFunctionExpression(new List<AnyElement> { element1, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(elements).ToArray());
+
+        public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyObjectElement element2, string value, params AnyStringElement[] elements)
+            => new StringConcatFunctionExpression(new List<AnyElement> { element1, element2, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(elements).ToArray());
+
+        public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyObjectElement element3, string value, params AnyStringElement[] elements)
+            => new StringConcatFunctionExpression(new List<AnyElement> { element1, element2, element3, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(elements).ToArray());
+
+        public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, AnyObjectElement element4, string value, params AnyStringElement[] elements)
+            => new StringConcatFunctionExpression(new List<AnyElement> { element1, element2, element3, element4, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(elements).ToArray());
+        #endregion
+
+        #region string
         public static StringConcatFunctionExpression Concat(params AnyStringElement[] elements)
             => new StringConcatFunctionExpression(elements);
 
@@ -26,14 +47,29 @@ namespace HatTrick.DbEx.Sql.Builder
         public static StringConcatFunctionExpression Concat(AnyStringElement element1, AnyStringElement element2, AnyStringElement element3, AnyStringElement element4, string value, params AnyStringElement[] elements)
             => new StringConcatFunctionExpression(new List<AnyStringElement> { element1, element2, element3, element4, new StringExpressionMediator(new LiteralExpression<string>(value)) }.Concat(elements).ToArray());
         #endregion
+        #endregion
 
         #region coalesce
+        #region object
+        public static ObjectCoalesceFunctionExpression Coalesce(AnyElement element, object value)
+            => new ObjectCoalesceFunctionExpression(new List<AnyElement> { element, new ObjectExpressionMediator(new LiteralExpression<object>(value)) });
+
+        public static ObjectCoalesceFunctionExpression Coalesce(AnyElement element1, AnyElement element2, object value)
+            => new ObjectCoalesceFunctionExpression(new List<AnyElement> { element1, element2, new ObjectExpressionMediator(new LiteralExpression<object>(value)) });
+
+        public static ObjectCoalesceFunctionExpression Coalesce(AnyElement element1, AnyElement element2, AnyElement element3, object value)
+            => new ObjectCoalesceFunctionExpression(new List<AnyElement> { element1, element2, element3, new ObjectExpressionMediator(new LiteralExpression<object>(value)) });
+
+        public static ObjectCoalesceFunctionExpression Coalesce(AnyElement element1, AnyElement element2, AnyElement element3, AnyElement element4, params AnyElement[] elements)
+            => new ObjectCoalesceFunctionExpression(new List<AnyElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
+        #endregion
+
         #region bool
         public static BooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element, bool value)
             => new BooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element, new BooleanExpressionMediator(new LiteralExpression<bool>(value)) });
 
         public static NullableBooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element1, bool? value)
-            => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>(value)) });
+            => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, new NullableBooleanExpressionMediator(new LiteralExpression<bool?>(value)) });
 
         public static NullableBooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element1, BooleanElement element2)
             => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1 }, element2);
@@ -45,7 +81,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new BooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, new BooleanExpressionMediator(new LiteralExpression<bool>(value)) });
 
         public static NullableBooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element1, AnyBooleanElement element2, bool? value)
-            => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>(value)) });
+            => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, new NullableBooleanExpressionMediator(new LiteralExpression<bool?>(value)) });
 
         public static NullableBooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element1, AnyBooleanElement element2, BooleanElement element3)
             => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2 }, element3);
@@ -57,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new BooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, element3, new BooleanExpressionMediator(new LiteralExpression<bool>(value)) });
 
         public static NullableBooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element1, AnyBooleanElement element2, AnyBooleanElement element3, bool? value)
-            => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, element3, new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>(value)) });
+            => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, element3, new NullableBooleanExpressionMediator(new LiteralExpression<bool?>(value)) });
 
         public static NullableBooleanCoalesceFunctionExpression Coalesce(AnyBooleanElement element1, AnyBooleanElement element2, AnyBooleanElement element3, AnyBooleanElement element4, params AnyBooleanElement[] elements)
             => new NullableBooleanCoalesceFunctionExpression(new List<AnyBooleanElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -68,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Builder
            => new ByteCoalesceFunctionExpression(new List<AnyByteElement> { element, new ByteExpressionMediator(new LiteralExpression<byte>(value)) });
 
         public static NullableByteCoalesceFunctionExpression Coalesce(AnyByteElement element, byte? value)
-            => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element, new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>(value)) });
+            => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element, new NullableByteExpressionMediator(new LiteralExpression<byte?>(value)) });
 
         public static NullableByteCoalesceFunctionExpression Coalesce(AnyByteElement element1, ByteElement element2)
             => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1 }, element2);
@@ -80,7 +116,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new ByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, new ByteExpressionMediator(new LiteralExpression<byte>(value)) });
 
         public static NullableByteCoalesceFunctionExpression Coalesce(AnyByteElement element1, AnyByteElement element2, byte? value)
-            => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>(value)) });
+            => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, new NullableByteExpressionMediator(new LiteralExpression<byte?>(value)) });
 
         public static NullableByteCoalesceFunctionExpression Coalesce(AnyByteElement element1, AnyByteElement element2, ByteElement element3)
             => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2 }, element3);
@@ -92,7 +128,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new ByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, element3, new ByteExpressionMediator(new LiteralExpression<byte>(value)) });
 
         public static NullableByteCoalesceFunctionExpression Coalesce(AnyByteElement element1, AnyByteElement element2, AnyByteElement element3, byte? value)
-            => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, element3, new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>(value)) });
+            => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, element3, new NullableByteExpressionMediator(new LiteralExpression<byte?>(value)) });
 
         public static NullableByteCoalesceFunctionExpression Coalesce(AnyByteElement element1, AnyByteElement element2, AnyByteElement element3, AnyByteElement element4, params AnyByteElement[] elements)
             => new NullableByteCoalesceFunctionExpression(new List<AnyByteElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -103,7 +139,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(value)) });
 
         public static NullableDateTimeCoalesceFunctionExpression Coalesce(AnyDateTimeElement element, DateTime? value)
-            => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(value)) });
+            => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(value)) });
 
         public static NullableDateTimeCoalesceFunctionExpression Coalesce(AnyDateTimeElement element1, DateTimeElement element2)
             => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1 }, element2);
@@ -115,7 +151,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(value)) });
 
         public static NullableDateTimeCoalesceFunctionExpression Coalesce(AnyDateTimeElement element1, AnyDateTimeElement element2, DateTime? value)
-            => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(value)) });
+            => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(value)) });
 
         public static NullableDateTimeCoalesceFunctionExpression Coalesce(AnyDateTimeElement element1, AnyDateTimeElement element2, DateTimeElement element3)
             => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2 }, element3);
@@ -127,7 +163,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, element3, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(value)) });
 
         public static NullableDateTimeCoalesceFunctionExpression Coalesce(AnyDateTimeElement element1, AnyDateTimeElement element2, AnyDateTimeElement element3, DateTime? value)
-            => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, element3, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(value)) });
+            => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, element3, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(value)) });
 
         public static NullableDateTimeCoalesceFunctionExpression Coalesce(AnyDateTimeElement element1, AnyDateTimeElement element2, AnyDateTimeElement element3, AnyDateTimeElement element4, params AnyDateTimeElement[] elements)
             => new NullableDateTimeCoalesceFunctionExpression(new List<AnyDateTimeElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -138,7 +174,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)) });
 
         public static NullableDateTimeOffsetCoalesceFunctionExpression Coalesce(AnyDateTimeOffsetElement element, DateTimeOffset? value)
-            => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(value)) });
+            => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(value)) });
 
         public static NullableDateTimeOffsetCoalesceFunctionExpression Coalesce(AnyDateTimeOffsetElement element1, DateTimeOffsetElement element2)
             => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1 }, element2);
@@ -150,7 +186,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)) });
 
         public static NullableDateTimeOffsetCoalesceFunctionExpression Coalesce(AnyDateTimeOffsetElement element1, AnyDateTimeOffsetElement element2, DateTimeOffset? value)
-            => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(value)) });
+            => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(value)) });
 
         public static NullableDateTimeOffsetCoalesceFunctionExpression Coalesce(AnyDateTimeOffsetElement element1, AnyDateTimeOffsetElement element2, DateTimeOffsetElement element3)
             => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2 }, element3);
@@ -162,7 +198,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, element3, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)) });
 
         public static NullableDateTimeOffsetCoalesceFunctionExpression Coalesce(AnyDateTimeOffsetElement element1, AnyDateTimeOffsetElement element2, AnyDateTimeOffsetElement element3, DateTimeOffset? value)
-            => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, element3, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(value)) });
+            => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, element3, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(value)) });
 
         public static NullableDateTimeOffsetCoalesceFunctionExpression Coalesce(AnyDateTimeOffsetElement element1, AnyDateTimeOffsetElement element2, AnyDateTimeOffsetElement element3, AnyDateTimeOffsetElement element4, params AnyDateTimeOffsetElement[] elements)
             => new NullableDateTimeOffsetCoalesceFunctionExpression(new List<AnyDateTimeOffsetElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -173,7 +209,7 @@ namespace HatTrick.DbEx.Sql.Builder
            => new DoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element, new DoubleExpressionMediator(new LiteralExpression<double>(value)) });
 
         public static NullableDoubleCoalesceFunctionExpression Coalesce(AnyDoubleElement element, double? value)
-            => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)) });
+            => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element, new NullableDoubleExpressionMediator(new LiteralExpression<double?>(value)) });
 
         public static NullableDoubleCoalesceFunctionExpression Coalesce(AnyDoubleElement element1, DoubleElement element2)
             => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1 }, element2);
@@ -185,7 +221,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, new DoubleExpressionMediator(new LiteralExpression<double>(value)) });
 
         public static NullableDoubleCoalesceFunctionExpression Coalesce(AnyDoubleElement element1, AnyDoubleElement element2, double? value)
-            => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)) });
+            => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, new NullableDoubleExpressionMediator(new LiteralExpression<double?>(value)) });
 
         public static NullableDoubleCoalesceFunctionExpression Coalesce(AnyDoubleElement element1, AnyDoubleElement element2, DoubleElement element3)
             => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2 }, element3);
@@ -197,7 +233,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, element3, new DoubleExpressionMediator(new LiteralExpression<double>(value)) });
 
         public static NullableDoubleCoalesceFunctionExpression Coalesce(AnyDoubleElement element1, AnyDoubleElement element2, AnyDoubleElement element3, double? value)
-            => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, element3, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)) });
+            => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, element3, new NullableDoubleExpressionMediator(new LiteralExpression<double?>(value)) });
 
         public static NullableDoubleCoalesceFunctionExpression Coalesce(AnyDoubleElement element1, AnyDoubleElement element2, AnyDoubleElement element3, AnyDoubleElement element4, params AnyDoubleElement[] elements)
             => new NullableDoubleCoalesceFunctionExpression(new List<AnyDoubleElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -208,7 +244,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)) });
 
         public static NullableDecimalCoalesceFunctionExpression Coalesce(AnyDecimalElement element, decimal? value)
-            => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element, new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>(value)) });
+            => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element, new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(value)) });
 
         public static NullableDecimalCoalesceFunctionExpression Coalesce(AnyDecimalElement element1, DecimalElement element2)
             => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1 }, element2);
@@ -220,7 +256,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)) });
 
         public static NullableDecimalCoalesceFunctionExpression Coalesce(AnyDecimalElement element1, AnyDecimalElement element2, decimal? value)
-            => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>(value)) });
+            => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(value)) });
 
         public static NullableDecimalCoalesceFunctionExpression Coalesce(AnyDecimalElement element1, AnyDecimalElement element2, DecimalElement element3)
             => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2 }, element3);
@@ -232,7 +268,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, element3, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)) });
 
         public static NullableDecimalCoalesceFunctionExpression Coalesce(AnyDecimalElement element1, AnyDecimalElement element2, AnyDecimalElement element3, decimal? value)
-            => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, element3, new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>(value)) });
+            => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, element3, new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(value)) });
 
         public static NullableDecimalCoalesceFunctionExpression Coalesce(AnyDecimalElement element1, AnyDecimalElement element2, AnyDecimalElement element3, AnyDecimalElement element4, params AnyDecimalElement[] elements)
             => new NullableDecimalCoalesceFunctionExpression(new List<AnyDecimalElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -245,7 +281,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static NullableEnumCoalesceFunctionExpression<TEnum> Coalesce<TEnum>(AnyEnumElement<TEnum> element, TEnum? value)
             where TEnum : struct, Enum, IComparable
-            => new NullableEnumCoalesceFunctionExpression<TEnum>(new List<AnyEnumElement<TEnum>> { element, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)) });
+            => new NullableEnumCoalesceFunctionExpression<TEnum>(new List<AnyEnumElement<TEnum>> { element, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(value)) });
 
         public static NullableEnumCoalesceFunctionExpression<TEnum> Coalesce<TEnum>(AnyEnumElement<TEnum> element1, EnumElement<TEnum> element2)
             where TEnum : struct, Enum, IComparable
@@ -261,7 +297,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static NullableEnumCoalesceFunctionExpression<TEnum> Coalesce<TEnum>(AnyEnumElement<TEnum> element1, AnyEnumElement<TEnum> element2, TEnum? value)
             where TEnum : struct, Enum, IComparable
-            => new NullableEnumCoalesceFunctionExpression<TEnum>(new List<AnyEnumElement<TEnum>> { element1, element2, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)) });
+            => new NullableEnumCoalesceFunctionExpression<TEnum>(new List<AnyEnumElement<TEnum>> { element1, element2, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(value)) });
 
         public static NullableEnumCoalesceFunctionExpression<TEnum> Coalesce<TEnum>(AnyEnumElement<TEnum> element1, AnyEnumElement<TEnum> element2, EnumElement<TEnum> element3)
             where TEnum : struct, Enum, IComparable
@@ -277,7 +313,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static NullableEnumCoalesceFunctionExpression<TEnum> Coalesce<TEnum>(AnyEnumElement<TEnum> element1, AnyEnumElement<TEnum> element2, AnyEnumElement<TEnum> element3, TEnum? value)
             where TEnum : struct, Enum, IComparable
-            => new NullableEnumCoalesceFunctionExpression<TEnum>(new List<AnyEnumElement<TEnum>> { element1, element2, element3, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)) });
+            => new NullableEnumCoalesceFunctionExpression<TEnum>(new List<AnyEnumElement<TEnum>> { element1, element2, element3, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(value)) });
 
         public static NullableEnumCoalesceFunctionExpression<TEnum> Coalesce<TEnum>(AnyEnumElement<TEnum> element1, AnyEnumElement<TEnum> element2, AnyEnumElement<TEnum> element3, AnyEnumElement<TEnum> element4, params AnyEnumElement<TEnum>[] elements)
             where TEnum : struct, Enum, IComparable
@@ -289,7 +325,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new SingleCoalesceFunctionExpression(new List<AnySingleElement> { element, new SingleExpressionMediator(new LiteralExpression<float>(value)) });
 
         public static NullableSingleCoalesceFunctionExpression Coalesce(AnySingleElement element, float? value)
-            => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element, new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>(value)) });
+            => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element, new NullableSingleExpressionMediator(new LiteralExpression<float?>(value)) });
 
         public static NullableSingleCoalesceFunctionExpression Coalesce(AnySingleElement element1, SingleElement element2)
             => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1 }, element2);
@@ -301,7 +337,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new SingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, new SingleExpressionMediator(new LiteralExpression<float>(value)) });
 
         public static NullableSingleCoalesceFunctionExpression Coalesce(AnySingleElement element1, AnySingleElement element2, float? value)
-            => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>(value)) });
+            => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, new NullableSingleExpressionMediator(new LiteralExpression<float?>(value)) });
 
         public static NullableSingleCoalesceFunctionExpression Coalesce(AnySingleElement element1, AnySingleElement element2, SingleElement element3)
             => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2 }, element3);
@@ -313,7 +349,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new SingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, element3, new SingleExpressionMediator(new LiteralExpression<float>(value)) });
 
         public static NullableSingleCoalesceFunctionExpression Coalesce(AnySingleElement element1, AnySingleElement element2, AnySingleElement element3, float? value)
-            => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, element3, new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>(value)) });
+            => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, element3, new NullableSingleExpressionMediator(new LiteralExpression<float?>(value)) });
 
         public static NullableSingleCoalesceFunctionExpression Coalesce(AnySingleElement element1, AnySingleElement element2, AnySingleElement element3, AnySingleElement element4, params AnySingleElement[] elements)
             => new NullableSingleCoalesceFunctionExpression(new List<AnySingleElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -324,7 +360,7 @@ namespace HatTrick.DbEx.Sql.Builder
            => new GuidCoalesceFunctionExpression(new List<AnyGuidElement> { element, new GuidExpressionMediator(new LiteralExpression<decimal>(value)) });
 
         public static NullableGuidCoalesceFunctionExpression Coalesce(AnyGuidElement element, decimal? value)
-            => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element, new NullableGuidExpressionMediator(new NullableLiteralExpression<decimal?>(value)) });
+            => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element, new NullableGuidExpressionMediator(new LiteralExpression<decimal?>(value)) });
 
         public static NullableGuidCoalesceFunctionExpression Coalesce(AnyGuidElement element1, GuidElement element2)
             => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1 }, element2);
@@ -336,7 +372,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new GuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, new GuidExpressionMediator(new LiteralExpression<decimal>(value)) });
 
         public static NullableGuidCoalesceFunctionExpression Coalesce(AnyGuidElement element1, AnyGuidElement element2, decimal? value)
-            => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, new NullableGuidExpressionMediator(new NullableLiteralExpression<decimal?>(value)) });
+            => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, new NullableGuidExpressionMediator(new LiteralExpression<decimal?>(value)) });
 
         public static NullableGuidCoalesceFunctionExpression Coalesce(AnyGuidElement element1, AnyGuidElement element2, GuidElement element3)
             => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2 }, element3);
@@ -348,7 +384,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new GuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, element3, new GuidExpressionMediator(new LiteralExpression<decimal>(value)) });
 
         public static NullableGuidCoalesceFunctionExpression Coalesce(AnyGuidElement element1, AnyGuidElement element2, AnyGuidElement element3, decimal? value)
-            => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, element3, new NullableGuidExpressionMediator(new NullableLiteralExpression<decimal?>(value)) });
+            => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, element3, new NullableGuidExpressionMediator(new LiteralExpression<decimal?>(value)) });
 
         public static NullableGuidCoalesceFunctionExpression Coalesce(AnyGuidElement element1, AnyGuidElement element2, AnyGuidElement element3, AnyGuidElement element4, params AnyGuidElement[] elements)
             => new NullableGuidCoalesceFunctionExpression(new List<AnyGuidElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -359,7 +395,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int16CoalesceFunctionExpression(new List<AnyInt16Element> { element, new Int16ExpressionMediator(new LiteralExpression<int>(value)) });
 
         public static NullableInt16CoalesceFunctionExpression Coalesce(AnyInt16Element element, short? value)
-            => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element, new NullableInt16ExpressionMediator(new NullableLiteralExpression<int?>(value)) });
+            => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element, new NullableInt16ExpressionMediator(new LiteralExpression<int?>(value)) });
 
         public static NullableInt16CoalesceFunctionExpression Coalesce(AnyInt16Element element1, Int16Element element2)
             => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1 }, element2);
@@ -371,7 +407,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, new Int16ExpressionMediator(new LiteralExpression<short>(value)) });
 
         public static NullableInt16CoalesceFunctionExpression Coalesce(AnyInt16Element element1, AnyInt16Element element2, short? value)
-            => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, new NullableInt16ExpressionMediator(new NullableLiteralExpression<short?>(value)) });
+            => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, new NullableInt16ExpressionMediator(new LiteralExpression<short?>(value)) });
 
         public static NullableInt16CoalesceFunctionExpression Coalesce(AnyInt16Element element1, AnyInt16Element element2, Int16Element element3)
             => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2 }, element3);
@@ -383,7 +419,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, element3, new Int16ExpressionMediator(new LiteralExpression<short>(value)) });
 
         public static NullableInt16CoalesceFunctionExpression Coalesce(AnyInt16Element element1, AnyInt16Element element2, AnyInt16Element element3, short? value)
-            => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, element3, new NullableInt16ExpressionMediator(new NullableLiteralExpression<short?>(value)) });
+            => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, element3, new NullableInt16ExpressionMediator(new LiteralExpression<short?>(value)) });
 
         public static NullableInt16CoalesceFunctionExpression Coalesce(AnyInt16Element element1, AnyInt16Element element2, AnyInt16Element element3, AnyInt16Element element4, params AnyInt16Element[] elements)
             => new NullableInt16CoalesceFunctionExpression(new List<AnyInt16Element> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -394,7 +430,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int32CoalesceFunctionExpression(new List<AnyInt32Element> { element, new Int32ExpressionMediator(new LiteralExpression<int>(value)) });
 
         public static NullableInt32CoalesceFunctionExpression Coalesce(AnyInt32Element element, int? value)
-            => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element, new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>(value)) });
+            => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element, new NullableInt32ExpressionMediator(new LiteralExpression<int?>(value)) });
 
         public static NullableInt32CoalesceFunctionExpression Coalesce(AnyInt32Element element1, Int32Element element2)
             => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1 }, element2);
@@ -406,7 +442,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, new Int32ExpressionMediator(new LiteralExpression<int>(value)) });
 
         public static NullableInt32CoalesceFunctionExpression Coalesce(AnyInt32Element element1, AnyInt32Element element2, int? value)
-            => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>(value)) });
+            => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, new NullableInt32ExpressionMediator(new LiteralExpression<int?>(value)) });
 
         public static NullableInt32CoalesceFunctionExpression Coalesce(AnyInt32Element element1, AnyInt32Element element2, Int32Element element3)
             => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2 }, element3);
@@ -418,7 +454,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, element3, new Int32ExpressionMediator(new LiteralExpression<int>(value)) });
 
         public static NullableInt32CoalesceFunctionExpression Coalesce(AnyInt32Element element1, AnyInt32Element element2, AnyInt32Element element3, int? value)
-            => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, element3, new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>(value)) });
+            => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, element3, new NullableInt32ExpressionMediator(new LiteralExpression<int?>(value)) });
 
         public static NullableInt32CoalesceFunctionExpression Coalesce(AnyInt32Element element1, AnyInt32Element element2, AnyInt32Element element3, AnyInt32Element element4, params AnyInt32Element[] elements)
             => new NullableInt32CoalesceFunctionExpression(new List<AnyInt32Element> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -429,7 +465,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int64CoalesceFunctionExpression(new List<AnyInt64Element> { element, new Int64ExpressionMediator(new LiteralExpression<long>(value)) });
 
         public static NullableInt64CoalesceFunctionExpression Coalesce(AnyInt64Element element, long? value)
-            => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element, new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>(value)) });
+            => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element, new NullableInt64ExpressionMediator(new LiteralExpression<long?>(value)) });
 
         public static NullableInt64CoalesceFunctionExpression Coalesce(AnyInt64Element element1, Int64Element element2)
             => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1 }, element2);
@@ -441,7 +477,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, new Int64ExpressionMediator(new LiteralExpression<long>(value)) });
 
         public static NullableInt64CoalesceFunctionExpression Coalesce(AnyInt64Element element1, AnyInt64Element element2, long? value)
-            => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>(value)) });
+            => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, new NullableInt64ExpressionMediator(new LiteralExpression<long?>(value)) });
 
         public static NullableInt64CoalesceFunctionExpression Coalesce(AnyInt64Element element1, AnyInt64Element element2, Int64Element element3)
             => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2 }, element3);
@@ -453,7 +489,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, element3, new Int64ExpressionMediator(new LiteralExpression<long>(value)) });
 
         public static NullableInt64CoalesceFunctionExpression Coalesce(AnyInt64Element element1, AnyInt64Element element2, AnyInt64Element element3, long? value)
-            => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, element3, new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>(value)) });
+            => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, element3, new NullableInt64ExpressionMediator(new LiteralExpression<long?>(value)) });
 
         public static NullableInt64CoalesceFunctionExpression Coalesce(AnyInt64Element element1, AnyInt64Element element2, AnyInt64Element element3, AnyInt64Element element4, params AnyInt64Element[] elements)
             => new NullableInt64CoalesceFunctionExpression(new List<AnyInt64Element> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -490,7 +526,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new TimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)) });
 
         public static NullableTimeSpanCoalesceFunctionExpression Coalesce(AnyTimeSpanElement element, TimeSpan? value)
-            => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)) });
+            => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element, new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(value)) });
 
         public static NullableTimeSpanCoalesceFunctionExpression Coalesce(AnyTimeSpanElement element1, TimeSpanElement element2)
             => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1 }, element2);
@@ -502,7 +538,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new TimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)) });
 
         public static NullableTimeSpanCoalesceFunctionExpression Coalesce(AnyTimeSpanElement element1, AnyTimeSpanElement element2, TimeSpan? value)
-            => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)) });
+            => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(value)) });
 
         public static NullableTimeSpanCoalesceFunctionExpression Coalesce(AnyTimeSpanElement element1, AnyTimeSpanElement element2, TimeSpanElement element3)
             => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2 }, element3);
@@ -514,7 +550,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new TimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, element3, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)) });
 
         public static NullableTimeSpanCoalesceFunctionExpression Coalesce(AnyTimeSpanElement element1, AnyTimeSpanElement element2, AnyTimeSpanElement element3, TimeSpan? value)
-            => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, element3, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)) });
+            => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, element3, new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(value)) });
 
         public static NullableTimeSpanCoalesceFunctionExpression Coalesce(AnyTimeSpanElement element1, AnyTimeSpanElement element2, AnyTimeSpanElement element3, AnyTimeSpanElement element4, params AnyTimeSpanElement[] elements)
             => new NullableTimeSpanCoalesceFunctionExpression(new List<AnyTimeSpanElement> { element1, element2, element3, element4 }.Concat(elements).ToList());
@@ -522,6 +558,14 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region isnull
+        #region object
+        public static ObjectIsNullFunctionExpression IsNull(AnyObjectElement element1, AnyObjectElement element2)
+            => new ObjectIsNullFunctionExpression(element1, element2);
+
+        public static ObjectIsNullFunctionExpression IsNull(AnyObjectElement element, object value)
+            => new ObjectIsNullFunctionExpression(element, new ObjectExpressionMediator(new LiteralExpression<object>(value)));
+        #endregion
+
         #region bool
         public static BooleanIsNullFunctionExpression IsNull(AnyBooleanElement element1, BooleanElement element2)
             => new BooleanIsNullFunctionExpression(element1, element2);
@@ -533,7 +577,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new BooleanIsNullFunctionExpression(element, new BooleanExpressionMediator(new LiteralExpression<bool>(value)));
 
         public static NullableBooleanIsNullFunctionExpression IsNull(AnyBooleanElement element, bool? value)
-            => new NullableBooleanIsNullFunctionExpression(element, new NullableBooleanExpressionMediator(new NullableLiteralExpression<bool?>(value)));
+            => new NullableBooleanIsNullFunctionExpression(element, new NullableBooleanExpressionMediator(new LiteralExpression<bool?>(value)));
         #endregion
 
         #region byte
@@ -547,7 +591,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new ByteIsNullFunctionExpression(element, new ByteExpressionMediator(new LiteralExpression<byte>(value)));
 
         public static NullableByteIsNullFunctionExpression IsNull(AnyByteElement element, byte? value)
-            => new NullableByteIsNullFunctionExpression(element, new NullableByteExpressionMediator(new NullableLiteralExpression<byte?>(value)));
+            => new NullableByteIsNullFunctionExpression(element, new NullableByteExpressionMediator(new LiteralExpression<byte?>(value)));
         #endregion
 
         #region DateTime
@@ -561,7 +605,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeIsNullFunctionExpression(element, new DateTimeExpressionMediator(new LiteralExpression<DateTime>(value)));
 
         public static NullableDateTimeIsNullFunctionExpression IsNull(AnyDateTimeElement element, DateTime? value)
-            => new NullableDateTimeIsNullFunctionExpression(element, new NullableDateTimeExpressionMediator(new NullableLiteralExpression<DateTime?>(value)));
+            => new NullableDateTimeIsNullFunctionExpression(element, new NullableDateTimeExpressionMediator(new LiteralExpression<DateTime?>(value)));
         #endregion
 
         #region DateTimeOffset
@@ -575,7 +619,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DateTimeOffsetIsNullFunctionExpression(element, new DateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset>(value)));
 
         public static NullableDateTimeOffsetIsNullFunctionExpression IsNull(AnyDateTimeOffsetElement element, DateTimeOffset? value)
-            => new NullableDateTimeOffsetIsNullFunctionExpression(element, new NullableDateTimeOffsetExpressionMediator(new NullableLiteralExpression<DateTimeOffset?>(value)));
+            => new NullableDateTimeOffsetIsNullFunctionExpression(element, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTimeOffset?>(value)));
         #endregion
 
         #region decimal
@@ -589,7 +633,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DecimalIsNullFunctionExpression(element, new DecimalExpressionMediator(new LiteralExpression<decimal>(value)));
 
         public static NullableDecimalIsNullFunctionExpression IsNull(AnyDecimalElement element, decimal? value)
-            => new NullableDecimalIsNullFunctionExpression(element, new NullableDecimalExpressionMediator(new NullableLiteralExpression<decimal?>(value)));
+            => new NullableDecimalIsNullFunctionExpression(element, new NullableDecimalExpressionMediator(new LiteralExpression<decimal?>(value)));
         #endregion
 
         #region double
@@ -603,7 +647,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new DoubleIsNullFunctionExpression(element, new DoubleExpressionMediator(new LiteralExpression<double>(value)));
 
         public static NullableDoubleIsNullFunctionExpression IsNull(AnyDoubleElement element, double? value)
-            => new NullableDoubleIsNullFunctionExpression(element, new NullableDoubleExpressionMediator(new NullableLiteralExpression<double?>(value)));
+            => new NullableDoubleIsNullFunctionExpression(element, new NullableDoubleExpressionMediator(new LiteralExpression<double?>(value)));
         #endregion
 
         #region Enum
@@ -621,7 +665,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         public static NullableEnumIsNullFunctionExpression<TEnum> IsNull<TEnum>(AnyEnumElement<TEnum> element, TEnum? value)
             where TEnum : struct, Enum, IComparable
-            => new NullableEnumIsNullFunctionExpression<TEnum>(element, new NullableEnumExpressionMediator<TEnum>(new NullableLiteralExpression<TEnum?>(value)));
+            => new NullableEnumIsNullFunctionExpression<TEnum>(element, new NullableEnumExpressionMediator<TEnum>(new LiteralExpression<TEnum?>(value)));
         #endregion
 
         #region float
@@ -635,7 +679,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new SingleIsNullFunctionExpression(element, new SingleExpressionMediator(new LiteralExpression<float>(value)));
 
         public static NullableSingleIsNullFunctionExpression IsNull(AnySingleElement element, float? value)
-            => new NullableSingleIsNullFunctionExpression(element, new NullableSingleExpressionMediator(new NullableLiteralExpression<float?>(value)));
+            => new NullableSingleIsNullFunctionExpression(element, new NullableSingleExpressionMediator(new LiteralExpression<float?>(value)));
         #endregion
 
         #region Guid
@@ -649,7 +693,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new GuidIsNullFunctionExpression(element, new GuidExpressionMediator(new LiteralExpression<Guid>(value)));
 
         public static NullableGuidIsNullFunctionExpression IsNull(AnyGuidElement element, Guid? value)
-            => new NullableGuidIsNullFunctionExpression(element, new NullableGuidExpressionMediator(new NullableLiteralExpression<Guid?>(value)));
+            => new NullableGuidIsNullFunctionExpression(element, new NullableGuidExpressionMediator(new LiteralExpression<Guid?>(value)));
         #endregion
 
         #region short
@@ -663,7 +707,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int16IsNullFunctionExpression(element, new Int16ExpressionMediator(new LiteralExpression<short>(value)));
 
         public static NullableInt16IsNullFunctionExpression IsNull(AnyInt16Element element, short? value)
-            => new NullableInt16IsNullFunctionExpression(element, new NullableInt16ExpressionMediator(new NullableLiteralExpression<short?>(value)));
+            => new NullableInt16IsNullFunctionExpression(element, new NullableInt16ExpressionMediator(new LiteralExpression<short?>(value)));
         #endregion
 
         #region int
@@ -677,7 +721,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int32IsNullFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(value)));
 
         public static NullableInt32IsNullFunctionExpression IsNull(AnyInt32Element element, int? value)
-            => new NullableInt32IsNullFunctionExpression(element, new NullableInt32ExpressionMediator(new NullableLiteralExpression<int?>(value)));
+            => new NullableInt32IsNullFunctionExpression(element, new NullableInt32ExpressionMediator(new LiteralExpression<int?>(value)));
         #endregion
 
         #region long
@@ -691,7 +735,7 @@ namespace HatTrick.DbEx.Sql.Builder
             => new Int64IsNullFunctionExpression(element, new Int64ExpressionMediator(new LiteralExpression<long>(value)));
 
         public static NullableInt64IsNullFunctionExpression IsNull(AnyInt64Element element, long? value)
-            => new NullableInt64IsNullFunctionExpression(element, new NullableInt64ExpressionMediator(new NullableLiteralExpression<long?>(value)));
+            => new NullableInt64IsNullFunctionExpression(element, new NullableInt64ExpressionMediator(new LiteralExpression<long?>(value)));
         #endregion
 
         #region string
@@ -716,11 +760,14 @@ namespace HatTrick.DbEx.Sql.Builder
             => new TimeSpanIsNullFunctionExpression(element, new TimeSpanExpressionMediator(new LiteralExpression<TimeSpan>(value)));
 
         public static NullableTimeSpanIsNullFunctionExpression IsNull(AnyTimeSpanElement element, TimeSpan? value)
-            => new NullableTimeSpanIsNullFunctionExpression(element, new NullableTimeSpanExpressionMediator(new NullableLiteralExpression<TimeSpan?>(value)));
+            => new NullableTimeSpanIsNullFunctionExpression(element, new NullableTimeSpanExpressionMediator(new LiteralExpression<TimeSpan?>(value)));
         #endregion
         #endregion
 
         #region average
+        public static ObjectAverageFunctionExpression Avg(AnyObjectElement element)
+            => new ObjectAverageFunctionExpression(element);
+
         public static Int32AverageFunctionExpression Avg(ByteElement element)
             => new Int32AverageFunctionExpression(element);
 
@@ -765,6 +812,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region minimum
+        public static ObjectMinimumFunctionExpression Min(AnyObjectElement element)
+            => new ObjectMinimumFunctionExpression(element);
+
         public static ByteMinimumFunctionExpression Min(ByteElement element)
             => new ByteMinimumFunctionExpression(element);
 
@@ -836,6 +886,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region maximum
+        public static ObjectMaximumFunctionExpression Max(AnyObjectElement element)
+            => new ObjectMaximumFunctionExpression(element);
+
         public static ByteMaximumFunctionExpression Max(ByteElement element)
             => new ByteMaximumFunctionExpression(element);
 
@@ -915,6 +968,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region sum
+        public static ObjectSumFunctionExpression Sum(AnyObjectElement element)
+            => new ObjectSumFunctionExpression(element);
+
         public static Int32SumFunctionExpression Sum(ByteElement element)
             => new Int32SumFunctionExpression(element);
 
@@ -959,6 +1015,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region standard deviation
+        public static ObjectStandardDeviationFunctionExpression StDev(AnyObjectElement element)
+            => new ObjectStandardDeviationFunctionExpression(element);
+
         public static SingleStandardDeviationFunctionExpression StDev(ByteElement element)
             => new SingleStandardDeviationFunctionExpression(element);
 
@@ -1003,6 +1062,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region standard deviation p
+        public static ObjectPopulationStandardDeviationFunctionExpression StDevP(AnyObjectElement element)
+            => new ObjectPopulationStandardDeviationFunctionExpression(element);
+
         public static SinglePopulationStandardDeviationFunctionExpression StDevP(ByteElement element)
             => new SinglePopulationStandardDeviationFunctionExpression(element);
 
@@ -1047,6 +1109,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region variance
+        public static ObjectVarianceFunctionExpression Var(AnyObjectElement element)
+            => new ObjectVarianceFunctionExpression(element);
+
         public static SingleVarianceFunctionExpression Var(ByteElement element)
             => new SingleVarianceFunctionExpression(element);
 
@@ -1091,6 +1156,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region variance p
+        public static ObjectPopulationVarianceFunctionExpression VarP(AnyObjectElement element)
+            => new ObjectPopulationVarianceFunctionExpression(element);
+
         public static SinglePopulationVarianceFunctionExpression VarP(ByteElement element)
             => new SinglePopulationVarianceFunctionExpression(element);
 
@@ -1140,6 +1208,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region floor
+        public static ObjectFloorFunctionExpression Floor(AnyObjectElement element)
+            => new ObjectFloorFunctionExpression(element);
+
         public static ByteFloorFunctionExpression Floor(ByteElement element)
             => new ByteFloorFunctionExpression(element);
 
@@ -1184,6 +1255,9 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region ceiling
+        public static ObjectCeilingFunctionExpression Ceiling(AnyObjectElement element)
+            => new ObjectCeilingFunctionExpression(element);
+
         public static ByteCeilingFunctionExpression Ceiling(ByteElement element)
             => new ByteCeilingFunctionExpression(element);
 

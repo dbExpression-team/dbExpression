@@ -32,5 +32,19 @@ namespace HatTrick.DbEx.Sql.Assembler
                 AppendAlias(expression, builder, context);
             }
         }
+
+        protected override void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (string.IsNullOrWhiteSpace(aliasable.Alias))
+                return;
+
+            if (context.EntityExpressionAppendStyle == EntityExpressionAppendStyle.None)
+                return;
+
+            builder.Appender.Write(" AS ")
+                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(aliasable.Alias)
+                .Write(context.Configuration.IdentifierDelimiter.End);
+        }
     }
 }

@@ -1,10 +1,14 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using System.Collections.Generic;
 using System.Linq;
+using System.Dynamic;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -12,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     public class Aliasing : ExecutorTestBase
     {
         [Theory]
-        [Trait("Operation", "INNER QUERY")]
+        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
@@ -27,8 +31,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").AsInt32(),
-                db.alias("vips", "PurchaseYear").AsInt32(),
+                db.alias("vips", "PurchaseCount"),
+                db.alias("vips", "PurchaseYear"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -47,10 +51,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").AsInt32().Desc
+                db.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -62,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [Trait("Operation", "INNER QUERY")]
+        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
@@ -77,8 +81,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                (db.alias("vips", "PurchaseCount").AsInt32() + dbo.Person.Id).As("PurchaseCount"),
-                db.alias("vips", "PurchaseYear").AsInt32(),
+                (db.alias("vips", "PurchaseCount") + dbo.Person.Id).As("PurchaseCount"),
+                db.alias("vips", "PurchaseYear"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -97,10 +101,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").AsInt32().Desc
+                db.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -112,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [Trait("Operation", "INNER QUERY")]
+        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
@@ -127,7 +131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").AsInt32(),
+                db.alias("vips", "PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -146,10 +150,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").AsInt32().Desc
+                db.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -159,7 +163,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [Trait("Operation", "INNER QUERY")]
+        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
@@ -174,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.fx.Coalesce(db.alias("vips", "PurchaseCount").AsNullableInt32(), db.alias("not_vips", "PurchaseCount").AsNullableInt32(), 1).As("PurchaseCount"),
+                db.fx.Coalesce(db.alias("vips", "PurchaseCount"), db.alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -193,7 +197,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
             .LeftJoin(
                 db.SelectMany(
                     dbo.Purchase.PersonId,
@@ -209,10 +213,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId").AsInt32())
+            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").AsInt32().Desc
+                db.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -221,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
-        [Trait("Operation", "INNER QUERY")]
+        [Trait("Operation", "SUBQUERY")]
         [Trait("Operation", "GROUP BY")]
         [MsSqlVersions.AllVersions]
         public void Can_aliasing_an_alias_result_in_correct_output(int version, int expected = 2)
@@ -231,7 +235,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectOne(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").AsInt32().As("Result")
+                db.alias("vips", "PurchaseCount").As("Result")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -243,12 +247,206 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(
                     dbo.Purchase.PersonId
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId").AsInt32())
-            .Where(db.alias("vips", "PurchaseCount").AsInt32() == expected)
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            .Where(db.alias("vips", "PurchaseCount") == expected)
             .Execute();
 
             //then
             ((int)vipStatistics.Result).Should().Be(expected);
+        }
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [MsSqlVersions.AllVersions]
+        public void Can_aliased_subquery_result_in_correct_counts_for_dynamic_return(int version, int personCount = 50, int addressCount = 17)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = db.SelectMany(
+                dbo.Person.Id,
+                (dbo.Person.FirstName + " " + dbo.Person.LastName).As("CustomerName"),
+                (db.alias("person_address", "Id") + 2).As("AddressId")
+            )
+            .From(dbo.Person)
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.PersonAddress.PersonId,
+                    dbo.Address.Id
+                )
+                .From(dbo.Address)
+                .InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
+                .Where(dbo.Address.AddressType == AddressType.Mailing)
+            ).As("person_address").On(db.alias("person_address", "PersonId") == dbo.Person.Id)
+            .Execute();
+
+            //then
+            persons.Should().HaveCount(personCount);
+            persons.Where(x => ((int?)x.AddressId).HasValue).Should().HaveCount(addressCount);
+        }
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [MsSqlVersions.AllVersions]
+        public void Can_aliased_subquery_result_in_correct_counts_for_value_return(int version, int personCount = 50, int addressCount = 17)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = db.SelectMany(
+                db.alias("person_address", "Id").As("Foo")
+            )
+            .From(dbo.Person)
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.PersonAddress.PersonId,
+                    dbo.Address.Id
+                )
+                .From(dbo.Address)
+                .InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
+                .Where(dbo.Address.AddressType == AddressType.Mailing)
+            ).As("person_address").On(db.alias("person_address", "PersonId") == dbo.Person.Id)
+            .Execute();
+
+            //then
+            persons.Should().HaveCount(personCount);
+            persons.Where(x => ((int?)x).HasValue).Should().HaveCount(addressCount);
+        }
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [MsSqlVersions.AllVersions]
+        public void Can_aliased_subquery_result_in_correct_counts_for_entity_return(int version, int personCount = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = db.SelectMany<Person>()
+            .From(dbo.Person)
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.PersonAddress.PersonId,
+                    dbo.Address.Id
+                )
+                .From(dbo.Address)
+                .InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
+                .Where(dbo.Address.AddressType == AddressType.Mailing)
+            ).As("person_address").On(db.alias("person_address", "PersonId") == dbo.Person.Id)
+            .Execute();
+
+            //then
+            persons.Should().HaveCount(personCount);
+        }
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [MsSqlVersions.AllVersions]
+        public void Can_aliased_subqueries_result_in_correct_counts_for_coalesced_value_return(int version, int count = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
+
+            IList<object> values = db.SelectMany(
+                db.fx.Coalesce(db.alias("vips", "PurchaseCount"), db.alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
+            )
+            .From(dbo.Person)
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("PurchaseYear"),
+                    db.fx.Count(dbo.Purchase.Id).As("PurchaseCount")
+                )
+                .From(dbo.Purchase)
+                .GroupBy(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
+                ).Having(
+                    db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
+                )
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("PurchaseYear"),
+                    db.fx.Count(dbo.Purchase.Id).As("PurchaseCount")
+                )
+                .From(dbo.Purchase)
+                .GroupBy(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
+                ).Having(
+                    db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
+                )
+            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId"))
+            .OrderBy(
+                (dbo.Person.Id + dbo.Person.Id).Asc,
+                db.alias("vips", "PurchaseCount").Desc
+            )
+            .Execute();
+
+            //then
+            values.Should().HaveCount(count);
+        }
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [MsSqlVersions.AllVersions]
+        public void Can_aliased_subqueries_result_in_correct_counts_for_coalesced_value_using_custom_mapping_in_execute(int version, int count = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
+
+            var values = db.SelectMany(
+                dbo.Person.Id,
+                db.fx.Coalesce(db.alias("vips", "PurchaseCount"), db.alias("not_vips", "PurchaseCount"), int.MinValue)
+            )
+            .From(dbo.Person)
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("PurchaseYear"),
+                    db.fx.Count(dbo.Purchase.Id).As("PurchaseCount")
+                )
+                .From(dbo.Purchase)
+                .GroupBy(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
+                ).Having(
+                    db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
+                )
+            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            .LeftJoin(
+                db.SelectMany(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate).As("PurchaseYear"),
+                    db.fx.Count(dbo.Purchase.Id).As("PurchaseCount")
+                )
+                .From(dbo.Purchase)
+                .GroupBy(
+                    dbo.Purchase.PersonId,
+                    db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
+                ).Having(
+                    db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
+                )
+            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId"))
+            .OrderBy(
+                (dbo.Person.Id + dbo.Person.Id).Asc,
+                db.alias("vips", "PurchaseCount").Desc
+            )
+            .Execute(row =>
+                {
+                    dynamic o = new ExpandoObject();
+                    o.Id = row.ReadField().GetValue<int>();
+                    o.Count = row.ReadField().GetValue<int>();
+                    return o;
+                });
+
+            //then
+            values.Should().HaveCount(count);
         }
     }
 }

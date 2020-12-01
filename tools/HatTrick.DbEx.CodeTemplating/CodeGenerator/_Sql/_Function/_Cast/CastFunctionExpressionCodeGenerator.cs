@@ -1,9 +1,6 @@
 ﻿using HatTrick.DbEx.CodeTemplating.Builder;
 using HatTrick.DbEx.CodeTemplating.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 {
@@ -15,7 +12,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             base.PopulateModel(model, @namespace, typeModel);
             model.FunctionName = functionName;
-            model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
+            model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddAllTypes().Except<object>().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,
                 ReturnType = ArithmeticBuilder.InferReturnTypeByPrecedence(typeModel, @type),
