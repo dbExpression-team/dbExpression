@@ -18,26 +18,9 @@ namespace {Namespace}
         {-/if-}
         #endregion
 
-        #region set
-        public override AssignmentExpression Set({:fieldExpressionType.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{:fieldExpressionType.Alias}>(value));
-        public virtual AssignmentExpression Set({:fieldExpressionType.Name}Element value) => new AssignmentExpression(this, value);
-        {-#if :fieldExpressionType.IsNullable-}
-        public override AssignmentExpression Set({:fieldExpressionType.NullableAlias} value) => new AssignmentExpression(this, new LiteralExpression<{:fieldExpressionType.NullableAlias}>(value));
-        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<{:fieldExpressionType.NullableAlias}>(DBNull.Value));
-        public virtual AssignmentExpression Set(Nullable{:fieldExpressionType.Name}Element value) => new AssignmentExpression(this, value);
-        {-/if-}
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new Nullable{:fieldExpressionType.Name}ExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new Nullable{:fieldExpressionType.Name}ExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<{:fieldExpressionType.NullableAlias}>(Nullable{:fieldExpressionType.Name}FieldExpression a) => new SelectExpression<{:fieldExpressionType.NullableAlias}>(a);
         public static implicit operator Nullable{:fieldExpressionType.Name}ExpressionMediator(Nullable{:fieldExpressionType.Name}FieldExpression a) => new Nullable{:fieldExpressionType.Name}ExpressionMediator(a);
-        public static implicit operator OrderByExpression(Nullable{:fieldExpressionType.Name}FieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(Nullable{:fieldExpressionType.Name}FieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

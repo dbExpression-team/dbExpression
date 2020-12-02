@@ -17,6 +17,7 @@
     <None Remove="Resources\Templates\Partials\DbMetadata.htt" />
     <None Remove="Resources\Templates\Partials\EntityExpression.htt" />
     <None Remove="Resources\Templates\Partials\EntityMetadata.htt" />
+    <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
     <None Remove="Resources\Templates\Partials\Fx.htt" />
     <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
     <None Remove="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
@@ -35,6 +36,7 @@
     <EmbeddedResource Include="Resources\Templates\Partials\DbMetadata.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\EntityMetadata.htt" />
+    <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\Fx.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />

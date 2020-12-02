@@ -10,15 +10,6 @@ namespace {Namespace}
     {{
         #region implicit operators
         public static implicit operator NullableEnumExpressionMediator<TEnum>(NullableEnum{:functionName}FunctionExpression<TEnum> a) => new NullableEnumExpressionMediator<TEnum>(new NullableEnumExpressionMediator<TEnum>(a));
-        public static implicit operator OrderByExpression(NullableEnum{:functionName}FunctionExpression<TEnum> a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        {-#if !IsAggregateFunction-}
-        public static implicit operator GroupByExpression(NullableEnum{:functionName}FunctionExpression<TEnum> a) => new GroupByExpression(a);
-        {-/if-}
-        #endregion
-        
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
         
         #region filter operators

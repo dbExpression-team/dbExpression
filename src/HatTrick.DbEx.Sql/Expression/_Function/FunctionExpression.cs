@@ -34,8 +34,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order
-        public abstract OrderByExpression Asc { get; }
-        public abstract OrderByExpression Desc { get; }
+        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
@@ -67,6 +67,10 @@ namespace HatTrick.DbEx.Sql.Expression
                 return hash;
             }
         }
+        #endregion
+
+        #region implicit operators
+        public static implicit operator OrderByExpression(FunctionExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
         #endregion
     }
 }

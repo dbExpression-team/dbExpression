@@ -10,8 +10,6 @@ namespace {Namespace}
     {{
         #region implicit operators
         public static implicit operator SelectExpression<{:mediatorType.Alias}>({:mediatorType.Name}ExpressionMediator a) => new SelectExpression<{:mediatorType.Alias}>(a);
-        public static implicit operator OrderByExpression({:mediatorType.Name}ExpressionMediator a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression({:mediatorType.Name}ExpressionMediator a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

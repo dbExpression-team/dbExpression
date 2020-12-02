@@ -33,21 +33,9 @@ namespace HatTrick.DbEx.Sql.Expression
             => base.GetHashCode();
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value));
-        public virtual AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<byte[]>(ByteArrayFieldExpression a) => new SelectExpression<byte[]>(a);
         public static implicit operator ByteArrayExpressionMediator(ByteArrayFieldExpression a) => new ByteArrayExpressionMediator(a);
-        public static implicit operator OrderByExpression(ByteArrayFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(ByteArrayFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region filter operators

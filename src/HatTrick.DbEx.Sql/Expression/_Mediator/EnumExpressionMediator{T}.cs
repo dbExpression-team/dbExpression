@@ -50,8 +50,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator SelectExpression<TEnum>(EnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(a);
-        public static implicit operator OrderByExpression(EnumExpressionMediator<TEnum> a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(EnumExpressionMediator<TEnum> a) => new GroupByExpression(a);
         #endregion
 
         #region filter operators

@@ -6,8 +6,6 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region implicit operators
         public static implicit operator SelectExpression<float>(SingleExpressionMediator a) => new SelectExpression<float>(a);
-        public static implicit operator OrderByExpression(SingleExpressionMediator a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(SingleExpressionMediator a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

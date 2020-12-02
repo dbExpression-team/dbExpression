@@ -12,24 +12,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<byte?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<byte?>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(byte value) => new AssignmentExpression(this, new LiteralExpression<byte>(value));
-        public virtual AssignmentExpression Set(ByteElement value) => new AssignmentExpression(this, value);
-        public override AssignmentExpression Set(byte? value) => new AssignmentExpression(this, new LiteralExpression<byte?>(value));
-        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte?>(DBNull.Value));
-        public virtual AssignmentExpression Set(NullableByteElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new NullableByteExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new NullableByteExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<byte?>(NullableByteFieldExpression a) => new SelectExpression<byte?>(a);
         public static implicit operator NullableByteExpressionMediator(NullableByteFieldExpression a) => new NullableByteExpressionMediator(a);
-        public static implicit operator OrderByExpression(NullableByteFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableByteFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

@@ -22,9 +22,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public abstract FilterExpressionSet In(params TValue[] value);
         public abstract FilterExpressionSet In(IEnumerable<TValue> value);
         #endregion
-
-        #region set
-        public abstract AssignmentExpression Set(TValue value);
-        #endregion
     }
 }

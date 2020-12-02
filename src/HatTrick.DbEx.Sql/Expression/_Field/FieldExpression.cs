@@ -53,22 +53,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region order
-        public abstract OrderByExpression Asc { get; }
-        public abstract OrderByExpression Desc { get; }
-        #endregion
-
-        #region operators
-        public static bool operator ==(FieldExpression obj1, FieldExpression obj2)
-        {
-            if (obj1 is null && obj2 is object) return false;
-            if (obj1 is object && obj2 is null) return false;
-            if (obj1 is null && obj2 is null) return true;
-
-            return obj1.Equals(obj2);
-        }
-
-        public static bool operator !=(FieldExpression obj1, FieldExpression obj2)
-            => !(obj1 == obj2);
+        public virtual OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+        public virtual OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region equals
@@ -106,6 +92,22 @@ namespace HatTrick.DbEx.Sql.Expression
             }
         }
         #endregion
-    }
 
+        #region operators
+        public static implicit operator OrderByExpression(FieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(FieldExpression a) => new GroupByExpression(a);
+
+        public static bool operator ==(FieldExpression obj1, FieldExpression obj2)
+        {
+            if (obj1 is null && obj2 is object) return false;
+            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is null) return true;
+
+            return obj1.Equals(obj2);
+        }
+
+        public static bool operator !=(FieldExpression obj1, FieldExpression obj2)
+            => !(obj1 == obj2);
+        #endregion
+    }
 }

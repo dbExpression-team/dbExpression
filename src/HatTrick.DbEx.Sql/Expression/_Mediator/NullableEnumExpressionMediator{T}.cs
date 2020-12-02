@@ -46,8 +46,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator SelectExpression<TEnum>(NullableEnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a));
-        public static implicit operator OrderByExpression(NullableEnumExpressionMediator<TEnum> a) => new OrderByExpression(new NullableEnumExpressionMediator<TEnum>(a), OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableEnumExpressionMediator<TEnum> a) => new GroupByExpression(new NullableEnumExpressionMediator<TEnum>(a));
         #endregion
 
         #region filter operators

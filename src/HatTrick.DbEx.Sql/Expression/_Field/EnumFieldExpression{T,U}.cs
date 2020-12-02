@@ -29,15 +29,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<TEnum> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<TEnum>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(TEnum value) => new AssignmentExpression(this, new LiteralExpression<TEnum>(value));
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
-        #endregion
-
         #region equals
         public bool Equals(EnumFieldExpression<TEntity, TEnum> obj)
             => obj is EnumFieldExpression<TEntity, TEnum> && base.Equals(obj);
@@ -52,8 +43,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #region implicit operators
         public static implicit operator EnumExpressionMediator<TEnum>(EnumFieldExpression<TEntity, TEnum> a) => new EnumExpressionMediator<TEnum>(a);
         public static implicit operator SelectExpression<TEnum>(EnumFieldExpression<TEntity, TEnum> a) => new SelectExpression<TEnum>(a);
-        public static implicit operator OrderByExpression(EnumFieldExpression<TEntity, TEnum> a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(EnumFieldExpression<TEntity, TEnum> a) => new GroupByExpression(a);
         #endregion
 
         #region filter operators

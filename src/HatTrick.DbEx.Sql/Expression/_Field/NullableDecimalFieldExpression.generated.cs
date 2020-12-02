@@ -12,24 +12,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<decimal?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<decimal?>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
-        public virtual AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
-        public override AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
-        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(DBNull.Value));
-        public virtual AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new NullableDecimalExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new NullableDecimalExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<decimal?>(NullableDecimalFieldExpression a) => new SelectExpression<decimal?>(a);
         public static implicit operator NullableDecimalExpressionMediator(NullableDecimalFieldExpression a) => new NullableDecimalExpressionMediator(a);
-        public static implicit operator OrderByExpression(NullableDecimalFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableDecimalFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators
