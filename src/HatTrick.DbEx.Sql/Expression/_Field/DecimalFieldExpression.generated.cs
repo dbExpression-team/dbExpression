@@ -10,21 +10,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<decimal> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<decimal>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
-        public virtual AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new DecimalExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new DecimalExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<decimal>(DecimalFieldExpression a) => new SelectExpression<decimal>(a);
         public static implicit operator DecimalExpressionMediator(DecimalFieldExpression a) => new DecimalExpressionMediator(a);
-        public static implicit operator OrderByExpression(DecimalFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(DecimalFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

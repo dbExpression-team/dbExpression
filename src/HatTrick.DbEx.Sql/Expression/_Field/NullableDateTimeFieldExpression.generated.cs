@@ -12,24 +12,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<DateTime?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<DateTime?>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
-        public virtual AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
-        public override AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
-        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(DBNull.Value));
-        public virtual AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new NullableDateTimeExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new NullableDateTimeExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<DateTime?>(NullableDateTimeFieldExpression a) => new SelectExpression<DateTime?>(a);
         public static implicit operator NullableDateTimeExpressionMediator(NullableDateTimeFieldExpression a) => new NullableDateTimeExpressionMediator(a);
-        public static implicit operator OrderByExpression(NullableDateTimeFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableDateTimeFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

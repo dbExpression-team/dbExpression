@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             idFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<Int32FieldExpression<Person>>()
+                .And.BeOfType<PersonEntity.IdField>()
                 .And.Be(sec.Person.Id);
 
             idFilter.RightArg
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             idFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<Int32FieldExpression<Person>>()
+                .And.BeOfType<PersonEntity.IdField>()
                 .And.Be(sec.Person.Id);
 
             idFilter.RightArg
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             ssnFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<StringFieldExpression<Person>>()
+                .And.BeOfType<PersonEntity.SSNField>()
                 .And.Be(sec.Person.SSN);
 
             ssnFilter.RightArg
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             idFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<Int32FieldExpression<Person>>()
+                .And.BeOfType<PersonEntity.IdField>()
                 .And.Be(sec.Person.Id);
 
             idFilter.RightArg
@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             ssnFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<StringFieldExpression<Person>>()
+                .And.BeOfType<PersonEntity.SSNField>()
                 .And.Be(sec.Person.SSN);
 
             ssnFilter.RightArg
@@ -149,7 +149,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             dateCreatedFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<DateTimeOffsetFieldExpression<Person>>()
+                .And.BeOfType<PersonEntity.DateCreatedField>()
                 .And.Be(sec.Person.DateCreated);
 
             dateCreatedFilter.RightArg

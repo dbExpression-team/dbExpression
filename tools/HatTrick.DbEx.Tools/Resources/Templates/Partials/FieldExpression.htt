@@ -1,0 +1,28 @@
+﻿        {#if !($) => IsIgnored}
+        {?var:columnName = ($) => ResolveName}
+        {?var:nullableClrTypeName = ($, $.IsNullable) => ResolveClrTypeName}
+        {?var:clrTypeName = ($, false) => ResolveClrTypeName}
+        #region {($) => InsertSpaceOnCapitalizationAndToLower} field expression
+        public partial class {:columnName}Field : {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {:clrTypeName} {/if}>
+        {{
+            #region constructors
+            public {:columnName}Field(string identifier, {:tableName}Entity entity) : base(identifier, entity)
+            {{
+
+            }}
+            #endregion
+
+            #region set
+            public AssignmentExpression Set({:clrTypeName} value) => new AssignmentExpression(this, new LiteralExpression<{:clrTypeName}>(value));
+            public AssignmentExpression Set({($) => ResolveElementTypeName} value) => new AssignmentExpression(this, value);
+            {#if $.IsNullable}
+            {#if ($) => IsNullableType}
+            public AssignmentExpression Set({:nullableClrTypeName} value) => new AssignmentExpression(this, new LiteralExpression<{:nullableClrTypeName}>(value));
+            {/if}
+            public AssignmentExpression Set(Nullable{($) => ResolveElementTypeName} value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            {/if}
+            #endregion
+        }}
+        #endregion
+        {/if}

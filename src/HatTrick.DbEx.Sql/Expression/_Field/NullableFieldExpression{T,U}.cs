@@ -24,12 +24,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public abstract FilterExpressionSet In(params TNullableValue[] value);
         public abstract FilterExpressionSet In(IEnumerable<TNullableValue> value);
         #endregion
-
-        #region set
-        public abstract AssignmentExpression Set(TValue value);
-
-        public abstract AssignmentExpression Set(TNullableValue value);
-        public abstract AssignmentExpression Set(DBNull value);
-        #endregion
     }
 }

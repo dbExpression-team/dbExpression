@@ -341,18 +341,19 @@ namespace DbEx.dboDataService
     #endregion
 
     #region address entity expression
+
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region interface properties
-        public Int32FieldExpression<Address> Id { get; private set; }
-        public NullableEnumFieldExpression<Address, DbEx.Data.AddressType> AddressType { get; private set; }
-        public StringFieldExpression<Address> Line1 { get; private set; }
-        public NullableStringFieldExpression<Address> Line2 { get; private set; }
-        public StringFieldExpression<Address> City { get; private set; }
-        public StringFieldExpression<Address> State { get; private set; }
-        public StringFieldExpression<Address> Zip { get; private set; }
-        public DateTimeFieldExpression<Address> DateCreated { get; private set; }
-        public DateTimeFieldExpression<Address> DateUpdated { get; private set; }
+        public IdField Id { get; private set; }
+        public AddressTypeField AddressType { get; private set; }
+        public Line1Field Line1 { get; private set; }
+        public Line2Field Line2 { get; private set; }
+        public CityField City { get; private set; }
+        public StateField State { get; private set; }
+        public ZipField Zip { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
+        public DateUpdatedField DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -366,15 +367,15 @@ namespace DbEx.dboDataService
 
         private AddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Address>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.AddressType", AddressType = new NullableEnumFieldExpression<Address, DbEx.Data.AddressType>($"{identifier}.AddressType", this));
-            Fields.Add($"{identifier}.Line1", Line1 = new StringFieldExpression<Address>($"{identifier}.Line1", this));
-            Fields.Add($"{identifier}.Line2", Line2 = new NullableStringFieldExpression<Address>($"{identifier}.Line2", this));
-            Fields.Add($"{identifier}.City", City = new StringFieldExpression<Address>($"{identifier}.City", this));
-            Fields.Add($"{identifier}.State", State = new StringFieldExpression<Address>($"{identifier}.State", this));
-            Fields.Add($"{identifier}.Zip", Zip = new StringFieldExpression<Address>($"{identifier}.Zip", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Address>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Address>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.AddressType", AddressType = new AddressTypeField($"{identifier}.AddressType", this));
+            Fields.Add($"{identifier}.Line1", Line1 = new Line1Field($"{identifier}.Line1", this));
+            Fields.Add($"{identifier}.Line2", Line2 = new Line2Field($"{identifier}.Line2", this));
+            Fields.Add($"{identifier}.City", City = new CityField($"{identifier}.City", this));
+            Fields.Add($"{identifier}.State", State = new StateField($"{identifier}.State", this));
+            Fields.Add($"{identifier}.Zip", Zip = new ZipField($"{identifier}.Zip", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -443,22 +444,184 @@ namespace DbEx.dboDataService
 			address.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<Address>
+        {
+            #region constructors
+            public IdField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region address type field expression
+        public partial class AddressTypeField : NullableEnumFieldExpression<Address, DbEx.Data.AddressType>
+        {
+            #region constructors
+            public AddressTypeField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DbEx.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType>(value));
+            public AssignmentExpression Set(EnumElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DbEx.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.AddressType?>(value));
+            public AssignmentExpression Set(NullableEnumElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region line1 field expression
+        public partial class Line1Field : StringFieldExpression<Address>
+        {
+            #region constructors
+            public Line1Field(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region line2 field expression
+        public partial class Line2Field : NullableStringFieldExpression<Address>
+        {
+            #region constructors
+            public Line2Field(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region city field expression
+        public partial class CityField : StringFieldExpression<Address>
+        {
+            #region constructors
+            public CityField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region state field expression
+        public partial class StateField : StringFieldExpression<Address>
+        {
+            #region constructors
+            public StateField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region zip field expression
+        public partial class ZipField : StringFieldExpression<Address>
+        {
+            #region constructors
+            public ZipField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<Address>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date updated field expression
+        public partial class DateUpdatedField : DateTimeFieldExpression<Address>
+        {
+            #region constructors
+            public DateUpdatedField(string identifier, AddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
     #region person entity expression
+
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
-        public Int32FieldExpression<Person> Id { get; private set; }
-        public StringFieldExpression<Person> FirstName { get; private set; }
-        public StringFieldExpression<Person> LastName { get; private set; }
-        public NullableDateTimeFieldExpression<Person> BirthDate { get; private set; }
-        public EnumFieldExpression<Person, DbEx.Data.GenderType> GenderType { get; private set; }
-        public NullableInt32FieldExpression<Person> CreditLimit { get; private set; }
-        public NullableInt32FieldExpression<Person> YearOfLastCreditLimitReview { get; private set; }
-        public DateTimeFieldExpression<Person> DateCreated { get; private set; }
-        public DateTimeFieldExpression<Person> DateUpdated { get; private set; }
+        public IdField Id { get; private set; }
+        public FirstNameField FirstName { get; private set; }
+        public LastNameField LastName { get; private set; }
+        public BirthDateField BirthDate { get; private set; }
+        public GenderTypeField GenderType { get; private set; }
+        public CreditLimitField CreditLimit { get; private set; }
+        public YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
+        public DateUpdatedField DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -472,15 +635,15 @@ namespace DbEx.dboDataService
 
         private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.FirstName", FirstName = new StringFieldExpression<Person>($"{identifier}.FirstName", this));
-            Fields.Add($"{identifier}.LastName", LastName = new StringFieldExpression<Person>($"{identifier}.LastName", this));
-            Fields.Add($"{identifier}.BirthDate", BirthDate = new NullableDateTimeFieldExpression<Person>($"{identifier}.BirthDate", this));
-            Fields.Add($"{identifier}.GenderType", GenderType = new EnumFieldExpression<Person, DbEx.Data.GenderType>($"{identifier}.GenderType", this));
-            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new NullableInt32FieldExpression<Person>($"{identifier}.CreditLimit", this));
-            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new NullableInt32FieldExpression<Person>($"{identifier}.YearOfLastCreditLimitReview", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Person>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Person>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", this));
+            Fields.Add($"{identifier}.LastName", LastName = new LastNameField($"{identifier}.LastName", this));
+            Fields.Add($"{identifier}.BirthDate", BirthDate = new BirthDateField($"{identifier}.BirthDate", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", this));
+            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new CreditLimitField($"{identifier}.CreditLimit", this));
+            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField($"{identifier}.YearOfLastCreditLimitReview", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -549,17 +712,183 @@ namespace DbEx.dboDataService
 			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<Person>
+        {
+            #region constructors
+            public IdField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region first name field expression
+        public partial class FirstNameField : StringFieldExpression<Person>
+        {
+            #region constructors
+            public FirstNameField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region last name field expression
+        public partial class LastNameField : StringFieldExpression<Person>
+        {
+            #region constructors
+            public LastNameField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region birth date field expression
+        public partial class BirthDateField : NullableDateTimeFieldExpression<Person>
+        {
+            #region constructors
+            public BirthDateField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
+            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region gender type field expression
+        public partial class GenderTypeField : EnumFieldExpression<Person, DbEx.Data.GenderType>
+        {
+            #region constructors
+            public GenderTypeField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DbEx.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.GenderType>(value));
+            public AssignmentExpression Set(EnumElement<DbEx.Data.GenderType> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region credit limit field expression
+        public partial class CreditLimitField : NullableInt32FieldExpression<Person>
+        {
+            #region constructors
+            public CreditLimitField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value));
+            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region year of last credit limit review field expression
+        public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Person>
+        {
+            #region constructors
+            public YearOfLastCreditLimitReviewField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value));
+            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<Person>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date updated field expression
+        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
+        {
+            #region constructors
+            public DateUpdatedField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
     #region person address entity expression
+
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region interface properties
-        public Int32FieldExpression<PersonAddress> Id { get; private set; }
-        public Int32FieldExpression<PersonAddress> PersonId { get; private set; }
-        public Int32FieldExpression<PersonAddress> AddressId { get; private set; }
-        public DateTimeFieldExpression<PersonAddress> DateCreated { get; private set; }
+        public IdField Id { get; private set; }
+        public PersonIdField PersonId { get; private set; }
+        public AddressIdField AddressId { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
         #endregion
 
         #region constructors
@@ -573,10 +902,10 @@ namespace DbEx.dboDataService
 
         private PersonAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonAddress>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<PersonAddress>($"{identifier}.PersonId", this));
-            Fields.Add($"{identifier}.AddressId", AddressId = new Int32FieldExpression<PersonAddress>($"{identifier}.AddressId", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PersonAddress>($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
         }
         #endregion
 
@@ -625,30 +954,102 @@ namespace DbEx.dboDataService
 			personAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<PersonAddress>
+        {
+            #region constructors
+            public IdField(string identifier, PersonAddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region person id field expression
+        public partial class PersonIdField : Int32FieldExpression<PersonAddress>
+        {
+            #region constructors
+            public PersonIdField(string identifier, PersonAddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region address id field expression
+        public partial class AddressIdField : Int32FieldExpression<PersonAddress>
+        {
+            #region constructors
+            public AddressIdField(string identifier, PersonAddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<PersonAddress>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, PersonAddressEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
     #region product entity expression
+
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region interface properties
-        public Int32FieldExpression<Product> Id { get; private set; }
-        public NullableEnumFieldExpression<Product, DbEx.Data.ProductCategoryType> ProductCategoryType { get; private set; }
-        public StringFieldExpression<Product> Name { get; private set; }
-        public NullableStringFieldExpression<Product> Description { get; private set; }
-        public DoubleFieldExpression<Product> ListPrice { get; private set; }
-        public DoubleFieldExpression<Product> Price { get; private set; }
-        public Int32FieldExpression<Product> Quantity { get; private set; }
-        public NullableByteArrayFieldExpression<Product> Image { get; private set; }
-        public NullableDecimalFieldExpression<Product> Height { get; private set; }
-        public NullableDecimalFieldExpression<Product> Width { get; private set; }
-        public NullableDecimalFieldExpression<Product> Depth { get; private set; }
-        public NullableDecimalFieldExpression<Product> Weight { get; private set; }
-        public DecimalFieldExpression<Product> ShippingWeight { get; private set; }
-        public NullableTimeSpanFieldExpression<Product> ValidStartTimeOfDayForPurchase { get; private set; }
-        public NullableTimeSpanFieldExpression<Product> ValidEndTimeOfDayForPurchase { get; private set; }
-        public DateTimeFieldExpression<Product> DateCreated { get; private set; }
-        public DateTimeFieldExpression<Product> DateUpdated { get; private set; }
+        public IdField Id { get; private set; }
+        public ProductCategoryTypeField ProductCategoryType { get; private set; }
+        public NameField Name { get; private set; }
+        public DescriptionField Description { get; private set; }
+        public ListPriceField ListPrice { get; private set; }
+        public PriceField Price { get; private set; }
+        public QuantityField Quantity { get; private set; }
+        public ImageField Image { get; private set; }
+        public HeightField Height { get; private set; }
+        public WidthField Width { get; private set; }
+        public DepthField Depth { get; private set; }
+        public WeightField Weight { get; private set; }
+        public ShippingWeightField ShippingWeight { get; private set; }
+        public ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase { get; private set; }
+        public ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
+        public DateUpdatedField DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -662,23 +1063,23 @@ namespace DbEx.dboDataService
 
         private ProductEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Product>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new NullableEnumFieldExpression<Product, DbEx.Data.ProductCategoryType>($"{identifier}.ProductCategoryType", this));
-            Fields.Add($"{identifier}.Name", Name = new StringFieldExpression<Product>($"{identifier}.Name", this));
-            Fields.Add($"{identifier}.Description", Description = new NullableStringFieldExpression<Product>($"{identifier}.Description", this));
-            Fields.Add($"{identifier}.ListPrice", ListPrice = new DoubleFieldExpression<Product>($"{identifier}.ListPrice", this));
-            Fields.Add($"{identifier}.Price", Price = new DoubleFieldExpression<Product>($"{identifier}.Price", this));
-            Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<Product>($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.Image", Image = new NullableByteArrayFieldExpression<Product>($"{identifier}.Image", this));
-            Fields.Add($"{identifier}.Height", Height = new NullableDecimalFieldExpression<Product>($"{identifier}.Height", this));
-            Fields.Add($"{identifier}.Width", Width = new NullableDecimalFieldExpression<Product>($"{identifier}.Width", this));
-            Fields.Add($"{identifier}.Depth", Depth = new NullableDecimalFieldExpression<Product>($"{identifier}.Depth", this));
-            Fields.Add($"{identifier}.Weight", Weight = new NullableDecimalFieldExpression<Product>($"{identifier}.Weight", this));
-            Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new DecimalFieldExpression<Product>($"{identifier}.ShippingWeight", this));
-            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new NullableTimeSpanFieldExpression<Product>($"{identifier}.ValidStartTimeOfDayForPurchase", this));
-            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new NullableTimeSpanFieldExpression<Product>($"{identifier}.ValidEndTimeOfDayForPurchase", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Product>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Product>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new ProductCategoryTypeField($"{identifier}.ProductCategoryType", this));
+            Fields.Add($"{identifier}.Name", Name = new NameField($"{identifier}.Name", this));
+            Fields.Add($"{identifier}.Description", Description = new DescriptionField($"{identifier}.Description", this));
+            Fields.Add($"{identifier}.ListPrice", ListPrice = new ListPriceField($"{identifier}.ListPrice", this));
+            Fields.Add($"{identifier}.Price", Price = new PriceField($"{identifier}.Price", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.Image", Image = new ImageField($"{identifier}.Image", this));
+            Fields.Add($"{identifier}.Height", Height = new HeightField($"{identifier}.Height", this));
+            Fields.Add($"{identifier}.Width", Width = new WidthField($"{identifier}.Width", this));
+            Fields.Add($"{identifier}.Depth", Depth = new DepthField($"{identifier}.Depth", this));
+            Fields.Add($"{identifier}.Weight", Weight = new WeightField($"{identifier}.Weight", this));
+            Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new ShippingWeightField($"{identifier}.ShippingWeight", this));
+            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField($"{identifier}.ValidStartTimeOfDayForPurchase", this));
+            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField($"{identifier}.ValidEndTimeOfDayForPurchase", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -779,26 +1180,344 @@ namespace DbEx.dboDataService
 			product.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<Product>
+        {
+            #region constructors
+            public IdField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region product category type field expression
+        public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product, DbEx.Data.ProductCategoryType>
+        {
+            #region constructors
+            public ProductCategoryTypeField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DbEx.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType>(value));
+            public AssignmentExpression Set(EnumElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DbEx.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.ProductCategoryType?>(value));
+            public AssignmentExpression Set(NullableEnumElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region name field expression
+        public partial class NameField : StringFieldExpression<Product>
+        {
+            #region constructors
+            public NameField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region description field expression
+        public partial class DescriptionField : NullableStringFieldExpression<Product>
+        {
+            #region constructors
+            public DescriptionField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region list price field expression
+        public partial class ListPriceField : DoubleFieldExpression<Product>
+        {
+            #region constructors
+            public ListPriceField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region price field expression
+        public partial class PriceField : DoubleFieldExpression<Product>
+        {
+            #region constructors
+            public PriceField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region quantity field expression
+        public partial class QuantityField : Int32FieldExpression<Product>
+        {
+            #region constructors
+            public QuantityField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region image field expression
+        public partial class ImageField : NullableByteArrayFieldExpression<Product>
+        {
+            #region constructors
+            public ImageField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value));
+            public AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(NullableByteArrayElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region height field expression
+        public partial class HeightField : NullableDecimalFieldExpression<Product>
+        {
+            #region constructors
+            public HeightField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region width field expression
+        public partial class WidthField : NullableDecimalFieldExpression<Product>
+        {
+            #region constructors
+            public WidthField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region depth field expression
+        public partial class DepthField : NullableDecimalFieldExpression<Product>
+        {
+            #region constructors
+            public DepthField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region weight field expression
+        public partial class WeightField : NullableDecimalFieldExpression<Product>
+        {
+            #region constructors
+            public WeightField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region shipping weight field expression
+        public partial class ShippingWeightField : DecimalFieldExpression<Product>
+        {
+            #region constructors
+            public ShippingWeightField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region valid start time of day for purchase field expression
+        public partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        {
+            #region constructors
+            public ValidStartTimeOfDayForPurchaseField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value));
+            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value));
+            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region valid end time of day for purchase field expression
+        public partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
+        {
+            #region constructors
+            public ValidEndTimeOfDayForPurchaseField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value));
+            public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value));
+            public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<Product>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date updated field expression
+        public partial class DateUpdatedField : DateTimeFieldExpression<Product>
+        {
+            #region constructors
+            public DateUpdatedField(string identifier, ProductEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
     #region purchase entity expression
+
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region interface properties
-        public Int32FieldExpression<Purchase> Id { get; private set; }
-        public Int32FieldExpression<Purchase> PersonId { get; private set; }
-        public StringFieldExpression<Purchase> OrderNumber { get; private set; }
-        public StringFieldExpression<Purchase> TotalPurchaseQuantity { get; private set; }
-        public DoubleFieldExpression<Purchase> TotalPurchaseAmount { get; private set; }
-        public DateTimeFieldExpression<Purchase> PurchaseDate { get; private set; }
-        public NullableDateTimeFieldExpression<Purchase> ShipDate { get; private set; }
-        public NullableDateTimeFieldExpression<Purchase> ExpectedDeliveryDate { get; private set; }
-        public NullableGuidFieldExpression<Purchase> TrackingIdentifier { get; private set; }
-        public EnumFieldExpression<Purchase, DbEx.Data.PaymentMethodType> PaymentMethodType { get; private set; }
-        public NullableEnumFieldExpression<Purchase, DbEx.Data.PaymentSourceType> PaymentSourceType { get; private set; }
-        public DateTimeFieldExpression<Purchase> DateCreated { get; private set; }
-        public DateTimeFieldExpression<Purchase> DateUpdated { get; private set; }
+        public IdField Id { get; private set; }
+        public PersonIdField PersonId { get; private set; }
+        public OrderNumberField OrderNumber { get; private set; }
+        public TotalPurchaseQuantityField TotalPurchaseQuantity { get; private set; }
+        public TotalPurchaseAmountField TotalPurchaseAmount { get; private set; }
+        public PurchaseDateField PurchaseDate { get; private set; }
+        public ShipDateField ShipDate { get; private set; }
+        public ExpectedDeliveryDateField ExpectedDeliveryDate { get; private set; }
+        public TrackingIdentifierField TrackingIdentifier { get; private set; }
+        public PaymentMethodTypeField PaymentMethodType { get; private set; }
+        public PaymentSourceTypeField PaymentSourceType { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
+        public DateUpdatedField DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -812,19 +1531,19 @@ namespace DbEx.dboDataService
 
         private PurchaseEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Purchase>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new Int32FieldExpression<Purchase>($"{identifier}.PersonId", this));
-            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new StringFieldExpression<Purchase>($"{identifier}.OrderNumber", this));
-            Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new StringFieldExpression<Purchase>($"{identifier}.TotalPurchaseQuantity", this));
-            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new DoubleFieldExpression<Purchase>($"{identifier}.TotalPurchaseAmount", this));
-            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new DateTimeFieldExpression<Purchase>($"{identifier}.PurchaseDate", this));
-            Fields.Add($"{identifier}.ShipDate", ShipDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ShipDate", this));
-            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new NullableDateTimeFieldExpression<Purchase>($"{identifier}.ExpectedDeliveryDate", this));
-            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new NullableGuidFieldExpression<Purchase>($"{identifier}.TrackingIdentifier", this));
-            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new EnumFieldExpression<Purchase, DbEx.Data.PaymentMethodType>($"{identifier}.PaymentMethodType", this));
-            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new NullableEnumFieldExpression<Purchase, DbEx.Data.PaymentSourceType>($"{identifier}.PaymentSourceType", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<Purchase>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", this));
+            Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", this));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", this));
+            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new PurchaseDateField($"{identifier}.PurchaseDate", this));
+            Fields.Add($"{identifier}.ShipDate", ShipDate = new ShipDateField($"{identifier}.ShipDate", this));
+            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new ExpectedDeliveryDateField($"{identifier}.ExpectedDeliveryDate", this));
+            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new TrackingIdentifierField($"{identifier}.TrackingIdentifier", this));
+            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new PaymentMethodTypeField($"{identifier}.PaymentMethodType", this));
+            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new PaymentSourceTypeField($"{identifier}.PaymentSourceType", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -909,20 +1628,257 @@ namespace DbEx.dboDataService
 			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<Purchase>
+        {
+            #region constructors
+            public IdField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region person id field expression
+        public partial class PersonIdField : Int32FieldExpression<Purchase>
+        {
+            #region constructors
+            public PersonIdField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region order number field expression
+        public partial class OrderNumberField : StringFieldExpression<Purchase>
+        {
+            #region constructors
+            public OrderNumberField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region total purchase quantity field expression
+        public partial class TotalPurchaseQuantityField : StringFieldExpression<Purchase>
+        {
+            #region constructors
+            public TotalPurchaseQuantityField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region total purchase amount field expression
+        public partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
+        {
+            #region constructors
+            public TotalPurchaseAmountField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region purchase date field expression
+        public partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
+        {
+            #region constructors
+            public PurchaseDateField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region ship date field expression
+        public partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
+        {
+            #region constructors
+            public ShipDateField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
+            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region expected delivery date field expression
+        public partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
+        {
+            #region constructors
+            public ExpectedDeliveryDateField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
+            public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region tracking identifier field expression
+        public partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
+        {
+            #region constructors
+            public TrackingIdentifierField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value));
+            public AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value));
+            public AssignmentExpression Set(NullableGuidElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region payment method type field expression
+        public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase, DbEx.Data.PaymentMethodType>
+        {
+            #region constructors
+            public PaymentMethodTypeField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DbEx.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentMethodType>(value));
+            public AssignmentExpression Set(EnumElement<DbEx.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region payment source type field expression
+        public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase, DbEx.Data.PaymentSourceType>
+        {
+            #region constructors
+            public PaymentSourceTypeField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DbEx.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType>(value));
+            public AssignmentExpression Set(EnumElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DbEx.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentSourceType?>(value));
+            public AssignmentExpression Set(NullableEnumElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<Purchase>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date updated field expression
+        public partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
+        {
+            #region constructors
+            public DateUpdatedField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
     #region purchase line entity expression
+
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region interface properties
-        public Int32FieldExpression<PurchaseLine> Id { get; private set; }
-        public Int32FieldExpression<PurchaseLine> PurchaseId { get; private set; }
-        public Int32FieldExpression<PurchaseLine> ProductId { get; private set; }
-        public DecimalFieldExpression<PurchaseLine> PurchasePrice { get; private set; }
-        public Int32FieldExpression<PurchaseLine> Quantity { get; private set; }
-        public DateTimeFieldExpression<PurchaseLine> DateCreated { get; private set; }
-        public DateTimeFieldExpression<PurchaseLine> DateUpdated { get; private set; }
+        public IdField Id { get; private set; }
+        public PurchaseIdField PurchaseId { get; private set; }
+        public ProductIdField ProductId { get; private set; }
+        public PurchasePriceField PurchasePrice { get; private set; }
+        public QuantityField Quantity { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
+        public DateUpdatedField DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -936,13 +1892,13 @@ namespace DbEx.dboDataService
 
         private PurchaseLineEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PurchaseLine>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new Int32FieldExpression<PurchaseLine>($"{identifier}.PurchaseId", this));
-            Fields.Add($"{identifier}.ProductId", ProductId = new Int32FieldExpression<PurchaseLine>($"{identifier}.ProductId", this));
-            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new DecimalFieldExpression<PurchaseLine>($"{identifier}.PurchasePrice", this));
-            Fields.Add($"{identifier}.Quantity", Quantity = new Int32FieldExpression<PurchaseLine>($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeFieldExpression<PurchaseLine>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeFieldExpression<PurchaseLine>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new PurchaseIdField($"{identifier}.PurchaseId", this));
+            Fields.Add($"{identifier}.ProductId", ProductId = new ProductIdField($"{identifier}.ProductId", this));
+            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new PurchasePriceField($"{identifier}.PurchasePrice", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -1003,16 +1959,139 @@ namespace DbEx.dboDataService
 			purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public IdField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region purchase id field expression
+        public partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public PurchaseIdField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region product id field expression
+        public partial class ProductIdField : Int32FieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public ProductIdField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region purchase price field expression
+        public partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public PurchasePriceField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region quantity field expression
+        public partial class QuantityField : Int32FieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public QuantityField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date updated field expression
+        public partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
+        {
+            #region constructors
+            public DateUpdatedField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
     #region person total purchases view entity expression
+
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region interface properties
-        public Int32FieldExpression<PersonTotalPurchasesView> Id { get; private set; }
-        public NullableDoubleFieldExpression<PersonTotalPurchasesView> TotalAmount { get; private set; }
-        public NullableInt32FieldExpression<PersonTotalPurchasesView> TotalCount { get; private set; }
+        public IdField Id { get; private set; }
+        public TotalAmountField TotalAmount { get; private set; }
+        public TotalCountField TotalCount { get; private set; }
         #endregion
 
         #region constructors
@@ -1026,9 +2105,9 @@ namespace DbEx.dboDataService
 
         private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<PersonTotalPurchasesView>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new NullableDoubleFieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalAmount", this));
-            Fields.Add($"{identifier}.TotalCount", TotalCount = new NullableInt32FieldExpression<PersonTotalPurchasesView>($"{identifier}.TotalCount", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new TotalAmountField($"{identifier}.TotalAmount", this));
+            Fields.Add($"{identifier}.TotalCount", TotalCount = new TotalCountField($"{identifier}.TotalCount", this));
         }
         #endregion
 
@@ -1074,6 +2153,66 @@ namespace DbEx.dboDataService
 			personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
+        {
+            #region constructors
+            public IdField(string identifier, PersonTotalPurchasesViewEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region total amount field expression
+        public partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
+        {
+            #region constructors
+            public TotalAmountField(string identifier, PersonTotalPurchasesViewEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(double? value) => new AssignmentExpression(this, new LiteralExpression<double?>(value));
+            public AssignmentExpression Set(NullableDoubleElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region total count field expression
+        public partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
+        {
+            #region constructors
+            public TotalCountField(string identifier, PersonTotalPurchasesViewEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value));
+            public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 
@@ -1128,13 +2267,14 @@ namespace DbEx.secDataService
     #endregion
 
     #region person entity expression
+
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
-        public Int32FieldExpression<Person> Id { get; private set; }
-        public StringFieldExpression<Person> SSN { get; private set; }
-        public DateTimeOffsetFieldExpression<Person> DateCreated { get; private set; }
-        public DateTimeOffsetFieldExpression<Person> DateUpdated { get; private set; }
+        public IdField Id { get; private set; }
+        public SSNField SSN { get; private set; }
+        public DateCreatedField DateCreated { get; private set; }
+        public DateUpdatedField DateUpdated { get; private set; }
         #endregion
 
         #region constructors
@@ -1148,10 +2288,10 @@ namespace DbEx.secDataService
 
         private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new Int32FieldExpression<Person>($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.SSN", SSN = new StringFieldExpression<Person>($"{identifier}.SSN", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateTimeOffsetFieldExpression<Person>($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateTimeOffsetFieldExpression<Person>($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
+            Fields.Add($"{identifier}.SSN", SSN = new SSNField($"{identifier}.SSN", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
         #endregion
 
@@ -1200,6 +2340,77 @@ namespace DbEx.secDataService
 			person.DateUpdated = reader.ReadField().GetValue<DateTimeOffset>();
         }
 		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<Person>
+        {
+            #region constructors
+            public IdField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region s s n field expression
+        public partial class SSNField : StringFieldExpression<Person>
+        {
+            #region constructors
+            public SSNField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeOffsetFieldExpression<Person>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
+            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date updated field expression
+        public partial class DateUpdatedField : DateTimeOffsetFieldExpression<Person>
+        {
+            #region constructors
+            public DateUpdatedField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
+            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #endregion
     }
     #endregion
 

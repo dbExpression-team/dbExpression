@@ -150,9 +150,9 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region resolve field expression name
-        public string GetFieldExpressionTypeName(SqlDbType sqlDbType, bool isNullable)
+        public string GetTypeName(SqlDbType sqlDbType, bool isNullable)
         {
-            string format(string name) => isNullable ? $"Nullable{name}FieldExpression" : $"{name}FieldExpression";
+            string format(string name) => isNullable ? $"Nullable{name}" : name;
 
             switch (sqlDbType)
             {
@@ -209,9 +209,9 @@ namespace HatTrick.DbEx.Tools.Service
         #endregion
 
         #region resolve field expression name
-        public string GetFieldExpressionTypeName(string alias, bool isNullable)
+        public string GetTypeName(string alias, bool isNullable)
         {
-            string format(string name) => isNullable ? $"Nullable{name}FieldExpression" : $"{name}FieldExpression";
+            string format(string name) => isNullable ? $"Nullable{name}" : name;
 
             switch (alias)
             {

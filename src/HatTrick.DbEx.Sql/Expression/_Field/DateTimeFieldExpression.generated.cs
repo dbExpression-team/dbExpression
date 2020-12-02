@@ -10,21 +10,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<DateTime> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<DateTime>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
-        public virtual AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new DateTimeExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new DateTimeExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<DateTime>(DateTimeFieldExpression a) => new SelectExpression<DateTime>(a);
         public static implicit operator DateTimeExpressionMediator(DateTimeFieldExpression a) => new DateTimeExpressionMediator(a);
-        public static implicit operator OrderByExpression(DateTimeFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(DateTimeFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

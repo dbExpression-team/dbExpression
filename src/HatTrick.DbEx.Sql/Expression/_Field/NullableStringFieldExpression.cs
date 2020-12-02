@@ -24,10 +24,6 @@ namespace HatTrick.DbEx.Sql.Expression
         public abstract NullableStringElement As(string alias);
         #endregion
 
-        #region set
-        public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(DBNull.Value));
-        #endregion
-
         #region equals
         public bool Equals(NullableStringFieldExpression obj)
             => obj is NullableStringFieldExpression && base.Equals(obj);

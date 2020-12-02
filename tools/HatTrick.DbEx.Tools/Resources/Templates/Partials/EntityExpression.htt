@@ -2,13 +2,14 @@
     {?var:table = $}
     {?var:tableName = ($) => ResolveName}
     {?var:columns = Columns.Values}
+
     public partial class {:tableName}Entity : EntityExpression<{:tableName}>
     {{
         #region interface properties
 		{#each Columns.Values}
 		{#if !($) => IsIgnored}
         {?var:columnName = ($) => ResolveName}
-        public {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {($, false) => ResolveClrTypeName} {/if}> {:columnName} {{ get; private set; }}
+        public {:columnName}Field {:columnName} {{ get; private set; }}
 		{/if}
 		{/each}
         #endregion
@@ -27,7 +28,7 @@
 			{#each Columns.Values}
 			{#if !($) => IsIgnored}
             {?var:columnName = ($) => ResolveName}
-            Fields.Add($"{{identifier}}.{$.Name}", {:columnName} = new {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {($, false) => ResolveClrTypeName} {/if}>($"{{identifier}}.{$.Name}", this));
+            Fields.Add($"{{identifier}}.{$.Name}", {:columnName} = new {:columnName}Field($"{{identifier}}.{$.Name}", this));
 			{/if}
 			{/each}
         }}
@@ -85,5 +86,11 @@
 			{/each}
         }}
 		#endregion
+
+        #region classes
+        {#each Columns.Values}
+	    {>("FieldExpression") => GetTemplatePartial+}
+	    {/each}
+        #endregion
     }}
     #endregion

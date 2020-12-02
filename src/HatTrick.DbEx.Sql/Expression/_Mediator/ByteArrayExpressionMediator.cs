@@ -40,8 +40,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator SelectExpression<byte[]>(ByteArrayExpressionMediator a) => new SelectExpression<byte[]>(a);
-        public static implicit operator OrderByExpression(ByteArrayExpressionMediator a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(ByteArrayExpressionMediator a) => new GroupByExpression(a);
         #endregion
 
         #region filter operators

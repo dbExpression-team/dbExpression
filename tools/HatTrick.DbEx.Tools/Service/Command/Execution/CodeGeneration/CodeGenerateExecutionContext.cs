@@ -570,6 +570,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.ResolveClrTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveClrTypeName);
             repo.Register(nameof(helpers.ResolveStrictAssemblyTypeName), (Func<MsSqlColumn, string>)helpers.ResolveStrictAssemblyTypeName);
             repo.Register(nameof(helpers.ResolveFieldExpressionTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveFieldExpressionTypeName);
+            repo.Register(nameof(helpers.ResolveElementTypeName), (Func<MsSqlColumn, string>)helpers.ResolveElementTypeName);
             repo.Register(nameof(helpers.IsLast), (Func<IEnumerable<MsSqlColumn>, MsSqlColumn, bool>)helpers.IsLast);
             repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, IList<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
             repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
@@ -577,6 +578,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
             repo.Register(nameof(helpers.ResolveRootNamespace), (Func<string>)helpers.ResolveRootNamespace);
             repo.Register(nameof(helpers.ResolveAppliedInterfaces), (Func<INamedMeta, string[]>)helpers.ResolveAppliedInterfaces);
+            repo.Register(nameof(helpers.IsNullableType), (Func<MsSqlColumn, bool>)helpers.IsNullableType);
 
             string output = null;
             try

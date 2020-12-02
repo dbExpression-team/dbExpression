@@ -11,21 +11,9 @@ namespace {Namespace}
         public override FilterExpressionSet In(IEnumerable<{:fieldExpressionType.Alias}> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<{:fieldExpressionType.Alias}>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set({:fieldExpressionType.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{:fieldExpressionType.Alias}>(value));
-        public virtual AssignmentExpression Set({:fieldExpressionType.Name}Element value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new {:fieldExpressionType.Name}ExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new {:fieldExpressionType.Name}ExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<{:fieldExpressionType.Alias}>({:fieldExpressionType.Name}FieldExpression a) => new SelectExpression<{:fieldExpressionType.Alias}>(a);
         public static implicit operator {:fieldExpressionType.Name}ExpressionMediator({:fieldExpressionType.Name}FieldExpression a) => new {:fieldExpressionType.Name}ExpressionMediator(a);
-        public static implicit operator OrderByExpression({:fieldExpressionType.Name}FieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression({:fieldExpressionType.Name}FieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

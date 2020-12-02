@@ -11,15 +11,6 @@ namespace {Namespace}
     {{
         #region implicit operators
         public static implicit operator Nullable{:dataType.Name}ExpressionMediator(Nullable{:dataType.Name}{:functionName}FunctionExpression a) => new Nullable{:dataType.Name}ExpressionMediator(a);
-        public static implicit operator OrderByExpression(Nullable{:dataType.Name}{:functionName}FunctionExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        {-#if !IsAggregateFunction-}
-        public static implicit operator GroupByExpression(Nullable{:dataType.Name}{:functionName}FunctionExpression a) => new GroupByExpression(a);
-        {-/if-}
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region arithmetic operators

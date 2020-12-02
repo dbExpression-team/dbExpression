@@ -143,6 +143,23 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
+        #region is nullable type
+        public bool IsNullableType(MsSqlColumn column)
+        {
+            string name = null;
+            if (this.IsEnum(column))
+            {
+                name = this.ResolveClrTypeName(column, column.IsNullable);
+                return name.EndsWith("?");
+            }
+            else
+            {
+                name = svc.TypeMap.GetAssemblyTypeShortName(column.SqlType, column.IsNullable);
+            }
+            return name.EndsWith("?");
+        }
+        #endregion
+
         #region resolve field expression type name
         public string ResolveFieldExpressionTypeName(MsSqlColumn column, bool allowNullableType)
         {
@@ -153,9 +170,25 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else if (this.HasClrTypeOverride(column, out string dataTypeOverride))
             {
-                return svc.TypeMap.GetFieldExpressionTypeName(dataTypeOverride, column.IsNullable);
+                return $"{svc.TypeMap.GetTypeName(dataTypeOverride, column.IsNullable)}FieldExpression";
             }
-            return svc.TypeMap.GetFieldExpressionTypeName(column.SqlType, column.IsNullable);
+            return $"{svc.TypeMap.GetTypeName(column.SqlType, column.IsNullable)}FieldExpression";
+        }
+        #endregion
+
+        #region resolve element type name
+        public string ResolveElementTypeName(MsSqlColumn column)
+        {
+            if (this.IsEnum(column))
+            {
+                var name = this.ResolveClrTypeName(column, false);
+                return $"{(name.EndsWith("?") ? "Nullable" : string.Empty)}EnumElement<{this.ResolveClrTypeName(column, false)}>";
+            }
+            else if (this.HasClrTypeOverride(column, out string dataTypeOverride))
+            {
+                return $"{svc.TypeMap.GetTypeName(dataTypeOverride, false)}Element";
+            }
+            return $"{svc.TypeMap.GetTypeName(column.SqlType, false)}Element";
         }
         #endregion
 

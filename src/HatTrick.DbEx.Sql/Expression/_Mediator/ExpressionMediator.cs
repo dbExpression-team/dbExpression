@@ -82,5 +82,10 @@ namespace HatTrick.DbEx.Sql.Expression
             }
         }
         #endregion
+
+        #region implicit operators
+        public static implicit operator OrderByExpression(ExpressionMediator a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
+        public static implicit operator GroupByExpression(ExpressionMediator a) => new GroupByExpression(a);
+        #endregion
     }
 }

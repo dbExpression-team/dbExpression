@@ -28,11 +28,10 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             //then
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
-                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
+                .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
-                .And.BeAssignableTo<EntityExpression<Person>>()
-                .And.Equals(sec.Person);
+                .And.BeOfType<PersonEntity>();
         }
 
         [Theory]
@@ -55,14 +54,13 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             expressionSet.Select.Expressions.Should().HaveCount(2);
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.Id))
-                .Which.Expression.Should().BeOfType<Int32FieldExpression<Person>>();
+                .Which.Expression.Should().BeOfType<PersonEntity.IdField>();
 
             expressionSet.Select.Expressions.Should().ContainSingle(x => x.Expression.Equals(sec.Person.DateCreated))
-                .Which.Expression.Should().BeOfType<DateTimeOffsetFieldExpression<Person>>();
+                .Which.Expression.Should().BeOfType<PersonEntity.DateCreatedField>();
 
             expressionSet.BaseEntity.Should().NotBeNull()
-                .And.BeAssignableTo<EntityExpression<Person>>()
-                .And.Equals(sec.Person);
+                .And.BeOfType<PersonEntity>();
         }
     }
 }

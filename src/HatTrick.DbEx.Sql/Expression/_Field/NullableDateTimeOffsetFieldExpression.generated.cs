@@ -12,24 +12,9 @@ namespace HatTrick.DbEx.Sql.Expression
         public override FilterExpressionSet In(IEnumerable<DateTimeOffset?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<DateTimeOffset?>(value), FilterExpressionOperator.None)) : null;
         #endregion
 
-        #region set
-        public override AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
-        public virtual AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
-        public override AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value));
-        public override AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(DBNull.Value));
-        public virtual AssignmentExpression Set(NullableDateTimeOffsetElement value) => new AssignmentExpression(this, value);
-        #endregion
-
-        #region order
-        public override OrderByExpression Asc => new OrderByExpression(new NullableDateTimeOffsetExpressionMediator(this), OrderExpressionDirection.ASC);
-        public override OrderByExpression Desc => new OrderByExpression(new NullableDateTimeOffsetExpressionMediator(this), OrderExpressionDirection.DESC);
-        #endregion
-
         #region implicit operators
         public static implicit operator SelectExpression<DateTimeOffset?>(NullableDateTimeOffsetFieldExpression a) => new SelectExpression<DateTimeOffset?>(a);
         public static implicit operator NullableDateTimeOffsetExpressionMediator(NullableDateTimeOffsetFieldExpression a) => new NullableDateTimeOffsetExpressionMediator(a);
-        public static implicit operator OrderByExpression(NullableDateTimeOffsetFieldExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
-        public static implicit operator GroupByExpression(NullableDateTimeOffsetFieldExpression a) => new GroupByExpression(a);
         #endregion
 
         #region arithmetic operators

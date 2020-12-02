@@ -12,5 +12,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         #endregion
+
+        #region implicit operators
+        public static implicit operator GroupByExpression(DataTypeFunctionExpression a) => new GroupByExpression(a);
+        #endregion
     }
 }
