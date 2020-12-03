@@ -67,6 +67,7 @@ namespace ServerSideBlazorApp.Pages
             var sorting = Sorting?.ToList() ?? new List<DataGridColumnInfo>();
             List<DataGridColumnInfo> updated = e.Columns.ToList();
             var @new = new DataGridColumnInfo[updated.Count + 1];
+            var pageReset = false;
 
             foreach (var column in updated.Where(c => c.Direction != SortDirection.None))
             {
@@ -79,9 +80,10 @@ namespace ServerSideBlazorApp.Pages
                 {
                     @new[0] = column;
                 }
+                pageReset = true;
             }
 
-            await SetCurrentPageAsync(e.Page - 1, e.PageSize, @new.Where(c => c is object));
+            await SetCurrentPageAsync(pageReset ? 0 : e.Page - 1, e.PageSize, @new.Where(c => c is object));
         }
 
         private async Task OnPageSizeChanged(int pageSize)

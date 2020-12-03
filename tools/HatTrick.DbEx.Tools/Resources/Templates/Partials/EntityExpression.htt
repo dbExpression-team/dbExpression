@@ -8,8 +8,11 @@
         #region interface properties
 		{#each Columns.Values}
 		{#if !($) => IsIgnored}
+        {?var:fieldModel = ($) => GetFieldTemplateModel}
+        {>("FieldExpressionDocumentation") => GetTemplatePartial+}
         {?var:columnName = ($) => ResolveName}
-        public {:columnName}Field {:columnName} {{ get; private set; }}
+        public readonly {:columnName}Field {:columnName};
+
 		{/if}
 		{/each}
         #endregion

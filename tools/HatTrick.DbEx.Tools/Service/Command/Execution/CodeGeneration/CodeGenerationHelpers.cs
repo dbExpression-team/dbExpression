@@ -170,9 +170,9 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else if (this.HasClrTypeOverride(column, out string dataTypeOverride))
             {
-                return $"{svc.TypeMap.GetTypeName(dataTypeOverride, column.IsNullable)}FieldExpression";
+                return $"{(column.IsNullable ? "Nullable" : string.Empty)}{svc.TypeMap.GetTypeNameFromAlias(dataTypeOverride)}FieldExpression";
             }
-            return $"{svc.TypeMap.GetTypeName(column.SqlType, column.IsNullable)}FieldExpression";
+            return $"{(column.IsNullable ? "Nullable" : string.Empty)}{svc.TypeMap.GetAssemblyTypeName(column.SqlType)}FieldExpression";
         }
         #endregion
 
@@ -186,9 +186,9 @@ namespace HatTrick.DbEx.Tools.Service
             }
             else if (this.HasClrTypeOverride(column, out string dataTypeOverride))
             {
-                return $"{svc.TypeMap.GetTypeName(dataTypeOverride, false)}Element";
+                return $"{svc.TypeMap.GetTypeNameFromAlias(dataTypeOverride)}Element";
             }
-            return $"{svc.TypeMap.GetTypeName(column.SqlType, false)}Element";
+            return $"{svc.TypeMap.GetAssemblyTypeName(column.SqlType)}Element";
         }
         #endregion
 
@@ -311,6 +311,6 @@ namespace HatTrick.DbEx.Tools.Service
             var resource = resources.GetTemplatePartial(shortName);
             return resource.Value;
         }
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -10,6 +10,7 @@ using HatTrick.DbEx.Tools.Configuration;
 using HatTrick.Reflection;
 using System.Linq;
 using System.Reflection;
+using HatTrick.DbEx.Tools.Model;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -579,6 +580,9 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.ResolveRootNamespace), (Func<string>)helpers.ResolveRootNamespace);
             repo.Register(nameof(helpers.ResolveAppliedInterfaces), (Func<INamedMeta, string[]>)helpers.ResolveAppliedInterfaces);
             repo.Register(nameof(helpers.IsNullableType), (Func<MsSqlColumn, bool>)helpers.IsNullableType);
+
+            repo.Register("GetFieldTemplateModel", (Func<MsSqlColumn, ColumnTemplateModel>)(c => new ColumnTemplateModel(c, helpers, new TypeMapService())));
+            repo.Register("GetEntityTemplateModel", (Func<INamedMeta, ISqlEntityModel>)(e => e is MsSqlTable table ? (ISqlEntityModel)new TableTemplateModel(table, helpers) : new ViewTemplateModel(e as MsSqlView, helpers)));
 
             string output = null;
             try
