@@ -1,6 +1,5 @@
 using HatTrick.DbEx.MsSql.Builder;
 using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
@@ -316,13 +315,13 @@ namespace DbEx.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
     {
         #region interface
-        public AddressEntity Address { get; private set; }
-        public PersonEntity Person { get; private set; }
-        public PersonAddressEntity PersonAddress { get; private set; }
-        public ProductEntity Product { get; private set; }
-        public PurchaseEntity Purchase { get; private set; }
-        public PurchaseLineEntity PurchaseLine { get; private set; }
-        public PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
+        public readonly AddressEntity Address;
+        public readonly PersonEntity Person;
+        public readonly PersonAddressEntity PersonAddress;
+        public readonly ProductEntity Product;
+        public readonly PurchaseEntity Purchase;
+        public readonly PurchaseLineEntity PurchaseLine;
+        public readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
         #endregion
 
         #region constructors
@@ -345,15 +344,171 @@ namespace DbEx.dboDataService
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public AddressTypeField AddressType { get; private set; }
-        public Line1Field Line1 { get; private set; }
-        public Line2Field Line2 { get; private set; }
-        public CityField City { get; private set; }
-        public StateField State { get; private set; }
-        public ZipField Zip { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
-        public DateUpdatedField DateUpdated { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.AddressType"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>AddressType</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly AddressTypeField AddressType;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Line1</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(50)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly Line1Field Line1;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Line2</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(50)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly Line2Field Line2;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>City</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(60)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly CityField City;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>State</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>char(2)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly StateField State;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Zip</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(10)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ZipField Zip;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateUpdated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateUpdatedField DateUpdated;
+
         #endregion
 
         #region constructors
@@ -712,15 +867,171 @@ namespace DbEx.dboDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public FirstNameField FirstName { get; private set; }
-        public LastNameField LastName { get; private set; }
-        public BirthDateField BirthDate { get; private set; }
-        public GenderTypeField GenderType { get; private set; }
-        public CreditLimitField CreditLimit { get; private set; }
-        public YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
-        public DateUpdatedField DateUpdated { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>FirstName</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly FirstNameField FirstName;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>LastName</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly LastNameField LastName;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>BirthDate</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>date</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly BirthDateField BirthDate;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.GenderType"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>GenderType</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly GenderTypeField GenderType;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
+        /// with a .NET type of <see cref="int"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>CreditLimit</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly CreditLimitField CreditLimit;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
+        /// with a .NET type of <see cref="int"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>YearOfLastCreditLimitReview</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateUpdated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateUpdatedField DateUpdated;
+
         #endregion
 
         #region constructors
@@ -1083,10 +1394,81 @@ namespace DbEx.dboDataService
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public PersonIdField PersonId { get; private set; }
-        public AddressIdField AddressId { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.PersonAddress.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.PersonAddress.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PersonId</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PersonIdField PersonId;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.PersonAddress.AddressId" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>AddressId</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly AddressIdField AddressId;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.PersonAddress.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
         #endregion
 
         #region constructors
@@ -1275,23 +1657,315 @@ namespace DbEx.dboDataService
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public ProductCategoryTypeField ProductCategoryType { get; private set; }
-        public NameField Name { get; private set; }
-        public DescriptionField Description { get; private set; }
-        public ListPriceField ListPrice { get; private set; }
-        public PriceField Price { get; private set; }
-        public QuantityField Quantity { get; private set; }
-        public ImageField Image { get; private set; }
-        public HeightField Height { get; private set; }
-        public WidthField Width { get; private set; }
-        public DepthField Depth { get; private set; }
-        public WeightField Weight { get; private set; }
-        public ShippingWeightField ShippingWeight { get; private set; }
-        public ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase { get; private set; }
-        public ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
-        public DateUpdatedField DateUpdated { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.ProductCategoryType"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ProductCategoryType</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ProductCategoryTypeField ProductCategoryType;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Name</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(80)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly NameField Name;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Description</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>nvarchar(4000)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DescriptionField Description;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
+        /// with a .NET type of <see cref="double"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ListPrice</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>money</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ListPriceField ListPrice;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
+        /// with a .NET type of <see cref="double"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Price</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>money</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PriceField Price;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Quantity</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly QuantityField Quantity;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
+        /// with a .NET type of <see cref="byte"/>[]
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Image</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varbinary(-1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ImageField Image;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Height</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly HeightField Height;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Width</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly WidthField Width;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Depth</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DepthField Depth;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Weight</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly WeightField Weight;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ShippingWeight</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(4,1)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ShippingWeightField ShippingWeight;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ValidStartTimeOfDayForPurchase</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>time</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
+        /// with a .NET type of <see cref="TimeSpan"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ValidEndTimeOfDayForPurchase</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>time</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateUpdated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateUpdatedField DateUpdated;
+
         #endregion
 
         #region constructors
@@ -1934,19 +2608,246 @@ namespace DbEx.dboDataService
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public PersonIdField PersonId { get; private set; }
-        public OrderNumberField OrderNumber { get; private set; }
-        public TotalPurchaseQuantityField TotalPurchaseQuantity { get; private set; }
-        public TotalPurchaseAmountField TotalPurchaseAmount { get; private set; }
-        public PurchaseDateField PurchaseDate { get; private set; }
-        public ShipDateField ShipDate { get; private set; }
-        public ExpectedDeliveryDateField ExpectedDeliveryDate { get; private set; }
-        public TrackingIdentifierField TrackingIdentifier { get; private set; }
-        public PaymentMethodTypeField PaymentMethodType { get; private set; }
-        public PaymentSourceTypeField PaymentSourceType { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
-        public DateUpdatedField DateUpdated { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PersonId</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PersonIdField PersonId;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>OrderNumber</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly OrderNumberField OrderNumber;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>TotalPurchaseQuantity</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>TotalPurchaseAmount</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>money</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly TotalPurchaseAmountField TotalPurchaseAmount;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PurchaseDate</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PurchaseDateField PurchaseDate;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ShipDate</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ShipDateField ShipDate;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ExpectedDeliveryDate</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
+        /// with a .NET type of <see cref="Guid"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>TrackingIdentifier</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>uniqueidentifier</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly TrackingIdentifierField TrackingIdentifier;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.PaymentMethodType"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PaymentMethodType</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PaymentMethodTypeField PaymentMethodType;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
+        /// with a .NET type of <see cref="DbEx.Data.PaymentSourceType"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PaymentSourceType</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>varchar(20)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PaymentSourceTypeField PaymentSourceType;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getutcdate())</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateUpdated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateUpdatedField DateUpdated;
+
         #endregion
 
         #region constructors
@@ -2444,13 +3345,135 @@ namespace DbEx.dboDataService
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public PurchaseIdField PurchaseId { get; private set; }
-        public ProductIdField ProductId { get; private set; }
-        public PurchasePriceField PurchasePrice { get; private set; }
-        public QuantityField Quantity { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
-        public DateUpdatedField DateUpdated { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PurchaseId</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PurchaseIdField PurchaseId;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>ProductId</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly ProductIdField ProductId;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
+        /// with a .NET type of <see cref="decimal"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PurchasePrice</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>decimal(12,2)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PurchasePriceField PurchasePrice;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Quantity</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly QuantityField Quantity;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateUpdated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateUpdatedField DateUpdated;
+
         #endregion
 
         #region constructors
@@ -2738,9 +3761,60 @@ namespace DbEx.dboDataService
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public TotalAmountField TotalAmount { get; private set; }
-        public TotalCountField TotalCount { get; private set; }
+        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
+        /// with a .NET type of <see cref="double"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>TotalAmount</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>money</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly TotalAmountField TotalAmount;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
+        /// with a .NET type of <see cref="int"/>?
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>TotalCount</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly TotalCountField TotalCount;
+
         #endregion
 
         #region constructors
@@ -2910,18 +3984,174 @@ namespace DbEx.dboDataService
         #endregion
 
         #region interface
-        public static AddressEntity Address => _schema.Address;
-        public static PersonEntity Person => _schema.Person;
-        public static PersonAddressEntity PersonAddress => _schema.PersonAddress;
-        public static ProductEntity Product => _schema.Product;
-        public static PurchaseEntity Purchase => _schema.Purchase;
-        public static PurchaseLineEntity PurchaseLine => _schema.PurchaseLine;
-        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView => _schema.PersonTotalPurchasesView;
+        /// <summary>A <see cref="DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Address</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_Address
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly AddressEntity Address;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Person</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_Person
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly PersonEntity Person;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity"/> representing the "dbo.PersonAddress" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Person_Address</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_Person_Address
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly PersonAddressEntity PersonAddress;
+
+        /// <summary>A <see cref="DbEx.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Product</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_Product
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly ProductEntity Product;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Purchase</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_Purchase
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly PurchaseEntity Purchase;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PurchaseLine</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_PurchaseLine
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly PurchaseLineEntity PurchaseLine;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PersonTotalPurchasesView</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
+
         #endregion
 
         #region constructors
-        private dbo()
-        { }
+        static dbo()
+        { 
+            Address = _schema.Address;
+            Person = _schema.Person;
+            PersonAddress = _schema.PersonAddress;
+            Product = _schema.Product;
+            Purchase = _schema.Purchase;
+            PurchaseLine = _schema.PurchaseLine;
+            PersonTotalPurchasesView = _schema.PersonTotalPurchasesView;
+        }
         #endregion
     }
     #endregion
@@ -2936,7 +4166,7 @@ namespace DbEx.secDataService
 #pragma warning restore IDE1006 // Naming Styles
     {
         #region interface
-        public PersonEntity Person { get; private set; }
+        public readonly PersonEntity Person;
         #endregion
 
         #region constructors
@@ -2953,10 +4183,81 @@ namespace DbEx.secDataService
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
-        public IdField Id { get; private set; }
-        public SSNField SSN { get; private set; }
-        public DateCreatedField DateCreated { get; private set; }
-        public DateUpdatedField DateUpdated { get; private set; }
+        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.SSNField"/> representing the "sec.Person.SSN" column in the database, 
+        /// with a .NET type of <see cref="string"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>SSN</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>char(9)</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly SSNField SSN;
+
+        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetimeoffset</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateUpdated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetimeoffset</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateUpdatedField DateUpdated;
+
         #endregion
 
         #region constructors
@@ -3152,12 +4453,37 @@ namespace DbEx.secDataService
         #endregion
 
         #region interface
-        public static PersonEntity Person => _schema.Person;
+        /// <summary>A <see cref="DbEx.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Person</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_secPerson
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static readonly PersonEntity Person;
+
         #endregion
 
         #region constructors
-        private sec()
-        { }
+        static sec()
+        { 
+            Person = _schema.Person;
+        }
         #endregion
     }
     #endregion

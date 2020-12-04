@@ -12,14 +12,23 @@
         #region interface
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        public static {($) => ResolveName}Entity {($) => ResolveName} => _schema.{($) => ResolveName};
+        {?var:entityModel = ($) => GetEntityTemplateModel}
+        {>("EntityExpressionDocumentation") => GetTemplatePartial+}
+        public static readonly {($) => ResolveName}Entity {($) => ResolveName};
+
 		{/if}
 		{/each}
         #endregion
 
         #region constructors
-        private {($) => ResolveName}()
-        {{ }}
+        static {($) => ResolveName}()
+        {{ 
+            {#each ($) => ResolveConsolidatedTablesAndViews}
+		    {#if !($) => IsIgnored}
+            {($) => ResolveName} = _schema.{($) => ResolveName};
+		    {/if}
+		    {/each}
+        }}
         #endregion
     }}
     #endregion

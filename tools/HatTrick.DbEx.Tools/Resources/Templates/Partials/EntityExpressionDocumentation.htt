@@ -1,0 +1,27 @@
+﻿        /// <summary>A <see cref="{:entityModel.Entity.Namespace}.{:entityModel.Name}Entity"/> representing the "{:entityModel.SchemaName}.{:entityModel.Name}" {:entityModel.TypeName} in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        {#each :entityModel.Documentation.Properties}
+        /// <item>
+        /// <term>{Key}</term><description>{Value}</description>
+        /// </item>
+        {/each}
+        /// </list>
+        /// </para>
+        {#if :entityModel.Documentation.Indexes}
+        /// <para>Indexes:</para>
+        /// <para>
+        {#each :entityModel.Documentation.Indexes}
+        /// <list type="bullet">{$.Item1}
+        /// <list type="table">
+        {#each $.Item2}
+        /// <item>
+        /// <term>{Key}</term><description>{Value}</description>
+        /// </item>
+        {/each}
+        /// </list>
+        /// </list>
+        {/each}
+        /// </para>
+        {/if}
+        /// </summary>

@@ -6,7 +6,7 @@
         #region interface
 		{#each ($) => ResolveConsolidatedTablesAndViews}
 		{#if !($) => IsIgnored}
-        public {($) => ResolveName}Entity {($) => ResolveName} {{ get; private set; }}
+        public readonly {($) => ResolveName}Entity {($) => ResolveName};
 		{/if}
 		{/each}
         #endregion
