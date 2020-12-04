@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        private NullableByteFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableByteFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }

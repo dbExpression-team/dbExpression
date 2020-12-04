@@ -454,12 +454,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -471,6 +482,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private AddressTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableEnumElement<DbEx.Data.AddressType> As(string alias)
+                => new AddressTypeField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -480,6 +501,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableEnumElement<DbEx.Data.AddressType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -491,12 +513,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private Line1Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new Line1Field(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -508,6 +541,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private Line2Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableStringElement As(string alias)
+                => new Line2Field(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -516,6 +559,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -527,12 +571,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private CityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new CityField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -544,12 +599,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private StateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new StateField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -561,12 +627,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ZipField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new ZipField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -578,12 +655,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -595,12 +683,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateUpdatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -722,12 +821,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -739,12 +849,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private FirstNameField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new FirstNameField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -756,12 +877,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private LastNameField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new LastNameField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -773,6 +905,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private BirthDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDateTimeElement As(string alias)
+                => new BirthDateField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -782,6 +924,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -793,12 +936,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private GenderTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override EnumElement<DbEx.Data.GenderType> As(string alias)
+                => new GenderTypeField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DbEx.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.GenderType>(value));
             public AssignmentExpression Set(EnumElement<DbEx.Data.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -810,6 +964,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private CreditLimitField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableInt32Element As(string alias)
+                => new CreditLimitField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -819,6 +983,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -830,6 +995,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private YearOfLastCreditLimitReviewField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableInt32Element As(string alias)
+                => new YearOfLastCreditLimitReviewField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -839,6 +1014,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -850,12 +1026,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -867,12 +1054,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateUpdatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -964,12 +1162,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -981,12 +1190,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PersonIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new PersonIdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -998,12 +1218,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private AddressIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new AddressIdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1015,12 +1246,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1190,12 +1432,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1207,6 +1460,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ProductCategoryTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableEnumElement<DbEx.Data.ProductCategoryType> As(string alias)
+                => new ProductCategoryTypeField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1216,6 +1479,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableEnumElement<DbEx.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1227,12 +1491,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private NameField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new NameField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1244,6 +1519,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DescriptionField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableStringElement As(string alias)
+                => new DescriptionField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1252,6 +1537,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1263,12 +1549,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ListPriceField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DoubleElement As(string alias)
+                => new ListPriceField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
             public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1280,12 +1577,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PriceField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DoubleElement As(string alias)
+                => new PriceField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
             public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1297,12 +1605,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private QuantityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new QuantityField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1314,6 +1633,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ImageField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableByteArrayElement As(string alias)
+                => new ImageField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1322,6 +1651,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableByteArrayElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1333,6 +1663,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private HeightField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDecimalElement As(string alias)
+                => new HeightField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1342,6 +1682,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1353,6 +1694,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private WidthField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDecimalElement As(string alias)
+                => new WidthField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1362,6 +1713,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1373,6 +1725,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DepthField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDecimalElement As(string alias)
+                => new DepthField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1382,6 +1744,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1393,6 +1756,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private WeightField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDecimalElement As(string alias)
+                => new WeightField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1402,6 +1775,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1413,12 +1787,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ShippingWeightField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DecimalElement As(string alias)
+                => new ShippingWeightField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1430,6 +1815,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ValidStartTimeOfDayForPurchaseField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableTimeSpanElement As(string alias)
+                => new ValidStartTimeOfDayForPurchaseField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1439,6 +1834,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1450,6 +1846,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ValidEndTimeOfDayForPurchaseField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableTimeSpanElement As(string alias)
+                => new ValidEndTimeOfDayForPurchaseField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1459,6 +1865,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1470,12 +1877,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1487,12 +1905,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateUpdatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1638,12 +2067,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1655,12 +2095,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PersonIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new PersonIdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1672,12 +2123,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private OrderNumberField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new OrderNumberField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1689,12 +2151,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private TotalPurchaseQuantityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new TotalPurchaseQuantityField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1706,12 +2179,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private TotalPurchaseAmountField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DoubleElement As(string alias)
+                => new TotalPurchaseAmountField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
             public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1723,12 +2207,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PurchaseDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new PurchaseDateField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1740,6 +2235,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ShipDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDateTimeElement As(string alias)
+                => new ShipDateField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1749,6 +2254,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1760,6 +2266,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ExpectedDeliveryDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDateTimeElement As(string alias)
+                => new ExpectedDeliveryDateField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1769,6 +2285,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1780,6 +2297,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private TrackingIdentifierField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableGuidElement As(string alias)
+                => new TrackingIdentifierField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1789,6 +2316,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableGuidElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1800,12 +2328,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PaymentMethodTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override EnumElement<DbEx.Data.PaymentMethodType> As(string alias)
+                => new PaymentMethodTypeField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DbEx.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<DbEx.Data.PaymentMethodType>(value));
             public AssignmentExpression Set(EnumElement<DbEx.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1817,6 +2356,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PaymentSourceTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableEnumElement<DbEx.Data.PaymentSourceType> As(string alias)
+                => new PaymentSourceTypeField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -1826,6 +2375,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableEnumElement<DbEx.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -1837,12 +2387,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1854,12 +2415,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateUpdatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1969,12 +2541,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -1986,12 +2569,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PurchaseIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new PurchaseIdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2003,12 +2597,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private ProductIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new ProductIdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2020,12 +2625,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private PurchasePriceField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DecimalElement As(string alias)
+                => new PurchasePriceField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2037,12 +2653,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private QuantityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new QuantityField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2054,12 +2681,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2071,12 +2709,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+                => new DateUpdatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2163,12 +2812,23 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2180,6 +2840,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private TotalAmountField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDoubleElement As(string alias)
+                => new TotalAmountField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -2189,6 +2859,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableDoubleElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -2200,6 +2871,16 @@ namespace DbEx.dboDataService
             {
 
             }
+
+            private TotalCountField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableInt32Element As(string alias)
+                => new TotalCountField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -2209,6 +2890,7 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
+
         }
         #endregion
 
@@ -2350,12 +3032,23 @@ namespace DbEx.secDataService
             {
 
             }
+
+            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+                => new IdField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2367,12 +3060,23 @@ namespace DbEx.secDataService
             {
 
             }
+
+            private SSNField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override StringElement As(string alias)
+                => new SSNField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2384,12 +3088,23 @@ namespace DbEx.secDataService
             {
 
             }
+
+            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeOffsetElement As(string alias)
+                => new DateCreatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
             public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 
@@ -2401,12 +3116,23 @@ namespace DbEx.secDataService
             {
 
             }
+
+            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeOffsetElement As(string alias)
+                => new DateUpdatedField(base.identifier, base.entity, alias);
             #endregion
 
             #region set
             public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
             public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
+
         }
         #endregion
 

@@ -10,6 +10,16 @@
             {{
 
             }}
+
+            private {:columnName}Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {{
+
+            }}
+            #endregion
+
+            #region as
+            public override {+#if $.IsNullable}Nullable{/if}{($) => ResolveElementTypeName} As(string alias)
+                => new {:columnName}Field(base.identifier, base.entity, alias);
             #endregion
 
             #region set
@@ -23,6 +33,7 @@
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             {/if}
             #endregion
+
         }}
         #endregion
         {/if}

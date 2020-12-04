@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        private TimeSpanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected TimeSpanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }

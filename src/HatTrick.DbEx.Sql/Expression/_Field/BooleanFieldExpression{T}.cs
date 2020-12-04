@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        private BooleanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected BooleanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }

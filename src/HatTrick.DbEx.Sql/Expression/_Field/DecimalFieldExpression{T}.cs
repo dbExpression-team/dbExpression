@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        private DecimalFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected DecimalFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
