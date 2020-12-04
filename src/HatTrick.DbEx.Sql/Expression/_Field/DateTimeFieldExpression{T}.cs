@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        private DateTimeFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected DateTimeFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
         {
 
         }
