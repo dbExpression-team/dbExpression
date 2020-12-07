@@ -1,5 +1,5 @@
 ﻿    #region runtime db
-    public abstract class {($) => ResolveName}RuntimeSqlDatabase : IRuntimeSqlDatabase
+    public abstract class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase
     {{
         #region internals
         protected static RuntimeSqlDatabaseConfiguration config = new RuntimeSqlDatabaseConfiguration();

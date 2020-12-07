@@ -16,26 +16,28 @@ namespace HatTrick.DbEx.Tools
             Assembly assem = Assembly.GetExecutingAssembly();
             string[] names = assem.GetManifestResourceNames().ToList()
                 .FindAll(n => n.StartsWith("HatTrick.DbEx.Tools.Resources.Templates") && !n.Contains(".Partials"))
-                .ToArray(); ;
+                .ToArray();
 
             for (int i = 0; i < names.Length; i++)
             {
-                names[i] = this.ParseShortName(names[i]);
+                var (shortName, extension) = this.ParseShortName(names[i]);
+                names[i] = $"{shortName}.{extension}";
             }
             return names;
         }
         #endregion
 
         #region parse short name
-        private string ParseShortName(string fullName)
+        private (string,string) ParseShortName(string fullName)
         {
-            //HatTrick.DbEx.Tools.Resources.Templates.{name}.htt
-            //HatTrick.DbEx.Tools.Resources.Templates.Partials.{name}.htt
-            int idx1 = fullName.LastIndexOf('.');
-            int idx2 = fullName.LastIndexOf('.', idx1 - 1);
-            string shortName = fullName.Substring(++idx2, (idx1 - idx2));
+            var lastSegment = fullName.EndsWith(".htt") ? 2 : 1;
 
-            return shortName;
+            var segments = fullName.Split('.');
+            var shortName = string.Join('.', segments.Skip(5).Take(segments.Length - (5 + lastSegment)));
+
+            var extension = segments[segments.Length - lastSegment];
+
+            return (shortName, extension);
         }
         #endregion
 
@@ -60,7 +62,7 @@ namespace HatTrick.DbEx.Tools
         {
             Assembly assem = Assembly.GetExecutingAssembly();
 
-            string shortName = this.ParseShortName(fullName);
+            var (shortName, extension) = this.ParseShortName(fullName);
 
             string output = null;
             using (Stream stream = assem.GetManifestResourceStream(fullName))
@@ -74,7 +76,8 @@ namespace HatTrick.DbEx.Tools
             {
                 Name = shortName,
                 FullName = fullName,
-                Value = output
+                Value = output,
+                Extension = extension.StartsWith("_") ? extension.Substring(1) : extension
             };
             return resource;
         }
@@ -91,6 +94,8 @@ namespace HatTrick.DbEx.Tools
         public string FullName { get; set; }
 
         public string Value { get; set; }
+
+        public string Extension { get; set; }
         #endregion
     }
     #endregion

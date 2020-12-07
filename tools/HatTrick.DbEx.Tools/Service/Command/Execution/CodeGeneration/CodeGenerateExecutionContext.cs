@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -11,6 +12,7 @@ using HatTrick.Reflection;
 using System.Linq;
 using System.Reflection;
 using HatTrick.DbEx.Tools.Model;
+using HatTrick.DbEx.Tools.Builder;
 
 namespace HatTrick.DbEx.Tools.Service
 {
@@ -560,34 +562,16 @@ namespace HatTrick.DbEx.Tools.Service
             engine.TrimWhitespace = true;
 
             LambdaRepository repo = engine.LambdaRepo;
-            repo.Register(nameof(helpers.IsIgnored), (Func<INamedMeta, bool>)helpers.IsIgnored);
-            repo.Register(nameof(helpers.ToCamelCase), (Func<INamedMeta, string>)helpers.ToCamelCase);
-            repo.Register(nameof(helpers.ResolveName), (Func<INamedMeta, string>)helpers.ResolveName);
-            repo.Register(nameof(helpers.ResolveStrictName), (Func<INamedMeta, string>)helpers.ResolveStrictName);
+            repo.Register(nameof(helpers.ToCamelCase), (Func<string, string>)helpers.ToCamelCase);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string, string>)helpers.InsertSpaceOnCapitalization);
-            repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<INamedMeta, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
-            repo.Register(nameof(helpers.HasClrTypeOverride), (Func<INamedMeta, bool>)helpers.HasClrTypeOverride);
-            repo.Register(nameof(helpers.IsEnum), (Func<INamedMeta, bool>)helpers.IsEnum);
-            repo.Register(nameof(helpers.ResolveClrTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveClrTypeName);
-            repo.Register(nameof(helpers.ResolveStrictAssemblyTypeName), (Func<MsSqlColumn, string>)helpers.ResolveStrictAssemblyTypeName);
-            repo.Register(nameof(helpers.ResolveFieldExpressionTypeName), (Func<MsSqlColumn, bool, string>)helpers.ResolveFieldExpressionTypeName);
-            repo.Register(nameof(helpers.ResolveElementTypeName), (Func<MsSqlColumn, string>)helpers.ResolveElementTypeName);
-            repo.Register(nameof(helpers.IsLast), (Func<IEnumerable<MsSqlColumn>, MsSqlColumn, bool>)helpers.IsLast);
-            repo.Register(nameof(helpers.ResolveConsolidatedTablesAndViews), (Func<MsSqlSchema, IList<INamedMeta>>)helpers.ResolveConsolidatedTablesAndViews);
-            repo.Register(nameof(helpers.IsMsSqlTable), (Func<INamedMeta, bool>)helpers.IsMsSqlTable);
-            repo.Register(nameof(helpers.IsMsSqlView), (Func<INamedMeta, bool>)helpers.IsMsSqlView);
+            repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
+            repo.Register(nameof(helpers.IsLast), (Func<IEnumerable, object, bool>)helpers.IsLast);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
-            repo.Register(nameof(helpers.ResolveRootNamespace), (Func<string>)helpers.ResolveRootNamespace);
-            repo.Register(nameof(helpers.ResolveAppliedInterfaces), (Func<INamedMeta, string[]>)helpers.ResolveAppliedInterfaces);
-            repo.Register(nameof(helpers.IsNullableType), (Func<MsSqlColumn, bool>)helpers.IsNullableType);
-
-            repo.Register("GetFieldTemplateModel", (Func<MsSqlColumn, ColumnTemplateModel>)(c => new ColumnTemplateModel(c, helpers, new TypeMapService())));
-            repo.Register("GetEntityTemplateModel", (Func<INamedMeta, ISqlEntityModel>)(e => e is MsSqlTable table ? (ISqlEntityModel)new TableTemplateModel(table, helpers) : new ViewTemplateModel(e as MsSqlView, helpers)));
 
             string output = null;
             try
             {
-                output = engine.Merge(sqlModel);
+                output = engine.Merge(DatabaseModelBuilder.CreateModel(sqlModel, helpers));
             }
             catch (Exception e)
             {
@@ -596,7 +580,7 @@ namespace HatTrick.DbEx.Tools.Service
             }
 
             string outputDir = config.OutputDirectory;
-            string fileName = $"{resource.Name}.generated.cs";
+            string fileName = $"{resource.Name}.generated.{resource.Extension}";
             string path = Path.Combine(outputDir, fileName);
 
             svc.IO.WriteFile(path, output, Encoding.UTF8);

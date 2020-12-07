@@ -1,16 +1,16 @@
-﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower}
-    public partial class {($) => ResolveName} : IDbEntity{#each ($) => ResolveAppliedInterfaces}, {$}{/each+}
+﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower}
+    public partial class {$.EntityExpression.Name} : IDbEntity{#each $.EntityExpression.AppliedInterfaces}, {$}{/each+}
     {{
         #region interface
-	    {#each Columns.Values}
-	    {#if !($) => IsIgnored}
-        public {($, $.IsNullable) => ResolveClrTypeName} {($) => ResolveName} {{ get; set; }}
+	    {#each $.Items}
+	    {#if !$.FieldExpression.IsIgnored}
+        public {$.FieldExpression.Type.NullableAlias} {$.FieldExpression.Name} {{ get; set; }}
 	    {/if}
 	    {/each}
         #endregion
 
         #region constructor
-        public {($) => ResolveName}()
+        public {$.EntityExpression.Name}()
         {{
         }}
         #endregion

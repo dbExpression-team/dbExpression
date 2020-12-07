@@ -1,10 +1,13 @@
-﻿namespace HatTrick.DbEx.Tools.Model
+﻿using System.Collections.Generic;
+
+namespace HatTrick.DbEx.Tools.Model
 {
     public interface ISqlEntityModel
     {
-        string SchemaName { get; }
+        SchemaModel Schema { get; }
         string Name { get; }
-        string TypeName { get; }
-        DocumentationPropertiesModel Documentation { get; }
+        string TypeIdentifier { get; }
+        IDictionary<string,string> Properties { get; }
+        IList<(string, IDictionary<string, string>)> Indexes { get; }
     }
 }

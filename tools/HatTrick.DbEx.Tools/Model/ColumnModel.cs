@@ -1,27 +1,28 @@
-﻿using HatTrick.DbEx.Tools.Service;
-using HatTrick.Model.MsSql;
+﻿using HatTrick.Model.MsSql;
 using System;
 using System.Collections.Generic;
 using System.Data;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-    public class ColumnTemplateModel
+    public class ColumnModel
     {
         private readonly MsSqlColumn _column;
 
-        public ISqlEntityModel Parent { get; }
-        public string ColumnName => _column.Name;
+        public ISqlEntityModel Entity { get; }
+        public string Name => _column.Name;
         public bool IsNullable => _column.IsNullable;
+        public bool IsIdentity => _column.IsIdentity;
+        public bool IsComputed => _column.IsComputed;
+        public short MaxLength => _column.MaxLength;
         public IDictionary<string, string> Properties { get; }
-        public FieldModel Field { get; }
+        public SqlDbType SqlType => _column.SqlType;
 
-        public ColumnTemplateModel(MsSqlColumn column, CodeGenerationHelpers helpers, TypeMapService typeMap)
+        public ColumnModel(ISqlEntityModel entity, MsSqlColumn column)
         {
+            Entity = entity;
             _column = column ?? throw new ArgumentNullException(nameof(column));
-            Parent = _column.GetParent() is MsSqlTable table ? (ISqlEntityModel)(new TableTemplateModel(table, helpers)) : new ViewTemplateModel(_column.GetParent() as MsSqlView, helpers);
             Properties = BuildColumnDocumentationMetadata(column);
-            Field = new FieldModel(column, helpers, typeMap ?? throw new ArgumentNullException(nameof(typeMap)));
         }
 
         private IDictionary<string, string> BuildColumnDocumentationMetadata(MsSqlColumn column)
@@ -48,9 +49,10 @@ namespace HatTrick.DbEx.Tools.Model
                 case SqlDbType.Binary:
                 case SqlDbType.VarBinary:
                 case SqlDbType.Char:
+                case SqlDbType.VarChar: return $"{column.SqlType.ToString().ToLower()}({(column.MaxLength == -1 ? "MAX" : column.MaxLength.ToString())})";
+                
                 case SqlDbType.NChar:
-                case SqlDbType.NVarChar:
-                case SqlDbType.VarChar: return $"{column.SqlType.ToString().ToLower()}({column.MaxLength})";
+                case SqlDbType.NVarChar: return $"{column.SqlType.ToString().ToLower()}({(column.MaxLength == -1 ? "MAX" : (column.MaxLength / 2).ToString())})";
 
                 case SqlDbType.Decimal:
                     return $"{column.SqlType.ToString().ToLower()}({column.Precision}{(column.Scale > 0 ? $",{column.Scale}" : string.Empty)})";

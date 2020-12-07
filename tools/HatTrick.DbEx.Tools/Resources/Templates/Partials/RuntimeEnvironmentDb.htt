@@ -1,8 +1,8 @@
 ﻿    #region runtime environment db
-    {?var:dbName = ($) => ResolveName}
+    {?var:dbName = $.DatabaseExpression.Name}
     public class {:dbName} : RuntimeEnvironmentSqlDatabase
     {{
-        public {:dbName}() : base(new db(), new SqlDatabaseMetadataProvider(new {:dbName}SqlDatabaseMetadata("{:dbName}", "{($) => ResolveStrictName}")))
+        public {:dbName}() : base(new db(), new SqlDatabaseMetadataProvider(new {:dbName}SqlDatabaseMetadata("{:dbName}", "{$.Database.Name}")))
         {{ }}
     }}
     #endregion
