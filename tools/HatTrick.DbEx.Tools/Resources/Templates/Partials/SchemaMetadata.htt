@@ -1,5 +1,5 @@
-﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower}
-	public class {($) => ResolveName}SchemaMetadata : ISqlSchemaMetadata
+﻿    #region {($.SchemaExpression.Name) => InsertSpaceOnCapitalizationAndToLower}
+	public class {$.SchemaExpression.Name}SchemaMetadata : ISqlSchemaMetadata
     {{
 		#region interface
         public ISqlDatabaseMetadata Database {{ get; }}
@@ -9,14 +9,14 @@
 		#endregion
 
         #region constructors
-        public {($) => ResolveName}SchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
+        public {$.SchemaExpression.Name}SchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
         {{
             Database = database;
             Identifier = identifier;
             Name = name;
-			{#each ($) => ResolveConsolidatedTablesAndViews}
-			{#if !($) => IsIgnored}
-            Entities.Add($"{{identifier}}.{$.Name}", new {($) => ResolveName}EntityMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}"));
+			{#each $.Items}
+			{#if !$.EntityExpression.IsIgnored}
+            Entities.Add($"{{identifier}}.{$.Entity.Name}", new {$.EntityExpression.Name}EntityMetadata(this, $"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}"));
 			{/if}
 			{/each}
         }}

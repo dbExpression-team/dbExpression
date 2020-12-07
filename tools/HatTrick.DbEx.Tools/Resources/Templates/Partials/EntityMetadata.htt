@@ -1,5 +1,5 @@
-﻿    #region {($)  => InsertSpaceOnCapitalizationAndToLower}
-	public class {($)  => ResolveName}EntityMetadata : ISqlEntityMetadata
+﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower}
+	public class {$.EntityExpression.Name}EntityMetadata : ISqlEntityMetadata
 	{{
         #region interface
         public ISqlSchemaMetadata Schema {{ get; }}
@@ -9,15 +9,15 @@
         #endregion
 		
         #region constructors
-        public {($) => ResolveName}EntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        public {$.EntityExpression.Name}EntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
         {{
             Schema = schema;
             Identifier = identifier;
             Name = name;
 			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
-			{#each Columns.Values}
-			{#if !($) => IsIgnored}
-            Fields.Add($"{{identifier}}.{$.Name}", new MsSqlFieldMetadata(this, $"{{identifier}}.{$.Name}", "{$.Name}", SqlDbType.{$.SqlType}, {$.MaxLength}){#if $.IsIdentity} {{ IsIdentity = true }}{/if});
+			{#each $.Items}
+			{#if !$.FieldExpression.IsIgnored}
+            Fields.Add($"{{identifier}}.{$.Column.Name}", new MsSqlFieldMetadata(this, $"{{identifier}}.{$.Column.Name}", "{$.Column.Name}", SqlDbType.{$.Column.SqlType}, {$.Column.MaxLength}){#if $.Column.IsIdentity} {{ IsIdentity = true }}{/if});
 			{/if}
 			{/each}
         }}

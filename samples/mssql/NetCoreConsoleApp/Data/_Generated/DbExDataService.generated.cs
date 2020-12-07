@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace SimpleConsole.DataService
 {
     #region runtime db
@@ -340,7 +341,6 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region address entity expression
-
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region interface properties
@@ -536,9 +536,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public AddressEntity As(string name)
-        {
-            return new AddressEntity(this.identifier, this.schema, name);
-        }
+            => new AddressEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -582,7 +580,6 @@ namespace SimpleConsole.dboDataService
             if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -863,7 +860,6 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region person entity expression
-
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
@@ -1059,9 +1055,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public PersonEntity As(string name)
-        {
-            return new PersonEntity(this.identifier, this.schema, name);
-        }
+            => new PersonEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -1105,7 +1099,6 @@ namespace SimpleConsole.dboDataService
             if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -1390,11 +1383,10 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region person address entity expression
-
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
         #region interface properties
-        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.PersonAddress.Id" column in the database, 
+        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1415,7 +1407,7 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly IdField Id;
 
-        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.PersonAddress.PersonId" column in the database, 
+        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1433,7 +1425,7 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
-        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.PersonAddress.AddressId" column in the database, 
+        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1451,7 +1443,7 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public readonly AddressIdField AddressId;
 
-        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.PersonAddress.DateCreated" column in the database, 
+        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1491,9 +1483,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public PersonAddressEntity As(string name)
-        {
-            return new PersonAddressEntity(this.identifier, this.schema, name);
-        }
+            => new PersonAddressEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -1522,7 +1512,6 @@ namespace SimpleConsole.dboDataService
             if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
             if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
-
             return expr;
         }
 
@@ -1653,7 +1642,6 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region product entity expression
-
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region interface properties
@@ -1722,7 +1710,7 @@ namespace SimpleConsole.dboDataService
         /// <term>name</term><description>Description</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>nvarchar(4000)</description>
+        /// <term>sql type</term><description>nvarchar(2000)</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>yes</description>
@@ -1794,7 +1782,7 @@ namespace SimpleConsole.dboDataService
         /// <term>name</term><description>Image</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>varbinary(-1)</description>
+        /// <term>sql type</term><description>varbinary(MAX)</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>yes</description>
@@ -2001,9 +1989,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public ProductEntity As(string name)
-        {
-            return new ProductEntity(this.identifier, this.schema, name);
-        }
+            => new ProductEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -2071,7 +2057,6 @@ namespace SimpleConsole.dboDataService
             if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -2604,7 +2589,6 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region purchase entity expression
-
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region interface properties
@@ -2879,9 +2863,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public PurchaseEntity As(string name)
-        {
-            return new PurchaseEntity(this.identifier, this.schema, name);
-        }
+            => new PurchaseEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -2937,7 +2919,6 @@ namespace SimpleConsole.dboDataService
             if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -3341,7 +3322,6 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region purchase line entity expression
-
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region interface properties
@@ -3499,9 +3479,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public PurchaseLineEntity As(string name)
-        {
-            return new PurchaseLineEntity(this.identifier, this.schema, name);
-        }
+            => new PurchaseLineEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -3539,7 +3517,6 @@ namespace SimpleConsole.dboDataService
             if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -3757,7 +3734,6 @@ namespace SimpleConsole.dboDataService
     #endregion
 
     #region person total purchases view entity expression
-
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region interface properties
@@ -3836,9 +3812,7 @@ namespace SimpleConsole.dboDataService
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
-        {
-            return new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
-        }
+            => new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -3865,7 +3839,6 @@ namespace SimpleConsole.dboDataService
             if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
             if (target.TotalAmount != source.TotalAmount) { expr &= TotalAmount.Set(source.TotalAmount); }
             if (target.TotalCount != source.TotalCount) { expr &= TotalCount.Set(source.TotalCount); }
-
             return expr;
         }
 
@@ -4032,7 +4005,7 @@ namespace SimpleConsole.dboDataService
         /// </summary>
         public static readonly PersonEntity Person;
 
-        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity"/> representing the "dbo.PersonAddress" table in the database.
+        /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -4179,7 +4152,6 @@ namespace SimpleConsole.secDataService
     #endregion
 
     #region person entity expression
-
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
@@ -4280,9 +4252,7 @@ namespace SimpleConsole.secDataService
 
         #region methods
         public PersonEntity As(string name)
-        {
-            return new PersonEntity(this.identifier, this.schema, name);
-        }
+            => new PersonEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -4311,7 +4281,6 @@ namespace SimpleConsole.secDataService
             if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -4488,3 +4457,4 @@ namespace SimpleConsole.secDataService
     }
     #endregion
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

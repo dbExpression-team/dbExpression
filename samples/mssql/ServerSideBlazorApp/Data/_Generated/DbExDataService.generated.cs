@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace ServerSideBlazorApp.DataService
 {
     #region runtime db
@@ -340,7 +341,6 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region address entity expression
-
     public partial class AddressEntity : EntityExpression<Address>
     {
         #region interface properties
@@ -536,9 +536,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public AddressEntity As(string name)
-        {
-            return new AddressEntity(this.identifier, this.schema, name);
-        }
+            => new AddressEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -582,7 +580,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.Zip != source.Zip) { expr &= Zip.Set(source.Zip); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -863,11 +860,10 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region customer entity expression
-
     public partial class CustomerEntity : EntityExpression<Customer>
     {
         #region interface properties
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> representing the "dbo.Customer.Id" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -888,7 +884,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> representing the "dbo.Customer.FirstName" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
         /// with a .NET type of <see cref="string"/>
         /// <para>Properties:
         /// <list type="table">
@@ -906,7 +902,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly FirstNameField FirstName;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> representing the "dbo.Customer.LastName" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
         /// with a .NET type of <see cref="string"/>
         /// <para>Properties:
         /// <list type="table">
@@ -924,7 +920,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly LastNameField LastName;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> representing the "dbo.Customer.BirthDate" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>?
         /// <para>Properties:
         /// <list type="table">
@@ -942,7 +938,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly BirthDateField BirthDate;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.GenderTypeField"/> representing the "dbo.Customer.GenderType" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
         /// with a .NET type of <see cref="ServerSideBlazorApp.Data.GenderType"/>
         /// <para>Properties:
         /// <list type="table">
@@ -960,7 +956,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly GenderTypeField GenderType;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> representing the "dbo.Customer.CreditLimit" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
         /// with a .NET type of <see cref="int"/>?
         /// <para>Properties:
         /// <list type="table">
@@ -978,7 +974,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly CreditLimitField CreditLimit;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Customer.YearOfLastCreditLimitReview" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
         /// with a .NET type of <see cref="int"/>?
         /// <para>Properties:
         /// <list type="table">
@@ -996,7 +992,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateCreatedField"/> representing the "dbo.Customer.DateCreated" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1014,7 +1010,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateUpdatedField"/> representing the "dbo.Customer.DateUpdated" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1059,9 +1055,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public CustomerEntity As(string name)
-        {
-            return new CustomerEntity(this.identifier, this.schema, name);
-        }
+            => new CustomerEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -1105,7 +1099,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -1390,11 +1383,10 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region customer address entity expression
-
     public partial class CustomerAddressEntity : EntityExpression<CustomerAddress>
     {
         #region interface properties
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> representing the "dbo.CustomerAddress.Id" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1415,7 +1407,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.PersonIdField"/> representing the "dbo.CustomerAddress.PersonId" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1433,7 +1425,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly PersonIdField PersonId;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> representing the "dbo.CustomerAddress.AddressId" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1451,7 +1443,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly AddressIdField AddressId;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.DateCreatedField"/> representing the "dbo.CustomerAddress.DateCreated" column in the database, 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>
         /// <para>Properties:
         /// <list type="table">
@@ -1491,9 +1483,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public CustomerAddressEntity As(string name)
-        {
-            return new CustomerAddressEntity(this.identifier, this.schema, name);
-        }
+            => new CustomerAddressEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -1522,7 +1512,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
             if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
-
             return expr;
         }
 
@@ -1653,7 +1642,6 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region product entity expression
-
     public partial class ProductEntity : EntityExpression<Product>
     {
         #region interface properties
@@ -1722,7 +1710,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// <term>name</term><description>Description</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>nvarchar(4000)</description>
+        /// <term>sql type</term><description>nvarchar(2000)</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>yes</description>
@@ -1794,7 +1782,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// <term>name</term><description>Image</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>varbinary(-1)</description>
+        /// <term>sql type</term><description>varbinary(MAX)</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>yes</description>
@@ -2001,9 +1989,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public ProductEntity As(string name)
-        {
-            return new ProductEntity(this.identifier, this.schema, name);
-        }
+            => new ProductEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -2071,7 +2057,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.ValidEndTimeOfDayForPurchase != source.ValidEndTimeOfDayForPurchase) { expr &= ValidEndTimeOfDayForPurchase.Set(source.ValidEndTimeOfDayForPurchase); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -2604,7 +2589,6 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region purchase entity expression
-
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
         #region interface properties
@@ -2879,9 +2863,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public PurchaseEntity As(string name)
-        {
-            return new PurchaseEntity(this.identifier, this.schema, name);
-        }
+            => new PurchaseEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -2937,7 +2919,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.PaymentSourceType != source.PaymentSourceType) { expr &= PaymentSourceType.Set(source.PaymentSourceType); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -3341,7 +3322,6 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region purchase line entity expression
-
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
         #region interface properties
@@ -3499,9 +3479,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public PurchaseLineEntity As(string name)
-        {
-            return new PurchaseLineEntity(this.identifier, this.schema, name);
-        }
+            => new PurchaseLineEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -3539,7 +3517,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.Quantity != source.Quantity) { expr &= Quantity.Set(source.Quantity); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -3757,7 +3734,6 @@ namespace ServerSideBlazorApp.dboDataService
     #endregion
 
     #region person total purchases view entity expression
-
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
         #region interface properties
@@ -3836,9 +3812,7 @@ namespace ServerSideBlazorApp.dboDataService
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
-        {
-            return new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
-        }
+            => new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -3865,7 +3839,6 @@ namespace ServerSideBlazorApp.dboDataService
             if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
             if (target.TotalAmount != source.TotalAmount) { expr &= TotalAmount.Set(source.TotalAmount); }
             if (target.TotalCount != source.TotalCount) { expr &= TotalCount.Set(source.TotalCount); }
-
             return expr;
         }
 
@@ -4008,7 +3981,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public static readonly AddressEntity Address;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity"/> representing the "dbo.Customer" table in the database.
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -4032,7 +4005,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public static readonly CustomerEntity Customer;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity"/> representing the "dbo.CustomerAddress" table in the database.
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
         /// <item>
@@ -4179,7 +4152,6 @@ namespace ServerSideBlazorApp.secDataService
     #endregion
 
     #region person entity expression
-
     public partial class PersonEntity : EntityExpression<Person>
     {
         #region interface properties
@@ -4280,9 +4252,7 @@ namespace ServerSideBlazorApp.secDataService
 
         #region methods
         public PersonEntity As(string name)
-        {
-            return new PersonEntity(this.identifier, this.schema, name);
-        }
+            => new PersonEntity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -4311,7 +4281,6 @@ namespace ServerSideBlazorApp.secDataService
             if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
             if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
             if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
-
             return expr;
         }
 
@@ -4488,3 +4457,4 @@ namespace ServerSideBlazorApp.secDataService
     }
     #endregion
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

@@ -1,22 +1,22 @@
-﻿    #region {$.Name} schema expression
+﻿    #region {$.SchemaExpression.Name} schema expression
 #pragma warning disable IDE1006 // Naming Styles
-    public class {($) => ResolveName}SchemaExpression : SchemaExpression
+    public class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
 #pragma warning restore IDE1006 // Naming Styles
     {{
         #region interface
-		{#each ($) => ResolveConsolidatedTablesAndViews}
-		{#if !($) => IsIgnored}
-        public readonly {($) => ResolveName}Entity {($) => ResolveName};
+		{#each $.Items}
+		{#if !$.EntityExpression.IsIgnored}
+        public readonly {$.EntityExpression.Name}Entity {$.EntityExpression.Name};
 		{/if}
 		{/each}
         #endregion
 
         #region constructors
-        public {($) => ResolveName}SchemaExpression(string identifier) : base(identifier, null)
+        public {$.SchemaExpression.Name}SchemaExpression(string identifier) : base(identifier, null)
         {{
-			{#each ($) => ResolveConsolidatedTablesAndViews}
-			{#if !($) => IsIgnored}
-            Entities.Add($"{{identifier}}.{$.Name}", {($) => ResolveName} = new {($) => ResolveName}Entity($"{{identifier}}.{$.Name}", this));
+			{#each $.Items}
+			{#if !$.EntityExpression.IsIgnored}
+            Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{{identifier}}.{$.Entity.Name}", this));
 			{/if}
 			{/each}
         }}

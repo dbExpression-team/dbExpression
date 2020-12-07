@@ -1,39 +1,35 @@
-﻿        {#if !($) => IsIgnored}
-        {?var:columnName = ($) => ResolveName}
-        {?var:nullableClrTypeName = ($, $.IsNullable) => ResolveClrTypeName}
-        {?var:clrTypeName = ($, false) => ResolveClrTypeName}
-        #region {($) => InsertSpaceOnCapitalizationAndToLower} field expression
-        public partial class {:columnName}Field : {($, $.IsNullable) => ResolveFieldExpressionTypeName}<{:tableName}{#if ($) => IsEnum}, {:clrTypeName} {/if}>
+﻿{?var:isEnum = $.FieldExpression.Type.IsEnum}
+        #region {($.FieldExpression.Name) => InsertSpaceOnCapitalizationAndToLower} field expression
+        public partial class {$.FieldExpression.Name}Field : {+#if $.Column.IsNullable}Nullable{/if}{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}FieldExpression<{$.FieldExpression.EntityExpression.Name}{#if :isEnum}, {$.FieldExpression.Type.TypeName}{/if}>
         {{
             #region constructors
-            public {:columnName}Field(string identifier, {:tableName}Entity entity) : base(identifier, entity)
+            public {$.FieldExpression.Name}Field(string identifier, {$.FieldExpression.EntityExpression.Name}Entity entity) : base(identifier, entity)
             {{
 
             }}
 
-            private {:columnName}Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            private {$.FieldExpression.Name}Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
             {{
 
             }}
             #endregion
 
             #region as
-            public override {+#if $.IsNullable}Nullable{/if}{($) => ResolveElementTypeName} As(string alias)
-                => new {:columnName}Field(base.identifier, base.entity, alias);
+            public override {+#if $.Column.IsNullable}Nullable{/if}{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} As(string alias)
+                => new {$.FieldExpression.Name}Field(base.identifier, base.entity, alias);
             #endregion
 
             #region set
-            public AssignmentExpression Set({:clrTypeName} value) => new AssignmentExpression(this, new LiteralExpression<{:clrTypeName}>(value));
-            public AssignmentExpression Set({($) => ResolveElementTypeName} value) => new AssignmentExpression(this, value);
-            {#if $.IsNullable}
-            {#if ($) => IsNullableType}
-            public AssignmentExpression Set({:nullableClrTypeName} value) => new AssignmentExpression(this, new LiteralExpression<{:nullableClrTypeName}>(value));
+            public AssignmentExpression Set({$.FieldExpression.Type.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value));
+            public AssignmentExpression Set({+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
+            {#if $.Column.IsNullable}
+            {#if $.FieldExpression.Type.IsNullable}
+            public AssignmentExpression Set({$.FieldExpression.Type.NullableAlias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.NullableAlias}>(value));
             {/if}
-            public AssignmentExpression Set(Nullable{($) => ResolveElementTypeName} value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(Nullable{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             {/if}
             #endregion
 
         }}
         #endregion
-        {/if}

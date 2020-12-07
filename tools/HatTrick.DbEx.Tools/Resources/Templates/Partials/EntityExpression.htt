@@ -1,98 +1,88 @@
-﻿    #region {($) => InsertSpaceOnCapitalizationAndToLower} entity expression
-    {?var:table = $}
-    {?var:tableName = ($) => ResolveName}
-    {?var:columns = Columns.Values}
-
-    public partial class {:tableName}Entity : EntityExpression<{:tableName}>
+﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
+    public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
         #region interface properties
-		{#each Columns.Values}
-		{#if !($) => IsIgnored}
-        {?var:fieldModel = ($) => GetFieldTemplateModel}
-        {>("FieldExpressionDocumentation") => GetTemplatePartial+}
-        {?var:columnName = ($) => ResolveName}
-        public readonly {:columnName}Field {:columnName};
+		{#each $.Items}
+        {#if !$.FieldExpression.IsIgnored}
+        {>("FieldExpression.Documentation") => GetTemplatePartial+}
+        public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
 
 		{/if}
 		{/each}
         #endregion
 
         #region constructors
-        private {($) => ResolveName}Entity() : base(null, null, null)
+        private {$.EntityExpression.Name}Entity() : base(null, null, null)
         {{
         }}
 
-		public {($) => ResolveName}Entity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public {$.EntityExpression.Name}Entity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
         {{
         }}
 
-        private {($) => ResolveName}Entity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private {$.EntityExpression.Name}Entity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {{
-			{#each Columns.Values}
-			{#if !($) => IsIgnored}
-            {?var:columnName = ($) => ResolveName}
-            Fields.Add($"{{identifier}}.{$.Name}", {:columnName} = new {:columnName}Field($"{{identifier}}.{$.Name}", this));
+			{#each $.Items}
+			{#if !$.FieldExpression.IsIgnored}
+            Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{{identifier}}.{$.Column.Name}", this));
 			{/if}
 			{/each}
         }}
         #endregion
 
         #region methods
-        public {:tableName}Entity As(string name)
-        {{
-            return new {:tableName}Entity(this.identifier, this.schema, name);
-        }}
+        public {$.EntityExpression.Name}Entity As(string name)
+            => new {$.EntityExpression.Name}Entity(this.identifier, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {{
             return new SelectExpressionSet(
-				{#each Columns.Values}
-				{#if !($) => IsIgnored}
-                {($) => ResolveName}{#if !(:columns, $) => IsLast},{/if+}
+				{#each $.Items}
+				{#if !$.FieldExpression.IsIgnored}
+                {$.FieldExpression.Name}{#if !(..\$.Items, $) => IsLast},{/if+}
 				{/if}
 				{/each}
             );
         }}
 		
-        protected override InsertExpressionSet<{($) => ResolveName}> GetInclusiveInsertExpression({($) => ResolveName} {($) => ToCamelCase})
+        protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
         {{
-            return new InsertExpressionSet<{($) => ResolveName}>({(:table) => ToCamelCase}, 
-				{#each Columns.Values}
-				{#if !($) => IsIgnored}
-                new InsertExpression<{($, $.IsNullable) => ResolveClrTypeName}>({($) => ResolveName}, {(:table) => ToCamelCase}.{($) => ResolveName}){#if !(:columns, $) => IsLast},{/if+}
-				{/if}
-				{/each}                
+            return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase}, 
+				{#each $.Items}
+			    {#if !$.FieldExpression.IsIgnored}
+                new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({$.FieldExpression.Name}, {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name}){#if !(..\$.Items, $) => IsLast},{/if+}
+                {/if}
+                {/each}                
             );
         }}
 
-        protected override AssignmentExpressionSet GetAssignmentExpression({($) => ResolveName} target, {($) => ResolveName} source)
+        protected override AssignmentExpressionSet GetAssignmentExpression({$.EntityExpression.Name} target, {$.EntityExpression.Name} source)
         {{
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            {#each Columns.Values}
-            {#if !($) => IsIgnored}
-            {#if !$.IsIdentity}
-            if (target.{($) => ResolveName} != source.{($) => ResolveName}) {{ expr &= {($) => ResolveName}.Set(source.{($) => ResolveName}); }}
+            {#each $.Items}
+			{#if !$.FieldExpression.IsIgnored}
+			{#if !$.Column.IsIdentity}
+            if (target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
             {/if}
             {/if}
             {/each}
-
             return expr;
         }}
 
-        protected override void HydrateEntity({($) => ResolveName} {($) => ToCamelCase}, ISqlFieldReader reader)
+        protected override void HydrateEntity({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase}, ISqlFieldReader reader)
         {{
-			{#each Columns.Values}
-			{#if !($) => IsIgnored}
-			{(:table) => ToCamelCase}.{($) => ResolveName} = reader.ReadField().GetValue<{($, $.IsNullable) => ResolveClrTypeName}>();
+			{#each $.Items}
+			{#if !$.FieldExpression.IsIgnored}
+			{($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField().GetValue<{$.FieldExpression.Type.NullableAlias}>();
 			{/if}
 			{/each}
         }}
 		#endregion
 
         #region classes
-        {#each Columns.Values}
-	    {>("FieldExpression") => GetTemplatePartial+}
+        {#each $.Items}
+		{>("FieldExpression") => GetTemplatePartial+}
 	    {/each}
         #endregion
     }}

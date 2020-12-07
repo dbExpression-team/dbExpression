@@ -1,17 +1,17 @@
-﻿        /// <summary>A <see cref="{:entityModel.Entity.Namespace}.{:entityModel.Name}Entity"/> representing the "{:entityModel.SchemaName}.{:entityModel.Name}" {:entityModel.TypeName} in the database.
+﻿        /// <summary>A <see cref="{$.EntityExpression.NamespaceRoot}DataService.{$.EntityExpression.Name}Entity"/> representing the "{$.Entity.Schema.Name}.{$.Entity.Name}" {$.Entity.TypeIdentifier} in the database.
         /// <para>Properties:
         /// <list type="table">
-        {#each :entityModel.Documentation.Properties}
+        {#each $.Entity.Properties}
         /// <item>
         /// <term>{Key}</term><description>{Value}</description>
         /// </item>
         {/each}
         /// </list>
         /// </para>
-        {#if :entityModel.Documentation.Indexes}
+        {#if $.Entity.Indexes}
         /// <para>Indexes:</para>
         /// <para>
-        {#each :entityModel.Documentation.Indexes}
+        {#each $.Entity.Indexes}
         /// <list type="bullet">{$.Item1}
         /// <list type="table">
         {#each $.Item2}

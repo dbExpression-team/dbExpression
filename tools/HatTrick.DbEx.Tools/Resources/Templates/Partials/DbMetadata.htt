@@ -1,5 +1,5 @@
 ﻿    #region db meta
-    public class {($) => ResolveName}SqlDatabaseMetadata : ISqlDatabaseMetadata
+    public class {$.DatabaseExpression.Name}SqlDatabaseMetadata : ISqlDatabaseMetadata
     {{
         #region interface
         public string Identifier {{ get; private set; }}
@@ -8,13 +8,13 @@
         #endregion
 
         #region constructors
-        public {($) => ResolveName}SqlDatabaseMetadata(string identifier, string name)
+        public {$.DatabaseExpression.Name}SqlDatabaseMetadata(string identifier, string name)
         {{
             Identifier = identifier;
             Name = name;
-		    {#each Schemas.Values}
-		    {#if !($) => IsIgnored}
-            Schemas.Add("{$.Name}", new {($) => ResolveName}SchemaMetadata(this, "{$.Name}", "{$.Name}"));
+		    {#each $.Items}
+		    {#if !$.SchemaExpression.IsIgnored}
+            Schemas.Add("{$.Schema.Name}", new {$.SchemaExpression.Name}SchemaMetadata(this, "{$.Schema.Name}", "{$.Schema.Name}"));
 		    {/if}
 		    {/each}
         }}

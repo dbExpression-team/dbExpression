@@ -58,8 +58,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var table = dbo.Person.As("dboPerson");
-            
+            var table = dbo.Person.As("dboPerson");  
+                        
             var count = await db.SelectOne(db.fx.Count(table.FirstName))
                 .From(table)
                 .GroupBy(table.FirstName)

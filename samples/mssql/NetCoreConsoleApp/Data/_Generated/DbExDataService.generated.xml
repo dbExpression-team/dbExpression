@@ -1,0 +1,1277 @@
+<?xml version="1.0"?>
+<schemas>
+    <schema name="dbo">
+        <tables>
+          <table name="Address">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>Address</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="AddressType">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>AddressType</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Line1">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Line1</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(50)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Line2">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Line2</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(50)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="City">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>City</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(60)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="State">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>State</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>char(2)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Zip">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Zip</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(10)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateUpdated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateUpdated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_Address">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+          <table name="Person">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>Person</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="FirstName">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>FirstName</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(20)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="LastName">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>LastName</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(20)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="BirthDate">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>BirthDate</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>date</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="GenderType">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>GenderType</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="CreditLimit">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>CreditLimit</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="YearOfLastCreditLimitReview">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>YearOfLastCreditLimitReview</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateUpdated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateUpdated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_Person">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+          <table name="Person_Address">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>Person_Address</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PersonId">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PersonId</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="AddressId">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>AddressId</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_Person_Address">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+          <table name="Product">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>Product</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ProductCategoryType">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ProductCategoryType</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Name">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Name</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(80)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Description">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Description</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>nvarchar(2000)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ListPrice">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ListPrice</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>money</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Price">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Price</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>money</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Quantity">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Quantity</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Image">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Image</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varbinary(MAX)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Height">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Height</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>decimal(4,1)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Width">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Width</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>decimal(4,1)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Depth">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Depth</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>decimal(4,1)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Weight">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Weight</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>decimal(4,1)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ShippingWeight">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ShippingWeight</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>decimal(4,1)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ValidStartTimeOfDayForPurchase">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ValidStartTimeOfDayForPurchase</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>time</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ValidEndTimeOfDayForPurchase">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ValidEndTimeOfDayForPurchase</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>time</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateUpdated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateUpdated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_Product">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+          <table name="Purchase">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>Purchase</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PersonId">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PersonId</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="OrderNumber">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>OrderNumber</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(20)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="TotalPurchaseQuantity">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>TotalPurchaseQuantity</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="TotalPurchaseAmount">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>TotalPurchaseAmount</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>money</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PurchaseDate">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PurchaseDate</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ShipDate">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ShipDate</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ExpectedDeliveryDate">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ExpectedDeliveryDate</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="TrackingIdentifier">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>TrackingIdentifier</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>uniqueidentifier</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PaymentMethodType">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PaymentMethodType</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(20)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PaymentSourceType">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PaymentSourceType</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>varchar(20)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>default</name>
+                      <value>(getutcdate())</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateUpdated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateUpdated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_Purchase">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+          <table name="PurchaseLine">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>PurchaseLine</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PurchaseId">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PurchaseId</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="ProductId">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>ProductId</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="PurchasePrice">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>PurchasePrice</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>decimal(12,2)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="Quantity">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Quantity</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateUpdated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateUpdated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetime</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_PurchaseLine">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+          <table name="PersonTotalPurchasesView">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>PersonTotalPurchasesView</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="TotalAmount">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>TotalAmount</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>money</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="TotalCount">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>TotalCount</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+            </table>
+        </tables>
+    </schema>
+    <schema name="sec">
+        <tables>
+          <table name="Person">
+              <properties>
+                <property>
+                  <name>name</name>
+                  <value>Person</value>
+                </property>
+              </properties>
+              <columns>
+                <column name="Id">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>Id</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>int</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                    <property>
+                      <name>identity</name>
+                      <value>yes</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="SSN">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>SSN</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>char(9)</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateCreated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateCreated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetimeoffset</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+                <column name="DateUpdated">
+                  <properties>
+                    <property>
+                      <name>name</name>
+                      <value>DateUpdated</value>
+                    </property>
+                    <property>
+                      <name>sql type</name>
+                      <value>datetimeoffset</value>
+                    </property>
+                    <property>
+                      <name>allow null</name>
+                      <value>no</value>
+                    </property>
+                  </properties>
+                </column>
+              </columns>
+              <indexes>
+                <index id="PK_secPerson">
+                  <properties type="table">
+                    <item>
+                      <name>primary key</name>
+                      <value>yes</value>
+                    </item>
+                    <item>
+                      <name>columns</name>
+                      <value>Id</value>
+                    </item>
+                  </properties>
+                </index>
+                </indexes>
+            </table>
+        </tables>
+    </schema>
+</schemas>
