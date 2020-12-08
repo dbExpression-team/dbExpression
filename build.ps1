@@ -99,7 +99,7 @@ dotnet build $config.solutionPath --configuration $Configuration
 Write-Host "Creating NuGet packages for" $config.solutionPath
 dotnet pack $config.solutionPath --output $config.nuGetPackageOutputPath --configuration $Configuration
 
-Write-Host "Repairing packages for" $config.solutionPath
+Write-Host "Repairing NuGet packages for " $config.solutionPath
 Remove-NuspecProjectReferenceNodes -Solution $config.solutionPath -Configuration $Configuration -Output $config.nuGetPackageOutputPath -SkipRemovalOfTemporaryFiles
 
 Write-Host "Build complete for" $config.solutionPath

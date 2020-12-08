@@ -1,53 +1,53 @@
 {
-	solutionPath: "./DbEx.sln",
-	nuGetPackageOutputPath: "./assets",
-	companyName: "HatTrick Labs, LLC",
-	projects: [
+	"solutionPath" : "./DbEx.sln",
+	"nuGetPackageOutputPath" : "./assets",
+	"companyName" : "HatTrick Labs, LLC",
+	"projects" : [
 		{
-			name: "tools",
-			productName: "HatTrick.DbEx.Tools",
-			csprojPath: "./tools/HatTrick.DbEx.Tools/HatTrick.DbEx.Tools.csproj",
-			major: 1,
-			minor: 0,
-			nuGet: {
-				patch: 0,
-				id: "HatTrick.DbEx.Tools",
-				title: "Code Generation",
-				authors: "jerrod.eiman, gwgrubbs",
-				description: "A .net tool for generating code",
-				tags: [
+			"name" : "tools",
+			"productName" : "HatTrick.DbEx.Tools",
+			"csprojPath" : "./tools/HatTrick.DbEx.Tools/HatTrick.DbEx.Tools.csproj",
+			"major" : 1,
+			"minor" : 0,
+			"nuGet" : {
+				"patch" : 0,
+				"id" : "HatTrick.DbEx.Tools",
+				"title" : "Code Generation",
+				"authors" : "jerrod.eiman, gwgrubbs",
+				"description" : "A .net tool for generating code",
+				"tags" : [
 					"code-generation",
 					"sql-query"
 				],
-				licenseType: "Apache-2.0",
-				projectUrl: "https://github.com/HatTrickLabs/db-ex",
-				repositoryUrl: "https://github.com/HatTrickLabs/db-ex",
-				releaseNotesPath: "../..foo.txt",
-				toolCommandName: "dbex"
+				"licenseType" : "Apache-2.0",
+				"projectUrl" : "https://github.com/HatTrickLabs/db-ex",
+				"repositoryUrl" : "https://github.com/HatTrickLabs/db-ex",
+				"releaseNotesPath" : "../..foo.txt",
+				"toolCommandName" : "dbex"
 			}
 		},
 		{
-			name: "dbex-sql",
-			productName: "HatTrick.DbEx.Sql",
-			csprojPath: "./src/HatTrick.DbEx.Sql/HatTrick.DbEx.Sql.csproj",
-			major: 1,
-			minor: 0
+			"name" : "dbex-sql",
+			"productName" : "HatTrick.DbEx.Sql",
+			"csprojPath" : "./src/HatTrick.DbEx.Sql/HatTrick.DbEx.Sql.csproj",
+			"major" : 1,
+			"minor" : 0
 		},
 		{
-			name: "dbex-mssql",
-			productName: "HatTrick.DbEx.MsSql",
-			csprojPath: "./src/HatTrick.DbEx.MsSql/HatTrick.DbEx.MsSql.csproj",
-			major: 1,
-			minor: 0,
-			nuGet: {
-				patch: 0,
-				id: "HatTrick.DbEx.MsSql",
-				title: "DbExpression for Microsoft Sql Server",
-				authors: "jerrod.eiman, gwgrubbs",
-				description: "Description",
-				licenseType: "Apache-2.0",
-				projectUrl: "https://github.com/HatTrickLabs/db-ex",
-				repositoryUrl: "https://github.com/HatTrickLabs/db-ex"
+			"name" : "dbex-mssql",
+			"productName" : "HatTrick.DbEx.MsSql",
+			"csprojPath" : "./src/HatTrick.DbEx.MsSql/HatTrick.DbEx.MsSql.csproj",
+			"major" : 1,
+			"minor" : 0,
+			"nuGet" : {
+				"patch" : 0,
+				"id" : "HatTrick.DbEx.MsSql",
+				"title" : "DbExpression for Microsoft Sql Server",
+				"authors" : "jerrod.eiman, gwgrubbs",
+				"description" : "Description",
+				"licenseType" : "Apache-2.0",
+				"projectUrl" : "https://github.com/HatTrickLabs/db-ex",
+				"repositoryUrl" : "https://github.com/HatTrickLabs/db-ex"
 			}
 		}
 	]

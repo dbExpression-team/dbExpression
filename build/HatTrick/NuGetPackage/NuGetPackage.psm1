@@ -6,12 +6,10 @@ function _Remove-NuspecProjectReferenceNodes()
         [string]$NuspecPath
     )
 
-    Write-Host "NuspecPath parameter: " $NuspecPath
-
     # remove dependency node from nuspec file for assemblies that are in the "lib" folder
 
-    $nupkgNoExtension = [System.IO.Path]::GetFileNameWithoutExtension($NuspecPath)
-    $destination = Split-Path -Parent $NuspecPath
+    $nupkgFileNameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($NuspecPath)
+    $tempPath = Split-Path -Parent $NuspecPath
 
     [xml]$xml = (Get-Content $NuspecPath)
     $mgr = [System.Xml.XmlNamespaceManager]::new($xml.Psbase.NameTable)
@@ -24,8 +22,8 @@ function _Remove-NuspecProjectReferenceNodes()
         {
             $id = $dependency.GetAttribute("id")
             $folder = $tfm.StartsWith(".") ? $tfm.Substring(1) : $tfm
-            $dllPath = [System.IO.Path]::Combine($destination, "lib", $folder, $id + ".dll")
-            Write-Host ("Removing project reference {0} from nuspec file {1}" -f ($id + ".dll"), $NuspecPath)
+            $dllPath = [System.IO.Path]::Combine($tempPath, "lib", $folder, $id + ".dll")
+            Write-Host ("[{0}]: Removing project reference {1} from nuspec file" -f $nupkgFileNameWithoutExtension, ($id + ".dll"))
             if ((Get-Item $dllPath -ErrorAction SilentlyContinue))
             {
                 $dependency.ParentNode.RemoveChild($dependency) | Out-Null
@@ -66,33 +64,42 @@ function Remove-NuspecProjectReferenceNodes()
         New-Item $outputDirectory | Out-Null
     }
 
-    foreach ($nupkgFile in (Get-ChildItem $outputDirectory -Filter *.nupkg))
+    foreach ($nupkgFilePath in (Get-ChildItem $outputDirectory -Filter "*.*nupkg"))
     {
-        $nupkgNoExtension = [System.IO.Path]::GetFileNameWithoutExtension($nupkgFile)
-        $destination = [System.IO.Path]::Combine((Split-Path -Parent $nupkgFile), $nupkgNoExtension)
+        $nupkgFileNameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($nupkgFilePath)
+        $nupkgFileExtension = [System.IO.Path]::GetExtension($nupkgFilePath)
+        $tempPath = [System.IO.Path]::Combine((Split-Path -Parent $nupkgFilePath), $nupkgFileNameWithoutExtension)
+    
+        # unzip the [s]nupkg file to a temporary folder (name of the package without the extension)
+        Expand-Archive -Path $nupkgFilePath -DestinationPath $tempPath -Force
 
-        Expand-Archive -Path $nupkgFile -DestinationPath $destination -Force
-    }
+        Start-Sleep -Seconds 5
+    
+        # remove the original package file
+        Remove-Item $nupkgFilePath
 
-    Start-Sleep -Seconds 5
+        if ($nupkgFileExtension -eq ".nupkg")
+        {
+            Write-Host ("[{0}]: Removing .pdb files from package" -f $nupkgFileNameWithoutExtension)
+            Remove-Item -Path $tempPath -Recurse -Include "*.pdb" -Force
+        }
+        else
+        {
+            Write-Host ("[{0}]: Removing .dll files from package" -f $nupkgFileNameWithoutExtension)
+            Remove-Item -Path $tempPath -Recurse -Include "*.dll" -Force
+        }
+        
+        Write-Host ("[{0}]: Removing project references from .nuspec file" -f $nupkgFileNameWithoutExtension)
+        _Remove-NuspecProjectReferenceNodes (Get-ChildItem $tempPath -Filter "*.nuspec")
+        
+        # build the path of corrected assets to re-zip to the original package name
+        $newItems = Get-ChildItem ([System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgFileNameWithoutExtension))
 
-    foreach ($package in (Get-ChildItem $outputDirectory -Directory))
-    {
-        _Remove-NuspecProjectReferenceNodes (Get-ChildItem $package -Filter *.nuspec)
-    }
-
-    Start-Sleep -Seconds 5
-
-    foreach ($nupkgFile in (Get-ChildItem $outputDirectory -Filter *.nupkg))
-    {
-        $nupkgFile = [System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgFile)
-        $nupkgNoExtension = [System.IO.Path]::GetFileNameWithoutExtension($nupkgFile)
-        $newItems = Get-ChildItem ([System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgNoExtension))
-        Compress-Archive -Path $newItems -Update -DestinationPath $nupkgFile | Out-Null
-
+        Compress-Archive -Path $newItems -DestinationPath $nupkgFilePath -Force | Out-Null
+    
         if (!($SkipRemovalOfTemporaryFiles))
         {
-            Remove-Item ([System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgNoExtension)) -Recurse | Out-Null
+            Remove-Item ([System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgFileNameWithoutExtension)) -Recurse | Out-Null
         }
     }
 }
