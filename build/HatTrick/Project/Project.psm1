@@ -280,6 +280,7 @@ function New-BuildPropsFile()
         if ($dependencies.Count -gt 0)
         {
             $props.WriteElementString("TargetsForTfmSpecificBuildOutput", "`$(TargetsForTfmSpecificBuildOutput);PackProjectReferences")
+            $props.WriteElementString("AllowedOutputExtensionsInPackageBuildOutputFolder", "`$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb")
         }
 
         $props.WriteElementString("Id", $Project.Id)
@@ -297,6 +298,8 @@ function New-BuildPropsFile()
             $props.WriteElementString("Tags", ([string]::Join(",", $Project.Tags)))
         }
         $props.WriteElementString("RepositoryUrl", $Project.RepositoryUrl)
+        $props.WriteElementString("IncludeSymbols", "true");
+        $props.WriteElementString("SymbolPackageFormat", "snupkg");
         if (!([string]::IsNullOrWhitespace($Project.ToolCommandName)))
         {
             $props.WriteElementString("ToolCommandName", $Project.ToolCommandName)
@@ -347,11 +350,16 @@ function New-BuildTargetsFile()
     $targets.WriteStartDocument()
     $targets.WriteStartElement("Project")
     $targets.WriteStartElement("Target")
-    $targets.WriteAttributeString("Name", "PackProjectReferences")    
+    $targets.WriteAttributeString("Name", "PackProjectReferences")   
+    $targets.WriteAttributeString("DependsOnTargets", "ResolveReferences")
     $targets.WriteStartElement("ItemGroup")
     $targets.WriteStartElement("BuildOutputInPackage")
-    $targets.WriteAttributeString("Include", "`$(OutputPath)\*.dll")
+    #$targets.WriteAttributeString("Include", "`$(OutputPath)\*.dll")
+    $targets.WriteAttributeString("Include", "`@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))")
     $targets.WriteEndElement() # /BuildOutputInPackage
+    $targets.WriteStartElement("BuildOutputInPackage")
+    $targets.WriteAttributeString("Include", "`@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-`>Replace('.dll', '.pdb'))")
+    $targets.WriteEndElement() # /BuildOutputInPackage    
     $targets.WriteEndElement() # /ItemGroup
     $targets.WriteEndElement() # /Target
     $targets.WriteEndElement() # /Project
