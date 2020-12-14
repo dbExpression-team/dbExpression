@@ -23,8 +23,7 @@ namespace NetCoreConsoleApp
 			//where dbo.Person.Id = {personId};
 			db.Update(
 					dbo.Person.CreditLimit.Set(creditLimit), 
-					dbo.Person.YearOfLastCreditLimitReview.Set(DateTime.Now.Year),
-					dbo.Person.DateUpdated.Set(DateTime.Now)
+					dbo.Person.YearOfLastCreditLimitReview.Set(DateTime.Now.Year)
 				)
 				.From(dbo.Person)
 				.Where(dbo.Person.Id == personId)
@@ -46,8 +45,7 @@ namespace NetCoreConsoleApp
 			//where dbo.Address.Zip = {zip} and dbo.Person.GenderType = {gender};
 			int rowCount = db.Update(
 					dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + increase), //server side arithmetic
-					dbo.Person.YearOfLastCreditLimitReview.Set(DateTime.Now.Year),
-					dbo.Person.DateUpdated.Set(DateTime.Now)
+					dbo.Person.YearOfLastCreditLimitReview.Set(DateTime.Now.Year)
 				)
 				.From(dbo.Person)
 				.InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
@@ -96,8 +94,7 @@ namespace NetCoreConsoleApp
 
 					db.Update(
 							dbo.Person.FirstName.Set(firstName),
-							dbo.Person.LastName.Set(lastName),
-							dbo.Person.DateUpdated.Set(DateTime.Now)
+							dbo.Person.LastName.Set(lastName)
 						)
 						.From(dbo.Person)
 						.Where(dbo.Person.Id == personId)
@@ -108,8 +105,7 @@ namespace NetCoreConsoleApp
 						   dbo.Address.Line2.Set(billingAddress.Line2),
 						   dbo.Address.City.Set(billingAddress.City),
 						   dbo.Address.State.Set(billingAddress.State),
-						   dbo.Address.Zip.Set(billingAddress.Zip),
-						   dbo.Address.DateUpdated.Set(DateTime.Now)
+						   dbo.Address.Zip.Set(billingAddress.Zip)
 					   )
 					   .From(dbo.Address)
 					   .InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.AddressId == dbo.Address.Id)

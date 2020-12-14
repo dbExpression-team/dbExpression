@@ -53,11 +53,13 @@ namespace HatTrick.DbEx.Tools.Builder
                             var columnPair = new ColumnPairModel(
                                 new ColumnModel(entityPair.Entity, column),
                                 new FieldExpressionModel(
-                                    entityPair.EntityExpression, 
-                                    column, helpers.IsIgnored(column), 
-                                    helpers.ResolveName(column), 
-                                    helpers.GetClrTypeOverride(column), 
-                                    helpers.IsEnum(column)
+                                    entityPair.EntityExpression,
+                                    column, helpers.IsIgnored(column),
+                                    helpers.ResolveName(column),
+                                    helpers.GetClrTypeOverride(column),
+                                    helpers.IsEnum(column),
+                                    helpers.AllowInsert(column),
+                                    helpers.AllowUpdate(column)
                                 )
                             );
 
@@ -85,7 +87,9 @@ namespace HatTrick.DbEx.Tools.Builder
                                     column, helpers.IsIgnored(column),
                                     helpers.ResolveName(column),
                                     helpers.GetClrTypeOverride(column),
-                                    helpers.IsEnum(column)
+                                    helpers.IsEnum(column),
+                                    false,
+                                    false
                                 )
                             );
 

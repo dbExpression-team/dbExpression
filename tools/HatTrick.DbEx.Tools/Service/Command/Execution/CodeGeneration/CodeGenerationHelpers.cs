@@ -129,6 +129,26 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
+        #region allow insert
+        public bool AllowInsert(MsSqlColumn column)
+        {
+            if (this.TryResolveMeta(column, "AllowInsert", out bool? allowInsert))
+                return allowInsert.Value;
+
+            return true;
+        }
+        #endregion
+
+        #region allow update
+        public bool AllowUpdate(MsSqlColumn column)
+        {
+            if (this.TryResolveMeta(column, "AllowUpdate", out bool? allowUpdate))
+                return allowUpdate.Value;
+
+            return true;
+        }
+        #endregion
+
         #region try resolve meta
         private bool TryResolveMeta<T>(INamedMeta namedMeta, string key, out T value)
         {
@@ -146,16 +166,6 @@ namespace HatTrick.DbEx.Tools.Service
             value = meta.ReflectItem<T>(key, false);
 
             return value is object;
-        }
-        #endregion
-
-        #region is last
-        public bool IsLast(IEnumerable set, object item)
-        {
-            var enumerator = set.GetEnumerator();
-            object current = null;
-            while (enumerator.MoveNext()) { current = enumerator.Current; }
-            return current == item;
         }
         #endregion
 

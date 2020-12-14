@@ -36,10 +36,12 @@
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {{
+            {?var :applyComma = false}
             return new SelectExpressionSet(
 				{#each $.Items}
 				{#if !$.FieldExpression.IsIgnored}
-                {$.FieldExpression.Name}{#if !(..\$.Items, $) => IsLast},{/if+}
+                {+#if :applyComma},{/if}{$.FieldExpression.Name}
+                {? :applyComma = true}
 				{/if}
 				{/each}
             );
@@ -47,10 +49,16 @@
 		
         protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
         {{
-            return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase}, 
+            return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase} 
 				{#each $.Items}
 			    {#if !$.FieldExpression.IsIgnored}
-                new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({$.FieldExpression.Name}, {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name}){#if !(..\$.Items, $) => IsLast},{/if+}
+                {#if !$.Column.IsIdentity}
+                {#if !$.Column.IsComputed}
+                {#if $.FieldExpression.AllowInsert}
+                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({$.FieldExpression.Name}, {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name})
+                {/if}
+                {/if}
+                {/if}
                 {/if}
                 {/each}                
             );
@@ -63,7 +71,11 @@
             {#each $.Items}
 			{#if !$.FieldExpression.IsIgnored}
 			{#if !$.Column.IsIdentity}
+            {#if !$.Column.IsComputed}
+            {#if $.FieldExpression.AllowUpdate}
             if (target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
+            {/if}
+            {/if}
             {/if}
             {/if}
             {/each}

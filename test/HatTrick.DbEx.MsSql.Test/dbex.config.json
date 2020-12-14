@@ -93,6 +93,26 @@
 					"path": "dbo.Purchase.TotalPurchaseQuantity"
 				}
 			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "dbo.*.DateCreated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "dbo.*.DateUpdated",
+					"objectType": "tablecolumn"
+				}
+			}
 		}
 	]
 }

@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region write output
         private void WriteOutput(string path)
         {
-            string resourcePath = "HatTrick.DbEx.Tools.Resources.DbExConfig.DbExConfig.Example.json";
+            string resourcePath = "HatTrick.DbEx.Tools.Resources.DbExConfig.DbEx.Config.Example.json";
             var resources = new ResourceAccessor();
             Resource config = resources.Get(resourcePath);
 

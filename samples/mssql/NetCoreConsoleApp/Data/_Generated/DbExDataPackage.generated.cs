@@ -135,6 +135,7 @@ namespace SimpleConsole.dboData
         public int ProductId { get; set; }
         public decimal PurchasePrice { get; set; }
         public int Quantity { get; set; }
+        public decimal? PurchaseTotal { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         #endregion
