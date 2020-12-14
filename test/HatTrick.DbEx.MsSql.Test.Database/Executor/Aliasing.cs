@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Dynamic;
 using Xunit;
+using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -164,6 +165,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]
@@ -226,6 +228,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [Trait("Operation", "GROUP BY")]
         [MsSqlVersions.AllVersions]
         public void Can_aliasing_an_alias_result_in_correct_output(int version, int expected = 2)
@@ -257,6 +260,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_aliased_subquery_result_in_correct_counts_for_dynamic_return(int version, int personCount = 50, int addressCount = 17)
         {
@@ -287,6 +291,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_aliased_subquery_result_in_correct_counts_for_value_return(int version, int personCount = 50, int addressCount = 17)
         {
@@ -315,6 +320,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_aliased_subquery_result_in_correct_counts_for_entity_return(int version, int personCount = 50)
         {
@@ -340,6 +346,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_aliased_subqueries_result_in_correct_counts_for_coalesced_value_return(int version, int count = 50)
         {
@@ -392,6 +399,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
         [MsSqlVersions.AllVersions]
         public void Can_aliased_subqueries_result_in_correct_counts_for_coalesced_value_using_custom_mapping_in_execute(int version, int count = 50)
         {
