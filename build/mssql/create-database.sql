@@ -129,10 +129,21 @@ CREATE TABLE [dbo].[Address](
 	[City] VARCHAR(60) NOT NULL,
 	[State] CHAR(2) NOT NULL,
 	[Zip] VARCHAR(10) NOT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Address_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Address_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED ([Id])
 )
+GO
+
+CREATE TRIGGER [dbo].[TR_Address_DateUpdated]
+	ON [dbo].[Address]
+	AFTER UPDATE 
+	AS 
+	IF NOT UPDATE([DateUpdated])
+		UPDATE [dbo].[Address] 
+		SET [DateUpdated] = GETDATE()
+		FROM inserted i
+		INNER JOIN [dbo].[Address] a ON a.Id = i.Id
 GO
 
 CREATE TABLE [dbo].[Person](
@@ -143,17 +154,28 @@ CREATE TABLE [dbo].[Person](
 	[GenderType] INT NOT NULL,
 	[CreditLimit] INT NULL,
 	[YearOfLastCreditLimitReview] INT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([Id]) 
 )
+GO
+
+CREATE TRIGGER [dbo].[TR_Person_DateUpdated]
+	ON [dbo].[Person]
+	AFTER UPDATE 
+	AS 
+	IF NOT UPDATE([DateUpdated])
+		UPDATE [dbo].[Person] 
+		SET [DateUpdated] = GETDATE()
+		FROM inserted i
+		INNER JOIN [dbo].[Person] a ON a.Id = i.Id
 GO
 
 CREATE TABLE [dbo].[Person_Address](
 	[Id] INT IDENTITY(1,1) NOT NULL,
 	[PersonId] INT NOT NULL,
 	[AddressId] INT NOT NULL,
-	[DateCreated] DATETIME NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_Address_DateCreated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_Person_Address] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_Person_Address_Address] FOREIGN KEY([AddressId]) REFERENCES [dbo].[Address] ([Id]),
 	CONSTRAINT [FK_Person_Address_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
@@ -176,10 +198,21 @@ CREATE TABLE [dbo].[Product](
 	[ShippingWeight] DECIMAL(4, 1) NOT NULL,
 	[ValidStartTimeOfDayForPurchase] TIME NULL,
 	[ValidEndTimeOfDayForPurchase] TIME NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Product_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Product_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([Id]) 
 )
+GO
+
+CREATE TRIGGER [dbo].[TR_Product_DateUpdated]
+	ON [dbo].[Product]
+	AFTER UPDATE 
+	AS 
+	IF NOT UPDATE([DateUpdated])
+		UPDATE [dbo].[Product] 
+		SET [DateUpdated] = GETDATE()
+		FROM inserted i
+		INNER JOIN [dbo].[Product] a ON a.Id = i.Id
 GO
 
 CREATE TABLE [dbo].[Purchase](
@@ -194,11 +227,22 @@ CREATE TABLE [dbo].[Purchase](
 	[TrackingIdentifier] UNIQUEIDENTIFIER NULL,
 	[PaymentMethodType] VARCHAR(20) NOT NULL,
 	[PaymentSourceType] VARCHAR(20) NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Purchase_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Purchase_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_Purchase_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
 )
+GO
+
+CREATE TRIGGER [dbo].[TR_Purchase_DateUpdated]
+	ON [dbo].[Purchase]
+	AFTER UPDATE 
+	AS 
+	IF NOT UPDATE([DateUpdated])
+		UPDATE [dbo].[Purchase] 
+		SET [DateUpdated] = GETDATE()
+		FROM inserted i
+		INNER JOIN [dbo].[Purchase] a ON a.Id = i.Id
 GO
 
 CREATE TABLE [dbo].[PurchaseLine](
@@ -207,12 +251,23 @@ CREATE TABLE [dbo].[PurchaseLine](
 	[ProductId] INT NOT NULL,
 	[PurchasePrice] DECIMAL(12, 2) NOT NULL,
 	[Quantity] INT NOT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_PurchaseLine_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_PurchaseLine_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_PurchaseLine] PRIMARY KEY CLUSTERED ([Id]),
 	CONSTRAINT [FK_PurchaseLine_Purchase] FOREIGN KEY([PurchaseId]) REFERENCES [dbo].[Purchase] ([Id]),
 	CONSTRAINT [FK_PurchaseLine_Product] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Product] ([Id])
 )
+GO
+
+CREATE TRIGGER [dbo].[TR_PurchaseLine_DateUpdated]
+	ON [dbo].[PurchaseLine]
+	AFTER UPDATE 
+	AS 
+	IF NOT UPDATE([DateUpdated])
+		UPDATE [dbo].[PurchaseLine] 
+		SET [DateUpdated] = GETDATE()
+		FROM inserted i
+		INNER JOIN [dbo].[PurchaseLine] a ON a.Id = i.Id
 GO
 
 CREATE SCHEMA [sec]
@@ -221,10 +276,21 @@ GO
 CREATE TABLE [sec].[Person](
 	[Id] INT IDENTITY(1,1) NOT NULL,
 	[SSN] CHAR(9) NOT NULL,
-	[DateCreated] DATETIMEOFFSET NOT NULL,
-	[DateUpdated] DATETIMEOFFSET NOT NULL,
+	[DateCreated] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_secPerson] PRIMARY KEY CLUSTERED ([Id])
 )
+GO
+
+CREATE TRIGGER [sec].[TR_Person_DateUpdated]
+	ON [sec].[Person]
+	AFTER UPDATE 
+	AS 
+	IF NOT UPDATE([DateUpdated])
+		UPDATE [sec].[Person] 
+		SET [DateUpdated] = GETDATE()
+		FROM inserted i
+		INNER JOIN [sec].[Person] a ON a.Id = i.Id
 GO
 
 CREATE VIEW [dbo].[PersonTotalPurchasesView]
