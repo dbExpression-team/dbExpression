@@ -163,13 +163,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.DateDiff(DateParts.Day, db.alias("lines", "DateCreated"), dbo.Purchase.ShipDate).As("alias")
+                    db.fx.DateDiff(DateParts.Day, dbex.alias("lines", "DateCreated"), dbo.Purchase.ShipDate).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)
                     .From(dbo.PurchaseLine)
                     .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
-                ).As("lines").On(dbo.Purchase.Id == db.alias("lines", "PurchaseId"));
+                ).As("lines").On(dbo.Purchase.Id == dbex.alias("lines", "PurchaseId"));
 
             //when               
             int? result = exp.Execute();

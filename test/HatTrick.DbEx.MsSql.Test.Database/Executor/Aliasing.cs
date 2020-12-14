@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount"),
-                db.alias("vips", "PurchaseYear"),
+                dbex.alias("vips", "PurchaseCount"),
+                dbex.alias("vips", "PurchaseYear"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -51,10 +51,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").Desc
+                dbex.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -81,8 +81,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                (db.alias("vips", "PurchaseCount") + dbo.Person.Id).As("PurchaseCount"),
-                db.alias("vips", "PurchaseYear"),
+                (dbex.alias("vips", "PurchaseCount") + dbo.Person.Id).As("PurchaseCount"),
+                dbex.alias("vips", "PurchaseYear"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -101,10 +101,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").Desc
+                dbex.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -131,7 +131,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount"),
+                dbex.alias("vips", "PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -150,10 +150,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").Desc
+                dbex.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -178,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.fx.Coalesce(db.alias("vips", "PurchaseCount"), db.alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount"),
+                db.fx.Coalesce(dbex.alias("vips", "PurchaseCount"), dbex.alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -197,7 +197,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
             .LeftJoin(
                 db.SelectMany(
                     dbo.Purchase.PersonId,
@@ -213,10 +213,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
                     & db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year
                 )
-            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId"))
+            ).As("not_vips").On(dbo.Person.Id == dbex.alias("not_vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").Desc
+                dbex.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -235,7 +235,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectOne(
                 dbo.Person.Id.As("PersonId"),
-                db.alias("vips", "PurchaseCount").As("Result")
+                dbex.alias("vips", "PurchaseCount").As("Result")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -247,8 +247,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .GroupBy(
                     dbo.Purchase.PersonId
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
-            .Where(db.alias("vips", "PurchaseCount") == expected)
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
+            .Where(dbex.alias("vips", "PurchaseCount") == expected)
             .Execute();
 
             //then
@@ -266,7 +266,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = db.SelectMany(
                 dbo.Person.Id,
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("CustomerName"),
-                (db.alias("person_address", "Id") + 2).As("AddressId")
+                (dbex.alias("person_address", "Id") + 2).As("AddressId")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -277,7 +277,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Address)
                 .InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
                 .Where(dbo.Address.AddressType == AddressType.Mailing)
-            ).As("person_address").On(db.alias("person_address", "PersonId") == dbo.Person.Id)
+            ).As("person_address").On(dbex.alias("person_address", "PersonId") == dbo.Person.Id)
             .Execute();
 
             //then
@@ -294,7 +294,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var persons = db.SelectMany(
-                db.alias("person_address", "Id").As("Foo")
+                dbex.alias("person_address", "Id").As("Foo")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -305,7 +305,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Address)
                 .InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
                 .Where(dbo.Address.AddressType == AddressType.Mailing)
-            ).As("person_address").On(db.alias("person_address", "PersonId") == dbo.Person.Id)
+            ).As("person_address").On(dbex.alias("person_address", "PersonId") == dbo.Person.Id)
             .Execute();
 
             //then
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .From(dbo.Address)
                 .InnerJoin(dbo.PersonAddress).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
                 .Where(dbo.Address.AddressType == AddressType.Mailing)
-            ).As("person_address").On(db.alias("person_address", "PersonId") == dbo.Person.Id)
+            ).As("person_address").On(dbex.alias("person_address", "PersonId") == dbo.Person.Id)
             .Execute();
 
             //then
@@ -349,7 +349,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             IList<object> values = db.SelectMany(
-                db.fx.Coalesce(db.alias("vips", "PurchaseCount"), db.alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
+                db.fx.Coalesce(dbex.alias("vips", "PurchaseCount"), dbex.alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -365,7 +365,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).Having(
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
             .LeftJoin(
                 db.SelectMany(
                     dbo.Purchase.PersonId,
@@ -379,10 +379,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).Having(
                     db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
                 )
-            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId"))
+            ).As("not_vips").On(dbo.Person.Id == dbex.alias("not_vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").Desc
+                dbex.alias("vips", "PurchaseCount").Desc
             )
             .Execute();
 
@@ -402,7 +402,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var values = db.SelectMany(
                 dbo.Person.Id,
-                db.fx.Coalesce(db.alias("vips", "PurchaseCount"), db.alias("not_vips", "PurchaseCount"), int.MinValue)
+                db.fx.Coalesce(dbex.alias("vips", "PurchaseCount"), dbex.alias("not_vips", "PurchaseCount"), int.MinValue)
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -418,7 +418,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).Having(
                     db.fx.Count(dbo.Purchase.PurchaseDate) >= purchaseCount
                 )
-            ).As("vips").On(dbo.Person.Id == db.alias("vips", "PersonId"))
+            ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
             .LeftJoin(
                 db.SelectMany(
                     dbo.Purchase.PersonId,
@@ -432,10 +432,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 ).Having(
                     db.fx.Count(dbo.Purchase.PurchaseDate) < purchaseCount
                 )
-            ).As("not_vips").On(dbo.Person.Id == db.alias("not_vips", "PersonId"))
+            ).As("not_vips").On(dbo.Person.Id == dbex.alias("not_vips", "PersonId"))
             .OrderBy(
                 (dbo.Person.Id + dbo.Person.Id).Asc,
-                db.alias("vips", "PurchaseCount").Desc
+                dbex.alias("vips", "PurchaseCount").Desc
             )
             .Execute(row =>
                 {

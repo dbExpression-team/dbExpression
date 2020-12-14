@@ -1,4 +1,0 @@
-﻿        #region alias
-        public static AliasExpression alias(string tableName, string fieldName)
-            => new AliasExpression(tableName, fieldName);
-        #endregion
