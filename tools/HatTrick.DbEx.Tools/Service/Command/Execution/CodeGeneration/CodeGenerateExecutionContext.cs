@@ -127,8 +127,8 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-		#region resolve output path
-		protected string ResolveOutputDirectory(DbExConfig config)
+        #region resolve output path
+        protected string ResolveOutputDirectory(DbExConfig config)
         {
             string keyUsed;
             bool optionFound = base.TryGetOption(out string optionPath, out keyUsed, "--output", "-o");
@@ -243,10 +243,10 @@ namespace HatTrick.DbEx.Tools.Service
 
             base.PushProgressFeedback($"applied working directory override");
         }
-		#endregion
+        #endregion
 
-		#region ensure output directory
-		protected void EnsureOutputDirectory(DbExConfig config)
+        #region ensure output directory
+        protected void EnsureOutputDirectory(DbExConfig config)
         {
             //was value provided as option or config?
             bool isProvided = !string.IsNullOrWhiteSpace(config.OutputDirectory);
@@ -321,9 +321,11 @@ namespace HatTrick.DbEx.Tools.Service
                     IList<INamedMeta> set = this.ResolveOverrideTarget(model, o);
                     if (set is null || set.Count == 0)
                     {
-                        svc.Feedback.Push(To.Warn, $"override.apply.to.path: '{o.Apply.To.Path}' at meta[{i}] resolved 0 items");
+                        svc.Feedback.Push(To.Warn, $"overrides.apply.to.path: '{o.Apply.To.Path}' at overrides[{i}] resolved 0 items");
                         continue;
                     }
+
+                    this.ValidateOverride(o, i, set); //this only renders warnings
 
                     foreach (var item in set)
                     {
@@ -332,9 +334,26 @@ namespace HatTrick.DbEx.Tools.Service
                 }
             }
         }
-		#endregion
+        #endregion
 
-		#region ensure override
+        #region ensure render safe
+        private void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
+        {
+            if (config.Overrides is null)
+                return;
+
+            if (!config.Overrides.Any(ov => ov.Apply.To.Path == "."))
+                return; //if override to path . exists, we caught this issue in ApplyOverrides
+
+            if (string.Compare(config.RootNamespace, model.Name, true) == 0)
+            {
+                //setting the root namespace equal the db name causes compile circular dependency
+                throw new CommandException($"dbex.config error: rootNamespace: {config.RootNamespace} - rootNamespace cannot equal database name: {model.Name}");
+            }
+        }
+        #endregion
+
+        #region ensure override
         private bool EnsureOverride(Override o, int atIndex, DbExConfig config)
         {
             //warnings...
@@ -371,35 +390,19 @@ namespace HatTrick.DbEx.Tools.Service
                 if (o.Apply.To.Path == "." && (string.Compare(o.Apply.Name, config.RootNamespace, true) == 0))
                 {
                     //setting the root namespace equal the db name causes compile circular dependency
-                    StringBuilder msg = new StringBuilder();
-                    msg.AppendLine($"DbExConfig error: rootNamespace=\"{config.RootNamespace}\" - rootNamespace cannot equal database name override");
-                    msg.AppendLine($"encountered override.apply.name=\"{o.Apply.Name}\" for override.apply.to.path=\"{o.Apply.To.Path}\" at overrides[{atIndex}]");
-                    throw new CommandException(msg.ToString());
+                    string msg = string.Empty;
+                    msg += $"encountered override.apply.name=\"{o.Apply.Name}\" for override.apply.to.path=\"{o.Apply.To.Path}\" at overrides[{atIndex}]";
+                    msg += ($"  The rootNamespace cannot equal the database name.");
+                    throw new CommandException(msg);
                 }
             }
 
             return isValid;
         }
-        #endregion
-
-        #region ensure render safe
-        private void EnsureRenderSafe(DbExConfig config, MsSqlModel model)
-        {
-            if (!config.Overrides.Any(ov => ov.Apply.To.Path == "."))//if override to path . exists, we caught this issue in ApplyOverrides
-            {
-                if (string.Compare(config.RootNamespace, model.Name, true) == 0)
-                {
-                    //setting the root namespace equal the db name causes compile circular dependency
-                    StringBuilder msg = new StringBuilder();
-                    msg.AppendLine($"DbExConfig error: rootNamespace=\"{config.RootNamespace}\" - rootNamespace cannot equal database name: {model.Name}");
-                    throw new CommandException(msg.ToString());
-                }
-            }
-        }
 		#endregion
 
-		#region resolve override target
-		private IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
+        #region resolve override target
+        private IList<INamedMeta> ResolveOverrideTarget(MsSqlModel model, Override o)
         {
             IList<INamedMeta> set = null;
             switch (o.Apply.To.ObjectType)
@@ -458,8 +461,37 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region build match predicate
-        private Predicate<T> BuildMatchPredicate<T>(MsSqlModel model, Override o)
+        #region validate override
+        private void ValidateOverride(Override ovrd, int atIndex, IList<INamedMeta> targetSet)
+        {
+            //resolve distinct target types
+            var distinct = targetSet.GroupBy(t => t.GetType()).Select(t => t.FirstOrDefault()).ToList();
+
+            if (ovrd.Apply.AllowInsert.HasValue && !distinct.All(m => (m is MsSqlTableColumn)))
+            {
+                svc.Feedback.Push(To.Warn, $"override.apply.allowinsert at overrides[{atIndex}] is invalid");
+                svc.Feedback.Push(To.Warn, $"allowinsert is only valid on table columns");
+            }
+            if (ovrd.Apply.AllowUpdate.HasValue && !distinct.All(m => (m is MsSqlTableColumn)))
+            {
+                svc.Feedback.Push(To.Warn, $"override.apply.allowupdate at overrides[{atIndex}] is invalid");
+                svc.Feedback.Push(To.Warn, $"allowupdate is only valid on table columns");
+            }
+            if (ovrd.Apply.ClrType != null && !distinct.All(m => (m is MsSqlColumn)))
+            {
+                svc.Feedback.Push(To.Warn, $"override.apply.clrtype at overrides[{atIndex}] is invalid");
+                svc.Feedback.Push(To.Warn, $"clrtype is only valid on columns");
+            }
+            if (ovrd.Apply.Interfaces != null && ovrd.Apply.Interfaces.Length > 0 && !distinct.All(m => (m is MsSqlTable) || (m is MsSqlView)))
+            {
+                svc.Feedback.Push(To.Warn, $"override.apply.interfaces at overrides[{atIndex}] is invalid");
+                svc.Feedback.Push(To.Warn, $"interfaces are only valid on tables and views");
+            }
+        }
+		#endregion
+
+		#region build match predicate
+		private Predicate<T> BuildMatchPredicate<T>(MsSqlModel model, Override o)
         {
             Predicate<T> predicate = null;
 
@@ -565,7 +597,6 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.ToCamelCase), (Func<string, string>)helpers.ToCamelCase);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string, string>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
-            repo.Register(nameof(helpers.IsLast), (Func<IEnumerable, object, bool>)helpers.IsLast);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
 
             string output = null;

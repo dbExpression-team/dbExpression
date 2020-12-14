@@ -20,6 +20,9 @@
             #endregion
 
             #region set
+            {#if !$.Column.IsComputed}
+            {#if !$.Column.IsIdentity}
+            {#if $.FieldExpression.AllowUpdate}
             public AssignmentExpression Set({$.FieldExpression.Type.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value));
             public AssignmentExpression Set({+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
             {#if $.Column.IsNullable}
@@ -29,7 +32,9 @@
             public AssignmentExpression Set(Nullable{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             {/if}
+            {/if}
+            {/if}
+            {/if}
             #endregion
-
         }}
         #endregion

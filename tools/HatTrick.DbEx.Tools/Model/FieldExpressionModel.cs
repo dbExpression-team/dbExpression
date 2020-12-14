@@ -8,7 +8,9 @@ namespace HatTrick.DbEx.Tools.Model
         public EntityExpressionModel EntityExpression { get; }
         public string Name { get; }
         public TypeModel Type { get; }
-        public bool IsIgnored { get; }        
+        public bool IsIgnored { get; }
+        public bool AllowInsert { get; }
+        public bool AllowUpdate { get; }
         public (string,string) CrefTypeName
         {
             get
@@ -22,12 +24,14 @@ namespace HatTrick.DbEx.Tools.Model
             }
         }
 
-        public FieldExpressionModel(EntityExpressionModel entity, MsSqlColumn column, bool isIgnored, string name, string clrTypeOverride, bool isEnum)
+        public FieldExpressionModel(EntityExpressionModel entity, MsSqlColumn column, bool isIgnored, string name, string clrTypeOverride, bool isEnum, bool allowInsert, bool allowUpdate)
         {
             EntityExpression = entity;
             Name = name;
             Type = TypeModelBuilder.CreateTypeModel(column.SqlType, clrTypeOverride, column.IsNullable, isEnum);
             IsIgnored = isIgnored;
+            AllowInsert = allowInsert;
+            AllowUpdate = allowUpdate;
         }
     }
 }

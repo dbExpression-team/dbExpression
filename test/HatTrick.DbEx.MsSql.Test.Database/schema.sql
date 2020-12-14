@@ -105,111 +105,59 @@ DROP TABLE #DropObjects
 ---------------------------------START THE BUILD ---------------------------------------------------------
 USE [MsSqlDbExTest]
 GO
-
-CREATE TABLE [dbo].[Address](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[AddressType] INT NULL,
-	[Line1] VARCHAR(50) NOT NULL,
-	[Line2] VARCHAR(50) NULL,
-	[City] VARCHAR(60) NOT NULL,
-	[State] CHAR(2) NOT NULL,
-	[Zip] VARCHAR(10) NOT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
-	CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED ([Id])
-)
-GO
-
-CREATE TABLE [dbo].[Person](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[FirstName] VARCHAR(20) NOT NULL,
-	[LastName] VARCHAR(20) NOT NULL,
-	[BirthDate] DATE NULL,
-	[GenderType] INT NOT NULL,
-	[CreditLimit] INT NULL,
-	[YearOfLastCreditLimitReview] INT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
-	CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([Id]) 
-)
-GO
-
-CREATE TABLE [dbo].[Person_Address](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[PersonId] INT NOT NULL,
-	[AddressId] INT NOT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	CONSTRAINT [PK_Person_Address] PRIMARY KEY CLUSTERED ([Id]),
-	CONSTRAINT [FK_Person_Address_Address] FOREIGN KEY([AddressId]) REFERENCES [dbo].[Address] ([Id]),
-	CONSTRAINT [FK_Person_Address_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
-)
-GO
-
-CREATE TABLE [dbo].[Product](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[ProductCategoryType] INT NULL,
-	[Name] VARCHAR(80) NOT NULL,
-	[Description] NVARCHAR(2000) NULL,
-	[ListPrice] MONEY NOT NULL,
-	[Price] MONEY NOT NULL,
-	[Quantity] INT NOT NULL,
-	[Image] VARBINARY(MAX) NULL,
-	[Height] DECIMAL(4, 1) NULL,
-	[Width] DECIMAL(4, 1) NULL,
-	[Depth] DECIMAL(4, 1) NULL,
-	[Weight] DECIMAL(4, 1) NULL,
-	[ShippingWeight] DECIMAL(4, 1) NOT NULL,
-	[ValidStartTimeOfDayForPurchase] TIME NULL,
-	[ValidEndTimeOfDayForPurchase] TIME NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
-	CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([Id]) 
-)
-GO
-
-CREATE TABLE [dbo].[Purchase](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[PersonId] INT NOT NULL,
-	[OrderNumber] VARCHAR(20) NOT NULL,
-	[TotalPurchaseQuantity] INT NOT NULL,
-	[TotalPurchaseAmount] MONEY NOT NULL,
-	[PurchaseDate] DATETIME NOT NULL,
-	[ShipDate] DATETIME NULL,
-	[ExpectedDeliveryDate] DATETIME NULL,
-	[TrackingIdentifier] UNIQUEIDENTIFIER NULL,
-	[PaymentMethodType] VARCHAR(20) NOT NULL,
-	[PaymentSourceType] VARCHAR(20) NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
-	CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED ([Id]),
-	CONSTRAINT [FK_Purchase_Person] FOREIGN KEY([PersonId]) REFERENCES [dbo].[Person] ([Id])
-)
-GO
-
-CREATE TABLE [dbo].[PurchaseLine](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[PurchaseId] INT NOT NULL,
-	[ProductId] INT NOT NULL,
-	[PurchasePrice] DECIMAL(12, 2) NOT NULL,
-	[Quantity] INT NOT NULL,
-	[DateCreated] DATETIME NOT NULL,
-	[DateUpdated] DATETIME NOT NULL,
-	CONSTRAINT [PK_PurchaseLine] PRIMARY KEY CLUSTERED ([Id]),
-	CONSTRAINT [FK_PurchaseLine_Purchase] FOREIGN KEY([PurchaseId]) REFERENCES [dbo].[Purchase] ([Id]),
-	CONSTRAINT [FK_PurchaseLine_Product] FOREIGN KEY([ProductId]) REFERENCES [dbo].[Product] ([Id])
-)
-GO
-
+/****** Object:  Schema [sec]    Script Date: 12/13/2020 9:56:58 PM ******/
 CREATE SCHEMA [sec]
 GO
-
-CREATE TABLE [sec].[Person](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[SSN] CHAR(9) NOT NULL,
-	[DateCreated] DATETIMEOFFSET NOT NULL,
-	[DateUpdated] DATETIMEOFFSET NOT NULL,
-	CONSTRAINT [PK_secPerson] PRIMARY KEY CLUSTERED ([Id])
-)
+/****** Object:  Table [dbo].[Person]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Person](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[FirstName] [varchar](20) NOT NULL,
+	[LastName] [varchar](20) NOT NULL,
+	[BirthDate] [date] NULL,
+	[GenderType] [int] NOT NULL,
+	[CreditLimit] [int] NULL,
+	[YearOfLastCreditLimitReview] [int] NULL,
+	[DateCreated] [datetime] NOT NULL,
+	[DateUpdated] [datetime] NOT NULL,
+ CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Purchase]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Purchase](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PersonId] [int] NOT NULL,
+	[OrderNumber] [varchar](20) NOT NULL,
+	[TotalPurchaseQuantity] [int] NOT NULL,
+	[TotalPurchaseAmount] [money] NOT NULL,
+	[PurchaseDate] [datetime] NOT NULL,
+	[ShipDate] [datetime] NULL,
+	[ExpectedDeliveryDate] [datetime] NULL,
+	[TrackingIdentifier] [uniqueidentifier] NULL,
+	[PaymentMethodType] [varchar](20) NOT NULL,
+	[PaymentSourceType] [varchar](20) NULL,
+	[DateCreated] [datetime] NOT NULL,
+	[DateUpdated] [datetime] NOT NULL,
+ CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  View [dbo].[PersonTotalPurchasesView]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE VIEW [dbo].[PersonTotalPurchasesView]
@@ -224,4 +172,249 @@ FROM
 GROUP BY 
 	[dbo].[Person].[Id]
 
+GO
+/****** Object:  Table [dbo].[Address]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Address](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[AddressType] [int] NULL,
+	[Line1] [varchar](50) NOT NULL,
+	[Line2] [varchar](50) NULL,
+	[City] [varchar](60) NOT NULL,
+	[State] [char](2) NOT NULL,
+	[Zip] [varchar](10) NOT NULL,
+	[DateCreated] [datetime] NOT NULL,
+	[DateUpdated] [datetime] NOT NULL,
+ CONSTRAINT [PK_Address] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Person_Address]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Person_Address](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PersonId] [int] NOT NULL,
+	[AddressId] [int] NOT NULL,
+	[DateCreated] [datetime] NOT NULL,
+ CONSTRAINT [PK_Person_Address] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Product]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Product](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ProductCategoryType] [int] NULL,
+	[Name] [varchar](80) NOT NULL,
+	[Description] [nvarchar](2000) NULL,
+	[ListPrice] [money] NOT NULL,
+	[Price] [money] NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[Image] [varbinary](max) NULL,
+	[Height] [decimal](4, 1) NULL,
+	[Width] [decimal](4, 1) NULL,
+	[Depth] [decimal](4, 1) NULL,
+	[Weight] [decimal](4, 1) NULL,
+	[ShippingWeight] [decimal](4, 1) NOT NULL,
+	[ValidStartTimeOfDayForPurchase] [time](7) NULL,
+	[ValidEndTimeOfDayForPurchase] [time](7) NULL,
+	[DateCreated] [datetime] NOT NULL,
+	[DateUpdated] [datetime] NOT NULL,
+ CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PurchaseLine]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PurchaseLine](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PurchaseId] [int] NOT NULL,
+	[ProductId] [int] NOT NULL,
+	[PurchasePrice] [decimal](12, 2) NOT NULL,
+	[Quantity] [int] NOT NULL,
+	[PurchaseTotal]  AS ([PurchasePrice]*[Quantity]),
+	[DateCreated] [datetime] NOT NULL,
+	[DateUpdated] [datetime] NOT NULL,
+ CONSTRAINT [PK_PurchaseLine] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [sec].[Person]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [sec].[Person](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SSN] [char](9) NOT NULL,
+	[DateCreated] [datetimeoffset](7) NOT NULL,
+	[DateUpdated] [datetimeoffset](7) NOT NULL,
+ CONSTRAINT [PK_secPerson] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Address] ADD  CONSTRAINT [DF_Address_DateCreated]  DEFAULT (getdate()) FOR [DateCreated]
+GO
+ALTER TABLE [dbo].[Address] ADD  CONSTRAINT [DF_Address_DateUpdated]  DEFAULT (getdate()) FOR [DateUpdated]
+GO
+ALTER TABLE [dbo].[Person] ADD  CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()) FOR [DateCreated]
+GO
+ALTER TABLE [dbo].[Person] ADD  CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()) FOR [DateUpdated]
+GO
+ALTER TABLE [dbo].[Person_Address] ADD  CONSTRAINT [DF_Person_Address_DateCreated]  DEFAULT (getdate()) FOR [DateCreated]
+GO
+ALTER TABLE [dbo].[Product] ADD  CONSTRAINT [DF_Product_DateCreated]  DEFAULT (getdate()) FOR [DateCreated]
+GO
+ALTER TABLE [dbo].[Product] ADD  CONSTRAINT [DF_Product_DateUpdated]  DEFAULT (getdate()) FOR [DateUpdated]
+GO
+ALTER TABLE [dbo].[Purchase] ADD  CONSTRAINT [DF_Purchase_DateCreated]  DEFAULT (getdate()) FOR [DateCreated]
+GO
+ALTER TABLE [dbo].[Purchase] ADD  CONSTRAINT [DF_Purchase_DateUpdated]  DEFAULT (getdate()) FOR [DateUpdated]
+GO
+ALTER TABLE [dbo].[PurchaseLine] ADD  CONSTRAINT [DF_PurchaseLine_DateCreated]  DEFAULT (getdate()) FOR [DateCreated]
+GO
+ALTER TABLE [dbo].[PurchaseLine] ADD  CONSTRAINT [DF_PurchaseLine_DateUpdated]  DEFAULT (getdate()) FOR [DateUpdated]
+GO
+ALTER TABLE [dbo].[Person_Address]  WITH CHECK ADD  CONSTRAINT [FK_Person_Address_Address] FOREIGN KEY([AddressId])
+REFERENCES [dbo].[Address] ([Id])
+GO
+ALTER TABLE [dbo].[Person_Address] CHECK CONSTRAINT [FK_Person_Address_Address]
+GO
+ALTER TABLE [dbo].[Person_Address]  WITH CHECK ADD  CONSTRAINT [FK_Person_Address_Person] FOREIGN KEY([PersonId])
+REFERENCES [dbo].[Person] ([Id])
+GO
+ALTER TABLE [dbo].[Person_Address] CHECK CONSTRAINT [FK_Person_Address_Person]
+GO
+ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD  CONSTRAINT [FK_Purchase_Person] FOREIGN KEY([PersonId])
+REFERENCES [dbo].[Person] ([Id])
+GO
+ALTER TABLE [dbo].[Purchase] CHECK CONSTRAINT [FK_Purchase_Person]
+GO
+ALTER TABLE [dbo].[PurchaseLine]  WITH CHECK ADD  CONSTRAINT [FK_PurchaseLine_Product] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[Product] ([Id])
+GO
+ALTER TABLE [dbo].[PurchaseLine] CHECK CONSTRAINT [FK_PurchaseLine_Product]
+GO
+ALTER TABLE [dbo].[PurchaseLine]  WITH CHECK ADD  CONSTRAINT [FK_PurchaseLine_Purchase] FOREIGN KEY([PurchaseId])
+REFERENCES [dbo].[Purchase] ([Id])
+GO
+ALTER TABLE [dbo].[PurchaseLine] CHECK CONSTRAINT [FK_PurchaseLine_Purchase]
+GO
+/****** Object:  Trigger [dbo].[TR_Address_DateUpdated]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[TR_Address_DateUpdated]
+ON [dbo].[Address]
+AFTER UPDATE 
+AS 
+UPDATE dbo.[Address] 
+SET DateUpdated = GETDATE()
+FROM inserted i
+INNER JOIN dbo.[Address] a ON a.Id = i.Id
+GO
+ALTER TABLE [dbo].[Address] ENABLE TRIGGER [TR_Address_DateUpdated]
+GO
+/****** Object:  Trigger [dbo].[TR_Person_DateUpdated]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[TR_Person_DateUpdated]
+ON [dbo].[Person]
+AFTER UPDATE 
+AS 
+UPDATE dbo.[Person] 
+SET DateUpdated = GETDATE()
+FROM inserted i
+INNER JOIN dbo.[Person] a ON a.Id = i.Id
+GO
+ALTER TABLE [dbo].[Person] ENABLE TRIGGER [TR_Person_DateUpdated]
+GO
+/****** Object:  Trigger [dbo].[TR_Product_DateUpdated]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[TR_Product_DateUpdated]
+ON [dbo].[Product]
+AFTER UPDATE 
+AS 
+UPDATE dbo.[Product] 
+SET DateUpdated = GETDATE()
+FROM inserted i
+INNER JOIN dbo.[Product] a ON a.Id = i.Id
+GO
+ALTER TABLE [dbo].[Product] ENABLE TRIGGER [TR_Product_DateUpdated]
+GO
+/****** Object:  Trigger [dbo].[TR_Purchase_DateUpdated]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[TR_Purchase_DateUpdated]
+ON [dbo].[Purchase]
+AFTER UPDATE 
+AS 
+UPDATE dbo.[Purchase] 
+SET DateUpdated = GETDATE()
+FROM inserted i
+INNER JOIN dbo.[Purchase] a ON a.Id = i.Id
+GO
+ALTER TABLE [dbo].[Purchase] ENABLE TRIGGER [TR_Purchase_DateUpdated]
+GO
+/****** Object:  Trigger [dbo].[TR_PurchaseLine_DateUpdated]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[TR_PurchaseLine_DateUpdated]
+ON [dbo].[PurchaseLine]
+AFTER UPDATE 
+AS 
+UPDATE dbo.[PurchaseLine] 
+SET DateUpdated = GETDATE()
+FROM inserted i
+INNER JOIN dbo.[PurchaseLine] a ON a.Id = i.Id
+GO
+ALTER TABLE [dbo].[PurchaseLine] ENABLE TRIGGER [TR_PurchaseLine_DateUpdated]
+GO
+/****** Object:  Trigger [sec].[TR_Person_DateUpdated]    Script Date: 12/13/2020 9:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [sec].[TR_Person_DateUpdated]
+ON [sec].[Person]
+AFTER UPDATE 
+AS 
+UPDATE sec.[Person] 
+SET DateUpdated = GETDATE()
+FROM inserted i
+INNER JOIN sec.[Person] a ON a.Id = i.Id
+GO
+ALTER TABLE [sec].[Person] ENABLE TRIGGER [TR_Person_DateUpdated]
 GO

@@ -48,7 +48,7 @@
     },
     {
       "apply": {
-        "interfaces": [ ], /* remove IUpdateableEntity from association tables */
+        "interfaces": null, /* remove IUpdateableEntity from association tables */
         "to": {
           "path": "*.*_*",
           "objectType": "table"
@@ -101,6 +101,26 @@
         "clrType": "SimpleConsole.Data.PaymentSourceType?",
         "to": {
           "path": "dbo.Purchase.PaymentSourceType"
+        }
+      }
+    },
+    {
+      "apply": {
+        "allowInsert": false,
+        "allowUpdate": false,
+        "to": {
+          "path": "dbo.*.DateCreated",
+          "objectType": "tablecolumn"
+        }
+      }
+    },
+    {
+      "apply": {
+        "allowInsert": false,
+        "allowUpdate": false,
+        "to": {
+          "path": "dbo.*.DateUpdated",
+          "objectType": "tablecolumn"
         }
       }
     }

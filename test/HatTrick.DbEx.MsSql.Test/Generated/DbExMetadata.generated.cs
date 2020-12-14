@@ -243,6 +243,7 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.ProductId", new MsSqlFieldMetadata(this, $"{identifier}.ProductId", "ProductId", SqlDbType.Int, 4));
             Fields.Add($"{identifier}.PurchasePrice", new MsSqlFieldMetadata(this, $"{identifier}.PurchasePrice", "PurchasePrice", SqlDbType.Decimal, 9));
             Fields.Add($"{identifier}.Quantity", new MsSqlFieldMetadata(this, $"{identifier}.Quantity", "Quantity", SqlDbType.Int, 4));
+            Fields.Add($"{identifier}.PurchaseTotal", new MsSqlFieldMetadata(this, $"{identifier}.PurchaseTotal", "PurchaseTotal", SqlDbType.Decimal, 13));
             Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime, 8));
             Fields.Add($"{identifier}.DateUpdated", new MsSqlFieldMetadata(this, $"{identifier}.DateUpdated", "DateUpdated", SqlDbType.DateTime, 8));
         }

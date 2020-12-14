@@ -50,6 +50,10 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string[] Interfaces { get; set; }
 
+        public bool? AllowInsert { get; set; }
+
+        public bool? AllowUpdate { get; set; }
+
         public ApplyTo To { get; set; }
 
         public string ToJson()
