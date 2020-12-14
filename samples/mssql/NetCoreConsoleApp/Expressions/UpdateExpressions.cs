@@ -17,8 +17,7 @@ namespace NetCoreConsoleApp
 			//update dbo.Person
 			//set 
 			//	dbo.Person.CreditLimit = {creditLimit}, 
-			//	dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE()), 
-			//	DateUpdated = GETDATE()
+			//	dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE())
 			//from dbo.Person
 			//where dbo.Person.Id = {personId};
 			db.Update(
@@ -37,8 +36,7 @@ namespace NetCoreConsoleApp
 			//update dbo.Person
 			//set
 			//	dbo.Person.CreditLimit = (dbo.Person.CreditLimit + {increase}), 
-			//	dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE()), 
-			//	DateUpdated = GETDATE()
+			//	dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE())
 			//from dbo.Person
 			//inner join dbo.Person_Address on dbo.Person_Address.PersonId = dbo.Person.Id
 			//inner join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
@@ -66,8 +64,7 @@ namespace NetCoreConsoleApp
 			//update dbo.Person
 			//set
 			//	dbo.Person.FirstName = '',
-			//	dbo.Person.LastName = '',
-			//	dbo.Person.DateUpdated = GETDATE()
+			//	dbo.Person.LastName = ''
 			//from dbo.Person
 			//where dbo.Person.Id = 0;
 
@@ -77,8 +74,7 @@ namespace NetCoreConsoleApp
 			//	dbo.Address.Line2 = '',
 			//	dbo.Address.City = '',
 			//	dbo.Address.State = '',
-			//	dbo.Address.Zip = '',
-			//	dbo.Address.DateUpdated = GETDATE()
+			//	dbo.Address.Zip = ''
 			//from dbo.Address
 			//inner join dbo.Person_Address on dbo.Person_Address.AddressId = dbo.Address.Id
 			//where dbo.Person_Address.PersonId = 0 and dbo.Address.AddressType = 1
