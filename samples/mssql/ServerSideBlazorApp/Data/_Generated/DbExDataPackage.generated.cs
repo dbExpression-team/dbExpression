@@ -8,15 +8,15 @@ namespace ServerSideBlazorApp.dboData
     public partial class Address : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public ServerSideBlazorApp.Data.AddressType? AddressType { get; set; }
-        public string Line1 { get; set; }
-        public string Line2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Zip { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual ServerSideBlazorApp.Data.AddressType? AddressType { get; set; }
+        public virtual string Line1 { get; set; }
+        public virtual string Line2 { get; set; }
+        public virtual string City { get; set; }
+        public virtual string State { get; set; }
+        public virtual string Zip { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
         #endregion
 
         #region constructor
@@ -31,15 +31,15 @@ namespace ServerSideBlazorApp.dboData
     public partial class Customer : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime? BirthDate { get; set; }
-        public ServerSideBlazorApp.Data.GenderType GenderType { get; set; }
-        public int? CreditLimit { get; set; }
-        public int? YearOfLastCreditLimitReview { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string FirstName { get; set; }
+        public virtual string LastName { get; set; }
+        public virtual DateTime? BirthDate { get; set; }
+        public virtual ServerSideBlazorApp.Data.GenderType GenderType { get; set; }
+        public virtual int? CreditLimit { get; set; }
+        public virtual int? YearOfLastCreditLimitReview { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
         #endregion
 
         #region constructor
@@ -54,10 +54,10 @@ namespace ServerSideBlazorApp.dboData
     public partial class CustomerAddress : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public int PersonId { get; set; }
-        public int AddressId { get; set; }
-        public DateTime DateCreated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual int PersonId { get; set; }
+        public virtual int AddressId { get; set; }
+        public virtual DateTime DateCreated { get; set; }
         #endregion
 
         #region constructor
@@ -72,23 +72,23 @@ namespace ServerSideBlazorApp.dboData
     public partial class Product : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public ServerSideBlazorApp.Data.ProductCategoryType? ProductCategoryType { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double ListPrice { get; set; }
-        public double Price { get; set; }
-        public int Quantity { get; set; }
-        public byte[] Image { get; set; }
-        public decimal? Height { get; set; }
-        public decimal? Width { get; set; }
-        public decimal? Depth { get; set; }
-        public decimal? Weight { get; set; }
-        public decimal ShippingWeight { get; set; }
-        public TimeSpan? ValidStartTimeOfDayForPurchase { get; set; }
-        public TimeSpan? ValidEndTimeOfDayForPurchase { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual ServerSideBlazorApp.Data.ProductCategoryType? ProductCategoryType { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Description { get; set; }
+        public virtual double ListPrice { get; set; }
+        public virtual double Price { get; set; }
+        public virtual int Quantity { get; set; }
+        public virtual byte[] Image { get; set; }
+        public virtual decimal? Height { get; set; }
+        public virtual decimal? Width { get; set; }
+        public virtual decimal? Depth { get; set; }
+        public virtual decimal? Weight { get; set; }
+        public virtual decimal ShippingWeight { get; set; }
+        public virtual TimeSpan? ValidStartTimeOfDayForPurchase { get; set; }
+        public virtual TimeSpan? ValidEndTimeOfDayForPurchase { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
         #endregion
 
         #region constructor
@@ -103,19 +103,19 @@ namespace ServerSideBlazorApp.dboData
     public partial class Purchase : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public int PersonId { get; set; }
-        public string OrderNumber { get; set; }
-        public int TotalPurchaseQuantity { get; set; }
-        public double TotalPurchaseAmount { get; set; }
-        public DateTime PurchaseDate { get; set; }
-        public DateTime? ShipDate { get; set; }
-        public DateTime? ExpectedDeliveryDate { get; set; }
-        public Guid? TrackingIdentifier { get; set; }
-        public ServerSideBlazorApp.Data.PaymentMethodType PaymentMethodType { get; set; }
-        public ServerSideBlazorApp.Data.PaymentSourceType? PaymentSourceType { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual int PersonId { get; set; }
+        public virtual string OrderNumber { get; set; }
+        public virtual int TotalPurchaseQuantity { get; set; }
+        public virtual double TotalPurchaseAmount { get; set; }
+        public virtual DateTime PurchaseDate { get; set; }
+        public virtual DateTime? ShipDate { get; set; }
+        public virtual DateTime? ExpectedDeliveryDate { get; set; }
+        public virtual Guid? TrackingIdentifier { get; set; }
+        public virtual ServerSideBlazorApp.Data.PaymentMethodType PaymentMethodType { get; set; }
+        public virtual ServerSideBlazorApp.Data.PaymentSourceType? PaymentSourceType { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
         #endregion
 
         #region constructor
@@ -130,14 +130,13 @@ namespace ServerSideBlazorApp.dboData
     public partial class PurchaseLine : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public int PurchaseId { get; set; }
-        public int ProductId { get; set; }
-        public decimal PurchasePrice { get; set; }
-        public int Quantity { get; set; }
-        public decimal? PurchaseTotal { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual int PurchaseId { get; set; }
+        public virtual int ProductId { get; set; }
+        public virtual decimal PurchasePrice { get; set; }
+        public virtual int Quantity { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
         #endregion
 
         #region constructor
@@ -152,9 +151,9 @@ namespace ServerSideBlazorApp.dboData
     public partial class PersonTotalPurchasesView : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public double? TotalAmount { get; set; }
-        public int? TotalCount { get; set; }
+        public virtual int Id { get; set; }
+        public virtual double? TotalAmount { get; set; }
+        public virtual int? TotalCount { get; set; }
         #endregion
 
         #region constructor
@@ -172,10 +171,10 @@ namespace ServerSideBlazorApp.secData
     public partial class Person : IDbEntity
     {
         #region interface
-        public int Id { get; set; }
-        public string SSN { get; set; }
-        public DateTimeOffset DateCreated { get; set; }
-        public DateTimeOffset DateUpdated { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string SSN { get; set; }
+        public virtual DateTimeOffset DateCreated { get; set; }
+        public virtual DateTimeOffset DateUpdated { get; set; }
         #endregion
 
         #region constructor

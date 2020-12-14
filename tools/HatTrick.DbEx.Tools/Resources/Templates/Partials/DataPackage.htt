@@ -3,9 +3,7 @@
     {{
         #region interface
 	    {#each $.Items}
-	    {#if !$.FieldExpression.IsIgnored}
-        public {$.FieldExpression.Type.NullableAlias} {$.FieldExpression.Name} {{ get; set; }}
-	    {/if}
+        public virtual {$.FieldExpression.Type.NullableAlias} {$.FieldExpression.Name} {{ get; set; }}
 	    {/each}
         #endregion
 

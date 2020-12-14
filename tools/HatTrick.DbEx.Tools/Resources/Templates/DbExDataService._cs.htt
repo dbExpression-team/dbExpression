@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
+#pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA1034 // Nested types should not be visible
 namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {{
 {>("RuntimeDb") => GetTemplatePartial+}
@@ -19,7 +21,6 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
 }}
 
 {#each $.Items}
-{#if !$.SchemaExpression.IsIgnored}
 namespace {$.SchemaExpression.NamespaceRoot}DataService
 {{
 	using {$.SchemaExpression.NamespaceRoot}Data;
@@ -27,13 +28,13 @@ namespace {$.SchemaExpression.NamespaceRoot}DataService
 {>("SchemaExpression") => GetTemplatePartial+}
 
 	{#each $.Items}
-	{#if !$.EntityExpression.IsIgnored}
 {>("EntityExpression") => GetTemplatePartial+}
 
-	{/if}
     {/each}
 {>("Schema") => GetTemplatePartial+}
 }}
 {/if}
 {/each}
+#pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning restore CA1034 // Nested types should not be visible

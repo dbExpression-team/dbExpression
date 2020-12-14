@@ -3,9 +3,10 @@
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface UpdateTermination<T> : IUpdateTerminationExpressionBuilder<T>
+    public interface UpdateEntitiesTermination<TEntity> : IUpdateTerminationExpressionBuilder<TEntity>
 #pragma warning restore IDE1006 // Naming Styles
-        where T : class, IDbEntity
+        where TEntity : class, IDbEntity
     {
+
     }
 }

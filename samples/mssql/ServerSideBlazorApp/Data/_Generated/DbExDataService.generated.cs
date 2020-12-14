@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
+#pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA1034 // Nested types should not be visible
 namespace ServerSideBlazorApp.DataService
 {
     #region runtime db
@@ -25,258 +27,965 @@ namespace ServerSideBlazorApp.DataService
 
         #region methods
         #region select one
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single entity.
+        /// <para>
+        /// To retrieve a <see cref="ServerSideBlazorApp.dboData.Address" />, use a type param of <see cref="ServerSideBlazorApp.dboData.Address" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config);
 
-        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.EnumElement{TEnum}" />
+        ///, for example "dbo.Person.GenderType"
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
 
-        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{TEnum}" />
+        ///, for example "dbo.Person.GenderType"
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
 
-        public static SelectValue<object> SelectOne(AnyObjectElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.AnyObjectElement" />
+        ///, for example "dbo.Person.GenderType"
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(AnyObjectElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<bool> SelectOne(BooleanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.BooleanElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool> SelectOne(BooleanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<bool?> SelectOne(NullableBooleanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableBooleanElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte> SelectOne(ByteElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte> SelectOne(ByteElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte?> SelectOne(NullableByteElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte?> SelectOne(NullableByteElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte[]> SelectOne(ByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteArrayElement" />
+        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteArrayElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<DateTime> SelectOne(DateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeElement" />
+        ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTime> SelectOne(DateTimeElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement" />
+        ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement" />
+        ///, for example "sec.Person.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, sec.Person.DateCreated)" or "db.fx.IsNull(sec.Person.DateCreated, DateTimeOffset.Now)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<decimal> SelectOne(DecimalElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DecimalElement" />
+        ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal> SelectOne(DecimalElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<decimal?> SelectOne(NullableDecimalElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDecimalElement" />
+        ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<double> SelectOne(DoubleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DoubleElement" />
+        ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double> SelectOne(DoubleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<double?> SelectOne(NullableDoubleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDoubleElement" />
+        ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double?> SelectOne(NullableDoubleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<Guid> SelectOne(GuidElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.GuidElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid> SelectOne(GuidElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<Guid?> SelectOne(NullableGuidElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableGuidElement" />
+        ///, for example "dbo.Purchase.TrackingIdentifier"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<short> SelectOne(Int16Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int16Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short> SelectOne(Int16Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<short?> SelectOne(NullableInt16Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt16Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short?> SelectOne(NullableInt16Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<int> SelectOne(Int32Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int32Element" />
+        ///, for example "dbo.Address.Id" or "db.fx.Avg(dbo.Address.Id)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int> SelectOne(Int32Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<int?> SelectOne(NullableInt32Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt32Element" />
+        ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int?> SelectOne(NullableInt32Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<long> SelectOne(Int64Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int64Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long> SelectOne(Int64Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<long?> SelectOne(NullableInt64Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt64Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long?> SelectOne(NullableInt64Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<float> SelectOne(SingleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.SingleElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float> SelectOne(SingleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<float?> SelectOne(NullableSingleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableSingleElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float?> SelectOne(NullableSingleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<string> SelectOne(StringElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.StringElement" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<string> SelectOne(NullableStringElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableStringElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(NullableStringElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.TimeSpanElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement" />
+        ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<ExpandoObject> SelectOne(IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field1, field2, fields);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the resulting value are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element1, element2, elements);
         #endregion
 
         #region select many
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of entities.
+        /// <para>
+        /// To retrieve a list of <see cref="ServerSideBlazorApp.dboData.Address" />(s), use a type param of <see cref="ServerSideBlazorApp.dboData.Address" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity
            => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config);
 
-        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.EnumElement{TEnum}" />
+        ///, for example "dbo.Person.GenderType"
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
 
-        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{TEnum}" />
+        ///, for example "dbo.Person.GenderType"
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
 
-        public static SelectValues<object> SelectMany(AnyObjectElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.AnyObjectElement" />
+        ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(AnyObjectElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<bool> SelectMany(BooleanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.BooleanElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool> SelectMany(BooleanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<bool?> SelectMany(NullableBooleanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableBooleanElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte> SelectMany(ByteElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte> SelectMany(ByteElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte?> SelectMany(NullableByteElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte?> SelectMany(NullableByteElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte[]> SelectMany(ByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteArrayElement" />
+        ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteArrayElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTime> SelectMany(DateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeElement" />
+        ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime> SelectMany(DateTimeElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement" />
+        ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement" />
+        ///, for example "sec.Person.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, sec.Person.DateCreated)" or "db.fx.IsNull(sec.Person.DateCreated, DateTimeOffset.Now)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<decimal> SelectMany(DecimalElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DecimalElement" />
+        ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal> SelectMany(DecimalElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<decimal?> SelectMany(NullableDecimalElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDecimalElement" />
+        ///, for example "dbo.Product.Height"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<double> SelectMany(DoubleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DoubleElement" />
+        ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double> SelectMany(DoubleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<double?> SelectMany(NullableDoubleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDoubleElement" />
+        ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double?> SelectMany(NullableDoubleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<Guid> SelectMany(GuidElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.GuidElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid> SelectMany(GuidElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<Guid?> SelectMany(NullableGuidElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableGuidElement" />
+        ///, for example "dbo.Purchase.TrackingIdentifier"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<short> SelectMany(Int16Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int16Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short> SelectMany(Int16Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<short?> SelectMany(NullableInt16Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt16Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short?> SelectMany(NullableInt16Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<int> SelectMany(Int32Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int32Element" />
+        ///, for example "dbo.Address.Id"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int> SelectMany(Int32Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<int?> SelectMany(NullableInt32Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt32Element" />
+        ///, for example "dbo.:column.Entity.Name}.Id"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int?> SelectMany(NullableInt32Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<long> SelectMany(Int64Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int64Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long> SelectMany(Int64Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<long?> SelectMany(NullableInt64Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt64Element" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long?> SelectMany(NullableInt64Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<float> SelectMany(SingleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.SingleElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float> SelectMany(SingleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<float?> SelectMany(NullableSingleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableSingleElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float?> SelectMany(NullableSingleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<string> SelectMany(StringElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.StringElement" />
+        ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<string> SelectMany(NullableStringElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableStringElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(NullableStringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.TimeSpanElement" />
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement" />
+        ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<ExpandoObject> SelectMany(AnyElement field1, AnyElement field2, params AnyElement[] fields)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field1, field2, fields);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element1, element2, elements);
         #endregion
 
         #region update
-        public static UpdateEntities Update(params EntityFieldAssignment[] fields)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s).
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="HatTrick.DbEx.Sql.EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// For example "dbo.Address.Line1.Set("new value")"
+        /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(params EntityFieldAssignment[] assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
 
-        public static UpdateEntities Update(IList<EntityFieldAssignment> fields)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="HatTrick.DbEx.Sql.EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// For example "dbo.Address.Line1.Set("new value")"
+        /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(IList<EntityFieldAssignment> assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
 
-        public static UpdateEntities<TEntity> Update<TEntity>(TEntity updateValuesInThisEntity, TEntity fromValuesInThisEntity)
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s) based on the comparison of property values between two entity instances.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="oldStateOfEntity">If a property value differs from the corresponding property value in "<paramref name="newStateOfEntity"/>", an assignment expression will be generated with the value set to the property value from "<paramref name="newStateOfEntity"/>".  
+        /// </param>
+        /// <param name="newStateOfEntity">Records will be updated to the property values from this entity when they differ from the property values in "<paramref name="oldStateOfEntity"/>". 
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities{TEntity}"/>, a fluent builder for constructing a sql UPDATE statement, with a list of "<see cref="HatTrick.DbEx.Sql.EntityFieldAssignment"/>" constructed from the comparison of the two entity params.</returns>
+        /// <typeparam name="TEntity">The entity type to update.</typeparam>
+        public static UpdateEntities<TEntity> Update<TEntity>(TEntity oldStateOfEntity, TEntity newStateOfEntity)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, updateValuesInThisEntity, fromValuesInThisEntity);     
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, oldStateOfEntity, newStateOfEntity);     
         #endregion
 
         #region delete
+        /// <summary>
+        /// Start constructing a sql DELETE query expression to remove records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities Delete()
             => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
         #endregion
 
         #region insert
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entity">The entity supplying the property values.
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entity);
 
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(params TEntity[] entities)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
 
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(IList<TEntity> entities)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
         #endregion
 
         #region get connection
+        /// <summary>
+        /// Creates a connection to the database.
+        /// <para>
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="HatTrick.DbEx.Sql.Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.Connection.ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
             => new SqlConnector(config.ConnectionFactory);
-        #pragma warning disable IDE1006 // Naming Styles
-        #pragma warning restore IDE1006 // Naming Styles
         #endregion
         #endregion
 
         #region fx
-#pragma warning disable CA1034 // Nested types should not be visible
-#pragma warning disable IDE1006 // Naming Styles
+        /// <inheritdoc />
         public class fx : MsSqlFunctionExpressionBuilder
-#pragma warning restore IDE1006 // Naming Styles
-#pragma warning restore CA1034 // Nested types should not be visible
         {
         }
         #endregion
@@ -297,9 +1006,7 @@ namespace ServerSideBlazorApp.DataService
     #endregion
 
     #region db
-#pragma warning disable IDE1006 // Naming Styles
     public partial class db : CRMDatabaseRuntimeSqlDatabase
-#pragma warning restore IDE1006 // Naming Styles
     {
     	
     }
@@ -311,9 +1018,7 @@ namespace ServerSideBlazorApp.dboDataService
 	using ServerSideBlazorApp.dboData;
 
     #region dbo schema expression
-#pragma warning disable IDE1006 // Naming Styles
     public class dboSchemaExpression : SchemaExpression
-#pragma warning restore IDE1006 // Naming Styles
     {
         #region interface
         public readonly AddressEntity Address;
@@ -345,8 +1050,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -366,8 +1072,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.AddressTypeField"/> representing the "dbo.Address.AddressType" column in the database, 
-        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.AddressType"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.AddressType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.AddressTypeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.AddressType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{ServerSideBlazorApp.Data.AddressType}Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>AddressType</description>
@@ -384,8 +1091,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly AddressTypeField AddressType;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line1Field"/> representing the "dbo.Address.Line1" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line1Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Line1</description>
@@ -402,8 +1110,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly Line1Field Line1;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line2Field"/> representing the "dbo.Address.Line2" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.Line2Field"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Line2</description>
@@ -420,8 +1129,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly Line2Field Line2;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.CityField"/> representing the "dbo.Address.City" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.CityField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>City</description>
@@ -438,8 +1148,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly CityField City;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.StateField"/> representing the "dbo.Address.State" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.StateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>State</description>
@@ -456,8 +1167,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly StateField State;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.ZipField"/> representing the "dbo.Address.Zip" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.ZipField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Zip</description>
@@ -474,8 +1186,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ZipField Zip;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateCreatedField"/> representing the "dbo.Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -486,17 +1199,15 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
-        /// </item>
         /// </list>
         /// </para>
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateUpdatedField"/> representing the "dbo.Address.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.AddressEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
@@ -506,9 +1217,6 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
-        /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -850,8 +1558,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -871,8 +1580,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> representing the "dbo.Person.FirstName" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.FirstNameField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>FirstName</description>
@@ -889,8 +1599,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly FirstNameField FirstName;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> representing the "dbo.Person.LastName" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.LastNameField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>LastName</description>
@@ -907,8 +1618,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly LastNameField LastName;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> representing the "dbo.Person.BirthDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.BirthDateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>BirthDate</description>
@@ -925,8 +1637,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly BirthDateField BirthDate;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.GenderTypeField"/> representing the "dbo.Person.GenderType" column in the database, 
-        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.GenderType"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.GenderType"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.GenderTypeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.GenderType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{ServerSideBlazorApp.Data.GenderType}Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>GenderType</description>
@@ -943,8 +1656,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly GenderTypeField GenderType;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> representing the "dbo.Person.CreditLimit" column in the database, 
-        /// with a .NET type of <see cref="int"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.CreditLimitField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>CreditLimit</description>
@@ -961,8 +1675,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly CreditLimitField CreditLimit;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> representing the "dbo.Person.YearOfLastCreditLimitReview" column in the database, 
-        /// with a .NET type of <see cref="int"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.YearOfLastCreditLimitReviewField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>YearOfLastCreditLimitReview</description>
@@ -979,8 +1694,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -991,17 +1707,15 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
-        /// </item>
         /// </list>
         /// </para>
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateUpdatedField"/> representing the "dbo.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
@@ -1011,9 +1725,6 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
-        /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -1359,8 +2070,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -1380,8 +2092,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.PersonIdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PersonId</description>
@@ -1398,8 +2111,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PersonIdField PersonId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>AddressId</description>
@@ -1416,8 +2130,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly AddressIdField AddressId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.DateCreatedField"/> representing the "dbo.Person_Address.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -1427,9 +2142,6 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
-        /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -1610,8 +2322,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -1631,8 +2344,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ProductCategoryTypeField"/> representing the "dbo.Product.ProductCategoryType" column in the database, 
-        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.ProductCategoryType"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.ProductCategoryType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ProductCategoryTypeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.ProductCategoryType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{ServerSideBlazorApp.Data.ProductCategoryType}Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ProductCategoryType</description>
@@ -1649,8 +2363,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ProductCategoryTypeField ProductCategoryType;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.NameField"/> representing the "dbo.Product.Name" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.NameField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Name</description>
@@ -1667,8 +2382,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly NameField Name;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> representing the "dbo.Product.Description" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DescriptionField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Description</description>
@@ -1685,8 +2401,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly DescriptionField Description;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ListPriceField"/> representing the "dbo.Product.ListPrice" column in the database, 
-        /// with a .NET type of <see cref="double"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ListPriceField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ListPrice</description>
@@ -1703,8 +2420,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ListPriceField ListPrice;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.PriceField"/> representing the "dbo.Product.Price" column in the database, 
-        /// with a .NET type of <see cref="double"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.PriceField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Price</description>
@@ -1721,8 +2439,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PriceField Price;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.QuantityField"/> representing the "dbo.Product.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.QuantityField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Quantity</description>
@@ -1739,8 +2458,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly QuantityField Quantity;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ImageField"/> representing the "dbo.Product.Image" column in the database, 
-        /// with a .NET type of <see cref="byte"/>[]
-        /// <para>Properties:
+        /// with a .NET type of <see cref="byte"/>[].  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ImageField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyByteArrayElement"/> or <see cref="HatTrick.DbEx.Sql.ByteArrayElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Image</description>
@@ -1757,8 +2477,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ImageField Image;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.HeightField"/> representing the "dbo.Product.Height" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.HeightField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Height</description>
@@ -1775,8 +2496,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly HeightField Height;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WidthField"/> representing the "dbo.Product.Width" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WidthField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Width</description>
@@ -1793,8 +2515,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly WidthField Width;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DepthField"/> representing the "dbo.Product.Depth" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DepthField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Depth</description>
@@ -1811,8 +2534,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly DepthField Depth;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WeightField"/> representing the "dbo.Product.Weight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="decimal"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.WeightField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDecimalElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Weight</description>
@@ -1829,8 +2553,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly WeightField Weight;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ShippingWeightField"/> representing the "dbo.Product.ShippingWeight" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ShippingWeightField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ShippingWeight</description>
@@ -1847,8 +2572,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ShippingWeightField ShippingWeight;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidStartTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidStartTimeOfDayForPurchaseField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ValidStartTimeOfDayForPurchase</description>
@@ -1865,8 +2591,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ValidStartTimeOfDayForPurchaseField ValidStartTimeOfDayForPurchase;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> representing the "dbo.Product.ValidEndTimeOfDayForPurchase" column in the database, 
-        /// with a .NET type of <see cref="TimeSpan"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="TimeSpan"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.ValidEndTimeOfDayForPurchaseField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyTimeSpanElement"/> or <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ValidEndTimeOfDayForPurchase</description>
@@ -1883,8 +2610,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ValidEndTimeOfDayForPurchaseField ValidEndTimeOfDayForPurchase;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateCreatedField"/> representing the "dbo.Product.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -1895,17 +2623,15 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
-        /// </item>
         /// </list>
         /// </para>
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateUpdatedField"/> representing the "dbo.Product.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.ProductEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
@@ -1915,9 +2641,6 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
-        /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -2535,8 +3258,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -2556,8 +3280,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PersonIdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PersonId</description>
@@ -2574,8 +3299,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PersonIdField PersonId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>OrderNumber</description>
@@ -2592,8 +3318,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly OrderNumberField OrderNumber;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> representing the "dbo.Purchase.TotalPurchaseQuantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseQuantityField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>TotalPurchaseQuantity</description>
@@ -2610,8 +3337,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly TotalPurchaseQuantityField TotalPurchaseQuantity;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> representing the "dbo.Purchase.TotalPurchaseAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="double"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TotalPurchaseAmountField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.DoubleElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>TotalPurchaseAmount</description>
@@ -2628,8 +3356,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly TotalPurchaseAmountField TotalPurchaseAmount;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PurchaseDateField"/> representing the "dbo.Purchase.PurchaseDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PurchaseDateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PurchaseDate</description>
@@ -2646,8 +3375,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PurchaseDateField PurchaseDate;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ShipDateField"/> representing the "dbo.Purchase.ShipDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ShipDateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ShipDate</description>
@@ -2664,8 +3394,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ShipDateField ShipDate;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> representing the "dbo.Purchase.ExpectedDeliveryDate" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.ExpectedDeliveryDateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ExpectedDeliveryDate</description>
@@ -2682,8 +3413,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ExpectedDeliveryDateField ExpectedDeliveryDate;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TrackingIdentifierField"/> representing the "dbo.Purchase.TrackingIdentifier" column in the database, 
-        /// with a .NET type of <see cref="Guid"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="Guid"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.TrackingIdentifierField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyGuidElement"/> or <see cref="HatTrick.DbEx.Sql.NullableGuidElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>TrackingIdentifier</description>
@@ -2700,8 +3432,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly TrackingIdentifierField TrackingIdentifier;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> representing the "dbo.Purchase.PaymentMethodType" column in the database, 
-        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentMethodType"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentMethodType"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentMethodTypeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.PaymentMethodType}Element"/> or <see cref="HatTrick.DbEx.Sql.EnumElement{ServerSideBlazorApp.Data.PaymentMethodType}Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PaymentMethodType</description>
@@ -2718,8 +3451,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PaymentMethodTypeField PaymentMethodType;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> representing the "dbo.Purchase.PaymentSourceType" column in the database, 
-        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentSourceType"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="ServerSideBlazorApp.Data.PaymentSourceType"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PaymentSourceTypeField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyEnumElement{ServerSideBlazorApp.Data.PaymentSourceType}Element"/> or <see cref="HatTrick.DbEx.Sql.NullableEnumElement{ServerSideBlazorApp.Data.PaymentSourceType}Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PaymentSourceType</description>
@@ -2736,8 +3470,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PaymentSourceTypeField PaymentSourceType;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateCreatedField"/> representing the "dbo.Purchase.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -2749,7 +3484,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// <term>allow null</term><description>no</description>
         /// </item>
         /// <item>
-        /// <term>default</term><description>(getdate())</description>
+        /// <term>default</term><description>(getutcdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -2757,8 +3492,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateUpdatedField"/> representing the "dbo.Purchase.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
@@ -2768,9 +3504,6 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
-        /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -3247,8 +3980,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -3268,8 +4002,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseIdField"/> representing the "dbo.PurchaseLine.PurchaseId" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseIdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PurchaseId</description>
@@ -3286,8 +4021,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PurchaseIdField PurchaseId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.ProductIdField"/> representing the "dbo.PurchaseLine.ProductId" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.ProductIdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>ProductId</description>
@@ -3304,8 +4040,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly ProductIdField ProductId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchasePriceField"/> representing the "dbo.PurchaseLine.PurchasePrice" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="decimal"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchasePriceField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDecimalElement"/> or <see cref="HatTrick.DbEx.Sql.DecimalElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>PurchasePrice</description>
@@ -3322,8 +4059,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly PurchasePriceField PurchasePrice;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.QuantityField"/> representing the "dbo.PurchaseLine.Quantity" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.QuantityField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Quantity</description>
@@ -3339,30 +4077,10 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly QuantityField Quantity;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.PurchaseTotalField"/> representing the "dbo.PurchaseLine.PurchaseTotal" column in the database, 
-        /// with a .NET type of <see cref="decimal"/>?
-        /// <para>Properties:
-        /// <list type="table">
-        /// <item>
-        /// <term>name</term><description>PurchaseTotal</description>
-        /// </item>
-        /// <item>
-        /// <term>sql type</term><description>decimal(23,2)</description>
-        /// </item>
-        /// <item>
-        /// <term>allow null</term><description>yes</description>
-        /// </item>
-        /// <item>
-        /// <term>computed</term><description>yes</description>
-        /// </item>
-        /// </list>
-        /// </para>
-        /// </summary>
-        public readonly PurchaseTotalField PurchaseTotal;
-
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateCreatedField"/> representing the "dbo.PurchaseLine.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -3373,17 +4091,15 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
-        /// </item>
         /// </list>
         /// </para>
         /// </summary>
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateUpdatedField"/> representing the "dbo.PurchaseLine.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTime"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseLineEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
@@ -3393,9 +4109,6 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
-        /// </item>
-        /// <item>
-        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -3420,7 +4133,6 @@ namespace ServerSideBlazorApp.dboDataService
             Fields.Add($"{identifier}.ProductId", ProductId = new ProductIdField($"{identifier}.ProductId", this));
             Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new PurchasePriceField($"{identifier}.PurchasePrice", this));
             Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.PurchaseTotal", PurchaseTotal = new PurchaseTotalField($"{identifier}.PurchaseTotal", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
@@ -3438,7 +4150,6 @@ namespace ServerSideBlazorApp.dboDataService
                 ,ProductId
                 ,PurchasePrice
                 ,Quantity
-                ,PurchaseTotal
                 ,DateCreated
                 ,DateUpdated
             );
@@ -3472,7 +4183,6 @@ namespace ServerSideBlazorApp.dboDataService
 			purchaseLine.ProductId = reader.ReadField().GetValue<int>();
 			purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
 			purchaseLine.Quantity = reader.ReadField().GetValue<int>();
-			purchaseLine.PurchaseTotal = reader.ReadField().GetValue<decimal?>();
 			purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
 			purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
@@ -3612,31 +4322,6 @@ namespace ServerSideBlazorApp.dboDataService
         }
         #endregion
 
-        #region purchase total field expression
-        public partial class PurchaseTotalField : NullableDecimalFieldExpression<PurchaseLine>
-        {
-            #region constructors
-            public PurchaseTotalField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PurchaseTotalField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
-            {
-
-            }
-            #endregion
-
-            #region as
-            public override NullableDecimalElement As(string alias)
-                => new PurchaseTotalField(base.identifier, base.entity, alias);
-            #endregion
-
-            #region set
-            #endregion
-        }
-        #endregion
-
         #region date created field expression
         public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
@@ -3696,8 +4381,9 @@ namespace ServerSideBlazorApp.dboDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -3714,8 +4400,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> representing the "dbo.PersonTotalPurchasesView.TotalAmount" column in the database, 
-        /// with a .NET type of <see cref="double"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="double"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalAmountField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDoubleElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDoubleElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>TotalAmount</description>
@@ -3732,8 +4419,9 @@ namespace ServerSideBlazorApp.dboDataService
         public readonly TotalAmountField TotalAmount;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> representing the "dbo.PersonTotalPurchasesView.TotalCount" column in the database, 
-        /// with a .NET type of <see cref="int"/>?
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>?.  The <see cref="ServerSideBlazorApp.dboDataService.PersonTotalPurchasesViewEntity.TotalCountField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.NullableInt32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>TotalCount</description>
@@ -4066,14 +4754,13 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 }
+
 namespace ServerSideBlazorApp.secDataService
 {
 	using ServerSideBlazorApp.secData;
 
     #region sec schema expression
-#pragma warning disable IDE1006 // Naming Styles
     public class secSchemaExpression : SchemaExpression
-#pragma warning restore IDE1006 // Naming Styles
     {
         #region interface
         public readonly PersonEntity Person;
@@ -4093,8 +4780,9 @@ namespace ServerSideBlazorApp.secDataService
     {
         #region interface properties
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
-        /// with a .NET type of <see cref="int"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>Id</description>
@@ -4114,8 +4802,9 @@ namespace ServerSideBlazorApp.secDataService
         public readonly IdField Id;
 
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.SSNField"/> representing the "sec.Person.SSN" column in the database, 
-        /// with a .NET type of <see cref="string"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.SSNField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyStringElement"/> or <see cref="HatTrick.DbEx.Sql.StringElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>SSN</description>
@@ -4132,8 +4821,9 @@ namespace ServerSideBlazorApp.secDataService
         public readonly SSNField SSN;
 
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
@@ -4150,8 +4840,9 @@ namespace ServerSideBlazorApp.secDataService
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>
-        /// <para>Properties:
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="ServerSideBlazorApp.secDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
@@ -4387,4 +5078,7 @@ namespace ServerSideBlazorApp.secDataService
     }
     #endregion
 }
+
+#pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning restore CA1034 // Nested types should not be visible

@@ -6,6 +6,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 {
     public partial class SysDateTimeFunctionExpression : DataTypeFunctionExpression,
         IExpressionElement<DateTime>,
+        AnyDateTimeElement,
         DateTimeElement,
         IExpressionAliasProvider,
         IEquatable<SysDateTimeFunctionExpression>

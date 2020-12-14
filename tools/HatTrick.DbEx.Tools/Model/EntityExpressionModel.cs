@@ -7,15 +7,16 @@ namespace HatTrick.DbEx.Tools.Model
         public SchemaExpressionModel SchemaExpression { get; }
         public string NamespaceRoot => SchemaExpression.NamespaceRoot;
         public string Name { get; }
-        public bool IsIgnored { get; }
         public IEnumerable<string> AppliedInterfaces { get; }
 
-        public EntityExpressionModel(SchemaExpressionModel schemaExpression, string name, bool isIgnored, IList<string> interfaces)
+        public EntityExpressionModel(SchemaExpressionModel schemaExpression, string name, IList<string> interfaces)
         {
             SchemaExpression = schemaExpression;
             Name = name;
-            IsIgnored = isIgnored;
             AppliedInterfaces = interfaces;
         }
+
+        public override string ToString()
+            => $"{Name}Entity";
     }
 }

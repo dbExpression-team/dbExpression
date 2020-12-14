@@ -3,11 +3,9 @@
     {{
         #region interface properties
 		{#each $.Items}
-        {#if !$.FieldExpression.IsIgnored}
         {>("FieldExpression.Documentation") => GetTemplatePartial+}
         public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
 
-		{/if}
 		{/each}
         #endregion
 
@@ -23,9 +21,7 @@
         private {$.EntityExpression.Name}Entity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {{
 			{#each $.Items}
-			{#if !$.FieldExpression.IsIgnored}
             Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{{identifier}}.{$.Column.Name}", this));
-			{/if}
 			{/each}
         }}
         #endregion
@@ -39,10 +35,8 @@
             {?var :applyComma = false}
             return new SelectExpressionSet(
 				{#each $.Items}
-				{#if !$.FieldExpression.IsIgnored}
                 {+#if :applyComma},{/if}{$.FieldExpression.Name}
                 {? :applyComma = true}
-				{/if}
 				{/each}
             );
         }}
@@ -51,12 +45,10 @@
         {{
             return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase} 
 				{#each $.Items}
-			    {#if !$.FieldExpression.IsIgnored}
                 {#if !$.Column.IsIdentity}
                 {#if !$.Column.IsComputed}
                 {#if $.FieldExpression.AllowInsert}
                 ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({$.FieldExpression.Name}, {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name})
-                {/if}
                 {/if}
                 {/if}
                 {/if}
@@ -69,12 +61,10 @@
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
             {#each $.Items}
-			{#if !$.FieldExpression.IsIgnored}
 			{#if !$.Column.IsIdentity}
             {#if !$.Column.IsComputed}
             {#if $.FieldExpression.AllowUpdate}
             if (target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
-            {/if}
             {/if}
             {/if}
             {/if}
@@ -85,9 +75,7 @@
         protected override void HydrateEntity({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase}, ISqlFieldReader reader)
         {{
 			{#each $.Items}
-			{#if !$.FieldExpression.IsIgnored}
 			{($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField().GetValue<{$.FieldExpression.Type.NullableAlias}>();
-			{/if}
 			{/each}
         }}
 		#endregion

@@ -597,6 +597,8 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.ToCamelCase), (Func<string, string>)helpers.ToCamelCase);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalization), (Func<string, string>)helpers.InsertSpaceOnCapitalization);
             repo.Register(nameof(helpers.InsertSpaceOnCapitalizationAndToLower), (Func<string, string>)helpers.InsertSpaceOnCapitalizationAndToLower);
+            repo.Register(nameof(helpers.FirstOrDefault), (Func<IEnumerable, object>)helpers.FirstOrDefault);
+            repo.Register(nameof(helpers.Concat), (Func<string, string, string>)helpers.Concat);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
 
             string output = null;

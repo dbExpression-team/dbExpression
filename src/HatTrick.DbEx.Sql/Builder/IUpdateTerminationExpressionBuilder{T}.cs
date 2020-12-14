@@ -1,7 +1,7 @@
 ﻿namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IUpdateTerminationExpressionBuilder<T> : ITerminationExpressionBuilder
-        where T : class, IDbEntity
+    public interface IUpdateTerminationExpressionBuilder<TEntity> : ITerminationExpressionBuilder
+        where TEntity : class, IDbEntity
     {
     }
 }

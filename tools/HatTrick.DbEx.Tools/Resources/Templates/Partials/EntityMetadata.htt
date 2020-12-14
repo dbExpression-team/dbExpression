@@ -14,11 +14,8 @@
             Schema = schema;
             Identifier = identifier;
             Name = name;
-			//TODO: add overload to MsSqlFieldMetadata that accepts name, type, size, precision, and scale...
 			{#each $.Items}
-			{#if !$.FieldExpression.IsIgnored}
-            Fields.Add($"{{identifier}}.{$.Column.Name}", new MsSqlFieldMetadata(this, $"{{identifier}}.{$.Column.Name}", "{$.Column.Name}", SqlDbType.{$.Column.SqlType}, {$.Column.MaxLength}){#if $.Column.IsIdentity} {{ IsIdentity = true }}{/if});
-			{/if}
+            Fields.Add($"{{identifier}}.{$.Column.Name}", new MsSqlFieldMetadata(this, $"{{identifier}}.{$.Column.Name}", "{$.Column.Name}", SqlDbType.{$.Column.SqlType}{#if $.Column.Size}, {$.Column.Size}{/if}{#if $.Column.Precision}, {$.Column.Precision}{/if}{#if $.Column.Scale}, {$.Column.Scale}{/if}){#if $.Column.IsIdentity+} {{ IsIdentity = true }}{/if});
 			{/each}
         }}
         #endregion

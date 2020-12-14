@@ -14,5 +14,8 @@ namespace HatTrick.DbEx.Tools.Model
             Entity = entity ?? throw new ArgumentNullException(nameof(entity));
             EntityExpression = entityExpression ?? throw new ArgumentNullException(nameof(entityExpression));
         }
+
+        public override string ToString()
+            => $"({Entity}, {EntityExpression})";
     }
 }

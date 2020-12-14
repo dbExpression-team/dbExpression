@@ -26,23 +26,23 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        InsertEntityTermination<TEntity> InsertEntity<TEntity>.Into<U>(U entity)
+        InsertEntityTermination<TEntity> InsertEntity<TEntity>.Into(Entity<TEntity> entity)
         {
             Into(entity);
             return this;
         }
 
-        InsertEntitiesTermination<TEntity> InsertEntities<TEntity>.Into<U>(U entity)
+        InsertEntitiesTermination<TEntity> InsertEntities<TEntity>.Into(Entity<TEntity> entity)
         {
             Into(entity);
             return this;
         }
 
-        protected virtual void Into(EntityExpression<TEntity> entity)
+        protected virtual void Into(Entity<TEntity> entity)
         {
             var i = 0;
             var insertEntity = entity as IExpressionEntity<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}.");
-            expression.BaseEntity = entity;
+            expression.BaseEntity = entity as EntityExpression<TEntity>;
             expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, insertEntity.BuildInclusiveInsertExpression(x).Expressions));
             expression.Outputs = insertEntity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).ToList();
         }

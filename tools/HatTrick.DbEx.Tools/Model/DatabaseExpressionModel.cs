@@ -4,13 +4,14 @@
     {
         public string NamespaceRoot { get; }
         public string Name { get; }
-        public bool IsIgnored { get; }
 
-        public DatabaseExpressionModel(string name, bool isIgnored, string namespaceRoot)
+        public DatabaseExpressionModel(string name, string namespaceRoot)
         {
             Name = name;
-            IsIgnored = isIgnored;
             NamespaceRoot = namespaceRoot;
         }
+
+        public override string ToString()
+            => Name;
     }
 }

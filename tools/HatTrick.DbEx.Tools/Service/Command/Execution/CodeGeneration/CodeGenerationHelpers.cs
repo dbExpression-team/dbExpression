@@ -1,4 +1,5 @@
 ﻿using HatTrick.DbEx.Tools.Configuration;
+using HatTrick.DbEx.Tools.Model;
 using HatTrick.Model.MsSql;
 using HatTrick.Reflection;
 using Newtonsoft.Json;
@@ -79,6 +80,13 @@ namespace HatTrick.DbEx.Tools.Service
         public string InsertSpaceOnCapitalizationAndToLower(string value)
         {
             return this.InsertSpaceOnCapitalization(value).ToLower();
+        }
+        #endregion
+
+        #region concat
+        public string Concat(string item1, string item2)
+        {
+            return item1 + item2;
         }
         #endregion
 
@@ -167,6 +175,19 @@ namespace HatTrick.DbEx.Tools.Service
 
             return value is object;
         }
+        #endregion
+
+        #region first or default
+        public object FirstOrDefault(IEnumerable set)
+        {
+            var enumerator = set.GetEnumerator();
+            return enumerator.MoveNext() ? enumerator.Current : null;
+        }
+        #endregion
+
+        #region enums
+        public IList<string> GetDeclaredEnumerationTypes()
+            => _config.Enums;
         #endregion
 
         #region get template partial
