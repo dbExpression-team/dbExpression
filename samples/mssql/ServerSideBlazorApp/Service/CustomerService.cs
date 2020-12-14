@@ -110,6 +110,7 @@ namespace ServerSideBlazorApp.Service
             var mailingAddress = nameof(CustomerDetailModel.MailingAddress);
             var billingAddress = nameof(CustomerDetailModel.BillingAddress);
             var shippingAddress = nameof(CustomerDetailModel.ShippingAddress);
+            Func<string,AnyElement,ObjectElement> alias = (string table, AnyElement a) => dbex.alias(table, nameof(a));
 
             var customer = new CustomerDetailModel();
 
@@ -153,7 +154,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(nameof(CustomerDetailModel.MailingAddress)).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)))
+                ).As(mailingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.PersonId,
@@ -166,7 +167,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(nameof(CustomerDetailModel.BillingAddress)).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)))
+                ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.PersonId,
@@ -179,7 +180,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(nameof(CustomerDetailModel.ShippingAddress)).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)))
+                ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     sqlRow => 
