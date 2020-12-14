@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql
         /// <para>
         /// Use the <paramref name="alias"/> value from this operation as the 'tableName' parameter when creating an <see cref="AliasExpression"/> 
         /// (for the joined sql SELECT query expression) for use with outer expressions:
-        /// <code>db.alias({tableName}, {fieldName})</code>
+        /// <code>dbex.alias({tableName}, {fieldName})</code>
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-us/sql/relational-databases/performance/joins">Microsoft docs on JOINS</see>

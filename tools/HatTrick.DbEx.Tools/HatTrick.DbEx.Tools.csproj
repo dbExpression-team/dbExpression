@@ -11,7 +11,6 @@
     <None Remove="Resources\Templates\DbExDataPackage._cs.htt" />
     <None Remove="Resources\Templates\DbExDataService._cs.htt" />
     <None Remove="Resources\Templates\DbExMetadata._cs.htt" />
-    <None Remove="Resources\Templates\Partials\Alias.htt" />
     <None Remove="Resources\Templates\Partials\DataPackage.htt" />
     <None Remove="Resources\Templates\Partials\Db.htt" />
     <None Remove="Resources\Templates\Partials\DbMetadata.htt" />
@@ -33,7 +32,6 @@
     <EmbeddedResource Include="Resources\Templates\DbExDataPackage._cs.htt" />
     <EmbeddedResource Include="Resources\Templates\DbExDataService._cs.htt" />
     <EmbeddedResource Include="Resources\Templates\DbExMetadata._cs.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\Alias.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\DataPackage.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\Db.htt" />
     <EmbeddedResource Include="Resources\Templates\Partials\DbMetadata.htt" />

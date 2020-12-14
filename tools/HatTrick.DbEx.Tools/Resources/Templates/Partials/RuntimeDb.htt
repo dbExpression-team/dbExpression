@@ -1200,7 +1200,5 @@
         #endregion
 
 {+>("Fx") => GetTemplatePartial+}
-
-{+>("Alias") => GetTemplatePartial+}
     }}
     #endregion

@@ -989,11 +989,6 @@ namespace ServerSideBlazorApp.DataService
         {
         }
         #endregion
-
-        #region alias
-        public static AliasExpression alias(string tableName, string fieldName)
-            => new AliasExpression(tableName, fieldName);
-        #endregion
     }
     #endregion
 
@@ -1199,6 +1194,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
+        /// </item>
         /// </list>
         /// </para>
         /// </summary>
@@ -1217,6 +1215,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -1707,6 +1708,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
+        /// </item>
         /// </list>
         /// </para>
         /// </summary>
@@ -1725,6 +1729,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -2142,6 +2149,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -2623,6 +2633,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
+        /// </item>
         /// </list>
         /// </para>
         /// </summary>
@@ -2641,6 +2654,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -3484,7 +3500,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// <term>allow null</term><description>no</description>
         /// </item>
         /// <item>
-        /// <term>default</term><description>(getutcdate())</description>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -3504,6 +3520,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -4091,6 +4110,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
+        /// </item>
         /// </list>
         /// </para>
         /// </summary>
@@ -4109,6 +4131,9 @@ namespace ServerSideBlazorApp.dboDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
@@ -4834,6 +4859,9 @@ namespace ServerSideBlazorApp.secDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
+        /// </item>
         /// </list>
         /// </para>
         /// </summary>
@@ -4852,6 +4880,9 @@ namespace ServerSideBlazorApp.secDataService
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
         /// </item>
         /// </list>
         /// </para>
