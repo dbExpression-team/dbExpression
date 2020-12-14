@@ -14,5 +14,8 @@ namespace HatTrick.DbEx.Tools.Model
             Schema = schema ?? throw new ArgumentNullException(nameof(schema));
             SchemaExpression = schemaExpression ?? throw new ArgumentNullException(nameof(schemaExpression));
         }
+
+        public override string ToString()
+            => $"({Schema}, {SchemaExpression})";
     }
 }

@@ -11,11 +11,9 @@
 
         #region interface
 		{#each $.Items}
-		{#if !$.EntityExpression.IsIgnored}
         {>("EntityExpression.Documentation") => GetTemplatePartial+}
         public static readonly {$.EntityExpression.Name}Entity {$.EntityExpression.Name};
 
-		{/if}
 		{/each}
         #endregion
 
@@ -23,9 +21,7 @@
         static {$.SchemaExpression.Name}()
         {{ 
 		    {#each $.Items}
-		    {#if !$.EntityExpression.IsIgnored}            
             {$.EntityExpression.Name} = _schema.{$.EntityExpression.Name};
-		    {/if}
 		    {/each}
         }}
         #endregion

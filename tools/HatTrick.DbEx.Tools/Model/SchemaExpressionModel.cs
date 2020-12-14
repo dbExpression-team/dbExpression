@@ -8,14 +8,15 @@ namespace HatTrick.DbEx.Tools.Model
         public DatabaseExpressionModel DatabaseExpression { get; }
         public string NamespaceRoot { get; }
         public string Name { get; }
-        public bool IsIgnored { get; }
 
-        public SchemaExpressionModel(DatabaseExpressionModel database, MsSqlSchema schema, string namespaceRoot, string name, bool isIgnored)
+        public SchemaExpressionModel(DatabaseExpressionModel database, MsSqlSchema schema, string namespaceRoot, string name)
         {
             DatabaseExpression = database ?? throw new ArgumentNullException(nameof(database));
             Name = name;
             NamespaceRoot = namespaceRoot;
-            IsIgnored = isIgnored;
         }
+
+        public override string ToString()
+            => $"{Name}Schema";
     }
 }

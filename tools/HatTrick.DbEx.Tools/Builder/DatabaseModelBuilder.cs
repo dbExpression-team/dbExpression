@@ -13,12 +13,11 @@ namespace HatTrick.DbEx.Tools.Builder
                      database,
                      new DatabaseExpressionModel(
                          helpers.ResolveName(database), 
-                         helpers.IsIgnored(database), 
                          helpers.ResolveRootNamespace()
                     )
                 );
 
-            foreach (var schema in database.Schemas.Values)
+            foreach (var schema in database.Schemas.Values.Where(c => !helpers.IsIgnored(c)))
             {
                 var schemaPair = new SchemaPairModel(
                         new SchemaModel(databasePair.Database, schema),
@@ -26,14 +25,13 @@ namespace HatTrick.DbEx.Tools.Builder
                             databasePair.DatabaseExpression, 
                             schema,
                             $"{helpers.ResolveRootNamespace()}{helpers.ResolveName(schema)}",
-                            helpers.ResolveName(schema),
-                            helpers.IsIgnored(schema)
+                            helpers.ResolveName(schema)
                         )
                     );
 
                 databasePair.Items.Add(schemaPair);
 
-                foreach (var entity in schema.Tables.Values.Cast<INamedMeta>().Concat(schema.Views.Values))
+                foreach (var entity in schema.Tables.Values.Where(c => !helpers.IsIgnored(c)).Cast<INamedMeta>().Concat(schema.Views.Values))
                 {
                     EntityPairModel entityPair = null;
                     if (entity is MsSqlTable table)
@@ -43,18 +41,17 @@ namespace HatTrick.DbEx.Tools.Builder
                                 new EntityExpressionModel(
                                     schemaPair.SchemaExpression, 
                                     helpers.ResolveName(table), 
-                                    helpers.IsIgnored(table),
                                     helpers.ResolveAppliedInterfaces(table)
                                 )
                             );
 
-                        foreach (var column in table.Columns.Values)
+                        foreach (var column in table.Columns.Values.Where(c => !helpers.IsIgnored(c)))
                         {
                             var columnPair = new ColumnPairModel(
                                 new ColumnModel(entityPair.Entity, column),
                                 new FieldExpressionModel(
                                     entityPair.EntityExpression,
-                                    column, helpers.IsIgnored(column),
+                                    column,
                                     helpers.ResolveName(column),
                                     helpers.GetClrTypeOverride(column),
                                     helpers.IsEnum(column),
@@ -73,18 +70,17 @@ namespace HatTrick.DbEx.Tools.Builder
                                 new EntityExpressionModel(
                                     schemaPair.SchemaExpression,
                                     helpers.ResolveName(view),
-                                    helpers.IsIgnored(view),
                                     helpers.ResolveAppliedInterfaces(view)
                                 )
                             );
 
-                        foreach (var column in view.Columns.Values)
+                        foreach (var column in view.Columns.Values.Where(c => !helpers.IsIgnored(c)))
                         {
                             var columnPair = new ColumnPairModel(
                                 new ColumnModel(entityPair.Entity, column),
                                 new FieldExpressionModel(
                                     entityPair.EntityExpression,
-                                    column, helpers.IsIgnored(column),
+                                    column, 
                                     helpers.ResolveName(column),
                                     helpers.GetClrTypeOverride(column),
                                     helpers.IsEnum(column),
@@ -100,6 +96,8 @@ namespace HatTrick.DbEx.Tools.Builder
                     schemaPair.Items.Add(entityPair);
                 }
             }
+
+            databasePair.Documentation = new DocumentationItemsModel(databasePair);
 
             return databasePair;
         }

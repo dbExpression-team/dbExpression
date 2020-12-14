@@ -13,9 +13,7 @@
             Identifier = identifier;
             Name = name;
 		    {#each $.Items}
-		    {#if !$.SchemaExpression.IsIgnored}
             Schemas.Add("{$.Schema.Name}", new {$.SchemaExpression.Name}SchemaMetadata(this, "{$.Schema.Name}", "{$.Schema.Name}"));
-		    {/if}
 		    {/each}
         }}
         #endregion

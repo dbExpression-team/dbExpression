@@ -7,23 +7,33 @@ namespace HatTrick.DbEx.Tools.Model
 {
     public class ColumnModel
     {
-        private readonly MsSqlColumn _column;
-
         public ISqlEntityModel Entity { get; }
-        public string Name => _column.Name;
-        public bool IsNullable => _column.IsNullable;
-        public bool IsIdentity => _column.IsIdentity;
-        public bool IsComputed => _column.IsComputed;
-        public short MaxLength => _column.MaxLength;
+        public string Name { get; }
+        public bool IsNullable { get; }
+        public bool IsIdentity { get; }
+        public bool IsComputed { get; }
+        public short? Size { get; }
+        public byte? Precision { get; }
+        public byte? Scale { get; }
         public IDictionary<string, string> Properties { get; }
-        public SqlDbType SqlType => _column.SqlType;
+        public SqlDbType SqlType { get; }
 
         public ColumnModel(ISqlEntityModel entity, MsSqlColumn column)
         {
-            Entity = entity;
-            _column = column ?? throw new ArgumentNullException(nameof(column));
-            Properties = BuildColumnDocumentationMetadata(column);
+            Entity = entity ?? throw new ArgumentNullException(nameof(entity));
+            Properties = BuildColumnDocumentationMetadata(column ?? throw new ArgumentNullException(nameof(column)));
+            Name = column.Name;
+            IsNullable = column.IsNullable;
+            IsIdentity = column.IsIdentity;
+            IsComputed = column.IsComputed;
+            Size = SupportsSize(column) ? column.MaxLength == 0 ? (short?)null : column.MaxLength : null;
+            Precision = SupportsPrecision(column) ? column.Precision == 0 ? (byte?)null : column.Precision : null;
+            Scale = SupportsPrecision(column) ? column.Scale == 0 ? (byte?)null : column.Scale : null;
+            SqlType = column.SqlType;
         }
+
+        public override string ToString()
+            => $"[{Entity.Schema.Name}].[{Entity.Name}].[{Name}]";
 
         private IDictionary<string, string> BuildColumnDocumentationMetadata(MsSqlColumn column)
         {
@@ -59,6 +69,38 @@ namespace HatTrick.DbEx.Tools.Model
 
                 default:
                     return column.SqlType.ToString().ToLower();
+            }
+        }
+
+        private bool SupportsSize(MsSqlColumn column)
+        {
+            switch (column.SqlType)
+            {
+                case SqlDbType.Binary:
+                case SqlDbType.Char:
+                case SqlDbType.DateTime2:
+                case SqlDbType.DateTimeOffset:
+                case SqlDbType.VarBinary:
+                case SqlDbType.VarChar:
+                case SqlDbType.NChar:
+                case SqlDbType.NVarChar:
+                case SqlDbType.Time:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        private bool SupportsPrecision(MsSqlColumn column)
+        {
+            switch (column.SqlType)
+            {
+                case SqlDbType.Decimal:
+                    return true;
+
+                default:
+                    return false;
             }
         }
     }

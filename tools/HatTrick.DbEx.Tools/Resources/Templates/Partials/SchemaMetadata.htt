@@ -15,9 +15,7 @@
             Identifier = identifier;
             Name = name;
 			{#each $.Items}
-			{#if !$.EntityExpression.IsIgnored}
             Entities.Add($"{{identifier}}.{$.Entity.Name}", new {$.EntityExpression.Name}EntityMetadata(this, $"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}"));
-			{/if}
 			{/each}
         }}
         #endregion

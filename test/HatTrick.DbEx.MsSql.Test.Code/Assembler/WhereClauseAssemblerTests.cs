@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .From(sec.Person)
                     .Where(sec.Person.Id > 0);
 
-            SelectQueryExpression expressionSet = exp.Expression as SelectQueryExpression;
+            SelectQueryExpression expressionSet = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
             IAppender appender = database.AppenderFactory.CreateAppender();
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);

@@ -4,8 +4,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class CurrentTimestampFunctionExpression : DataTypeFunctionExpression,
         IExpressionElement<DateTime>,
-        DateTimeElement,
         AnyDateTimeElement,
+        DateTimeElement,
         IEquatable<CurrentTimestampFunctionExpression>
     {
         #region constructors

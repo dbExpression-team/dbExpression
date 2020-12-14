@@ -12,6 +12,9 @@ namespace HatTrick.DbEx.Tools.Model
         {
             Database = database ?? throw new ArgumentNullException(nameof(database));
             Name = schema?.Name ?? throw new ArgumentNullException(nameof(schema));
-        }        
+        }
+
+        public override string ToString()
+            => Name;
     }
 }

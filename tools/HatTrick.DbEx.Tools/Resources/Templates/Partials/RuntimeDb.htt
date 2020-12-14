@@ -12,249 +12,1190 @@
 
         #region methods
         #region select one
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single entity.
+        /// <para>
+        /// To retrieve a <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />, use a type param of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectEntity{{TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config);
 
-        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.EnumElement{{TEnum}}" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
 
-        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{{TEnum}}" />
+        {#if $.Documentation.AnyNullableEnumColumnExpression}
+        {?var:column = $.Documentation.AnyNullableEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
+        public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
 
-        public static SelectValue<object> SelectOne(AnyObjectElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.AnyObjectElement" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<object> SelectOne(AnyObjectElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<bool> SelectOne(BooleanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.BooleanElement" />
+        {#if $.Documentation.AnyColumnOfTypeBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool> SelectOne(BooleanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<bool?> SelectOne(NullableBooleanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableBooleanElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte> SelectOne(ByteElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteElement" />
+        {#if $.Documentation.AnyColumnOfTypeByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte> SelectOne(ByteElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte?> SelectOne(NullableByteElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte?> SelectOne(NullableByteElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte[]> SelectOne(ByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteArrayElement" />
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteArrayElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<DateTime> SelectOne(DateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeElement" />
+        {#if $.Documentation.AnyColumnOfTypeDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTime> SelectOne(DateTimeElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
-        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement" />
+        {#if $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<decimal> SelectOne(DecimalElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DecimalElement" />
+        {#if $.Documentation.AnyColumnOfTypeDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal> SelectOne(DecimalElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<decimal?> SelectOne(NullableDecimalElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDecimalElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<double> SelectOne(DoubleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DoubleElement" />
+        {#if $.Documentation.AnyColumnOfTypeDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double> SelectOne(DoubleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<double?> SelectOne(NullableDoubleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDoubleElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Min({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<double?> SelectOne(NullableDoubleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<Guid> SelectOne(GuidElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.GuidElement" />
+        {#if $.Documentation.AnyColumnOfTypeGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid> SelectOne(GuidElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<Guid?> SelectOne(NullableGuidElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableGuidElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<short> SelectOne(Int16Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int16Element" />
+        {#if $.Documentation.AnyColumnOfTypeInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short> SelectOne(Int16Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<short?> SelectOne(NullableInt16Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt16Element" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<short?> SelectOne(NullableInt16Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<int> SelectOne(Int32Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int32Element" />
+        {#if $.Documentation.AnyColumnOfTypeInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int> SelectOne(Int32Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<int?> SelectOne(NullableInt32Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt32Element" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Avg({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<int?> SelectOne(NullableInt32Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<long> SelectOne(Int64Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int64Element" />
+        {#if $.Documentation.AnyColumnOfTypeInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long> SelectOne(Int64Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<long?> SelectOne(NullableInt64Element field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt64Element" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<long?> SelectOne(NullableInt64Element element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<float> SelectOne(SingleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.SingleElement" />
+        {#if $.Documentation.AnyColumnOfTypeSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float> SelectOne(SingleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<float?> SelectOne(NullableSingleElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableSingleElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Max({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<float?> SelectOne(NullableSingleElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<string> SelectOne(StringElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.StringElement" />
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(StringElement element) 
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<string> SelectOne(NullableStringElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableStringElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableString}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, "(not provided)")"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<string> SelectOne(NullableStringElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.TimeSpanElement" />
+        {#if $.Documentation.AnyColumnOfTypeTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
-        public static SelectValue<ExpandoObject> SelectOne(IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, field1, field2, fields);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the resulting value are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, element1, element2, elements);
         #endregion
 
         #region select many
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of entities.
+        /// <para>
+        /// To retrieve a list of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />(s), use a type param of <see cref="{$.Documentation.AnyEntityExpression.NamespaceRoot}Data.{$.Documentation.AnyEntityExpression.Name}" />
+        /// </para>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectEntities{{TEntity}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity
            => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config);
 
-        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.EnumElement{{TEnum}}" />
+        {#if $.Documentation.AnyEnumColumnExpression}
+        {?var:column = $.Documentation.AnyEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
 
-        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> field)
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{{TEnum}}" />
+        {#if $.Documentation.AnyNullableEnumColumnExpression}
+        {?var:column = $.Documentation.AnyNullableEnumColumnExpression}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}      
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TEnum}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, field);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
 
-        public static SelectValues<object> SelectMany(AnyObjectElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
+        /// </summary>
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.AnyObjectElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:firstColumn = $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:secondColumn = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "db.fx.Coalesce({:firstColumn.Entity.Schema.Name}.{:firstColumn.Entity.Name}.{:firstColumn.Name}, {:secondColumn.Entity.Schema.Name}.{:secondColumn.Entity.Name}.{:secondColumn.Name})"
+        {/if}
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<object> SelectMany(AnyObjectElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<bool> SelectMany(BooleanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.BooleanElement" />
+        {#if $.Documentation.AnyColumnOfTypeBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, false)
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool> SelectMany(BooleanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<bool?> SelectMany(NullableBooleanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableBooleanElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableBoolean}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableBoolean}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}""
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte> SelectMany(ByteElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteElement" />
+        {#if $.Documentation.AnyColumnOfTypeByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, byte.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte> SelectMany(ByteElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte?> SelectMany(NullableByteElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableByte}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByte}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte?> SelectMany(NullableByteElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte[]> SelectMany(ByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteArrayElement" />
+        {#if $.Documentation.AnyColumnOfTypeByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, new byte[0])"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteArrayElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableByteArray}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableByteArray}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTime> SelectMany(DateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeElement" />
+        {#if $.Documentation.AnyColumnOfTypeDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}) or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTime.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime> SelectMany(DateTimeElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTime}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTime}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement" />
+        {#if $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, DateTimeOffset.Now)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDateTimeOffset}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.DateAdd(DateParts.Year, 1, {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})" 
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<decimal> SelectMany(DecimalElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DecimalElement" />
+        {#if $.Documentation.AnyColumnOfTypeDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, decimal.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal> SelectMany(DecimalElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<decimal?> SelectMany(NullableDecimalElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDecimalElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDecimal}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDecimal}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<double> SelectMany(DoubleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DoubleElement" />
+        {#if $.Documentation.AnyColumnOfTypeDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, double.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double> SelectMany(DoubleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<double?> SelectMany(NullableDoubleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDoubleElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableDouble}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableDouble}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<double?> SelectMany(NullableDoubleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<Guid> SelectMany(GuidElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.GuidElement" />
+        {#if $.Documentation.AnyColumnOfTypeGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, Guid.Empty)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid> SelectMany(GuidElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<Guid?> SelectMany(NullableGuidElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableGuidElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableGuid}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableGuid}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<short> SelectMany(Int16Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int16Element" />
+        {#if $.Documentation.AnyColumnOfTypeInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, short.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short> SelectMany(Int16Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<short?> SelectMany(NullableInt16Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt16Element" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt16}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt16}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<short?> SelectMany(NullableInt16Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<int> SelectMany(Int32Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int32Element" />
+        {#if $.Documentation.AnyColumnOfTypeInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int> SelectMany(Int32Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<int?> SelectMany(NullableInt32Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt32Element" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
+        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        ///, for example "{:column.Entity.Schema.Name}.:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<int?> SelectMany(NullableInt32Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<long> SelectMany(Int64Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int64Element" />
+        {#if $.Documentation.AnyColumnOfTypeInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, long.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long> SelectMany(Int64Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<long?> SelectMany(NullableInt64Element field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt64Element" />
+        {#if $.Documentation.AnyColumnOfTypeNullableInt64}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt64}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<long?> SelectMany(NullableInt64Element element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<float> SelectMany(SingleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.SingleElement" />
+        {#if $.Documentation.AnyColumnOfTypeSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, float.MinValue)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float> SelectMany(SingleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<float?> SelectMany(NullableSingleElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableSingleElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableSingle}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableSingle}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<float?> SelectMany(NullableSingleElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<string> SelectMany(StringElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.StringElement" />
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.Concat("Value: ", {:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name})"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(StringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<string> SelectMany(NullableStringElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableStringElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableString}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableString}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}" or "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, "(not provided)")"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<string> SelectMany(NullableStringElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.TimeSpanElement" />
+        {#if $.Documentation.AnyColumnOfTypeTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}", "db.fx.IsNull({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}, TimeSpan.MinValue)" or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + DateTime.Now"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement field)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement" />
+        {#if $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableTimeSpan}
+        ///, for example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
-        public static SelectValues<ExpandoObject> SelectMany(AnyElement field1, AnyElement field2, params AnyElement[] fields)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, field1, field2, fields);
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="element2">Any expression</param>
+        /// <param name="elements">Any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element1, element2, elements);
         #endregion
 
         #region update
-        public static UpdateEntities Update(params EntityFieldAssignment[] fields)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s).
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="HatTrick.DbEx.Sql.EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        /// For example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set("new value")"
+        {/if}
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(params EntityFieldAssignment[] assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
 
-        public static UpdateEntities Update(IList<EntityFieldAssignment> fields)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, fields);
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="assignments">A list of <see cref="HatTrick.DbEx.Sql.EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        {#if $.Documentation.AnyColumnOfTypeString}
+        {?var:column = $.Documentation.AnyColumnOfTypeString}
+        /// For example "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set("new value")"
+        {/if}
+        {#if $.Documentation.AnyColumnOfTypeNullableInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
+        /// or "{:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name}.Set({:column.Entity.Schema.Name}.{:column.Entity.Name}.{:column.Name} + 10)"
+        {/if}
+        ///</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(IList<EntityFieldAssignment> assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
 
-        public static UpdateEntities<TEntity> Update<TEntity>(TEntity updateValuesInThisEntity, TEntity fromValuesInThisEntity)
+        /// <summary>
+        /// Start constructing a sql UPDATE query expression to update record(s) based on the comparison of property values between two entity instances.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
+        /// </para>
+        /// </summary>
+        /// <param name="oldStateOfEntity">If a property value differs from the corresponding property value in "<paramref name="newStateOfEntity"/>", an assignment expression will be generated with the value set to the property value from "<paramref name="newStateOfEntity"/>".  
+        /// </param>
+        /// <param name="newStateOfEntity">Records will be updated to the property values from this entity when they differ from the property values in "<paramref name="oldStateOfEntity"/>". 
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities{{TEntity}}"/>, a fluent builder for constructing a sql UPDATE statement, with a list of "<see cref="HatTrick.DbEx.Sql.EntityFieldAssignment"/>" constructed from the comparison of the two entity params.</returns>
+        /// <typeparam name="TEntity">The entity type to update.</typeparam>
+        public static UpdateEntities<TEntity> Update<TEntity>(TEntity oldStateOfEntity, TEntity newStateOfEntity)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, updateValuesInThisEntity, fromValuesInThisEntity);     
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, oldStateOfEntity, newStateOfEntity);     
         #endregion
 
         #region delete
+        /// <summary>
+        /// Start constructing a sql DELETE query expression to remove records.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities Delete()
             => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
         #endregion
 
         #region insert
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert a record.  Property values from the <paramref name="entity"/> instance are used to create the record values for the INSERT statement. 
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entity">The entity supplying the property values.
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntity{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entity);
 
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntities{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(params TEntity[] entities)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
 
+        /// <summary>
+        /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/insert-transact-sql">Microsoft docs on INSERT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="entities">A list of entities.
+        /// </param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntities{{TEntity}}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(IList<TEntity> entities)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
         #endregion
 
         #region get connection
+        /// <summary>
+        /// Creates a connection to the database.
+        /// <para>
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="HatTrick.DbEx.Sql.Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// </para>
+        /// </summary>
+        /// <returns><see cref="HatTrick.DbEx.Sql.Connection.ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
             => new SqlConnector(config.ConnectionFactory);
-        #pragma warning disable IDE1006 // Naming Styles
-        #pragma warning restore IDE1006 // Naming Styles
         #endregion
         #endregion
 

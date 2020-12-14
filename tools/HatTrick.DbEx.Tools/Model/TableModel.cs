@@ -21,6 +21,9 @@ namespace HatTrick.DbEx.Tools.Model
             Indexes = BuildIndexDocumentationMetadata(table).ToList();
         }
 
+        public override string ToString()
+            => $"[{Schema.Name}].[{Name}]";
+
         private IEnumerable<(string, IDictionary<string, string>)> BuildIndexDocumentationMetadata(INamedMeta meta)
         {
             if (meta is MsSqlTable table)
