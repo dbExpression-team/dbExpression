@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableGuidElement As(string alias)
-            => new NullableGuidExpressionMediator(base.Expression, alias);
+            => new NullableGuidSelectExpression(this).As(alias);
         #endregion
 
         #region equals

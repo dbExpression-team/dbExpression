@@ -18,10 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DateTimeElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new DateTimeSelectExpression(this).As(alias);
         #endregion
 
         #region equals

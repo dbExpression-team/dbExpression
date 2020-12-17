@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public GuidElement As(string alias)
-            => new GuidExpressionMediator(base.Expression, alias);
+            => new GuidSelectExpression(this).As(alias);
         #endregion
 
         #region equals

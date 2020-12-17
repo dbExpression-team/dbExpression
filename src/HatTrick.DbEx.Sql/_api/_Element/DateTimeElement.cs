@@ -6,5 +6,4 @@
     {
         DateTimeElement As(string alias);
     }
-
 }

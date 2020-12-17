@@ -18,10 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableGuidElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new NullableGuidSelectExpression(this).As(alias);
         #endregion
 
         #region distinct

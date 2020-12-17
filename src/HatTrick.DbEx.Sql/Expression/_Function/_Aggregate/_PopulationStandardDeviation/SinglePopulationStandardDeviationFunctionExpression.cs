@@ -45,10 +45,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public SingleElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new SingleSelectExpression(this).As(alias);
         #endregion
 
         #region distinct

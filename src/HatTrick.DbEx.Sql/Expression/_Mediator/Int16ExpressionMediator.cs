@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int16Element As(string alias)
-            => new Int16ExpressionMediator(base.Expression, alias);
+            => new Int16SelectExpression(this).As(alias);
         #endregion
 
         #region equals

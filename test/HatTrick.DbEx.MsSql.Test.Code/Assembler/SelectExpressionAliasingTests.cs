@@ -14,32 +14,6 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_a_select_expression_skip_aliasing_by_default(int version, string alias = "Name")
-        {
-            //given
-            var database = ConfigureForMsSqlVersion(version);
-
-            ITerminationExpressionBuilder exp =
-
-                db.SelectOne(dbo.Person.FirstName.As(alias))
-                    .From(dbo.Person);
-
-            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
-            IAppender appender = database.AppenderFactory.CreateAppender();
-            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
-            var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
-
-            //when
-            builder.AppendElement(queryExpression.Select, context);
-            var select = builder.Appender.ToString();
-
-            //then
-            select.Should().NotEndWith($"AS [{alias}]{System.Environment.NewLine}");
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
         public void Does_a_select_expression_alias_correctly(int version, string alias = "Name")
         {
             //given

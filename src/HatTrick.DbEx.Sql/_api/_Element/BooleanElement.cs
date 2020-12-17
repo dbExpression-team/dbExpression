@@ -6,5 +6,4 @@
     {
         BooleanElement As(string alias);
     }
-
 }

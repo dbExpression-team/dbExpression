@@ -9,7 +9,6 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionTypeProvider,
         ISqlMetadataIdentifier,
         IExpressionProvider<EntityExpression>,
-        IExpressionAliasProvider,
         IEquatable<FieldExpression>
     {
         #region internals
@@ -23,7 +22,6 @@ namespace HatTrick.DbEx.Sql.Expression
         string ISqlMetadataIdentifier.Identifier => identifier;
         Type IExpressionTypeProvider.DeclaredType => declaredType;
         EntityExpression IExpressionProvider<EntityExpression>.Expression => entity;
-        string IExpressionAliasProvider.Alias => alias;
         #endregion
 
         #region constructors
@@ -36,7 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
             this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
             this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
             this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
-            this.alias = alias;
         }
         #endregion
 
@@ -68,7 +65,6 @@ namespace HatTrick.DbEx.Sql.Expression
             if (!entity.Equals(obj.entity)) return false;
 
             if (declaredType != obj.declaredType) return false;
-            if (!StringComparer.Ordinal.Equals(alias, obj.alias)) return false;
 
             return identifier.Equals(obj.identifier);
         }
@@ -87,7 +83,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 hash = (hash * multiplier) ^ (identifier is object ? identifier.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (entity is object ? entity.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (alias is object ? alias.GetHashCode() : 0);
                 return hash;
             }
         }

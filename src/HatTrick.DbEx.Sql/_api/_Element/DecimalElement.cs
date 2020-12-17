@@ -6,5 +6,4 @@
     {
         DecimalElement As(string alias);
     }
-
 }

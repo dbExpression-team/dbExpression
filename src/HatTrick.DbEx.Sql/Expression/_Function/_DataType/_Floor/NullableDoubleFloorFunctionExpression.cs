@@ -17,10 +17,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableDoubleElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new NullableDoubleSelectExpression(this).As(alias);
         #endregion
 
         #region equals

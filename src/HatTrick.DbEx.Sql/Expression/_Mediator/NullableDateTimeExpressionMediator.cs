@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableDateTimeElement As(string alias)
-            => new NullableDateTimeExpressionMediator(base.Expression, alias);
+            => new NullableDateTimeSelectExpression(this).As(alias);
         #endregion
 
         #region equals

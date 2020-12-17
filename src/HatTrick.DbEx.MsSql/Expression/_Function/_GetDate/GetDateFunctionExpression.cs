@@ -8,7 +8,6 @@ namespace HatTrick.DbEx.MsSql.Expression
         IExpressionElement<DateTime>,
         AnyDateTimeElement,
         DateTimeElement,
-        IExpressionAliasProvider,
         IEquatable<GetDateFunctionExpression>
     {
         #region constructors
@@ -21,10 +20,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         #region methods
         #region as
         public DateTimeElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new DateTimeSelectExpression(this).As(alias);
         #endregion
 
         #region to string

@@ -1325,7 +1325,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1350,7 +1352,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableEnumElement<ServerSideBlazorApp.Data.AddressType> As(string alias)
-                => new AddressTypeField(base.identifier, base.entity, alias);
+            {
+                return new NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType>(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1380,7 +1384,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new Line1Field(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1407,7 +1413,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableStringElement As(string alias)
-                => new Line2Field(base.identifier, base.entity, alias);
+            {
+                return new NullableStringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1436,7 +1444,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new CityField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1463,7 +1473,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new StateField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1490,7 +1502,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new ZipField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1517,7 +1531,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1542,7 +1558,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateUpdatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1839,7 +1857,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1864,7 +1884,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new FirstNameField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1891,7 +1913,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new LastNameField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1918,7 +1942,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDateTimeElement As(string alias)
-                => new BirthDateField(base.identifier, base.entity, alias);
+            {
+                return new NullableDateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1948,7 +1974,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override EnumElement<ServerSideBlazorApp.Data.GenderType> As(string alias)
-                => new GenderTypeField(base.identifier, base.entity, alias);
+            {
+                return new EnumSelectExpression<ServerSideBlazorApp.Data.GenderType>(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -1975,7 +2003,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableInt32Element As(string alias)
-                => new CreditLimitField(base.identifier, base.entity, alias);
+            {
+                return new NullableInt32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2005,7 +2035,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableInt32Element As(string alias)
-                => new YearOfLastCreditLimitReviewField(base.identifier, base.entity, alias);
+            {
+                return new NullableInt32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2035,7 +2067,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2060,7 +2094,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateUpdatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2236,7 +2272,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2261,7 +2299,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new PersonIdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2288,7 +2328,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new AddressIdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2315,7 +2357,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2804,7 +2848,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2829,7 +2875,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableEnumElement<ServerSideBlazorApp.Data.ProductCategoryType> As(string alias)
-                => new ProductCategoryTypeField(base.identifier, base.entity, alias);
+            {
+                return new NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType>(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2859,7 +2907,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new NameField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2886,7 +2936,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableStringElement As(string alias)
-                => new DescriptionField(base.identifier, base.entity, alias);
+            {
+                return new NullableStringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2915,7 +2967,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DoubleElement As(string alias)
-                => new ListPriceField(base.identifier, base.entity, alias);
+            {
+                return new DoubleSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2942,7 +2996,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DoubleElement As(string alias)
-                => new PriceField(base.identifier, base.entity, alias);
+            {
+                return new DoubleSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2969,7 +3025,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new QuantityField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -2996,7 +3054,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableByteArrayElement As(string alias)
-                => new ImageField(base.identifier, base.entity, alias);
+            {
+                return new NullableByteArraySelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3025,7 +3085,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDecimalElement As(string alias)
-                => new HeightField(base.identifier, base.entity, alias);
+            {
+                return new NullableDecimalSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3055,7 +3117,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDecimalElement As(string alias)
-                => new WidthField(base.identifier, base.entity, alias);
+            {
+                return new NullableDecimalSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3085,7 +3149,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDecimalElement As(string alias)
-                => new DepthField(base.identifier, base.entity, alias);
+            {
+                return new NullableDecimalSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3115,7 +3181,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDecimalElement As(string alias)
-                => new WeightField(base.identifier, base.entity, alias);
+            {
+                return new NullableDecimalSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3145,7 +3213,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DecimalElement As(string alias)
-                => new ShippingWeightField(base.identifier, base.entity, alias);
+            {
+                return new DecimalSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3172,7 +3242,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableTimeSpanElement As(string alias)
-                => new ValidStartTimeOfDayForPurchaseField(base.identifier, base.entity, alias);
+            {
+                return new NullableTimeSpanSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3202,7 +3274,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableTimeSpanElement As(string alias)
-                => new ValidEndTimeOfDayForPurchaseField(base.identifier, base.entity, alias);
+            {
+                return new NullableTimeSpanSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3232,7 +3306,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3257,7 +3333,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateUpdatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3650,7 +3728,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3675,7 +3755,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new PersonIdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3702,7 +3784,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override StringElement As(string alias)
-                => new OrderNumberField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3729,7 +3813,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new TotalPurchaseQuantityField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3756,7 +3842,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DoubleElement As(string alias)
-                => new TotalPurchaseAmountField(base.identifier, base.entity, alias);
+            {
+                return new DoubleSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3783,7 +3871,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new PurchaseDateField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3810,7 +3900,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDateTimeElement As(string alias)
-                => new ShipDateField(base.identifier, base.entity, alias);
+            {
+                return new NullableDateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3840,7 +3932,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDateTimeElement As(string alias)
-                => new ExpectedDeliveryDateField(base.identifier, base.entity, alias);
+            {
+                return new NullableDateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3870,7 +3964,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableGuidElement As(string alias)
-                => new TrackingIdentifierField(base.identifier, base.entity, alias);
+            {
+                return new NullableGuidSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3900,7 +3996,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override EnumElement<ServerSideBlazorApp.Data.PaymentMethodType> As(string alias)
-                => new PaymentMethodTypeField(base.identifier, base.entity, alias);
+            {
+                return new EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3927,7 +4025,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableEnumElement<ServerSideBlazorApp.Data.PaymentSourceType> As(string alias)
-                => new PaymentSourceTypeField(base.identifier, base.entity, alias);
+            {
+                return new NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType>(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3957,7 +4057,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -3982,7 +4084,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateUpdatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4231,7 +4335,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4256,7 +4362,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new PurchaseIdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4283,7 +4391,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new ProductIdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4310,7 +4420,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DecimalElement As(string alias)
-                => new PurchasePriceField(base.identifier, base.entity, alias);
+            {
+                return new DecimalSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4337,7 +4449,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new QuantityField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4364,7 +4478,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4389,7 +4505,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override DateTimeElement As(string alias)
-                => new DateUpdatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4533,7 +4651,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4558,7 +4678,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableDoubleElement As(string alias)
-                => new TotalAmountField(base.identifier, base.entity, alias);
+            {
+                return new NullableDoubleSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4583,7 +4705,9 @@ namespace ServerSideBlazorApp.dboDataService
 
             #region as
             public override NullableInt32Element As(string alias)
-                => new TotalCountField(base.identifier, base.entity, alias);
+            {
+                return new NullableInt32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4969,7 +5093,9 @@ namespace ServerSideBlazorApp.secDataService
 
             #region as
             public override Int32Element As(string alias)
-                => new IdField(base.identifier, base.entity, alias);
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -4994,7 +5120,9 @@ namespace ServerSideBlazorApp.secDataService
 
             #region as
             public override StringElement As(string alias)
-                => new SSNField(base.identifier, base.entity, alias);
+            {
+                return new StringSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -5021,7 +5149,9 @@ namespace ServerSideBlazorApp.secDataService
 
             #region as
             public override DateTimeOffsetElement As(string alias)
-                => new DateCreatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeOffsetSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set
@@ -5048,7 +5178,9 @@ namespace ServerSideBlazorApp.secDataService
 
             #region as
             public override DateTimeOffsetElement As(string alias)
-                => new DateUpdatedField(base.identifier, base.entity, alias);
+            {
+                return new DateTimeOffsetSelectExpression(this).As(alias);
+            }
             #endregion
 
             #region set

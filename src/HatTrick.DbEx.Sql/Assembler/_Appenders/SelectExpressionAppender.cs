@@ -10,6 +10,17 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.AppendElement(expression.Expression, context);
             AppendAlias(expression, builder, context);
         }
+
+        protected virtual void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            if (string.IsNullOrWhiteSpace(aliasable.Alias))
+                return;
+
+            builder.Appender.Write(" AS ")
+                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(aliasable.Alias)
+                .Write(context.Configuration.IdentifierDelimiter.End);
+        }
         #endregion
     }
 }

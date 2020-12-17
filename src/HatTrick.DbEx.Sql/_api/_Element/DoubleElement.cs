@@ -6,5 +6,4 @@
     {
         DoubleElement As(string alias);
     }
-
 }

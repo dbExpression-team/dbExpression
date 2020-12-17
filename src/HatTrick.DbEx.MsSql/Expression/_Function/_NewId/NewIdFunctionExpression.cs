@@ -18,10 +18,7 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         #region as
         public GuidElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new GuidSelectExpression(this).As(alias);
         #endregion
 
         #region to string

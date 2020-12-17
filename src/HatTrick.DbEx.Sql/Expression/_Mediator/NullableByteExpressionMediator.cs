@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableByteElement As(string alias)
-            => new NullableByteExpressionMediator(base.Expression, alias);
+            => new NullableByteSelectExpression(this).As(alias);
         #endregion
 
         #region equals
