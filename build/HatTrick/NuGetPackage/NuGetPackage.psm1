@@ -21,12 +21,13 @@ function _Remove-NuspecProjectReferenceNodes()
         foreach ($dependency in $targetFramework.SelectNodes("//x:dependency", $mgr))
         {
             $id = $dependency.GetAttribute("id")
-            $folder = $tfm.StartsWith(".") ? $tfm.Substring(1) : $tfm
+            Write-Host ("[{0}]: Inspecting project reference {1} in nuspec file" -f $nupkgFileNameWithoutExtension, $id)
+            $folder = ($tfm.StartsWith(".") ? $tfm.Substring(1) : $tfm).ToLower()
             $dllPath = [System.IO.Path]::Combine($tempPath, "lib", $folder, $id + ".dll")
-            Write-Host ("[{0}]: Removing project reference {1} from nuspec file" -f $nupkgFileNameWithoutExtension, ($id + ".dll"))
             if ((Get-Item $dllPath -ErrorAction SilentlyContinue))
             {
-                $dependency.ParentNode.RemoveChild($dependency) | Out-Null
+                Write-Host ("[{0}]: Removing project reference {1} from nuspec file" -f $nupkgFileNameWithoutExtension, ($id + ".dll"))
+				$dependency.ParentNode.RemoveChild($dependency) | Out-Null
             }
         }
     }
@@ -43,8 +44,7 @@ function Remove-NuspecProjectReferenceNodes()
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$Configuration,
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [string]$Output,
-        [switch]$SkipRemovalOfTemporaryFiles
+        [string]$Output
     )
 
     Write-Host "Solution parameter: " $Solution
@@ -66,18 +66,22 @@ function Remove-NuspecProjectReferenceNodes()
 
     foreach ($nupkgFilePath in (Get-ChildItem $outputDirectory -Filter "*.*nupkg"))
     {
+        Write-Host ("Found nuget package {0}" -f $nupkgFilePath)
         $nupkgFileNameWithoutExtension = [System.IO.Path]::GetFileNameWithoutExtension($nupkgFilePath)
         $nupkgFileExtension = [System.IO.Path]::GetExtension($nupkgFilePath)
-        $tempPath = [System.IO.Path]::Combine((Split-Path -Parent $nupkgFilePath), $nupkgFileNameWithoutExtension)
+        $tempPath = [System.IO.Path]::Combine((Split-Path -Parent $nupkgFilePath), "tmp", $nupkgFileNameWithoutExtension)
     
         # unzip the [s]nupkg file to a temporary folder (name of the package without the extension)
+        Write-Host ("Expanding package {0} to {1}" -f $nupkgFilePath, $tempPath)
         Expand-Archive -Path $nupkgFilePath -DestinationPath $tempPath -Force
 
         Start-Sleep -Seconds 5
     
         # remove the original package file
+        Write-Host ("[{0}]: Removing original package {1}" -f $nupkgFileNameWithoutExtension, $nupkgFilePath)
         Remove-Item $nupkgFilePath
 
+        Write-Host ("[{0}]: Beginning alteration of package {1}" -f $nupkgFileNameWithoutExtension, $tempPath)
         if ($nupkgFileExtension -eq ".nupkg")
         {
             Write-Host ("[{0}]: Removing .pdb files from package" -f $nupkgFileNameWithoutExtension)
@@ -93,14 +97,20 @@ function Remove-NuspecProjectReferenceNodes()
         _Remove-NuspecProjectReferenceNodes (Get-ChildItem $tempPath -Filter "*.nuspec")
         
         # build the path of corrected assets to re-zip to the original package name
-        $newItems = Get-ChildItem ([System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgFileNameWithoutExtension))
+        $newItems = Get-ChildItem ([System.IO.Path]::Combine((Get-Item $outputDirectory), "tmp", $nupkgFileNameWithoutExtension))
 
+        Write-Host ("Compressing new package to {0}" -f $nupkgFilePath)
         Compress-Archive -Path $newItems -DestinationPath $nupkgFilePath -Force | Out-Null
     
-        if (!($SkipRemovalOfTemporaryFiles))
-        {
-            Remove-Item ([System.IO.Path]::Combine((Get-Item $outputDirectory), $nupkgFileNameWithoutExtension)) -Recurse | Out-Null
-        }
+        Start-Sleep -Seconds 5
+    }
+ 
+    $tempDirectory = [System.IO.Path]::Combine($outputDirectory, "tmp")
+    if (Test-Path -Path $tempDirectory -PathType Container)
+    {
+        Write-Host ("Removing temp directory {0}" -f $tempDirectory)
+        Get-ChildItem -Path $tempDirectory -Recurse | Remove-Item -Force -Recurse
+        Remove-Item $tempDirectory -Force
     }
 }
 

@@ -99,7 +99,13 @@ dotnet build $config.solutionPath --configuration $Configuration
 Write-Host "Creating NuGet packages for" $config.solutionPath
 dotnet pack $config.solutionPath --output $config.nuGetPackageOutputPath --configuration $Configuration
 
+Write-Host "NuGet packages (before repair):"
+Get-ChildItem -Path $config.nuGetPackageOutputPath -File | Write-Host
+
 Write-Host "Repairing NuGet packages for " $config.solutionPath
-Remove-NuspecProjectReferenceNodes -Solution $config.solutionPath -Configuration $Configuration -Output $config.nuGetPackageOutputPath -SkipRemovalOfTemporaryFiles
+Remove-NuspecProjectReferenceNodes -Solution $config.solutionPath -Configuration $Configuration -Output $config.nuGetPackageOutputPath
+
+Write-Host "NuGet packages (after repair):"
+Get-ChildItem -Path $config.nuGetPackageOutputPath -File | Write-Host
 
 Write-Host "Build complete for" $config.solutionPath
