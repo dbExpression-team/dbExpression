@@ -6,5 +6,4 @@
     {
         DateTimeOffsetElement As(string alias);
     }
-
 }

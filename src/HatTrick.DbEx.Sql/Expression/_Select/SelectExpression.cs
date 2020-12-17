@@ -8,37 +8,26 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionAliasProvider
     {
         #region internals
-        protected string alias;
+        protected string Alias { get; set; }
         protected bool IsDistinct { get; private set; }
         #endregion
 
         #region interface
         public IExpressionElement Expression { get; }
         Type IExpressionTypeProvider.DeclaredType => (Expression as IExpressionTypeProvider).DeclaredType;
-        string IExpressionAliasProvider.Alias => alias;
+        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
-        public SelectExpression(ExpressionMediator expression) : this(expression, null)
-        {
-
-        }
-
         public SelectExpression(IExpressionElement expression) : this(expression, null)
         {
 
         }
 
-        protected SelectExpression(ExpressionMediator expression, string alias)
-        {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
-            this.alias = alias;
-        }
-
         protected SelectExpression(IExpressionElement expression, string alias)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
-            this.alias = alias;
+            this.Alias = alias;
         }
         #endregion
 

@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableDecimalElement As(string alias)
-            => new NullableDecimalExpressionMediator(base.Expression, alias);
+            => new NullableDecimalSelectExpression(this).As(alias);
         #endregion
 
         #region equals

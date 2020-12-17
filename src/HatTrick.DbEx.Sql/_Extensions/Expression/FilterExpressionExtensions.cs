@@ -1,13 +1,13 @@
 ﻿namespace HatTrick.DbEx.Sql.Expression
 {
-    public static class FilterExpressionExtensions
+    internal static class FilterExpressionExtensions
     {
-        public static JoinOnExpressionSet ConvertToJoinOnExpressionSet(this FilterExpression filter)
+        internal static JoinOnExpressionSet ConvertToJoinOnExpressionSet(this FilterExpression filter)
         {
             return ConvertToJoinOnExpressionSet(new FilterExpressionSet(filter));
         }
 
-        public static JoinOnExpressionSet ConvertToJoinOnExpressionSet(this FilterExpressionSet filterSet)
+        internal static JoinOnExpressionSet ConvertToJoinOnExpressionSet(this FilterExpressionSet filterSet)
         {
             return ConvertToJoinOnExpressionSet(filterSet.LeftArg, filterSet.RightArg, filterSet.ConditionalOperator, filterSet.Negate);
         }

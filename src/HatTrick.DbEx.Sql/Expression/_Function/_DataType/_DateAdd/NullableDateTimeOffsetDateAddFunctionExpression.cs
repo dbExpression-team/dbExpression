@@ -42,10 +42,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableDateTimeOffsetElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new NullableDateTimeOffsetSelectExpression(this).As(alias);
         #endregion
 
         #region equals

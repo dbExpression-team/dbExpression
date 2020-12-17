@@ -6,5 +6,4 @@
     {
         GuidElement As(string alias);
     }
-
 }

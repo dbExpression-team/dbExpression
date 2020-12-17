@@ -25,10 +25,10 @@ namespace HatTrick.DbEx.MsSql.Builder
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
             {
-                new SelectExpression(field1),
-                new SelectExpression(field2)
+                field1 as SelectExpression ?? new SelectExpression(field1),
+                field2 as SelectExpression ?? new SelectExpression(field2)
             };
-            expressions.AddRange(fields.Select(field => new SelectExpression(field)));
+            expressions.AddRange(fields.Select(field => field as SelectExpression ?? new SelectExpression(field)));
             expression.Top = 1;
             expression.Select = new SelectExpressionSet(expressions);
             return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
-            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
+            expression.Select = new SelectExpressionSet(field as SelectExpression ?? new SelectExpression<TEnum>(field));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
-            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum?>(new EnumExpressionMediator<TEnum>(field)));
+            expression.Select = new SelectExpressionSet(field as SelectExpression ?? new SelectExpression<TEnum?>(field));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
@@ -139,11 +139,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         public SelectValue<TimeSpan?> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableTimeSpanElement field)
             => CreateSelectValueBuilder<TimeSpan?>(configuration, field);
 
-        private SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
+        private SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
-            expression.Select = new SelectExpressionSet(new SelectExpression<TValue>(field));
+            expression.Select = new SelectExpressionSet(field as SelectExpression ?? new SelectExpression<TValue>(field));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TValue>(configuration, expression);
         }
         #endregion
@@ -157,15 +157,15 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new MsSqlSelectEntitiesSelectQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
-        public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field1, IExpressionElement field2, params IExpressionElement[] fields)
+        public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
             {
-                new SelectExpression(field1),
-                new SelectExpression(field2)
+                field1 as SelectExpression ?? new SelectExpression(field1),
+                field2 as SelectExpression ?? new SelectExpression(field2)
             };
-            expressions.AddRange(fields.Select(field => new SelectExpression(field)));
+            expressions.AddRange(fields.Select(field => field as SelectExpression ?? new SelectExpression(field)));
             expression.Select = new SelectExpressionSet(expressions);
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
@@ -174,7 +174,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TEnum : struct, Enum, IComparable
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum>(new EnumExpressionMediator<TEnum>(field)));
+            expression.Select = new SelectExpressionSet(field as SelectExpression ?? new SelectExpression<TEnum>(field));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
@@ -182,7 +182,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TEnum : struct, Enum, IComparable
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(new SelectExpression<TEnum?>(new NullableEnumExpressionMediator<TEnum>(field)));
+            expression.Select = new SelectExpressionSet(field as SelectExpression ?? new SelectExpression<TEnum?>(field));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
@@ -276,10 +276,10 @@ namespace HatTrick.DbEx.MsSql.Builder
         public SelectValues<object> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, ObjectElement field)
             => CreateSelectValuesBuilder<object>(configuration, field);
 
-        private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, IExpressionElement field)
+        private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(new SelectExpression<TValue>(field));
+            expression.Select = new SelectExpressionSet(field as SelectExpression ?? new SelectExpression<TValue>(field));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TValue>(configuration, expression);
         }
         #endregion

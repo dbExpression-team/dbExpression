@@ -4,7 +4,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression :
         ObjectElement,
-        IExpressionAliasProvider,
+        IExpressionElement<object>,
         IExpressionTypeProvider,
         IEquatable<AliasExpression>
     {
@@ -13,7 +13,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #region interface
         public string TableAlias { get; private set; }
         public string FieldAlias { get; private set; }
-        string IExpressionAliasProvider.Alias => alias;
         Type IExpressionTypeProvider.DeclaredType => typeof(object);
 
         #endregion
@@ -39,7 +38,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public ObjectElement As(string alias)
-            => new AliasExpression(TableAlias, FieldAlias, alias);
+            => new ObjectSelectExpression(this).As(alias);
         #endregion
 
         #region to string

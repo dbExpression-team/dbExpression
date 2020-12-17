@@ -13,8 +13,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                 .Write(context.Configuration.IdentifierDelimiter.Begin)
                 .Write(expression.FieldAlias)
                 .Write(context.Configuration.IdentifierDelimiter.End);
-
-            AppendAlias(expression, builder, context);
         }
     }
 }

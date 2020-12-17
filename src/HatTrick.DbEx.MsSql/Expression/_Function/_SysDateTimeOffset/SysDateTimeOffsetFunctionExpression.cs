@@ -8,7 +8,6 @@ namespace HatTrick.DbEx.MsSql.Expression
         IExpressionElement<DateTime>,
         AnyDateTimeElement,
         DateTimeElement,
-        IExpressionAliasProvider,
         IEquatable<SysDateTimeOffsetFunctionExpression>
     {
         #region constructors
@@ -20,11 +19,9 @@ namespace HatTrick.DbEx.MsSql.Expression
 
         #region as
         public DateTimeElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new DateTimeSelectExpression(this).As(alias);
         #endregion
+
 
         #region to string
         public override string ToString() => "GetUtcDate()";

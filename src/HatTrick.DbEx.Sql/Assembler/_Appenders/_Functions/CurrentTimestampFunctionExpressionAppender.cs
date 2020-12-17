@@ -9,9 +9,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             builder.Appender
                 .Write("CURRENT_TIMESTAMP");
-
-            AppendAlias(expression, builder, context);
-
         }
         #endregion
     }

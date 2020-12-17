@@ -2,9 +2,9 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public static class ExpressionElementExtensions
+    internal static class ExpressionElementExtensions
     {
-        public static bool IsDBNull(this IExpressionElement expression)
+        internal static bool IsDBNull(this IExpressionElement expression)
         {
             if (expression is LiteralExpression literal)
                 return literal.Expression is DBNull;
@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
             return false;
         }
 
-        public static FieldExpression AsFieldExpression(this IExpressionElement expression)
+        internal static FieldExpression AsFieldExpression(this IExpressionElement expression)
         {
             if (expression is FieldExpression field)
                 return field;

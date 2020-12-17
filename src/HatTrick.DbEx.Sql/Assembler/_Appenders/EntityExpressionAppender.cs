@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             }
         }
 
-        protected override void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
+        protected void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
         {
             if (string.IsNullOrWhiteSpace(aliasable.Alias))
                 return;

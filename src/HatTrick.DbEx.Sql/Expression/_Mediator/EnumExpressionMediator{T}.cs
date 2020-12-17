@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public EnumElement<TEnum> As(string alias)
-            => new EnumExpressionMediator<TEnum>(base.Expression, alias);
+            => new EnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region order

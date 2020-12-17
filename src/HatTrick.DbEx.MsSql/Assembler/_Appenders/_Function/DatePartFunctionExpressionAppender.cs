@@ -15,8 +15,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             builder.AppendElement(expression.Expression, context);
             builder.Appender.Write(")");
-
-            AppendAlias(expression, builder, context);
         }
         #endregion
     }

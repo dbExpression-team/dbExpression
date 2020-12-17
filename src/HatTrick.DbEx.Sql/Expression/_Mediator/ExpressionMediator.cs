@@ -8,18 +8,15 @@ namespace HatTrick.DbEx.Sql.Expression
         AnyOrderByClause,
         AnyGroupByClause,
         IExpressionTypeProvider,
-        IExpressionAliasProvider,
         IEquatable<ExpressionMediator>
     {
         #region internals
         private Type declaredType;
-        private string alias;
         #endregion
 
         #region interface
         public IExpressionElement Expression { get; set; }
         Type IExpressionTypeProvider.DeclaredType => declaredType;
-        string IExpressionAliasProvider.Alias => alias;
         #endregion
 
         #region constructors
@@ -36,7 +33,6 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
             this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
-            this.alias = string.IsNullOrWhiteSpace(alias) ? null : alias;
         }
         #endregion
 
@@ -59,7 +55,6 @@ namespace HatTrick.DbEx.Sql.Expression
             if (!Expression.Equals(obj.Expression)) return false;
 
             if (declaredType != obj.declaredType) return false;
-            if (!StringComparer.Ordinal.Equals(alias, obj.alias)) return false;
 
             return true;
         }
@@ -77,7 +72,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (alias is object ? alias.GetHashCode() : 0);
                 return hash;
             }
         }

@@ -8,7 +8,6 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement,
         ISqlMetadataIdentifier,
         IExpressionListProvider<EntityExpression>,
-        IExpressionAliasProvider,
         IEquatable<SchemaExpression>
     {
         #region internals
@@ -20,7 +19,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #region interface
         public string Identifier => identifier;
         IList<EntityExpression> IExpressionListProvider<EntityExpression>.Expressions => Entities.Values.ToList();
-        string IExpressionAliasProvider.Alias => Alias;
         #endregion
 
         #region constructors
@@ -56,8 +54,6 @@ namespace HatTrick.DbEx.Sql.Expression
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (!StringComparer.Ordinal.Equals(Alias, obj.Alias)) return false;
-
             return Identifier.Equals(obj.Identifier);
         }
 
@@ -73,7 +69,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Identifier is object ? Identifier.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Alias is object ? Alias.GetHashCode() : 0);
                 return hash;
             }
         }

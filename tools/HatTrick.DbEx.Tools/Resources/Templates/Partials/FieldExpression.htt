@@ -16,7 +16,14 @@
 
             #region as
             public override {+#if $.Column.IsNullable}Nullable{/if}{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} As(string alias)
-                => new {$.FieldExpression.Name}Field(base.identifier, base.entity, alias);
+            {{
+                {#if :isEnum}
+                return new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>(this).As(alias);
+                {/if}
+                {#if !:isEnum}
+                return new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression(this).As(alias);
+                {/if}
+            }}
             #endregion
 
             #region set

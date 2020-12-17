@@ -33,10 +33,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableEnumElement<TEnum> As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new NullableEnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region equals

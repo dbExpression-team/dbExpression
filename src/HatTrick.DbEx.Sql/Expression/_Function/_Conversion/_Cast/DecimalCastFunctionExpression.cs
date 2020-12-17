@@ -18,10 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DecimalElement As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new DecimalSelectExpression(this).As(alias);
         #endregion
 
         #region equals

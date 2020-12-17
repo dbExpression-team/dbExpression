@@ -6,5 +6,4 @@
     {
         ByteElement As(string alias);
     }
-
 }

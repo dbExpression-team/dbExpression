@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code
             var coalesceAsBar = coalesce.As("Bar");
 
             //then
-            coalesceAsFoo.Should().BeSameAs(coalesceAsBar);
+            coalesceAsFoo.Should().NotBeSameAs(coalesceAsBar);
         }
     }
 }

@@ -8,8 +8,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(ExpressionMediator expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.AppendElement(expression.Expression, context);
-
-            AppendAlias(expression, builder, context);
         }
         #endregion
     }

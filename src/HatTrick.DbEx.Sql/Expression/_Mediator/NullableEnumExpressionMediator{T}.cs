@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableEnumElement<TEnum> As(string alias)
-            => new NullableEnumExpressionMediator<TEnum>(base.Expression, alias);
+            => null; // new NullableEnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region order

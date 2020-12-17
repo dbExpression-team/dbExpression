@@ -10,8 +10,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
         {
             builder.Appender
                 .Write("NEWID()");
-
-            AppendAlias(expression, builder, context);
         }
         #endregion
     }

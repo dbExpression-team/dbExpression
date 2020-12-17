@@ -10,8 +10,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("CEILING(");
             builder.AppendElement(expression.Expression, context);
             builder.Appender.Write(")");
-
-            AppendAlias(expression, builder, context);
         }
         #endregion
     }

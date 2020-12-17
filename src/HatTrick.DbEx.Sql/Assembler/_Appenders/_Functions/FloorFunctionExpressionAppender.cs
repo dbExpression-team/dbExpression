@@ -10,8 +10,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("FLOOR(");
             builder.AppendElement(expression.Expression, context);
             builder.Appender.Write(")");
-
-            AppendAlias(expression, builder, context);
         }
         #endregion
     }

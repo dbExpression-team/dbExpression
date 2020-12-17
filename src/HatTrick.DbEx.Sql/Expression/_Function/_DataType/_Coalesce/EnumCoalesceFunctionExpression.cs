@@ -19,10 +19,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public EnumElement<TEnum> As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new EnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region equals

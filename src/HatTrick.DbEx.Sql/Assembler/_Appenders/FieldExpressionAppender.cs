@@ -17,43 +17,17 @@ namespace HatTrick.DbEx.Sql.Assembler
 
                 if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Alias)
                 {
-                    var alias = (expression as IExpressionAliasProvider).Alias;
-                    if (!string.IsNullOrWhiteSpace(alias))
-                    {
-                        builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin)
-                            .Write(alias)
-                            .Write(context.Configuration.IdentifierDelimiter.End);
-                        return;
-                    }
+                    return;
                 }
 
                 builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin);
                 builder.Appender.Write(builder.FindMetadata(expression).Name);
                 builder.Appender.Write(context.Configuration.IdentifierDelimiter.End);
-
-                if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.Declaration)
-                {
-                    AppendAlias(expression, builder, context);
-                }
             }
             finally
             {
                 context.PopField();
             }
-        }
-
-        protected override void AppendAlias(IExpressionAliasProvider aliasable, ISqlStatementBuilder builder, AssemblyContext context)
-        {
-            if (string.IsNullOrWhiteSpace(aliasable.Alias))
-                return;
-
-            if (context.FieldExpressionAppendStyle == FieldExpressionAppendStyle.None)
-                return;
-
-            builder.Appender.Write(" AS ")
-                .Write(context.Configuration.IdentifierDelimiter.Begin)
-                .Write(aliasable.Alias)
-                .Write(context.Configuration.IdentifierDelimiter.End);
         }
     }
 }

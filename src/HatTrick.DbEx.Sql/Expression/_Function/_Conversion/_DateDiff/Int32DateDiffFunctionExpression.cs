@@ -32,10 +32,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public Int32Element As(string alias)
-        {
-            Alias = alias;
-            return this;
-        }
+            => new Int32SelectExpression(this).As(alias);
         #endregion
 
         #region equals

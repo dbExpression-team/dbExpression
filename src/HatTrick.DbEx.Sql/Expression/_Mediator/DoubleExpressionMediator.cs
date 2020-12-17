@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public DoubleElement As(string alias)
-            => new DoubleExpressionMediator(base.Expression, alias);
+            => new DoubleSelectExpression(this).As(alias);
         #endregion
 
         #region equals
