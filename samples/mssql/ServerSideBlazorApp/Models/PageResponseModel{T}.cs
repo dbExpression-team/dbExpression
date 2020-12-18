@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ServerSideBlazorApp.Models
 {
@@ -16,5 +17,8 @@ namespace ServerSideBlazorApp.Models
             Page = page;
             TotalCount = totalCount;
         }
+
+        public static PageResponseModel<T> CreateDefault()
+            => new PageResponseModel<T>(0, 10, null, Enumerable.Empty<T>(), 0);
     }
 }

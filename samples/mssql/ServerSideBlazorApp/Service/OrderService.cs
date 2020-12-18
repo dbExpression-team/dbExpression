@@ -11,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace ServerSideBlazorApp.Service
 {
-    public class OrderService : ServiceBase
+    public class OrderService
     {
         public async Task<PageResponseModel<OrderSummaryModel>> GetOrdersPageAsync(PageModel model)
         {
             var orders = await
                 db.SelectMany(
                     dbo.Purchase.Id,
-                    dbo.Purchase.PersonId,
+                    dbo.Purchase.CustomerId,
                     dbo.Customer.FirstName + " " + dbo.Customer.LastName,
                     db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
                     dbo.Purchase.OrderNumber,
@@ -28,7 +28,7 @@ namespace ServerSideBlazorApp.Service
                     dbo.Purchase.ShipDate
                 )
                 .From(dbo.Purchase)
-                .InnerJoin(dbo.Customer).On(dbo.Purchase.PersonId == dbo.Customer.Id)
+                .InnerJoin(dbo.Customer).On(dbo.Purchase.CustomerId == dbo.Customer.Id)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(dbo.Purchase.PurchaseDate.Desc)
                 .Skip(model.Offset).Limit(model.Limit)
@@ -38,7 +38,7 @@ namespace ServerSideBlazorApp.Service
                         Id = row.ReadField().GetValue<int>(),
                         CustomerId = row.ReadField().GetValue<int>(),
                         CustomerName = row.ReadField().GetValue<string>(),
-                        IsVIP = row.ReadField().GetValue<double>() >= LifetimeValueAmountToBeAVIPCustomer,
+                        IsVIP = row.ReadField().GetValue<double>() >= Constants.LifetimeValueAmountToBeAVIPCustomer,
                         OrderNumber = row.ReadField().GetValue<string>(),
                         PaymentMethod = row.ReadField().GetValue<PaymentMethodType>(),
                         TotalPurchaseAmount = row.ReadField().GetValue<double>(),
@@ -68,7 +68,7 @@ namespace ServerSideBlazorApp.Service
             var orders = await
                 db.SelectMany(
                     dbo.Purchase.Id,
-                    dbo.Purchase.PersonId,
+                    dbo.Purchase.CustomerId,
                     dbo.Customer.FirstName + " " + dbo.Customer.LastName,
                     db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
                     dbo.Purchase.OrderNumber,
@@ -78,9 +78,9 @@ namespace ServerSideBlazorApp.Service
                     dbo.Purchase.ShipDate
                 )
                 .From(dbo.Purchase)
-                .InnerJoin(dbo.Customer).On(dbo.Purchase.PersonId == dbo.Customer.Id)
+                .InnerJoin(dbo.Customer).On(dbo.Purchase.CustomerId == dbo.Customer.Id)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
-                .Where(dbo.Purchase.PersonId == customerId)
+                .Where(dbo.Purchase.CustomerId == customerId)
                 .OrderBy(dbo.Purchase.PurchaseDate.Desc)
                 .Skip(model.Offset).Limit(model.Limit)
                 .ExecuteAsync(row =>
@@ -89,7 +89,7 @@ namespace ServerSideBlazorApp.Service
                         Id = row.ReadField().GetValue<int>(),
                         CustomerId = row.ReadField().GetValue<int>(),
                         CustomerName = row.ReadField().GetValue<string>(),
-                        IsVIP = row.ReadField().GetValue<double>() >= LifetimeValueAmountToBeAVIPCustomer,
+                        IsVIP = row.ReadField().GetValue<double>() >= Constants.LifetimeValueAmountToBeAVIPCustomer,
                         OrderNumber = row.ReadField().GetValue<string>(),
                         PaymentMethod = row.ReadField().GetValue<PaymentMethodType>(),
                         TotalPurchaseAmount = row.ReadField().GetValue<double>(),
@@ -103,7 +103,7 @@ namespace ServerSideBlazorApp.Service
                     db.fx.Count()
                 )
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.PersonId == customerId)
+                .Where(dbo.Purchase.CustomerId == customerId)
                 .ExecuteAsync();
 
             return new PageResponseModel<OrderSummaryModel>(
@@ -145,11 +145,11 @@ namespace ServerSideBlazorApp.Service
                 dbex.alias(shippingAddress, nameof(dbo.Address.Zip))
             )
             .From(dbo.Purchase)
-            .InnerJoin(dbo.Customer).On(dbo.Purchase.PersonId == dbo.Customer.Id)
+            .InnerJoin(dbo.Customer).On(dbo.Purchase.CustomerId == dbo.Customer.Id)
             .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
             .LeftJoin(
                 db.SelectOne(
-                    dbo.CustomerAddress.PersonId,
+                    dbo.CustomerAddress.CustomerId,
                     dbo.Address.Line1,
                     dbo.Address.Line2,
                     dbo.Address.City,
@@ -158,12 +158,12 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
-                .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.PersonId == dbo.Purchase.PersonId)
+                .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.CustomerId == dbo.Purchase.CustomerId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Billing)
-            ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(billingAddress, nameof(dbo.CustomerAddress.PersonId)))
+            ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(billingAddress, "PersonId"))
             .LeftJoin(
                 db.SelectOne(
-                    dbo.CustomerAddress.PersonId,
+                    dbo.CustomerAddress.CustomerId,
                     dbo.Address.Line1,
                     dbo.Address.Line2,
                     dbo.Address.City,
@@ -172,9 +172,9 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
-                .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.PersonId == dbo.Purchase.PersonId)
+                .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.CustomerId == dbo.Purchase.CustomerId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Shipping)
-            ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(shippingAddress, nameof(dbo.CustomerAddress.PersonId)))
+            ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(shippingAddress, "PersonId"))
             .Where(dbo.Purchase.Id == orderId)
             .ExecuteAsync(
                 row => new OrderDetailModel
@@ -182,7 +182,7 @@ namespace ServerSideBlazorApp.Service
                         Id = row.ReadField().GetValue<int>(),
                         CustomerId = row.ReadField().GetValue<int>(),
                         CustomerName = row.ReadField().GetValue<string>(),
-                        IsVIP = row.ReadField().GetValue<double>() >= LifetimeValueAmountToBeAVIPCustomer,
+                        IsVIP = row.ReadField().GetValue<double>() >= Constants.LifetimeValueAmountToBeAVIPCustomer,
                         OrderNumber = row.ReadField().GetValue<string>(),
                         TotalPurchaseAmount = row.ReadField().GetValue<double>(),
                         PurchaseDate = row.ReadField().GetValue<DateTime>(),

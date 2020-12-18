@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ServerSideBlazorApp.Models
 {
@@ -7,7 +8,7 @@ namespace ServerSideBlazorApp.Models
         public int Offset { get; set; }
         public int Limit { get; set; }
         public string SearchPhrase { get; set; }
-        public IEnumerable<Sort> Sorting {get; set; }
+        public IEnumerable<Sort> Sorting { get; set; } = Enumerable.Empty<Sort>();
 
         protected PageModel()
         {

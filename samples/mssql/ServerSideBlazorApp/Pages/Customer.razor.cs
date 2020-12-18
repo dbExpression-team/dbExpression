@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace ServerSideBlazorApp.Pages
 {
     public partial class Customer
     {
         #region internals
+        private PageRequestModel ReturnToListPageQueryStringParameters { get; set; }
         private CustomerDetailModel Model { get; set; }
         private string SelectedTab { get; set; } = Tabs.Details.Id;
         #endregion
@@ -69,17 +68,19 @@ namespace ServerSideBlazorApp.Pages
 
         private string BuildCustomerGridUrl()
         {
-            return $"/customers?pageIndex={PageIndex}&pageSize={PageSize}&searchPhrase={HttpUtility.UrlEncode(SearchPhrase)}";
+            return $"/customers?{ReturnToListPageQueryStringParameters.ToQueryStringParameters()}";
         }
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageIndex), out var pageIndex))
-                PageIndex = pageIndex;
-            if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageSize), out var pageSize))
-                PageSize = pageSize;
-            if (NavigationManager.TryGetQueryStringParameter<string>(nameof(SearchPhrase), out var searchPhrase))
-                SearchPhrase = searchPhrase;
+            if (NavigationManager.GetPagingFromQueryStringParameters(out PageRequestModel model))
+                ReturnToListPageQueryStringParameters = model;
+            //if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageIndex), out var pageIndex))
+            //    PageIndex = pageIndex;
+            //if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageSize), out var pageSize))
+            //    PageSize = pageSize;
+            //if (NavigationManager.TryGetQueryStringParameter<string>(nameof(SearchPhrase), out var searchPhrase))
+            //    SearchPhrase = searchPhrase;
             await base.SetParametersAsync(parameters);
         }
 

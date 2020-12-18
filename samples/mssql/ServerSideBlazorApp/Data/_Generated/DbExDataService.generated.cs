@@ -435,7 +435,7 @@ namespace ServerSideBlazorApp.DataService
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the resulting value are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
@@ -446,6 +446,18 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, elements);
         #endregion
 
         #region select many
@@ -866,6 +878,17 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, elements);
         #endregion
 
         #region update
@@ -2146,8 +2169,8 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.PersonIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.CustomerIdField"/> representing the "dbo.Person_Address.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.CustomerIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -2163,7 +2186,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public readonly PersonIdField PersonId;
+        public readonly CustomerIdField CustomerId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> representing the "dbo.Person_Address.AddressId" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.CustomerAddressEntity.AddressIdField"/> can be 
@@ -2220,7 +2243,7 @@ namespace ServerSideBlazorApp.dboDataService
         private CustomerAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", this));
             Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
         }
@@ -2235,7 +2258,7 @@ namespace ServerSideBlazorApp.dboDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 new Int32SelectExpression(Id)
                 ,new Int32SelectExpression(PersonId)
-                ,new Int32SelectExpression(AddressId)
+                ,PersonId
                 ,new DateTimeSelectExpression(DateCreated)
             ));
         }
@@ -2243,7 +2266,7 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<CustomerAddress> GetInclusiveInsertExpression(CustomerAddress customerAddress)
         {
             return new InsertExpressionSet<CustomerAddress>(customerAddress 
-                ,new InsertExpression<int>(PersonId, customerAddress.PersonId)
+                ,new InsertExpression<int>(CustomerId, customerAddress.CustomerId)
                 ,new InsertExpression<int>(AddressId, customerAddress.AddressId)
             );
         }
@@ -2252,7 +2275,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (target.CustomerId != source.CustomerId) { expr &= CustomerId.Set(source.CustomerId); }
             if (target.AddressId != source.AddressId) { expr &= AddressId.Set(source.AddressId); }
             return expr;
         }
@@ -2260,7 +2283,7 @@ namespace ServerSideBlazorApp.dboDataService
         protected override void HydrateEntity(CustomerAddress customerAddress, ISqlFieldReader reader)
         {
 			customerAddress.Id = reader.ReadField().GetValue<int>();
-			customerAddress.PersonId = reader.ReadField().GetValue<int>();
+			customerAddress.CustomerId = reader.ReadField().GetValue<int>();
 			customerAddress.AddressId = reader.ReadField().GetValue<int>();
 			customerAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
@@ -2294,16 +2317,16 @@ namespace ServerSideBlazorApp.dboDataService
         }
         #endregion
 
-        #region person id field expression
-        public partial class PersonIdField : Int32FieldExpression<CustomerAddress>
+        #region customer id field expression
+        public partial class CustomerIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public PersonIdField(string identifier, CustomerAddressEntity entity) : base(identifier, entity)
+            public CustomerIdField(string identifier, CustomerAddressEntity entity) : base(identifier, entity)
             {
 
             }
 
-            private PersonIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            private CustomerIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
             {
 
             }
@@ -3393,8 +3416,8 @@ namespace ServerSideBlazorApp.dboDataService
         /// </summary>
         public readonly IdField Id;
 
-        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PersonIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
-        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.PersonIdField"/> can be 
+        /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.CustomerIdField"/> representing the "dbo.Purchase.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.CustomerIdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
         /// <para>Database Properties:
         /// <list type="table">
@@ -3410,7 +3433,7 @@ namespace ServerSideBlazorApp.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public readonly PersonIdField PersonId;
+        public readonly CustomerIdField CustomerId;
 
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> representing the "dbo.Purchase.OrderNumber" column in the database, 
         /// with a .NET type of <see cref="string"/>.  The <see cref="ServerSideBlazorApp.dboDataService.PurchaseEntity.OrderNumberField"/> can be 
@@ -3641,7 +3664,7 @@ namespace ServerSideBlazorApp.dboDataService
         private PurchaseEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
         {
             Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", this));
+            Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", this));
             Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", this));
             Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", this));
             Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", this));
@@ -3666,6 +3689,7 @@ namespace ServerSideBlazorApp.dboDataService
                 new Int32SelectExpression(Id)
                 ,new Int32SelectExpression(PersonId)
                 ,new StringSelectExpression(OrderNumber)
+                ,PersonId
                 ,new Int32SelectExpression(TotalPurchaseQuantity)
                 ,new DoubleSelectExpression(TotalPurchaseAmount)
                 ,new DateTimeSelectExpression(PurchaseDate)
@@ -3682,7 +3706,7 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
         {
             return new InsertExpressionSet<Purchase>(purchase 
-                ,new InsertExpression<int>(PersonId, purchase.PersonId)
+                ,new InsertExpression<int>(CustomerId, purchase.CustomerId)
                 ,new InsertExpression<string>(OrderNumber, purchase.OrderNumber)
                 ,new InsertExpression<int>(TotalPurchaseQuantity, purchase.TotalPurchaseQuantity)
                 ,new InsertExpression<double>(TotalPurchaseAmount, purchase.TotalPurchaseAmount)
@@ -3699,7 +3723,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (target.CustomerId != source.CustomerId) { expr &= CustomerId.Set(source.CustomerId); }
             if (target.OrderNumber != source.OrderNumber) { expr &= OrderNumber.Set(source.OrderNumber); }
             if (target.TotalPurchaseQuantity != source.TotalPurchaseQuantity) { expr &= TotalPurchaseQuantity.Set(source.TotalPurchaseQuantity); }
             if (target.TotalPurchaseAmount != source.TotalPurchaseAmount) { expr &= TotalPurchaseAmount.Set(source.TotalPurchaseAmount); }
@@ -3715,7 +3739,7 @@ namespace ServerSideBlazorApp.dboDataService
         protected override void HydrateEntity(Purchase purchase, ISqlFieldReader reader)
         {
 			purchase.Id = reader.ReadField().GetValue<int>();
-			purchase.PersonId = reader.ReadField().GetValue<int>();
+			purchase.CustomerId = reader.ReadField().GetValue<int>();
 			purchase.OrderNumber = reader.ReadField().GetValue<string>();
 			purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
 			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
@@ -3758,16 +3782,16 @@ namespace ServerSideBlazorApp.dboDataService
         }
         #endregion
 
-        #region person id field expression
-        public partial class PersonIdField : Int32FieldExpression<Purchase>
+        #region customer id field expression
+        public partial class CustomerIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public PersonIdField(string identifier, PurchaseEntity entity) : base(identifier, entity)
+            public CustomerIdField(string identifier, PurchaseEntity entity) : base(identifier, entity)
             {
 
             }
 
-            private PersonIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            private CustomerIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
             {
 
             }

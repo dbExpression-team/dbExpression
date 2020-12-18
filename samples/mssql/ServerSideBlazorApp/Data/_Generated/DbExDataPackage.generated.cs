@@ -55,7 +55,7 @@ namespace ServerSideBlazorApp.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual int PersonId { get; set; }
+        public virtual int CustomerId { get; set; }
         public virtual int AddressId { get; set; }
         public virtual DateTime DateCreated { get; set; }
         #endregion
@@ -104,7 +104,7 @@ namespace ServerSideBlazorApp.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual int PersonId { get; set; }
+        public virtual int CustomerId { get; set; }
         public virtual string OrderNumber { get; set; }
         public virtual int TotalPurchaseQuantity { get; set; }
         public virtual double TotalPurchaseAmount { get; set; }

@@ -7,46 +7,45 @@
 <Divider></Divider>
 <Card>
     <CardBody>
-        <GridLoading RecordCount="@(CurrentPage?.TotalCount)"></GridLoading>
-        @if (CurrentPage != null && CurrentPage.Page.Any())
-        {
-            <DataGrid TItem="OrderSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageSize" CurrentPage="@(PageIndex + 1)">
-                <DataGridColumns>
-                    <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.OrderNumber)" Caption="Order Number" Sortable="false" Width="10%">
-                        <DisplayTemplate>
-                            <Blazorise.Link To="@BuildDetailUrl((context as OrderSummaryModel).Id)">@((context as OrderSummaryModel).OrderNumber)</Blazorise.Link>
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.CustomerName)" Caption="Customer" Sortable="false" Width="30%">
-                        <DisplayTemplate>
-                            @if ((context as OrderSummaryModel).IsVIP)
-                            {
-                                <i class='fas fa-crown pr-2'></i>
-                            }
-                            @($"{(context as OrderSummaryModel).CustomerName}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PaymentMethod)" Caption="Payment Method" Sortable="false" Width="15%" />
-                    <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="false" Width="15%">
-                        <DisplayTemplate>
-                            @($"{(context as OrderSummaryModel)?.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PurchaseDate)" Caption="Purchase Date" Sortable="false" Width="15%">
-                        <DisplayTemplate>
-                            @($"{(context as OrderSummaryModel)?.PurchaseDate.ToString("d", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.ShipDate)" Caption="Ship Date" Sortable="false" Width="15%">
-                        <DisplayTemplate>
-                            @($"{(context as OrderSummaryModel)?.ShipDate?.ToString("d", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                </DataGridColumns>
-            </DataGrid>
-
-            <DataGridPager CurrentPage="@PageIndex" PageSize="@PageSize" TotalItems="@CurrentPage.TotalCount" OnPageChange="OnPage" OnPageSizeChange="OnPageSizeChanged"></DataGridPager>
-        }
+        <DataGrid TItem="OrderSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageRequest.Limit" CurrentPage="@((PageRequest.Offset / PageRequest.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+            <LoadingTemplate>Loading...</LoadingTemplate>
+            <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
+            <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>
+            <NextPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.NextPage" /></NextPageButtonTemplate>
+            <LastPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.LastPage" /></LastPageButtonTemplate>
+            <DataGridColumns>
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.OrderNumber)" Caption="Order Number" Sortable="true" Width="10%">
+                    <DisplayTemplate>
+                        <Blazorise.Link To="@BuildDetailUrl((context as OrderSummaryModel).Id)">@((context as OrderSummaryModel).OrderNumber)</Blazorise.Link>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.CustomerName)" Caption="Customer" Sortable="true" Width="30%">
+                    <DisplayTemplate>
+                        @if ((context as OrderSummaryModel).IsVIP)
+                        {
+                            <i class='fas fa-crown pr-2'></i>
+                        }
+                        @($"{(context as OrderSummaryModel).CustomerName}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PaymentMethod)" Caption="Payment Method" Sortable="true" Width="15%" />
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="true" Width="15%">
+                    <DisplayTemplate>
+                        @($"{(context as OrderSummaryModel)?.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PurchaseDate)" Caption="Purchase Date" Sortable="true" Width="15%">
+                    <DisplayTemplate>
+                        @($"{(context as OrderSummaryModel)?.PurchaseDate.ToString("d", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.ShipDate)" Caption="Ship Date" Sortable="true" Width="15%">
+                    <DisplayTemplate>
+                        @($"{(context as OrderSummaryModel)?.ShipDate?.ToString("d", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
     </CardBody>
 </Card>
 

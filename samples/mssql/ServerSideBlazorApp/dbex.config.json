@@ -47,9 +47,25 @@
 		},
 		{
 			"apply": {
+				"name": "CustomerId",
+				"to": {
+					"path": "dbo.Purchase.PersonId"
+				}
+			}
+		},
+		{
+			"apply": {
 				"name": "CustomerAddress",
 				"to": {
 					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "CustomerId",
+				"to": {
+					"path": "dbo.Person_Address.PersonId"
 				}
 			}
 		},

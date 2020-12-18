@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServerSideBlazorApp.Service
 {
-    public class ProductService : ServiceBase
+    public class ProductService
     {
         public async Task<PageResponseModel<ProductSummaryModel>> GetSummaryPageAsync(PageModel model)
         { 

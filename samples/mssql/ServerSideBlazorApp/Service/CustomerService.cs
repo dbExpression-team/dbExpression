@@ -10,15 +10,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HatTrick.DbEx.Sql.Expression;
 
 namespace ServerSideBlazorApp.Service
 {
-    public class CustomerService : ServiceBase
+    public class CustomerService
     {
-        private static NullableInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
+        private static readonly NullableInt16Element currentAgeApproximation = db.fx.Cast(db.fx.Floor(db.fx.DateDiff(DateParts.Day, dbo.Customer.BirthDate, db.fx.GetUtcDate()) / 365.25)).AsSmallInt();
 
-        private IDictionary<string, AnyElement> SortConversion = new Dictionary<string, AnyElement>
+        private static readonly IList<AnyElement> CustomerSummarySelectFields = new List<AnyElement>
+        {
+            dbo.Customer.Id,
+            (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As("Name"),
+            db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
+            currentAgeApproximation.As("CurrentAge")
+        };
+
+        private static readonly IDictionary<string, AnyElement> CustomerSummarySortingFields = new Dictionary<string, AnyElement>
         {
             { nameof(CustomerSummaryModel.Name), dbo.Customer.FirstName + " " + dbo.Customer.LastName },
             { nameof(CustomerSummaryModel.LifetimeValue), dbo.PersonTotalPurchasesView.TotalAmount },
@@ -27,8 +34,6 @@ namespace ServerSideBlazorApp.Service
 
         public async Task<IEnumerable<(int,decimal)>> GetPurchaseValueByYear(int customerId)
         {
-            var x = dbo.Customer.FirstName + " " + dbo.Customer.LastName;
-
             IEnumerable<dynamic> metrics = await
 
                 db.SelectMany(
@@ -36,7 +41,7 @@ namespace ServerSideBlazorApp.Service
                     db.fx.Sum(dbo.Purchase.TotalPurchaseAmount)
                 )
                 .From(dbo.Purchase)
-                .Where(dbo.Purchase.PersonId == customerId)
+                .Where(dbo.Purchase.CustomerId == customerId)
                 .GroupBy(
                     db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate)
                 )
@@ -50,32 +55,16 @@ namespace ServerSideBlazorApp.Service
         {
             var customers = await
                 db.SelectMany(
-                    dbo.Customer.Id,
-                    (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As("Name"),
-                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
-                    currentAgeApproximation.As("CurrentAge")
+                    CustomerSummarySelectFields
                 )
                 .From(dbo.Customer)
                 .Where(string.IsNullOrWhiteSpace(model.SearchPhrase) ? null : (dbo.Customer.FirstName + " " + dbo.Customer.LastName).Like(model.SearchPhrase + '%'))
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .OrderBy(
-                    model.Sorting is object && model.Sorting.Any() ?
-                        model.Sorting.Select(s => s.Ascending ? SortConversion[s.Field].Asc : SortConversion[s.Field].Desc)
-                        :
-                        new List<OrderByExpression> { (dbo.Customer.FirstName + " " + dbo.Customer.LastName).Asc }
+                    model.Sorting?.Select(s => s.Ascending ? CustomerSummarySortingFields[s.Field].Asc : CustomerSummarySortingFields[s.Field].Desc)
                 )
                 .Skip(model.Offset).Limit(model.Limit)
-                .ExecuteAsync(row => {
-                    var customer = new CustomerSummaryModel
-                    {
-                        Id = row.ReadField().GetValue<int>(),
-                        Name = row.ReadField().GetValue<string>(),
-                        LifetimeValue = row.ReadField().GetValue<double>(),
-                        CurrentAge = row.ReadField().GetValue<short?>(),
-                    };
-                    customer.IsVIP = customer.LifetimeValue >= LifetimeValueAmountToBeAVIPCustomer;
-                    return customer;
-                });
+                .ExecuteAsync(MapToCustomer);
 
             var countOfCustomers = await
                 db.SelectOne(
@@ -144,7 +133,7 @@ namespace ServerSideBlazorApp.Service
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
                 .LeftJoin(
                     db.SelectOne(
-                        dbo.CustomerAddress.PersonId,
+                        dbo.CustomerAddress.CustomerId,
                         dbo.Address.Line1,
                         dbo.Address.Line2,
                         dbo.Address.City,
@@ -153,11 +142,11 @@ namespace ServerSideBlazorApp.Service
                     )
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
-                    .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(mailingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.MailingAddress), nameof(dbo.CustomerAddress.PersonId)))
+                    .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Mailing)
+                ).As(mailingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.MailingAddress), "PersonId"))
                 .LeftJoin(
                     db.SelectOne(
-                        dbo.CustomerAddress.PersonId,
+                        dbo.CustomerAddress.CustomerId,
                         dbo.Address.Line1,
                         dbo.Address.Line2,
                         dbo.Address.City,
@@ -166,11 +155,11 @@ namespace ServerSideBlazorApp.Service
                     )
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
-                    .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.BillingAddress), nameof(dbo.CustomerAddress.PersonId)))
+                    .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Billing)
+                ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.BillingAddress), "PersonId"))
                 .LeftJoin(
                     db.SelectOne(
-                        dbo.CustomerAddress.PersonId,
+                        dbo.CustomerAddress.CustomerId,
                         dbo.Address.Line1,
                         dbo.Address.Line2,
                         dbo.Address.City,
@@ -179,8 +168,8 @@ namespace ServerSideBlazorApp.Service
                     )
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
-                    .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(dbo.CustomerAddress.PersonId)))
+                    .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Shipping)
+                ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.ShippingAddress), "PersonId"))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     sqlRow => 
@@ -197,7 +186,7 @@ namespace ServerSideBlazorApp.Service
                         customer.MailingAddress = mapAddress(AddressType.Mailing, sqlRow);
                         customer.BillingAddress = mapAddress(AddressType.Billing, sqlRow);
                         customer.ShippingAddress = mapAddress(AddressType.Shipping, sqlRow);
-                        customer.IsVIP = customer.LifetimeValue >= LifetimeValueAmountToBeAVIPCustomer;
+                        customer.IsVIP = customer.LifetimeValue >= Constants.LifetimeValueAmountToBeAVIPCustomer;
                         return customer;
                     }
                 );
@@ -211,26 +200,14 @@ namespace ServerSideBlazorApp.Service
             var ptpv = dbo.PersonTotalPurchasesView;
 
             return await db.SelectMany(
-                    dbo.Customer.Id,
-                    (dbo.Customer.FirstName + " " + dbo.Customer.LastName).As("Name"),
-                    db.fx.IsNull(dbo.PersonTotalPurchasesView.TotalAmount, 0).As("LifetimeValue"),
-                    currentAgeApproximation.As("CurrentAge")
+                    CustomerSummarySelectFields
                 )
                 .From(customer)
                 .LeftJoin(ptpv).On(ptpv.Id == customer.Id)
-                .Where(ptpv.TotalAmount >= LifetimeValueAmountToBeAVIPCustomer) //Lifetime spend > $1,500 is a VIP
+                .Where(ptpv.TotalAmount >= Constants.LifetimeValueAmountToBeAVIPCustomer)
                 .OrderBy(ptpv.TotalAmount.Desc)
                 .Skip(0).Limit(length)
-                .ExecuteAsync(row =>
-                    new CustomerSummaryModel
-                    {
-                        Id = row.ReadField().GetValue<int>(),
-                        Name = row.ReadField().GetValue<string>(),
-                        LifetimeValue = row.ReadField().GetValue<double>(),
-                        CurrentAge = row.ReadField().GetValue<short?>(),
-                        IsVIP = true
-                    }
-                );
+                .ExecuteAsync(MapToCustomer);
         }
 
         public async Task<AddressModel> SaveAddressAsync(int customerId, AddressModel address)
@@ -281,7 +258,7 @@ namespace ServerSideBlazorApp.Service
             => await db.SelectOne<Address>()
                 .From(dbo.Address)
                 .InnerJoin(dbo.CustomerAddress).On(dbo.Address.Id == dbo.CustomerAddress.AddressId)
-                .Where(dbo.CustomerAddress.PersonId == customerId & dbo.Address.AddressType == addressType)
+                .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == addressType)
                 .ExecuteAsync();
 
         private async Task UpdateAddressAsync(Address persisted, Address @new)
@@ -309,7 +286,7 @@ namespace ServerSideBlazorApp.Service
                     await db.Insert(
                             new CustomerAddress
                             {
-                                PersonId = customerId,
+                                CustomerId = customerId,
                                 AddressId = address.Id,
                                 DateCreated = DateTime.UtcNow
                             }
@@ -326,5 +303,14 @@ namespace ServerSideBlazorApp.Service
                 }
             }
         }
+
+        private CustomerSummaryModel MapToCustomer(ISqlRow row)
+            =>  new CustomerSummaryModel
+            {
+                Id = row.ReadField().GetValue<int>(),
+                Name = row.ReadField().GetValue<string>(),
+                LifetimeValue = row.ReadField().GetValue<double>(),
+                CurrentAge = row.ReadField().GetValue<short?>(),
+            };
     }
 }

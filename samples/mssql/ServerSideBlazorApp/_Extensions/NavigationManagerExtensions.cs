@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
+using ServerSideBlazorApp.Models;
 using System;
 using System.ComponentModel;
+using System.Text.Json;
+using System.Web;
 
 namespace ServerSideBlazorApp
 {
@@ -35,6 +38,17 @@ namespace ServerSideBlazorApp
                 {
                     throw new ArgumentException($"Cannot convert {parameterName} to type {typeof(T)}");
                 };
+            }
+            return false;
+        }
+
+        public static bool GetPagingFromQueryStringParameters(this NavigationManager manager, out PageRequestModel model)
+        {
+            model = null;
+            if (manager.TryGetQueryStringParameter("page", out string serialized))
+            {
+                model = JsonSerializer.Deserialize<PageRequestModel>(HttpUtility.UrlDecode(serialized));
+                return true;
             }
             return false;
         }

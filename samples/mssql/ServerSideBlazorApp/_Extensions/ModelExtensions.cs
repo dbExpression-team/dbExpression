@@ -1,4 +1,6 @@
 ﻿using ServerSideBlazorApp.Models;
+using System.Text.Json;
+using System.Web;
 
 namespace ServerSideBlazorApp
 {
@@ -15,5 +17,8 @@ namespace ServerSideBlazorApp
                 ZIP = source.ZIP
             };
         }
+
+        public static string ToQueryStringParameters(this PageRequestModel model)
+            => $"page={HttpUtility.UrlEncode(JsonSerializer.Serialize(model))}";
     }
 }

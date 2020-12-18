@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ServerSideBlazorApp.Models
 {
@@ -23,5 +24,8 @@ namespace ServerSideBlazorApp.Models
         public PageRequestModel(int offset, int limit, string searchPhrase = null, IEnumerable<Sort> sorting = null) : base(offset, limit, searchPhrase, sorting)
         {
         }
+
+        public static PageRequestModel CreateDefault()
+            => new PageRequestModel(0, 10);
     }
 }

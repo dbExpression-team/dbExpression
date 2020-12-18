@@ -1,0 +1,28 @@
+﻿<span aria-hidden="true"><i class="fas @buttonClass"></i></span>
+
+@code {
+    public enum PagingButtonType
+    {
+        FirstPage,
+        PreviousPage,
+        NextPage,
+        LastPage
+    }
+
+    private string buttonClass
+    {
+        get
+        {
+            switch (Type)
+            {
+                case PagingButtonType.FirstPage: return "fa-angle-double-left";
+                case PagingButtonType.PreviousPage: return "fa-angle-left";
+                case PagingButtonType.NextPage: return "fa-angle-right";
+                case PagingButtonType.LastPage: return "fa-angle-double-right";
+            };
+            return string.Empty;
+        }
+    }
+
+    [Parameter] public PagingButtonType Type { get; set; }
+}
