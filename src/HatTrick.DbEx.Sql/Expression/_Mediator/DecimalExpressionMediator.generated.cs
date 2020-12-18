@@ -4,10 +4,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DecimalExpressionMediator
     {
-        #region implicit operators
-        public static implicit operator SelectExpression<decimal>(DecimalExpressionMediator a) => new SelectExpression<decimal>(a);
-        #endregion
-
         #region arithmetic operators
         #region data type
         #region byte

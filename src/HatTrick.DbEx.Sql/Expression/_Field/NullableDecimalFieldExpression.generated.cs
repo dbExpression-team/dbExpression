@@ -13,7 +13,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<decimal?>(NullableDecimalFieldExpression a) => new SelectExpression<decimal?>(a);
         public static implicit operator NullableDecimalExpressionMediator(NullableDecimalFieldExpression a) => new NullableDecimalExpressionMediator(a);
         #endregion
 

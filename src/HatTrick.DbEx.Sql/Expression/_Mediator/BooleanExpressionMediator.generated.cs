@@ -4,10 +4,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class BooleanExpressionMediator
     {
-        #region implicit operators
-        public static implicit operator SelectExpression<bool>(BooleanExpressionMediator a) => new SelectExpression<bool>(a);
-        #endregion
-
         #region arithmetic operators
         #region data type
         #endregion

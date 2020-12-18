@@ -13,7 +13,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<double?>(NullableDoubleFieldExpression a) => new SelectExpression<double?>(a);
         public static implicit operator NullableDoubleExpressionMediator(NullableDoubleFieldExpression a) => new NullableDoubleExpressionMediator(a);
         #endregion
 

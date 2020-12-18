@@ -4,10 +4,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class DoubleExpressionMediator
     {
-        #region implicit operators
-        public static implicit operator SelectExpression<double>(DoubleExpressionMediator a) => new SelectExpression<double>(a);
-        #endregion
-
         #region arithmetic operators
         #region data type
         #region byte

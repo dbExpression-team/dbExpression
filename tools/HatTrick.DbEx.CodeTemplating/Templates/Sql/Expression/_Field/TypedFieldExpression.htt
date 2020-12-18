@@ -12,7 +12,6 @@ namespace {Namespace}
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<{:fieldExpressionType.Alias}>({:fieldExpressionType.Name}FieldExpression a) => new SelectExpression<{:fieldExpressionType.Alias}>(a);
         public static implicit operator {:fieldExpressionType.Name}ExpressionMediator({:fieldExpressionType.Name}FieldExpression a) => new {:fieldExpressionType.Name}ExpressionMediator(a);
         #endregion
 

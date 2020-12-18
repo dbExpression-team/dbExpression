@@ -1,7 +1,11 @@
 ﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
     public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
     {{
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
 		{#each $.Items}
         {>("FieldExpression.Documentation") => GetTemplatePartial+}
         public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
@@ -33,12 +37,17 @@
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {{
             {?var :applyComma = false}
-            return new SelectExpressionSet(
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
 				{#each $.Items}
-                {+#if :applyComma},{/if}{$.FieldExpression.Name}
+                {#if !$.FieldExpression.Type.IsEnum}
+                {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name})
+                {/if}
+                {#if $.FieldExpression.Type.IsEnum}
+                {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>({$.FieldExpression.Name})
+                {/if}
                 {? :applyComma = true}
 				{/each}
-            );
+            ));
         }}
 		
         protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})

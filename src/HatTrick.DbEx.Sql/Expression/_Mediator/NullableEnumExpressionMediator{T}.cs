@@ -3,7 +3,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableEnumExpressionMediator<TEnum> :
-        EnumExpressionMediator<TEnum>,
+        NullableExpressionMediator<TEnum,TEnum?>,
         NullableEnumElement<TEnum>,
         AnyEnumElement<TEnum>,
         IEquatable<NullableEnumExpressionMediator<TEnum>>
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public NullableEnumElement<TEnum> As(string alias)
-            => null; // new NullableEnumSelectExpression<TEnum>(this).As(alias);
+            => new NullableEnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region order
@@ -42,10 +42,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
             => base.GetHashCode();
-        #endregion
-
-        #region implicit operators
-        public static implicit operator SelectExpression<TEnum>(NullableEnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(new NullableEnumExpressionMediator<TEnum>(a));
         #endregion
 
         #region filter operators

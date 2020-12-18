@@ -33,9 +33,5 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
-
-        #region implicit operators
-        public static implicit operator SelectExpression<TValue>(ExpressionMediator<TValue> a) => new SelectExpression<TValue>(a);
-        #endregion
     }
 }

@@ -31,9 +31,9 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
             }
 
-            context.PushAppendStyle(EntityExpressionAppendStyle.Declaration);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.Declaration);
             builder.AppendElement(expression.JoinToo, context);
-            context.PopAppendStyles();
+            context.PopEntityAppendStyle();
 
             if (expression.JoinType == JoinOperationExpressionOperator.CROSS)
                 return;

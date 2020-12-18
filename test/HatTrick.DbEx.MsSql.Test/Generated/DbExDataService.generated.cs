@@ -64,7 +64,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{TEnum}" />
-        ///, for example "dbo.Person.GenderType"
+        ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
@@ -485,7 +485,7 @@ namespace DbEx.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{TEnum}" />
-        ///, for example "dbo.Person.GenderType"
+        ///, for example "dbo.Address.AddressType"
         /// </param>
         /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
@@ -1043,7 +1043,11 @@ namespace DbEx.dboDataService
     #region address entity expression
     public partial class AddressEntity : EntityExpression<Address>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity.IdField"/> representing the "dbo.Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AddressEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -1255,17 +1259,17 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,AddressType
-                ,Line1
-                ,Line2
-                ,City
-                ,State
-                ,Zip
-                ,DateCreated
-                ,DateUpdated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new NullableEnumSelectExpression<DbEx.Data.AddressType>(AddressType)
+                ,new StringSelectExpression(Line1)
+                ,new NullableStringSelectExpression(Line2)
+                ,new StringSelectExpression(City)
+                ,new StringSelectExpression(State)
+                ,new StringSelectExpression(Zip)
+                ,new DateTimeSelectExpression(DateCreated)
+                ,new DateTimeSelectExpression(DateUpdated)
+            ));
         }
 		
         protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address address)
@@ -1575,7 +1579,11 @@ namespace DbEx.dboDataService
     #region person entity expression
     public partial class PersonEntity : EntityExpression<Person>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.IdField"/> representing the "dbo.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -1787,17 +1795,17 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,FirstName
-                ,LastName
-                ,BirthDate
-                ,GenderType
-                ,CreditLimit
-                ,YearOfLastCreditLimitReview
-                ,DateCreated
-                ,DateUpdated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new StringSelectExpression(FirstName)
+                ,new StringSelectExpression(LastName)
+                ,new NullableDateTimeSelectExpression(BirthDate)
+                ,new EnumSelectExpression<DbEx.Data.GenderType>(GenderType)
+                ,new NullableInt32SelectExpression(CreditLimit)
+                ,new NullableInt32SelectExpression(YearOfLastCreditLimitReview)
+                ,new DateTimeSelectExpression(DateCreated)
+                ,new DateTimeSelectExpression(DateUpdated)
+            ));
         }
 		
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
@@ -2111,7 +2119,11 @@ namespace DbEx.dboDataService
     #region person address entity expression
     public partial class PersonAddressEntity : EntityExpression<PersonAddress>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> representing the "dbo.Person_Address.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonAddressEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -2220,12 +2232,12 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,PersonId
-                ,AddressId
-                ,DateCreated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new Int32SelectExpression(PersonId)
+                ,new Int32SelectExpression(AddressId)
+                ,new DateTimeSelectExpression(DateCreated)
+            ));
         }
 		
         protected override InsertExpressionSet<PersonAddress> GetInclusiveInsertExpression(PersonAddress personAddress)
@@ -2374,7 +2386,11 @@ namespace DbEx.dboDataService
     #region product entity expression
     public partial class ProductEntity : EntityExpression<Product>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity.IdField"/> representing the "dbo.Product.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.ProductEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -2746,25 +2762,25 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,ProductCategoryType
-                ,Name
-                ,Description
-                ,ListPrice
-                ,Price
-                ,Quantity
-                ,Image
-                ,Height
-                ,Width
-                ,Depth
-                ,Weight
-                ,ShippingWeight
-                ,ValidStartTimeOfDayForPurchase
-                ,ValidEndTimeOfDayForPurchase
-                ,DateCreated
-                ,DateUpdated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new NullableEnumSelectExpression<DbEx.Data.ProductCategoryType>(ProductCategoryType)
+                ,new StringSelectExpression(Name)
+                ,new NullableStringSelectExpression(Description)
+                ,new DoubleSelectExpression(ListPrice)
+                ,new DoubleSelectExpression(Price)
+                ,new Int32SelectExpression(Quantity)
+                ,new NullableByteArraySelectExpression(Image)
+                ,new NullableDecimalSelectExpression(Height)
+                ,new NullableDecimalSelectExpression(Width)
+                ,new NullableDecimalSelectExpression(Depth)
+                ,new NullableDecimalSelectExpression(Weight)
+                ,new DecimalSelectExpression(ShippingWeight)
+                ,new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase)
+                ,new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase)
+                ,new DateTimeSelectExpression(DateCreated)
+                ,new DateTimeSelectExpression(DateUpdated)
+            ));
         }
 		
         protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product product)
@@ -3350,7 +3366,11 @@ namespace DbEx.dboDataService
     #region purchase entity expression
     public partial class PurchaseEntity : EntityExpression<Purchase>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> representing the "dbo.Purchase.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -3642,21 +3662,21 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,PersonId
-                ,OrderNumber
-                ,TotalPurchaseQuantity
-                ,TotalPurchaseAmount
-                ,PurchaseDate
-                ,ShipDate
-                ,ExpectedDeliveryDate
-                ,TrackingIdentifier
-                ,PaymentMethodType
-                ,PaymentSourceType
-                ,DateCreated
-                ,DateUpdated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new Int32SelectExpression(PersonId)
+                ,new StringSelectExpression(OrderNumber)
+                ,new StringSelectExpression(TotalPurchaseQuantity)
+                ,new DoubleSelectExpression(TotalPurchaseAmount)
+                ,new DateTimeSelectExpression(PurchaseDate)
+                ,new NullableDateTimeSelectExpression(ShipDate)
+                ,new NullableDateTimeSelectExpression(ExpectedDeliveryDate)
+                ,new NullableGuidSelectExpression(TrackingIdentifier)
+                ,new EnumSelectExpression<DbEx.Data.PaymentMethodType>(PaymentMethodType)
+                ,new NullableEnumSelectExpression<DbEx.Data.PaymentSourceType>(PaymentSourceType)
+                ,new DateTimeSelectExpression(DateCreated)
+                ,new DateTimeSelectExpression(DateUpdated)
+            ));
         }
 		
         protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
@@ -4101,7 +4121,11 @@ namespace DbEx.dboDataService
     #region purchase line entity expression
     public partial class PurchaseLineEntity : EntityExpression<PurchaseLine>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> representing the "dbo.PurchaseLine.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PurchaseLineEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -4273,15 +4297,15 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,PurchaseId
-                ,ProductId
-                ,PurchasePrice
-                ,Quantity
-                ,DateCreated
-                ,DateUpdated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new Int32SelectExpression(PurchaseId)
+                ,new Int32SelectExpression(ProductId)
+                ,new DecimalSelectExpression(PurchasePrice)
+                ,new Int32SelectExpression(Quantity)
+                ,new DateTimeSelectExpression(DateCreated)
+                ,new DateTimeSelectExpression(DateUpdated)
+            ));
         }
 		
         protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine purchaseLine)
@@ -4522,7 +4546,11 @@ namespace DbEx.dboDataService
     #region person total purchases view entity expression
     public partial class PersonTotalPurchasesViewEntity : EntityExpression<PersonTotalPurchasesView>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> representing the "dbo.PersonTotalPurchasesView.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -4605,11 +4633,11 @@ namespace DbEx.dboDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,TotalAmount
-                ,TotalCount
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new NullableDoubleSelectExpression(TotalAmount)
+                ,new NullableInt32SelectExpression(TotalCount)
+            ));
         }
 		
         protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView personTotalPurchasesView)
@@ -4927,7 +4955,11 @@ namespace DbEx.secDataService
     #region person entity expression
     public partial class PersonEntity : EntityExpression<Person>
     {
-        #region interface properties
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.IdField"/> representing the "sec.Person.Id" column in the database, 
         /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.secDataService.PersonEntity.IdField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
@@ -5039,12 +5071,12 @@ namespace DbEx.secDataService
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
-            return new SelectExpressionSet(
-                Id
-                ,SSN
-                ,DateCreated
-                ,DateUpdated
-            );
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new StringSelectExpression(SSN)
+                ,new DateTimeOffsetSelectExpression(DateCreated)
+                ,new DateTimeOffsetSelectExpression(DateUpdated)
+            ));
         }
 		
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)

@@ -11,7 +11,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<long>(Int64FieldExpression a) => new SelectExpression<long>(a);
         public static implicit operator Int64ExpressionMediator(Int64FieldExpression a) => new Int64ExpressionMediator(a);
         #endregion
 

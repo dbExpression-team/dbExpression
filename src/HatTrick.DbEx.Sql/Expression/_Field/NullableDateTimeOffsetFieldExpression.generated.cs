@@ -13,7 +13,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<DateTimeOffset?>(NullableDateTimeOffsetFieldExpression a) => new SelectExpression<DateTimeOffset?>(a);
         public static implicit operator NullableDateTimeOffsetExpressionMediator(NullableDateTimeOffsetFieldExpression a) => new NullableDateTimeOffsetExpressionMediator(a);
         #endregion
 

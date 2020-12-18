@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
-            context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
+            context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
             builder.AppendElement(queryExpression.Select, context);
@@ -56,7 +56,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
-            context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
+            context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
             builder.AppendElement(queryExpression.Select, context);
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
             ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
-            context.PushAppendStyle(FieldExpressionAppendStyle.Declaration);
+            context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
             //when
             builder.AppendElement(queryExpression.GroupBy, context);
