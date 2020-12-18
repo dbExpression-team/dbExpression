@@ -17,9 +17,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indent().Write("FROM (").LineBreak()
                 .Indentation++;
 
-            context.PushAppendStyle(EntityExpressionAppendStyle.None);
-            AppendSelectClause(expression, builder, context);
-            context.PopAppendStyles();
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+            try
+            {
+                AppendSelectClause(expression, builder, context);
+            }
+            finally
+            {
+                context.PopEntityAppendStyle();
+            }
 
             //add windowing function
             if (context.Configuration.PrependCommaOnSelectClause)
@@ -31,9 +37,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
             {
                 builder.Appender.Indent();
 
-                context.PushAppendStyle(EntityExpressionAppendStyle.None);
-                builder.AppendElement(orderBys[i], context);
-                context.PopAppendStyles();
+                context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+                try
+                {
+                    builder.AppendElement(orderBys[i], context);
+                }
+                finally
+                {
+                    context.PopEntityAppendStyle();
+                }
 
                 if (i < orderBys.Count - 1)
                     builder.Appender.Write(", ");

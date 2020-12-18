@@ -3,11 +3,15 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class RawExpression :
-        IExpressionElement,
+        ObjectElement,
         IEquatable<RawExpression>
     {
         #region interface
         public string Expression { get; private set; }
+
+        public OrderByExpression Asc => new OrderByExpression(this, OrderExpressionDirection.ASC);
+
+        public OrderByExpression Desc => new OrderByExpression(this, OrderExpressionDirection.DESC);
         #endregion
 
         #region constructors
@@ -15,6 +19,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             Expression = expression;
         }
+        #endregion
+
+        #region as
+        public ObjectElement As(string alias)
+            => new ObjectSelectExpression(this).As(alias);
         #endregion
 
         #region tostring
@@ -28,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
             if (Expression is null && obj.Expression is object) return false;
             if (Expression is object && obj.Expression is null) return false;
-            if (!Expression.Equals(obj.Expression)) return false;
+            if (!StringComparer.OrdinalIgnoreCase.Equals(Expression, obj.Expression)) return false;
 
             return true;
         }

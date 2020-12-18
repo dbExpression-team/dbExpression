@@ -42,7 +42,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region implicit operators
         public static implicit operator EnumExpressionMediator<TEnum>(EnumFieldExpression<TEntity, TEnum> a) => new EnumExpressionMediator<TEnum>(a);
-        public static implicit operator SelectExpression<TEnum>(EnumFieldExpression<TEntity, TEnum> a) => new SelectExpression<TEnum>(a);
         #endregion
 
         #region filter operators

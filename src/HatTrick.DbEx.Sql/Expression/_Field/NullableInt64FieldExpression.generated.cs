@@ -13,7 +13,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<long?>(NullableInt64FieldExpression a) => new SelectExpression<long?>(a);
         public static implicit operator NullableInt64ExpressionMediator(NullableInt64FieldExpression a) => new NullableInt64ExpressionMediator(a);
         #endregion
 

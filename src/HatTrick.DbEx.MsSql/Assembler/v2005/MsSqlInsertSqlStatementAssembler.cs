@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
             builder.Appender.Indent().Write("0,").LineBreak();
 
             //write out all fields for the select from INSERTED table
-            context.PushAppendStyle(EntityExpressionAppendStyle.None);
+            context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
             try
             {
                 for (var i = 0; i < insertSet.Count; i++)
@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.v2005.Assembler
             }
             finally
             {
-                context.PopAppendStyles();
+                context.PopEntityAppendStyle();
             }
 
             builder.Appender.Indentation--.Indent().Write("VALUES (").LineBreak()

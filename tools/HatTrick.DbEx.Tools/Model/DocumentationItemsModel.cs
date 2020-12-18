@@ -238,12 +238,12 @@ namespace HatTrick.DbEx.Tools.Model
                         var field = entity.Items.FirstOrDefault(x => x.FieldExpression.Type.IsEnum && !x.FieldExpression.Type.IsNullable);
                         if (field is object)
                         {
-                            nullableEnumField = field;
-                            return nullableEnumField.Column;
+                            enumField = field;
+                            return enumField.Column;
                         }
                     }
 
-                return enumField?.Column;
+                return null;
             }
         }
 

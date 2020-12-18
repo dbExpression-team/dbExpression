@@ -11,7 +11,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<TimeSpan>(TimeSpanFieldExpression a) => new SelectExpression<TimeSpan>(a);
         public static implicit operator TimeSpanExpressionMediator(TimeSpanFieldExpression a) => new TimeSpanExpressionMediator(a);
         #endregion
 

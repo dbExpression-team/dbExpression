@@ -4,10 +4,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class TimeSpanExpressionMediator
     {
-        #region implicit operators
-        public static implicit operator SelectExpression<TimeSpan>(TimeSpanExpressionMediator a) => new SelectExpression<TimeSpan>(a);
-        #endregion
-
         #region arithmetic operators
         #region data type
         #region byte

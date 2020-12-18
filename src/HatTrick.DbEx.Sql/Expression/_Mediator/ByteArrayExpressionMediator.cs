@@ -38,10 +38,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => base.GetHashCode();
         #endregion
 
-        #region implicit operators
-        public static implicit operator SelectExpression<byte[]>(ByteArrayExpressionMediator a) => new SelectExpression<byte[]>(a);
-        #endregion
-
         #region filter operators
         #region byte[]
         public static FilterExpressionSet operator ==(ByteArrayExpressionMediator a, byte[] b) => new FilterExpressionSet(new FilterExpression(a, new LiteralExpression<byte[]>(b), FilterExpressionOperator.Equal));

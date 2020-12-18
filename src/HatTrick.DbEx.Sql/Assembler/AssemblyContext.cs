@@ -40,10 +40,10 @@ namespace HatTrick.DbEx.Sql.Assembler
             fieldStyles.Push(fieldAppendStyle);
         }
 
-        public void PushAppendStyle(FieldExpressionAppendStyle fieldAppendStyle)
+        public void PushFieldAppendStyle(FieldExpressionAppendStyle fieldAppendStyle)
             => fieldStyles.Push(fieldAppendStyle);
 
-        public void PushAppendStyle(EntityExpressionAppendStyle entityAppendStyle)
+        public void PushEntityAppendStyle(EntityExpressionAppendStyle entityAppendStyle)
             => entityStyles.Push(entityAppendStyle);
 
         public void PushField(FieldExpression field)
@@ -53,6 +53,18 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (entityStyles.Any())
                 entityStyles.Pop();
+            if (fieldStyles.Any())
+                fieldStyles.Pop();
+        }
+
+        public void PopEntityAppendStyle()
+        {
+            if (entityStyles.Any())
+                entityStyles.Pop();
+        }
+
+        public void PopFieldAppendStyle()
+        {
             if (fieldStyles.Any())
                 fieldStyles.Pop();
         }

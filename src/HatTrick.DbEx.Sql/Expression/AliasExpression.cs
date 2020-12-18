@@ -8,8 +8,6 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionTypeProvider,
         IEquatable<AliasExpression>
     {
-        private string alias;
-
         #region interface
         public string TableAlias { get; private set; }
         public string FieldAlias { get; private set; }
@@ -18,12 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public AliasExpression(string tableAlias, string fieldAlias) : this(tableAlias, fieldAlias, null)
-        {
-
-        }
-
-        private AliasExpression(string tableAlias, string fieldAlias, string alias)
+        public AliasExpression(string tableAlias, string fieldAlias)
         {
             if (string.IsNullOrWhiteSpace(tableAlias))
                 throw new ArgumentException($"{nameof(tableAlias)} is required.");
@@ -32,7 +25,6 @@ namespace HatTrick.DbEx.Sql.Expression
 
             TableAlias = tableAlias;
             FieldAlias = fieldAlias;
-            this.alias = alias;
         }
         #endregion
 

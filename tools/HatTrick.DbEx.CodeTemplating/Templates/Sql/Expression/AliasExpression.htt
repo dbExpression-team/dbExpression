@@ -11,7 +11,6 @@ namespace {Namespace}
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<object>(AliasExpression a) => new SelectExpression<object>(a);
         public static implicit operator OrderByExpression(AliasExpression a) => new OrderByExpression(a, OrderExpressionDirection.ASC);
         public static implicit operator GroupByExpression(AliasExpression a) => new GroupByExpression(a);
         public static implicit operator ObjectExpressionMediator(AliasExpression a) => new ObjectExpressionMediator(a);

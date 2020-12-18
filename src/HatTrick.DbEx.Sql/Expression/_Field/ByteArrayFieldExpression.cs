@@ -34,7 +34,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region implicit operators
-        public static implicit operator SelectExpression<byte[]>(ByteArrayFieldExpression a) => new SelectExpression<byte[]>(a);
         public static implicit operator ByteArrayExpressionMediator(ByteArrayFieldExpression a) => new ByteArrayExpressionMediator(a);
         #endregion
 

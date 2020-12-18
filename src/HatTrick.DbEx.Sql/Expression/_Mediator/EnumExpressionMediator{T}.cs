@@ -48,10 +48,6 @@ namespace HatTrick.DbEx.Sql.Expression
             => base.GetHashCode();
         #endregion
 
-        #region implicit operators
-        public static implicit operator SelectExpression<TEnum>(EnumExpressionMediator<TEnum> a) => new SelectExpression<TEnum>(a);
-        #endregion
-
         #region filter operators
         public static FilterExpressionSet operator ==(EnumExpressionMediator<TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.Equal));
         public static FilterExpressionSet operator !=(EnumExpressionMediator<TEnum> a, EnumExpressionMediator<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool>(a, b, FilterExpressionOperator.NotEqual));

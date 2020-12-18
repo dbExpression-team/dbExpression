@@ -4,10 +4,6 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class NullableSingleExpressionMediator
     {
-        #region implicit operators
-        public static implicit operator SelectExpression<float?>(NullableSingleExpressionMediator a) => new SelectExpression<float?>(a);
-        #endregion
-
         #region arithmetic operators 
         #region data type 
         #region byte
