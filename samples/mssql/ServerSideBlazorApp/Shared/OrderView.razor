@@ -4,7 +4,7 @@
     <Card Style="box-shadow:none;">
         <CardBody>
             <CardTitle>Order</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider Type="DividerType.Dotted" />
             <CardText>
                 <dl>
                     <dt>Order Number</dt>
@@ -34,7 +34,7 @@
     <Card Style="box-shadow:none;">
         <CardBody>
             <CardTitle>Billing Address</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider Type="DividerType.Dotted" />
             <CardText>
                 <AddressView Address="@Order.BillingAddress" />
             </CardText>
@@ -53,7 +53,7 @@
 <Card Style="box-shadow:none;">
     <CardBody>
         <CardTitle>Items</CardTitle>
-        <Divider Type="DividerType.Dotted"></Divider>        
+        <Divider Type="DividerType.Dotted" />
         <CardText>
             <Table Striped="true">
                 <TableHeader>
@@ -68,15 +68,15 @@
                 <TableBody>
                     @foreach (var line in Order.Lines)
                     {
-                    <Blazorise.TableRow>
-                        <TableRowCell>@line.Name</TableRowCell>
-                        <TableRowCell>@line.Category</TableRowCell>
-                        <TableRowCell TextAlignment="TextAlignment.Right">@line.Quantity</TableRowCell>
-                        <TableRowCell TextAlignment="TextAlignment.Right">@line.PurchasePrice.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
-                        <TableRowCell TextAlignment="TextAlignment.Right">@line.Subtotal.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
-                    </Blazorise.TableRow>
+                        <Blazorise.TableRow>
+                            <TableRowCell>@line.Name</TableRowCell>
+                            <TableRowCell>@line.Category</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.Right">@line.Quantity</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.Right">@line.PurchasePrice.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.Right">@line.Subtotal.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                        </Blazorise.TableRow>
                     }
-                    <Blazorise.TableRow  Casing="CharacterCasing.Upper">
+                    <Blazorise.TableRow Casing="CharacterCasing.Upper">
                         <TableRowCell ColumnSpan="4" TextAlignment="TextAlignment.Right" Style="font-weight:900;">Total:</TableRowCell>
                         <TableRowCell TextAlignment="TextAlignment.Right" Style="font-weight:900;">@Order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
                     </Blazorise.TableRow>

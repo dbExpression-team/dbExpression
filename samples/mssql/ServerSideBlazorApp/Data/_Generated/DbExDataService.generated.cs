@@ -2257,8 +2257,8 @@ namespace ServerSideBlazorApp.dboDataService
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
-                ,PersonId
+                ,new Int32SelectExpression(CustomerId)
+                ,new Int32SelectExpression(AddressId)
                 ,new DateTimeSelectExpression(DateCreated)
             ));
         }
@@ -3687,9 +3687,8 @@ namespace ServerSideBlazorApp.dboDataService
         {
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 new Int32SelectExpression(Id)
-                ,new Int32SelectExpression(PersonId)
+                ,new Int32SelectExpression(CustomerId)
                 ,new StringSelectExpression(OrderNumber)
-                ,PersonId
                 ,new Int32SelectExpression(TotalPurchaseQuantity)
                 ,new DoubleSelectExpression(TotalPurchaseAmount)
                 ,new DateTimeSelectExpression(PurchaseDate)

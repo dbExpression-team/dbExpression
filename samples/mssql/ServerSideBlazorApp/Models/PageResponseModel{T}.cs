@@ -3,22 +3,24 @@ using System.Linq;
 
 namespace ServerSideBlazorApp.Models
 {
-    public class PageResponseModel<T> : PageModel
+    public class Page<T>
     {
-        public IEnumerable<T> Page { get; set; } = new List<T>();
-        public int TotalCount { get; set; }
+        public PagingParameters PagingParameters { get; set; }
+        public IEnumerable<T> Data { get; set; } = new List<T>();
+        public int? TotalCount { get; set; }
 
-        public PageResponseModel()
+        public Page()
         { 
         }
 
-        public PageResponseModel(int offset, int limit, string searchPhrase, IEnumerable<T> page, int totalCount) : base(offset, limit, searchPhrase)
+        public Page(PagingParameters parameters, IEnumerable<T> page, int totalCount)
         {
-            Page = page;
+            PagingParameters = parameters;
+            Data = page;
             TotalCount = totalCount;
         }
 
-        public static PageResponseModel<T> CreateDefault()
-            => new PageResponseModel<T>(0, 10, null, Enumerable.Empty<T>(), 0);
+        public static Page<T> CreateDefault()
+            => new Page<T>(new PagingParameters(0, 10), Enumerable.Empty<T>(), 0);
     }
 }

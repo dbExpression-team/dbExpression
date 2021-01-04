@@ -7,7 +7,7 @@
 <Divider></Divider>
 <Card>
     <CardBody>
-        <DataGrid TItem="ProductSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageRequest.Limit" CurrentPage="@((PageRequest.Offset / PageRequest.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+        <DataGrid TItem="ProductSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PagingParameters.Limit" CurrentPage="@((PagingParameters.Offset / PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
             <LoadingTemplate>Loading...</LoadingTemplate>
             <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
             <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>

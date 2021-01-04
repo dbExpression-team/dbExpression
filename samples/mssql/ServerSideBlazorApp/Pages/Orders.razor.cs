@@ -11,11 +11,13 @@ namespace ServerSideBlazorApp.Pages
     public partial class Orders
     {
         #region internals
-        private bool IsFirstLoad { get; set; } = true;
-        private PageRequestModel PageRequest { get; set; } = PageRequestModel.CreateDefault();
-        private PageResponseModel<OrderSummaryModel> CurrentPage { get; set; } = PageResponseModel<OrderSummaryModel>.CreateDefault();
-        private IEnumerable<DataGridColumnInfo> PreviousSorting { get; set; } = Enumerable.Empty<DataGridColumnInfo>();
-        private IList<int> AllowedPageSizes { get; } = new int[] { 5, 10, 25, 50, 100 };
+        private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(OrderSummaryModel.PurchaseDate), SortDirection.Descending);
+        private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
+
+        private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
+        private Page<OrderSummaryModel> CurrentPage { get; set; } = Page<OrderSummaryModel>.CreateDefault();
+        private PagingParameters PreviousPagingParameters { get; set; }
+
         #endregion
 
         #region methods
@@ -23,10 +25,11 @@ namespace ServerSideBlazorApp.Pages
         {
             try
             {
-                CurrentPage = await OrderService.GetOrdersPageAsync(PageRequest);
+                CurrentPage = await OrderService.GetOrdersPageAsync(PagingParameters);
             }
             finally
             {
+                PreviousPagingParameters = PagingParameters;
                 await ProgressBar.Hide();
             }
 
@@ -35,30 +38,21 @@ namespace ServerSideBlazorApp.Pages
 
         private async Task OnPage(DataGridReadDataEventArgs<OrderSummaryModel> args)
         {
-            if (IsFirstLoad)
-            {
-                IsFirstLoad = false;
-                await FetchCurrentPageAsync(); //use the defaults or parameters set via query string
+            if (!args.Columns.Any())
                 return;
-            }
 
-            PageRequest = args.BuildPageRequestModel(PreviousSorting, (args.Columns.Single(c => c.Field == nameof(OrderSummaryModel.PurchaseDate)), SortDirection.Descending));
-
-            //store this round trip of sorting
-            PreviousSorting = args.Columns.Where(c => c.Direction != SortDirection.None);
+            PagingParameters = args.CreatePageRequestModel(PreviousPagingParameters ?? PagingParameters, DefaultSort);
 
             await FetchCurrentPageAsync();
         }
 
         private string BuildDetailUrl(int id)
-            => $"/orders/{id}?{PageRequest.ToQueryStringParameters()}";
+            => $"/orders/{id}?{NavigationManager.ToReturnUrl("orders", PagingParameters)}";
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.GetPagingFromQueryStringParameters(out PageRequestModel model))
-            {
-                PageRequest = model;
-            }
+            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters page))
+                PagingParameters = page;
             await base.SetParametersAsync(parameters);
         }
         #endregion

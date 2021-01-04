@@ -7,7 +7,7 @@
 <Divider></Divider>
 <Card>
     <CardBody>
-        <DataGrid TItem="OrderSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageRequest.Limit" CurrentPage="@((PageRequest.Offset / PageRequest.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+        <DataGrid TItem="OrderSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PagingParameters.Limit" CurrentPage="@((PagingParameters.Offset / PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
             <LoadingTemplate>Loading...</LoadingTemplate>
             <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
             <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>
@@ -29,7 +29,7 @@
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PaymentMethod)" Caption="Payment Method" Sortable="true" Width="15%" />
-                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="true" Width="15%">
+                <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
                     <DisplayTemplate>
                         @($"{(context as OrderSummaryModel)?.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)}")
                     </DisplayTemplate>

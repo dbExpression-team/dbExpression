@@ -8,9 +8,10 @@ namespace ServerSideBlazorApp.Pages
     public partial class Customer
     {
         #region internals
-        private PageRequestModel ReturnToListPageQueryStringParameters { get; set; }
+        private string ReturnUrl { get; set; }
         private CustomerDetailModel Model { get; set; }
         private string SelectedTab { get; set; } = Tabs.Details.Id;
+        private bool ShowOrdersView => SelectedTab == Tabs.Orders.Id;
         #endregion
 
         #region interface
@@ -22,7 +23,7 @@ namespace ServerSideBlazorApp.Pages
 
         #region methods
         private AddressModel ResolveAddress(AddressType addressType)
-            =>  addressType switch
+            => addressType switch
             {
                 AddressType.Mailing => Model.MailingAddress,
                 AddressType.Shipping => Model.ShippingAddress,
@@ -35,16 +36,16 @@ namespace ServerSideBlazorApp.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Model = await CustomerService.GetCustomerAsync(int.Parse(Id));
+            Model = await CustomerService.GetCustomerDetailAsync(int.Parse(Id));
         }
 
-        private async Task<PageResponseModel<OrderSummaryModel>> GetOrderSummaryPageAsync(PageRequestModel model)
+        private async Task<Page<OrderSummaryModel>> GetOrderSummaryPageAsync(PagingParameters pagingParameters)
         {
             await ProgressBar.Show();
 
             try
             {
-                return await OrderService.GetCustomerOrdersPageAsync(Model.Id, model);
+                return await OrderService.GetCustomerOrdersPageAsync(Model.Id, pagingParameters);
             }
             finally
             {
@@ -66,21 +67,9 @@ namespace ServerSideBlazorApp.Pages
             }
         }
 
-        private string BuildCustomerGridUrl()
-        {
-            return $"/customers?{ReturnToListPageQueryStringParameters.ToQueryStringParameters()}";
-        }
-
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.GetPagingFromQueryStringParameters(out PageRequestModel model))
-                ReturnToListPageQueryStringParameters = model;
-            //if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageIndex), out var pageIndex))
-            //    PageIndex = pageIndex;
-            //if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageSize), out var pageSize))
-            //    PageSize = pageSize;
-            //if (NavigationManager.TryGetQueryStringParameter<string>(nameof(SearchPhrase), out var searchPhrase))
-            //    SearchPhrase = searchPhrase;
+            ReturnUrl = NavigationManager.GetReturnUrl();
             await base.SetParametersAsync(parameters);
         }
 

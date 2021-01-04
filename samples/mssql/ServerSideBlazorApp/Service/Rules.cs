@@ -1,6 +1,6 @@
 ﻿namespace ServerSideBlazorApp.Service
 {
-    public static class Constants
+    public static class Rules
     {
         public static int LifetimeValueAmountToBeAVIPCustomer = 50;
     }

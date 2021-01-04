@@ -507,6 +507,24 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 //when & then
                 execute.Should().Throw<DbExpressionException>();
             }
+
+            [Theory]
+            [MsSqlVersions.AllVersions]
+            public void Can_select_product_where_image_is_not_null(int version)
+            {
+                //given
+                AppendImagesToProductsInDatabase();
+                ConfigureForMsSqlVersion(version);
+
+                //when
+                var productId = db.SelectOne(dbo.Product.Id)
+                    .From(dbo.Product)
+                    .Where(dbo.Product.Image != DBNull.Value)
+                    .Execute();
+
+                //then
+                productId.Should().BeGreaterThan(0);
+            }
             #endregion
         }
     }

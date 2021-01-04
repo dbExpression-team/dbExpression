@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace ServerSideBlazorApp.Pages
 {
@@ -17,30 +18,63 @@ namespace ServerSideBlazorApp.Pages
         {
             if (firstRender)
             {
-                Top5VIPCustomers = await CustomerService.GetVIPCustomers();
-                RecentOrders = (await OrderService.GetOrdersPageAsync(new PageRequestModel(0, 5))).Page;
-                if (Top5VIPCustomers.Any() || RecentOrders.Any())
-                    StateHasChanged();
+                try
+                {
+                    Top5VIPCustomers = await CustomerService.GetVIPCustomersPageAsync();
+                    RecentOrders = (await OrderService.GetOrdersPageAsync(new PagingParameters(0, 5, new Sort(nameof(OrderSummaryModel.PurchaseDate), OrderExpressionDirection.DESC)))).Data;
+                    if (Top5VIPCustomers.Any() || RecentOrders.Any())
+                        StateHasChanged();
+                }
+                catch (Exception)
+                {
+                    NavigationManager.NavigateTo($"/startup", true);
+                }
             }
         }
 
-
         private async Task<IEnumerable<SingleMetricDatasetModel>> GetDailySales()
-            => (await OrderService.GetRecentSalesByDay()).Select(x =>
-                new SingleMetricDatasetModel<double>
-                {
-                    Label = new DateTime(x.Year, x.Month, x.Day).ToString("d", CultureInfo.InvariantCulture),
-                    Value = (double)x.TotalSales
-                }
-            );
+        {
+            try
+            {
+                var orders = await OrderService.GetRecentSalesByDay();
+
+                return orders.Select(x =>
+                    new SingleMetricDatasetModel<double>
+                    {
+                        Label = new DateTime(x.Year, x.Month, x.Day).ToString("d", CultureInfo.InvariantCulture),
+                        Value = (double)x.TotalSales
+                    }
+                );           
+            }
+            catch (Exception)
+            {
+                NavigationManager.NavigateTo($"/startup", true);
+            }
+            return null;
+        }
 
         private async Task<IEnumerable<SingleMetricDatasetModel>> GetSalesByProductCategory()
-            => (await OrderService.GetSalesByProductCategory()).Select(x =>
-                new SingleMetricDatasetModel<double>
-                {
-                    Label = (ProductCategoryType?)x.ProductCategoryType is null ? "Other" : x.ProductCategoryType.ToString(),
-                    Value = (double)x.TotalSales
-                }
-            );
+        {
+            try
+            {
+                var sales = await OrderService.GetSalesByProductCategory();
+
+                if (!sales.Any())
+                    throw new ApplicationException();
+            
+                return sales.Select(x =>
+                    new SingleMetricDatasetModel<double>
+                    {
+                        Label = (ProductCategoryType?)x.ProductCategoryType is null ? "Other" : x.ProductCategoryType.ToString(),
+                        Value = (double)x.TotalSales
+                    }
+                );
+            }
+            catch (Exception)
+            {
+                NavigationManager.NavigateTo($"/startup", true);
+            }
+            return null;
+        }
     }
 }

@@ -3,9 +3,14 @@
 @inject OrderService OrderService
 @inject NavigationManager NavigationManager
 
+<Breadcrumb>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="@ReturnUrl"><i class="fas fa-chevron-left"></i>&nbsp;Back</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
+
 @if (Model is object)
 {
-    <MatButton Link="@BuildOrderGridUrl()">&lt; Back</MatButton>
     <h3>@Model.OrderNumber</h3>
     <Divider></Divider>
     <Card>

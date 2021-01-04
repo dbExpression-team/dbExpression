@@ -10,18 +10,25 @@
         <Fields>
             <Field ColumnSize="ColumnSize.Is4" Horizontal="true" Padding="Padding.Is5.FromLeft">
                 <FieldBody>
-                    <TextEdit Placeholder="Search by name..." Text="@PageRequest.SearchPhrase" TextChanged="OnSearch" />
+                    <Addons>
+                        <Addon>
+                            <TextEdit Placeholder="Search by name..." DelayTextOnKeyPress="true" DelayTextOnKeyPressInterval="200" Text="@SearchPhrase" TextChanged="OnSearch" />
+                        </Addon>
+                        <Addon AddonType="AddonType.End" Display="@(string.IsNullOrEmpty(SearchPhrase) ? Display.None : Display.Always)" @onclick="@(() => OnSearch(null))">
+                            <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                        </Addon>
+                    </Addons>
                 </FieldBody>
             </Field>
         </Fields>
-        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageRequest.Limit" CurrentPage="@((PageRequest.Offset / PageRequest.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PagingParameters.Limit" CurrentPage="@((PagingParameters.Offset / PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
             <LoadingTemplate>Loading...</LoadingTemplate>
             <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
             <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>
             <NextPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.NextPage" /></NextPageButtonTemplate>
             <LastPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.LastPage" /></LastPageButtonTemplate>
             <DataGridColumns>
-                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.Name)" Caption="Name" Sortable="true" Width="70%">
+                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.Name)" Caption="Name" Sortable="true" Direction="SortDirection.Ascending" Width="70%">
                     <DisplayTemplate>
                         @if ((context as CustomerSummaryModel).IsVIP)
                         {

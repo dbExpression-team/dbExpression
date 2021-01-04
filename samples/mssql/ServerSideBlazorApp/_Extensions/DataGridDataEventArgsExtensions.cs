@@ -1,6 +1,7 @@
 ﻿using Blazorise;
 using Blazorise.DataGrid;
 using ServerSideBlazorApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,37 +9,50 @@ namespace ServerSideBlazorApp
 {
     public static class DataGridDataEventArgsExtensions
     {
-        public static PageRequestModel BuildPageRequestModel<T>(this DataGridReadDataEventArgs<T> args, IEnumerable<DataGridColumnInfo> currentSorting, (DataGridColumnInfo column, SortDirection direction) defaultSort)
-        { 
+        public static PagingParameters CreatePageRequestModel<T>(this DataGridReadDataEventArgs<T> args, PagingParameters previous, Sort defaultSort)
+        {
             //args.Columns is assumed to be every column in the grid
-            var model = new PageRequestModel
+            var model = new PagingParameters
             {
                 Offset = (args.Page - 1) * args.PageSize, //Blazorise paging is 1 based
                 Limit = args.PageSize
             };
-
-            var sorting = currentSorting?.ToList() ?? new List<DataGridColumnInfo>();
-            var updated = args.Columns.ToList();
-            var @new = new List<DataGridColumnInfo>(updated.Count);
-
-            foreach (var column in updated.Where(c => c.Direction != SortDirection.None))
+            if (args.PageSize != previous.Limit) //page size is changing
             {
-                var match = sorting?.SingleOrDefault(s => s.Field == column.Field);
-                if (match is object)
-                {
-                    @new.Insert(column.Direction != match.Direction ? 0 : sorting.IndexOf(match), column);
-                }
-                else
-                {
-                    @new.Insert(0, column);
-                }
+                model.Offset = args.PageSize;
                 model.Offset = 0;
             }
 
-            model.Sorting = sorting.Select(s => new Sort(s.Field, s.Direction == SortDirection.Ascending));
+            var requestedSorting = args.Columns.Where(c => c.Direction != SortDirection.None).Select(r => new Sort(r.Field, r.Direction.ConvertSortDirection().Value)).ToList();
+            var previousSorting = previous.Sorting?.Where(s => s != defaultSort).ToList() ?? new List<Sort>();
+            var newSorting = new Sort[Math.Max(requestedSorting.Count, previousSorting.Count)];
+            var newlyRequestedSorting = new List<Sort>();
 
-            if (defaultSort != default && model.Sorting.SingleOrDefault(c => c.Field == defaultSort.column.Field) == null)
-                model.Sorting = model.Sorting.Concat(new Sort[1] { new Sort(defaultSort.column.Field, defaultSort.direction == SortDirection.Ascending) });
+            foreach (var requestedSort in requestedSorting)
+            {
+                var match = previousSorting.SingleOrDefault(s => s.Field == requestedSort.Field);
+                if (match is object)
+                {
+                    newSorting[previousSorting.IndexOf(match)] = requestedSort;
+                }
+                else
+                {
+                    newlyRequestedSorting.Add(requestedSort);
+                }
+            }
+            if (newlyRequestedSorting.Any())
+            {
+                model.Sorting = newlyRequestedSorting.Concat(newSorting.Where(s => s is object));
+                model.Offset = 0;  //reset page offset so "first" page will be requested with new sort
+            }
+            else
+            {
+                model.Sorting = newSorting.Where(s => s is object);
+            }
+            if (defaultSort is object && !model.Sorting.Select(s => s.Field).Contains(defaultSort.Field))
+            {
+                model.Sorting = model.Sorting.Append(defaultSort);
+            }
 
             return model;
         }

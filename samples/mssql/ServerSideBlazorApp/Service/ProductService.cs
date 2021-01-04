@@ -4,13 +4,33 @@ using ServerSideBlazorApp.DataService;
 using ServerSideBlazorApp.dboDataService;
 using ServerSideBlazorApp.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using HatTrick.DbEx.Sql.Expression;
 
 namespace ServerSideBlazorApp.Service
 {
+    /// <summary>
+    /// A service that provides methods to retrieve Product information from the database.
+    /// </summary>
     public class ProductService
     {
-        public async Task<PageResponseModel<ProductSummaryModel>> GetSummaryPageAsync(PageModel model)
+        //variable to hold dbExpression order by elements.  Stored as a variable as it's used more than once and to demonstrate that order by elements can be treated like most any other .NET object
+        private static readonly IDictionary<string, AnyElement> ProductSummarySortingFields = new Dictionary<string, AnyElement>
+        {
+            { nameof(ProductSummaryModel.Category), dbo.Product.ProductCategoryType },
+            { nameof(ProductSummaryModel.Name), dbo.Product.Name },
+            { nameof(ProductSummaryModel.ListPrice), dbo.Product.ListPrice },
+            { nameof(ProductSummaryModel.Price), dbo.Product.Price },
+            { nameof(ProductSummaryModel.QuantityOnHand), dbo.Product.Quantity }
+        };
+
+        /// <summary>
+        /// Search for orders, and retrieve a paged list using the supplied paging parameters.
+        /// </summary>
+        /// <param name="pagingParameters">A set of parameters specifying the offset, limit, and sorting criteria used in the SQL statement.</param>
+        public async Task<Page<ProductSummaryModel>> GetSummaryPageAsync(PagingParameters pagingParameters)
         { 
             var products = await 
                 db.SelectMany(
@@ -23,9 +43,9 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(dbo.Product)
                 .OrderBy(
-                    dbo.Product.Name
+                    pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? ProductSummarySortingFields[s.Field].Asc : ProductSummarySortingFields[s.Field].Desc)
                 )
-                .Skip(model.Offset).Limit(model.Limit)
+                .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(row =>
                     new ProductSummaryModel
                     {
@@ -45,16 +65,17 @@ namespace ServerSideBlazorApp.Service
                 .From(dbo.Product)
                 .ExecuteAsync();
 
-            return new PageResponseModel<ProductSummaryModel>(
-                model.Offset,
-                model.Limit,
-                model.SearchPhrase,
+            return new Page<ProductSummaryModel>(
+                pagingParameters,
                 products,
                 countOfProducts
             );
         }
 
-        public async Task<ProductDetailModel> GetProductAsync(int productId)
+        /// <summary>
+        /// Fetch a specific product by id.
+        /// </summary>
+        public async Task<ProductDetailModel> GetProductDetailAsync(int productId)
         {
             return await
                 db.SelectOne(
@@ -94,9 +115,13 @@ namespace ServerSideBlazorApp.Service
                 );
         }
 
+        /// <summary>
+        /// Update the price of a specific product by a specified percentage.
+        /// </summary>
         public async Task UpdatePrice(int productId, double percentage)
         {
             await db.Update(
+                //this is not good sound business logic, but for demonstration to show how dbExpression elements can be intermixed with things like ternarys.
                 dbo.Product.Price.Set(dbo.Product.Price * (1 + (percentage > 1 ? percentage / 100 : percentage)))
             )
             .From(dbo.Product)
