@@ -7,37 +7,36 @@
 <Divider></Divider>
 <Card>
     <CardBody>
-        <GridLoading RecordCount="@(CurrentPage?.TotalCount)"></GridLoading>
-        @if (CurrentPage != null && CurrentPage.Page.Any())
-        {
-            <DataGrid TItem="ProductSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageSize" CurrentPage="@(PageIndex + 1)">
-                <DataGridColumns>
-                    <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Name)" Caption="Name" Sortable="false" Width="30%">
-                        <DisplayTemplate>
-                            <Blazorise.Link To="@BuildDetailUrl((context as ProductSummaryModel).Id)">@((context as ProductSummaryModel).Name)</Blazorise.Link>
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Category)" Caption="Category" Sortable="false" Width="25%"></DataGridColumn>
-                    <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.ListPrice)" Caption="List" Sortable="false" Width="15%" TextAlignment="TextAlignment.Right">
-                        <DisplayTemplate>
-                            @($"{(context as ProductSummaryModel)?.ListPrice.ToString("c", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Price)" Caption="Price" Sortable="false" Width="15%" TextAlignment="TextAlignment.Right">
-                        <DisplayTemplate>
-                            @($"{(context as ProductSummaryModel)?.Price.ToString("c", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.QuantityOnHand)" Caption="Quantity (on-hand)" Sortable="false" Width="15%" TextAlignment="TextAlignment.Right">
-                        <DisplayTemplate>
-                            @($"{(context as ProductSummaryModel)?.QuantityOnHand.ToString("#,##0", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                </DataGridColumns>
-            </DataGrid>
-
-            <DataGridPager CurrentPage="@PageIndex" PageSize="@PageSize" TotalItems="@CurrentPage.TotalCount" OnPageChange="OnPage" OnPageSizeChange="OnPageSizeChanged"></DataGridPager>
-        }
+        <DataGrid TItem="ProductSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PagingParameters.Limit" CurrentPage="@((PagingParameters.Offset / PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+            <LoadingTemplate>Loading...</LoadingTemplate>
+            <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
+            <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>
+            <NextPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.NextPage" /></NextPageButtonTemplate>
+            <LastPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.LastPage" /></LastPageButtonTemplate>
+            <DataGridColumns>
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Name)" Caption="Name" Sortable="true" Width="30%">
+                    <DisplayTemplate>
+                        <Blazorise.Link To="@BuildDetailUrl((context as ProductSummaryModel).Id)">@((context as ProductSummaryModel).Name)</Blazorise.Link>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Category)" Caption="Category" Sortable="true" Width="25%"></DataGridColumn>
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.ListPrice)" Caption="List" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                    <DisplayTemplate>
+                        @($"{(context as ProductSummaryModel)?.ListPrice.ToString("c", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Price)" Caption="Price" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                    <DisplayTemplate>
+                        @($"{(context as ProductSummaryModel)?.Price.ToString("c", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.QuantityOnHand)" Caption="Quantity (on-hand)" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                    <DisplayTemplate>
+                        @($"{(context as ProductSummaryModel)?.QuantityOnHand.ToString("#,##0", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
     </CardBody>
 </Card>
 

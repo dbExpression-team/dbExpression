@@ -10,35 +10,41 @@
         <Fields>
             <Field ColumnSize="ColumnSize.Is4" Horizontal="true" Padding="Padding.Is5.FromLeft">
                 <FieldBody>
-                    <TextEdit Placeholder="Search by name..." Text="@SearchPhrase" TextChanged="OnSearch" />
+                    <Addons>
+                        <Addon>
+                            <TextEdit Placeholder="Search by name..." DelayTextOnKeyPress="true" DelayTextOnKeyPressInterval="200" Text="@SearchPhrase" TextChanged="OnSearch" />
+                        </Addon>
+                        <Addon AddonType="AddonType.End" Display="@(string.IsNullOrEmpty(SearchPhrase) ? Display.None : Display.Always)" @onclick="@(() => OnSearch(null))">
+                            <span aria-hidden="true"><i class="fas fa-times"></i></span>
+                        </Addon>
+                    </Addons>
                 </FieldBody>
             </Field>
         </Fields>
-        <GridLoading RecordCount="@(CurrentPage?.TotalCount)"></GridLoading>
-        @if (CurrentPage != null && CurrentPage.Page.Any())
-        {
-            <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Page" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PageSize" CurrentPage="@(PageIndex + 1)" Sortable="true">
-                <DataGridColumns>
-                    <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.Name)" Caption="Name" Sortable="true" Width="70%">
-                        <DisplayTemplate>
-                            @if ((context as CustomerSummaryModel).IsVIP)
-                            { 
-                                <i class='fas fa-crown pr-2'></i>
-                            }
-                            <Blazorise.Link To="@BuildDetailUrl((context as CustomerSummaryModel).Id)">@((context as CustomerSummaryModel).Name)</Blazorise.Link>
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.LifetimeValue)" Caption="Lifetime Value" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
-                        <DisplayTemplate>
-                            @($"{(context as CustomerSummaryModel)?.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)}")
-                        </DisplayTemplate>
-                    </DataGridColumn>
-                    <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.CurrentAge)" Caption="Current Age" Sortable="true" />
-                </DataGridColumns>
-            </DataGrid>
-
-            <DataGridPager CurrentPage="@PageIndex" PageSize="@PageSize" TotalItems="@CurrentPage.TotalCount" OnPageChange="OnPage" OnPageSizeChange="OnPageSizeChanged"></DataGridPager>
-        }
+        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PagingParameters.Limit" CurrentPage="@((PagingParameters.Offset / PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+            <LoadingTemplate>Loading...</LoadingTemplate>
+            <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
+            <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>
+            <NextPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.NextPage" /></NextPageButtonTemplate>
+            <LastPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.LastPage" /></LastPageButtonTemplate>
+            <DataGridColumns>
+                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.Name)" Caption="Name" Sortable="true" Direction="SortDirection.Ascending" Width="70%">
+                    <DisplayTemplate>
+                        @if ((context as CustomerSummaryModel).IsVIP)
+                        {
+                            <i class='fas fa-crown pr-2'></i>
+                        }
+                        <Blazorise.Link To="@BuildDetailUrl((context as CustomerSummaryModel).Id)">@((context as CustomerSummaryModel).Name)</Blazorise.Link>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.LifetimeValue)" Caption="Lifetime Value" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                    <DisplayTemplate>
+                        @($"{(context as CustomerSummaryModel)?.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)}")
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.CurrentAge)" Caption="Current Age" Sortable="true" />
+            </DataGridColumns>
+        </DataGrid>
     </CardBody>
 </Card>
 @code {

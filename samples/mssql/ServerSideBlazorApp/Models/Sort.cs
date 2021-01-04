@@ -1,18 +1,20 @@
-﻿namespace ServerSideBlazorApp.Models
+﻿using HatTrick.DbEx.Sql.Expression;
+
+namespace ServerSideBlazorApp.Models
 {
     public class Sort
-    { 
+    {
         public string Field { get; set; }
-        public bool Ascending { get; set; }
+        public OrderExpressionDirection Direction { get; set; }
 
         public Sort()
         {
         }
 
-        public Sort(string field, bool ascending)
+        public Sort(string field, OrderExpressionDirection direction)
         {
             Field = field;
-            Ascending = ascending;
+            Direction = direction;
         }
     }
 }

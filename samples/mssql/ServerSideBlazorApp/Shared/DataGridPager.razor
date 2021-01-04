@@ -34,7 +34,7 @@
         <Field Horizontal="true" Margin="Margin.Is0.FromBottom">
             <FieldLabel Padding="Padding.Is3.FromRight">Items per page:</FieldLabel>
             <FieldBody>
-                <SelectList TItem="int" Data="@AllowedPageSizes" TextField="@(p=>p.ToString())" ValueField="@(p=>p)" SelectedValue="@PageSize" SelectedValueChanged="@(p => ChangePageSize(int.Parse((string)p)))" />
+                @*<SelectList TItem="int" Data="@AllowedPageSizes" TextField="@(p=>p.ToString())" ValueField="@(p=>p)" SelectedValue="@PageSize" SelectedValueChanged="@(p => ChangePageSize(int.Parse((string)p)))" />*@
             </FieldBody>
         </Field>
     </PaginationItem>

@@ -34,6 +34,13 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
 
+        public SelectValue<ExpandoObject> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
+        {
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(fields.Select(field => field as SelectExpression ?? new SelectExpression(field)));
+            return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
+        }
+
         public SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
@@ -167,6 +174,13 @@ namespace HatTrick.DbEx.MsSql.Builder
             };
             expressions.AddRange(fields.Select(field => field as SelectExpression ?? new SelectExpression(field)));
             expression.Select = new SelectExpressionSet(expressions);
+            return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
+        }
+
+        public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
+        {
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(fields.Select(field => field as SelectExpression ?? new SelectExpression(field)));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
 

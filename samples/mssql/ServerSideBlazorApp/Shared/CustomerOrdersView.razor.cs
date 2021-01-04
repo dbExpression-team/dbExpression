@@ -1,44 +1,40 @@
 ﻿using Blazorise;
 using Blazorise.DataGrid;
-using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using ServerSideBlazorApp.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServerSideBlazorApp.Shared
 {
     public partial class CustomerOrdersView
     {
-        private int PageIndex { get; set; } = 0;
-        private int PageSize { get; set; } = 5;
-        private PageResponseModel<OrderSummaryModel> CurrentPage { get; set; } = new PageResponseModel<OrderSummaryModel>();
+        private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(OrderSummaryModel.PurchaseDate), SortDirection.Descending);
+
+        private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(25, DefaultSort);
+        private Page<OrderSummaryModel> CurrentPage { get; set; } = Page<OrderSummaryModel>.CreateDefault();
+        private PagingParameters PreviousPagingParameters { get; set; }
         private OrderDetailModel SelectedOrder { get; set; }
 
-        [Parameter] public Func<PageRequestModel, Task<PageResponseModel<OrderSummaryModel>>> OnGetOrderPageAsync { get; set; }
+        [Parameter] public Func<PagingParameters, Task<Page<OrderSummaryModel>>> OnGetOrderPageAsync { get; set; }
         [Parameter] public Func<int, Task<OrderDetailModel>> OnGetOrderDetailAsync { get; set; }
 
-        protected override async Task OnInitializedAsync()
-            => await SetCurrentPageAsync();
-
-        private async Task SetCurrentPageAsync()
+        private async Task FetchCurrentPageAsync()
         {
-            CurrentPage = await OnGetOrderPageAsync(new PageRequestModel { Limit = PageSize, Offset = PageIndex * PageSize });
-        }
-
-        private async Task OnPage(MatPaginatorPageEvent e)
-        {
-            PageSize = e.PageSize;
-            PageIndex = e.PageIndex;
-            await SetCurrentPageAsync();
+            CurrentPage = await OnGetOrderPageAsync(PagingParameters);
+            PreviousPagingParameters = PagingParameters;
             StateHasChanged();
         }
 
-        private async Task OnPage(int index)
+        private async Task OnPage(DataGridReadDataEventArgs<OrderSummaryModel> args)
         {
-            PageIndex = index;
-            await SetCurrentPageAsync();
-            StateHasChanged();
+            if (!args.Columns.Any())
+                return;
+
+            PagingParameters = args.CreatePageRequestModel(PreviousPagingParameters ?? PagingParameters, DefaultSort);
+
+            await FetchCurrentPageAsync();
         }
 
         private async Task SetSelectedOrder(OrderSummaryModel order)

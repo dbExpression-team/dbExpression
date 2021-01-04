@@ -1,7 +1,8 @@
-﻿using Blazorise.DataGrid;
-using MatBlazor;
+﻿using Blazorise;
+using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
 using ServerSideBlazorApp.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,68 +11,47 @@ namespace ServerSideBlazorApp.Pages
     public partial class Products
     {
         #region internals
-        private bool ShowLoading { get; set; } = true;
-        private PageResponseModel<ProductSummaryModel> CurrentPage { get; set; }
-        #endregion
+        private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(ProductSummaryModel.Name), SortDirection.Ascending);
+        private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
 
-        #region interface
-        [Parameter] public int PageIndex { get; set; } = 0;
-        [Parameter] public int PageSize { get; set; } = 10;
+        private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
+        private Page<ProductSummaryModel> CurrentPage { get; set; } = Page<ProductSummaryModel>.CreateDefault();
+        private PagingParameters PreviousPagingParameters { get; set; }
         #endregion
 
         #region methods
-        private async Task SetCurrentPageAsync(int pageIndex, int pageSize)
+        private async Task FetchCurrentPageAsync()
         {
-            if (PageSize == pageSize && PageIndex == pageIndex && CurrentPage is object)
-                return;
-
-            PageSize = pageSize;
-            PageIndex = pageIndex;
-
-            await ProgressBar.Show();
-
-            var model = new PageRequestModel { Limit = pageSize, Offset = pageIndex * pageSize };
-
             try
             {
-                CurrentPage = await service.GetSummaryPageAsync(model);
+                CurrentPage = await service.GetSummaryPageAsync(PagingParameters);
             }
             finally
             {
+                PreviousPagingParameters = PagingParameters;
                 await ProgressBar.Hide();
             }
 
-
             StateHasChanged();
         }
 
-        private async Task OnPage((int PageIndex, int PageSize) paging)
+        private async Task OnPage(DataGridReadDataEventArgs<ProductSummaryModel> args)
         {
-            await SetCurrentPageAsync(paging.PageIndex, paging.PageSize);
-            StateHasChanged();
+            if (!args.Columns.Any())
+                return;
+
+            PagingParameters = args.CreatePageRequestModel(PreviousPagingParameters ?? PagingParameters, DefaultSort);
+
+            await FetchCurrentPageAsync();
         }
-
-        private async Task OnPage(DataGridReadDataEventArgs<ProductSummaryModel> e)
-            => await OnPage(e.Page - 1, e.PageSize);
-
-        private async Task OnPage(int pageIndex, int pageSize)
-            => await SetCurrentPageAsync(pageIndex, pageSize);
-
-        private async Task OnPageSizeChanged(int pageSize)
-            => await SetCurrentPageAsync(0, pageSize);
 
         private string BuildDetailUrl(int id)
-            => $"/products/{id}?pageIndex={PageIndex}&pageSize={PageSize}";
-
-        protected override async Task OnInitializedAsync()
-            => await SetCurrentPageAsync(PageIndex, PageSize);
+            => $"/products/{id}?{NavigationManager.ToReturnUrl("products", PagingParameters)}";
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageIndex), out var pageIndex))
-                PageIndex = pageIndex;
-            if (NavigationManager.TryGetQueryStringParameter<int>(nameof(PageSize), out var pageSize))
-                PageSize = pageSize;
+            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters page))
+                PagingParameters = page;
             await base.SetParametersAsync(parameters);
         }
         #endregion

@@ -20,6 +20,14 @@ app {
     flex-direction: column;
 }
 
+dt {
+    color: rgba(0,0,0,.38);
+}
+
+dd {
+    
+}
+
 .top-row {
     height: 3.5rem;
     display: flex;

@@ -528,7 +528,7 @@
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the resulting value are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
@@ -539,6 +539,18 @@
         /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="element1">Any expression</param>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, elements);
         #endregion
 
         #region select many
@@ -1070,6 +1082,17 @@
         /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element1, element2, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression</param>
+        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{{TValue}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, elements);
         #endregion
 
         #region update
