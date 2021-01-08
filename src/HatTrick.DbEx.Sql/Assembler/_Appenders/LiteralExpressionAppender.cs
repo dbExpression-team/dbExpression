@@ -12,6 +12,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write(
                    builder.Parameters.Add(
                        expression.Expression is null || expression.Expression is DBNull ? DBNull.Value : expression.Expression,
+                       context,
                        context.Field is object ? builder.FindMetadata(context.Field) : null
                    )
                    .Parameter.ParameterName
@@ -25,7 +26,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 }
                 else
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.Expression, expression.Expression.GetType()).ParameterName);
+                    builder.Appender.Write(
+                        builder.Parameters.Add(
+                            expression.Expression, 
+                            expression.Expression.GetType(),
+                            context
+                        )
+                        .ParameterName
+                    );
                 }
             }
         }

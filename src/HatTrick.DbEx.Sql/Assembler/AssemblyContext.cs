@@ -21,6 +21,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public FieldExpression Field => fields.FirstOrDefault(f => f is object);
         public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
         public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();
+        public bool TrySharingExistingParameter { get; set; }
         #endregion
 
         #region constructors

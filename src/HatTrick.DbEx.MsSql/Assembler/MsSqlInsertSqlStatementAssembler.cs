@@ -42,6 +42,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     if (identity is object && (inserts[j] as IAssignmentExpressionProvider).Assignee == identity)
                         continue; //don't emit identity columns with the values; they can't be inserted into the table
 
+                    var originalTryShareParameterSetting = context.TrySharingExistingParameter;
+                    context.TrySharingExistingParameter = true;
                     context.PushField((inserts[j] as IAssignmentExpressionProvider).Assignee);
                     try
                     {
@@ -49,6 +51,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     }
                     finally
                     {
+                        context.TrySharingExistingParameter = originalTryShareParameterSetting;
                         context.PopField();
                     }
                     builder.Appender.Write(", ");
