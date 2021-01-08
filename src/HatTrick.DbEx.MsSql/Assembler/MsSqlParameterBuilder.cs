@@ -25,15 +25,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #endregion
 
         #region methods
-        public override DbParameter Add<T>(T value)
+        public override DbParameter Add<T>(T value, AssemblyContext context)
         {
             var (type, converted) = ConvertDbParameterValue(value);
             var typeMap = typeMaps.FindByClrType(type)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {typeof(T)}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
-            var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
-            if (existing is object)
-                return existing.Parameter;
+            if (context.TrySharingExistingParameter)
+            {
+                var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
+                if (existing?.Parameter is object)
+                    return existing.Parameter;
+            }
 
             var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null);
             var parameterized = new ParameterizedExpression(type, parameter, null);
@@ -41,15 +44,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return parameter;
         }
 
-        public override DbParameter Add(object value, Type valueType)
+        public override DbParameter Add(object value, Type valueType, AssemblyContext context)
         {
             var (type, converted) = ConvertDbParameterValue(valueType, value);
             var typeMap = typeMaps.FindByClrType(type)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {valueType}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
-            var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
-            if (existing is object)
-                return existing.Parameter;
+            if (context.TrySharingExistingParameter)
+            {
+                var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
+                if (existing?.Parameter is object)
+                    return existing.Parameter;
+            }
 
             var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null);
             var parameterized = new ParameterizedExpression(type, parameter, null);
@@ -57,15 +63,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return parameter;
         }
 
-        public override ParameterizedExpression Add<T>(T value, ISqlFieldMetadata meta)
+        public override ParameterizedExpression Add<T>(T value, AssemblyContext context, ISqlFieldMetadata meta)
         {
             var (type, converted) = ConvertDbParameterValue(value);
             var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType) 
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the {nameof(SqlDbType)} {(SqlDbType)meta.DbType}.  This is an internal issue that cannot be resolved; please report as an issue.");
             
-            var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
-            if (existing is object)
-                return existing;
+            if (context.TrySharingExistingParameter)
+            {
+                var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
+                if (existing?.Parameter is object)
+                    return existing;
+            }
 
             var parameter = CreateDbParameter(value, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale);
             var parameterized = new ParameterizedExpression(typeMap.ClrType, parameter, meta);

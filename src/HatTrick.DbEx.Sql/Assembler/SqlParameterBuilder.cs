@@ -10,9 +10,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         public IList<ParameterizedExpression> Parameters { get; set; } = new List<ParameterizedExpression>();
 
         #region abstract methods
-        public abstract DbParameter Add<T>(T value);
-        public abstract ParameterizedExpression Add<T>(T value, ISqlFieldMetadata meta);
-        public abstract DbParameter Add(object value, Type valueType);
+        public abstract DbParameter Add<T>(T value, AssemblyContext context);
+        public abstract ParameterizedExpression Add<T>(T value, AssemblyContext context, ISqlFieldMetadata meta);
+        public abstract DbParameter Add(object value, Type valueType, AssemblyContext context);
         #endregion
 
         protected virtual ParameterizedExpression FindExistingParameter<T>(T value, Type declaredType, DbType dbType, ParameterDirection direction, int? size, byte? precision, byte? scale)

@@ -20,11 +20,11 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //left part is primitive type, build a parameter for the primitive
                 if (expression.RightArg.AsFieldExpression() is FieldExpression field)
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg, builder.FindMetadata(field)).Parameter.ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg, context, builder.FindMetadata(field)).Parameter.ParameterName);
                 }
                 else
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg, expression.LeftArg.GetType()).ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg, expression.LeftArg.GetType(), context).ParameterName);
                 }
             }
             else
@@ -42,11 +42,11 @@ namespace HatTrick.DbEx.Sql.Assembler
                 //right part is primitive type, build a parameter for the primitive
                 if (expression.LeftArg.AsFieldExpression() is FieldExpression field)
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg, builder.FindMetadata(field)).Parameter.ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg, context, builder.FindMetadata(field)).Parameter.ParameterName);
                 }
                 else
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg, expression.RightArg.GetType()).ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg, expression.RightArg.GetType(), context).ParameterName);
                 }
             }
             else

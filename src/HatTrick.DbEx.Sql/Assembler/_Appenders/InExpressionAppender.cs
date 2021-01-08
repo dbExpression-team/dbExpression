@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(InExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("IN (");
-            AddParametersFromList(builder, context.Field, expression.Expression);
+            AddParametersFromList(builder, context, expression.Expression);
             builder.Appender.Write(")");
         }
 
-        private void AddParametersFromList(ISqlStatementBuilder builder, FieldExpression field, IEnumerable expression)
+        private void AddParametersFromList(ISqlStatementBuilder builder, AssemblyContext context, IEnumerable expression)
         {
-            var meta = field is object ? builder.FindMetadata(field) : null;
+            var meta = context.Field is object ? builder.FindMetadata(context.Field) : null;
             var hasElements = false;
             var enumerator = expression.GetEnumerator();
             var firstElement = true;
@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 {
                     firstElement = false;
                 }
-                AddParameter(builder, field, meta, enumerator.Current);
+                AddParameter(builder, context, meta, enumerator.Current);
                 hasElements = true;
             }
 
@@ -40,13 +40,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.Appender.Write("NULL");
         }
 
-        private void AddParameter(ISqlStatementBuilder builder, FieldExpression field, ISqlFieldMetadata meta, object expression)
+        private void AddParameter(ISqlStatementBuilder builder, AssemblyContext context, ISqlFieldMetadata meta, object expression)
         {
-            if (field is object)
+            if (context.Field is object)
             {
                 builder.Appender.Write(
                    builder.Parameters.Add(
                        expression is null || expression is DBNull ? DBNull.Value : expression,
+                       context, 
                        meta
                    )
                    .Parameter.ParameterName
@@ -60,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                 }
                 else
                 {
-                    builder.Appender.Write(builder.Parameters.Add(expression, expression.GetType()).ParameterName);
+                    builder.Appender.Write(builder.Parameters.Add(expression, expression.GetType(), context).ParameterName);
                 }
             }
         }
