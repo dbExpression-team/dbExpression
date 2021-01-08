@@ -13,33 +13,33 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal OrderByExpressionSet()
+        private OrderByExpressionSet()
         { 
         
         }
 
-        public OrderByExpressionSet(AnyOrderByClause orderByExpression)
+        public OrderByExpressionSet(AnyOrderByClause orderBy)
         {
-            Expressions = Expressions.Concat(new AnyOrderByClause[1] { orderByExpression ?? throw new ArgumentNullException($"{nameof(orderByExpression)} is required.") });
+            Expressions = Expressions.Concat(new AnyOrderByClause[1] { (orderBy ?? throw new ArgumentNullException($"{nameof(orderBy)} is required.")) is OrderByExpression ? orderBy : new OrderByExpression(orderBy, OrderExpressionDirection.ASC) });
         }
 
-        public OrderByExpressionSet(AnyOrderByClause aOrderByExpression, AnyOrderByClause bOrderByExpression)
+        public OrderByExpressionSet(OrderByExpression aOrderBy, OrderByExpression bOrderBy)
         {
             Expressions = new List<AnyOrderByClause>
             {
-                aOrderByExpression ?? throw new ArgumentNullException($"{nameof(aOrderByExpression)} is required."),
-                bOrderByExpression ?? throw new ArgumentNullException($"{nameof(bOrderByExpression)} is required.")
+                aOrderBy ?? throw new ArgumentNullException($"{nameof(aOrderBy)} is required."),
+                bOrderBy ?? throw new ArgumentNullException($"{nameof(bOrderBy)} is required.")
             };
         }
 
-        public OrderByExpressionSet(IEnumerable<AnyOrderByClause> orderByExpression)
+        public OrderByExpressionSet(IEnumerable<AnyOrderByClause> orderBys)
         {
-            Expressions = orderByExpression ?? throw new ArgumentNullException($"{nameof(orderByExpression)} is required.");
+            Expressions = (orderBys ?? throw new ArgumentNullException($"{nameof(orderBys)} is required.")).Select(x => x is OrderByExpression ? x : new OrderByExpression(x, OrderExpressionDirection.ASC));
         }
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(o => o.ToString()));
+        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
         #endregion
 
         #region condition & operators

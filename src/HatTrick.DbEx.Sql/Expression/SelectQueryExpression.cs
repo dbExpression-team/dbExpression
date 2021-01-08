@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql.Expression
+﻿using System.Text;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectQueryExpression : QueryExpression
     {
@@ -13,6 +15,49 @@
         public OrderByExpressionSet OrderBy { get; set; }
         public GroupByExpressionSet GroupBy { get; set; }
         public HavingExpression Having { get; set; }
+        #endregion
+
+        #region to string
+        public override string ToString()
+        {
+            var sb = new StringBuilder("SELECT ");
+            if (Distinct.HasValue && Distinct.Value)
+                sb.Append("DISTINCT ");
+            if (Top.HasValue)
+            {
+                sb.Append("TOP ");
+                sb.Append(Top);
+                sb.Append(" ");
+            }
+            sb.Append(Select);
+            sb.Append(" FROM ");
+            sb.Append(BaseEntity);
+            sb.Append(" ");
+            sb.Append(Joins);
+            sb.Append(" ");
+            if (Where?.LeftArg is object)
+            {
+                sb.Append("WHERE ");
+                sb.Append(Where);
+            }
+            if (OrderBy?.Expressions is object)
+            {
+                sb.Append("ORDER BY ");
+                sb.Append(OrderBy);
+            }
+            if (GroupBy?.Expressions is object)
+            {
+                sb.Append("GROUP BY ");
+                sb.Append(GroupBy);
+            }
+            if (Having is object)
+            {
+                sb.Append("HAVING ");
+                sb.Append(Having);
+            }
+
+            return sb.ToString();
+        }
         #endregion
 
         #region operators

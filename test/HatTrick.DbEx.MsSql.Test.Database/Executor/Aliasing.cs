@@ -236,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var vipStatistics = db.SelectOne(
+            var vipStatisticsq = db.SelectOne(
                 dbo.Person.Id.As("PersonId"),
                 dbex.alias("vips", "PurchaseCount").As("Result")
             )
@@ -251,7 +251,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     dbo.Purchase.PersonId
                 )
             ).As("vips").On(dbo.Person.Id == dbex.alias("vips", "PersonId"))
-            .Where(dbex.alias("vips", "PurchaseCount") == expected)
+            .Where(dbex.alias("vips", "PurchaseCount") == expected);
+
+            var vipStatistics = vipStatisticsq
             .Execute();
 
             //then

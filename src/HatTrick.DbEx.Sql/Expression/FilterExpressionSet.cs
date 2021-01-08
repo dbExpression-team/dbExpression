@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => (Negate) ? $"NOT ({LeftArg} {ConditionalOperator} {RightArg})" : $"{LeftArg} {ConditionalOperator} {RightArg}";
+        public override string ToString() => (Negate) ? $"NOT ({LeftArg}{(RightArg is object ? $"{ConditionalOperator} {RightArg}" : string.Empty)})" : $"{LeftArg}{(RightArg is object ? $"{ConditionalOperator} {RightArg}" : string.Empty)}";
         #endregion
 
         #region implicit operators
