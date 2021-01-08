@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(s => s.ToString()));
+        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
         #endregion
 
         #region logical & operator

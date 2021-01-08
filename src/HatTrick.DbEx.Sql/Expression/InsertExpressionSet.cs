@@ -20,5 +20,9 @@ namespace HatTrick.DbEx.Sql.Expression
             Expressions = fields ?? throw new ArgumentNullException($"{nameof(fields)} is required.");
         }
         #endregion
+
+        #region to string
+        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        #endregion
     }
 }

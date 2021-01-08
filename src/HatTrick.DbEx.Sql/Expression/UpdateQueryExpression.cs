@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql.Expression
+﻿using System.Text;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
     public class UpdateQueryExpression : QueryExpression
     {
@@ -7,6 +9,31 @@
         public int? Top { get; set; }
         public FilterExpressionSet Where { get; set; }
         public JoinExpressionSet Joins { get; set; }
+        #endregion
+
+        #region to string
+        public override string ToString()
+        {
+            var sb = new StringBuilder("UPDATE ");
+            if (Top.HasValue)
+            {
+                sb.Append("TOP ");
+                sb.Append(Top);
+            }
+            sb.Append(Assign);
+            sb.Append("FROM ");
+            sb.Append(BaseEntity);
+            sb.Append(" ");
+            sb.Append(Joins);
+            sb.Append(" ");
+            if (Where?.LeftArg is object)
+            {
+                sb.Append("WHERE ");
+                sb.Append(Where);
+            }
+
+            return sb.ToString();
+        }
         #endregion
 
         #region operators

@@ -13,28 +13,28 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        internal GroupByExpressionSet()
+        private GroupByExpressionSet()
         {
 
         }
 
-        public GroupByExpressionSet(AnyGroupByClause groupByExpression)
+        public GroupByExpressionSet(AnyGroupByClause groupBy)
         {
-            Expressions = Expressions.Concat(new AnyGroupByClause[1] { groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.") });
+            Expressions = Expressions.Concat(new AnyGroupByClause[1] { (groupBy ?? throw new ArgumentNullException($"{nameof(groupBy)} is required.")) is GroupByExpression ? groupBy : new GroupByExpression(groupBy) });
         }
 
-        public GroupByExpressionSet(AnyGroupByClause aGroupByExpression, AnyGroupByClause bGroupByExpression)
+        public GroupByExpressionSet(GroupByExpression aGroupBy, GroupByExpression bGroupBy)
         {
             Expressions = new List<AnyGroupByClause>
             {
-                aGroupByExpression ?? throw new ArgumentNullException($"{nameof(aGroupByExpression)} is required."),
-                bGroupByExpression ?? throw new ArgumentNullException($"{nameof(bGroupByExpression)} is required.")
+                aGroupBy ?? throw new ArgumentNullException($"{nameof(aGroupBy)} is required."),
+                bGroupBy ?? throw new ArgumentNullException($"{nameof(bGroupBy)} is required.")
             };
         }
 
-        public GroupByExpressionSet(IEnumerable<AnyGroupByClause> groupByExpression)
+        public GroupByExpressionSet(IEnumerable<AnyGroupByClause> groupBys)
         {
-            Expressions = groupByExpression ?? throw new ArgumentNullException($"{nameof(groupByExpression)} is required.");
+            Expressions = (groupBys ?? throw new ArgumentNullException($"{nameof(groupBys)} is required.")).Select(x => x is GroupByExpression ? x : new GroupByExpression(x));
         }
         #endregion
 
