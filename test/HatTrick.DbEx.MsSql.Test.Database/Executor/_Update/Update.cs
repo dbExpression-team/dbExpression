@@ -5,7 +5,9 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -215,12 +217,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             source.LastName = "x";
             source.FirstName = "x";
 
-            var exp = db.Update(
-                   target,
-                   source
-                )
-               .From(dbo.Person)
-               .Where(dbo.Person.Id == source.Id);
+            var comparison = dbex.BuildAssignmentsFor(dbo.Person).From(source).To(target);
+            var exp = db.Update(comparison)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == source.Id);
 
             //when               
             var recordsAffected = exp.Execute();
@@ -235,7 +235,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Can_update_persons_lastname_and_firstname_using_entities_to_build_assignment_expression_and_top_result_in_correct_records_affected(int version, string lastName = "Biggle", int expectedRecordsAffected = 2)
+        public void Does_an_empty_update_expression_set_cause_sql_exception(int version, string lastName = "Biggle")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -243,20 +243,15 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
             var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
 
-            source.LastName = "x";
-            source.FirstName = "x";
+            var comparison = dbex.BuildAssignmentsFor(dbo.Person).From(source).To(target);
+            Func<Task> execute = async () => await db.Update(comparison)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == source.Id)
+                .ExecuteAsync();
 
-            //when
-            db.Update(
-                   target,
-                   source
-                ).Top(expectedRecordsAffected)
-               .From(dbo.Person)
-               .Execute();
+            //when & then
+            execute.Should().Throw<SqlException>().And.Message.Should().StartWith("Incorrect syntax near");
 
-            //then
-            var recordsAffected = db.SelectOne(db.fx.Count()).From(dbo.Person).Where(dbo.Person.LastName == "x").Execute();
-            recordsAffected.Should().Be(expectedRecordsAffected);
         }
     }
 }

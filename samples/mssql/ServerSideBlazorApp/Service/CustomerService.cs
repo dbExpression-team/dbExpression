@@ -291,13 +291,21 @@ namespace ServerSideBlazorApp.Service
                 .ExecuteAsync();
 
         private async Task UpdateAddressAsync(Address persisted, Address @new)
-            => await db.Update(
-                persisted,
-                @new
-            )
-            .From(dbo.Address)
-            .Where(dbo.Address.Id == persisted.Id)
-            .ExecuteAsync();
+        {
+            //build a list of assignment expressions for the update statement based on the difference between the two Address instances.
+            var assignments = dbex.BuildAssignmentsFor(dbo.Address).From(persisted).To(@new);
+
+            //if there are differences, execute an update.
+            if (assignments.Any())
+            {
+                await db.Update(
+                    assignments
+                )
+                .From(dbo.Address)
+                .Where(dbo.Address.Id == persisted.Id)
+                .ExecuteAsync();
+            }
+        }
 
         private async Task InsertAddressAsync(int customerId, Address address)
         {

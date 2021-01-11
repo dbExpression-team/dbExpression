@@ -10,22 +10,10 @@ namespace HatTrick.DbEx.Sql.Builder
         UpdateEntitiesContinuation<TEntity>
         where TEntity : class, IDbEntity
     {
-        #region internals
-        protected TEntity Target { get; set; }
-        protected TEntity Source { get; set; }
-        #endregion
-
         #region constructors
         protected UpdateEntitiesUpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression, EntityExpression<TEntity> entity) : base(config, expression, entity)
         {
 
-        }
-
-        protected UpdateEntitiesUpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, TEntity target, TEntity source)
-            : base(configuration, expression)
-        {
-            Target = target ?? throw new ArgumentNullException($"{target} is required.");
-            Source = source ?? throw new ArgumentNullException($"{source} is required.");
         }
         #endregion
 
@@ -70,11 +58,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         UpdateEntitiesContinuation<TEntity> UpdateEntities<TEntity>.From(Entity<TEntity> entity)
-        {
-            var builder = CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}."));
-            Expression.Assign = entity.BuildAssignmentExpression(Target, Source);
-            return builder;
-        }
+            => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}."));
         #endregion
     }
 }

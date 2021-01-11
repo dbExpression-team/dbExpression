@@ -36,7 +36,7 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
@@ -48,10 +48,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="Sql.EnumElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
+        /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
@@ -63,10 +63,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
@@ -78,10 +78,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.AnyObjectElement" />
+        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<object> SelectOne(AnyObjectElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -91,9 +91,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.BooleanElement" />
+        /// <param name="element">An expression of type <see cref="BooleanElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<bool> SelectOne(BooleanElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -103,9 +103,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -115,9 +115,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteElement" />
+        /// <param name="element">An expression of type <see cref="ByteElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte> SelectOne(ByteElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -127,9 +127,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="NullableByteElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte?> SelectOne(NullableByteElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -139,10 +139,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
         ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -152,9 +152,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -164,10 +164,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="DateTimeElement" />
         ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime> SelectOne(DateTimeElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -177,10 +177,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime?> SelectOne(NullableDateTimeElement field)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, field);
 
@@ -190,10 +190,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
         ///, for example "sec.Person.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, sec.Person.DateCreated)" or "db.fx.IsNull(sec.Person.DateCreated, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -203,9 +203,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -215,10 +215,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DecimalElement" />
+        /// <param name="element">An expression of type <see cref="DecimalElement" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<decimal> SelectOne(DecimalElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -228,10 +228,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
         ///, for example "dbo.Product.Height" or "db.fx.Min(dbo.Product.Height)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -241,10 +241,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DoubleElement" />
+        /// <param name="element">An expression of type <see cref="DoubleElement" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<double> SelectOne(DoubleElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -254,10 +254,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDoubleElement" />
+        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount" or "db.fx.Min(dbo.PersonTotalPurchasesView.TotalAmount)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<double?> SelectOne(NullableDoubleElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -267,9 +267,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.GuidElement" />
+        /// <param name="element">An expression of type <see cref="GuidElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<Guid> SelectOne(GuidElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -279,10 +279,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -292,9 +292,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int16Element" />
+        /// <param name="element">An expression of type <see cref="Int16Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<short> SelectOne(Int16Element element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -304,9 +304,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<short?> SelectOne(NullableInt16Element element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -316,10 +316,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int32Element" />
+        /// <param name="element">An expression of type <see cref="Int32Element" />
         ///, for example "dbo.Address.Id" or "db.fx.Avg(dbo.Address.Id)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int> SelectOne(Int32Element element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -329,10 +329,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt32Element" />
+        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
         ///, for example "dbo.Person.CreditLimit" or "db.fx.Avg(dbo.Person.CreditLimit)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int?> SelectOne(NullableInt32Element element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -342,9 +342,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int64Element" />
+        /// <param name="element">An expression of type <see cref="Int64Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<long> SelectOne(Int64Element element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -354,9 +354,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<long?> SelectOne(NullableInt64Element element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -366,9 +366,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.SingleElement" />
+        /// <param name="element">An expression of type <see cref="SingleElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<float> SelectOne(SingleElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -378,9 +378,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<float?> SelectOne(NullableSingleElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -390,10 +390,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.StringElement" />
+        /// <param name="element">An expression of type <see cref="StringElement" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(StringElement element) 
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -403,9 +403,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableStringElement" />
+        /// <param name="element">An expression of type <see cref="NullableStringElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(NullableStringElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -415,9 +415,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
@@ -427,15 +427,15 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
@@ -443,19 +443,19 @@ namespace SimpleConsole.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element1, element2, elements);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, elements);
         #endregion
@@ -470,7 +470,7 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity
@@ -482,10 +482,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
         ///, for example "dbo.Person.GenderType"
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
@@ -496,10 +496,10 @@ namespace SimpleConsole.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableEnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="NullableEnumElement{TEnum}" />
         ///, for example "dbo.Address.AddressType"
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
             => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
@@ -510,10 +510,10 @@ namespace SimpleConsole.DataService
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.AnyObjectElement" />
+        /// <param name="element">An expression of type <see cref="AnyObjectElement" />
         ///, for example "db.fx.Coalesce(dbo.Person.CreditLimit, dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<object> SelectMany(AnyObjectElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -523,9 +523,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.BooleanElement" />
+        /// <param name="element">An expression of type <see cref="BooleanElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<bool> SelectMany(BooleanElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -535,9 +535,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableBooleanElement" />
+        /// <param name="element">An expression of type <see cref="NullableBooleanElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -547,9 +547,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteElement" />
+        /// <param name="element">An expression of type <see cref="ByteElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte> SelectMany(ByteElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -559,9 +559,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteElement" />
+        /// <param name="element">An expression of type <see cref="NullableByteElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte?> SelectMany(NullableByteElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -571,10 +571,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.ByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="ByteArrayElement" />
         ///, for example "dbo.Product.Image" or "db.fx.IsNull(dbo.Product.Image, new byte[0])"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -584,9 +584,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableByteArrayElement" />
+        /// <param name="element">An expression of type <see cref="NullableByteArrayElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -596,10 +596,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeElement" />
+        /// <param name="element">An expression of type <see cref="DateTimeElement" />
         ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime> SelectMany(DateTimeElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -609,10 +609,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeElement" />
+        /// <param name="element">An expression of type <see cref="NullableDateTimeElement" />
         ///, for example "dbo.Person.BirthDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.BirthDate)
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -622,10 +622,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
         ///, for example "sec.Person.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, sec.Person.DateCreated)" or "db.fx.IsNull(sec.Person.DateCreated, DateTimeOffset.Now)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -635,9 +635,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement" />
+        /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -647,10 +647,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DecimalElement" />
+        /// <param name="element">An expression of type <see cref="DecimalElement" />
         ///, for example "dbo.Product.ShippingWeight" or "db.fx.IsNull(dbo.Product.ShippingWeight, decimal.MinValue)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<decimal> SelectMany(DecimalElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -660,10 +660,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDecimalElement" />
+        /// <param name="element">An expression of type <see cref="NullableDecimalElement" />
         ///, for example "dbo.Product.Height"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -673,10 +673,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.DoubleElement" />
+        /// <param name="element">An expression of type <see cref="DoubleElement" />
         ///, for example "dbo.Product.ListPrice" or "db.fx.IsNull(dbo.Product.ListPrice, double.MinValue)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<double> SelectMany(DoubleElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -686,10 +686,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableDoubleElement" />
+        /// <param name="element">An expression of type <see cref="NullableDoubleElement" />
         ///, for example "dbo.PersonTotalPurchasesView.TotalAmount"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<double?> SelectMany(NullableDoubleElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -699,9 +699,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.GuidElement" />
+        /// <param name="element">An expression of type <see cref="GuidElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<Guid> SelectMany(GuidElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -711,10 +711,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableGuidElement" />
+        /// <param name="element">An expression of type <see cref="NullableGuidElement" />
         ///, for example "dbo.Purchase.TrackingIdentifier"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -724,9 +724,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int16Element" />
+        /// <param name="element">An expression of type <see cref="Int16Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<short> SelectMany(Int16Element element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -736,9 +736,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt16Element" />
+        /// <param name="element">An expression of type <see cref="NullableInt16Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<short?> SelectMany(NullableInt16Element element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -748,10 +748,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int32Element" />
+        /// <param name="element">An expression of type <see cref="Int32Element" />
         ///, for example "dbo.Address.Id"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int> SelectMany(Int32Element element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -761,10 +761,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt32Element" />
+        /// <param name="element">An expression of type <see cref="NullableInt32Element" />
         ///, for example "dbo.:column.Entity.Name}.Id"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int?> SelectMany(NullableInt32Element element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -774,9 +774,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.Int64Element" />
+        /// <param name="element">An expression of type <see cref="Int64Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<long> SelectMany(Int64Element element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -786,9 +786,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableInt64Element" />
+        /// <param name="element">An expression of type <see cref="NullableInt64Element" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<long?> SelectMany(NullableInt64Element element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -798,9 +798,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.SingleElement" />
+        /// <param name="element">An expression of type <see cref="SingleElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<float> SelectMany(SingleElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -810,9 +810,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableSingleElement" />
+        /// <param name="element">An expression of type <see cref="NullableSingleElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<float?> SelectMany(NullableSingleElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -822,10 +822,10 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.StringElement" />
+        /// <param name="element">An expression of type <see cref="StringElement" />
         ///, for example "dbo.Address.Line1" or "db.fx.Concat("Value: ", dbo.Address.Line1)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(StringElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -835,9 +835,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableStringElement" />
+        /// <param name="element">An expression of type <see cref="NullableStringElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(NullableStringElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -847,9 +847,9 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.TimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="TimeSpanElement" />
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
@@ -859,15 +859,15 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="HatTrick.DbEx.Sql.NullableTimeSpanElement" />
+        /// <param name="element">An expression of type <see cref="NullableTimeSpanElement" />
         ///, for example "dbo.Product.ValidStartTimeOfDayForPurchase"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
@@ -875,18 +875,18 @@ namespace SimpleConsole.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element1, element2, elements);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="HatTrick.DbEx.Sql.AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, elements);
         #endregion
@@ -898,11 +898,11 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
         /// </para>
         /// </summary>
-        /// <param name="assignments">A list of <see cref="HatTrick.DbEx.Sql.EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
         public static UpdateEntities Update(params EntityFieldAssignment[] assignments)
             => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
 
@@ -912,29 +912,13 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
         /// </para>
         /// </summary>
-        /// <param name="assignments">A list of <see cref="HatTrick.DbEx.Sql.EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities Update(IList<EntityFieldAssignment> assignments)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
-
-        /// <summary>
-        /// Start constructing a sql UPDATE query expression to update record(s) based on the comparison of property values between two entity instances.
-        /// <para>
-        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
-        /// </para>
-        /// </summary>
-        /// <param name="oldStateOfEntity">If a property value differs from the corresponding property value in "<paramref name="newStateOfEntity"/>", an assignment expression will be generated with the value set to the property value from "<paramref name="newStateOfEntity"/>".  
-        /// </param>
-        /// <param name="newStateOfEntity">Records will be updated to the property values from this entity when they differ from the property values in "<paramref name="oldStateOfEntity"/>". 
-        /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.UpdateEntities{TEntity}"/>, a fluent builder for constructing a sql UPDATE statement, with a list of "<see cref="HatTrick.DbEx.Sql.EntityFieldAssignment"/>" constructed from the comparison of the two entity params.</returns>
-        /// <typeparam name="TEntity">The entity type to update.</typeparam>
-        public static UpdateEntities<TEntity> Update<TEntity>(TEntity oldStateOfEntity, TEntity newStateOfEntity)
-            where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder<TEntity>(config, oldStateOfEntity, newStateOfEntity);     
+        /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
+        public static UpdateEntities Update(IEnumerable<EntityFieldAssignment> assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);   
         #endregion
 
         #region delete
@@ -944,7 +928,7 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/statements/delete-transact-sql">Microsoft docs on DELETE</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="HatTrick.DbEx.Sql.DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
+        /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities Delete()
             => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
         #endregion
@@ -958,7 +942,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <param name="entity">The entity supplying the property values.
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntity{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entity to insert.</typeparam>
         public static InsertEntity<TEntity> Insert<TEntity>(TEntity entity)
             where TEntity : class, IDbEntity
@@ -972,7 +956,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(params TEntity[] entities)
             where TEntity : class, IDbEntity
@@ -986,7 +970,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <param name="entities">A list of entities.
         /// </param>
-        /// <returns><see cref="HatTrick.DbEx.Sql.InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
+        /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
         public static InsertEntities<TEntity> InsertMany<TEntity>(IList<TEntity> entities)
             where TEntity : class, IDbEntity
@@ -997,10 +981,10 @@ namespace SimpleConsole.DataService
         /// <summary>
         /// Creates a connection to the database.
         /// <para>
-        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="HatTrick.DbEx.Sql.Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
+        /// The connection has not been opened, use <see cref="System.Data.IDbConnection.Open"/> or <see cref="Connection.ISqlConnection.EnsureOpen"/> to ensure an open connection to the database prior to operations like <see cref="System.Data.IDbConnection.BeginTransaction"/>.
         /// </para>
         /// </summary>
-        /// <returns><see cref="HatTrick.DbEx.Sql.Connection.ISqlConnection"/>, a connection to the database.</returns>
+        /// <returns><see cref="ISqlConnection"/>, a connection to the database.</returns>
         public static ISqlConnection GetConnection()
             => new SqlConnector(config.ConnectionFactory);
         #endregion

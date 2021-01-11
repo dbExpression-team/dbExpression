@@ -298,18 +298,11 @@ namespace HatTrick.DbEx.MsSql.Builder
         }
         #endregion
 
-        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IList<EntityFieldAssignment> fields)
+        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<EntityFieldAssignment> fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Assign = new AssignmentExpressionSet(expression.Assign.Expressions.Concat(fields?.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(fields)} to be assignable to {typeof(AssignmentExpression)}."))));
             return new MsSqlUpdateQueryExpressionBuilder(configuration, expression);
-        }
-
-        public UpdateEntities<TEntity> CreateUpdateExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity target, TEntity source)
-            where TEntity : class, IDbEntity
-        {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            return new UpdateEntitiesUpdateQueryExpressionBuilder<TEntity>(configuration, expression, target, source);
         }
 
         public DeleteEntities CreateDeleteExpressionBulder(RuntimeSqlDatabaseConfiguration configuration)

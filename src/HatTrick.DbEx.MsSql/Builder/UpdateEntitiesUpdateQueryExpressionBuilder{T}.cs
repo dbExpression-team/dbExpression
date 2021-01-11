@@ -13,12 +13,6 @@ namespace HatTrick.DbEx.MsSql.Builder
         {
 
         }
-
-        public UpdateEntitiesUpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, TEntity target, TEntity source)
-            : base(configuration, expression, target, source)
-        {
-
-        }
         #endregion
 
         #region methods
