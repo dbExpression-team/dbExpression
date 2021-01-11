@@ -38,9 +38,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbex.alias("joined", "Id"))
+            var exp = db.SelectMany(dbex.Alias("joined", "Id"))
                 .From(dbo.Person)
-                .InnerJoin(dbo.Person.As("joined")).On(dbo.Person.FirstName == dbex.alias("joined", "FirstName") & dbo.Person.LastName == dbex.alias("joined", "LastName"));
+                .InnerJoin(dbo.Person.As("joined")).On(dbo.Person.FirstName == dbex.Alias("joined", "FirstName") & dbo.Person.LastName == dbex.Alias("joined", "LastName"));
 
             //when               
             var persons = exp.Execute();
@@ -57,9 +57,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var exp = db.SelectMany(dbex.alias("joined", "Id"))
+            var exp = db.SelectMany(dbex.Alias("joined", "Id"))
                 .From(dbo.Person)
-                .InnerJoin(dbo.Person.As("joined")).On(dbo.Person.FirstName == dbex.alias("joined", "FirstName") & dbo.Person.LastName == dbex.alias("joined", "LastName"))
+                .InnerJoin(dbo.Person.As("joined")).On(dbo.Person.FirstName == dbex.Alias("joined", "FirstName") & dbo.Person.LastName == dbex.Alias("joined", "LastName"))
                 .Where(dbo.Person.FirstName == firstName);
 
             //when               

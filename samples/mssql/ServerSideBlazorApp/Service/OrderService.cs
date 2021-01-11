@@ -164,16 +164,16 @@ namespace ServerSideBlazorApp.Service
                 dbo.Purchase.PaymentMethodType,
                 dbo.Purchase.ExpectedDeliveryDate,
                 dbo.Purchase.TrackingIdentifier,
-                dbex.alias(billingAddress, nameof(dbo.Address.Line1)),
-                dbex.alias(billingAddress, nameof(dbo.Address.Line2)),
-                dbex.alias(billingAddress, nameof(dbo.Address.City)),
-                dbex.alias(billingAddress, nameof(dbo.Address.State)),
-                dbex.alias(billingAddress, nameof(dbo.Address.Zip)),
-                dbex.alias(shippingAddress, nameof(dbo.Address.Line1)),
-                dbex.alias(shippingAddress, nameof(dbo.Address.Line2)),
-                dbex.alias(shippingAddress, nameof(dbo.Address.City)),
-                dbex.alias(shippingAddress, nameof(dbo.Address.State)),
-                dbex.alias(shippingAddress, nameof(dbo.Address.Zip))
+                dbex.Alias(billingAddress, nameof(dbo.Address.Line1)),
+                dbex.Alias(billingAddress, nameof(dbo.Address.Line2)),
+                dbex.Alias(billingAddress, nameof(dbo.Address.City)),
+                dbex.Alias(billingAddress, nameof(dbo.Address.State)),
+                dbex.Alias(billingAddress, nameof(dbo.Address.Zip)),
+                dbex.Alias(shippingAddress, nameof(dbo.Address.Line1)),
+                dbex.Alias(shippingAddress, nameof(dbo.Address.Line2)),
+                dbex.Alias(shippingAddress, nameof(dbo.Address.City)),
+                dbex.Alias(shippingAddress, nameof(dbo.Address.State)),
+                dbex.Alias(shippingAddress, nameof(dbo.Address.Zip))
             )
             .From(dbo.Purchase)
             .InnerJoin(dbo.Customer).On(dbo.Purchase.CustomerId == dbo.Customer.Id)
@@ -191,7 +191,7 @@ namespace ServerSideBlazorApp.Service
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                 .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.CustomerId == dbo.Purchase.CustomerId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Billing)
-            ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(billingAddress, nameof(OrderDetailModel.CustomerId)))
+            ).As(billingAddress).On(dbo.Customer.Id == dbex.Alias(billingAddress, nameof(OrderDetailModel.CustomerId)))
             .LeftJoin(
                 db.SelectOne(
                     dbo.CustomerAddress.CustomerId.As(nameof(OrderDetailModel.CustomerId)),
@@ -205,7 +205,7 @@ namespace ServerSideBlazorApp.Service
                 .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                 .InnerJoin(dbo.Purchase).On(dbo.CustomerAddress.CustomerId == dbo.Purchase.CustomerId)
                 .Where(dbo.Purchase.Id == orderId & dbo.Address.AddressType == AddressType.Shipping)
-            ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(shippingAddress, nameof(OrderDetailModel.CustomerId)))
+            ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(shippingAddress, nameof(OrderDetailModel.CustomerId)))
             .Where(dbo.Purchase.Id == orderId)
             .ExecuteAsync(
                 row => new OrderDetailModel
