@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //when
             var values = db.SelectMany(
                 dbo.Person.Id,
-                dbex.coerce(dbo.Purchase.Id).As("PurchaseId")
+                dbex.Coerce(dbo.Purchase.Id).As("PurchaseId")
             )
             .From(dbo.Person)
             .LeftJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)

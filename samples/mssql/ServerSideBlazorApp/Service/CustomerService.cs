@@ -134,7 +134,7 @@ namespace ServerSideBlazorApp.Service
             var mailingAddress = nameof(CustomerDetailModel.MailingAddress);
             var billingAddress = nameof(CustomerDetailModel.BillingAddress);
             var shippingAddress = nameof(CustomerDetailModel.ShippingAddress);
-            Func<string,AnyElement,ObjectElement> alias = (string table, AnyElement a) => dbex.alias(table, nameof(a));
+            Func<string,AnyElement,ObjectElement> alias = (string table, AnyElement a) => dbex.Alias(table, nameof(a));
 
             var customer = new CustomerDetailModel();
 
@@ -149,21 +149,21 @@ namespace ServerSideBlazorApp.Service
                     dbo.Customer.YearOfLastCreditLimitReview,
                     dbo.Customer.BirthDate,
                     currentAgeApproximation.As(nameof(CustomerSummaryModel.CurrentAge)),
-                    dbex.alias(mailingAddress, nameof(AddressModel.Line1)),
-                    dbex.alias(mailingAddress, nameof(AddressModel.Line2)),
-                    dbex.alias(mailingAddress, nameof(AddressModel.City)),
-                    dbex.alias(mailingAddress, nameof(AddressModel.State)),
-                    dbex.alias(mailingAddress, nameof(AddressModel.ZIP)),
-                    dbex.alias(billingAddress, nameof(AddressModel.Line1)),
-                    dbex.alias(billingAddress, nameof(AddressModel.Line2)),
-                    dbex.alias(billingAddress, nameof(AddressModel.City)),
-                    dbex.alias(billingAddress, nameof(AddressModel.State)),
-                    dbex.alias(billingAddress, nameof(AddressModel.ZIP)),
-                    dbex.alias(shippingAddress, nameof(AddressModel.Line1)),
-                    dbex.alias(shippingAddress, nameof(AddressModel.Line2)),
-                    dbex.alias(shippingAddress, nameof(AddressModel.City)),
-                    dbex.alias(shippingAddress, nameof(AddressModel.State)),
-                    dbex.alias(shippingAddress, nameof(AddressModel.ZIP))
+                    dbex.Alias(mailingAddress, nameof(AddressModel.Line1)),
+                    dbex.Alias(mailingAddress, nameof(AddressModel.Line2)),
+                    dbex.Alias(mailingAddress, nameof(AddressModel.City)),
+                    dbex.Alias(mailingAddress, nameof(AddressModel.State)),
+                    dbex.Alias(mailingAddress, nameof(AddressModel.ZIP)),
+                    dbex.Alias(billingAddress, nameof(AddressModel.Line1)),
+                    dbex.Alias(billingAddress, nameof(AddressModel.Line2)),
+                    dbex.Alias(billingAddress, nameof(AddressModel.City)),
+                    dbex.Alias(billingAddress, nameof(AddressModel.State)),
+                    dbex.Alias(billingAddress, nameof(AddressModel.ZIP)),
+                    dbex.Alias(shippingAddress, nameof(AddressModel.Line1)),
+                    dbex.Alias(shippingAddress, nameof(AddressModel.Line2)),
+                    dbex.Alias(shippingAddress, nameof(AddressModel.City)),
+                    dbex.Alias(shippingAddress, nameof(AddressModel.State)),
+                    dbex.Alias(shippingAddress, nameof(AddressModel.ZIP))
                 )
                 .From(dbo.Customer)
                 .LeftJoin(dbo.PersonTotalPurchasesView).On(dbo.Customer.Id == dbo.PersonTotalPurchasesView.Id)
@@ -179,7 +179,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Mailing)
-                ).As(mailingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(mailingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.MailingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
@@ -192,7 +192,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Billing)
-                ).As(billingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(billingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.BillingAddress), nameof(CustomerSummaryModel.Id)))
                 .LeftJoin(
                     db.SelectOne(
                         dbo.CustomerAddress.CustomerId.As(nameof(CustomerSummaryModel.Id)),
@@ -205,7 +205,7 @@ namespace ServerSideBlazorApp.Service
                     .From(dbo.Address)
                     .InnerJoin(dbo.CustomerAddress).On(dbo.CustomerAddress.AddressId == dbo.Address.Id)
                     .Where(dbo.CustomerAddress.CustomerId == customerId & dbo.Address.AddressType == AddressType.Shipping)
-                ).As(shippingAddress).On(dbo.Customer.Id == dbex.alias(nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
+                ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
                     sqlRow => 

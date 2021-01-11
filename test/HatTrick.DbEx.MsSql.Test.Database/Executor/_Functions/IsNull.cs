@@ -310,13 +310,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.IsNull(dbex.alias("lines", "PurchasePrice"), 0).As("alias")
+                    db.fx.IsNull(dbex.Alias("lines", "PurchasePrice"), 0).As("alias")
                 ).From(dbo.Purchase)
                 .LeftJoin(
                     db.SelectOne<PurchaseLine>()
                     .From(dbo.PurchaseLine)
                     .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
-                ).As("lines").On(dbo.Purchase.Id == dbex.alias("lines", "PurchaseId"))
+                ).As("lines").On(dbo.Purchase.Id == dbex.Alias("lines", "PurchaseId"))
                 .Where(dbo.Purchase.Id == 1);
 
             //when               

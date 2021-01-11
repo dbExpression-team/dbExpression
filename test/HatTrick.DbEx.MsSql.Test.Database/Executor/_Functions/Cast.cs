@@ -221,13 +221,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Cast(dbex.alias("lines", "PurchasePrice")).AsVarChar(50).As("alias")
+                    db.fx.Cast(dbex.Alias("lines", "PurchasePrice")).AsVarChar(50).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)
                     .From(dbo.PurchaseLine)
                     .OrderBy(dbo.PurchaseLine.PurchasePrice.Desc)
-                ).As("lines").On(dbo.Purchase.Id == dbex.alias("lines", "PurchaseId"));
+                ).As("lines").On(dbo.Purchase.Id == dbex.Alias("lines", "PurchaseId"));
 
             //when               
             object result = exp.Execute();
