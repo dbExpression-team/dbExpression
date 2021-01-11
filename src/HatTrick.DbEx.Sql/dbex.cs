@@ -1,4 +1,5 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql
@@ -99,6 +100,17 @@ namespace HatTrick.DbEx.Sql
         /// </summary>
         public static NullableTimeSpanElement coerce(TimeSpanElement element)
             => new NullableTimeSpanExpressionMediator(element);
+
+        /// <summary>
+        /// Start constructing a list of <see cref="EntityFieldAssignment"/> containing update assignments for an <typeparamref name="TEntity"/> based on the differences between two <typeparamref name="TEntity"/> entities.  
+        /// The completion of this fluent builder is useful for building an UPDATE query expression for updating an <typeparamref name="TEntity"/> entity.
+        /// </summary>
+        /// <returns><see cref="EntityFieldAssignmentsContinuation{TEntity}"/>, a fluent continuation for the construction of a list of <see cref="EntityFieldAssignment"/>s.</returns>
+        public static EntityFieldAssignmentsContinuation<TEntity> BuildAssignmentsFor<TEntity>(Entity<TEntity> entity)
+            where TEntity : class, IDbEntity
+        {
+            return new EntityComparisonAssignmentBuilder<TEntity>(entity);
+        }
     }
 #pragma warning restore IDE1006 // Naming Styles
 }
