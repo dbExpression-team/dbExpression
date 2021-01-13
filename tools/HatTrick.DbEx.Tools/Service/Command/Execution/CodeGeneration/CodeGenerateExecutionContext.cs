@@ -25,6 +25,7 @@ namespace HatTrick.DbEx.Tools.Service
             "--path", "-p", //config file path
             "--output", "-o" //command line override of output path
         };
+        private readonly string DEFAULT_ROOT_NAMESPACE = "DbEx";
         private readonly string DEFAULT_CONFIG_PATH = "./";
         private readonly string DEFAULT_CONFIG_NAME = "dbex.config.json";
         private readonly string DEFAULT_OUTPUT_PATH = "./DbEx";
@@ -193,9 +194,9 @@ namespace HatTrick.DbEx.Tools.Service
 
             if (string.IsNullOrWhiteSpace(config.RootNamespace))
             {
-                string key1 = nameof(config.RootNamespace);
-                string msg = $"DbEx configuration file missing required key: {key1}";
-                throw new CommandException(msg);
+                //just provide a root namespace default...
+                config.RootNamespace = DEFAULT_ROOT_NAMESPACE;
+                svc.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.RootNamespace)}, defaulting to '{DEFAULT_ROOT_NAMESPACE}'");
             }
         }
         #endregion
@@ -639,7 +640,7 @@ namespace HatTrick.DbEx.Tools.Service
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming dbex.config.json is in the current working directory:»Green");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate -p ./");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}{base.Tab}Or");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}{base.Tab}or");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex generate");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"Usage assuming the dbex.config.json is in the config folder one direcory below current working directory:»Green");

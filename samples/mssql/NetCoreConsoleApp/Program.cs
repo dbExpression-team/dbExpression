@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using HatTrick.DbEx.MsSql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
+using Microsoft.Extensions.Configuration;
 using SimpleConsole.Data;
 using SimpleConsole.DataService;
 using SimpleConsole.dboData;
-using SimpleConsole.dboDataService;
-using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Converter;
-using Microsoft.Extensions.Configuration;
 
 namespace NetCoreConsoleApp
 {

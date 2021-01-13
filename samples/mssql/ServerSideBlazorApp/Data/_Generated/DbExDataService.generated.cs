@@ -5090,8 +5090,6 @@ namespace ServerSideBlazorApp.secDataService
         {
             return new InsertExpressionSet<Person>(person 
                 ,new InsertExpression<string>(SSN, person.SSN)
-                ,new InsertExpression<DateTimeOffset>(DateCreated, person.DateCreated)
-                ,new InsertExpression<DateTimeOffset>(DateUpdated, person.DateUpdated)
             );
         }
 
@@ -5100,8 +5098,6 @@ namespace ServerSideBlazorApp.secDataService
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
             if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
             return expr;
         }
 
@@ -5194,8 +5190,6 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5223,8 +5217,6 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
