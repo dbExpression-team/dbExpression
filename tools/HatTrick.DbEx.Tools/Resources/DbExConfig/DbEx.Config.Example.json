@@ -5,5 +5,9 @@
       "value": "{connectionString}"
     }
   },
-  "rootNamespace": "{generatedCodeRootNamespace}"
+  "workingDirectory":  null,
+  "rootNamespace": null,
+  "enums": [],
+  "outputDirectory": null,
+  "overrides": []
 }

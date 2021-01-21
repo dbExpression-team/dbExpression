@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.Sql.Connection
                 throw new DbExpressionException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
 
             if (DbTransaction != null)
-                throw new DbExpressionException("An pending transaction already exists for this connection.  Parallel transactions are not supported.");
+                throw new DbExpressionException("A pending transaction already exists for this connection.  Parallel transactions are not supported.");
 
             DbTransaction = _dbConnection.BeginTransaction();
             return DbTransaction;
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Connection
                 throw new DbExpressionException($"The connection is '{_dbConnection?.State ?? ConnectionState.Closed}'.");
 
             if (DbTransaction != null)
-                throw new DbExpressionException("An pending transaction already exists for this connection.  Parallel transactions are not supported.");
+                throw new DbExpressionException("A pending transaction already exists for this connection.  Parallel transactions are not supported.");
 
             DbTransaction = _dbConnection.BeginTransaction(iso);
             return DbTransaction;

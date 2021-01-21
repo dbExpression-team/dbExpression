@@ -121,16 +121,17 @@ namespace HatTrick.DbEx.Tools.Service
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"The following two commands produce the same results (output file written to current working directory):»Green");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d ./");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}{base.Tab}or");
             svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"Usage for an absolute output directory path:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d: c:/git/my-project");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d c:/git/my-project");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"Usage for a relative output directory path:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d: ../../my-project");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d ../../my-project");
             svc.Feedback.Push(To.ConsoleOnly, string.Empty);
             svc.Feedback.Push(To.ConsoleOnly, $"Usage for a output directory path containing spaces:»Green");
-            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d: \"../../my project\"");
+            svc.Feedback.Push(To.ConsoleOnly, $"{base.Tab}dbex makeconfig -d \"../../my project\"");
         }
         #endregion
     }

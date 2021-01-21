@@ -109,7 +109,7 @@
         "allowInsert": false,
         "allowUpdate": false,
         "to": {
-          "path": "dbo.*.DateCreated",
+          "path": "*.*.DateCreated",
           "objectType": "tablecolumn"
         }
       }
@@ -119,7 +119,7 @@
         "allowInsert": false,
         "allowUpdate": false,
         "to": {
-          "path": "dbo.*.DateUpdated",
+          "path": "*.*.DateUpdated",
           "objectType": "tablecolumn"
         }
       }
