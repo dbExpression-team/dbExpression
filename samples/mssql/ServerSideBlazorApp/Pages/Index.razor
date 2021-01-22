@@ -10,14 +10,14 @@
     <Card>
         <CardBody>
             <CardTitle>Recent Sales by Day</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider DividerType="DividerType.Dotted"></Divider>
             <SingleMetricChart Type="ChartType.Bar" Data="@GetDailySales" ShowLegend="false" />
         </CardBody>
     </Card>
     <Card>
         <CardBody>
             <CardTitle>Top VIP Customers</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider DividerType="DividerType.Dotted"></Divider>
             <CardText>
                 <Table Striped="true">
                     <TableHeader>
@@ -47,7 +47,7 @@
     <Card>
         <CardBody>
             <CardTitle>Recent Orders</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider DividerType="DividerType.Dotted"></Divider>
             <CardText>
                 <Table Striped="true">
                     <TableHeader>
@@ -80,7 +80,7 @@
     <Card>
         <CardBody>
             <CardTitle>Total Sales by Product Category</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider DividerType="DividerType.Dotted"></Divider>
             <SingleMetricChart Type="ChartType.Doughnut" Data="@GetSalesByProductCategory" />
         </CardBody>
     </Card>

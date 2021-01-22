@@ -4,7 +4,7 @@
     <Card Style="box-shadow:none;">
         <CardBody>
             <CardTitle>Order</CardTitle>
-            <Divider Type="DividerType.Dotted" />
+            <Divider DividerType="DividerType.Dotted" />
             <CardText>
                 <dl>
                     <dt>Order Number</dt>
@@ -34,7 +34,7 @@
     <Card Style="box-shadow:none;">
         <CardBody>
             <CardTitle>Billing Address</CardTitle>
-            <Divider Type="DividerType.Dotted" />
+            <Divider DividerType="DividerType.Dotted" />
             <CardText>
                 <AddressView Address="@Order.BillingAddress" />
             </CardText>
@@ -43,7 +43,7 @@
     <Card Style="box-shadow:none;">
         <CardBody>
             <CardTitle>Shipping Address</CardTitle>
-            <Divider Type="DividerType.Dotted"></Divider>
+            <Divider DividerType="DividerType.Dotted"></Divider>
             <CardText>
                 <AddressView Address="@Order.ShippingAddress" />
             </CardText>
@@ -53,7 +53,7 @@
 <Card Style="box-shadow:none;">
     <CardBody>
         <CardTitle>Items</CardTitle>
-        <Divider Type="DividerType.Dotted" />
+        <Divider DividerType="DividerType.Dotted" />
         <CardText>
             <Table Striped="true">
                 <TableHeader>
