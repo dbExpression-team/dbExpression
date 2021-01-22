@@ -7,13 +7,27 @@ namespace HatTrick.DbEx.MsSql.Connection
 {
     public class MsSqlConnectionFactory : SqlConnectionFactory
     {
+        #region internals
         private Func<string> connectionStringFactory;
+        private Func<string, IDbConnection> connectionFactory;
+        #endregion
 
-        public MsSqlConnectionFactory(Func<string> connectionStringFactory)
+        #region constructors
+
+        public MsSqlConnectionFactory(Func<string> connectionStringFactory) : this(connectionStringFactory, connectionString => new SqlConnection(connectionString))
         {
-            this.connectionStringFactory = connectionStringFactory;
+
         }
 
-        public override IDbConnection CreateSqlConnection() => new SqlConnection(connectionStringFactory());
+        public MsSqlConnectionFactory(Func<string> connectionStringFactory, Func<string, IDbConnection> connectionFactory)
+        {
+            this.connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException($"{nameof(connectionStringFactory)} is required.");
+            this.connectionFactory = connectionFactory ?? throw new ArgumentNullException($"{nameof(connectionFactory)} is required.");
+        }
+        #endregion
+
+        #region methods
+        public override IDbConnection CreateSqlConnection() => connectionFactory(connectionStringFactory());
+        #endregion
     }
 }
