@@ -211,25 +211,25 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            var source = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
-            var target = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+            var unchanged = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
+            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == lastName).Execute();
 
-            source.LastName = "x";
-            source.FirstName = "x";
+            updated.LastName = "x";
+            updated.FirstName = "x";
 
-            var comparison = dbex.BuildAssignmentsFor(dbo.Person).From(source).To(target);
+            var comparison = dbex.BuildAssignmentsFor(dbo.Person).From(unchanged).To(updated);
             var exp = db.Update(comparison)
                 .From(dbo.Person)
-                .Where(dbo.Person.Id == source.Id);
+                .Where(dbo.Person.Id == unchanged.Id);
 
             //when               
             var recordsAffected = exp.Execute();
-            var updated = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == "x").Execute();
+            var verification = db.SelectOne<Person>().From(dbo.Person).Where(dbo.Person.LastName == "x").Execute();
 
             //then
             recordsAffected.Should().Be(expectedRecordsAffected);
-            updated.LastName.Should().Be("x");
-            updated.FirstName.Should().Be("x");
+            verification.LastName.Should().Be("x");
+            verification.FirstName.Should().Be("x");
         }
 
         [Theory]
