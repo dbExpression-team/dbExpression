@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         ///<inheritdoc/>
         IEnumerable<EntityFieldAssignment> EntityFieldAssignmentsContinuation<TEntity>.To(TEntity newStateOfEntity)
-            => entity.BuildAssignmentExpression(newStateOfEntity ?? throw new ArgumentNullException($"{nameof(newStateOfEntity)} is required."), oldStateOfEntity).Expressions.Cast<EntityFieldAssignment>();
+            => entity.BuildAssignmentExpression(oldStateOfEntity, newStateOfEntity ?? throw new ArgumentNullException($"{nameof(newStateOfEntity)} is required.")).Expressions.Cast<EntityFieldAssignment>();
         #endregion
     }
 }
