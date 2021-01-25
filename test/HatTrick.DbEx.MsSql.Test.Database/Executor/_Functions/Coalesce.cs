@@ -165,7 +165,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_ascending_succeed(int version, int expected = 2017)
+        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_ascending_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -185,7 +185,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_descending_succeed(int version, int expected = 2017)
+        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_descending_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_ascending_and_aliasing_succeed(int version, int expected = 2017)
+        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_ascending_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -225,7 +225,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_descending_and_aliasing_succeed(int version, int expected = 2017)
+        public void Can_order_by_coalesce_of_ship_date_and_purchase_date_descending_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);

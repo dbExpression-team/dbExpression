@@ -191,7 +191,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
-        ///, for example "sec.Person.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, sec.Person.DateCreated)" or "db.fx.IsNull(sec.Person.DateCreated, DateTimeOffset.Now)"
+        ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
@@ -204,6 +204,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
@@ -623,7 +624,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DateTimeOffsetElement" />
-        ///, for example "sec.Person.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, sec.Person.DateCreated)" or "db.fx.IsNull(sec.Person.DateCreated, DateTimeOffset.Now)"
+        ///, for example "dbo.Person.RegistrationDate", "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.RegistrationDate)" or "db.fx.IsNull(dbo.Person.RegistrationDate, DateTimeOffset.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
@@ -636,6 +637,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableDateTimeOffsetElement" />
+        ///, for example "dbo.Person.LastLoginDate" or "db.fx.DateAdd(DateParts.Year, 1, dbo.Person.LastLoginDate)" 
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
@@ -1727,6 +1729,47 @@ namespace DbEx.dboDataService
         /// </summary>
         public readonly YearOfLastCreditLimitReviewField YearOfLastCreditLimitReview;
 
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.RegistrationDateField"/> representing the "dbo.Person.RegistrationDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.dboDataService.PersonEntity.RegistrationDateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>RegistrationDate</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetimeoffset</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(sysdatetimeoffset())</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly RegistrationDateField RegistrationDate;
+
+        /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.LastLoginDateField"/> representing the "dbo.Person.LastLoginDate" column in the database, 
+        /// with a .NET type of <see cref="DateTimeOffset"/>?.  The <see cref="DbEx.dboDataService.PersonEntity.LastLoginDateField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.NullableDateTimeOffsetElement"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>LastLoginDate</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetimeoffset</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly LastLoginDateField LastLoginDate;
+
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> representing the "dbo.Person.DateCreated" column in the database, 
         /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.PersonEntity.DateCreatedField"/> can be 
         /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
@@ -1791,6 +1834,8 @@ namespace DbEx.dboDataService
             Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", this));
             Fields.Add($"{identifier}.CreditLimit", CreditLimit = new CreditLimitField($"{identifier}.CreditLimit", this));
             Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField($"{identifier}.YearOfLastCreditLimitReview", this));
+            Fields.Add($"{identifier}.RegistrationDate", RegistrationDate = new RegistrationDateField($"{identifier}.RegistrationDate", this));
+            Fields.Add($"{identifier}.LastLoginDate", LastLoginDate = new LastLoginDateField($"{identifier}.LastLoginDate", this));
             Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
             Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
         }
@@ -1810,6 +1855,8 @@ namespace DbEx.dboDataService
                 ,new EnumSelectExpression<DbEx.Data.GenderType>(GenderType)
                 ,new NullableInt32SelectExpression(CreditLimit)
                 ,new NullableInt32SelectExpression(YearOfLastCreditLimitReview)
+                ,new DateTimeOffsetSelectExpression(RegistrationDate)
+                ,new NullableDateTimeOffsetSelectExpression(LastLoginDate)
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
@@ -1824,6 +1871,8 @@ namespace DbEx.dboDataService
                 ,new InsertExpression<DbEx.Data.GenderType>(GenderType, person.GenderType)
                 ,new InsertExpression<int?>(CreditLimit, person.CreditLimit)
                 ,new InsertExpression<int?>(YearOfLastCreditLimitReview, person.YearOfLastCreditLimitReview)
+                ,new InsertExpression<DateTimeOffset>(RegistrationDate, person.RegistrationDate)
+                ,new InsertExpression<DateTimeOffset?>(LastLoginDate, person.LastLoginDate)
             );
         }
 
@@ -1837,6 +1886,8 @@ namespace DbEx.dboDataService
             if (target.GenderType != source.GenderType) { expr &= GenderType.Set(source.GenderType); }
             if (target.CreditLimit != source.CreditLimit) { expr &= CreditLimit.Set(source.CreditLimit); }
             if (target.YearOfLastCreditLimitReview != source.YearOfLastCreditLimitReview) { expr &= YearOfLastCreditLimitReview.Set(source.YearOfLastCreditLimitReview); }
+            if (target.RegistrationDate != source.RegistrationDate) { expr &= RegistrationDate.Set(source.RegistrationDate); }
+            if (target.LastLoginDate != source.LastLoginDate) { expr &= LastLoginDate.Set(source.LastLoginDate); }
             return expr;
         }
 
@@ -1849,6 +1900,8 @@ namespace DbEx.dboDataService
 			person.GenderType = reader.ReadField().GetValue<DbEx.Data.GenderType>();
 			person.CreditLimit = reader.ReadField().GetValue<int?>();
 			person.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+			person.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
+			person.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
 			person.DateCreated = reader.ReadField().GetValue<DateTime>();
 			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
@@ -2060,6 +2113,67 @@ namespace DbEx.dboDataService
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value));
             public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            #endregion
+        }
+        #endregion
+
+        #region registration date field expression
+        public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Person>
+        {
+            #region constructors
+            public RegistrationDateField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+
+            private RegistrationDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeOffsetElement As(string alias)
+            {
+                return new DateTimeOffsetSelectExpression(this).As(alias);
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
+            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region last login date field expression
+        public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Person>
+        {
+            #region constructors
+            public LastLoginDateField(string identifier, PersonEntity entity) : base(identifier, entity)
+            {
+
+            }
+
+            private LastLoginDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override NullableDateTimeOffsetElement As(string alias)
+            {
+                return new NullableDateTimeOffsetSelectExpression(this).As(alias);
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
+            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
+            public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value));
+            public AssignmentExpression Set(NullableDateTimeOffsetElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
             #endregion
         }
@@ -4981,9 +5095,6 @@ namespace DbEx.secDataService
         /// <item>
         /// <term>allow null</term><description>no</description>
         /// </item>
-        /// <item>
-        /// <term>identity</term><description>yes</description>
-        /// </item>
         /// </list>
         /// </para>
         /// </summary>
@@ -4998,7 +5109,7 @@ namespace DbEx.secDataService
         /// <term>name</term><description>SSN</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>char(9)</description>
+        /// <term>sql type</term><description>char(11)</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
@@ -5009,15 +5120,15 @@ namespace DbEx.secDataService
         public readonly SSNField SSN;
 
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> representing the "sec.Person.DateCreated" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateCreated</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>datetimeoffset</description>
+        /// <term>sql type</term><description>datetime</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
@@ -5031,15 +5142,15 @@ namespace DbEx.secDataService
         public readonly DateCreatedField DateCreated;
 
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> representing the "sec.Person.DateUpdated" column in the database, 
-        /// with a .NET type of <see cref="DateTimeOffset"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> can be 
-        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeOffsetElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeOffsetElement"/>.
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.secDataService.PersonEntity.DateUpdatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
         /// <para>Database Properties:
         /// <list type="table">
         /// <item>
         /// <term>name</term><description>DateUpdated</description>
         /// </item>
         /// <item>
-        /// <term>sql type</term><description>datetimeoffset</description>
+        /// <term>sql type</term><description>datetime</description>
         /// </item>
         /// <item>
         /// <term>allow null</term><description>no</description>
@@ -5081,17 +5192,16 @@ namespace DbEx.secDataService
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
                 new Int32SelectExpression(Id)
                 ,new StringSelectExpression(SSN)
-                ,new DateTimeOffsetSelectExpression(DateCreated)
-                ,new DateTimeOffsetSelectExpression(DateUpdated)
+                ,new DateTimeSelectExpression(DateCreated)
+                ,new DateTimeSelectExpression(DateUpdated)
             ));
         }
 		
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
         {
             return new InsertExpressionSet<Person>(person 
+                ,new InsertExpression<int>(Id, person.Id)
                 ,new InsertExpression<string>(SSN, person.SSN)
-                ,new InsertExpression<DateTimeOffset>(DateCreated, person.DateCreated)
-                ,new InsertExpression<DateTimeOffset>(DateUpdated, person.DateUpdated)
             );
         }
 
@@ -5099,9 +5209,8 @@ namespace DbEx.secDataService
         {
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
+            if (target.Id != source.Id) { expr &= Id.Set(source.Id); }
             if (target.SSN != source.SSN) { expr &= SSN.Set(source.SSN); }
-            if (target.DateCreated != source.DateCreated) { expr &= DateCreated.Set(source.DateCreated); }
-            if (target.DateUpdated != source.DateUpdated) { expr &= DateUpdated.Set(source.DateUpdated); }
             return expr;
         }
 
@@ -5109,8 +5218,8 @@ namespace DbEx.secDataService
         {
 			person.Id = reader.ReadField().GetValue<int>();
 			person.SSN = reader.ReadField().GetValue<string>();
-			person.DateCreated = reader.ReadField().GetValue<DateTimeOffset>();
-			person.DateUpdated = reader.ReadField().GetValue<DateTimeOffset>();
+			person.DateCreated = reader.ReadField().GetValue<DateTime>();
+			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -5138,6 +5247,8 @@ namespace DbEx.secDataService
             #endregion
 
             #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
@@ -5172,7 +5283,7 @@ namespace DbEx.secDataService
         #endregion
 
         #region date created field expression
-        public partial class DateCreatedField : DateTimeOffsetFieldExpression<Person>
+        public partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateCreatedField(string identifier, PersonEntity entity) : base(identifier, entity)
@@ -5187,21 +5298,19 @@ namespace DbEx.secDataService
             #endregion
 
             #region as
-            public override DateTimeOffsetElement As(string alias)
+            public override DateTimeElement As(string alias)
             {
-                return new DateTimeOffsetSelectExpression(this).As(alias);
+                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion
 
         #region date updated field expression
-        public partial class DateUpdatedField : DateTimeOffsetFieldExpression<Person>
+        public partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
             public DateUpdatedField(string identifier, PersonEntity entity) : base(identifier, entity)
@@ -5216,15 +5325,13 @@ namespace DbEx.secDataService
             #endregion
 
             #region as
-            public override DateTimeOffsetElement As(string alias)
+            public override DateTimeElement As(string alias)
             {
-                return new DateTimeOffsetSelectExpression(this).As(alias);
+                return new DateTimeSelectExpression(this).As(alias);
             }
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
-            public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
         }
         #endregion

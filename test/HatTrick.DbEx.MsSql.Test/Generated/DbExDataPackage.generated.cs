@@ -38,6 +38,8 @@ namespace DbEx.dboData
         public virtual DbEx.Data.GenderType GenderType { get; set; }
         public virtual int? CreditLimit { get; set; }
         public virtual int? YearOfLastCreditLimitReview { get; set; }
+        public virtual DateTimeOffset RegistrationDate { get; set; }
+        public virtual DateTimeOffset? LastLoginDate { get; set; }
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -173,8 +175,8 @@ namespace DbEx.secData
         #region interface
         public virtual int Id { get; set; }
         public virtual string SSN { get; set; }
-        public virtual DateTimeOffset DateCreated { get; set; }
-        public virtual DateTimeOffset DateUpdated { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateUpdated { get; set; }
         #endregion
 
         #region constructor

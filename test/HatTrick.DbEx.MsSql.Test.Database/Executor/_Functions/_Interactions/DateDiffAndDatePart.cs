@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datediff_of_purchase_date_and_date_created_added_to_datepart_of_purchase_date_succeed(int version, int expected = 2017)
+        public void Does_selecting_datediff_of_purchase_date_and_date_created_added_to_datepart_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 2017)
+        public void Does_selecting_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2017)
+        public void Does_selecting_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_purchase_date_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2017)
+        public void Does_selecting_datepart_of_purchase_date_added_to_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datediff_of_purchase_date_and_date_created_minus_datepart_of_purchase_date_succeed(int version, int expected = -2017)
+        public void Does_selecting_datediff_of_purchase_date_and_date_created_minus_datepart_of_purchase_date_succeed(int version, int expected = -2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_ship_date_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 2017)
+        public void Does_selecting_datepart_of_ship_date_minus_datediff_of_purchase_date_and_ship_date_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -133,7 +133,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_ship_date_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2017)
+        public void Does_selecting_datepart_of_ship_date_minus_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -153,7 +153,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_datepart_of_purchase_date_minums_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2017)
+        public void Does_selecting_datepart_of_purchase_date_minums_datediff_of_purchase_date_and_date_created_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);

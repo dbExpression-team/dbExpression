@@ -153,8 +153,8 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
                 .And.Be(sec.Person.DateCreated);
 
             dateCreatedFilter.RightArg
-                .Should().BeOfType<LiteralExpression<DateTimeOffset>>()
-                .Which.Expression.Should().Be((DateTimeOffset)now);
+                .Should().BeOfType<LiteralExpression<DateTime>>()
+                .Which.Expression.Should().Be(now);
         }
     }
 }
