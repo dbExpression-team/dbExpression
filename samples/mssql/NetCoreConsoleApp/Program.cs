@@ -114,6 +114,8 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Male,
                     CreditLimit = 4500,
                     YearOfLastCreditLimitReview = 2019,
+                    RegistrationDate = DateTimeOffset.Now,
+                    LastLoginDate = null,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
@@ -132,6 +134,8 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Male,
                     CreditLimit = 80000,
                     YearOfLastCreditLimitReview = 2020,
+                    RegistrationDate = DateTimeOffset.Now,
+                    LastLoginDate = null,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
