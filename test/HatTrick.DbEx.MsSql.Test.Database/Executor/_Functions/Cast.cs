@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2017")
+        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_succeed(int version, string expected = "Nov  5 2017")
+        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_succeed(int version, string expected = "Nov  5 2019")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -95,7 +95,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2017")
+        public void Can_order_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -115,7 +115,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_and_aliasing_succeed(int version, string expected = "Nov  5 2017")
+        public void Can_order_by_cast_of_purchase_date_to_varchar_descending_and_aliasing_succeed(int version, string expected = "Nov  5 2019")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -135,7 +135,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2017")
+        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2017")
+        public void Can_group_by_cast_of_purchase_date_to_varchar_ascending_and_aliasing_succeed(int version, string expected = "Nov  1 2019")
         {
             //given
             ConfigureForMsSqlVersion(version);

@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_minimum_of_dateadd_of_purchase_date_succeed(int version, int expected = 2018)
+        public void Does_selecting_minimum_of_dateadd_of_purchase_date_succeed(int version, int expected = 2020)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_minimum_of_dateadd_of_ship_date_succeed(int version, int expected = 2018)
+        public void Does_selecting_minimum_of_dateadd_of_ship_date_succeed(int version, int expected = 2020)
         {
             //given
             ConfigureForMsSqlVersion(version);

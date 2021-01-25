@@ -334,6 +334,8 @@ namespace NetCoreConsoleApp
 					dbo.Person.GenderType,
 					dbo.Person.CreditLimit,
 					dbo.Person.YearOfLastCreditLimitReview,
+					dbo.Person.RegistrationDate,
+					dbo.Person.LastLoginDate,
 					dbo.Person.DateCreated,
 					dbo.Person.DateUpdated)
 			   .Having(db.fx.Count(dbo.Address.Id) > 1)

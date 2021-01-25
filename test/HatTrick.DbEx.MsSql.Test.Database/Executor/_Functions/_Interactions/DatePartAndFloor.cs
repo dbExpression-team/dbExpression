@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_floor_of_year_datepart_of_purchase_date_succeed(int version, int expected = 2017)
+        public void Does_selecting_floor_of_year_datepart_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_floor_of_year_datepart_of_ship_date_succeed(int version, int expected = 2017)
+        public void Does_selecting_floor_of_year_datepart_of_ship_date_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);

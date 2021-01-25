@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Does_datepart_selecting_year_of_purchase_date_succeed(int version, int expected = 2017)
+        public void Does_datepart_selecting_year_of_purchase_date_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datepart_selecting_year_of_purchase_date_ascending_succeed(int version, int expected = 2017)
+        public void Can_order_by_datepart_selecting_year_of_purchase_date_ascending_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datepart_selecting_year_of_ship_date_descending_succeed(int version, int expected = 2017)
+        public void Can_order_by_datepart_selecting_year_of_ship_date_descending_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -97,7 +97,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datepart_selecting_year_of_purchase_date_and_aliasing_succeed(int version, int expected = 2017)
+        public void Can_order_by_datepart_selecting_year_of_purchase_date_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_datepart_selecting_year_of_ship_date_descending_and_aliasing_succeed(int version, int expected = 2017)
+        public void Can_order_by_datepart_selecting_year_of_ship_date_descending_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -157,7 +157,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "GROUP BY")]
-        public void Can_group_by_datepart_selecting_year_of_purchase_date_and_aliasing_succeed(int version, int expected = 2017)
+        public void Can_group_by_datepart_selecting_year_of_purchase_date_and_aliasing_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);

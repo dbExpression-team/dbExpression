@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     {
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_selecting_average_of_datedpart_of_purchasedate_and_shipdate_and_datepart_of_purchasedate_succeed(int version, int expected = 2017)
+        public void Does_selecting_average_of_datedpart_of_purchasedate_and_shipdate_and_datepart_of_purchasedate_succeed(int version, int expected = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);

@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            int year = 2017;
+            int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             var vipStatistics = db.SelectMany(
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            int year = 2017;
+            int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             var vipStatistics = db.SelectMany(
@@ -127,7 +127,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             ConfigureForMsSqlVersion(version);
 
-            int year = 2017;
+            int year = 2019;
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             var vipStatistics = db.SelectMany(

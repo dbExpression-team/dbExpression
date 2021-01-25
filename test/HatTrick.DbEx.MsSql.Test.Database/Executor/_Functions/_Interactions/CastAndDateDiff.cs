@@ -184,7 +184,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expectedValue = 2017)
+        public void Does_datepart_of_ship_date_added_to_datediff_of_purchase_date_and_ship_date_succeed(int version, int expectedValue = 2019)
         {
             //given
             ConfigureForMsSqlVersion(version);

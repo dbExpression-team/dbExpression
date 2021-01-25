@@ -143,7 +143,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 [Trait("Operation", "GROUP BY")]
                 [Trait("Operation", "HAVING")]
                 [MsSqlVersions.AllVersions]
-                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int version, int expected = 3, int shippedCount = 3, int year = 2017)
+                public void Does_purchasedate_count_by_person_having_count_of_shipdate_equal_to_3_and_year_equal_to_2017_have_correct_count(int version, int expected = 3, int shippedCount = 3, int year = 2019)
                 {
                     //given
                     ConfigureForMsSqlVersion(version);

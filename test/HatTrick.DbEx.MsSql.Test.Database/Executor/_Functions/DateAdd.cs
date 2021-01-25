@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public void Does_dateadd_of_year_to_shipdate_succeed(int version, int expectedValue = 2018)
+        public void Does_dateadd_of_year_to_shipdate_succeed(int version, int expectedValue = 2020)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -77,7 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_succeed(int version, int expected = 2018)
+        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_succeed(int version, int expected = 2020)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -117,7 +117,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "ORDER BY")]
-        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_and_aliasing_succeed(int version, int expected = 2018)
+        public void Can_order_by_dateadd_of_year_to_null_ship_date_descending_and_aliasing_succeed(int version, int expected = 2020)
         {
             //given
             ConfigureForMsSqlVersion(version);
