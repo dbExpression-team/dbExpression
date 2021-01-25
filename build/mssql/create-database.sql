@@ -154,6 +154,8 @@ CREATE TABLE [dbo].[Person](
 	[GenderType] INT NOT NULL,
 	[CreditLimit] INT NULL,
 	[YearOfLastCreditLimitReview] INT NULL,
+	[RegistrationDate] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_RegistrationDate]  DEFAULT (sysdatetimeoffset()),
+	[LastLoginDate] DATETIMEOFFSET NULL,
 	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
 	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_Person] PRIMARY KEY CLUSTERED ([Id]) 
@@ -274,10 +276,10 @@ CREATE SCHEMA [sec]
 GO
 
 CREATE TABLE [sec].[Person](
-	[Id] INT IDENTITY(1,1) NOT NULL,
-	[SSN] CHAR(9) NOT NULL,
-	[DateCreated] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
-	[DateUpdated] DATETIMEOFFSET NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
+	[Id] INT NOT NULL,
+	[SSN] CHAR(11) NOT NULL,
+	[DateCreated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateCreated]  DEFAULT (getdate()),
+	[DateUpdated] DATETIME NOT NULL CONSTRAINT [DF_Person_DateUpdated]  DEFAULT (getdate()),
 	CONSTRAINT [PK_secPerson] PRIMARY KEY CLUSTERED ([Id])
 )
 GO
