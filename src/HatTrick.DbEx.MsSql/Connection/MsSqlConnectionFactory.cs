@@ -8,8 +8,8 @@ namespace HatTrick.DbEx.MsSql.Connection
     public class MsSqlConnectionFactory : SqlConnectionFactory
     {
         #region internals
-        private Func<string> connectionStringFactory;
-        private Func<string, IDbConnection> connectionFactory;
+        private readonly Func<string> connectionStringFactory;
+        private readonly Func<string, IDbConnection> connectionFactory;
         #endregion
 
         #region constructors

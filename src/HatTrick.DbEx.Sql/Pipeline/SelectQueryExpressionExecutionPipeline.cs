@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution,
             PipelineEventHook<AfterExecutionPipelineExecutionContext> afterExecution,
             PipelineEventHook<BeforeSelectPipelineExecutionContext> beforeSelect,
-            PipelineEventHook<AfterSelectPipelineExecutionContext> afterSelect
+            PipelineEventHook<AfterSelectPipelineExecutionContext> afterSelectEntity
         )
         {
             this.database = database;
@@ -42,7 +42,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             this.beforeExecution = beforeExecution;
             this.afterExecution = afterExecution;
             this.beforeSelect = beforeSelect;
-            this.afterSelect = afterSelect;
+            this.afterSelect = afterSelectEntity;
         }
         #endregion
 
@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public async Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
             where T : class, IDbEntity, new()
         {
-            T value = default;
+            T entity = default;
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -87,19 +87,19 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     else
                         reader.Close();
 
-                    value = database.EntityFactory.CreateEntity<T>();
+                    entity = database.EntityFactory.CreateEntity<T>();
                     var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
-                    mapper.Map(value, row);
+                    mapper.Map(entity, row);
                 },
                 ct
             ).ConfigureAwait(false);
-            return value;
+            return entity;
         }
 
         public IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
             where T : class, IDbEntity, new()
         {
-            var values = new List<T>();
+            var entities = new List<T>();
             var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
             ExecuteSelectQuery(
                 expression,
@@ -112,11 +112,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     {
                         var entity = database.EntityFactory.CreateEntity<T>();
                         mapper.Map(entity, row);
-                        values.Add(entity);
+                        entities.Add(entity);
                     }
                 }
             );
-            return values;
+            return entities;
         }
 
         public async Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
@@ -133,9 +133,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlRow row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
                     {
-                        var value = database.EntityFactory.CreateEntity<T>();
-                        mapper.Map(value, row);
-                        values.Add(value);
+                        var entity = database.EntityFactory.CreateEntity<T>();
+                        mapper.Map(entity, row);
+                        values.Add(entity);
                     }
                 },
                 ct
@@ -457,25 +457,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
 
-            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)));
+            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)));
             var statement = statementBuilder.CreateSqlStatement();
-            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder)));
+            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)));
 
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
 
-            beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, appender, parameterBuilder)));
+            beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, parameterBuilder)));
 
             var reader = executor.ExecuteQuery(
                 statement, 
                 connection,
                 new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory),
                 cmd => { 
-                    beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statement, cmd))); 
+                    beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
-                cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, statement, cmd)))
+                cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
             );
 
             if (reader is null)
@@ -483,7 +483,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             transform(reader);
 
-            afterSelect?.Invoke(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(database, expression, statement)));
+            afterSelect?.Invoke(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(database, expression)));
         }
 
         private async Task ExecuteSelectQueryAsync(
@@ -496,17 +496,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
 
             if (beforeAssembly is object)
             {
-                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
+                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
             }
 
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {
-                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder)), ct).ConfigureAwait(false);
+                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+
+            if (beforeSelect is object)
+            {
+                await beforeSelect.InvokeAsync(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, parameterBuilder)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
             }
 
             var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
@@ -515,21 +523,25 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 statement,
                 connection,
                 new SqlStatementValueConverterResolver(expression.Select, database.ValueConverterFactory),
-                async cmd => {
+                async cmd =>
+                {
                     if (beforeExecution is object)
                     {
-                        await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, statementBuilder.CreateSqlStatement(), cmd)), ct).ConfigureAwait(false);
+                        await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);
                     }
-                    configureCommand?.Invoke(cmd); 
+                    configureCommand?.Invoke(cmd);
                 },
-                async cmd => {
+                async cmd =>
+                {
                     if (afterExecution is object)
                     {
-                        await afterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, statement, cmd)), ct).ConfigureAwait(false);
+                        await afterExecution.InvokeAsync(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)), ct).ConfigureAwait(false);
                     }
-                }, 
+                },
                 ct
             ).ConfigureAwait(false);
+
+            ct.ThrowIfCancellationRequested();
 
             if (reader is null)
                 return;
@@ -538,7 +550,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             if (afterSelect is object)
             {
-                await afterSelect.InvokeAsync(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(database, expression, statement)), ct).ConfigureAwait(false);
+                await afterSelect.InvokeAsync(new Lazy<AfterSelectPipelineExecutionContext>(() => new AfterSelectPipelineExecutionContext(database, expression)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
             }
         }
     }

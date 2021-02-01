@@ -6,25 +6,26 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public class SqlStatementExecutorFactory : ISqlStatementExecutorFactory
     {
+        #region internals
         private static readonly ISqlStatementExecutor sqlStatementExecutor = new SqlStatementExecutor();
-        private readonly ConcurrentDictionary<Type, Func<ISqlStatementExecutor>> _statementExecutors = new ConcurrentDictionary<Type, Func<ISqlStatementExecutor>>();
+        private readonly ConcurrentDictionary<Type, Func<ISqlStatementExecutor>> statementExecutors = new ConcurrentDictionary<Type, Func<ISqlStatementExecutor>>();
+        #endregion
 
-        public virtual void RegisterDefaultExecutors()
+        #region constructors
+        public SqlStatementExecutorFactory()
         {
-            _statementExecutors.TryAdd(typeof(SelectQueryExpression), () => sqlStatementExecutor);
-            _statementExecutors.TryAdd(typeof(InsertQueryExpression), () => sqlStatementExecutor);
-            _statementExecutors.TryAdd(typeof(UpdateQueryExpression), () => sqlStatementExecutor);
-            _statementExecutors.TryAdd(typeof(DeleteQueryExpression), () => sqlStatementExecutor);
+            RegisterExecutor<SelectQueryExpression>(sqlStatementExecutor);
+            RegisterExecutor<InsertQueryExpression>(sqlStatementExecutor);
+            RegisterExecutor<UpdateQueryExpression>(sqlStatementExecutor);
+            RegisterExecutor<DeleteQueryExpression>(sqlStatementExecutor);
         }
+        #endregion
 
-        protected void RegisterQueryExpressionWithDefaultExecutor<T>()
-            where T : QueryExpression
-            => _statementExecutors.AddOrUpdate(typeof(T), () => sqlStatementExecutor, (t, f) => () => sqlStatementExecutor);
-
+        #region methods
         public void RegisterExecutor<T, U>()
             where T : QueryExpression
             where U : class, ISqlStatementExecutor, new()
-            => _statementExecutors.AddOrUpdate(typeof(T), () => new U(), (t, f) => () => new U());
+            => RegisterExecutor<T>(() => new U());
 
         public void RegisterExecutor<T>(ISqlStatementExecutor executor)
             where T : QueryExpression
@@ -32,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public void RegisterExecutor<T>(Func<ISqlStatementExecutor> executorFactory)
             where T : QueryExpression
-            => _statementExecutors.AddOrUpdate(typeof(T), executorFactory, (t, f) => executorFactory);
+            => statementExecutors.AddOrUpdate(typeof(T), executorFactory, (t, f) => executorFactory);
 
         public ISqlStatementExecutor CreateSqlStatementExecutor(QueryExpression expression)
         {
@@ -42,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Executor
 
         private Func<ISqlStatementExecutor> ResolveElementAppenderFactory(Type current, Type original)
         {
-            if (_statementExecutors.TryGetValue(current, out Func<ISqlStatementExecutor> factory))
+            if (statementExecutors.TryGetValue(current, out Func<ISqlStatementExecutor> factory))
                 return factory;
 
             if (current.BaseType is null)
@@ -52,9 +53,10 @@ namespace HatTrick.DbEx.Sql.Executor
 
             if (factory is object && current == original)
                 //reduce runtime recursion by "registering" the original with the found appender
-                _statementExecutors.TryAdd(original, factory);
+                statementExecutors.TryAdd(original, factory);
 
             return factory;
         }
+        #endregion
     }
 }

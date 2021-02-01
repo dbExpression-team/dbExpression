@@ -11,12 +11,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
         public IEnumerable<UpdateFieldDescriptor> Fields { get; private set; }
-        public IAppender CommandTextWriter { get; private set; }
+        public SqlStatement SqlStatement { get; private set; }
 
-        public BeforeUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        public BeforeUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
-            CommandTextWriter = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
+            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
             Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
         }

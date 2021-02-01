@@ -8,12 +8,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
     public class BeforeSelectPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
-        public IAppender CommandTextWriter { get; private set; }
+        public SqlStatement SqlStatement { get; private set; }
 
-        public BeforeSelectPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        public BeforeSelectPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
-            CommandTextWriter = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
+            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
         }
     }

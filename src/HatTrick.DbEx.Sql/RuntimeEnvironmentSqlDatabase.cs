@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql
+﻿using System;
+
+namespace HatTrick.DbEx.Sql
 {
     public abstract class RuntimeEnvironmentSqlDatabase : IRuntimeEnvironmentSqlDatabase
     {
@@ -7,8 +9,8 @@
 
         protected RuntimeEnvironmentSqlDatabase(IRuntimeSqlDatabase database, ISqlDatabaseMetadataProvider metadata)
         {
-            Database = database;
-            Metadata = metadata;
+            Database = database ?? throw new ArgumentNullException($"{nameof(database)} is required.");
+            Metadata = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required.");
         }
     }
 }

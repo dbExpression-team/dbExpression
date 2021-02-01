@@ -2,26 +2,35 @@
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class BeforeInsertPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public IDbEntity InsertEntity { get; private set; }
-        public ISqlParameterBuilder ParameterBuilder { get; private set; }
-        public IEnumerable<InsertFieldDescriptor> Fields { get; private set; }
-        public IAppender CommandTextWriter { get; private set; }
+        #region internals
+        private readonly IDbEntity entity;
+        #endregion
 
-        public BeforeInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        #region interface
+        public ISqlParameterBuilder ParameterBuilder { get; private set; }
+        public SqlStatement SqlStatement { get; private set; }
+        public override Type EntityType => entity.GetType();
+        #endregion
+
+        #region constructors
+        public BeforeInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, IDbEntity entity, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
-            CommandTextWriter = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
-            InsertEntity = target?.Entity ?? throw new ArgumentNullException($"{nameof(target)} is required.");
-            Fields = target.Expressions.Select(x => new InsertFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
+            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
+            this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
         }
+        #endregion
+
+        #region methods
+        public TEntity GetEntity<TEntity>()
+            where TEntity : class, IDbEntity
+            => entity as TEntity;
+        #endregion
     }
 }

@@ -298,10 +298,23 @@ namespace HatTrick.DbEx.MsSql.Builder
         }
         #endregion
 
-        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<EntityFieldAssignment> fields)
+        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
         {
             var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Assign = new AssignmentExpressionSet(expression.Assign.Expressions.Concat(fields?.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(fields)} to be assignable to {typeof(AssignmentExpression)}."))));
+            expression.Assign = new AssignmentExpressionSet(
+                new List<AssignmentExpression>(assignments.Length + 1)
+                {
+                    assignment as AssignmentExpression ?? throw new DbExpressionException($"Expected {nameof(assignment)} to be assignable to {typeof(AssignmentExpression)}.")
+                }
+                .Concat(assignments?.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")))
+            );
+            return new MsSqlUpdateQueryExpressionBuilder(configuration, expression);
+        }
+
+        public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<EntityFieldAssignment> assignments)
+        {
+            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Assign = new AssignmentExpressionSet(assignments.Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
             return new MsSqlUpdateQueryExpressionBuilder(configuration, expression);
         }
 
@@ -315,8 +328,17 @@ namespace HatTrick.DbEx.MsSql.Builder
             where TEntity : class, IDbEntity
             => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), new List<TEntity> { instance });
 
-        public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, IList<TEntity> instances)
+        public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity entity, params TEntity[] entities)
+            where TEntity : class, IDbEntity
+            => new MsSqlInsertQueryExpressionBuilder<TEntity>(
+                configuration, 
+                (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."),
+                new List<TEntity>(entities.Length + 1) { entity }.Concat(entities)
+            );
+
+        public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances)
             where TEntity : class, IDbEntity
             => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), instances);
+
     }
 }

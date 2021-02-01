@@ -7,8 +7,5 @@ namespace HatTrick.DbEx.Sql.Converter
     {
         IValueConverter CreateConverter<T>();
         IValueConverter CreateConverter(Type type);
-        void RegisterConverter<T>(IValueConverter converter);
-        void RegisterConverter<T, U>()
-            where U : class, IValueConverter, new();
     }
 }

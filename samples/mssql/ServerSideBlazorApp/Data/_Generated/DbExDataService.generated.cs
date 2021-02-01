@@ -17,7 +17,8 @@ namespace ServerSideBlazorApp.DataService
     public abstract class CRMDatabaseRuntimeSqlDatabase : IRuntimeSqlDatabase
     {
         #region internals
-        protected static RuntimeSqlDatabaseConfiguration config = new RuntimeSqlDatabaseConfiguration();
+        private const string NO_CONFIG_MESSAGE = "Cannot construct or execute queries as the database runtime environment has not been configured.";
+        protected static RuntimeSqlDatabaseConfiguration config;
         protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
@@ -26,6 +27,9 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region methods
+        void IRuntimeSqlDatabase.Initialize(RuntimeSqlDatabaseConfiguration configuration)
+            => config = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -40,7 +44,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config);
+            => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE));
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -55,7 +59,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -70,7 +74,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
@@ -83,7 +87,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<object> SelectOne(AnyObjectElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -95,7 +99,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<bool> SelectOne(BooleanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -107,7 +111,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -119,7 +123,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte> SelectOne(ByteElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -131,7 +135,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte?> SelectOne(NullableByteElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -144,7 +148,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -156,7 +160,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -169,7 +173,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime> SelectOne(DateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -195,7 +199,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -208,7 +212,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -221,7 +225,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<decimal> SelectOne(DecimalElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -234,7 +238,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -247,7 +251,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<double> SelectOne(DoubleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -260,7 +264,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<double?> SelectOne(NullableDoubleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -272,7 +276,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<Guid> SelectOne(GuidElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -285,7 +289,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -297,7 +301,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<short> SelectOne(Int16Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -309,7 +313,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<short?> SelectOne(NullableInt16Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -322,7 +326,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int> SelectOne(Int32Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -335,7 +339,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int?> SelectOne(NullableInt32Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -347,7 +351,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<long> SelectOne(Int64Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -359,7 +363,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<long?> SelectOne(NullableInt64Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -371,7 +375,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<float> SelectOne(SingleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -383,7 +387,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<float?> SelectOne(NullableSingleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -396,7 +400,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(StringElement element) 
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -408,7 +412,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(NullableStringElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -420,7 +424,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -433,7 +437,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
@@ -475,7 +479,7 @@ namespace ServerSideBlazorApp.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity
-           => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config);
+           => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE));
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -489,7 +493,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -503,7 +507,7 @@ namespace ServerSideBlazorApp.DataService
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
@@ -516,7 +520,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<object> SelectMany(AnyObjectElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -528,7 +532,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<bool> SelectMany(BooleanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -540,7 +544,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -552,7 +556,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte> SelectMany(ByteElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -564,7 +568,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte?> SelectMany(NullableByteElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -577,7 +581,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -589,7 +593,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -602,7 +606,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime> SelectMany(DateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -615,7 +619,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -628,7 +632,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -641,7 +645,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -654,7 +658,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<decimal> SelectMany(DecimalElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -667,7 +671,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -680,7 +684,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<double> SelectMany(DoubleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -693,7 +697,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<double?> SelectMany(NullableDoubleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -705,7 +709,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<Guid> SelectMany(GuidElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -718,7 +722,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -730,7 +734,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<short> SelectMany(Int16Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -742,7 +746,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<short?> SelectMany(NullableInt16Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -755,7 +759,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int> SelectMany(Int32Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -768,7 +772,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int?> SelectMany(NullableInt32Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -780,7 +784,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<long> SelectMany(Int64Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -792,7 +796,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<long?> SelectMany(NullableInt64Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -804,7 +808,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<float> SelectMany(SingleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -816,7 +820,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<float?> SelectMany(NullableSingleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -829,7 +833,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(StringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -841,7 +845,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(NullableStringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -853,7 +857,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -866,7 +870,7 @@ namespace ServerSideBlazorApp.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -900,13 +904,14 @@ namespace ServerSideBlazorApp.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
         /// </para>
         /// </summary>
-        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
+        /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities Update(params EntityFieldAssignment[] assignments)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
+        public static UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -932,7 +937,7 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities Delete()
-            => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
+            => expressionBuilderFactory.CreateDeleteExpressionBulder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE));
         #endregion
 
         #region insert
@@ -960,9 +965,9 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<TEntity> InsertMany<TEntity>(params TEntity[] entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -974,7 +979,7 @@ namespace ServerSideBlazorApp.DataService
         /// </param>
         /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<TEntity> InsertMany<TEntity>(IList<TEntity> entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
         #endregion

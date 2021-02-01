@@ -1,6 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-
-namespace HatTrick.DbEx.Sql
+﻿namespace HatTrick.DbEx.Sql
 {
     public interface ISqlDatabaseMetadataProvider
     {
