@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne(dbo.Person.Id)
@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = new SqlConnector(config.ConnectionFactory);
 
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -150,10 +150,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
-
-            db.SelectOne<Person>();
 
             var exp = db.SelectOne<Person>()
                 .From(dbo.Person);
@@ -191,7 +189,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = new SqlConnector(config.ConnectionFactory);
 
@@ -233,7 +231,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -282,7 +280,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne(
@@ -327,7 +325,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = new SqlConnector(config.ConnectionFactory);
 
@@ -375,7 +373,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -448,7 +446,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne(
@@ -474,7 +472,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e =>
+                c => c.Events.OnBeforeSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -525,7 +523,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -578,7 +576,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne(dbo.Person.Id)
@@ -616,7 +614,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = new SqlConnector(config.ConnectionFactory);
 
@@ -657,7 +655,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -704,7 +702,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne<Person>()
@@ -743,7 +741,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = new SqlConnector(config.ConnectionFactory);
 
@@ -785,7 +783,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
@@ -834,7 +832,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne(
@@ -879,7 +877,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             IDbConnection usedConnection = null;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.BeforeExecutingCommand(e => usedConnection = e.DbCommand.Connection)
+                c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
             var conn = new SqlConnector(config.ConnectionFactory);
 
@@ -970,7 +968,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //given
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
+                c => c.Events.OnAfterSqlStatementExecution(e => usedCommandTimeout = e.DbCommand.CommandTimeout)
             );
 
             var exp = db.SelectOne(
@@ -1039,7 +1037,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IDbConnection usedConnection = null;
             var usedCommandTimeout = 0;
             var config = ConfigureForMsSqlVersion(version,
-                c => c.WhenExecutingSqlStatements.AfterExecutingCommand(e =>
+                c => c.Events.OnAfterSqlStatementExecution(e =>
                 {
                     usedConnection = e.DbCommand.Connection;
                     usedCommandTimeout = e.DbCommand.CommandTimeout;

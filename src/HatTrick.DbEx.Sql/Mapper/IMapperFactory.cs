@@ -1,11 +1,13 @@
-﻿using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IMapperFactory
     {
-        IEntityMapper<T> CreateEntityMapper<T>(EntityExpression<T> entity)
-            where T : class, IDbEntity;
+        IEntityMapper<TEntity> CreateEntityMapper<TEntity>(EntityExpression<TEntity> entity)
+            where TEntity : class, IDbEntity;
         IExpandoObjectMapper CreateExpandoObjectMapper();
     }
 }

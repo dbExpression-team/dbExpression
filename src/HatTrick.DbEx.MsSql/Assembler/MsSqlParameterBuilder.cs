@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return parameterized;
         }
 
-        private (Type, object) ConvertDbParameterValue<T>(T value)
+        protected virtual (Type, object) ConvertDbParameterValue<T>(T value)
         {
             if (value is DBNull || !(value is object))
             {
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return converter.ConvertToDatabase(value);
         }
 
-        private (Type, object) ConvertDbParameterValue(Type type, object value)
+        protected virtual (Type, object) ConvertDbParameterValue(Type type, object value)
         {
             if (value is DBNull || value is null)
             {
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return converter.ConvertToDatabase(value);
         }
 
-        private DbParameter CreateDbParameter<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)
+        protected virtual DbParameter CreateDbParameter<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)
         {
             var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
 

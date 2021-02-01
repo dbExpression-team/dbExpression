@@ -19,13 +19,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Parameter Builder.");
 
-            this.factory = new Func<ISqlParameterBuilder>(() =>
-            {
-                var f = factory().CreateSqlParameterBuilder();
-                if (f is null)
-                    throw new DbExpressionException("Cannot create a Sql Parameter Builder: The factory returned a null value.");
-                return f;
-            });
+            this.factory = () => factory()?.CreateSqlParameterBuilder() ?? throw new DbExpressionException("Cannot create a Sql Parameter Builder: The factory returned a null value.");
         }
         #endregion
 

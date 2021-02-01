@@ -13,27 +13,21 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region constructors
         public DelegateSqlStatementBuilderFactory(Func<ISqlDatabaseMetadataProvider, IExpressionElementAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Builder."); ;
-        }
-
-        public DelegateSqlStatementBuilderFactory(Func<ISqlStatementBuilderFactory> factory)
-        {
-            if (factory is null)
-                throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Builder.");
-
-            this.factory = new Func<ISqlDatabaseMetadataProvider, IExpressionElementAppenderFactory, SqlStatementAssemblerConfiguration, QueryExpression, IAppender, ISqlParameterBuilder, ISqlStatementBuilder>((databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder) =>
-            {
-                var f = factory().CreateSqlStatementBuilder(databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder);
-                if (f is null)
-                    throw new DbExpressionException("Cannot create a Sql Statement Builder: The factory returned a null value.");
-                return f;
-            });
+            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Builder.");
         }
         #endregion
 
         #region methods
-        public ISqlStatementBuilder CreateSqlStatementBuilder(ISqlDatabaseMetadataProvider databaseMetadata, IExpressionElementAppenderFactory partAppenderFactory, SqlStatementAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
-            => factory(databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder);
+        public ISqlStatementBuilder CreateSqlStatementBuilder(
+            ISqlDatabaseMetadataProvider databaseMetadata, 
+            IExpressionElementAppenderFactory partAppenderFactory, 
+            SqlStatementAssemblerConfiguration config, 
+            QueryExpression expression, 
+            IAppender appender, 
+            ISqlParameterBuilder parameterBuilder
+        )
+            => factory(databaseMetadata, partAppenderFactory, config, expression, appender, parameterBuilder) ?? 
+                throw new DbExpressionConfigurationException("Could not resolve a statement builder, please ensure an statement builder factory has been properly registered.");
         #endregion
     }
 }

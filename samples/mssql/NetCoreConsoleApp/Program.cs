@@ -53,8 +53,10 @@ namespace NetCoreConsoleApp
                     config.GetConnectionString("dbex_mssql_test"),
                     runtime =>
                     {
-                        runtime.WhenMappingData.ForEnumType<PaymentMethodType>().PersistTheEnumValueAsString();
-                        runtime.WhenMappingData.ForEnumType<PaymentSourceType>().PersistTheEnumValueAsString();
+                        runtime.Conversions.UseDefaultFactory(x => x
+                            .OverrideForEnumType<PaymentMethodType>().PersistAsString()
+                            .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                        );
                     }
                 );
             });

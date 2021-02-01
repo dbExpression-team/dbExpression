@@ -7,14 +7,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class BeforeDeletePipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
+        #region interface
         public ISqlParameterBuilder ParameterBuilder { get; private set; }
-        public IAppender CommandTextWriter { get; private set; }
+        public SqlStatement SqlStatement { get; private set; }
+        #endregion
 
-        public BeforeDeletePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        #region constructors
+        public BeforeDeletePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
-            CommandTextWriter = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
             ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
+            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
         }
+        #endregion
     }
 }

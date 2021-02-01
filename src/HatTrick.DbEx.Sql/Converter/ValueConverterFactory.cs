@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Converter
@@ -38,42 +37,42 @@ namespace HatTrick.DbEx.Sql.Converter
 
         private static readonly IValueConverter objectConverter = new ObjectConverter();
 
-        private readonly ConcurrentDictionary<Type, Func<IValueConverter>> _valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
+        private readonly ConcurrentDictionary<Type, Func<IValueConverter>> valueConverters = new ConcurrentDictionary<Type, Func<IValueConverter>>();
         #endregion
 
         #region methods
-        public void RegisterDefaultConverters()
+        public ValueConverterFactory()
         {
-            _valueConverters.TryAdd(typeof(bool), () => boolConverter);
-            _valueConverters.TryAdd(typeof(bool?), () => nullableBoolConverter);
-            _valueConverters.TryAdd(typeof(byte), () => byteConverter);
-            _valueConverters.TryAdd(typeof(byte?), () => nullableByteConverter);
-            _valueConverters.TryAdd(typeof(short), () => shortConverter);
-            _valueConverters.TryAdd(typeof(short?), () => nullableShortConverter);
-            _valueConverters.TryAdd(typeof(int), () => intConverter);
-            _valueConverters.TryAdd(typeof(int?), () => nullableIntConverter);
-            _valueConverters.TryAdd(typeof(long), () => longConverter);
-            _valueConverters.TryAdd(typeof(long?), () => nullableLongConverter);
-            _valueConverters.TryAdd(typeof(double), () => doubleConverter);
-            _valueConverters.TryAdd(typeof(double?), () => nullableDoubleConverter);
-            _valueConverters.TryAdd(typeof(decimal), () => decimalConverter);
-            _valueConverters.TryAdd(typeof(decimal?), () => nullableDecimalConverter);
-            _valueConverters.TryAdd(typeof(float), () => floatConverter);
-            _valueConverters.TryAdd(typeof(float?), () => nullableFloatConverter);
-            _valueConverters.TryAdd(typeof(DateTime), () => dateTimeConverter);
-            _valueConverters.TryAdd(typeof(DateTime?), () => nullableDateTimeConverter);
-            _valueConverters.TryAdd(typeof(DateTimeOffset), () => dateTimeOffsetConverter);
-            _valueConverters.TryAdd(typeof(DateTimeOffset?), () => nullableDateTimeOffsetConverter);
-            _valueConverters.TryAdd(typeof(Guid), () => guidConverter);
-            _valueConverters.TryAdd(typeof(Guid?), () => nullableGuidConverter);
-            _valueConverters.TryAdd(typeof(string), () => stringConverter);
-            _valueConverters.TryAdd(typeof(byte[]), () => byteArrayConverter);
-            _valueConverters.TryAdd(typeof(object), () => objectConverter);
-            _valueConverters.TryAdd(typeof(TimeSpan), () => timeSpanConverter);
-            _valueConverters.TryAdd(typeof(TimeSpan?), () => nullableTimeSpanConverter);
+            RegisterConverter<bool>(boolConverter);
+            RegisterConverter<bool?>(nullableBoolConverter);
+            RegisterConverter<byte>(byteConverter);
+            RegisterConverter<byte?>(nullableByteConverter);
+            RegisterConverter<short>(shortConverter);
+            RegisterConverter<short?>(nullableShortConverter);
+            RegisterConverter<int>(intConverter);
+            RegisterConverter<int?>(nullableIntConverter);
+            RegisterConverter<long>(longConverter);
+            RegisterConverter<long?>(nullableLongConverter);
+            RegisterConverter<double>(doubleConverter);
+            RegisterConverter<double?>(nullableDoubleConverter);
+            RegisterConverter<decimal>(decimalConverter);
+            RegisterConverter<decimal?>(nullableDecimalConverter);
+            RegisterConverter<float>(floatConverter);
+            RegisterConverter<float?>(nullableFloatConverter);
+            RegisterConverter<DateTime>(dateTimeConverter);
+            RegisterConverter<DateTime?>(nullableDateTimeConverter);
+            RegisterConverter<DateTimeOffset>(dateTimeOffsetConverter);
+            RegisterConverter<DateTimeOffset?>(nullableDateTimeOffsetConverter);
+            RegisterConverter<Guid>(guidConverter);
+            RegisterConverter<Guid?>(nullableGuidConverter);
+            RegisterConverter<string>(stringConverter);
+            RegisterConverter<byte[]>(byteArrayConverter);
+            RegisterConverter<object>(objectConverter);
+            RegisterConverter<TimeSpan>(timeSpanConverter);
+            RegisterConverter<TimeSpan?>(nullableTimeSpanConverter);
         }
 
-        public void RegisterConverter<T>(IValueConverter converter)
+        public virtual void RegisterConverter<T>(IValueConverter converter)
         {
             if (converter is null)
                 throw new ArgumentNullException($"{nameof(converter)} is required.");
@@ -81,36 +80,36 @@ namespace HatTrick.DbEx.Sql.Converter
             RegisterConverter<T>(() => converter);
         }
 
-        public void RegisterConverter<T, U>()
+        public virtual void RegisterConverter<T, U>()
             where U : class, IValueConverter, new()
             => RegisterConverter<T>(new U());
 
-        public void RegisterConverter<T>(Func<IValueConverter> converter)
+        public virtual void RegisterConverter<T>(Func<IValueConverter> converter)
         {
             if (converter is null)
                 throw new ArgumentNullException($"{nameof(converter)} is required.");
 
-            _valueConverters.AddOrUpdate(typeof(T), converter, (type, @return) => converter);
+            valueConverters.AddOrUpdate(typeof(T), converter, (type, @return) => converter);
         }
 
-        public IValueConverter CreateConverter(Type type)
+        public virtual IValueConverter CreateConverter(Type type)
         {
-            if (_valueConverters.TryGetValue(type, out Func<IValueConverter> converter))
+            if (valueConverters.TryGetValue(type, out Func<IValueConverter> converter))
                 return converter();
 
             if (TryCreateEnumValueConverter(type, out IValueConverter enumConverter))
             {
-                _valueConverters.TryAdd(type, () => enumConverter);
+                valueConverters.TryAdd(type, () => enumConverter);
                 return enumConverter;
             }
 
             throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{type}', please ensure a converter has been registered.");
         }
 
-        public IValueConverter CreateConverter<T>()
+        public virtual IValueConverter CreateConverter<T>()
             => CreateConverter(typeof(T));
 
-        private bool TryCreateEnumValueConverter(Type enumType, out IValueConverter converter)
+        protected virtual bool TryCreateEnumValueConverter(Type enumType, out IValueConverter converter)
         {
             converter = null;
             try
@@ -124,10 +123,10 @@ namespace HatTrick.DbEx.Sql.Converter
             }
         }
 
-        private EnumValueConverter CreateEnumValueConverter(Type enumType)
+        protected virtual EnumValueConverter CreateEnumValueConverter(Type enumType)
             => CreateEnumValueConverter(enumType, enumType, false);
 
-        private EnumValueConverter CreateEnumValueConverter(Type enumType, Type rootType, bool isNullable)
+        protected virtual EnumValueConverter CreateEnumValueConverter(Type enumType, Type rootType, bool isNullable)
         {
             if (enumType.IsEnum)
             {

@@ -6,7 +6,7 @@ namespace ServerSideBlazorApp
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddDbExpression(this IServiceCollection services, params Action<RuntimeEnvironmentBuilder>[] databases)
+        public static void AddDbExpression(this IServiceCollection services, params Action<IRuntimeEnvironmentBuilder>[] databases)
         {
             dbExpression.ConfigureRuntime(databases);
         }

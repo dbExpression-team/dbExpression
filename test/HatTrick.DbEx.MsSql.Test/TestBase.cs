@@ -1,9 +1,7 @@
 ﻿using DbEx.Data;
 using DbEx.DataService;
-using DbEx.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Configuration.Syntax;
 using HatTrick.DbEx.Sql.Converter;
 using System;
 
@@ -12,16 +10,26 @@ namespace HatTrick.DbEx.MsSql.Test
     public abstract class TestBase
     {
         public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, Action<IRuntimeSqlDatabaseConfigurationBuilder> postConfigure = null)
+            => ConfigureForMsSqlVersion(version, ConfigurationProvider.ConnectionString, postConfigure);
+
+        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString)
+            => ConfigureForMsSqlVersion(version, connectionString, null);
+
+        public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> postConfigure = null)
         {
             RuntimeSqlDatabaseConfiguration config = null;
             Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime = database =>
             {
                 config = (database as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
 
-                database.WhenAssemblingSqlStatements.ConfigureAttributesOfAssemblingSqlStatements(a => a.PrependCommaOnSelectClause = true);
+                database.SqlStatements.Assembly.ConfigureOutputSettings(
+                    x => x.PrependCommaOnSelectClause = true
+                );
 
-                database.WhenMappingData.ForType<PaymentMethodType>().UseConverter<StringEnumValueConverter>();
-                database.WhenMappingData.ForEnumType<PaymentSourceType>().PersistTheEnumValueAsString();
+                database.Conversions.UseDefaultFactory(x =>
+                    x.OverrideForEnumType<PaymentMethodType, StringEnumValueConverter>()
+                        .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                );
 
                 postConfigure?.Invoke(database);
             };
@@ -33,7 +41,7 @@ namespace HatTrick.DbEx.MsSql.Test
                         dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2005Database<MsSqlDb>(
-                                ConfigurationProvider.ConnectionString,
+                                connectionString,
                                 configureRuntime
                             );
                         });
@@ -44,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test
                         dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2008Database<MsSqlDb>(
-                                ConfigurationProvider.ConnectionString,
+                                connectionString,
                                 configureRuntime
                             );
                         });
@@ -55,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test
                         dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2012Database<MsSqlDb>(
-                                ConfigurationProvider.ConnectionString,
+                                connectionString,
                                 configureRuntime
                             );
                         });
@@ -66,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test
                         dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2014Database<MsSqlDb>(
-                                ConfigurationProvider.ConnectionString,
+                                connectionString,
                                 configureRuntime
                             );
                         });
@@ -77,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test
                         dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2016Database<MsSqlDb>(
-                                ConfigurationProvider.ConnectionString,
+                                connectionString,
                                 configureRuntime
                             );
                         });
@@ -88,7 +96,7 @@ namespace HatTrick.DbEx.MsSql.Test
                         dbExpression.ConfigureRuntime(c =>
                         {
                             c.AddMsSql2017Database<MsSqlDb>(
-                                ConfigurationProvider.ConnectionString,
+                                connectionString,
                                 configureRuntime
                             );
                         });

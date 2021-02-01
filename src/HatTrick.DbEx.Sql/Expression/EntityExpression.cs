@@ -10,9 +10,11 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionProvider<SchemaExpression>,
         IExpressionListProvider<FieldExpression>,
         IExpressionAliasProvider,
+        IDbEntityTypeProvider,
         IEquatable<EntityExpression>
    {
         #region internals
+        protected readonly Type dbEntityType;
         protected readonly string identifier;
         protected readonly SchemaExpression schema;
         protected IDictionary<string, FieldExpression> Fields { get; } = new Dictionary<string, FieldExpression>();
@@ -20,6 +22,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
+        Type IDbEntityTypeProvider.EntityType => dbEntityType;
         string ISqlMetadataIdentifier.Identifier => identifier;
         SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
         IList<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values.ToList();
@@ -32,8 +35,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         
-        protected EntityExpression(string identifier, SchemaExpression schema, string alias)
+        protected EntityExpression(Type dbEntityType, string identifier, SchemaExpression schema, string alias)
         {
+            this.dbEntityType = dbEntityType ?? throw new ArgumentNullException($"{nameof(dbEntityType)} is required.");
             this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
             this.schema = schema ?? throw new ArgumentNullException($"{nameof(schema)} is required.");
             this.alias = alias;

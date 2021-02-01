@@ -5,5 +5,6 @@ namespace HatTrick.DbEx.Sql
     public interface IRuntimeSqlDatabase
     {
         RuntimeSqlDatabaseConfiguration Configuration { get; }
+        void Initialize(RuntimeSqlDatabaseConfiguration configuration);
     }
 }

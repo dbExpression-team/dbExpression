@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.Sql.Expression
         where T : class, IDbEntity
     {
         #region constructors
-        private EntityExpression() : base(null, null, null)
+        private EntityExpression() : base(typeof(T), null, null, null)
         { 
         
         }
 
         protected EntityExpression(string identifier, SchemaExpression schema, string alias)
-            : base(identifier, schema, alias)
+            : base(typeof(T), identifier, schema, alias)
         {
 
         }

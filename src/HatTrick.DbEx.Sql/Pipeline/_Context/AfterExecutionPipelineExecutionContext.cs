@@ -8,13 +8,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterExecutionPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public SqlStatement Statement { get; private set; }
         public IDbCommand DbCommand { get; private set; }
 
-        public AfterExecutionPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, SqlStatement statement, IDbCommand command)
+        public AfterExecutionPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, IDbCommand command)
             : base(database, expression)
         {
-            Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
             DbCommand = command ?? throw new ArgumentNullException($"{nameof(command)} is required.");
         }
     }

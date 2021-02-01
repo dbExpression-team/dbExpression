@@ -6,12 +6,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterSelectPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public SqlStatement Statement { get; private set; }
-
-        public AfterSelectPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression, SqlStatement statement)
+        public AfterSelectPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression)
             : base(database, expression)
         {
-            Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
+
         }
     }
 }

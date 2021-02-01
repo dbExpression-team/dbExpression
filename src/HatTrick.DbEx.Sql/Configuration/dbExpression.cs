@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Configuration
     public class dbExpression : DbExpressionConfigurationBuilder
 #pragma warning restore IDE1006 // Naming Styles
     {
-        public static void ConfigureRuntime(params Action<RuntimeEnvironmentBuilder>[] databases)
+        public static void ConfigureRuntime(params Action<IRuntimeEnvironmentBuilder>[] databases)
             => new dbExpression().ConfigureRuntimeEnvironment(databases);
     }
 }

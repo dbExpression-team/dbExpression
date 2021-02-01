@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HatTrick.DbEx.Sql.Mapper
+﻿namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IEntityFactory
     {

@@ -3,9 +3,9 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
 {
-    public interface IEntityMapper<T> : IMapper
+    public interface IEntityMapper<T> : IEntityMapper
         where T : class, IDbEntity
     {
-        Action<T, ISqlFieldReader> Map { get; }
+        new Action<T, ISqlFieldReader> Map { get; }
     }
 }
