@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 
@@ -114,7 +114,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 
@@ -142,7 +142,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 
@@ -170,7 +170,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 
@@ -198,7 +198,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 
@@ -226,7 +226,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             runtimeConfiguration?.Invoke(configBuilder);
 
-            runtime.Database.Initialize(config);
+            runtime.Database.UseConfiguration(config);
         }
         #endregion
 

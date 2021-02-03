@@ -20,15 +20,12 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        protected void From<T>(Entity<T> entity, bool populateSelectListFromEntity)
+        protected virtual void From<T>(Entity<T> entity)
             where T : class, IDbEntity
         {
             if (!(entity is EntityExpression e))
-                throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}.");
-
+                throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}.");          
             Expression.BaseEntity = e;
-            if (populateSelectListFromEntity)
-                Expression.Select = new SelectExpressionSet(entity.BuildInclusiveSelectExpression());
         }
 
         protected void Top(int value)

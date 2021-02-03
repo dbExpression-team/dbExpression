@@ -1,18 +1,31 @@
 ﻿    #region runtime db
-    public abstract class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase
+    public abstract class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {{
         #region internals
         private const string NO_CONFIG_MESSAGE = "Cannot construct or execute queries as the database runtime environment has not been configured.";
+        protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
+        protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
         protected static RuntimeSqlDatabaseConfiguration config;
-        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
+        IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        #endregion
+
+        #region constructors
+        static {$.DatabaseExpression.Name}RuntimeSqlDatabase()
+        {{
+            {#each $.Items}
+            var {$.SchemaExpression.Name}Schema = new {$.SchemaExpression.Name}SchemaExpression("{$.SchemaExpression.Name}");
+            schemas.Add({$.SchemaExpression.Name}Schema);
+            {$.SchemaExpression.Name}.UseSchema({$.SchemaExpression.Name}Schema);
+
+            {/each}
+        }}
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.Initialize(RuntimeSqlDatabaseConfiguration configuration)
+        void IRuntimeSqlDatabase.UseConfiguration(RuntimeSqlDatabaseConfiguration configuration)
             => config = configuration ?? throw new ArgumentNullException($"{{nameof(configuration)}} is required.");
 
         #region select one

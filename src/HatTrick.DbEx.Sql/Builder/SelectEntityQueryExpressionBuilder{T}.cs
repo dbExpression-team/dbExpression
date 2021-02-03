@@ -18,9 +18,15 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
+        protected override void From<T>(Entity<T> entity)
+        {
+            base.From(entity);
+            Expression.Select = new SelectExpressionSet(entity.BuildInclusiveSelectExpression());
+        }
+
         SelectEntityContinuation<TEntity> SelectEntity<TEntity>.From(Entity<TEntity> entity)
         {
-            From(entity, true);
+            From(entity);
             return this;
         }
 

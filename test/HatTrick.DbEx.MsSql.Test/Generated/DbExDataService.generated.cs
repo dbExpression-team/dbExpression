@@ -13,21 +13,39 @@ using System.Dynamic;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace DbEx.DataService
 {
+	using DbEx.dboDataService;
+	using DbEx.secDataService;
+
     #region runtime db
-    public abstract class MsSqlDbRuntimeSqlDatabase : IRuntimeSqlDatabase
+    public abstract class MsSqlDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {
         #region internals
         private const string NO_CONFIG_MESSAGE = "Cannot construct or execute queries as the database runtime environment has not been configured.";
+        protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
+        protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
         protected static RuntimeSqlDatabaseConfiguration config;
-        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
+        IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        #endregion
+
+        #region constructors
+        static MsSqlDbRuntimeSqlDatabase()
+        {
+            var dboSchema = new dboSchemaExpression("dbo");
+            schemas.Add(dboSchema);
+            dbo.UseSchema(dboSchema);
+
+            var secSchema = new secSchemaExpression("sec");
+            schemas.Add(secSchema);
+            sec.UseSchema(secSchema);
+
+        }
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.Initialize(RuntimeSqlDatabaseConfiguration configuration)
+        void IRuntimeSqlDatabase.UseConfiguration(RuntimeSqlDatabaseConfiguration configuration)
             => config = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
 
         #region select one
@@ -4880,10 +4898,6 @@ namespace DbEx.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        #region internals
-        private static readonly dboSchemaExpression _schema = new dboSchemaExpression("dbo");
-        #endregion
-
         #region interface
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
@@ -4907,7 +4921,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly AddressEntity Address;
+        public static AddressEntity Address { get; private set; }
 
         /// <summary>A <see cref="DbEx.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
@@ -4931,7 +4945,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonEntity Person;
+        public static PersonEntity Person { get; private set; }
 
         /// <summary>A <see cref="DbEx.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
@@ -4955,7 +4969,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonAddressEntity PersonAddress;
+        public static PersonAddressEntity PersonAddress { get; private set; }
 
         /// <summary>A <see cref="DbEx.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
@@ -4979,7 +4993,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly ProductEntity Product;
+        public static ProductEntity Product { get; private set; }
 
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
@@ -5003,7 +5017,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PurchaseEntity Purchase;
+        public static PurchaseEntity Purchase { get; private set; }
 
         /// <summary>A <see cref="DbEx.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
@@ -5027,7 +5041,7 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PurchaseLineEntity PurchaseLine;
+        public static PurchaseLineEntity PurchaseLine { get; private set; }
 
         /// <summary>A <see cref="DbEx.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
@@ -5038,20 +5052,22 @@ namespace DbEx.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
 
         #endregion
 
-        #region constructors
-        static dbo()
+        #region methods
+        public static void UseSchema(dboSchemaExpression schema)
         { 
-            Address = _schema.Address;
-            Person = _schema.Person;
-            PersonAddress = _schema.PersonAddress;
-            Product = _schema.Product;
-            Purchase = _schema.Purchase;
-            PurchaseLine = _schema.PurchaseLine;
-            PersonTotalPurchasesView = _schema.PersonTotalPurchasesView;
+            if (schema == null)
+                 throw new ArgumentNullException($"{nameof(schema)} is required.");
+            Address = schema.Address ?? throw new ArgumentNullException($"{schema.Address } is required.");
+            Person = schema.Person ?? throw new ArgumentNullException($"{schema.Person } is required.");
+            PersonAddress = schema.PersonAddress ?? throw new ArgumentNullException($"{schema.PersonAddress } is required.");
+            Product = schema.Product ?? throw new ArgumentNullException($"{schema.Product } is required.");
+            Purchase = schema.Purchase ?? throw new ArgumentNullException($"{schema.Purchase } is required.");
+            PurchaseLine = schema.PurchaseLine ?? throw new ArgumentNullException($"{schema.PurchaseLine } is required.");
+            PersonTotalPurchasesView = schema.PersonTotalPurchasesView ?? throw new ArgumentNullException($"{schema.PersonTotalPurchasesView } is required.");
         }
         #endregion
     }
@@ -5352,10 +5368,6 @@ namespace DbEx.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        #region internals
-        private static readonly secSchemaExpression _schema = new secSchemaExpression("sec");
-        #endregion
-
         #region interface
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
@@ -5379,14 +5391,16 @@ namespace DbEx.secDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonEntity Person;
+        public static PersonEntity Person { get; private set; }
 
         #endregion
 
-        #region constructors
-        static sec()
+        #region methods
+        public static void UseSchema(secSchemaExpression schema)
         { 
-            Person = _schema.Person;
+            if (schema == null)
+                 throw new ArgumentNullException($"{nameof(schema)} is required.");
+            Person = schema.Person ?? throw new ArgumentNullException($"{schema.Person } is required.");
         }
         #endregion
     }
