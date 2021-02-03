@@ -2,6 +2,6 @@
 {
     public abstract class QueryExpression : IExpressionElement
     {
-        public EntityExpression BaseEntity { get; set; }
+        public IEntityExpression BaseEntity { get; set; }
     }    
 }

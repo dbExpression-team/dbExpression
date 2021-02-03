@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         SelectValuesContinuation<TValue> SelectValues<TValue>.From<TEntity>(Entity<TEntity> entity)
         {
-            From(entity, false);
+            From(entity);
             return this;
         }
 

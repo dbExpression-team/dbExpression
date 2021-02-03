@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region methods
         SelectValueContinuation<TValue> SelectValue<TValue>.From<TEntity>(Entity<TEntity> entity)
         {
-            From(entity, false);
+            From(entity);
             return this;
         }
 

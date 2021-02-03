@@ -20,6 +20,12 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
+        protected override void From<T>(Entity<T> entity)
+        {
+            base.From(entity);
+            Expression.Select = new SelectExpressionSet(entity.BuildInclusiveSelectExpression());
+        }
+
         SelectEntities<TEntity> SelectEntities<TEntity>.Top(int value)
         {
             Top(value);
@@ -34,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         SelectEntitiesContinuation<TEntity> SelectEntities<TEntity>.From(Entity<TEntity> entity)
         {
-            From(entity, true);
+            From(entity);
             return this;
         }
 

@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class EntityExpression :
+    public abstract class EntityExpression : 
+        IEntityExpression,
         AnyEntity,
         ISqlMetadataIdentifier,
         IExpressionProvider<SchemaExpression>,
@@ -102,7 +103,5 @@ namespace HatTrick.DbEx.Sql.Expression
             }
         }
         #endregion
-
-        protected abstract SelectExpressionSet GetInclusiveSelectExpression();
     }
 }

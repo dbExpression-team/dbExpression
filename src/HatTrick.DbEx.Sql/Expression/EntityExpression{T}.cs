@@ -22,17 +22,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        SelectExpressionSet IExpressionEntity.BuildInclusiveSelectExpression()
-            => GetInclusiveSelectExpression();
-        InsertExpressionSet<T> IExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
+        SelectExpressionSet IEntityExpression<T>.BuildInclusiveSelectExpression()
+            => GetInclusiveSelectExpression();        
+        InsertExpressionSet<T> IEntityExpression<T>.BuildInclusiveInsertExpression(T entity)
             => GetInclusiveInsertExpression(entity);
-        AssignmentExpressionSet IExpressionEntity<T>.BuildAssignmentExpression(T target, T source)
+        AssignmentExpressionSet IEntityExpression<T>.BuildAssignmentExpression(T target, T source)
             => GetAssignmentExpression(target, source);
-        void IExpressionEntity<T>.HydrateEntity(T entity, ISqlFieldReader reader)
+        void IEntityExpression<T>.HydrateEntity(T entity, ISqlFieldReader reader)
             => HydrateEntity(entity, reader);
         #endregion
 
         #region methods
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression();
         protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
         protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
         protected abstract void HydrateEntity(T entity, ISqlFieldReader reader);
