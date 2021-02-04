@@ -51,11 +51,12 @@ namespace HatTrick.DbEx.Sql.Connection
                 _dbConnection.Open();
         }
 
-        public async Task EnsureOpenAsync(CancellationToken cancellation)
+        public async Task EnsureOpenAsync(CancellationToken ct)
         {
+            ct.ThrowIfCancellationRequested();
             EnsureConnection();
             if (_dbConnection.State != ConnectionState.Open)
-                await (_dbConnection as DbConnection).OpenAsync(cancellation);
+                await (_dbConnection as DbConnection).OpenAsync(ct);
         }
 
         public void CommitTransaction()

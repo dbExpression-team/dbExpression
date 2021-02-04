@@ -8,19 +8,17 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
 {
+
     public class RuntimeSqlDatabaseConfigurationTests : TestBase
     {
         [Fact]
-        public void Does_bypassing_configuring_for_a_sql_server_version_return_non_null_configuration()
+        public void Does_bypassing_configuring_for_a_sql_server_version_return_null_configuration()
         {
             //given
-            var dbInstance = new db();
+            var dbInstance = new db() as IRuntimeSqlDatabase;
 
-            //when
-            var config = (dbInstance as IRuntimeSqlDatabase).Configuration;
-
-            //then
-            config.Should().NotBeNull();
+            //when & then
+            var ex = Assert.Throws<ArgumentNullException>(() => dbInstance.UseConfiguration(null));
         }
 
         [Fact]

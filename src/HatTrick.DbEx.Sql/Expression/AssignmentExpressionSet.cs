@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public AssignmentExpressionSet(IEnumerable<AssignmentExpression> assignments)
         {
-            Expressions = assignments?.ToList() ?? throw new ArgumentNullException($"{nameof(assignments)} is required.");
+            Expressions = assignments ?? throw new ArgumentNullException($"{nameof(assignments)} is required.");
         }
 
         public AssignmentExpressionSet(AssignmentExpression assignment)

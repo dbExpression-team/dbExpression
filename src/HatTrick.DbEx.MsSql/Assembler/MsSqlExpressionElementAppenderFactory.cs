@@ -1,33 +1,30 @@
-﻿using HatTrick.DbEx.MsSql.Expression;
-using HatTrick.DbEx.Sql.Assembler;
-using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Assembler;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlExpressionElementAppenderFactory : ExpressionElementAppenderFactory
     {
-        private static readonly DateAddFunctionExpressionAppender _dateAddFunctionAppender = new DateAddFunctionExpressionAppender();
-        private static readonly DateDiffFunctionExpressionAppender _dateDiffFunctionAppender = new DateDiffFunctionExpressionAppender();
-        private static readonly DatePartFunctionExpressionAppender _datePartFunctionAppender = new DatePartFunctionExpressionAppender();
-        private static readonly GetDateFunctionExpressionAppender _getDateFunctionAppender = new GetDateFunctionExpressionAppender();
-        private static readonly GetUtcDateFunctionExpressionAppender _getUtcDateFunctionAppender = new GetUtcDateFunctionExpressionAppender();
-        private static readonly NewIdFunctionExpressionAppender _newIdFunctionAppender = new NewIdFunctionExpressionAppender();
-        private static readonly SysDateTimeFunctionExpressionAppender _sysDateTimeFunctionAppender = new SysDateTimeFunctionExpressionAppender();
-        private static readonly SysDateTimeOffsetFunctionExpressionAppender _sysDateTimeOffsetFunctionAppender = new SysDateTimeOffsetFunctionExpressionAppender();
-        private static readonly SysUtcDateTimeFunctionExpressionAppender _sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionExpressionAppender();
+        private static readonly DateAddFunctionExpressionAppender dateAddFunctionAppender = new DateAddFunctionExpressionAppender();
+        private static readonly DateDiffFunctionExpressionAppender dateDiffFunctionAppender = new DateDiffFunctionExpressionAppender();
+        private static readonly DatePartFunctionExpressionAppender datePartFunctionAppender = new DatePartFunctionExpressionAppender();
+        private static readonly GetDateFunctionExpressionAppender getDateFunctionAppender = new GetDateFunctionExpressionAppender();
+        private static readonly GetUtcDateFunctionExpressionAppender getUtcDateFunctionAppender = new GetUtcDateFunctionExpressionAppender();
+        private static readonly NewIdFunctionExpressionAppender newIdFunctionAppender = new NewIdFunctionExpressionAppender();
+        private static readonly SysDateTimeFunctionExpressionAppender sysDateTimeFunctionAppender = new SysDateTimeFunctionExpressionAppender();
+        private static readonly SysDateTimeOffsetFunctionExpressionAppender sysDateTimeOffsetFunctionAppender = new SysDateTimeOffsetFunctionExpressionAppender();
+        private static readonly SysUtcDateTimeFunctionExpressionAppender sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionExpressionAppender();
 
-        public override void RegisterDefaultElementAppenders()
+        public MsSqlExpressionElementAppenderFactory()
         {
-            base.RegisterDefaultElementAppenders();
-            base.RegisterElementAppender<DateAddFunctionExpression>(_dateAddFunctionAppender);
-            base.RegisterElementAppender<DateDiffFunctionExpression>(_dateDiffFunctionAppender);
-            base.RegisterElementAppender<DatePartFunctionExpression>(_datePartFunctionAppender);
-            base.RegisterElementAppender<GetDateFunctionExpression>(_getDateFunctionAppender);
-            base.RegisterElementAppender<GetUtcDateFunctionExpression>(_getUtcDateFunctionAppender);
-            base.RegisterElementAppender<NewIdFunctionExpression>(_newIdFunctionAppender);
-            base.RegisterElementAppender<SysDateTimeFunctionExpression>(_sysDateTimeFunctionAppender);
-            base.RegisterElementAppender<SysDateTimeOffsetFunctionExpression>(_sysDateTimeOffsetFunctionAppender);
-            base.RegisterElementAppender<SysUtcDateTimeFunctionExpression>(_sysUtcDateTimeFunctionAppender);
+            base.RegisterElementAppender(dateAddFunctionAppender);
+            base.RegisterElementAppender(dateDiffFunctionAppender);
+            base.RegisterElementAppender(datePartFunctionAppender);
+            base.RegisterElementAppender(getDateFunctionAppender);
+            base.RegisterElementAppender(getUtcDateFunctionAppender);
+            base.RegisterElementAppender(newIdFunctionAppender);
+            base.RegisterElementAppender(sysDateTimeFunctionAppender);
+            base.RegisterElementAppender(sysDateTimeOffsetFunctionAppender);
+            base.RegisterElementAppender(sysUtcDateTimeFunctionAppender);
         }
     }
 }

@@ -68,11 +68,14 @@ namespace HatTrick.DbEx.Sql.Executor
 
         public void Close()
         {
-            if (DataReader is object && !DataReader.IsClosed)
-                DataReader.Close();
+            if (DataReader is object)
+            {
+                if (!DataReader.IsClosed)
+                    DataReader.Close();
 
-            DataReader.Dispose();
-            DataReader = null;
+                DataReader.Dispose();
+                DataReader = null;
+            }
         }
 
         protected virtual void Dispose(bool disposing)

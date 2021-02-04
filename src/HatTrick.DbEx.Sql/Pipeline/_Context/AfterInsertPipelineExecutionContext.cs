@@ -1,23 +1,31 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterInsertPipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public IEnumerable<InsertFieldDescriptor> Fields { get; private set; }
-        public InsertedEntityPipelineExecutionContext InsertedEntity { get; private set; }
-        public SqlStatement Statement { get; private set; }
+        #region internals
+        private readonly IDbEntity entity;
+        #endregion
 
-        public AfterInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, InsertExpressionSet target, SqlStatement statement)
+        #region interface
+        public override Type EntityType => entity.GetType();
+        #endregion
+
+        #region constructors
+        public AfterInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, IDbEntity entity)
             : base(database, expression)
         {
-            Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
-            Fields = target.Expressions.Select(x => new InsertFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
-            InsertedEntity = new InsertedEntityPipelineExecutionContext(database, expression, target);
+            this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
         }
+        #endregion
+
+        #region methods
+        public TEntity GetEntity<TEntity>()
+            where TEntity : class, IDbEntity
+            => entity as TEntity;
+        #endregion
     }
 }

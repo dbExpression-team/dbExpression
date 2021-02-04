@@ -526,13 +526,13 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string productDescription = "1234";
 
             var predicate = dbo.Product.Description == productDescription;
 
-            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -551,13 +551,13 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string firstName = "xxx";
 
             var predicate = dbo.Person.FirstName == firstName;
 
-            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -576,13 +576,13 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             double productPrice = 12.99;
 
             var predicate = dbo.Product.Price == productPrice;
 
-            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
 
             //when
             appender.AppendElement(predicate, builder, context);
@@ -600,13 +600,13 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.AssemblyPartAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             byte[] image = new byte[] { 1, 2, 3 };
 
             var predicate = dbo.Product.Image == image;
 
-            var appender = database.AssemblyPartAppenderFactory.CreateElementAppender(predicate);
+            var appender = database.ExpressionElementAppenderFactory.CreateElementAppender(predicate);
 
             //when
             appender.AppendElement(predicate, builder, context);

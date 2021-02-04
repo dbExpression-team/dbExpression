@@ -8,8 +8,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
     {
         public RuntimeSqlDatabaseConfiguration Database { get; private set; }
         public QueryExpression Expression { get; private set; }
-        public Type Entity => Expression.BaseEntity.GetType().GetGenericArguments()[0];
-        protected ISqlEntityMetadata BaseEntityMetadata => Expression.BaseEntity as ISqlEntityMetadata;
+        public virtual Type EntityType => (Expression.BaseEntity as IDbEntityTypeProvider).EntityType;
 
         protected PipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
         {

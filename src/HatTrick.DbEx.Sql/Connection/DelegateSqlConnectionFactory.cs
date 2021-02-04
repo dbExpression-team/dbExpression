@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Expression;
-using System;
+﻿using System;
 using System.Data;
 
 namespace HatTrick.DbEx.Sql.Connection
@@ -21,13 +20,7 @@ namespace HatTrick.DbEx.Sql.Connection
             if (factory is null)
                 throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Connection.");
 
-            this.factory = new Func<IDbConnection>(() =>
-            {
-                var f = factory().CreateSqlConnection();
-                if (f is null)
-                    throw new DbExpressionException("Cannot create a Sql Connection: The factory returned a null value.");
-                return f;
-            });
+            this.factory = () => factory()?.CreateSqlConnection() ?? throw new DbExpressionException("Cannot create a Sql Connection: The factory returned a null value.");
         }
         #endregion
 

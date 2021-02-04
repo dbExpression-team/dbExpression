@@ -6,12 +6,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
 {
     public class AfterDeletePipelineExecutionContext : PipelineExecutionContext, IPipelineExecutionContext
     {
-        public SqlStatement Statement { get; private set; }
-
-        public AfterDeletePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression, SqlStatement statement)
+        public AfterDeletePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
             : base(database, expression)
         {
-            Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
+
         }
     }
 }

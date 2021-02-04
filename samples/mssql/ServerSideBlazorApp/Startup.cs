@@ -42,8 +42,10 @@ namespace ServerSideBlazorApp
                     Configuration.GetConnectionString("Default"), 
                     runtime =>
                     {
-                        runtime.WhenMappingData.ForEnumType<PaymentMethodType>().PersistTheEnumValueAsString();
-                        runtime.WhenMappingData.ForEnumType<PaymentSourceType>().PersistTheEnumValueAsString();
+                        runtime.Conversions.UseDefaultFactory(x => 
+                            x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
+                                .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                        );
                     }
                 )
             );

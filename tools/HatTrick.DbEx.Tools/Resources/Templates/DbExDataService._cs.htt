@@ -13,6 +13,10 @@ using System.Dynamic;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {{
+	{#each $.Items}
+	using {$.SchemaExpression.NamespaceRoot}DataService;
+	{/each}
+
 {>("RuntimeDb") => GetTemplatePartial+}
 
 {>("RuntimeEnvironmentDb") => GetTemplatePartial+}

@@ -9,30 +9,31 @@ namespace HatTrick.DbEx.Sql.Expression
         where T : class, IDbEntity
     {
         #region constructors
-        private EntityExpression() : base(null, null, null)
+        private EntityExpression() : base(typeof(T), null, null, null)
         { 
         
         }
 
         protected EntityExpression(string identifier, SchemaExpression schema, string alias)
-            : base(identifier, schema, alias)
+            : base(typeof(T), identifier, schema, alias)
         {
 
         }
         #endregion
 
         #region interface
-        SelectExpressionSet IExpressionEntity.BuildInclusiveSelectExpression()
-            => GetInclusiveSelectExpression();
-        InsertExpressionSet<T> IExpressionEntity<T>.BuildInclusiveInsertExpression(T entity)
+        SelectExpressionSet IEntityExpression<T>.BuildInclusiveSelectExpression()
+            => GetInclusiveSelectExpression();        
+        InsertExpressionSet<T> IEntityExpression<T>.BuildInclusiveInsertExpression(T entity)
             => GetInclusiveInsertExpression(entity);
-        AssignmentExpressionSet IExpressionEntity<T>.BuildAssignmentExpression(T target, T source)
+        AssignmentExpressionSet IEntityExpression<T>.BuildAssignmentExpression(T target, T source)
             => GetAssignmentExpression(target, source);
-        void IExpressionEntity<T>.HydrateEntity(T entity, ISqlFieldReader reader)
+        void IEntityExpression<T>.HydrateEntity(T entity, ISqlFieldReader reader)
             => HydrateEntity(entity, reader);
         #endregion
 
         #region methods
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression();
         protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
         protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
         protected abstract void HydrateEntity(T entity, ISqlFieldReader reader);

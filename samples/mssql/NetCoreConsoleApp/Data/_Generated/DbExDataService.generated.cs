@@ -13,19 +13,41 @@ using System.Dynamic;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace SimpleConsole.DataService
 {
+	using SimpleConsole.dboDataService;
+	using SimpleConsole.secDataService;
+
     #region runtime db
-    public abstract class SimpleConsoleDbRuntimeSqlDatabase : IRuntimeSqlDatabase
+    public abstract class SimpleConsoleDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {
         #region internals
-        protected static RuntimeSqlDatabaseConfiguration config = new RuntimeSqlDatabaseConfiguration();
-        protected static MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
+        private const string NO_CONFIG_MESSAGE = "Cannot construct or execute queries as the database runtime environment has not been configured.";
+        protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
+        protected static readonly IList<SchemaExpression> schemas = new List<SchemaExpression>();
+        protected static RuntimeSqlDatabaseConfiguration config;
         #endregion
 
         #region interface
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabase.Configuration => config;
+        IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        #endregion
+
+        #region constructors
+        static SimpleConsoleDbRuntimeSqlDatabase()
+        {
+            var dboSchema = new dboSchemaExpression("dbo");
+            schemas.Add(dboSchema);
+            dbo.UseSchema(dboSchema);
+
+            var secSchema = new secSchemaExpression("sec");
+            schemas.Add(secSchema);
+            sec.UseSchema(secSchema);
+
+        }
         #endregion
 
         #region methods
+        void IRuntimeSqlDatabase.UseConfiguration(RuntimeSqlDatabaseConfiguration configuration)
+            => config = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -40,7 +62,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config);
+            => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE));
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/> value.
@@ -55,7 +77,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<TEnum> SelectOne<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <typeparamref name="TEnum"/>? value.  
@@ -70,7 +92,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEnum">The type of the Enum to select.</typeparam>
         public static SelectValue<TEnum?> SelectOne<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="object" /> value.
@@ -83,7 +105,7 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<object> SelectOne(AnyObjectElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" /> value.
@@ -95,7 +117,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<bool> SelectOne(BooleanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="bool" />? value.
@@ -107,7 +129,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<bool?> SelectOne(NullableBooleanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" /> value.
@@ -119,7 +141,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte> SelectOne(ByteElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />? value.
@@ -131,7 +153,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte?> SelectOne(NullableByteElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[] value.
@@ -144,7 +166,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="byte" />[]? value.
@@ -156,7 +178,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<byte[]> SelectOne(NullableByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" /> value.
@@ -169,7 +191,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime> SelectOne(DateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTime" />? value.
@@ -195,7 +217,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset> SelectOne(DateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="DateTimeOffset" />? value.
@@ -208,7 +230,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTimeOffset?> SelectOne(NullableDateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" /> value.
@@ -221,7 +243,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<decimal> SelectOne(DecimalElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="decimal" />? value.
@@ -234,7 +256,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<decimal?> SelectOne(NullableDecimalElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" /> value.
@@ -247,7 +269,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<double> SelectOne(DoubleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="double" />? value.
@@ -260,7 +282,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<double?> SelectOne(NullableDoubleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" /> value.
@@ -272,7 +294,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<Guid> SelectOne(GuidElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="Guid" />? value.
@@ -285,7 +307,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<Guid?> SelectOne(NullableGuidElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" /> value.
@@ -297,7 +319,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<short> SelectOne(Int16Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="short" />? value.
@@ -309,7 +331,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<short?> SelectOne(NullableInt16Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" /> value.
@@ -322,7 +344,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int> SelectOne(Int32Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="int" />? value.
@@ -335,7 +357,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int?> SelectOne(NullableInt32Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" /> value.
@@ -347,7 +369,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<long> SelectOne(Int64Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="long" />? value.
@@ -359,7 +381,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<long?> SelectOne(NullableInt64Element element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" /> value.
@@ -371,7 +393,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<float> SelectOne(SingleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="float" />? value.
@@ -383,7 +405,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<float?> SelectOne(NullableSingleElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -396,7 +418,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(StringElement element) 
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="string" /> value.
@@ -408,7 +430,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<string> SelectOne(NullableStringElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" /> value.
@@ -420,7 +442,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan> SelectOne(TimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="TimeSpan" />? value.
@@ -433,7 +455,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<TimeSpan?> SelectOne(NullableTimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValueBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValueBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
@@ -475,7 +497,7 @@ namespace SimpleConsole.DataService
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
            where TEntity : class, IDbEntity
-           => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config);
+           => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE));
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/> values.
@@ -489,7 +511,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         public static SelectValues<TEnum> SelectMany<TEnum>(EnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <typeparamref name="TEnum"/>? values.
@@ -503,7 +525,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectValues{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TEnum?> SelectMany<TEnum>(NullableEnumElement<TEnum> element)
             where TEnum : struct, Enum, IComparable
-            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder<TEnum>(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="object" /> values.
@@ -516,7 +538,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<object> SelectMany(AnyObjectElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" /> values.
@@ -528,7 +550,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<bool> SelectMany(BooleanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="bool" />? values.
@@ -540,7 +562,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<bool?> SelectMany(NullableBooleanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" /> values.
@@ -552,7 +574,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte> SelectMany(ByteElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />? values.
@@ -564,7 +586,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte?> SelectMany(NullableByteElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[] values.
@@ -577,7 +599,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(ByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="byte" />[]? values.
@@ -589,7 +611,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<byte[]> SelectMany(NullableByteArrayElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" /> values.
@@ -602,7 +624,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime> SelectMany(DateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTime" />? values.
@@ -615,7 +637,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime?> SelectMany(NullableDateTimeElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" /> values.
@@ -628,7 +650,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset> SelectMany(DateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="DateTimeOffset" />? values.
@@ -641,7 +663,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTimeOffset?> SelectMany(NullableDateTimeOffsetElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" /> values.
@@ -654,7 +676,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<decimal> SelectMany(DecimalElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="decimal" />? values.
@@ -667,7 +689,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<decimal?> SelectMany(NullableDecimalElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" /> values.
@@ -680,7 +702,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<double> SelectMany(DoubleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="double" />? values.
@@ -693,7 +715,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<double?> SelectMany(NullableDoubleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" /> values.
@@ -705,7 +727,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<Guid> SelectMany(GuidElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="Guid" />? values.
@@ -718,7 +740,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<Guid?> SelectMany(NullableGuidElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" /> values.
@@ -730,7 +752,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<short> SelectMany(Int16Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="short" />? values.
@@ -742,7 +764,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<short?> SelectMany(NullableInt16Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" /> values.
@@ -755,7 +777,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int> SelectMany(Int32Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="int" />? values.
@@ -768,7 +790,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int?> SelectMany(NullableInt32Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" /> values.
@@ -780,7 +802,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<long> SelectMany(Int64Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="long" />? values.
@@ -792,7 +814,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<long?> SelectMany(NullableInt64Element element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" /> values.
@@ -804,7 +826,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<float> SelectMany(SingleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="float" />? values.
@@ -816,7 +838,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<float?> SelectMany(NullableSingleElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -829,7 +851,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(StringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="string" /> values.
@@ -841,7 +863,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<string> SelectMany(NullableStringElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" /> values.
@@ -853,7 +875,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan> SelectMany(TimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="TimeSpan" />? values.
@@ -866,7 +888,7 @@ namespace SimpleConsole.DataService
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<TimeSpan?> SelectMany(NullableTimeSpanElement element)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(config, element);
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE), element);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -900,13 +922,14 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/update-transact-sql">Microsoft docs on UPDATE</see>
         /// </para>
         /// </summary>
-        /// <param name="assignments">A list of <see cref="EntityFieldAssignment" />(s) that assign a database field/column a new value.  
+        /// <param name="assignment">A <see cref="EntityFieldAssignment" /> assigning a database field/column a new value.  
         /// For example "dbo.Address.Line1.Set("new value")"
         /// or "dbo.Person.CreditLimit.Set(dbo.Person.CreditLimit + 10)"
         ///</param>
+        /// <param name="assignments">An additional list of <see cref="EntityFieldAssignment" />(s) assigning database fields/columns new values.  </param>
         /// <returns><see cref="UpdateEntities"/>, a fluent builder for constructing a sql UPDATE statement.</returns>
-        public static UpdateEntities Update(params EntityFieldAssignment[] assignments)
-            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignments);
+        public static UpdateEntities Update(EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
+            => expressionBuilderFactory.CreateUpdateExpressionBuilder(config, assignment, assignments);
 
         /// <summary>
         /// Start constructing a sql UPDATE query expression to update records.
@@ -932,7 +955,7 @@ namespace SimpleConsole.DataService
         /// </summary>
         /// <returns><see cref="DeleteEntities"/>, a fluent builder for constructing a sql DELETE statement.</returns>
         public static DeleteEntities Delete()
-            => expressionBuilderFactory.CreateDeleteExpressionBulder(config);
+            => expressionBuilderFactory.CreateDeleteExpressionBulder(config ?? throw new DbExpressionConfigurationException(NO_CONFIG_MESSAGE));
         #endregion
 
         #region insert
@@ -960,9 +983,9 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<TEntity> InsertMany<TEntity>(params TEntity[] entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
-            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
+            => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entity, entities);
 
         /// <summary>
         /// Start constructing a sql INSERT query expression to insert one or more record.  The property values from each <paramref name="entities"/> entity instance are used to create the new record values for the INSERT statement.
@@ -974,7 +997,7 @@ namespace SimpleConsole.DataService
         /// </param>
         /// <returns><see cref="InsertEntities{TEntity}"/>, a fluent builder for constructing a sql INSERT statement.</returns>
         /// <typeparam name="TEntity">The entity type of the entities to insert.</typeparam>
-        public static InsertEntities<TEntity> InsertMany<TEntity>(IList<TEntity> entities)
+        public static InsertEntities<TEntity> InsertMany<TEntity>(IEnumerable<TEntity> entities)
             where TEntity : class, IDbEntity
             => expressionBuilderFactory.CreateInsertExpressionBuilder(config, entities);
         #endregion
@@ -4875,10 +4898,6 @@ namespace SimpleConsole.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        #region internals
-        private static readonly dboSchemaExpression _schema = new dboSchemaExpression("dbo");
-        #endregion
-
         #region interface
         /// <summary>A <see cref="SimpleConsole.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
@@ -4902,7 +4921,7 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly AddressEntity Address;
+        public static AddressEntity Address { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonEntity"/> representing the "dbo.Person" table in the database.
         /// <para>Properties:
@@ -4926,7 +4945,7 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonEntity Person;
+        public static PersonEntity Person { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonAddressEntity"/> representing the "dbo.Person_Address" table in the database.
         /// <para>Properties:
@@ -4950,7 +4969,7 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonAddressEntity PersonAddress;
+        public static PersonAddressEntity PersonAddress { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.ProductEntity"/> representing the "dbo.Product" table in the database.
         /// <para>Properties:
@@ -4974,7 +4993,7 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly ProductEntity Product;
+        public static ProductEntity Product { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseEntity"/> representing the "dbo.Purchase" table in the database.
         /// <para>Properties:
@@ -4998,7 +5017,7 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PurchaseEntity Purchase;
+        public static PurchaseEntity Purchase { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PurchaseLineEntity"/> representing the "dbo.PurchaseLine" table in the database.
         /// <para>Properties:
@@ -5022,7 +5041,7 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PurchaseLineEntity PurchaseLine;
+        public static PurchaseLineEntity PurchaseLine { get; private set; }
 
         /// <summary>A <see cref="SimpleConsole.dboDataService.PersonTotalPurchasesViewEntity"/> representing the "dbo.PersonTotalPurchasesView" view in the database.
         /// <para>Properties:
@@ -5033,20 +5052,22 @@ namespace SimpleConsole.dboDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonTotalPurchasesViewEntity PersonTotalPurchasesView;
+        public static PersonTotalPurchasesViewEntity PersonTotalPurchasesView { get; private set; }
 
         #endregion
 
-        #region constructors
-        static dbo()
+        #region methods
+        public static void UseSchema(dboSchemaExpression schema)
         { 
-            Address = _schema.Address;
-            Person = _schema.Person;
-            PersonAddress = _schema.PersonAddress;
-            Product = _schema.Product;
-            Purchase = _schema.Purchase;
-            PurchaseLine = _schema.PurchaseLine;
-            PersonTotalPurchasesView = _schema.PersonTotalPurchasesView;
+            if (schema == null)
+                 throw new ArgumentNullException($"{nameof(schema)} is required.");
+            Address = schema.Address ?? throw new ArgumentNullException($"{schema.Address } is required.");
+            Person = schema.Person ?? throw new ArgumentNullException($"{schema.Person } is required.");
+            PersonAddress = schema.PersonAddress ?? throw new ArgumentNullException($"{schema.PersonAddress } is required.");
+            Product = schema.Product ?? throw new ArgumentNullException($"{schema.Product } is required.");
+            Purchase = schema.Purchase ?? throw new ArgumentNullException($"{schema.Purchase } is required.");
+            PurchaseLine = schema.PurchaseLine ?? throw new ArgumentNullException($"{schema.PurchaseLine } is required.");
+            PersonTotalPurchasesView = schema.PersonTotalPurchasesView ?? throw new ArgumentNullException($"{schema.PersonTotalPurchasesView } is required.");
         }
         #endregion
     }
@@ -5347,10 +5368,6 @@ namespace SimpleConsole.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        #region internals
-        private static readonly secSchemaExpression _schema = new secSchemaExpression("sec");
-        #endregion
-
         #region interface
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
@@ -5374,14 +5391,16 @@ namespace SimpleConsole.secDataService
         /// </list>
         /// </para>
         /// </summary>
-        public static readonly PersonEntity Person;
+        public static PersonEntity Person { get; private set; }
 
         #endregion
 
-        #region constructors
-        static sec()
+        #region methods
+        public static void UseSchema(secSchemaExpression schema)
         { 
-            Person = _schema.Person;
+            if (schema == null)
+                 throw new ArgumentNullException($"{nameof(schema)} is required.");
+            Person = schema.Person ?? throw new ArgumentNullException($"{schema.Person } is required.");
         }
         #endregion
     }
