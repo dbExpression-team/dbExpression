@@ -166,6 +166,7 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Male,
                     CreditLimit = 75000,
                     YearOfLastCreditLimitReview = 2018,
+                    RegistrationDate = DateTimeOffset.Now,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
@@ -178,6 +179,7 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Male,
                     CreditLimit = 1200,
                     YearOfLastCreditLimitReview = 2018,
+                    RegistrationDate = DateTimeOffset.Now,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
@@ -190,6 +192,7 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Male,
                     CreditLimit = 7500,
                     YearOfLastCreditLimitReview = 2018,
+                    RegistrationDate = DateTimeOffset.Now,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
@@ -202,6 +205,7 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Male,
                     CreditLimit = 10000,
                     YearOfLastCreditLimitReview = 2015,
+                    RegistrationDate = DateTimeOffset.Now,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
@@ -214,6 +218,7 @@ namespace NetCoreConsoleApp
                     GenderType = GenderType.Female,
                     CreditLimit = 35000,
                     YearOfLastCreditLimitReview = 2016,
+                    RegistrationDate = DateTimeOffset.Now,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now
                 };
