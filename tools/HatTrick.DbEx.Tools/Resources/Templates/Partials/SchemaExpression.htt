@@ -11,7 +11,7 @@
         public {$.SchemaExpression.Name}SchemaExpression(string identifier) : base(identifier, null)
         {{
 			{#each $.Items}
-            Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{{identifier}}.{$.Entity.Name}", this));
+            Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}", this));
 			{/each}
         }}
         #endregion

@@ -10,6 +10,7 @@ using Xunit;
 using DbEx.dboData;
 using HatTrick.DbEx.Sql.Connection;
 using System.Data;
+using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -259,6 +260,117 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_map_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(45, row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn, 45, row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
         }
         #endregion
 
@@ -804,6 +916,454 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_map_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(45, row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new HashSet<int>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, 45, row => persons.Add(row.ReadField().GetValue<int>()));
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(45, (row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(conn, (row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(conn, 45, (row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(row => 
+                { 
+                    var person = new Person(); 
+                    person.Id = row.ReadField().GetValue<int>(); 
+                    return person; 
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(45, row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(conn, row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(conn, 45, row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_async_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(async row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                    persons.Add(person);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(45, async row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                    persons.Add(person);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, async row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                    persons.Add(person);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var persons = new List<Person>();
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, 45, async row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                    persons.Add(person);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_async_map_to_factory_created_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(45, async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(conn, async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_list_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var persons = await exp.ExecuteAsync(conn, 45, async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            persons.Should().HaveCount(expected);
+            persons.Should().NotContain(x => x.Id <= 0);
         }
         #endregion
 

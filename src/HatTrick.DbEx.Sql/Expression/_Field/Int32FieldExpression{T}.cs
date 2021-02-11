@@ -8,12 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public Int32FieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected Int32FieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public Int32FieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
@@ -21,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override Int32Element As(string alias)
-            => new Int32FieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new Int32SelectExpression(this).As(alias);
         #endregion
 
         #region equals

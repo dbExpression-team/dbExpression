@@ -174,7 +174,7 @@ namespace DbEx.secData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual string SSN { get; set; }
+        public virtual string SocialSecurityNumber { get; set; }
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion

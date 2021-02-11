@@ -8,12 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableTimeSpanFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected NullableTimeSpanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public NullableTimeSpanFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
@@ -21,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override NullableTimeSpanElement As(string alias)
-            => new NullableTimeSpanFieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new NullableTimeSpanSelectExpression(this).As(alias);
         #endregion
 
         #region equals

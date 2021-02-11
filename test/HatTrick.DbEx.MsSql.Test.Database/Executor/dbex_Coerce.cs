@@ -8,7 +8,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public class Coerce : ExecutorTestBase
+    public class dbex_Coerce : ExecutorTestBase
     {
         [Theory]
         [Trait("Pattern", "LEFT JOIN NULL PATTERN")]

@@ -8,12 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public DateTimeOffsetFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected DateTimeOffsetFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public DateTimeOffsetFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
@@ -21,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override DateTimeOffsetElement As(string alias)
-            => new DateTimeOffsetFieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new DateTimeOffsetSelectExpression(this).As(alias);
         #endregion
 
         #region equals

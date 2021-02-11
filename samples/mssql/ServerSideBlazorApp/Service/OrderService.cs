@@ -57,18 +57,18 @@ namespace ServerSideBlazorApp.Service
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? OrderSummarySortingFields[s.Field].Asc : OrderSummarySortingFields[s.Field].Desc)
                 )
                 .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
-                .ExecuteAsync(row =>
+                .ExecuteAsync(reader =>
                     new OrderSummaryModel
                     {
-                        Id = row.ReadField().GetValue<int>(),
-                        CustomerId = row.ReadField().GetValue<int>(),
-                        CustomerName = row.ReadField().GetValue<string>(),
-                        IsVIP = row.ReadField().GetValue<double>() >= Rules.LifetimeValueAmountToBeAVIPCustomer,
-                        OrderNumber = row.ReadField().GetValue<string>(),
-                        PaymentMethod = row.ReadField().GetValue<PaymentMethodType>(),
-                        TotalPurchaseAmount = row.ReadField().GetValue<double>(),
-                        PurchaseDate = row.ReadField().GetValue<DateTime>(),
-                        ShipDate = row.ReadField().GetValue<DateTime?>()
+                        Id = reader.ReadField().GetValue<int>(),
+                        CustomerId = reader.ReadField().GetValue<int>(),
+                        CustomerName = reader.ReadField().GetValue<string>(),
+                        IsVIP = reader.ReadField().GetValue<double>() >= Rules.LifetimeValueAmountToBeAVIPCustomer,
+                        OrderNumber = reader.ReadField().GetValue<string>(),
+                        PaymentMethod = reader.ReadField().GetValue<PaymentMethodType>(),
+                        TotalPurchaseAmount = reader.ReadField().GetValue<double>(),
+                        PurchaseDate = reader.ReadField().GetValue<DateTime>(),
+                        ShipDate = reader.ReadField().GetValue<DateTime?>()
                     }
                 );
 
@@ -113,18 +113,18 @@ namespace ServerSideBlazorApp.Service
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? OrderSummarySortingFields[s.Field].Asc : OrderSummarySortingFields[s.Field].Desc)
                 )
                 .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
-                .ExecuteAsync(row =>
+                .ExecuteAsync(reader =>
                     new OrderSummaryModel
                     {
-                        Id = row.ReadField().GetValue<int>(),
-                        CustomerId = row.ReadField().GetValue<int>(),
-                        CustomerName = row.ReadField().GetValue<string>(),
-                        IsVIP = row.ReadField().GetValue<double>() >= Rules.LifetimeValueAmountToBeAVIPCustomer,
-                        OrderNumber = row.ReadField().GetValue<string>(),
-                        PaymentMethod = row.ReadField().GetValue<PaymentMethodType>(),
-                        TotalPurchaseAmount = row.ReadField().GetValue<double>(),
-                        PurchaseDate = row.ReadField().GetValue<DateTime>(),
-                        ShipDate = row.ReadField().GetValue<DateTime?>()
+                        Id = reader.ReadField().GetValue<int>(),
+                        CustomerId = reader.ReadField().GetValue<int>(),
+                        CustomerName = reader.ReadField().GetValue<string>(),
+                        IsVIP = reader.ReadField().GetValue<double>() >= Rules.LifetimeValueAmountToBeAVIPCustomer,
+                        OrderNumber = reader.ReadField().GetValue<string>(),
+                        PaymentMethod = reader.ReadField().GetValue<PaymentMethodType>(),
+                        TotalPurchaseAmount = reader.ReadField().GetValue<double>(),
+                        PurchaseDate = reader.ReadField().GetValue<DateTime>(),
+                        ShipDate = reader.ReadField().GetValue<DateTime?>()
                     }
                 );
 
@@ -208,36 +208,36 @@ namespace ServerSideBlazorApp.Service
             ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(shippingAddress, nameof(OrderDetailModel.CustomerId)))
             .Where(dbo.Purchase.Id == orderId)
             .ExecuteAsync(
-                row => new OrderDetailModel
+                reader => new OrderDetailModel
                     {
-                        Id = row.ReadField().GetValue<int>(),
-                        CustomerId = row.ReadField().GetValue<int>(),
-                        CustomerName = row.ReadField().GetValue<string>(),
-                        IsVIP = row.ReadField().GetValue<double>() >= Rules.LifetimeValueAmountToBeAVIPCustomer,
-                        OrderNumber = row.ReadField().GetValue<string>(),
-                        TotalPurchaseAmount = row.ReadField().GetValue<double>(),
-                        PurchaseDate = row.ReadField().GetValue<DateTime>(),
-                        ShipDate = row.ReadField().GetValue<DateTime?>(),
-                        PaymentMethod = row.ReadField().GetValue<PaymentMethodType>(),
-                        ExpectedDeliveryDate = row.ReadField().GetValue<DateTime?>(),
-                        TrackingIdentifier = row.ReadField().GetValue<Guid?>(),
+                        Id = reader.ReadField().GetValue<int>(),
+                        CustomerId = reader.ReadField().GetValue<int>(),
+                        CustomerName = reader.ReadField().GetValue<string>(),
+                        IsVIP = reader.ReadField().GetValue<double>() >= Rules.LifetimeValueAmountToBeAVIPCustomer,
+                        OrderNumber = reader.ReadField().GetValue<string>(),
+                        TotalPurchaseAmount = reader.ReadField().GetValue<double>(),
+                        PurchaseDate = reader.ReadField().GetValue<DateTime>(),
+                        ShipDate = reader.ReadField().GetValue<DateTime?>(),
+                        PaymentMethod = reader.ReadField().GetValue<PaymentMethodType>(),
+                        ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>(),
+                        TrackingIdentifier = reader.ReadField().GetValue<Guid?>(),
                         BillingAddress = new AddressModel
                         {
                             Type = AddressType.Billing,
-                            Line1 = row.ReadField().GetValue<string>(),
-                            Line2 = row.ReadField().GetValue<string>(),
-                            City = row.ReadField().GetValue<string>(),
-                            State = row.ReadField().GetValue<string>(),
-                            ZIP = row.ReadField().GetValue<string>()
+                            Line1 = reader.ReadField().GetValue<string>(),
+                            Line2 = reader.ReadField().GetValue<string>(),
+                            City = reader.ReadField().GetValue<string>(),
+                            State = reader.ReadField().GetValue<string>(),
+                            ZIP = reader.ReadField().GetValue<string>()
                         },
                         ShippingAddress = new AddressModel
                         {
                             Type = AddressType.Shipping,
-                            Line1 = row.ReadField().GetValue<string>(),
-                            Line2 = row.ReadField().GetValue<string>(),
-                            City = row.ReadField().GetValue<string>(),
-                            State = row.ReadField().GetValue<string>(),
-                            ZIP = row.ReadField().GetValue<string>()
+                            Line1 = reader.ReadField().GetValue<string>(),
+                            Line2 = reader.ReadField().GetValue<string>(),
+                            City = reader.ReadField().GetValue<string>(),
+                            State = reader.ReadField().GetValue<string>(),
+                            ZIP = reader.ReadField().GetValue<string>()
                         }
                     }
             );

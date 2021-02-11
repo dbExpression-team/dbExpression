@@ -11,11 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        protected NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-        }
-
-        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableEnumFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }

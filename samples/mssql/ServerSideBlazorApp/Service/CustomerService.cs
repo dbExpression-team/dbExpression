@@ -104,7 +104,7 @@ namespace ServerSideBlazorApp.Service
             );
         }
 
-        private static CustomerSummaryModel MapToCustomerSummary(ISqlRow row)
+        private static CustomerSummaryModel MapToCustomerSummary(ISqlFieldReader row)
             => new CustomerSummaryModel
             {
                 Id = row.ReadField().GetValue<int>(),
@@ -120,7 +120,7 @@ namespace ServerSideBlazorApp.Service
         /// </summary>
         public async Task<CustomerDetailModel> GetCustomerDetailAsync(int customerId)
         {
-            static AddressModel mapAddress(AddressType addressType, ISqlRow sqlRow)
+            static AddressModel mapAddress(AddressType addressType, ISqlFieldReader sqlRow)
                 =>  new AddressModel
                 {
                     Type = addressType,
@@ -208,20 +208,20 @@ namespace ServerSideBlazorApp.Service
                 ).As(shippingAddress).On(dbo.Customer.Id == dbex.Alias(nameof(CustomerDetailModel.ShippingAddress), nameof(CustomerSummaryModel.Id)))
                 .Where(dbo.Customer.Id == customerId)
                 .ExecuteAsync(
-                    sqlRow => 
+                    reader => 
                     {
-                        customer.Id = sqlRow.ReadField().GetValue<int>();
-                        customer.FirstName = sqlRow.ReadField().GetValue<string>();
-                        customer.LastName = sqlRow.ReadField().GetValue<string>();
-                        customer.LifetimeValue = sqlRow.ReadField().GetValue<double>();
-                        customer.Gender = sqlRow.ReadField().GetValue<GenderType>();
-                        customer.CreditLimit = sqlRow.ReadField().GetValue<int?>();
-                        customer.YearOfLastCreditLimitReview = sqlRow.ReadField().GetValue<int?>();
-                        customer.BirthDate = sqlRow.ReadField().GetValue<DateTime?>();
-                        customer.CurrentAge = sqlRow.ReadField().GetValue<short?>();
-                        customer.MailingAddress = mapAddress(AddressType.Mailing, sqlRow);
-                        customer.BillingAddress = mapAddress(AddressType.Billing, sqlRow);
-                        customer.ShippingAddress = mapAddress(AddressType.Shipping, sqlRow);
+                        customer.Id = reader.ReadField().GetValue<int>();
+                        customer.FirstName = reader.ReadField().GetValue<string>();
+                        customer.LastName = reader.ReadField().GetValue<string>();
+                        customer.LifetimeValue = reader.ReadField().GetValue<double>();
+                        customer.Gender = reader.ReadField().GetValue<GenderType>();
+                        customer.CreditLimit = reader.ReadField().GetValue<int?>();
+                        customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+                        customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
+                        customer.CurrentAge = reader.ReadField().GetValue<short?>();
+                        customer.MailingAddress = mapAddress(AddressType.Mailing, reader);
+                        customer.BillingAddress = mapAddress(AddressType.Billing, reader);
+                        customer.ShippingAddress = mapAddress(AddressType.Shipping, reader);
                         customer.IsVIP = customer.LifetimeValue >= Rules.LifetimeValueAmountToBeAVIPCustomer;
                         return customer;
                     }

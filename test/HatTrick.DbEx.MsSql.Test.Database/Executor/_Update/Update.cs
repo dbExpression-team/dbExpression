@@ -253,5 +253,25 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             execute.Should().Throw<SqlException>().And.Message.Should().StartWith("Incorrect syntax near");
 
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public async Task Can_update_persons_firstname_async(int version, int id = 1, string expectedFirstName = "Foo")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.Update(dbo.Person.FirstName.Set(expectedFirstName))
+               .From(dbo.Person)
+               .Where(dbo.Person.Id == id);
+
+            //when               
+            await exp.ExecuteAsync();
+
+            //then
+            var firstName = db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == id).Execute();
+            firstName.Should().Be(expectedFirstName);
+        }
     }
 }

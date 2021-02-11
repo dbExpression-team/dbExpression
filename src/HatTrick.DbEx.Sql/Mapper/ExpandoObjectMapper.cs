@@ -7,11 +7,11 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class ExpandoObjectMapper : IExpandoObjectMapper
     {
-        public void Map(ExpandoObject expandoObject, ISqlRow row, IValueConverterFinder finder)
+        public void Map(ExpandoObject expandoObject, ISqlFieldReader reader, IValueConverterFinder finder)
         {
             var expando = expandoObject as IDictionary<string, object>;
             ISqlField field;
-            while ((field = row.ReadField()) is object)
+            while ((field = reader.ReadField()) is object)
             {
                 if (string.IsNullOrWhiteSpace(field.Name))
                 {

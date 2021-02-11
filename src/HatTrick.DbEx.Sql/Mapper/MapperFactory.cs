@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         #endregion
 
         #region methods
-        public void RegisterEntityMapper<TEntity>(Action<TEntity, ISqlFieldReader> converter)
+        public void RegisterEntityMapper<TEntity>(Action<ISqlFieldReader, TEntity> converter)
             where TEntity : class, IDbEntity
         {
             if (converter is null)
@@ -21,13 +21,13 @@ namespace HatTrick.DbEx.Sql.Mapper
             entityMappers.AddOrUpdate(typeof(TEntity), () => new EntityMapper<TEntity>(converter), (t, f) => () => new EntityMapper<TEntity>(converter));
         }
 
-        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(EntityExpression<TEntity> entity)
+        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity)
             where TEntity : class, IDbEntity
         {
             if (entityMappers.TryGetValue(typeof(TEntity), out Func<IMapper> map))
                 return map() as IEntityMapper<TEntity>;
 
-            var entityMap = new EntityMapper<TEntity>((entity as IEntityExpression<TEntity>).HydrateEntity);
+            var entityMap = new EntityMapper<TEntity>(entity.HydrateEntity);
             entityMappers.TryAdd(typeof(TEntity), () => entityMap);
 
             return entityMap;

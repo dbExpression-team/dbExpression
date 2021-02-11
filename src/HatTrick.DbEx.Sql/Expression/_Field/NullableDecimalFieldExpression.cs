@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<NullableDecimalFieldExpression>
     {
         #region constructors
-        protected NullableDecimalFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected NullableDecimalFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        protected NullableDecimalFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }

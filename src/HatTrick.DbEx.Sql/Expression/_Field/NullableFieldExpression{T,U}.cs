@@ -7,12 +7,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue,TNullableValue>
     {
         #region constructors
-        protected NullableFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TNullableValue), entity)
-        {
-
-        }
-
-        protected NullableFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TNullableValue), entity, alias)
+        protected NullableFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(TNullableValue), entity)
         {
 
         }

@@ -1,6 +1,9 @@
 ﻿using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -109,6 +112,62 @@ namespace HatTrick.DbEx.Sql
         public static EntityFieldAssignmentsContinuation<TEntity> BuildAssignmentsFor<TEntity>(Entity<TEntity> entity)
             where TEntity : class, IDbEntity
             => new EntityComparisonAssignmentBuilder<TEntity>(entity);
+
+        /// <summary>
+        /// Get a list of all the columns for an <typeparamref name="TEntity"/> entity for use with a select query expression (effectively a "SELECT *").
+        /// </summary>
+        /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
+        /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
+        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Entity<TEntity> entity)
+            where TEntity : class, IDbEntity
+        {
+            if (entity is null)
+                throw new ArgumentNullException($"{nameof(entity)} is required.");
+
+            return entity.BuildInclusiveSelectExpression().Expressions.Cast<AnyElement>();
+        }
+
+        /// <summary>
+        /// Get a list of all the columns for an <typeparamref name="TEntity"/> entity for use with a select query expression (effectively a "SELECT *").
+        /// </summary>
+        /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
+        /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
+        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Entity<TEntity> entity, string aliasPrefix)
+            where TEntity : class, IDbEntity
+        {
+            return SelectAllFor(entity, name => $"{aliasPrefix}{name}");
+        }
+
+        /// <summary>
+        /// Get a list of all the columns for an <typeparamref name="TEntity"/> entity for use with a select query expression (effectively a "SELECT *").
+        /// </summary>
+        /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
+        /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
+        public static IEnumerable<AnyElement> SelectAllFor<TEntity>(Entity<TEntity> entity, Func<string,string> alias)
+            where TEntity : class, IDbEntity
+        {
+            if (entity is null)
+                throw new ArgumentNullException($"{nameof(entity)} is required.");
+
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            return entity.BuildInclusiveSelectExpression(alias).Expressions.Cast<AnyElement>();
+        }
+
+        /// <summary>
+        /// Get the default mapping delegate to map values from a field reader to a <typeparamref name="TEntity"/> entity.
+        /// </summary>
+        /// <returns>A <see cref="SelectExpressionSet"/> containing a list of <see cref="SelectExpression"/>s representing all columns for a table.</returns>
+        /// <remarks>The list will not include any fields/columns that were marked to ignore as part of configuration.</remarks>
+        public static Action<ISqlFieldReader, TEntity> GetDefaultMappingFor<TEntity>(Entity<TEntity> entity)
+            where TEntity : class, IDbEntity
+        {
+            if (entity is null)
+                throw new ArgumentNullException($"{nameof(entity)} is required.");
+
+            return entity.HydrateEntity;
+        }
     }
 #pragma warning restore IDE1006 // Naming Styles
 }

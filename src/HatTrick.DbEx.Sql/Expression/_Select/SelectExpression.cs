@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
 
-        protected SelectExpression(IExpressionElement expression, string alias)
+        public SelectExpression(IExpressionElement expression, string alias)
         {
             Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required");
             this.Alias = alias;

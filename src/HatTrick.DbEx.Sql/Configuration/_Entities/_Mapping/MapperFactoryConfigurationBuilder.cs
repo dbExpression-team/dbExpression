@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
-        public IMapperFactoryContinuationConfigurationBuilder OverrideForEntity<TEntity>(Action<TEntity, ISqlFieldReader> mapping)
+        public IMapperFactoryContinuationConfigurationBuilder OverrideForEntity<TEntity>(Action<ISqlFieldReader, TEntity> mapping)
             where TEntity : class, IDbEntity
         {
             (configuration.EntityFactory as MapperFactory).RegisterEntityMapper(mapping);

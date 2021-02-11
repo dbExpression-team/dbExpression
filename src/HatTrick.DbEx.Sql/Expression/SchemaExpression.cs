@@ -6,7 +6,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class SchemaExpression : 
         IExpressionElement,
-        ISqlMetadataIdentifier,
+        ISqlMetadataIdentifierProvider,
         IExpressionListProvider<EntityExpression>,
         IEquatable<SchemaExpression>
     {

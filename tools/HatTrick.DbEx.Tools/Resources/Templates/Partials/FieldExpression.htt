@@ -3,12 +3,7 @@
         public partial class {$.FieldExpression.Name}Field : {+#if $.Column.IsNullable}Nullable{/if}{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}FieldExpression<{$.FieldExpression.EntityExpression.Name}{#if :isEnum}, {$.FieldExpression.Type.TypeName}{/if}>
         {{
             #region constructors
-            public {$.FieldExpression.Name}Field(string identifier, {$.FieldExpression.EntityExpression.Name}Entity entity) : base(identifier, entity)
-            {{
-
-            }}
-
-            private {$.FieldExpression.Name}Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public {$.FieldExpression.Name}Field(string identifier, string name, {$.FieldExpression.EntityExpression.Name}Entity entity) : base(identifier, name, entity)
             {{
 
             }}

@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DateTimeOffsetFieldExpression>
     {
         #region constructors
-        protected DateTimeOffsetFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(DateTimeOffset), entity)
-        {
-
-        }
-
-        protected DateTimeOffsetFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(DateTimeOffset), entity, alias)
+        protected DateTimeOffsetFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(DateTimeOffset), entity)
         {
 
         }

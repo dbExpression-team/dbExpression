@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public async Task<ISqlRow> ReadRowAsync()
+        public async Task<ISqlFieldReader> ReadRowAsync()
         {
             CancellationToken.ThrowIfCancellationRequested();
 

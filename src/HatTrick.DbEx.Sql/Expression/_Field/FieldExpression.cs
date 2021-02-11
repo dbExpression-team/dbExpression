@@ -7,46 +7,37 @@ namespace HatTrick.DbEx.Sql.Expression
         AnyOrderByClause,
         AnyGroupByClause,
         IExpressionTypeProvider,
-        ISqlMetadataIdentifier,
+        ISqlMetadataIdentifierProvider,
+        IExpressionNameProvider,
         IExpressionProvider<EntityExpression>,
         IEquatable<FieldExpression>
     {
         #region internals
         protected readonly string identifier;
         protected readonly Type declaredType;
+        protected readonly string name;
         protected readonly EntityExpression entity;
-        protected readonly string alias;
         #endregion
 
         #region interface
-        string ISqlMetadataIdentifier.Identifier => identifier;
+        string ISqlMetadataIdentifierProvider.Identifier => identifier;
+        string IExpressionNameProvider.Name => name;
         Type IExpressionTypeProvider.DeclaredType => declaredType;
         EntityExpression IExpressionProvider<EntityExpression>.Expression => entity;
         #endregion
 
         #region constructors
-        protected FieldExpression(string identifier, Type declaredType, EntityExpression entity) : this(identifier, declaredType, entity, null)
-        {
-        }
-
-        protected FieldExpression(string identifier, Type declaredType, EntityExpression entity, string alias)
+        protected FieldExpression(string identifier, string name, Type declaredType, EntityExpression entity)
         {
             this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
+            this.name = name ?? throw new ArgumentNullException($"{nameof(name)} is required.");
             this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
             this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
         }
         #endregion
 
         #region to string
-        public override string ToString() => this.ToString(false);
-
-        public string ToString(bool ignoreAlias = false)
-        {
-            if (ignoreAlias || string.IsNullOrWhiteSpace(alias))
-                return identifier;
-
-            return $"{identifier} AS {alias}";
-        }
+        public override string ToString() => identifier;
         #endregion
 
         #region order

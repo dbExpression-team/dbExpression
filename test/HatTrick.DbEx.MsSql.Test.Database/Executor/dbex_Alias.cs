@@ -14,7 +14,7 @@ using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public class Aliasing : ExecutorTestBase
+    public class dbex_Alias : ExecutorTestBase
     {
         [Theory]
         [Trait("Operation", "SUBQUERY")]

@@ -77,9 +77,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
             );
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>);
 
-            ISqlRow row;
+            ISqlFieldReader row;
             while ((row = reader.ReadRow()) is object)
             {
                 var index = 0;
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     throw new DbExpressionException("Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
                 }
                 var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                mapper.Map(entity as T, row);
+                mapper.Map(row, entity as T);
             }
 
             if (afterInsert is object)
@@ -154,9 +154,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as EntityExpression<T>);
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>);
 
-            ISqlRow row;
+            ISqlFieldReader row;
             while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
             {
                 var index = 0;
@@ -169,7 +169,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     throw new DbExpressionException("Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
                 }
                 var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                mapper.Map(entity as T, row);
+                mapper.Map(row, entity as T);
             }
 
             if (afterInsert is object)
