@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region methods
-        public ISqlRow ReadRow()
+        public ISqlFieldReader ReadRow()
         {
             try
             {

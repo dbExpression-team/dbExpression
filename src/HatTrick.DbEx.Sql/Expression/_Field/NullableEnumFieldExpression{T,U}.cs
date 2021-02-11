@@ -8,18 +8,16 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
         where TEnum : struct, Enum, IComparable
     {
-        public NullableEnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-        }
-
-        protected NullableEnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        #region constructors
+        public NullableEnumFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
+        #endregion
 
         #region as
         public override NullableEnumElement<TEnum> As(string alias)
-            => new NullableEnumFieldExpression<TEntity, TEnum>(base.identifier, base.entity, alias);
+            => new NullableEnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region in value set

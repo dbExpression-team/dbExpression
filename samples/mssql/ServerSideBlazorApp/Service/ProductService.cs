@@ -46,15 +46,15 @@ namespace ServerSideBlazorApp.Service
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? ProductSummarySortingFields[s.Field].Asc : ProductSummarySortingFields[s.Field].Desc)
                 )
                 .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
-                .ExecuteAsync(row =>
+                .ExecuteAsync(reader =>
                     new ProductSummaryModel
                     {
-                        Id = row.ReadField().GetValue<int>(),
-                        Category = row.ReadField().GetValue<ProductCategoryType?>(),
-                        Name = row.ReadField().GetValue<string>(),
-                        ListPrice = row.ReadField().GetValue<double>(),
-                        Price = row.ReadField().GetValue<double>(),
-                        QuantityOnHand = row.ReadField().GetValue<int>()
+                        Id = reader.ReadField().GetValue<int>(),
+                        Category = reader.ReadField().GetValue<ProductCategoryType?>(),
+                        Name = reader.ReadField().GetValue<string>(),
+                        ListPrice = reader.ReadField().GetValue<double>(),
+                        Price = reader.ReadField().GetValue<double>(),
+                        QuantityOnHand = reader.ReadField().GetValue<int>()
                     }
                 );
 
@@ -95,22 +95,22 @@ namespace ServerSideBlazorApp.Service
                 )
                 .From(dbo.Product)
                 .Where(dbo.Product.Id == productId)
-                .ExecuteAsync(row =>
+                .ExecuteAsync(reader =>
                     new ProductDetailModel
                     {
-                        Id = row.ReadField().GetValue<int>(),
-                        Category = row.ReadField().GetValue<ProductCategoryType?>(),
-                        Name = row.ReadField().GetValue<string>(),
-                        Description = row.ReadField().GetValue<string>(),
-                        ListPrice = row.ReadField().GetValue<double>(),
-                        Price = row.ReadField().GetValue<double>(),
-                        QuantityOnHand = row.ReadField().GetValue<int>(),
-                        Height = row.ReadField().GetValue<decimal?>(),
-                        Width = row.ReadField().GetValue<decimal?>(),
-                        Depth = row.ReadField().GetValue<decimal?>(),
-                        Weight = row.ReadField().GetValue<decimal?>(),
-                        ShippingWeight = row.ReadField().GetValue<decimal>(),
-                        Image = Convert.ToBase64String(row.ReadField().GetValue<byte[]>() ?? new byte[0])
+                        Id = reader.ReadField().GetValue<int>(),
+                        Category = reader.ReadField().GetValue<ProductCategoryType?>(),
+                        Name = reader.ReadField().GetValue<string>(),
+                        Description = reader.ReadField().GetValue<string>(),
+                        ListPrice = reader.ReadField().GetValue<double>(),
+                        Price = reader.ReadField().GetValue<double>(),
+                        QuantityOnHand = reader.ReadField().GetValue<int>(),
+                        Height = reader.ReadField().GetValue<decimal?>(),
+                        Width = reader.ReadField().GetValue<decimal?>(),
+                        Depth = reader.ReadField().GetValue<decimal?>(),
+                        Weight = reader.ReadField().GetValue<decimal?>(),
+                        ShippingWeight = reader.ReadField().GetValue<decimal>(),
+                        Image = Convert.ToBase64String(reader.ReadField().GetValue<byte[]>() ?? new byte[0])
                     }
                 );
         }

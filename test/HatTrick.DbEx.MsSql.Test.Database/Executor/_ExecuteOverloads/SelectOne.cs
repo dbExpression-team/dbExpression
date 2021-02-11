@@ -10,6 +10,7 @@ using DbEx.dboData;
 using Moq;
 using HatTrick.DbEx.Sql.Connection;
 using System.Data;
+using System;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -135,6 +136,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var value = exp.Execute(conn, 45);
+
+            //then
+            value.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_value_with_action_override_succeed(int version, int expected = 1)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            object value = default;
+
+            var exp = db.SelectOne(dbo.Person.Id, dbo.Person.FirstName)
+                .From(dbo.Person)
+                .Where(dbo.Person.Id == expected);
+
+            //when               
+            await exp.ExecuteAsync(o =>
+                { value = o.ReadField().GetValue<int>(); }
+            );
 
             //then
             value.Should().Be(expected);
@@ -268,6 +291,124 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             int id = person.Id;
             id.Should().Be(expected);
+        }
+
+
+
+
+
+
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_with_map_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(45, row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            exp.Execute(conn, 45, row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_execute_type_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = exp.Execute((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
         }
         #endregion
 
@@ -820,6 +961,449 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             int id = person.Id;
             id.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_map_delegate_override_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_commandTimeout_and_map_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(45, row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_map_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            var id = 0;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, 45, row => id = row.ReadField().GetValue<int>());
+
+            //then
+            id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_map_to_entity_delegate_override_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync((row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(45, (row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(conn, (row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(conn, 45, (row, person) => person.Id = row.ReadField().GetValue<int>());
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_async_map_to_entity_delegate_override_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(45, row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(conn, row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(conn, 45, row =>
+                {
+                    var person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    return person;
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_async_map_to_entity_delegate_override_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            Person person = default;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(async row =>
+                {
+                    person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            Person person = default;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(45, async row =>
+                {
+                    person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_connection_and_async_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            Person person = default;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, async row =>
+                {
+                    person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_void_with_connection_and_commandTimeout_and_async_map_to_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+            Person person = default;
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            await exp.ExecuteAsync(conn, 45, async row =>
+                {
+                    person = new Person();
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_async_map_to_factory_created_entity_delegate_override_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(45, async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(conn, async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_execute_async_type_with_connection_and_commandTimeout_and_async_map_to_factory_created_entity_delegate_overrides_succeed(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version);
+            var conn = new SqlConnector(config.ConnectionFactory);
+
+            var exp = db.SelectOne<Person>()
+                .From(dbo.Person);
+
+            //when               
+            var person = await exp.ExecuteAsync(conn, 45, async (row, person) =>
+                {
+                    person.Id = row.ReadField().GetValue<int>();
+                    await Task.Delay(TimeSpan.Zero);
+                }
+            );
+
+            //then
+            person.Should().NotBeNull();
+            person.Id.Should().NotBe(0);
         }
         #endregion
 

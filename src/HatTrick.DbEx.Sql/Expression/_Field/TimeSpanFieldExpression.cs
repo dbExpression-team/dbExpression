@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<TimeSpanFieldExpression>
     {
         #region constructors
-        protected TimeSpanFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TimeSpan), entity)
-        {
-
-        }
-
-        protected TimeSpanFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TimeSpan), entity, alias)
+        protected TimeSpanFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(TimeSpan), entity)
         {
 
         }

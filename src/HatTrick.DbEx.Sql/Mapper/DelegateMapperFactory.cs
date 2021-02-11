@@ -1,5 +1,4 @@
-﻿using HatTrick.DbEx.Sql.Executor;
-using HatTrick.DbEx.Sql.Expression;
+﻿using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Mapper
@@ -20,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         #endregion
 
         #region methods
-        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(EntityExpression<TEntity> entity)
+        public IEntityMapper<TEntity> CreateEntityMapper<TEntity>(IEntityExpression<TEntity> entity)
             where TEntity : class, IDbEntity
         {
             var mapper = entityMapperFactory(typeof(TEntity));

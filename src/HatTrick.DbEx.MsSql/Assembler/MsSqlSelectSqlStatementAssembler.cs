@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             //end CTE
             builder.Appender.Indent().Write("AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
-                    .Write((expression.BaseEntity as ISqlMetadataIdentifier).Identifier)
+                    .Write((expression.BaseEntity as ISqlMetadataIdentifierProvider).Identifier)
                     .Write(context.Configuration.IdentifierDelimiter.End)
                     .LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()

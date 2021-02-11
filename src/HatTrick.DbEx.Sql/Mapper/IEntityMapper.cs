@@ -5,6 +5,6 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IEntityMapper : IMapper 
     {
-        Action<IDbEntity, ISqlFieldReader> Map { get; }
+        Action<ISqlFieldReader, IDbEntity> Map { get; }
     }
 }

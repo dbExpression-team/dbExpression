@@ -1,8 +1,7 @@
 ﻿namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlMetadataName
+    public interface ISqlMetadataNameProvider
     {
         string Name { get; }
-
     }
 }

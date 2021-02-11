@@ -13,12 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        public StringFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected StringFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public StringFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
@@ -26,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override StringElement As(string alias)
-            => new StringFieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new StringSelectExpression(this).As(alias);
         #endregion
 
         #region like

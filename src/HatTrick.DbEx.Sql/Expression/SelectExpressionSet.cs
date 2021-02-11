@@ -13,14 +13,14 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructor
-        internal SelectExpressionSet()
+        private SelectExpressionSet()
         {
 
         }
 
         public SelectExpressionSet(params SelectExpression[] expressions)
         {
-            Expressions = expressions.ToList();
+            Expressions = (expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required")).ToList();
         }
 
         public SelectExpressionSet(SelectExpression selectExpression)

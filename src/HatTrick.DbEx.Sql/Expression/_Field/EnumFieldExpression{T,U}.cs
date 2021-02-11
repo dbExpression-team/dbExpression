@@ -9,11 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEnum : struct, Enum, IComparable
     {
         #region constructors
-        public EnumFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(TEnum), entity)
-        {
-        }
-
-        protected EnumFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(TEnum), entity, alias)
+        public EnumFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(TEnum), entity)
         {
 
         }
@@ -21,7 +17,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override EnumElement<TEnum> As(string alias)
-            => new EnumFieldExpression<TEntity, TEnum>(base.identifier, base.entity, alias);
+            => new EnumSelectExpression<TEnum>(this).As(alias);
         #endregion
 
         #region in value set

@@ -8,12 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public SingleFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected SingleFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public SingleFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
@@ -21,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override SingleElement As(string alias)
-            => new SingleFieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new SingleSelectExpression(this).As(alias);
         #endregion
 
         #region equals

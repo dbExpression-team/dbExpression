@@ -7,6 +7,7 @@ using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 
 #pragma warning disable IDE1006 // Naming Styles
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
@@ -466,7 +467,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, element1, element2, elements);
 
@@ -478,9 +479,21 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValue{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements)
             => expressionBuilderFactory.CreateSelectValueBuilder(config, elements);
+
+        /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => expressionBuilderFactory.CreateSelectValueBuilder(config, (elements ?? throw new ArgumentNullException($"{nameof(elements)} is required.")).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -899,7 +912,7 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, element1, element2, elements);
 
@@ -910,9 +923,21 @@ namespace ServerSideBlazorApp.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements)
             => expressionBuilderFactory.CreateSelectValuesBuilder(config, elements);
+
+            /// <summary>
+        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// <para>
+        /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
+        /// </para>
+        /// </summary>
+        /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
+        /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
+        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => expressionBuilderFactory.CreateSelectValuesBuilder(config, (elements ?? throw new ArgumentNullException($"{nameof(elements)} is required.")).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1060,13 +1085,13 @@ namespace ServerSideBlazorApp.dboDataService
         #region constructors
         public dboSchemaExpression(string identifier) : base(identifier, null)
         {
-            Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", this));
-            Entities.Add($"{identifier}.Person", Customer = new CustomerEntity($"{identifier}.Person", this));
-            Entities.Add($"{identifier}.Person_Address", CustomerAddress = new CustomerAddressEntity($"{identifier}.Person_Address", this));
-            Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", this));
-            Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", this));
-            Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", this));
-            Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", this));
+            Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
+            Entities.Add($"{identifier}.Person", Customer = new CustomerEntity($"{identifier}.Person", "Person", this));
+            Entities.Add($"{identifier}.Person_Address", CustomerAddress = new CustomerAddressEntity($"{identifier}.Person_Address", "Person_Address", this));
+            Entities.Add($"{identifier}.Product", Product = new ProductEntity($"{identifier}.Product", "Product", this));
+            Entities.Add($"{identifier}.Purchase", Purchase = new PurchaseEntity($"{identifier}.Purchase", "Purchase", this));
+            Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
+            Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView", this));
         }
         #endregion
     }
@@ -1263,31 +1288,31 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private AddressEntity() : base(null, null, null)
+        private AddressEntity() : base(null, null, null, null)
         {
         }
 
-		public AddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private AddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private AddressEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.AddressType", AddressType = new AddressTypeField($"{identifier}.AddressType", this));
-            Fields.Add($"{identifier}.Line1", Line1 = new Line1Field($"{identifier}.Line1", this));
-            Fields.Add($"{identifier}.Line2", Line2 = new Line2Field($"{identifier}.Line2", this));
-            Fields.Add($"{identifier}.City", City = new CityField($"{identifier}.City", this));
-            Fields.Add($"{identifier}.State", State = new StateField($"{identifier}.State", this));
-            Fields.Add($"{identifier}.Zip", Zip = new ZipField($"{identifier}.Zip", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.AddressType", AddressType = new AddressTypeField($"{identifier}.AddressType", "AddressType", this));
+            Fields.Add($"{identifier}.Line1", Line1 = new Line1Field($"{identifier}.Line1", "Line1", this));
+            Fields.Add($"{identifier}.Line2", Line2 = new Line2Field($"{identifier}.Line2", "Line2", this));
+            Fields.Add($"{identifier}.City", City = new CityField($"{identifier}.City", "City", this));
+            Fields.Add($"{identifier}.State", State = new StateField($"{identifier}.State", "State", this));
+            Fields.Add($"{identifier}.Zip", Zip = new ZipField($"{identifier}.Zip", "Zip", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
         public AddressEntity As(string name)
-            => new AddressEntity(this.identifier, this.schema, name);
+            => new AddressEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -1302,6 +1327,44 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(AddressType));
+            set &= aliased != nameof(AddressType) ? new NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType>(AddressType).As(aliased) as NullableEnumSelectExpression<ServerSideBlazorApp.Data.AddressType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressType));
+
+            aliased = alias(nameof(Line1));
+            set &= aliased != nameof(Line1) ? new StringSelectExpression(Line1).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line1));
+
+            aliased = alias(nameof(Line2));
+            set &= aliased != nameof(Line2) ? new NullableStringSelectExpression(Line2).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Line2));
+
+            aliased = alias(nameof(City));
+            set &= aliased != nameof(City) ? new StringSelectExpression(City).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(City));
+
+            aliased = alias(nameof(State));
+            set &= aliased != nameof(State) ? new StringSelectExpression(State).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(State));
+
+            aliased = alias(nameof(Zip));
+            set &= aliased != nameof(Zip) ? new StringSelectExpression(Zip).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Zip));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            aliased = alias(nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address address)
@@ -1329,7 +1392,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Address address, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, Address address)
         {
 			address.Id = reader.ReadField().GetValue<int>();
 			address.AddressType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.AddressType?>();
@@ -1348,12 +1411,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<Address>
         {
             #region constructors
-            public IdField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1375,12 +1433,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class AddressTypeField : NullableEnumFieldExpression<Address, ServerSideBlazorApp.Data.AddressType>
         {
             #region constructors
-            public AddressTypeField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private AddressTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public AddressTypeField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1407,12 +1460,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class Line1Field : StringFieldExpression<Address>
         {
             #region constructors
-            public Line1Field(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private Line1Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public Line1Field(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1436,12 +1484,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class Line2Field : NullableStringFieldExpression<Address>
         {
             #region constructors
-            public Line2Field(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private Line2Field(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public Line2Field(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1467,12 +1510,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class CityField : StringFieldExpression<Address>
         {
             #region constructors
-            public CityField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private CityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public CityField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1496,12 +1534,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class StateField : StringFieldExpression<Address>
         {
             #region constructors
-            public StateField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private StateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public StateField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1525,12 +1558,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ZipField : StringFieldExpression<Address>
         {
             #region constructors
-            public ZipField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ZipField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ZipField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1554,12 +1582,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateCreatedField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1581,12 +1604,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Address>
         {
             #region constructors
-            public DateUpdatedField(string identifier, AddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateUpdatedField(string identifier, string name, AddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1840,33 +1858,33 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private CustomerEntity() : base(null, null, null)
+        private CustomerEntity() : base(null, null, null, null)
         {
         }
 
-		public CustomerEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public CustomerEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private CustomerEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private CustomerEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", this));
-            Fields.Add($"{identifier}.LastName", LastName = new LastNameField($"{identifier}.LastName", this));
-            Fields.Add($"{identifier}.BirthDate", BirthDate = new BirthDateField($"{identifier}.BirthDate", this));
-            Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", this));
-            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new CreditLimitField($"{identifier}.CreditLimit", this));
-            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField($"{identifier}.YearOfLastCreditLimitReview", this));
-            Fields.Add($"{identifier}.RegistrationDate", RegistrationDate = new RegistrationDateField($"{identifier}.RegistrationDate", this));
-            Fields.Add($"{identifier}.LastLoginDate", LastLoginDate = new LastLoginDateField($"{identifier}.LastLoginDate", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.FirstName", FirstName = new FirstNameField($"{identifier}.FirstName", "FirstName", this));
+            Fields.Add($"{identifier}.LastName", LastName = new LastNameField($"{identifier}.LastName", "LastName", this));
+            Fields.Add($"{identifier}.BirthDate", BirthDate = new BirthDateField($"{identifier}.BirthDate", "BirthDate", this));
+            Fields.Add($"{identifier}.GenderType", GenderType = new GenderTypeField($"{identifier}.GenderType", "GenderType", this));
+            Fields.Add($"{identifier}.CreditLimit", CreditLimit = new CreditLimitField($"{identifier}.CreditLimit", "CreditLimit", this));
+            Fields.Add($"{identifier}.YearOfLastCreditLimitReview", YearOfLastCreditLimitReview = new YearOfLastCreditLimitReviewField($"{identifier}.YearOfLastCreditLimitReview", "YearOfLastCreditLimitReview", this));
+            Fields.Add($"{identifier}.RegistrationDate", RegistrationDate = new RegistrationDateField($"{identifier}.RegistrationDate", "RegistrationDate", this));
+            Fields.Add($"{identifier}.LastLoginDate", LastLoginDate = new LastLoginDateField($"{identifier}.LastLoginDate", "LastLoginDate", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
         public CustomerEntity As(string name)
-            => new CustomerEntity(this.identifier, this.schema, name);
+            => new CustomerEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -1883,6 +1901,50 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(FirstName));
+            set &= aliased != nameof(FirstName) ? new StringSelectExpression(FirstName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(FirstName));
+
+            aliased = alias(nameof(LastName));
+            set &= aliased != nameof(LastName) ? new StringSelectExpression(LastName).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastName));
+
+            aliased = alias(nameof(BirthDate));
+            set &= aliased != nameof(BirthDate) ? new NullableDateTimeSelectExpression(BirthDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(BirthDate));
+
+            aliased = alias(nameof(GenderType));
+            set &= aliased != nameof(GenderType) ? new EnumSelectExpression<ServerSideBlazorApp.Data.GenderType>(GenderType).As(aliased) as EnumSelectExpression<ServerSideBlazorApp.Data.GenderType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(GenderType));
+
+            aliased = alias(nameof(CreditLimit));
+            set &= aliased != nameof(CreditLimit) ? new NullableInt32SelectExpression(CreditLimit).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CreditLimit));
+
+            aliased = alias(nameof(YearOfLastCreditLimitReview));
+            set &= aliased != nameof(YearOfLastCreditLimitReview) ? new NullableInt32SelectExpression(YearOfLastCreditLimitReview).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(YearOfLastCreditLimitReview));
+
+            aliased = alias(nameof(RegistrationDate));
+            set &= aliased != nameof(RegistrationDate) ? new DateTimeOffsetSelectExpression(RegistrationDate).As(aliased) as DateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(RegistrationDate));
+
+            aliased = alias(nameof(LastLoginDate));
+            set &= aliased != nameof(LastLoginDate) ? new NullableDateTimeOffsetSelectExpression(LastLoginDate).As(aliased) as NullableDateTimeOffsetSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(LastLoginDate));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            aliased = alias(nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<Customer> GetInclusiveInsertExpression(Customer customer)
@@ -1914,7 +1976,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Customer customer, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, Customer customer)
         {
 			customer.Id = reader.ReadField().GetValue<int>();
 			customer.FirstName = reader.ReadField().GetValue<string>();
@@ -1935,12 +1997,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<Customer>
         {
             #region constructors
-            public IdField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1962,12 +2019,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class FirstNameField : StringFieldExpression<Customer>
         {
             #region constructors
-            public FirstNameField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private FirstNameField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public FirstNameField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -1991,12 +2043,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class LastNameField : StringFieldExpression<Customer>
         {
             #region constructors
-            public LastNameField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private LastNameField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public LastNameField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2020,12 +2067,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class BirthDateField : NullableDateTimeFieldExpression<Customer>
         {
             #region constructors
-            public BirthDateField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private BirthDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public BirthDateField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2052,12 +2094,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class GenderTypeField : EnumFieldExpression<Customer, ServerSideBlazorApp.Data.GenderType>
         {
             #region constructors
-            public GenderTypeField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private GenderTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public GenderTypeField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2081,12 +2118,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class CreditLimitField : NullableInt32FieldExpression<Customer>
         {
             #region constructors
-            public CreditLimitField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private CreditLimitField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public CreditLimitField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2113,12 +2145,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class YearOfLastCreditLimitReviewField : NullableInt32FieldExpression<Customer>
         {
             #region constructors
-            public YearOfLastCreditLimitReviewField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private YearOfLastCreditLimitReviewField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public YearOfLastCreditLimitReviewField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2145,12 +2172,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class RegistrationDateField : DateTimeOffsetFieldExpression<Customer>
         {
             #region constructors
-            public RegistrationDateField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private RegistrationDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public RegistrationDateField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2174,12 +2196,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class LastLoginDateField : NullableDateTimeOffsetFieldExpression<Customer>
         {
             #region constructors
-            public LastLoginDateField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private LastLoginDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public LastLoginDateField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2206,12 +2223,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Customer>
         {
             #region constructors
-            public DateCreatedField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2233,12 +2245,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Customer>
         {
             #region constructors
-            public DateUpdatedField(string identifier, CustomerEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateUpdatedField(string identifier, string name, CustomerEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2353,26 +2360,26 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private CustomerAddressEntity() : base(null, null, null)
+        private CustomerAddressEntity() : base(null, null, null, null)
         {
         }
 
-		public CustomerAddressEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public CustomerAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private CustomerAddressEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private CustomerAddressEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", this));
-            Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", "CustomerId", this));
+            Fields.Add($"{identifier}.AddressId", AddressId = new AddressIdField($"{identifier}.AddressId", "AddressId", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
         }
         #endregion
 
         #region methods
         public CustomerAddressEntity As(string name)
-            => new CustomerAddressEntity(this.identifier, this.schema, name);
+            => new CustomerAddressEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -2382,6 +2389,29 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new Int32SelectExpression(AddressId)
                 ,new DateTimeSelectExpression(DateCreated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(CustomerId));
+            set &= aliased != nameof(CustomerId) ? new Int32SelectExpression(CustomerId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CustomerId));
+
+            aliased = alias(nameof(AddressId));
+            set &= aliased != nameof(AddressId) ? new Int32SelectExpression(AddressId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AddressId));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<CustomerAddress> GetInclusiveInsertExpression(CustomerAddress customerAddress)
@@ -2401,7 +2431,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(CustomerAddress customerAddress, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, CustomerAddress customerAddress)
         {
 			customerAddress.Id = reader.ReadField().GetValue<int>();
 			customerAddress.CustomerId = reader.ReadField().GetValue<int>();
@@ -2415,12 +2445,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public IdField(string identifier, CustomerAddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, CustomerAddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2442,12 +2467,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class CustomerIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public CustomerIdField(string identifier, CustomerAddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private CustomerIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public CustomerIdField(string identifier, string name, CustomerAddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2471,12 +2491,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class AddressIdField : Int32FieldExpression<CustomerAddress>
         {
             #region constructors
-            public AddressIdField(string identifier, CustomerAddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private AddressIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public AddressIdField(string identifier, string name, CustomerAddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2500,12 +2515,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<CustomerAddress>
         {
             #region constructors
-            public DateCreatedField(string identifier, CustomerAddressEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, CustomerAddressEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -2870,39 +2880,39 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private ProductEntity() : base(null, null, null)
+        private ProductEntity() : base(null, null, null, null)
         {
         }
 
-		public ProductEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private ProductEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private ProductEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new ProductCategoryTypeField($"{identifier}.ProductCategoryType", this));
-            Fields.Add($"{identifier}.Name", Name = new NameField($"{identifier}.Name", this));
-            Fields.Add($"{identifier}.Description", Description = new DescriptionField($"{identifier}.Description", this));
-            Fields.Add($"{identifier}.ListPrice", ListPrice = new ListPriceField($"{identifier}.ListPrice", this));
-            Fields.Add($"{identifier}.Price", Price = new PriceField($"{identifier}.Price", this));
-            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.Image", Image = new ImageField($"{identifier}.Image", this));
-            Fields.Add($"{identifier}.Height", Height = new HeightField($"{identifier}.Height", this));
-            Fields.Add($"{identifier}.Width", Width = new WidthField($"{identifier}.Width", this));
-            Fields.Add($"{identifier}.Depth", Depth = new DepthField($"{identifier}.Depth", this));
-            Fields.Add($"{identifier}.Weight", Weight = new WeightField($"{identifier}.Weight", this));
-            Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new ShippingWeightField($"{identifier}.ShippingWeight", this));
-            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField($"{identifier}.ValidStartTimeOfDayForPurchase", this));
-            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField($"{identifier}.ValidEndTimeOfDayForPurchase", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.ProductCategoryType", ProductCategoryType = new ProductCategoryTypeField($"{identifier}.ProductCategoryType", "ProductCategoryType", this));
+            Fields.Add($"{identifier}.Name", Name = new NameField($"{identifier}.Name", "Name", this));
+            Fields.Add($"{identifier}.Description", Description = new DescriptionField($"{identifier}.Description", "Description", this));
+            Fields.Add($"{identifier}.ListPrice", ListPrice = new ListPriceField($"{identifier}.ListPrice", "ListPrice", this));
+            Fields.Add($"{identifier}.Price", Price = new PriceField($"{identifier}.Price", "Price", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", "Quantity", this));
+            Fields.Add($"{identifier}.Image", Image = new ImageField($"{identifier}.Image", "Image", this));
+            Fields.Add($"{identifier}.Height", Height = new HeightField($"{identifier}.Height", "Height", this));
+            Fields.Add($"{identifier}.Width", Width = new WidthField($"{identifier}.Width", "Width", this));
+            Fields.Add($"{identifier}.Depth", Depth = new DepthField($"{identifier}.Depth", "Depth", this));
+            Fields.Add($"{identifier}.Weight", Weight = new WeightField($"{identifier}.Weight", "Weight", this));
+            Fields.Add($"{identifier}.ShippingWeight", ShippingWeight = new ShippingWeightField($"{identifier}.ShippingWeight", "ShippingWeight", this));
+            Fields.Add($"{identifier}.ValidStartTimeOfDayForPurchase", ValidStartTimeOfDayForPurchase = new ValidStartTimeOfDayForPurchaseField($"{identifier}.ValidStartTimeOfDayForPurchase", "ValidStartTimeOfDayForPurchase", this));
+            Fields.Add($"{identifier}.ValidEndTimeOfDayForPurchase", ValidEndTimeOfDayForPurchase = new ValidEndTimeOfDayForPurchaseField($"{identifier}.ValidEndTimeOfDayForPurchase", "ValidEndTimeOfDayForPurchase", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
         public ProductEntity As(string name)
-            => new ProductEntity(this.identifier, this.schema, name);
+            => new ProductEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -2925,6 +2935,68 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(ProductCategoryType));
+            set &= aliased != nameof(ProductCategoryType) ? new NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType>(ProductCategoryType).As(aliased) as NullableEnumSelectExpression<ServerSideBlazorApp.Data.ProductCategoryType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductCategoryType));
+
+            aliased = alias(nameof(Name));
+            set &= aliased != nameof(Name) ? new StringSelectExpression(Name).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Name));
+
+            aliased = alias(nameof(Description));
+            set &= aliased != nameof(Description) ? new NullableStringSelectExpression(Description).As(aliased) as NullableStringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Description));
+
+            aliased = alias(nameof(ListPrice));
+            set &= aliased != nameof(ListPrice) ? new DoubleSelectExpression(ListPrice).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ListPrice));
+
+            aliased = alias(nameof(Price));
+            set &= aliased != nameof(Price) ? new DoubleSelectExpression(Price).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Price));
+
+            aliased = alias(nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+
+            aliased = alias(nameof(Image));
+            set &= aliased != nameof(Image) ? new NullableByteArraySelectExpression(Image).As(aliased) as NullableByteArraySelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Image));
+
+            aliased = alias(nameof(Height));
+            set &= aliased != nameof(Height) ? new NullableDecimalSelectExpression(Height).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Height));
+
+            aliased = alias(nameof(Width));
+            set &= aliased != nameof(Width) ? new NullableDecimalSelectExpression(Width).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Width));
+
+            aliased = alias(nameof(Depth));
+            set &= aliased != nameof(Depth) ? new NullableDecimalSelectExpression(Depth).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Depth));
+
+            aliased = alias(nameof(Weight));
+            set &= aliased != nameof(Weight) ? new NullableDecimalSelectExpression(Weight).As(aliased) as NullableDecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Weight));
+
+            aliased = alias(nameof(ShippingWeight));
+            set &= aliased != nameof(ShippingWeight) ? new DecimalSelectExpression(ShippingWeight).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShippingWeight));
+
+            aliased = alias(nameof(ValidStartTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidStartTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidStartTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidStartTimeOfDayForPurchase));
+
+            aliased = alias(nameof(ValidEndTimeOfDayForPurchase));
+            set &= aliased != nameof(ValidEndTimeOfDayForPurchase) ? new NullableTimeSpanSelectExpression(ValidEndTimeOfDayForPurchase).As(aliased) as NullableTimeSpanSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ValidEndTimeOfDayForPurchase));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            aliased = alias(nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product product)
@@ -2968,7 +3040,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Product product, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, Product product)
         {
 			product.Id = reader.ReadField().GetValue<int>();
 			product.ProductCategoryType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
@@ -2995,12 +3067,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<Product>
         {
             #region constructors
-            public IdField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3022,12 +3089,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ProductCategoryTypeField : NullableEnumFieldExpression<Product, ServerSideBlazorApp.Data.ProductCategoryType>
         {
             #region constructors
-            public ProductCategoryTypeField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ProductCategoryTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ProductCategoryTypeField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3054,12 +3116,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class NameField : StringFieldExpression<Product>
         {
             #region constructors
-            public NameField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private NameField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public NameField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3083,12 +3140,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DescriptionField : NullableStringFieldExpression<Product>
         {
             #region constructors
-            public DescriptionField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DescriptionField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DescriptionField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3114,12 +3166,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ListPriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public ListPriceField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ListPriceField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ListPriceField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3143,12 +3190,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class PriceField : DoubleFieldExpression<Product>
         {
             #region constructors
-            public PriceField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PriceField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public PriceField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3172,12 +3214,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class QuantityField : Int32FieldExpression<Product>
         {
             #region constructors
-            public QuantityField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private QuantityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public QuantityField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3201,12 +3238,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ImageField : NullableByteArrayFieldExpression<Product>
         {
             #region constructors
-            public ImageField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ImageField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ImageField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3232,12 +3264,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class HeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public HeightField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private HeightField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public HeightField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3264,12 +3291,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class WidthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WidthField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private WidthField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public WidthField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3296,12 +3318,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DepthField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public DepthField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DepthField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DepthField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3328,12 +3345,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class WeightField : NullableDecimalFieldExpression<Product>
         {
             #region constructors
-            public WeightField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private WeightField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public WeightField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3360,12 +3372,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ShippingWeightField : DecimalFieldExpression<Product>
         {
             #region constructors
-            public ShippingWeightField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ShippingWeightField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ShippingWeightField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3389,12 +3396,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ValidStartTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidStartTimeOfDayForPurchaseField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ValidStartTimeOfDayForPurchaseField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ValidStartTimeOfDayForPurchaseField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3421,12 +3423,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ValidEndTimeOfDayForPurchaseField : NullableTimeSpanFieldExpression<Product>
         {
             #region constructors
-            public ValidEndTimeOfDayForPurchaseField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ValidEndTimeOfDayForPurchaseField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ValidEndTimeOfDayForPurchaseField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3453,12 +3450,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateCreatedField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3480,12 +3472,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Product>
         {
             #region constructors
-            public DateUpdatedField(string identifier, ProductEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateUpdatedField(string identifier, string name, ProductEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3774,35 +3761,35 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseEntity() : base(null, null, null)
+        private PurchaseEntity() : base(null, null, null, null)
         {
         }
 
-		public PurchaseEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PurchaseEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private PurchaseEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", this));
-            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", this));
-            Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", this));
-            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", this));
-            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new PurchaseDateField($"{identifier}.PurchaseDate", this));
-            Fields.Add($"{identifier}.ShipDate", ShipDate = new ShipDateField($"{identifier}.ShipDate", this));
-            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new ExpectedDeliveryDateField($"{identifier}.ExpectedDeliveryDate", this));
-            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new TrackingIdentifierField($"{identifier}.TrackingIdentifier", this));
-            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new PaymentMethodTypeField($"{identifier}.PaymentMethodType", this));
-            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new PaymentSourceTypeField($"{identifier}.PaymentSourceType", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.PersonId", CustomerId = new CustomerIdField($"{identifier}.PersonId", "CustomerId", this));
+            Fields.Add($"{identifier}.OrderNumber", OrderNumber = new OrderNumberField($"{identifier}.OrderNumber", "OrderNumber", this));
+            Fields.Add($"{identifier}.TotalPurchaseQuantity", TotalPurchaseQuantity = new TotalPurchaseQuantityField($"{identifier}.TotalPurchaseQuantity", "TotalPurchaseQuantity", this));
+            Fields.Add($"{identifier}.TotalPurchaseAmount", TotalPurchaseAmount = new TotalPurchaseAmountField($"{identifier}.TotalPurchaseAmount", "TotalPurchaseAmount", this));
+            Fields.Add($"{identifier}.PurchaseDate", PurchaseDate = new PurchaseDateField($"{identifier}.PurchaseDate", "PurchaseDate", this));
+            Fields.Add($"{identifier}.ShipDate", ShipDate = new ShipDateField($"{identifier}.ShipDate", "ShipDate", this));
+            Fields.Add($"{identifier}.ExpectedDeliveryDate", ExpectedDeliveryDate = new ExpectedDeliveryDateField($"{identifier}.ExpectedDeliveryDate", "ExpectedDeliveryDate", this));
+            Fields.Add($"{identifier}.TrackingIdentifier", TrackingIdentifier = new TrackingIdentifierField($"{identifier}.TrackingIdentifier", "TrackingIdentifier", this));
+            Fields.Add($"{identifier}.PaymentMethodType", PaymentMethodType = new PaymentMethodTypeField($"{identifier}.PaymentMethodType", "PaymentMethodType", this));
+            Fields.Add($"{identifier}.PaymentSourceType", PaymentSourceType = new PaymentSourceTypeField($"{identifier}.PaymentSourceType", "PaymentSourceType", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PurchaseEntity As(string name)
-            => new PurchaseEntity(this.identifier, this.schema, name);
+            => new PurchaseEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -3821,6 +3808,56 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(CustomerId));
+            set &= aliased != nameof(CustomerId) ? new Int32SelectExpression(CustomerId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(CustomerId));
+
+            aliased = alias(nameof(OrderNumber));
+            set &= aliased != nameof(OrderNumber) ? new StringSelectExpression(OrderNumber).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(OrderNumber));
+
+            aliased = alias(nameof(TotalPurchaseQuantity));
+            set &= aliased != nameof(TotalPurchaseQuantity) ? new Int32SelectExpression(TotalPurchaseQuantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseQuantity));
+
+            aliased = alias(nameof(TotalPurchaseAmount));
+            set &= aliased != nameof(TotalPurchaseAmount) ? new DoubleSelectExpression(TotalPurchaseAmount).As(aliased) as DoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalPurchaseAmount));
+
+            aliased = alias(nameof(PurchaseDate));
+            set &= aliased != nameof(PurchaseDate) ? new DateTimeSelectExpression(PurchaseDate).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseDate));
+
+            aliased = alias(nameof(ShipDate));
+            set &= aliased != nameof(ShipDate) ? new NullableDateTimeSelectExpression(ShipDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ShipDate));
+
+            aliased = alias(nameof(ExpectedDeliveryDate));
+            set &= aliased != nameof(ExpectedDeliveryDate) ? new NullableDateTimeSelectExpression(ExpectedDeliveryDate).As(aliased) as NullableDateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ExpectedDeliveryDate));
+
+            aliased = alias(nameof(TrackingIdentifier));
+            set &= aliased != nameof(TrackingIdentifier) ? new NullableGuidSelectExpression(TrackingIdentifier).As(aliased) as NullableGuidSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TrackingIdentifier));
+
+            aliased = alias(nameof(PaymentMethodType));
+            set &= aliased != nameof(PaymentMethodType) ? new EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType).As(aliased) as EnumSelectExpression<ServerSideBlazorApp.Data.PaymentMethodType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentMethodType));
+
+            aliased = alias(nameof(PaymentSourceType));
+            set &= aliased != nameof(PaymentSourceType) ? new NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType>(PaymentSourceType).As(aliased) as NullableEnumSelectExpression<ServerSideBlazorApp.Data.PaymentSourceType> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PaymentSourceType));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            aliased = alias(nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
@@ -3856,7 +3893,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Purchase purchase, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, Purchase purchase)
         {
 			purchase.Id = reader.ReadField().GetValue<int>();
 			purchase.CustomerId = reader.ReadField().GetValue<int>();
@@ -3879,12 +3916,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public IdField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3906,12 +3938,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class CustomerIdField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public CustomerIdField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private CustomerIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public CustomerIdField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3935,12 +3962,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class OrderNumberField : StringFieldExpression<Purchase>
         {
             #region constructors
-            public OrderNumberField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private OrderNumberField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public OrderNumberField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3964,12 +3986,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class TotalPurchaseQuantityField : Int32FieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseQuantityField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private TotalPurchaseQuantityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public TotalPurchaseQuantityField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -3993,12 +4010,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class TotalPurchaseAmountField : DoubleFieldExpression<Purchase>
         {
             #region constructors
-            public TotalPurchaseAmountField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private TotalPurchaseAmountField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public TotalPurchaseAmountField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4022,12 +4034,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class PurchaseDateField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public PurchaseDateField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PurchaseDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public PurchaseDateField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4051,12 +4058,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ShipDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ShipDateField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ShipDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ShipDateField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4083,12 +4085,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ExpectedDeliveryDateField : NullableDateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public ExpectedDeliveryDateField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ExpectedDeliveryDateField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ExpectedDeliveryDateField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4115,12 +4112,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class TrackingIdentifierField : NullableGuidFieldExpression<Purchase>
         {
             #region constructors
-            public TrackingIdentifierField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private TrackingIdentifierField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public TrackingIdentifierField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4147,12 +4139,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class PaymentMethodTypeField : EnumFieldExpression<Purchase, ServerSideBlazorApp.Data.PaymentMethodType>
         {
             #region constructors
-            public PaymentMethodTypeField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PaymentMethodTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public PaymentMethodTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4176,12 +4163,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class PaymentSourceTypeField : NullableEnumFieldExpression<Purchase, ServerSideBlazorApp.Data.PaymentSourceType>
         {
             #region constructors
-            public PaymentSourceTypeField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PaymentSourceTypeField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public PaymentSourceTypeField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4208,12 +4190,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateCreatedField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4235,12 +4212,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Purchase>
         {
             #region constructors
-            public DateUpdatedField(string identifier, PurchaseEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateUpdatedField(string identifier, string name, PurchaseEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4415,29 +4387,29 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private PurchaseLineEntity() : base(null, null, null)
+        private PurchaseLineEntity() : base(null, null, null, null)
         {
         }
 
-		public PurchaseLineEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PurchaseLineEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private PurchaseLineEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new PurchaseIdField($"{identifier}.PurchaseId", this));
-            Fields.Add($"{identifier}.ProductId", ProductId = new ProductIdField($"{identifier}.ProductId", this));
-            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new PurchasePriceField($"{identifier}.PurchasePrice", this));
-            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.PurchaseId", PurchaseId = new PurchaseIdField($"{identifier}.PurchaseId", "PurchaseId", this));
+            Fields.Add($"{identifier}.ProductId", ProductId = new ProductIdField($"{identifier}.ProductId", "ProductId", this));
+            Fields.Add($"{identifier}.PurchasePrice", PurchasePrice = new PurchasePriceField($"{identifier}.PurchasePrice", "PurchasePrice", this));
+            Fields.Add($"{identifier}.Quantity", Quantity = new QuantityField($"{identifier}.Quantity", "Quantity", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PurchaseLineEntity As(string name)
-            => new PurchaseLineEntity(this.identifier, this.schema, name);
+            => new PurchaseLineEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -4450,6 +4422,38 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(PurchaseId));
+            set &= aliased != nameof(PurchaseId) ? new Int32SelectExpression(PurchaseId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchaseId));
+
+            aliased = alias(nameof(ProductId));
+            set &= aliased != nameof(ProductId) ? new Int32SelectExpression(ProductId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(ProductId));
+
+            aliased = alias(nameof(PurchasePrice));
+            set &= aliased != nameof(PurchasePrice) ? new DecimalSelectExpression(PurchasePrice).As(aliased) as DecimalSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PurchasePrice));
+
+            aliased = alias(nameof(Quantity));
+            set &= aliased != nameof(Quantity) ? new Int32SelectExpression(Quantity).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Quantity));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            aliased = alias(nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine purchaseLine)
@@ -4473,7 +4477,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(PurchaseLine purchaseLine, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine purchaseLine)
         {
 			purchaseLine.Id = reader.ReadField().GetValue<int>();
 			purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
@@ -4490,12 +4494,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public IdField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4517,12 +4516,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class PurchaseIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchaseIdField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PurchaseIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public PurchaseIdField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4546,12 +4540,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class ProductIdField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public ProductIdField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private ProductIdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public ProductIdField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4575,12 +4564,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class PurchasePriceField : DecimalFieldExpression<PurchaseLine>
         {
             #region constructors
-            public PurchasePriceField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private PurchasePriceField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public PurchasePriceField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4604,12 +4588,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class QuantityField : Int32FieldExpression<PurchaseLine>
         {
             #region constructors
-            public QuantityField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private QuantityField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public QuantityField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4633,12 +4612,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateCreatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateCreatedField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4660,12 +4634,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<PurchaseLine>
         {
             #region constructors
-            public DateUpdatedField(string identifier, PurchaseLineEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateUpdatedField(string identifier, string name, PurchaseLineEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4755,25 +4724,25 @@ namespace ServerSideBlazorApp.dboDataService
         #endregion
 
         #region constructors
-        private PersonTotalPurchasesViewEntity() : base(null, null, null)
+        private PersonTotalPurchasesViewEntity() : base(null, null, null, null)
         {
         }
 
-		public PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonTotalPurchasesViewEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new TotalAmountField($"{identifier}.TotalAmount", this));
-            Fields.Add($"{identifier}.TotalCount", TotalCount = new TotalCountField($"{identifier}.TotalCount", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.TotalAmount", TotalAmount = new TotalAmountField($"{identifier}.TotalAmount", "TotalAmount", this));
+            Fields.Add($"{identifier}.TotalCount", TotalCount = new TotalCountField($"{identifier}.TotalCount", "TotalCount", this));
         }
         #endregion
 
         #region methods
         public PersonTotalPurchasesViewEntity As(string name)
-            => new PersonTotalPurchasesViewEntity(this.identifier, this.schema, name);
+            => new PersonTotalPurchasesViewEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -4782,6 +4751,26 @@ namespace ServerSideBlazorApp.dboDataService
                 ,new NullableDoubleSelectExpression(TotalAmount)
                 ,new NullableInt32SelectExpression(TotalCount)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(TotalAmount));
+            set &= aliased != nameof(TotalAmount) ? new NullableDoubleSelectExpression(TotalAmount).As(aliased) as NullableDoubleSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalAmount));
+
+            aliased = alias(nameof(TotalCount));
+            set &= aliased != nameof(TotalCount) ? new NullableInt32SelectExpression(TotalCount).As(aliased) as NullableInt32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(TotalCount));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<PersonTotalPurchasesView> GetInclusiveInsertExpression(PersonTotalPurchasesView personTotalPurchasesView)
@@ -4797,7 +4786,7 @@ namespace ServerSideBlazorApp.dboDataService
             return expr;
         }
 
-        protected override void HydrateEntity(PersonTotalPurchasesView personTotalPurchasesView, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView personTotalPurchasesView)
         {
 			personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
 			personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
@@ -4810,12 +4799,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class IdField : Int32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public IdField(string identifier, PersonTotalPurchasesViewEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, PersonTotalPurchasesViewEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4837,12 +4821,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class TotalAmountField : NullableDoubleFieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalAmountField(string identifier, PersonTotalPurchasesViewEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private TotalAmountField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public TotalAmountField(string identifier, string name, PersonTotalPurchasesViewEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -4864,12 +4843,7 @@ namespace ServerSideBlazorApp.dboDataService
         public partial class TotalCountField : NullableInt32FieldExpression<PersonTotalPurchasesView>
         {
             #region constructors
-            public TotalCountField(string identifier, PersonTotalPurchasesViewEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private TotalCountField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public TotalCountField(string identifier, string name, PersonTotalPurchasesViewEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -5088,7 +5062,7 @@ namespace ServerSideBlazorApp.secDataService
         #region constructors
         public secSchemaExpression(string identifier) : base(identifier, null)
         {
-            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", this));
+            Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
         }
         #endregion
     }
@@ -5187,26 +5161,26 @@ namespace ServerSideBlazorApp.secDataService
         #endregion
 
         #region constructors
-        private PersonEntity() : base(null, null, null)
+        private PersonEntity() : base(null, null, null, null)
         {
         }
 
-		public PersonEntity(string identifier, SchemaExpression schema) : this(identifier, schema, null)
+		public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
-        private PersonEntity(string identifier, SchemaExpression schema, string alias) : base(identifier, schema, alias)
+        private PersonEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {
-            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", this));
-            Fields.Add($"{identifier}.SSN", SSN = new SSNField($"{identifier}.SSN", this));
-            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", this));
-            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", this));
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.SSN", SSN = new SSNField($"{identifier}.SSN", "SSN", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+            Fields.Add($"{identifier}.DateUpdated", DateUpdated = new DateUpdatedField($"{identifier}.DateUpdated", "DateUpdated", this));
         }
         #endregion
 
         #region methods
         public PersonEntity As(string name)
-            => new PersonEntity(this.identifier, this.schema, name);
+            => new PersonEntity(this.identifier, this.name, this.schema, name);
 
         protected override SelectExpressionSet GetInclusiveSelectExpression()
         {
@@ -5216,6 +5190,29 @@ namespace ServerSideBlazorApp.secDataService
                 ,new DateTimeSelectExpression(DateCreated)
                 ,new DateTimeSelectExpression(DateUpdated)
             ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException($"{nameof(alias)} is required.");
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(SSN));
+            set &= aliased != nameof(SSN) ? new StringSelectExpression(SSN).As(aliased) as StringSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(SSN));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            aliased = alias(nameof(DateUpdated));
+            set &= aliased != nameof(DateUpdated) ? new DateTimeSelectExpression(DateUpdated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateUpdated));
+
+            return set;
         }
 		
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
@@ -5235,7 +5232,7 @@ namespace ServerSideBlazorApp.secDataService
             return expr;
         }
 
-        protected override void HydrateEntity(Person person, ISqlFieldReader reader)
+        protected override void HydrateEntity(ISqlFieldReader reader, Person person)
         {
 			person.Id = reader.ReadField().GetValue<int>();
 			person.SSN = reader.ReadField().GetValue<string>();
@@ -5249,12 +5246,7 @@ namespace ServerSideBlazorApp.secDataService
         public partial class IdField : Int32FieldExpression<Person>
         {
             #region constructors
-            public IdField(string identifier, PersonEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private IdField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public IdField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -5278,12 +5270,7 @@ namespace ServerSideBlazorApp.secDataService
         public partial class SSNField : StringFieldExpression<Person>
         {
             #region constructors
-            public SSNField(string identifier, PersonEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private SSNField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public SSNField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -5307,12 +5294,7 @@ namespace ServerSideBlazorApp.secDataService
         public partial class DateCreatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateCreatedField(string identifier, PersonEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateCreatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateCreatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
             }
@@ -5334,12 +5316,7 @@ namespace ServerSideBlazorApp.secDataService
         public partial class DateUpdatedField : DateTimeFieldExpression<Person>
         {
             #region constructors
-            public DateUpdatedField(string identifier, PersonEntity entity) : base(identifier, entity)
-            {
-
-            }
-
-            private DateUpdatedField(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+            public DateUpdatedField(string identifier, string name, PersonEntity entity) : base(identifier, name, entity)
             {
 
             }

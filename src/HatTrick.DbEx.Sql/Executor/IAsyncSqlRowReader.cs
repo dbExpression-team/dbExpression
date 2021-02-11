@@ -5,7 +5,7 @@ namespace HatTrick.DbEx.Sql.Executor
 {
     public interface IAsyncSqlRowReader : IDisposable
     {
-        Task<ISqlRow> ReadRowAsync();
+        Task<ISqlFieldReader> ReadRowAsync();
         void Close();
     }
 }

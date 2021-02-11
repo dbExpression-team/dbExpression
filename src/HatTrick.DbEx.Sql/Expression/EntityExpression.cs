@@ -7,27 +7,30 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class EntityExpression : 
         IEntityExpression,
         AnyEntity,
-        ISqlMetadataIdentifier,
+        ISqlMetadataIdentifierProvider,
         IExpressionProvider<SchemaExpression>,
         IExpressionListProvider<FieldExpression>,
         IExpressionAliasProvider,
+        IExpressionNameProvider,
         IDbEntityTypeProvider,
         IEquatable<EntityExpression>
    {
         #region internals
-        protected readonly Type dbEntityType;
         protected readonly string identifier;
+        protected readonly string name;
+        protected readonly Type dbEntityType;
         protected readonly SchemaExpression schema;
         protected IDictionary<string, FieldExpression> Fields { get; } = new Dictionary<string, FieldExpression>();
         protected readonly string alias;
         #endregion
 
         #region interface
+        string ISqlMetadataIdentifierProvider.Identifier => identifier;
         Type IDbEntityTypeProvider.EntityType => dbEntityType;
-        string ISqlMetadataIdentifier.Identifier => identifier;
         SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
         IList<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values.ToList();
         string IExpressionAliasProvider.Alias => alias;
+        string IExpressionNameProvider.Name => name;
         #endregion
 
         #region constructors
@@ -36,10 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
 
         }
         
-        protected EntityExpression(Type dbEntityType, string identifier, SchemaExpression schema, string alias)
+        protected EntityExpression(string identifier, string name, Type dbEntityType, SchemaExpression schema, string alias)
         {
-            this.dbEntityType = dbEntityType ?? throw new ArgumentNullException($"{nameof(dbEntityType)} is required.");
             this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
+            this.name = name ?? throw new ArgumentNullException($"{nameof(name)} is required.");
+            this.dbEntityType = dbEntityType ?? throw new ArgumentNullException($"{nameof(dbEntityType)} is required.");
             this.schema = schema ?? throw new ArgumentNullException($"{nameof(schema)} is required.");
             this.alias = alias;
         }

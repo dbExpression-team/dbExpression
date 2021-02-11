@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //when
             exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
-               .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX");
+               .Where(sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX");
 
             filterSet = ((exp as IQueryExpressionProvider).Expression as SelectQueryExpression).Where;
 
@@ -86,8 +86,8 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             ssnFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<PersonEntity.SSNField>()
-                .And.Be(sec.Person.SSN);
+                .And.BeOfType<PersonEntity.SocialSecurityNumberField>()
+                .And.Be(sec.Person.SocialSecurityNumber);
 
             ssnFilter.RightArg
                 .Should().BeOfType<LiteralExpression<string>>()
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
             //when
             exp = db.SelectOne(sec.Person.Id)
                .From(sec.Person)
-               .Where(sec.Person.Id > 0 & sec.Person.SSN == "XXX" & sec.Person.DateCreated != now);
+               .Where(sec.Person.Id > 0 & sec.Person.SocialSecurityNumber == "XXX" & sec.Person.DateCreated != now);
 
             filterSet = ((exp as IQueryExpressionProvider).Expression as SelectQueryExpression).Where;
 
@@ -138,8 +138,8 @@ namespace HatTrick.DbEx.MsSql.Test.Builder
 
             ssnFilter.LeftArg
                 .Should().NotBeNull()
-                .And.BeOfType<PersonEntity.SSNField>()
-                .And.Be(sec.Person.SSN);
+                .And.BeOfType<PersonEntity.SocialSecurityNumberField>()
+                .And.Be(sec.Person.SocialSecurityNumber);
 
             ssnFilter.RightArg
                 .Should().BeOfType<LiteralExpression<string>>()

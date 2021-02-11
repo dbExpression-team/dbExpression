@@ -8,18 +8,15 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public ByteArrayFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
+        public ByteArrayFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
-        }
 
-        protected ByteArrayFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
-        {
         }
         #endregion
 
         #region as
         public override ByteArrayElement As(string alias)
-            => new ByteArrayFieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new ByteArraySelectExpression(this).As(alias);
         #endregion
 
         #region in value set

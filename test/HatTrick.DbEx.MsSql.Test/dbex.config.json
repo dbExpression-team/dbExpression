@@ -113,6 +113,14 @@
 					"objectType": "tablecolumn"
 				}
 			}
+		},
+		{
+			"apply": {
+				"name": "SocialSecurityNumber",
+				"to": {
+					"path": "sec.Person.SSN"
+				}
+			}
 		}
 	]
 }

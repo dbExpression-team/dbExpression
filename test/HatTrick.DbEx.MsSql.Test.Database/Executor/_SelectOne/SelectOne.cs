@@ -2,6 +2,7 @@
 using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
+using DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
@@ -70,6 +71,39 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             count.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_an_overriden_property_name_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var person = await db.SelectOne(
+                    sec.Person.Id, 
+                    sec.Person.SocialSecurityNumber
+                )
+                .From(sec.Person).ExecuteAsync();
+
+            //then
+            ((string)person.SocialSecurityNumber).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task xCan_an_overriden_property_name_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var person = await db.SelectOne(
+                    sec.Person.SocialSecurityNumber.As("foo")
+                )
+                .From(sec.Person).ExecuteAsync();
+
+            //then
+            person.Should().NotBeNull();
         }
     }
 }

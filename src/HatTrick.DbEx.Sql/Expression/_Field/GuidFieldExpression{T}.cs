@@ -8,20 +8,15 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public GuidFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected GuidFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public GuidFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
         #endregion
 
         #region as
-        public override GuidElement As(string alias)
-            => new GuidFieldExpression<TEntity>(base.identifier, base.entity, alias);
+        public override GuidElement As(string alias) 
+            => new GuidSelectExpression(this).As(alias);
         #endregion
 
         #region equals

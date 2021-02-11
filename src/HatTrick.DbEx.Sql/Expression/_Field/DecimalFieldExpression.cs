@@ -9,12 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<DecimalFieldExpression>
     {
         #region constructors
-        protected DecimalFieldExpression(string identifier, EntityExpression entity) : base(identifier, typeof(decimal), entity)
-        {
-
-        }
-
-        protected DecimalFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, typeof(decimal), entity, alias)
+        protected DecimalFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, typeof(decimal), entity)
         {
 
         }

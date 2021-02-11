@@ -74,7 +74,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use<NoOpSchemaMetadataProvider>());
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindEntityMetadata((dbo.Person as ISqlMetadataIdentifier).Identifier));
+            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindEntityMetadata((dbo.Person as ISqlMetadataIdentifierProvider).Identifier));
         }
 
         [Theory]
@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use<NoOpSchemaMetadataProvider>());
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindFieldMetadata((dbo.Person.Id as ISqlMetadataIdentifier).Identifier));
+            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindFieldMetadata((dbo.Person.Id as ISqlMetadataIdentifierProvider).Identifier));
         }
 
         [Theory]
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new NoOpSchemaMetadataProvider()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindEntityMetadata((dbo.Person as ISqlMetadataIdentifier).Identifier));
+            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindEntityMetadata((dbo.Person as ISqlMetadataIdentifierProvider).Identifier));
         }
 
         [Theory]
@@ -129,7 +129,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var config = ConfigureForMsSqlVersion(version, builder => builder.SchemaMetadata.Use(new NoOpSchemaMetadataProvider()));
 
             //when & then
-            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindFieldMetadata((dbo.Person.Id as ISqlMetadataIdentifier).Identifier));
+            Assert.Throws<NotImplementedException>(() => config.MetadataProvider.FindFieldMetadata((dbo.Person.Id as ISqlMetadataIdentifierProvider).Identifier));
         }
 
         public class NoOpSchemaMetadataProvider : ISqlDatabaseMetadataProvider

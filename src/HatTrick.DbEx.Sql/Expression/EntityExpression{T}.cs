@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.Sql.Expression
         where T : class, IDbEntity
     {
         #region constructors
-        private EntityExpression() : base(typeof(T), null, null, null)
+        private EntityExpression() : base(null, null, typeof(T), null, null)
         { 
         
         }
 
-        protected EntityExpression(string identifier, SchemaExpression schema, string alias)
-            : base(typeof(T), identifier, schema, alias)
+        protected EntityExpression(string identifier, string name, SchemaExpression schema, string alias)
+            : base(identifier, name, typeof(T), schema, alias)
         {
 
         }
@@ -23,20 +23,23 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region interface
         SelectExpressionSet IEntityExpression<T>.BuildInclusiveSelectExpression()
-            => GetInclusiveSelectExpression();        
+            => GetInclusiveSelectExpression();
+        SelectExpressionSet IEntityExpression<T>.BuildInclusiveSelectExpression(Func<string, string> alias)
+            => GetInclusiveSelectExpression(alias);
         InsertExpressionSet<T> IEntityExpression<T>.BuildInclusiveInsertExpression(T entity)
             => GetInclusiveInsertExpression(entity);
         AssignmentExpressionSet IEntityExpression<T>.BuildAssignmentExpression(T target, T source)
             => GetAssignmentExpression(target, source);
-        void IEntityExpression<T>.HydrateEntity(T entity, ISqlFieldReader reader)
-            => HydrateEntity(entity, reader);
+        void IEntityExpression<T>.HydrateEntity(ISqlFieldReader reader, T entity)
+            => HydrateEntity(reader, entity);
         #endregion
 
         #region methods
         protected abstract SelectExpressionSet GetInclusiveSelectExpression();
+        protected abstract SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias);
         protected abstract InsertExpressionSet<T> GetInclusiveInsertExpression(T entity);
         protected abstract AssignmentExpressionSet GetAssignmentExpression(T from, T to);
-        protected abstract void HydrateEntity(T entity, ISqlFieldReader reader);
+        protected abstract void HydrateEntity(ISqlFieldReader reader, T entity);
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
+using DbEx.secDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -299,6 +300,75 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             vipStatistics.Should().HaveCount(expectedCount);
             vipStatistics.Should().OnlyContain(x => x >= 3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_an_overriden_property_name_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = await db.SelectMany(
+                    sec.Person.Id,
+                    sec.Person.SocialSecurityNumber
+                )
+                .From(sec.Person).ExecuteAsync();
+
+            //then
+            ((string)persons.First().SocialSecurityNumber).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_an_overriden_property_name_be_used_in_join_condition_and_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = await db.SelectMany(
+                    sec.Person.Id,
+                    sec.Person.DateCreated,
+                    sec.Person.SocialSecurityNumber
+                )
+                .From(sec.Person)
+                .InnerJoin(
+                    db.SelectMany(
+                        sec.Person.Id,
+                        sec.Person.SocialSecurityNumber
+                    )
+                    .From(sec.Person)
+                ).As("secPerson").On(sec.Person.SocialSecurityNumber == dbex.Alias("secPerson", "SocialSecurityNumber"))
+                .ExecuteAsync();
+
+            //then
+            ((string)persons.First().SocialSecurityNumber).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_an_overriden_property_name_be_used_in_join_condition_where_aliased_and_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var persons = await db.SelectMany(
+                    sec.Person.Id,
+                    sec.Person.DateCreated,
+                    sec.Person.SocialSecurityNumber
+                )
+                .From(sec.Person)
+                .InnerJoin(
+                    db.SelectMany(
+                        sec.Person.Id,
+                        sec.Person.SocialSecurityNumber.As("foo")
+                    )
+                    .From(sec.Person)
+                ).As("secPerson").On(sec.Person.SocialSecurityNumber == dbex.Alias("secPerson", "foo"))
+                .ExecuteAsync();
+
+            //then
+            ((string)persons.First().SocialSecurityNumber).Should().NotBeNull();
         }
     }
 }

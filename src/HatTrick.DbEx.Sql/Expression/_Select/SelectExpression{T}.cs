@@ -9,6 +9,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public SelectExpression(IExpressionElement expression) : base(expression)
         {
+
         }
         #endregion
 

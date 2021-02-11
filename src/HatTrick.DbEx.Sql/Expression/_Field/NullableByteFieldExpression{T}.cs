@@ -8,12 +8,7 @@ namespace HatTrick.DbEx.Sql.Expression
         where TEntity : class, IDbEntity
     {
         #region constructors
-        public NullableByteFieldExpression(string identifier, EntityExpression entity) : base(identifier, entity)
-        {
-
-        }
-
-        protected NullableByteFieldExpression(string identifier, EntityExpression entity, string alias) : base(identifier, entity, alias)
+        public NullableByteFieldExpression(string identifier, string name, EntityExpression entity) : base(identifier, name, entity)
         {
 
         }
@@ -21,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region as
         public override NullableByteElement As(string alias)
-            => new NullableByteFieldExpression<TEntity>(base.identifier, base.entity, alias);
+            => new NullableByteSelectExpression(this).As(alias);
         #endregion
 
         #region equals
