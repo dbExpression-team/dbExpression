@@ -63,7 +63,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -81,7 +81,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -107,7 +107,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -126,7 +126,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -187,7 +187,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -205,7 +205,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -231,7 +231,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -250,7 +250,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -286,7 +286,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -305,7 +305,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -428,7 +428,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -449,7 +449,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -478,7 +478,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -500,7 +500,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -579,7 +579,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -600,7 +600,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -632,7 +632,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -654,7 +654,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -720,7 +720,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -738,7 +738,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -764,7 +764,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -783,7 +783,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id)
                 .From(dbo.Person);
@@ -843,7 +843,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -861,7 +861,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -887,7 +887,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -906,7 +906,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -942,7 +942,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -961,7 +961,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -980,7 +980,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new HashSet<int>();
 
             var exp = db.SelectMany<Person>()
@@ -1035,7 +1035,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1054,7 +1054,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1121,7 +1121,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1146,7 +1146,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1224,7 +1224,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1251,7 +1251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
             var persons = new List<Person>();
 
             var exp = db.SelectMany<Person>()
@@ -1324,7 +1324,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1348,7 +1348,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany<Person>()
                 .From(dbo.Person);
@@ -1421,7 +1421,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var config = ConfigureForMsSqlVersion(version,
                 c => c.Events.OnBeforeSqlStatementExecution(e => usedConnection = e.DbCommand.Connection)
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1442,7 +1442,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1463,7 +1463,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1557,7 +1557,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1589,7 +1589,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     usedCommandTimeout = e.DbCommand.CommandTimeout;
                 })
             );
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(
                     dbo.Person.Id,
@@ -1611,7 +1611,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            var conn = new SqlConnector(config.ConnectionFactory);
+            var conn = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory);
 
             var exp = db.SelectMany(dbo.Person.Id, dbo.Person.FirstName)
                 .From(dbo.Person);

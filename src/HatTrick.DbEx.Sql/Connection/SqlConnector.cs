@@ -11,6 +11,7 @@ namespace HatTrick.DbEx.Sql.Connection
         #region i sql connection
         private bool disposed;
         protected IDbConnection _dbConnection;
+        protected IConnectionStringFactory _connectionStringFactory;
         protected ISqlConnectionFactory _connectionFactory;
 
         public IDbTransaction DbTransaction { get; private set; }
@@ -30,18 +31,16 @@ namespace HatTrick.DbEx.Sql.Connection
 
         public bool IsTransactional => DbTransaction is object;
 
-        public SqlConnector(ISqlConnectionFactory connectionFactory)
+        public SqlConnector(IConnectionStringFactory connectionStringFactory, ISqlConnectionFactory connectionFactory)
         {
-            if (connectionFactory is null)
-                throw new ArgumentNullException(nameof(connectionFactory));
-
-            _connectionFactory = connectionFactory;
+            _connectionStringFactory = connectionStringFactory ?? throw new ArgumentNullException(nameof(connectionStringFactory));
+            _connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
         }
 
         protected void EnsureConnection()
         {
             if (_dbConnection is null)
-                _dbConnection = _connectionFactory.CreateSqlConnection();
+                _dbConnection = _connectionFactory.CreateSqlConnection(_connectionStringFactory.GetConnectionString());
         }
 
         public void EnsureOpen()

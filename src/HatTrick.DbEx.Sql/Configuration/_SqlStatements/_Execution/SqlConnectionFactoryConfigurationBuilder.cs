@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public ISqlStatementExecutionGroupingConfigurationBuilders Use(ISqlConnectionFactory factory)
         {
-            configuration.ConnectionFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            configuration.ConnectionFactory = factory;
             return caller;
         }
 
@@ -39,7 +39,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
-        public ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<IDbConnection> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<string, IDbConnection> factory)
         {
             configuration.ConnectionFactory = new DelegateSqlConnectionFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."));
             return caller;

@@ -1,23 +1,22 @@
 using Blazorise;
-using Blazorise.Icons.FontAwesome;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
 using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServerSideBlazorApp.Data;
 using ServerSideBlazorApp.DataService;
-using ServerSideBlazorApp.dboDataService;
 using ServerSideBlazorApp.Service;
 using System;
 using System.Linq;
 using System.Net.Http;
+using HatTrick.DbEx.Sql.Connection;
 
 namespace ServerSideBlazorApp
 {
@@ -37,18 +36,23 @@ namespace ServerSideBlazorApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            //add dbExpression dependencies to the service collection.  Note in the configuration of a specific database,
+            //the delegate contains the ServiceProvider, which can be used to resolve services
             services.AddDbExpression(
-                dbex => dbex.AddMsSql2019Database<CRMDatabase>(
-                    Configuration.GetConnectionString("Default"), 
-                    runtime =>
-                    {
-                        runtime.Conversions.UseDefaultFactory(x => 
-                            x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                                .OverrideForEnumType<PaymentSourceType>().PersistAsString()
-                        );
+                dbex => {
+
+                    dbex.AddMsSql2019Database<CRMDatabase>(
+                        (serviceProvider, database) =>
+                        {
+                            database.ConnectionString.Use(Configuration.GetConnectionString("Default"));
+
+                            database.Conversions.UseDefaultFactory(x =>
+                                x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
+                                    .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                            );
+                        });
                     }
-                )
-            );
+                );
 
             services.AddBlazorise(options =>
               {
@@ -94,6 +98,11 @@ namespace ServerSideBlazorApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //UseDbExpression is required when AddDbExpression is used in ConfigureServices.  No specific order for UseDbExpression is mandated,
+            //but it must occur before any code that uses dbExpression to build and execute queries.  If you have middleware that uses dbExpression,
+            //ensure they are listed with their "Use<Middelware>()" equivalent AFTER UseDbExpression.
+            app.UseDbExpression();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

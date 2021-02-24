@@ -47,19 +47,20 @@ namespace NetCoreConsoleApp
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
                         .Build();
 
-            dbExpression.ConfigureRuntime(c =>
-            {
-                c.AddMsSql2014Database<SimpleConsoleDb>(
-                    config.GetConnectionString("dbex_mssql_test"),
-                    runtime =>
-                    {
-                        runtime.Conversions.UseDefaultFactory(x => x
-                            .OverrideForEnumType<PaymentMethodType>().PersistAsString()
-                            .OverrideForEnumType<PaymentSourceType>().PersistAsString()
-                        );
-                    }
-                );
-            });
+            dbExpression.Configure(
+                dbex => {
+
+                    dbex.AddMsSql2019Database<SimpleConsoleDb>(
+                        database => {
+                            database.ConnectionString.Use(config.GetConnectionString("dbex_mssql_test"));
+                            database.Conversions.UseDefaultFactory(x =>
+                                x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
+                                    .OverrideForEnumType<PaymentSourceType>().PersistAsString()
+                            );
+                        }
+                    );
+
+                });
         }
 		#endregion
 

@@ -5,6 +5,11 @@ namespace HatTrick.DbEx.Sql.Configuration
     public interface IRuntimeSqlDatabaseConfigurationBuilder
     {
         /// <summary>
+        /// Configure the factory used for providing a connection string to create connections to the database.
+        /// </summary>
+        IConnectionStringFactoryConfigurationBuilder ConnectionString { get; }
+
+        /// <summary>
         /// Configure the factories used for assembly and execution of sql statements.
         /// </summary>
         ISqlStatementsConfigurationBuilderGrouping SqlStatements { get; }

@@ -4,6 +4,6 @@ namespace HatTrick.DbEx.Sql.Connection
 {
     public interface ISqlConnectionFactory
     {
-        IDbConnection CreateSqlConnection();
+        IDbConnection CreateSqlConnection(string connectionString);
     }
 }

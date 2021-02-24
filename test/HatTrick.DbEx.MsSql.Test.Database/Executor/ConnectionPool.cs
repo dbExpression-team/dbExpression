@@ -4,6 +4,7 @@ using FluentAssertions;
 using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Connection;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,7 +18,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            config.ConnectionFactory = new MsSqlConnectionFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;");
+            config.ConnectionStringFactory = new DelegateConnectionStringFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;");
+            config.ConnectionFactory = new MsSqlConnectionFactory();
 
             //when
             db.SelectOne(dbo.Person.Id).From(dbo.Person).Where(dbo.Person.Id == 1).Execute();
@@ -33,7 +35,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
-            config.ConnectionFactory = new MsSqlConnectionFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;");
+            config.ConnectionStringFactory = new DelegateConnectionStringFactory(() => $"{ConfigurationProvider.ConnectionString};Connect Timeout=3;Max Pool Size=1;Min Pool Size = 1;");
+            config.ConnectionFactory = new MsSqlConnectionFactory();
 
             //when
             await db.SelectOne(dbo.Person.Id).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();

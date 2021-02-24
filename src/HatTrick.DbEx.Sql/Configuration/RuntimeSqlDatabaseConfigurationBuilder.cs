@@ -1,4 +1,6 @@
-﻿namespace HatTrick.DbEx.Sql.Configuration
+﻿using System;
+
+namespace HatTrick.DbEx.Sql.Configuration
 {
     public class RuntimeSqlDatabaseConfigurationBuilder :
         IRuntimeSqlDatabaseConfigurationBuilder,
@@ -6,10 +8,10 @@
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration configuration;
+        private IConnectionStringFactoryConfigurationBuilder _connectionString;
         private ISqlStatementsConfigurationBuilderGrouping _assembler;
         private ISqlDatabaseMetadataProviderConfigurationBuilder _metadata;
         private IQueryExpressionFactoryConfigurationBuilder _queryExpressions;
-        private ISqlStatementExecutionGroupingConfigurationBuilders _executor;
         private IValueConverterFactoryConfigurationBuilder _valueConverter;
         private IExecutionPipelineEventConfigurationBuilder _event;
 
@@ -19,6 +21,7 @@
         #region interface
         RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabaseConfigurationProvider.Configuration => configuration;
 
+        public IConnectionStringFactoryConfigurationBuilder ConnectionString => _connectionString ?? (_connectionString = new ConnectionStringFactoryConfigurationBuilder(configuration));
         public ISqlDatabaseMetadataProviderConfigurationBuilder SchemaMetadata => _metadata ?? (_metadata = new SqlDatabaseMetadataProviderConfigurationBuilder(configuration));
         public IQueryExpressionFactoryConfigurationBuilder QueryExpressions => _queryExpressions ?? (_queryExpressions = new QueryExpressionFactoryConfigurationBuilder(configuration));
         public IEntitiesConfigurationBuilderGrouping Entities => _entities ?? (_entities = new EntitiesConfigurationBuilderGrouping(configuration));
@@ -30,7 +33,12 @@
         #region constructors
         public RuntimeSqlDatabaseConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.configuration = configuration;
+            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+        }
+
+        protected RuntimeSqlDatabaseConfigurationBuilder()
+        {
+
         }
         #endregion
     }

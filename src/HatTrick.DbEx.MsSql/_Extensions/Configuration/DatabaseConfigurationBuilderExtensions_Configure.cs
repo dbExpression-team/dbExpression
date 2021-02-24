@@ -4,233 +4,236 @@ using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Configuration;
 using System;
-using System.Data.SqlClient;
 
 namespace HatTrick.DbEx.MsSql.Configuration
 {
     public static partial class DatabaseConfigurationBuilderExtensions
     {
-        private static void EnsureValidConnectionString(Func<string> connectionStringFactory)
-        {
-            if (connectionStringFactory is null)
-                throw new DbExpressionConfigurationException($"{nameof(connectionStringFactory)} cannot be null");
-
-            var connectionString = connectionStringFactory();
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new DbExpressionConfigurationException($"The connection string settings factory did not provide a value for a connection string");
-
-            SqlConnectionStringBuilder connBuilder;
-            try
-            {
-                connBuilder = new SqlConnectionStringBuilder(connectionString);
-            }
-            catch (FormatException e) 
-            {
-                throw new DbExpressionConfigurationException($"The connection string is not in a valid format", e);
-            }
-            catch (ArgumentException e)
-            {
-                throw new DbExpressionConfigurationException($"The connection string appears to have an issue", e);
-            }
-        }
-
         #region 2005
-        public static void AddMsSql2005Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2005<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2005Database<T>(this IRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2005<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2005<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2005 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2005Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+            configBuilder.ConfigureMsSqlCommon(b => 
+                { 
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2005.MsSqlStatementBuilderFactory>(); 
+                    configureRuntime.Invoke(b); 
+                }, 
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2005.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
         #region 2008
-        public static void AddMsSql2008Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2008<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2008Database<T>(this IRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2008<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2008<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2008 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2008Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+                configBuilder.ConfigureMsSqlCommon(b =>
+                {
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2008.MsSqlStatementBuilderFactory>();
+                    configureRuntime.Invoke(b);
+                },
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2008.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
         #region 2012
-        public static void AddMsSql2012Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2012<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2012Database<T>(this IRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2012<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2012<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2012 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2012Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+                configBuilder.ConfigureMsSqlCommon(b =>
+                {
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2012.MsSqlStatementBuilderFactory>();
+                    configureRuntime.Invoke(b);
+                },
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2012.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
         #region 2014
-        public static void AddMsSql2014Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2014<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2014Database<T>(this IRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2014<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2014<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2014 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2014Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+            configBuilder.ConfigureMsSqlCommon(b =>
+                {
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2014.MsSqlStatementBuilderFactory>();
+                    configureRuntime.Invoke(b);
+                },
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2014.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
         #region 2016
-        public static void AddMsSql2016Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2016<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2016Database<T>(this RuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2016<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2016<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2016 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2016Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+            configBuilder.ConfigureMsSqlCommon(b =>
+                {
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2016.MsSqlStatementBuilderFactory>();
+                    configureRuntime.Invoke(b);
+                },
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2016.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
         #region 2017
-        public static void AddMsSql2017Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2017<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2017Database<T>(this IRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2017<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2017<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2017 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2017Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+                configBuilder.ConfigureMsSqlCommon(b =>
+                {
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2017.MsSqlStatementBuilderFactory>();
+                    configureRuntime.Invoke(b);
+                },
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2017.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
         #region 2019
-        public static void AddMsSql2019Database<T>(this IRuntimeEnvironmentBuilder builder, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2019<T>(() => connectionString, runtimeConfiguration);
-
-        public static void AddMsSql2019Database<T>(this IRuntimeEnvironmentBuilder builder, Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
-            where T : class, IRuntimeEnvironmentSqlDatabase, new()
-            => ConfigureMsSql2019<T>(connectionStringFactory, runtimeConfiguration);
-
-        private static void ConfigureMsSql2019<T>(Func<string> connectionStringFactory, Action<IRuntimeSqlDatabaseConfigurationBuilder> runtimeConfiguration = null)
+        /// <summary>
+        /// Configures dbExpression to use a SqlServer 2019 database.
+        /// </summary>
+        /// <typeparam name="T">The (code-generated) database you want to configure for use with dbExpression.</typeparam>
+        /// <param name="builder">The <see cref="IDbExpressionConfigurationBuilder" />, the fluent entry point for configuring the runtime environment for <typeparam name="T">. </param>
+        /// <param name="configureRuntime">
+        ///     <para>A delegate to configure the <see cref="RuntimeSqlDatabaseConfiguration" /> using a <see cref="IRuntimeSqlDatabaseConfigurationBuilder"/>.</para>
+        /// </param>        
+        public static void AddMsSql2019Database<T>(this IDbExpressionConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime)
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
-            EnsureValidConnectionString(connectionStringFactory);
+            if (configureRuntime is null)
+                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
+
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
+                configBuilder.ConfigureMsSqlCommon(b =>
+                {
+                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2019.MsSqlStatementBuilderFactory>();
+                    configureRuntime.Invoke(b);
+                },
+                runtime.Metadata
+            );
+            config.Validate();
 
-            configBuilder.ConfigureMsSqlCommon(runtime.Metadata, connectionStringFactory);
-
-            configBuilder.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2019.MsSqlStatementBuilderFactory>();
-
-            runtimeConfiguration?.Invoke(configBuilder);
-
-            runtime.Database.UseConfiguration(config);
+            runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
         }
         #endregion
 
-        private static void ConfigureMsSqlCommon(this IRuntimeSqlDatabaseConfigurationBuilder builder, ISqlDatabaseMetadataProvider metadata, Func<string> connectionStringFactory)
+        private static void ConfigureMsSqlCommon(this IRuntimeSqlDatabaseConfigurationBuilder builder, Action<IRuntimeSqlDatabaseConfigurationBuilder> configuration, ISqlDatabaseMetadataProvider metadata)
         {
             builder.SchemaMetadata.Use(metadata);
 
@@ -246,14 +249,16 @@ namespace HatTrick.DbEx.MsSql.Configuration
                 .Assembly
                     .StatementAppender.UseDefaultFactory()
                     .ElementAppender.Use<MsSqlExpressionElementAppenderFactory>()
-                    .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), () => (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration.ValueConverterFactory))
+                    .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration.ValueConverterFactory))
                     .ConfigureOutputSettings(
                         a => a.PrependCommaOnSelectClause = true
                     )
                 .Execution
                     .Executor.UseDefaultFactory()
                     .Pipeline.UseDefaultFactory()
-                    .Connection.Use(new MsSqlConnectionFactory(connectionStringFactory));
+                    .Connection.Use<MsSqlConnectionFactory>();
+
+            configuration.Invoke(builder);
         }
     }
 }

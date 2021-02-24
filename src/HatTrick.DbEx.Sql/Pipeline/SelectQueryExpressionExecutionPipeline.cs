@@ -1129,7 +1129,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var statement = statementBuilder.CreateSqlStatement();
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)));
 
-            var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression);
 
             beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, parameterBuilder)));
 
@@ -1189,7 +1189,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var executor = database.ExecutorFactory.CreateSqlStatementExecutor(expression);
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression);
 
             var reader = await executor.ExecuteQueryAsync(
                 statement,
