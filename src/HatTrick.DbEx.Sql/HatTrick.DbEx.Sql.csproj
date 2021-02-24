@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Configuration\_Conversions\ITypeConfigurationBuilder.cs" />
-    <Compile Remove="Configuration\_Conversions\ITypeValueConverterConfigurationBuilder{T}.cs" />
-    <Compile Remove="Configuration\TypeConfigurationBuilder{T}.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 

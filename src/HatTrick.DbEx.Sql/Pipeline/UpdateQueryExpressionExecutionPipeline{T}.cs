@@ -55,7 +55,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             beforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, parameterBuilder)));
 
-            var rowsAffected = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
+            var rowsAffected = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
                 statement,
                 connection,
                 cmd => { 
@@ -94,7 +94,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var rowsAffected = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalarAsync<int>(
+            var rowsAffected = await database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalarAsync<int>(
                 statement,
                 connection,
                 async cmd =>

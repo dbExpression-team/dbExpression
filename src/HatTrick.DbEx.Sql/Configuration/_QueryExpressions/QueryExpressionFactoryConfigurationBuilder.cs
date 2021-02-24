@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         public void Use(IQueryExpressionFactory factory)
-            => configuration.QueryExpressionFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            => configuration.QueryExpressionFactory = factory;
 
         public void Use<TQueryExpressionFactory>()
             where TQueryExpressionFactory : class, IQueryExpressionFactory, new()

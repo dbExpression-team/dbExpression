@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use(IExpressionElementAppenderFactory factory)
         {
-            configuration.ExpressionElementAppenderFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            configuration.ExpressionElementAppenderFactory = factory;
             return caller;
         }
 

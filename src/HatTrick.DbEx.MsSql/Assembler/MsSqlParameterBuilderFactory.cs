@@ -10,11 +10,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
     {
         #region internals
         private readonly IDbTypeMapFactory<SqlDbType> typeMaps;
-        private readonly Func<IValueConverterFactory> valueConverterFactory;
+        private readonly IValueConverterFactory valueConverterFactory;
         #endregion
 
         #region constructors
-        public MsSqlParameterBuilderFactory(IDbTypeMapFactory<SqlDbType> typeMaps, Func<IValueConverterFactory> valueConverterFactory)
+        public MsSqlParameterBuilderFactory(IDbTypeMapFactory<SqlDbType> typeMaps, IValueConverterFactory valueConverterFactory)
         {
             this.typeMaps = typeMaps ?? throw new ArgumentNullException($"{nameof(typeMaps)} is required.");
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #endregion
 
         #region methods
-        public ISqlParameterBuilder CreateSqlParameterBuilder() => new MsSqlParameterBuilder(typeMaps, valueConverterFactory());
+        public ISqlParameterBuilder CreateSqlParameterBuilder() => new MsSqlParameterBuilder(typeMaps, valueConverterFactory);
         #endregion
     }
 }

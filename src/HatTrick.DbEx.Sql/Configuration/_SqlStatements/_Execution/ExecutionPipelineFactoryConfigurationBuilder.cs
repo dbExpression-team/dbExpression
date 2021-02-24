@@ -21,7 +21,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public ISqlStatementExecutionGroupingConfigurationBuilders Use(IExecutionPipelineFactory factory)
         {
-            configuration.ExecutionPipelineFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            configuration.ExecutionPipelineFactory = factory;
             return caller;
         }
 

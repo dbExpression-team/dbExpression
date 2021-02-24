@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Outputs).ToList();
 
-            var reader = database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
+            var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
                 connection,
                 new SqlStatementValueConverterResolver(fields, database.ValueConverterFactory),
@@ -130,7 +130,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
             }
 
-            var reader = await database.ExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
+            var reader = await database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
                 statement,
                 connection,
                 new SqlStatementValueConverterResolver(new List<FieldExpression> { null }.Concat(expression.Outputs).ToList(), database.ValueConverterFactory),

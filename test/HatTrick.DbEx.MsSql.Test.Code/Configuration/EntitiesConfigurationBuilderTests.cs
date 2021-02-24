@@ -1,5 +1,6 @@
 ﻿using DbEx.dboData;
 using FluentAssertions;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Mapper;
 using System;
@@ -14,7 +15,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_using_instance_method_with_null_instance_throw_expected_exception(int version)
         {
             //given & when & then
-            Assert.Throws<ArgumentNullException>(() => ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((IEntityFactory)null)));
+            Assert.Throws<DbExpressionConfigurationException>(() => ConfigureForMsSqlVersion(version, builder => builder.Entities.Creation.Use((IEntityFactory)null)));
         }
 
         [Theory]

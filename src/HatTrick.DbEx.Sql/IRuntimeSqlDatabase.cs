@@ -1,9 +1,10 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
+using System;
 
 namespace HatTrick.DbEx.Sql
 {
     public interface IRuntimeSqlDatabase
     {
-        void UseConfiguration(RuntimeSqlDatabaseConfiguration configuration);
+        void UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory);
     }
 }

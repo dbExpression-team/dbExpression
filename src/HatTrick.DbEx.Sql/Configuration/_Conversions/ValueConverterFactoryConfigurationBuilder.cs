@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         public void Use(IValueConverterFactory factory)
-            => configuration.ValueConverterFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            => configuration.ValueConverterFactory = factory;
 
         public void Use<TValueConverterFactory>()
             where TValueConverterFactory : class, IValueConverterFactory, new()

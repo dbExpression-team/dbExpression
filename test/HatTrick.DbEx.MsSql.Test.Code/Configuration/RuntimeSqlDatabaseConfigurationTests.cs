@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             var dbInstance = new db() as IRuntimeSqlDatabase;
 
             //when & then
-            var ex = Assert.Throws<ArgumentNullException>(() => dbInstance.UseConfiguration(null));
+            var ex = Assert.Throws<ArgumentNullException>(() => dbInstance.UseConfigurationFactory(null));
         }
 
         [Fact]

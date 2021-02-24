@@ -25,8 +25,8 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TSqlConnectionFactory : class, ISqlConnectionFactory, new();
 
         /// <summary>
-        /// Use a custom factory for creating creating an <see cref="IDbConnection"/> used to execute sql statements against the target database.
+        /// Use a custom factory for creating creating an <see cref="IDbConnection"/>, given a connection string, used to execute sql statements against the target database.
         /// </summary>
-        ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<IDbConnection> factory);
+        ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<string, IDbConnection> factory);
     }
 }

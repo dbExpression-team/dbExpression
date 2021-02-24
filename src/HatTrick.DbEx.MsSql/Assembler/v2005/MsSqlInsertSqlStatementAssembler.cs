@@ -1,10 +1,9 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
-using System.Data.SqlClient;
 using System.Linq;
 
-namespace HatTrick.DbEx.MsSql.v2005.Assembler
+namespace HatTrick.DbEx.MsSql.Assembler.v2005
 {
     public class MsSqlInsertSqlStatementAssembler : InsertSqlStatementAssembler
     {

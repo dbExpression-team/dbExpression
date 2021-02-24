@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public ISqlStatementExecutionGroupingConfigurationBuilders Use(ISqlStatementExecutorFactory factory)
         {
-            configuration.ExecutorFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            configuration.StatementExecutorFactory = factory;
             return caller;
         }
 
@@ -33,21 +33,21 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlStatementExecutionGroupingConfigurationBuilders Use<TSqlStatementExecutorFactory>(Action<TSqlStatementExecutorFactory> configureFactory)
             where TSqlStatementExecutorFactory : class, ISqlStatementExecutorFactory, new()
         {
-            if (!(configuration.ExecutorFactory is TSqlStatementExecutorFactory))
-                configuration.ExecutorFactory = new TSqlStatementExecutorFactory();
-            configureFactory?.Invoke(configuration.ExecutorFactory as TSqlStatementExecutorFactory);
+            if (!(configuration.StatementExecutorFactory is TSqlStatementExecutorFactory))
+                configuration.StatementExecutorFactory = new TSqlStatementExecutorFactory();
+            configureFactory?.Invoke(configuration.StatementExecutorFactory as TSqlStatementExecutorFactory);
             return caller;
         }
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<QueryExpression, ISqlStatementExecutor> factory)
         {
-            configuration.ExecutorFactory = new DelegateSqlStatementExecutorFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."));
+            configuration.StatementExecutorFactory = new DelegateSqlStatementExecutorFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."));
             return caller;
         }
 
         public ISqlStatementExecutionGroupingConfigurationBuilders UseDefaultFactory()
         {
-            configuration.ExecutorFactory = new SqlStatementExecutorFactory();
+            configuration.StatementExecutorFactory = new SqlStatementExecutorFactory();
             return caller;
         }
         #endregion

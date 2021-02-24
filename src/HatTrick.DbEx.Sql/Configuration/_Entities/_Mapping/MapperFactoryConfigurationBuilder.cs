@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public IEntitiesConfigurationBuilderCreationGrouping Use(IMapperFactory factory)
         {
-            configuration.MapperFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            configuration.MapperFactory = factory;
             return caller;
         }
 

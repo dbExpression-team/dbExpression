@@ -138,7 +138,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public SelectValue<string> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, NullableStringElement field)
             => CreateSelectValueBuilder<string>(configuration, field);
-
+ 
         public SelectValue<TimeSpan> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, TimeSpanElement field)
             => CreateSelectValueBuilder<TimeSpan>(configuration, field);
 

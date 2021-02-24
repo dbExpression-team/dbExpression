@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use(ISqlParameterBuilderFactory factory)
         {
-            configuration.ParameterBuilderFactory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            configuration.ParameterBuilderFactory = factory;
             return caller;
         }
 
