@@ -57,7 +57,7 @@ stages:
         displayName: 'Build and Package Solution'
         inputs:
           filePath: '$(Build.SourcesDirectory)/build.ps1'
-          arguments: '-Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -UseBranchNameAsVersionSuffixWhenNotSupplied'
+          arguments: '-Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
         

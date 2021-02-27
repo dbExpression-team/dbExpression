@@ -2,9 +2,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <ToolCommandName>dbex</ToolCommandName>
     <PackAsTool>true</PackAsTool>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\DbExConfig\DbEx.Config.Example.json" />

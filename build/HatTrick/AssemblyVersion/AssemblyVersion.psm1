@@ -2,51 +2,48 @@ Set-StrictMode -Version Latest
 
 class AssemblyVersion
 {
-    [ValidateNotNullOrEmpty()][string]$Major
-    [ValidateNotNullOrEmpty()][string]$Minor
-    [string]$Patch
+    [int]$Major
+    [int]$Minor
+    [int]$Patch
     [string]$Suffix
-    [string]$Build
-    [string]$Revision
     [DateTime]$CurrentUtcDate
 
     [string]$AssemblyVersion
     [string]$AssemblyInformationalVersion
+    [short]$Build
+    [int]$Revision
 
     AssemblyVersion(
-        [string]$Major,
-        [string]$Minor,
-        [string]$Patch,
+        [int]$Major,
+        [int]$Minor,
+        [int]$Patch,
         [string]$Suffix,
-        [DateTime]$CurrentUtcDate
+        [Nullable[DateTime]]$CurrentUtcDate
     )
     {
         $this.Major = $Major
         $this.Minor = $Minor
         $this.Patch = $Patch
         $this.Suffix = $Suffix
-        $this.CurrentUtcDate = $CurrentUtcDate
 
-        # generate build (max value of [Int16] 32768), use visual studio style of number of days since Jan. 1, 2000
-        $this.Build = [int](New-TimeSpan -Start (Get-Date -Date "2000-01-01 00:00:00Z") -End ($this.CurrentUtcDate)).TotalDays 
-        
-        # generate revision by using the number of seconds into the current day (must divide by 2 as the max value for revision is 65534)
-        $this.Revision = [int]((New-TimeSpan -Start (New-Object "System.DateTime" -ArgumentList $this.CurrentUtcDate.Year, $this.CurrentUtcDate.Month, $this.CurrentUtcDate.Day) -End $this.CurrentUtcDate).TotalSeconds / 2)
-
-        $this.AssemblyVersion = "{0}.{1}.{2}.{3}" -f $this.Major, $this.Minor, $this.Build, $this.Revision
-        
-        if ([string]::IsNullOrEmpty($this.Patch))
+        if ($CurrentUtcDate -eq $null)
         {
-            $this.AssemblyInformationalVersion = $this.AssemblyVersion
+            $this.CurrentUtcDate = (Get-Date).ToUniversalTime()
         }
         else
         {
-            $version = "{0}.{1}.{2}" -f $this.Major, $this.Minor, $this.Patch
-            if (![string]::IsNullOrEmpty($this.Suffix))
-            {
-                $version = "{0}-{1}" -f $version, $this.Suffix
-            }      
-            $this.AssemblyInformationalVersion = $version
+            $this.CurrentUtcDate = $CurrentUtcDate
+        }
+
+        $this.Build = Get-BuildNumber($this.CurrentUtcDate)        
+        $this.Revision = Get-RevisionNumber($this.CurrentUtcDate)
+
+        $this.AssemblyVersion = "{0}.{1}.{2}.{3}" -f $this.Major, $this.Minor, $this.Build, $this.Revision
+        
+        $this.AssemblyInformationalVersion = $this.AssemblyVersion
+        if (![string]::IsNullOrEmpty($this.Patch))
+        {
+            $this.AssemblyInformationalVersion = "{0}-{1}" -f $this.AssemblyVersion, $this.Suffix
        }
     }
 
@@ -62,17 +59,7 @@ class AssemblyVersion
 
     [string] ToAssemblyInformationalVersionAttribute()
     {
-        if ([string]::IsNullOrEmpty($this.Patch))
-        {
-            return "[assembly: AssemblyInformationalVersion(""{0}"")]" -f $this.AssemblyVersion
-        }
-
-        $nugetVersion = "{0}.{1}.{2}" -f $this.Major, $this.Minor, $this.Patch
-        if (![string]::IsNullOrEmpty($this.Suffix))
-        {
-            $nugetVersion = "{0}-{1}" -f $nugetVersion, $this.Suffix
-        }        
-        return "[assembly: AssemblyInformationalVersion(""{0}"")]" -f $nugetVersion
+        return "[assembly: AssemblyInformationalVersion(""{0}"")]" -f $this.AssemblyInformationalVersion
     }
 }
 
@@ -80,9 +67,9 @@ function New-AssemblyVersion()
 {
     param
     (
-        [string]$Major,
-        [string]$Minor,
-        [string]$Patch,
+        [int]$Major,
+        [int]$Minor,
+        [int]$Patch,
         [string]$Suffix,
         [DateTime]$CurrentUtcDate
     )
@@ -121,6 +108,42 @@ function Get-AssemblyInformationalVersionAttribute()
     )
 
     return $AssemblyVersion.ToAssemblyInformationalVersionAttribute()
+}
+
+function Get-BuildNumber()
+{
+    param
+    (
+        [DateTime]$CurrentUtcDate
+    )
+
+    $this.CurrentUtcDate = $CurrentUtcDate
+    
+    if ($this.CurrentUtcDate -eq $null)
+    {
+        $this.CurrentUtcDate = (Get-Date).ToUniversalTime()
+    }
+
+    # generate build (max value of [Int16] 32768), use visual studio style of number of days since Jan. 1, 2000
+    return [int](New-TimeSpan -Start (Get-Date -Date "2000-01-01 00:00:00Z") -End ($this.CurrentUtcDate)).TotalDays
+}
+
+function Get-RevisionNumber()
+{
+    param
+    (
+        [DateTime]$CurrentUtcDate
+    )
+
+    $this.CurrentUtcDate = $CurrentUtcDate
+    
+    if ($this.CurrentUtcDate -eq $null)
+    {
+        $this.CurrentUtcDate = (Get-Date).ToUniversalTime()
+    }
+
+    # generate revision by using the number of seconds into the current day (must divide by 2 as the max value for revision is 65534)
+    return [int]((New-TimeSpan -Start (New-Object "System.DateTime" -ArgumentList $this.CurrentUtcDate.Year, $this.CurrentUtcDate.Month, $this.CurrentUtcDate.Day) -End $this.CurrentUtcDate).TotalSeconds / 2)
 }
 
 Export-ModuleMember -Function New-AssemblyVersion, Get-AssemblyVersionAttribute, Get-AssemblyFileVersionAttribute, Get-AssemblyInformationalVersionAttribute
