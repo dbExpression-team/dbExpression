@@ -1,111 +1,120 @@
-using module .\build\HatTrick\Project\Project.psm1
+using module .\build\HatTrick\DirectoryBuildPropsFile\DirectoryBuildPropsFile.psm1
 using module .\build\HatTrick\AssemblyVersion\AssemblyVersion.psm1
-using module .\build\HatTrick\NuGetPackage\NuGetPackage.psm1
 
-Param
+param
     (
+        # The full path (including name) to the solution to build
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$SolutionPath = "DbEx.sln",
+
+        # The full path (including name) to the Directory.build.props file used as a template to provide the base version (Major.Minor.Patch) version used to create assembly attributes and nuget packages.  If the fiile contains a VersionSuffix, it will be honored as provided.
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$PropertiesPath = "Directory.build.props",
+
+        # The path to place constructed NuGet packages
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]$NuGetOutputPath = "assets",
+
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$Configuration = "Release",
+
+        # The branch that sources public releases.  Any build processes from this branch will not use auto-generated build numbers and revisions in the package naming strategy, but will honor a VersionSuffix if supplied in the $PropertiesPath file.
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$BuildPropsFilePath = ".\build.props.json",
+        [string]$PublicReleaseBranchName = "master",
+
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$BranchName,
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$CommitSHA,
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$BuildIdentifier,
-        [switch]$SkipGenerationOfBuildFiles,
-        [switch]$SkipGenerationOfAssembyInfoFiles,
-        [switch]$SkipGenerationOfBuildPropFiles,
-        [switch]$SkipGenerationOfBuildTargetFiles,
-        [switch]$UseBranchNameAsVersionSuffixWhenNotSupplied
+
+        # A switch indicating whether the $BranchName should be used in generated a package name.  If VersionSuffix is supplied in the $PropertiesPath file, this switch has no effect.
+        [switch]$UseBranchNameInPackageSuffixWhenNotSpecified
    )
 
-Write-Host "Configuration parameter: " $Configuration
-Write-Host "BuildPropsFilePath parameter: " $BuildPropsFilePath
 Write-Host "BranchName parameter: " $BranchName
-Write-Host "CommitSHA parameter: " $CommitSHA
 Write-Host "BuildIdentifier parameter: " $BuildIdentifier
-Write-Host "SkipGenerationOfBuildFiles switch: " $SkipGenerationOfBuildFiles
-Write-Host "SkipGenerationOfAssembyInfoFiles switch: " $SkipGenerationOfAssembyInfoFiles
-Write-Host "SkipGenerationOfBuildPropFiles switch: " $SkipGenerationOfBuildPropFiles
-Write-Host "SkipGenerationOfBuildTargetFiles switch: " $SkipGenerationOfBuildTargetFiles
-Write-Host "UseBranchNameAsVersionSuffixWhenNotSupplied switch: " $UseBranchNameAsVersionSuffixWhenNotSupplied
+Write-Host "CommitSHA parameter: " $CommitSHA
+Write-Host "Configuration parameter: " $Configuration
+Write-Host "NuGetOutputPath parameter: " $NuGetOutputPath
+Write-Host "PropertiesPath parameter: " $PropertiesPath
+Write-Host "PublicReleaseBranchName parameter: " $PublicReleaseBranchName
+Write-Host "SolutionPath parameter: " $SolutionPath
+Write-Host "UseBranchNameInPackageSuffixWhenNotSupplied switch: " $UseBranchNameInPackageSuffixWhenNotSpecified
 
-# read configuration from file
-$config = Get-Content $BuildPropsFilePath | ConvertFrom-Json
+$directoryBuildPropsTemplate = [xml](Get-Content $PropertiesPath);
 
-[DateTime]$now = (Get-Date).ToUniversalTime()
-
-if (!($SkipGenerationOfBuildFiles))
+# validate version prefix is in format Major.Minor.Patch
+if ($directoryBuildPropsTemplate.SelectSingleNode("/Project/PropertyGroup/VersionPrefix") -eq $null)
 {
-    foreach ($project in $config.Projects)
-    {
-        $suffix = $null
-        if ((Get-Member -InputObject $project -Name "NuGet" -MemberType Properties) -and $project.nuGet -ne $null)
-        {
-            if(Get-Member -InputObject $project.nuGet -Name "Suffix" -MemberType Properties)
-            {
-                $suffix = $project.nuGet.suffix
-            }
-            elseif ($UseBranchNameAsVersionSuffixWhenNotSupplied -and $BranchName -ne "master")
-            {
-                $rgx = [System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9]");
-                $suffix = $rgx.Replace($BranchName, "-")
-            }
-        }
-
-        $version = New-AssemblyVersion `
-            -Major $project.major `
-            -Minor $project.minor `
-            -Patch ($project.nuGet -eq $null ? "" : $project.nuGet.patch) `
-            -Suffix $suffix `
-            -CurrentUtcDate $now
-
-        Write-Host ("[{0}]: AssemblyVersion: {1}" -f $project.name, $version.AssemblyVersion)
-        Write-Host ("[{0}]: AssemblyInformationalVersion: {1}" -f $project.name, $version.AssemblyInformationalVersion)
-    
-        $p = New-Project `
-            -ProjectPath $project.csprojPath `
-            -CompanyName $config.companyName `
-            -Configuration $project
-    
-        if (!($SkipGenerationOfAssembyInfoFiles))
-        {
-            Write-Host ("[{0}]: Creating AssemblyInfo.cs file" -f $p.Name)
-            New-AssemblyInfoFile -AssemblyVersion $version -BranchName $BranchName -CommitSHA $CommitSHA -BuildIdentifier $BuildIdentifier -CompanyName $config.companyName -Project $p
-        }
-
-        if (!($SkipGenerationOfBuildPropFiles))
-        {
-            Write-Host ("[{0}]: Creating Directory.Build.props file" -f $p.Name)
-            New-BuildPropsFile -Project $p -CompanyName $config.companyName -AssemblyVersion $version
-        }
-     
-        if (!($SkipGenerationOfBuildTargetFiles))
-        {
-            Write-Host ("[{0}]: Creating Directory.Build.targets file" -f $p.Name)
-            New-BuildTargetsFile $p
-        }
-    }
+    throw "Expected a node at /Project/PropertyGroup/VersionPrefix in `$PropertiesPath"
+}
+$versionPrefixParts = $directoryBuildPropsTemplate.SelectSingleNode("/Project/PropertyGroup/VersionPrefix").InnerText -Split "\."
+if ($versionPrefixParts.Length -ne 3)
+{
+    throw "Expected the node value at /Project/PropertyGroup/VersionPrefix to be in the form Major.Minor.Patch"
 }
 
-Write-Host "Restoring packages for" $config.solutionPath
-nuget restore $config.solutionPath -PackagesDirectory .\packages
+# generate a build/package suffix by using the value specified in template file or by branch name
+[string]$versionSuffix
+$versionSuffixNode = $directoryBuildPropsTemplate.SelectSingleNode("/Project/PropertyGroup/VersionSuffix")
+if ($versionSuffixNode -eq $null)
+{
+    if ($UseBranchNameInPackageSuffixWhenNotSpecified -and $BranchName -ne $PublicReleaseBranchName)
+    {
+        # a branch name of issue/#499 will become a version suffix of issue-499
+        $versionSuffix = ([System.Text.RegularExpressions.Regex]::new("[^a-zA-Z0-9]")).Replace($BranchName, "-")
+        $versionSuffix = ([System.Text.RegularExpressions.Regex]::new("--")).Replace($versionSuffix, "-")
+    }
+}
+else
+{
+    $versionSuffix = $versionSuffixNode.InnerText
+}
 
-Write-Host "Building solution" $config.solutionPath
-dotnet build $config.solutionPath --configuration $Configuration
+# create an assembly version, which provides build and revision numbers
+try
+{
+    $version = New-AssemblyVersion `
+       -Major $versionPrefixParts[0] `
+       -Minor $versionPrefixParts[1] `
+       -Patch $versionPrefixParts[2] `
+       -Suffix $versionSuffix
+}
+catch
+{
+    Write-Host $_
+    throw
+}
 
-Write-Host "Creating NuGet packages for" $config.solutionPath
-dotnet pack $config.solutionPath --output $config.nuGetPackageOutputPath --configuration $Configuration
+# rewrite the props file with additional data based on assembly version and script parameters
+try
+{
+    $props = New-DirectoryBuildPropsFile `
+       -OutputPath $PropertiesPath `
+       -Configuration $Configuration `
+       -BranchName $BranchName `
+       -CommitSHA $CommitSHA `
+       -BuildIdentifier $BuildIdentifier `
+       -AssemblyVersion $version `
+       -IncludeBuildNumberPartsInPackageVersion ($BranchName -ne $PublicReleaseBranchName)
 
-Write-Host "NuGet packages (before repair):"
-Get-ChildItem -Path $config.nuGetPackageOutputPath -File | Write-Host
+    $props.RewriteDirectoryBuildPropsFile()
+}
+catch
+{
+    Write-Host $_
+    throw
+}
 
-Write-Host "Repairing NuGet packages for " $config.solutionPath
-Remove-NuspecProjectReferenceNodes -Solution $config.solutionPath -Configuration $Configuration -Output $config.nuGetPackageOutputPath
+Write-Host "Restoring packages for" $SolutionPath
+nuget restore $SolutionPath -PackagesDirectory .\packages
 
-Write-Host "NuGet packages (after repair):"
-Get-ChildItem -Path $config.nuGetPackageOutputPath -File | Write-Host
+Write-Host "Building solution" $SolutionPath
+dotnet build $SolutionPath --configuration $Configuration
 
-Write-Host "Build complete for" $config.solutionPath
+Write-Host "Creating NuGet packages for" $SolutionPath
+dotnet pack $SolutionPath --output $NuGetOutputPath --configuration $Configuration
+
+Write-Host "Build complete for" $SolutionPath
