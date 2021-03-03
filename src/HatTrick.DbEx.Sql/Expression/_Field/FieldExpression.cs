@@ -29,10 +29,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected FieldExpression(string identifier, string name, Type declaredType, EntityExpression entity)
         {
-            this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
-            this.name = name ?? throw new ArgumentNullException($"{nameof(name)} is required.");
-            this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
-            this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
+            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
+            this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
         #endregion
 

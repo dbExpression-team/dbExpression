@@ -15,8 +15,8 @@ namespace HatTrick.DbEx.Sql.Expression
         protected DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, Type convertToType)
             : base(startDate, convertToType)
         {
-            DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
-            EndDate = endDate ?? throw new ArgumentNullException($"{nameof(endDate)} is required.");
+            DatePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
+            EndDate = endDate ?? throw new ArgumentNullException(nameof(endDate));
         }
         #endregion
 

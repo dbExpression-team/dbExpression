@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public ValueConverterFactoryConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion
@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public void Use(Func<Type, IValueConverter> factory)
         {
             if (factory is null)
-                throw new ArgumentNullException($"{nameof(factory)} is required.");
+                throw new ArgumentNullException(nameof(factory));
             configuration.ValueConverterFactory = new DelegateValueConverterFactory(factory);
         }
 

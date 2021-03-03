@@ -20,21 +20,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public JoinExpressionSet(JoinExpression joinExpression)
         {
-            Expressions = Expressions.Concat(new JoinExpression[1] { joinExpression ?? throw new ArgumentNullException($"{nameof(joinExpression)} is required.") });
+            Expressions = Expressions.Concat(new JoinExpression[1] { joinExpression ?? throw new ArgumentNullException(nameof(joinExpression)) });
         }
 
         public JoinExpressionSet(JoinExpression aJoinExpression, JoinExpression bJoinExpression)
         {
             Expressions = new List<JoinExpression>
             {
-                aJoinExpression ?? throw new ArgumentNullException($"{nameof(aJoinExpression)} is required."),
-                bJoinExpression ?? throw new ArgumentNullException($"{nameof(bJoinExpression)} is required.")
+                aJoinExpression ?? throw new ArgumentNullException(nameof(aJoinExpression)),
+                bJoinExpression ?? throw new ArgumentNullException(nameof(bJoinExpression))
             };
         }
 
         public JoinExpressionSet(IEnumerable<JoinExpression> joinExpressions)
         {
-            Expressions = joinExpressions ?? throw new ArgumentNullException($"{nameof(joinExpressions)} is required.");
+            Expressions = joinExpressions ?? throw new ArgumentNullException(nameof(joinExpressions));
         }
         #endregion
 

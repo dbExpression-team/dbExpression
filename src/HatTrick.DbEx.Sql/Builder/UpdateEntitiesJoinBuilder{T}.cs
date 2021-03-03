@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Builder
         public UpdateEntitiesJoinBuilder(UpdateQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, UpdateEntitiesContinuation<TEntity> caller)
             : base(expression, joinTo, joinType)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
         }
         #endregion
 

@@ -17,8 +17,8 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public SelectJoinExpressionBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType)
         {
-            this.expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
-            this.joinTo = joinTo ?? throw new ArgumentNullException($"{nameof(joinTo)} is required.");
+            this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            this.joinTo = joinTo ?? throw new ArgumentNullException(nameof(joinTo));
             this.joinType = joinType;
         }
         #endregion

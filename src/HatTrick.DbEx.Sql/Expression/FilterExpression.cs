@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public FilterExpression(IExpressionElement leftArg)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
         }
 
         public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator)
@@ -26,8 +26,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator filterExpressionOperator, bool negate)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ExpressionOperator = filterExpressionOperator;
             Negate = negate;
         }

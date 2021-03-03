@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Converter
         #region constructors
         public DelegateValueConverterFactory(Func<Type, IValueConverter> factory)
         {
-            this.factory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 

@@ -14,8 +14,8 @@ namespace HatTrick.DbEx.Sql.Expression
         protected DateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, Type declaredType) 
             : base(expression, declaredType)
         {
-            DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
-            Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");
+            DatePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
         #endregion
 

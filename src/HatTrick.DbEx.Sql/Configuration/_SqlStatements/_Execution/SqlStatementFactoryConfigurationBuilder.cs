@@ -14,8 +14,8 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public SqlStatementFactoryConfigurationBuilder(ISqlStatementExecutionGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<QueryExpression, ISqlStatementExecutor> factory)
         {
-            configuration.StatementExecutorFactory = new DelegateSqlStatementExecutorFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."));
+            configuration.StatementExecutorFactory = new DelegateSqlStatementExecutorFactory(factory ?? throw new ArgumentNullException(nameof(factory)));
             return caller;
         }
 

@@ -30,13 +30,13 @@ namespace HatTrick.DbEx.Sql.Assembler
             ISqlParameterBuilder parameterBuilder
         )
         {
-            DatabaseMetadata = databaseMetadata ?? throw new ArgumentNullException($"{nameof(databaseMetadata)} is required.");
-            AssemblerConfiguration = assemblerConfiguration ?? throw new ArgumentNullException($"{nameof(assemblerConfiguration)} is required.");
-            Query = query ?? throw new ArgumentNullException($"{nameof(query)} is required.");
-            AssemblerFactory = assemblerFactory ?? throw new ArgumentNullException($"{nameof(assemblerFactory)} is required.");
-            ElementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException($"{nameof(elementAppenderFactory)} is required.");
-            Appender = appender ?? throw new ArgumentNullException($"{nameof(appender)} is required.");
-            Parameters = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
+            DatabaseMetadata = databaseMetadata ?? throw new ArgumentNullException(nameof(databaseMetadata));
+            AssemblerConfiguration = assemblerConfiguration ?? throw new ArgumentNullException(nameof(assemblerConfiguration));
+            Query = query ?? throw new ArgumentNullException(nameof(query));
+            AssemblerFactory = assemblerFactory ?? throw new ArgumentNullException(nameof(assemblerFactory));
+            ElementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
+            Appender = appender ?? throw new ArgumentNullException(nameof(appender));
+            Parameters = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
         }
 
         public SqlStatement CreateSqlStatement()

@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Builder
         public SelectValuesJoinBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, SelectValuesContinuation<TValue> caller)
             : base(expression, joinTo, joinType)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
         }
         #endregion
 

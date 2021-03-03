@@ -20,12 +20,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public SelectExpressionSet(params SelectExpression[] expressions)
         {
-            Expressions = (expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required")).ToList();
+            Expressions = (expressions ?? throw new ArgumentNullException(nameof(expressions))).ToList();
         }
 
         public SelectExpressionSet(SelectExpression selectExpression)
         {
-            Expressions = new SelectExpression[1] { selectExpression ?? throw new ArgumentNullException($"{nameof(selectExpression)} is required") };
+            Expressions = new SelectExpression[1] { selectExpression ?? throw new ArgumentNullException(nameof(selectExpression)) };
         }
 
         public SelectExpressionSet(SelectExpressionSet selectExpressionSet)
@@ -35,14 +35,14 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public SelectExpressionSet(IEnumerable<SelectExpression> expressions)
         {
-            Expressions = expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required");
+            Expressions = expressions ?? throw new ArgumentNullException(nameof(expressions));
         }
 
         public SelectExpressionSet(SelectExpression aSelectExpression, SelectExpression bSelectExpression)
         {
             Expressions = new SelectExpression[2] {
-                aSelectExpression ?? throw new ArgumentNullException($"{nameof(aSelectExpression)} is required"),
-                bSelectExpression ?? throw new ArgumentNullException($"{nameof(bSelectExpression)} is required")
+                aSelectExpression ?? throw new ArgumentNullException(nameof(aSelectExpression)),
+                bSelectExpression ?? throw new ArgumentNullException(nameof(bSelectExpression))
             };
         }
         #endregion

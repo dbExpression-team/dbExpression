@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected IsNullFunctionExpression(IExpressionElement expression, Type declaredType, IExpressionElement value) : base(expression, declaredType)
         {
-            Value = value ?? throw new ArgumentNullException($"{nameof(value)} is required.");
+            Value = value ?? throw new ArgumentNullException(nameof(value));
         }
         #endregion
 

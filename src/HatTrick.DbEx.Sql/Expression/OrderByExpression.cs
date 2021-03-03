@@ -13,7 +13,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public OrderByExpression(IExpressionElement orderBy, OrderExpressionDirection direction)
         {
-            Expression = orderBy ?? throw new ArgumentNullException($"{nameof(orderBy)} is required.");
+            Expression = orderBy ?? throw new ArgumentNullException(nameof(orderBy));
             Direction = direction;
         }
         #endregion

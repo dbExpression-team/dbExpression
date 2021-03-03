@@ -20,8 +20,8 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public MapperFactoryConfigurationBuilder(IEntitiesConfigurationBuilderGrouping caller, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 
@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IEntitiesConfigurationBuilderCreationGrouping Use(Func<Type, IEntityMapper> factory)
         {
             var expando = new ExpandoObjectMapper();
-            configuration.MapperFactory = new DelegateMapperFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."), () => expando);
+            configuration.MapperFactory = new DelegateMapperFactory(factory ?? throw new ArgumentNullException(nameof(factory)), () => expando);
             return caller;
         }
 

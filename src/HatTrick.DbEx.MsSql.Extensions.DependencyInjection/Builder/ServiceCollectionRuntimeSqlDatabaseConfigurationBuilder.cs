@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.MsSql.Microsoft.Extensions.DependencyInjection.Builder
 
         public ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder(IServiceCollection services, RuntimeSqlDatabaseConfiguration configuration) : base(configuration)
         {
-            Services = services ?? throw new ArgumentNullException($"{nameof(services)} is required.");
+            Services = services ?? throw new ArgumentNullException(nameof(services));
         }        
     }
 }

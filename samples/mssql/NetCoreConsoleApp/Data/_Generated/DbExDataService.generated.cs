@@ -47,7 +47,7 @@ namespace SimpleConsole.DataService
 
         #region methods
         void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
-            => SimpleConsoleDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException($"{nameof(configurationFactory)} is required.");
+            => SimpleConsoleDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
 
         #region select one
         /// <summary>
@@ -493,7 +493,7 @@ namespace SimpleConsole.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, (elements ?? throw new ArgumentNullException($"{nameof(elements)} is required.")).Concat(additionalElements));
+            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -937,7 +937,7 @@ namespace SimpleConsole.DataService
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
         /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, (elements ?? throw new ArgumentNullException($"{nameof(elements)} is required.")).Concat(additionalElements));
+            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1332,7 +1332,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -1906,7 +1906,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -2394,7 +2394,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -2940,7 +2940,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -3813,7 +3813,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -4427,7 +4427,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -4756,7 +4756,7 @@ namespace SimpleConsole.dboDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -5034,14 +5034,15 @@ namespace SimpleConsole.dboDataService
         public static void UseSchema(dboSchemaExpression schema)
         { 
             if (schema == null)
-                 throw new ArgumentNullException($"{nameof(schema)} is required.");
-            Address = schema.Address ?? throw new ArgumentNullException($"{schema.Address } is required.");
-            Person = schema.Person ?? throw new ArgumentNullException($"{schema.Person } is required.");
-            PersonAddress = schema.PersonAddress ?? throw new ArgumentNullException($"{schema.PersonAddress } is required.");
-            Product = schema.Product ?? throw new ArgumentNullException($"{schema.Product } is required.");
-            Purchase = schema.Purchase ?? throw new ArgumentNullException($"{schema.Purchase } is required.");
-            PurchaseLine = schema.PurchaseLine ?? throw new ArgumentNullException($"{schema.PurchaseLine } is required.");
-            PersonTotalPurchasesView = schema.PersonTotalPurchasesView ?? throw new ArgumentNullException($"{schema.PersonTotalPurchasesView } is required.");
+                 throw new ArgumentNullException(nameof(schema));
+
+            Address = schema.Address;
+            Person = schema.Person;
+            PersonAddress = schema.PersonAddress;
+            Product = schema.Product;
+            Purchase = schema.Purchase;
+            PurchaseLine = schema.PurchaseLine;
+            PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
         }
         #endregion
     }
@@ -5195,7 +5196,7 @@ namespace SimpleConsole.secDataService
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;
@@ -5376,8 +5377,9 @@ namespace SimpleConsole.secDataService
         public static void UseSchema(secSchemaExpression schema)
         { 
             if (schema == null)
-                 throw new ArgumentNullException($"{nameof(schema)} is required.");
-            Person = schema.Person ?? throw new ArgumentNullException($"{schema.Person } is required.");
+                 throw new ArgumentNullException(nameof(schema));
+
+            Person = schema.Person;
         }
         #endregion
     }

@@ -17,7 +17,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region methods
         public void Use(ISqlDatabaseMetadataProvider provider)
-            => configuration.MetadataProvider = provider ?? throw new ArgumentNullException($"{nameof(provider)} is required.");
+            => configuration.MetadataProvider = provider ?? throw new ArgumentNullException(nameof(provider));
 
         public void Use<TSqlDatabaseMetadataProvider>()
             where TSqlDatabaseMetadataProvider : class, ISqlDatabaseMetadataProvider, new()

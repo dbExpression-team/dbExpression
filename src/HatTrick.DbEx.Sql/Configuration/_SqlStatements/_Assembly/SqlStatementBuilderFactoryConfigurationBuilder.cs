@@ -11,8 +11,8 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public SqlStatementBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use(ISqlStatementBuilderFactory factory)

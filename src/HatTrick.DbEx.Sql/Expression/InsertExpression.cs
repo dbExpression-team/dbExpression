@@ -19,8 +19,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected InsertExpression(FieldExpression field, IExpressionElement assignment)
         {
-            this.assignee = field ?? throw new ArgumentNullException($"{nameof(field)} is required.");
-            this.assignment = assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.");
+            this.assignee = field ?? throw new ArgumentNullException(nameof(field));
+            this.assignment = assignment ?? throw new ArgumentNullException(nameof(assignment));
         }
         #endregion
     }

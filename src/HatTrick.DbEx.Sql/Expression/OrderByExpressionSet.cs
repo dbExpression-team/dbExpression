@@ -20,21 +20,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public OrderByExpressionSet(AnyOrderByClause orderBy)
         {
-            Expressions = Expressions.Concat(new AnyOrderByClause[1] { (orderBy ?? throw new ArgumentNullException($"{nameof(orderBy)} is required.")) is OrderByExpression ? orderBy : new OrderByExpression(orderBy, OrderExpressionDirection.ASC) });
+            Expressions = Expressions.Concat(new AnyOrderByClause[1] { (orderBy ?? throw new ArgumentNullException(nameof(orderBy))) is OrderByExpression ? orderBy : new OrderByExpression(orderBy, OrderExpressionDirection.ASC) });
         }
 
         public OrderByExpressionSet(OrderByExpression aOrderBy, OrderByExpression bOrderBy)
         {
             Expressions = new List<AnyOrderByClause>
             {
-                aOrderBy ?? throw new ArgumentNullException($"{nameof(aOrderBy)} is required."),
-                bOrderBy ?? throw new ArgumentNullException($"{nameof(bOrderBy)} is required.")
+                aOrderBy ?? throw new ArgumentNullException(nameof(aOrderBy)),
+                bOrderBy ?? throw new ArgumentNullException(nameof(bOrderBy))
             };
         }
 
         public OrderByExpressionSet(IEnumerable<AnyOrderByClause> orderBys)
         {
-            Expressions = (orderBys ?? throw new ArgumentNullException($"{nameof(orderBys)} is required.")).Select(x => x is OrderByExpression ? x : new OrderByExpression(x, OrderExpressionDirection.ASC));
+            Expressions = (orderBys ?? throw new ArgumentNullException(nameof(orderBys))).Select(x => x is OrderByExpression ? x : new OrderByExpression(x, OrderExpressionDirection.ASC));
         }
         #endregion
 

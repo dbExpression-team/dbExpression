@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Mapper
         #region constructors
         public DelegateEntityFactory(Func<Type, IDbEntity> factory)
         {
-            this.factory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 

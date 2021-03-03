@@ -14,8 +14,8 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public EnumTypeValueConverterConfigurationBuilder(IValueConverterFactoryContinuationConfigurationBuilder caller, ValueConverterFactory factory)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.factory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 

@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected ConcatFunctionExpression(IList<IExpressionElement> expressions, Type declaredType) : base(null, declaredType)
         {
-            Expression = expressions ?? throw new ArgumentNullException($"{nameof(expressions)} is required.");
+            Expression = expressions ?? throw new ArgumentNullException(nameof(expressions));
             if (!expressions.Any())
                 throw new ArgumentException($"Expected {nameof(expressions)} to contain at least one element.");
         }

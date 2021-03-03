@@ -20,21 +20,21 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public GroupByExpressionSet(AnyGroupByClause groupBy)
         {
-            Expressions = Expressions.Concat(new AnyGroupByClause[1] { (groupBy ?? throw new ArgumentNullException($"{nameof(groupBy)} is required.")) is GroupByExpression ? groupBy : new GroupByExpression(groupBy) });
+            Expressions = Expressions.Concat(new AnyGroupByClause[1] { (groupBy ?? throw new ArgumentNullException(nameof(groupBy))) is GroupByExpression ? groupBy : new GroupByExpression(groupBy) });
         }
 
         public GroupByExpressionSet(GroupByExpression aGroupBy, GroupByExpression bGroupBy)
         {
             Expressions = new List<AnyGroupByClause>
             {
-                aGroupBy ?? throw new ArgumentNullException($"{nameof(aGroupBy)} is required."),
-                bGroupBy ?? throw new ArgumentNullException($"{nameof(bGroupBy)} is required.")
+                aGroupBy ?? throw new ArgumentNullException(nameof(aGroupBy)),
+                bGroupBy ?? throw new ArgumentNullException(nameof(bGroupBy))
             };
         }
 
         public GroupByExpressionSet(IEnumerable<AnyGroupByClause> groupBys)
         {
-            Expressions = (groupBys ?? throw new ArgumentNullException($"{nameof(groupBys)} is required.")).Select(x => x is GroupByExpression ? x : new GroupByExpression(x));
+            Expressions = (groupBys ?? throw new ArgumentNullException(nameof(groupBys))).Select(x => x is GroupByExpression ? x : new GroupByExpression(x));
         }
         #endregion
 

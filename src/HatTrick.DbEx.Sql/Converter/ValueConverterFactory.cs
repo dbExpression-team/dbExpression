@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual void RegisterConverter<T>(IValueConverter converter)
         {
             if (converter is null)
-                throw new ArgumentNullException($"{nameof(converter)} is required.");
+                throw new ArgumentNullException(nameof(converter));
 
             RegisterConverter<T>(() => converter);
         }
@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.Sql.Converter
         public virtual void RegisterConverter<T>(Func<IValueConverter> converter)
         {
             if (converter is null)
-                throw new ArgumentNullException($"{nameof(converter)} is required.");
+                throw new ArgumentNullException(nameof(converter));
 
             valueConverters.AddOrUpdate(typeof(T), converter, (type, @return) => converter);
         }

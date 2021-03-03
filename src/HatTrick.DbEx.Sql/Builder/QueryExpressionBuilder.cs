@@ -22,8 +22,8 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         protected QueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, QueryExpression expression)
         {
-            this.Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
-            this.expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
     }

@@ -22,27 +22,30 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public JoinOnExpressionSet(JoinOnExpression singleJoin)
         {
-            LeftArg = singleJoin ?? throw new ArgumentNullException($"{nameof(singleJoin)} is required.");
+            LeftArg = singleJoin ?? throw new ArgumentNullException(nameof(singleJoin));
         }
 
         protected JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ConditionalOperator = conditionalOperator;
         }
 
         protected JoinOnExpressionSet(JoinOnExpressionSet leftArg, JoinOnExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ConditionalOperator = conditionalOperator;
         }
 
         public JoinOnExpressionSet(IExpressionElement leftArg, IExpressionElement rightArg, ConditionalExpressionOperator conditionalOperator, bool negate)
         {
-            if (leftArg is null && rightArg is null)
-                throw new ArgumentNullException($"{nameof(leftArg)} or {nameof(leftArg)} must be non-null.");
+            if (leftArg is null)
+                throw new ArgumentNullException(nameof(leftArg));
+
+            if (rightArg is null)
+                throw new ArgumentNullException(nameof(rightArg));
 
             LeftArg = leftArg;
             RightArg = rightArg;

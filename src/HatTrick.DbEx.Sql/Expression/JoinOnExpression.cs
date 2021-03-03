@@ -20,8 +20,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public JoinOnExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator expresionOperator, bool negate)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ExpressionOperator = expresionOperator;
             Negate = negate;
         }

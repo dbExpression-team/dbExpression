@@ -17,16 +17,16 @@ namespace HatTrick.DbEx.Sql
         #region constructors
         public SqlStatementValueConverterResolver(IEnumerable<FieldExpression> fieldExpressions, IValueConverterFactory valueConverterFactory)
         {
-            this.fieldExpressions = fieldExpressions ?? throw new ArgumentNullException($"{nameof(fieldExpressions)} is required.");
-            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
+            this.fieldExpressions = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
         public SqlStatementValueConverterResolver(SelectExpressionSet selectExpressionSet, IValueConverterFactory valueConverterFactory)
         {
             if (selectExpressionSet is null)
-                throw new ArgumentNullException($"{nameof(selectExpressionSet)} is required.");
+                throw new ArgumentNullException(nameof(selectExpressionSet));
             this.fieldExpressions = selectExpressionSet.Expressions.Cast<IExpressionTypeProvider>();
-            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
         #endregion
 

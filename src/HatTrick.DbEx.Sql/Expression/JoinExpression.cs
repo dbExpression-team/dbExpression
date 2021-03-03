@@ -23,9 +23,9 @@ namespace HatTrick.DbEx.Sql.Expression
 
         protected JoinExpression(IExpressionElement joinToo, JoinOperationExpressionOperator joinType, AnyJoinOnClause onCondition, string alias)
         {
-            JoinToo = joinToo ?? throw new ArgumentNullException($"{nameof(joinToo)} is required.");
+            JoinToo = joinToo ?? throw new ArgumentNullException(nameof(joinToo));
             JoinType = joinType;
-            JoinOnExpression = onCondition ?? throw new ArgumentNullException($"{nameof(onCondition)} is required.");
+            JoinOnExpression = onCondition ?? throw new ArgumentNullException(nameof(onCondition));
             Alias = alias;
         }
         #endregion

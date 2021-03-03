@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             if (entity is null)
-                throw new ArgumentNullException($"{nameof(entity)} is required.");
+                throw new ArgumentNullException(nameof(entity));
 
             return entity.BuildInclusiveSelectExpression().Expressions.Cast<AnyElement>();
         }
@@ -147,10 +147,10 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             if (entity is null)
-                throw new ArgumentNullException($"{nameof(entity)} is required.");
+                throw new ArgumentNullException(nameof(entity));
 
             if (alias is null)
-                throw new ArgumentNullException($"{nameof(alias)} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             return entity.BuildInclusiveSelectExpression(alias).Expressions.Cast<AnyElement>();
         }
@@ -164,7 +164,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             if (entity is null)
-                throw new ArgumentNullException($"{nameof(entity)} is required.");
+                throw new ArgumentNullException(nameof(entity));
 
             return entity.HydrateEntity;
         }

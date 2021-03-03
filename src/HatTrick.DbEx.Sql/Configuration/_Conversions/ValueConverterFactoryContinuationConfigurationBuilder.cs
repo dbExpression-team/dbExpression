@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public ValueConverterFactoryContinuationConfigurationBuilder(ValueConverterFactory factory)
         {
-            this.factory = factory ?? throw new ArgumentNullException($"{nameof(factory)} is required.");
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 

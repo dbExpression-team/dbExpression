@@ -15,8 +15,8 @@ namespace HatTrick.DbEx.MsSql.Expression.DependencyInjection.Internal
         #region constructors
         public RuntimeSqlDatabaseConfigurationFor(T database, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.Database = database ?? throw new ArgumentNullException($"{nameof(database)} is required.");
-            this.Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.Database = database ?? throw new ArgumentNullException(nameof(database));
+            this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
     }

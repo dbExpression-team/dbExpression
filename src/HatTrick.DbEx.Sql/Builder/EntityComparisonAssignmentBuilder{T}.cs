@@ -15,7 +15,7 @@ namespace HatTrick.DbEx.Sql.Builder
         #region constructors
         public EntityComparisonAssignmentBuilder(Entity<TEntity> entity)
         {
-            this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
+            this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
         #endregion
 
@@ -23,13 +23,13 @@ namespace HatTrick.DbEx.Sql.Builder
         ///<inheritdoc/>
         EntityFieldAssignmentsContinuation<TEntity> EntityFieldAssignmentsContinuation<TEntity>.From(TEntity oldStateOfEntity)
         {
-            this.oldStateOfEntity = oldStateOfEntity ?? throw new ArgumentNullException($"{nameof(oldStateOfEntity)} is required.");
+            this.oldStateOfEntity = oldStateOfEntity ?? throw new ArgumentNullException(nameof(oldStateOfEntity));
             return this;
         }
 
         ///<inheritdoc/>
         IEnumerable<EntityFieldAssignment> EntityFieldAssignmentsContinuation<TEntity>.To(TEntity newStateOfEntity)
-            => entity.BuildAssignmentExpression(oldStateOfEntity, newStateOfEntity ?? throw new ArgumentNullException($"{nameof(newStateOfEntity)} is required.")).Expressions.Cast<EntityFieldAssignment>();
+            => entity.BuildAssignmentExpression(oldStateOfEntity, newStateOfEntity ?? throw new ArgumentNullException(nameof(newStateOfEntity))).Expressions.Cast<EntityFieldAssignment>();
         #endregion
     }
 }

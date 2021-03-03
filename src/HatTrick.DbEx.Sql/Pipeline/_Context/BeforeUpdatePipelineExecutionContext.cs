@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public BeforeUpdatePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression, SqlStatement statement, ISqlParameterBuilder parameterBuilder)
             : base(database, expression)
         {
-            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
-            ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
+            SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
+            ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
             Fields = expression.Assign.Expressions.Select(x => new UpdateFieldDescriptor((x as IAssignmentExpressionProvider).Assignee, (x as IAssignmentExpressionProvider).Assignment)).ToList().AsReadOnly();
         }
     }
