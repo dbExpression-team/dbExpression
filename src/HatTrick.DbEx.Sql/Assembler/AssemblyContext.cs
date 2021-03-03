@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             //set defaults
             fieldStyles.Push(FieldExpressionAppendStyle.None);
             entityStyles.Push(EntityExpressionAppendStyle.None);
-            Configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 

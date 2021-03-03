@@ -20,12 +20,12 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public AssignmentExpressionSet(IEnumerable<AssignmentExpression> assignments)
         {
-            Expressions = assignments ?? throw new ArgumentNullException($"{nameof(assignments)} is required.");
+            Expressions = assignments ?? throw new ArgumentNullException(nameof(assignments));
         }
 
         public AssignmentExpressionSet(AssignmentExpression assignment)
         {
-            Expressions = Expressions.Concat(new AssignmentExpression[1] { assignment ?? throw new ArgumentNullException($"{nameof(assignment)} is required.") });
+            Expressions = Expressions.Concat(new AssignmentExpression[1] { assignment ?? throw new ArgumentNullException(nameof(assignment)) });
         }
         #endregion
 

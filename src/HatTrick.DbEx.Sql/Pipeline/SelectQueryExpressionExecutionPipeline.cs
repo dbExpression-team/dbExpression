@@ -1116,10 +1116,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
         )
         {
             if (expression is null)
-                throw new ArgumentNullException($"{nameof(expression)} is required.");
+                throw new ArgumentNullException(nameof(expression));
 
             if (connection is null)
-                throw new ArgumentNullException($"{nameof(connection)} is required.");
+                throw new ArgumentNullException(nameof(connection));
 
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
@@ -1161,10 +1161,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
         )
         {
             if (expression is null)
-                throw new ArgumentNullException($"{nameof(expression)} is required.");
+                throw new ArgumentNullException(nameof(expression));
 
             if (connection is null)
-                throw new ArgumentNullException($"{nameof(connection)} is required.");
+                throw new ArgumentNullException(nameof(connection));
 
             var appender = database.AppenderFactory.CreateAppender();
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();

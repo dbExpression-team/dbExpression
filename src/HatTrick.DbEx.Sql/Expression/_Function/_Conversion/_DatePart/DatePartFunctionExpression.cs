@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType) : base(expression, declaredType)
         {
-            DatePart = datePart ?? throw new ArgumentNullException($"{nameof(datePart)} is required.");
+            DatePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
         }
         #endregion
 

@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public RuntimeSqlDatabaseConfigurationBuilder(RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         protected RuntimeSqlDatabaseConfigurationBuilder()

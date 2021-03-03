@@ -12,8 +12,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         protected PipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
         {
-            Database = database ?? throw new ArgumentNullException($"{nameof(database)} is required to construct a pipeline execution context.");
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required to construct a pipeline execution context.");
+            Database = database ?? throw new ArgumentNullException(nameof(database));
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
     }
 }

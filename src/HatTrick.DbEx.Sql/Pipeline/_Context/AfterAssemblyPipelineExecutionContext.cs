@@ -13,8 +13,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public AfterAssemblyPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
-            ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
-            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required to construct a pipeline execution context.");
+            ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
+            SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
         }
     }
 }

@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 
         public EntityMapper(Action<ISqlFieldReader, T> map)
         {
-            this.map = map ?? throw new ArgumentNullException($"{nameof(map)} is required.");
+            this.map = map ?? throw new ArgumentNullException(nameof(map));
         }
     }
 }

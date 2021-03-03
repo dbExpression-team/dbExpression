@@ -13,8 +13,8 @@ namespace HatTrick.DbEx.Sql.Mapper
         #region constructors
         public DelegateMapperFactory(Func<Type, IEntityMapper> entityMapperFactory, Func<IExpandoObjectMapper> expandoObjectMapperFactory)
         {
-            this.entityMapperFactory = entityMapperFactory ?? throw new DbExpressionConfigurationException($"{nameof(entityMapperFactory)} is required to initialize a Mapper.");
-            this.expandoObjectMapperFactory = expandoObjectMapperFactory ?? throw new DbExpressionConfigurationException($"{nameof(expandoObjectMapperFactory)} is required to initialize a Mapper.");
+            this.entityMapperFactory = entityMapperFactory ?? throw new ArgumentNullException(nameof(entityMapperFactory));
+            this.expandoObjectMapperFactory = expandoObjectMapperFactory ?? throw new ArgumentNullException(nameof(expandoObjectMapperFactory));
         }
         #endregion
 

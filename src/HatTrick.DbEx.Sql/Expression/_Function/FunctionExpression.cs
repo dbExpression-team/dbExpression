@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         protected FunctionExpression(IExpressionElement expression, Type declaredType)
         {
             Expression = expression; //expression may be fully managed in subclass
-            DeclaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
+            DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
         }
         #endregion
 

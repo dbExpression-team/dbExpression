@@ -12,13 +12,13 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region constructors
         public DelegateExpressionElementAppenderFactory(Func<Type, IExpressionElementAppender> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize an expression element appender factory."); ;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 
         #region methods
         public IExpressionElementAppender CreateElementAppender(IExpressionElement element)
-            => factory(element?.GetType()) ?? throw new DbExpressionConfigurationException($"Could not resolve an expression element appender for type '{element?.GetType()?.Name}', please ensure an appender has been registered.");
+            => factory(element?.GetType()) ?? throw new ArgumentNullException(nameof(factory));
         #endregion
     }
 }

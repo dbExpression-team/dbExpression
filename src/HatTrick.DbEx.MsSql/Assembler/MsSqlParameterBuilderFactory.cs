@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #region constructors
         public MsSqlParameterBuilderFactory(IDbTypeMapFactory<SqlDbType> typeMaps, IValueConverterFactory valueConverterFactory)
         {
-            this.typeMaps = typeMaps ?? throw new ArgumentNullException($"{nameof(typeMaps)} is required.");
-            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException($"{nameof(valueConverterFactory)} is required.");
+            this.typeMaps = typeMaps ?? throw new ArgumentNullException(nameof(typeMaps));
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
         #endregion
 

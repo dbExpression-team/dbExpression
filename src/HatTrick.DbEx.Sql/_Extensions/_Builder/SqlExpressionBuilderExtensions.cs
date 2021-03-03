@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
             ).ConfigureAwait(false);
@@ -151,7 +151,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -202,7 +202,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -220,7 +220,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -252,7 +252,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
                 cancellationToken
             ).ConfigureAwait(false);
@@ -293,7 +293,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -344,7 +344,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -362,7 +362,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -394,7 +394,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -435,7 +435,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -483,7 +483,7 @@ namespace HatTrick.DbEx.Sql
         public static TValue Execute<TValue>(this SelectValueTermination<TValue> builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -500,7 +500,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -550,7 +550,7 @@ namespace HatTrick.DbEx.Sql
         public static async Task<TValue> ExecuteAsync<TValue>(this SelectValueTermination<TValue> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -569,7 +569,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -617,7 +617,7 @@ namespace HatTrick.DbEx.Sql
         public static IList<TValue> Execute<TValue>(this SelectValuesTermination<TValue> builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -634,7 +634,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -650,7 +650,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     null, 
-                    handleValue ?? throw new ArgumentNullException($"{nameof(handleValue)} is required.")
+                    handleValue ?? throw new ArgumentNullException(nameof(handleValue))
                 );
         }
 
@@ -669,7 +669,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    handleValue ?? throw new ArgumentNullException($"{nameof(handleValue)} is required.")
+                    handleValue ?? throw new ArgumentNullException(nameof(handleValue))
                 );
         }
 
@@ -682,9 +682,9 @@ namespace HatTrick.DbEx.Sql
         public static void Execute<TValue>(this SelectValuesTermination<TValue> builder, ISqlConnection connection, Action<object> handleValue)
         {
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                handleValue ?? throw new ArgumentNullException($"{nameof(handleValue)} is required.")
+                handleValue ?? throw new ArgumentNullException(nameof(handleValue))
             );
         }
 
@@ -700,9 +700,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                handleValue ?? throw new ArgumentNullException($"{nameof(handleValue)} is required.")
+                handleValue ?? throw new ArgumentNullException(nameof(handleValue))
             );
         }
 
@@ -751,7 +751,7 @@ namespace HatTrick.DbEx.Sql
         public static async Task<IList<TValue>> ExecuteAsync<TValue>(this SelectValuesTermination<TValue> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -770,7 +770,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -788,7 +788,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection,
                     null,
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                    read ?? throw new ArgumentNullException(nameof(read)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -809,7 +809,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection,
                     command => command.CommandTimeout = commandTimeout,
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                    read ?? throw new ArgumentNullException(nameof(read)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -823,9 +823,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync<TValue>(this SelectValuesTermination<TValue> builder, ISqlConnection connection, Action<object> read, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -843,9 +843,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -862,7 +862,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection,
                     null,
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                    read ?? throw new ArgumentNullException(nameof(read)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -883,7 +883,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection,
                     command => command.CommandTimeout = commandTimeout,
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                    read ?? throw new ArgumentNullException(nameof(read)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -897,9 +897,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync<TValue>(this SelectValuesTermination<TValue> builder, ISqlConnection connection, Func<object, Task> read, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -917,9 +917,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                read ?? throw new ArgumentNullException(nameof(read)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -966,7 +966,7 @@ namespace HatTrick.DbEx.Sql
         public static dynamic Execute(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -983,7 +983,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -1033,7 +1033,7 @@ namespace HatTrick.DbEx.Sql
         public static async Task<dynamic> ExecuteAsync(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -1052,7 +1052,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -1070,7 +1070,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection,
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -1090,7 +1090,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection,
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -1103,9 +1103,9 @@ namespace HatTrick.DbEx.Sql
         public static TValue Execute<TValue>(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, TValue> map)
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -1122,9 +1122,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -1139,7 +1139,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                    read ?? throw new ArgumentNullException(nameof(read))
                 );
         }
 
@@ -1158,7 +1158,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                    read ?? throw new ArgumentNullException(nameof(read))
                 );
         }
 
@@ -1170,9 +1170,9 @@ namespace HatTrick.DbEx.Sql
         public static void Execute(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, Action<ISqlFieldReader> read)
         {
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -1188,9 +1188,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
         
@@ -1207,7 +1207,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection,
                     null,
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."),
+                    map ?? throw new ArgumentNullException(nameof(map)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1229,7 +1229,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection,
                     command => command.CommandTimeout = commandTimeout,
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."),
+                    map ?? throw new ArgumentNullException(nameof(map)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1244,9 +1244,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, Action<ISqlFieldReader> map, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."),
+                map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1265,9 +1265,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."),
+                map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1285,7 +1285,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection,
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1307,7 +1307,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection,
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1322,9 +1322,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task<TValue> ExecuteAsync<TValue>(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, TValue> map, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1343,9 +1343,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1362,7 +1362,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1383,7 +1383,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1397,9 +1397,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1417,9 +1417,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1437,7 +1437,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection,
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1459,7 +1459,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection,
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1474,9 +1474,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task<TValue> ExecuteAsync<TValue>(this SelectValueTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, Task<TValue>> map, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1495,9 +1495,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1544,7 +1544,7 @@ namespace HatTrick.DbEx.Sql
         public static IList<dynamic> Execute(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -1561,7 +1561,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -1611,7 +1611,7 @@ namespace HatTrick.DbEx.Sql
         public static async Task<IList<dynamic>> ExecuteAsync(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -1630,7 +1630,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -1648,7 +1648,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection,
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -1668,7 +1668,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -1681,9 +1681,9 @@ namespace HatTrick.DbEx.Sql
         public static IList<TValue> Execute<TValue>(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, TValue> map)
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -1700,9 +1700,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -1717,7 +1717,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -1736,7 +1736,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -1749,9 +1749,9 @@ namespace HatTrick.DbEx.Sql
         public static void Execute(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Action<ISqlFieldReader> read)
         {
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -1767,9 +1767,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout,
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -1786,7 +1786,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1808,7 +1808,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1823,9 +1823,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task<IList<TValue>> ExecuteAsync<TValue>(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, TValue> map, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1844,9 +1844,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1863,7 +1863,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1884,7 +1884,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1898,9 +1898,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Action<ISqlFieldReader> read, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1918,9 +1918,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1937,7 +1937,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1958,7 +1958,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -1972,9 +1972,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, Task> read, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -1992,9 +1992,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2012,7 +2012,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2034,7 +2034,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2049,9 +2049,9 @@ namespace HatTrick.DbEx.Sql
         public static async Task<IList<TValue>> ExecuteAsync<TValue>(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Func<ISqlFieldReader, Task<TValue>> map, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."),
+                map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2070,9 +2070,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2122,7 +2122,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -2140,7 +2140,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -2158,7 +2158,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -2179,7 +2179,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -2193,9 +2193,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -2213,9 +2213,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -2231,7 +2231,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                    read ?? throw new ArgumentNullException(nameof(read))
                 );
         }
 
@@ -2251,7 +2251,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                    read ?? throw new ArgumentNullException(nameof(read))
                 );
         }
 
@@ -2264,9 +2264,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -2283,9 +2283,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -2302,7 +2302,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -2323,7 +2323,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -2337,9 +2337,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -2357,9 +2357,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -2411,7 +2411,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -2431,7 +2431,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -2450,7 +2450,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null,
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2472,7 +2472,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2487,9 +2487,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2508,9 +2508,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2529,7 +2529,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2552,7 +2552,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2568,9 +2568,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2590,9 +2590,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2611,7 +2611,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection,
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2634,7 +2634,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2650,9 +2650,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."),
+                map ?? throw new ArgumentNullException(nameof(map)),
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2672,9 +2672,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2692,7 +2692,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2714,7 +2714,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2729,9 +2729,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2750,9 +2750,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2771,7 +2771,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2794,7 +2794,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -2810,9 +2810,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2832,9 +2832,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -2884,7 +2884,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
             );
         }
@@ -2902,7 +2902,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
             );
         }
@@ -2920,7 +2920,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -2941,7 +2941,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -2955,9 +2955,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -2975,9 +2975,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -2995,7 +2995,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -3015,7 +3015,7 @@ namespace HatTrick.DbEx.Sql
                 builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -3028,9 +3028,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -3047,9 +3047,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required.")
+                read ?? throw new ArgumentNullException(nameof(read))
             );
         }
 
@@ -3066,7 +3066,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -3087,7 +3087,7 @@ namespace HatTrick.DbEx.Sql
                 return builder.ExecutePipeline(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                    map ?? throw new ArgumentNullException(nameof(map))
                 );
         }
 
@@ -3101,9 +3101,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -3121,9 +3121,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required.")
+                map ?? throw new ArgumentNullException(nameof(map))
             );
         }
 
@@ -3175,7 +3175,7 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -3195,7 +3195,7 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
                 cancellationToken
             ).ConfigureAwait(false);
@@ -3214,7 +3214,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null,
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."),
+                    read ?? throw new ArgumentNullException(nameof(read)),
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3236,7 +3236,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3251,9 +3251,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3272,9 +3272,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3293,7 +3293,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3316,7 +3316,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3332,9 +3332,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3354,9 +3354,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3375,7 +3375,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3398,7 +3398,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3414,9 +3414,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3436,9 +3436,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3456,7 +3456,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3478,7 +3478,7 @@ namespace HatTrick.DbEx.Sql
                 await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                    read ?? throw new ArgumentNullException(nameof(read)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3493,9 +3493,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3514,9 +3514,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                read ?? throw new ArgumentNullException($"{nameof(read)} is required."), 
+                read ?? throw new ArgumentNullException(nameof(read)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3534,7 +3534,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     null, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3556,7 +3556,7 @@ namespace HatTrick.DbEx.Sql
                 return await builder.ExecutePipelineAsync(
                     connection, 
                     command => command.CommandTimeout = commandTimeout, 
-                    map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                    map ?? throw new ArgumentNullException(nameof(map)), 
                     cancellationToken
                 ).ConfigureAwait(false);
         }
@@ -3571,9 +3571,9 @@ namespace HatTrick.DbEx.Sql
             where TEntity : class, IDbEntity, new()
         {
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."),
+                connection ?? throw new ArgumentNullException(nameof(connection)),
                 null, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }
@@ -3592,9 +3592,9 @@ namespace HatTrick.DbEx.Sql
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
             return await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException($"{nameof(connection)} is required."), 
+                connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout, 
-                map ?? throw new ArgumentNullException($"{nameof(map)} is required."), 
+                map ?? throw new ArgumentNullException(nameof(map)), 
                 cancellationToken
             ).ConfigureAwait(false);
         }

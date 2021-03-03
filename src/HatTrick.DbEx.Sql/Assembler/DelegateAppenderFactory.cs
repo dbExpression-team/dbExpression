@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region constructors
         public DelegateAppenderFactory(Func<IAppender> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize an appender Factory."); ;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
         

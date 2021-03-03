@@ -9,8 +9,8 @@ namespace HatTrick.DbEx.Sql
 
         protected RuntimeEnvironmentSqlDatabase(IRuntimeSqlDatabase database, ISqlDatabaseMetadataProvider metadata)
         {
-            Database = database ?? throw new ArgumentNullException($"{nameof(database)} is required.");
-            Metadata = metadata ?? throw new ArgumentNullException($"{nameof(metadata)} is required.");
+            Database = database ?? throw new ArgumentNullException(nameof(database));
+            Metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
         }
     }
 }

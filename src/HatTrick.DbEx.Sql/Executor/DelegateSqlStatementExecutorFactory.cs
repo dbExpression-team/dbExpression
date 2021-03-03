@@ -14,13 +14,13 @@ namespace HatTrick.DbEx.Sql.Executor
         #region constructors
         public DelegateSqlStatementExecutorFactory(Func<QueryExpression, ISqlStatementExecutor> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Executor."); ;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
         public DelegateSqlStatementExecutorFactory(Func<ISqlStatementExecutorFactory> factory)
         {
             if (factory is null)
-                throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a Sql Statement Executor.");
+                throw new ArgumentNullException(nameof(factory));
 
             this.factory = (queryExpression) => factory()?.CreateSqlStatementExecutor(queryExpression) ?? throw new DbExpressionException("Cannot create a Sql Statement Executor: The factory returned a null value.");
         }

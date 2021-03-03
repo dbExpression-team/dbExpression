@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public EntitiesConfigurationBuilderGrouping(RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 

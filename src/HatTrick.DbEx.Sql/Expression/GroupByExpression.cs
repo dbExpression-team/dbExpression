@@ -12,7 +12,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public GroupByExpression(IExpressionElement expression)
         {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
 

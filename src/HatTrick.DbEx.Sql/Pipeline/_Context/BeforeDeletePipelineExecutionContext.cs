@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public BeforeDeletePipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression, ISqlParameterBuilder parameterBuilder, SqlStatement statement)
             : base(database, expression)
         {
-            ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException($"{nameof(parameterBuilder)} is required.");
-            SqlStatement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
+            ParameterBuilder = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
+            SqlStatement = statement ?? throw new ArgumentNullException(nameof(statement));
         }
         #endregion
     }

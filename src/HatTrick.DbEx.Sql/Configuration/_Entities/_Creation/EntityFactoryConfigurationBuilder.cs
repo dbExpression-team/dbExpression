@@ -19,8 +19,8 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public EntityFactoryConfigurationBuilder(IEntitiesConfigurationBuilderGrouping caller, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 
@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public IEntitiesConfigurationBuilderMappingGrouping Use(Func<Type, IDbEntity> factory)
         {
-            configuration.EntityFactory = new DelegateEntityFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."));
+            configuration.EntityFactory = new DelegateEntityFactory(factory ?? throw new ArgumentNullException(nameof(factory)));
             return caller;
         }
 
@@ -64,7 +64,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IEntityFactoryContinuationConfigurationBuilder OverrideForEntity<T>(Func<T> entityFactory)
             where T : class, IDbEntity
         {
-            (configuration.EntityFactory as EntityFactory).RegisterFactory(entityFactory ?? throw new ArgumentNullException($"{nameof(entityFactory)} is required."));
+            (configuration.EntityFactory as EntityFactory).RegisterFactory(entityFactory ?? throw new ArgumentNullException(nameof(entityFactory)));
             return this;
         }
         #endregion

@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public AfterInsertPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression, IDbEntity entity)
             : base(database, expression)
         {
-            this.entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
+            this.entity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
         #endregion
 

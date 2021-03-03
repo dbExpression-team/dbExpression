@@ -10,8 +10,8 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public SqlParameterBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use(ISqlParameterBuilderFactory factory)
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<ISqlParameterBuilder> factory)
         {
-            configuration.ParameterBuilderFactory = new DelegateSqlParameterBuilderFactory(factory ?? throw new ArgumentNullException($"{nameof(factory)} is required."));
+            configuration.ParameterBuilderFactory = new DelegateSqlParameterBuilderFactory(factory ?? throw new ArgumentNullException(nameof(factory)));
             return caller;
         }
     }

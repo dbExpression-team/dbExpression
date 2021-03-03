@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected SchemaExpression(string identifier, string alias)
         {
-            this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
+            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             Alias = alias;
         }
         #endregion

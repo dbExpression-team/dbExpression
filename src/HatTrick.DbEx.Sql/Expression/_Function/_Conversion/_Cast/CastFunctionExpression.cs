@@ -15,18 +15,18 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType) : base(expression, convertToType)
         {
-            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
+            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType));
         }
 
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int size) : base(expression, convertToType)
         {
-            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
+            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType));
             Size = size;
         }
 
         protected CastFunctionExpression(IExpressionElement expression, DbTypeExpression convertToDbType, Type convertToType, int precision, int? scale) : base(expression, convertToType)
         {
-            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException($"{nameof(convertToDbType)} is required.");
+            ConvertToDbType = convertToDbType ?? throw new ArgumentNullException(nameof(convertToDbType));
             Precision = precision;
             Scale = scale;
         }

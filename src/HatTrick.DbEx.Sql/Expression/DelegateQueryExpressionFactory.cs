@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public DelegateQueryExpressionFactory(Func<Type,QueryExpression> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize an Expression Set Factory."); ;
+            this.factory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
         #endregion
 

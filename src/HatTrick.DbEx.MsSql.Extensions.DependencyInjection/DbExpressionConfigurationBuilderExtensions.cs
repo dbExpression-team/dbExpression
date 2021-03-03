@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementBuilderFactory>();
@@ -76,7 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementBuilderFactory>();
@@ -112,7 +112,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementBuilderFactory>();
@@ -148,7 +148,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementBuilderFactory>();
@@ -184,7 +184,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementBuilderFactory>();
@@ -220,7 +220,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementBuilderFactory>();
@@ -256,7 +256,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
             services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementBuilderFactory>();
@@ -281,7 +281,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configuration is null)
-                throw new ArgumentNullException($"{nameof(configuration)} is required.");
+                throw new ArgumentNullException(nameof(configuration));
 
             builder.Environment = new T();
 

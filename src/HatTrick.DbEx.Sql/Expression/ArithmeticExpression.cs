@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #region constructors
         public ArithmeticExpression(IExpressionElement leftArg, IExpressionElement rightArg, ArithmeticExpressionOperator arithmeticOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ExpressionOperator = arithmeticOperator;
         }
         #endregion

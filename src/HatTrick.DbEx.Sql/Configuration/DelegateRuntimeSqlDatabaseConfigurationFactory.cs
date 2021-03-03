@@ -11,7 +11,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public DelegateRuntimeSqlDatabaseConfigurationFactory(Func<RuntimeSqlDatabaseConfiguration> configurationFactory)
         {
-            this.ConfigurationFactory = configurationFactory ?? throw new ArgumentNullException($"{nameof(configurationFactory)} is required.");
+            this.ConfigurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
         }
         #endregion
 

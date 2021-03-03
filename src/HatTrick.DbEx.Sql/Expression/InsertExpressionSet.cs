@@ -16,8 +16,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public InsertExpressionSet(IDbEntity entity, IEnumerable<InsertExpression> fields)
         {
-            Entity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
-            Expressions = fields ?? throw new ArgumentNullException($"{nameof(fields)} is required.");
+            Entity = entity ?? throw new ArgumentNullException(nameof(entity));
+            Expressions = fields ?? throw new ArgumentNullException(nameof(fields));
         }
         #endregion
 

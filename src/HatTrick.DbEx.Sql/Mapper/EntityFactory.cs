@@ -14,7 +14,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             where TEntity : class, IDbEntity
         {
             if (factory is null)
-                throw new ArgumentNullException($"{nameof(factory)} is required.");
+                throw new ArgumentNullException(nameof(factory));
 
             typeFactories.AddOrUpdate(typeof(TEntity), factory, (t, f) => factory);
         }

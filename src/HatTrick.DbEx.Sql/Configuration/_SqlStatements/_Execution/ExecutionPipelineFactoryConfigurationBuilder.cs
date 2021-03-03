@@ -13,8 +13,8 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region constructors
         public ExecutionPipelineFactoryConfigurationBuilder(ISqlStatementExecutionGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
         {
-            this.caller = caller ?? throw new ArgumentNullException($"{nameof(caller)} is required.");
-            this.configuration = configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.");
+            this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
         #endregion
 

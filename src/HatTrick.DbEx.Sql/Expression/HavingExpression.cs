@@ -18,7 +18,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public HavingExpression(FilterExpressionSet havingCondition)
         {
-            Expression = havingCondition ?? throw new ArgumentNullException($"{nameof(havingCondition)} is required.");
+            Expression = havingCondition ?? throw new ArgumentNullException(nameof(havingCondition));
         }
         #endregion
 

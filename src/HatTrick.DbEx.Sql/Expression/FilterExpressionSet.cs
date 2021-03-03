@@ -24,27 +24,27 @@ namespace HatTrick.DbEx.Sql.Expression
         
         public FilterExpressionSet(FilterExpression singleArg)
         {
-            LeftArg = singleArg ?? throw new ArgumentNullException($"{nameof(singleArg)} is required.");
+            LeftArg = singleArg ?? throw new ArgumentNullException(nameof(singleArg));
         }
 
         public FilterExpressionSet(FilterExpression leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ConditionalOperator = conditionalOperator;
         }
 
         public FilterExpressionSet(FilterExpressionSet leftArg, FilterExpressionSet rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ConditionalOperator = conditionalOperator;
         }
 
         private FilterExpressionSet(FilterExpressionSet leftArg, FilterExpression rightArg, ConditionalExpressionOperator conditionalOperator)
         {
-            LeftArg = leftArg ?? throw new ArgumentNullException($"{nameof(leftArg)} is required.");
-            RightArg = rightArg ?? throw new ArgumentNullException($"{nameof(rightArg)} is required.");
+            LeftArg = leftArg ?? throw new ArgumentNullException(nameof(leftArg));
+            RightArg = rightArg ?? throw new ArgumentNullException(nameof(rightArg));
             ConditionalOperator = conditionalOperator;
         }
         #endregion

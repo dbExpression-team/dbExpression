@@ -13,8 +13,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public BeforeExecutionPipelineExecutionContext(RuntimeSqlDatabaseConfiguration database, QueryExpression expression, IDbCommand command, SqlStatement statement)
             : base(database, expression)
         {
-            DbCommand = command ?? throw new ArgumentNullException($"{nameof(command)} is required.");
-            Statement = statement ?? throw new ArgumentNullException($"{nameof(statement)} is required.");
+            DbCommand = command ?? throw new ArgumentNullException(nameof(command));
+            Statement = statement ?? throw new ArgumentNullException(nameof(statement));
         }
     }
 }

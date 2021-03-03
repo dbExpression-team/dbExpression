@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
@@ -54,7 +54,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
@@ -86,7 +86,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
@@ -118,7 +118,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
@@ -150,7 +150,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
@@ -182,7 +182,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             where T : class, IRuntimeEnvironmentSqlDatabase, new()
         {
             if (configureRuntime is null)
-                throw new ArgumentNullException($"{nameof(configureRuntime)} is required.");
+                throw new ArgumentNullException(nameof(configureRuntime));
 
             var runtime = new T();
             var config = new RuntimeSqlDatabaseConfiguration();

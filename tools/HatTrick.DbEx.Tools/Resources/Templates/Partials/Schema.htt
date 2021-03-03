@@ -17,9 +17,10 @@
         public static void UseSchema({$.SchemaExpression.Name}SchemaExpression schema)
         {{ 
             if (schema == null)
-                 throw new ArgumentNullException($"{{nameof(schema)}} is required.");
+                 throw new ArgumentNullException(nameof(schema));
+
 		    {#each $.Items}
-            {$.EntityExpression.Name} = schema.{$.EntityExpression.Name} ?? throw new ArgumentNullException($"{{schema.{$.EntityExpression.Name} }} is required.");
+            {$.EntityExpression.Name} = schema.{$.EntityExpression.Name};
 		    {/each}
         }}
         #endregion

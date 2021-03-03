@@ -14,18 +14,18 @@ namespace HatTrick.DbEx.MsSql.Builder
         public SelectEntity<TEntity> CreateSelectEntityBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
             where TEntity : class, IDbEntity
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
             return new MsSqlSelectEntityQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
         public SelectValue<ExpandoObject> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
             {
-                field1?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field1)} is required."),
-                field2?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field2)} is required.")
+                field1?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field1)),
+                field2?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field2))
             };
             expressions.AddRange(fields.Select(field => field.ToSelectExpression(configuration.MetadataProvider)));
             expression.Top = 1;
@@ -35,26 +35,26 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public SelectValue<ExpandoObject> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required.")));
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
 
         public SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required."));
+            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
         public SelectValue<TEnum?> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required."));
+            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
@@ -147,9 +147,9 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         private SelectValue<TValue> CreateSelectValueBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Top = 1;
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required."));
+            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
             return new MsSqlSelectValueSelectQueryExpressionBuilder<TValue>(configuration, expression);
         }
         #endregion
@@ -158,17 +158,17 @@ namespace HatTrick.DbEx.MsSql.Builder
         public SelectEntities<TEntity> CreateSelectEntitiesBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration)
             where TEntity : class, IDbEntity
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             return new MsSqlSelectEntitiesSelectQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
         public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
             {
-                field1?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field1)} is required."),
-                field2?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field2)} is required.")
+                field1?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field1)),
+                field2?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field2))
             };
             expressions.AddRange(fields.Select(field => field.ToSelectExpression(configuration.MetadataProvider)));
             expression.Select = new SelectExpressionSet(expressions);
@@ -177,24 +177,24 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required.")));
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
         }
 
         public SelectValues<TEnum> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required."));
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum>(configuration, expression);
         }
 
         public SelectValues<TEnum?> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, NullableEnumElement<TEnum> field)
             where TEnum : struct, Enum, IComparable
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required."));
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TEnum?>(configuration, expression);
         }
 
@@ -290,15 +290,15 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         private SelectValues<TValue> CreateSelectValuesBuilder<TValue>(RuntimeSqlDatabaseConfiguration configuration, AnyElement field)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException($"{nameof(field)} is required."));
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Select = new SelectExpressionSet(field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field)));
             return new MsSqlSelectValuesSelectQueryExpressionBuilder<TValue>(configuration, expression);
         }
         #endregion
 
         public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, EntityFieldAssignment assignment, params EntityFieldAssignment[] assignments)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Assign = new AssignmentExpressionSet(
                 new List<AssignmentExpression>(assignments.Length + 1)
                 {
@@ -311,32 +311,32 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         public UpdateEntities CreateUpdateExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<EntityFieldAssignment> assignments)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
-            expression.Assign = new AssignmentExpressionSet((assignments ?? throw new ArgumentNullException($"{nameof(assignments)} is required.")).Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<UpdateQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            expression.Assign = new AssignmentExpressionSet((assignments ?? throw new ArgumentNullException(nameof(assignments))).Select(x => x as AssignmentExpression ?? throw new DbExpressionException($"Expected all {nameof(assignments)} to be assignable to {typeof(AssignmentExpression)}.")));
             return new MsSqlUpdateQueryExpressionBuilder(configuration, expression);
         }
 
         public DeleteEntities CreateDeleteExpressionBulder(RuntimeSqlDatabaseConfiguration configuration)
         {
-            var expression = (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<DeleteQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
+            var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<DeleteQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             return new MsSqlDeleteEntitiesBuilder(configuration, expression);
         }
 
         public InsertEntity<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity instance)
             where TEntity : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), new List<TEntity> { instance ?? throw new ArgumentNullException($"{nameof(instance)} is required.") });
+            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), new List<TEntity> { instance ?? throw new ArgumentNullException(nameof(instance)) });
 
         public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, TEntity entity, params TEntity[] entities)
             where TEntity : class, IDbEntity
             => new MsSqlInsertQueryExpressionBuilder<TEntity>(
                 configuration, 
-                (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."),
+                (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."),
                 new List<TEntity>(entities.Length + 1) { entity }.Concat(entities)
             );
 
         public InsertEntities<TEntity> CreateInsertExpressionBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances)
             where TEntity : class, IDbEntity
-            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException($"{nameof(configuration)} is required.")).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), instances ?? throw new ArgumentNullException($"{nameof(instances)} is required."));
+            => new MsSqlInsertQueryExpressionBuilder<TEntity>(configuration, (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<InsertQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression."), instances ?? throw new ArgumentNullException(nameof(instances)));
 
     }
 }

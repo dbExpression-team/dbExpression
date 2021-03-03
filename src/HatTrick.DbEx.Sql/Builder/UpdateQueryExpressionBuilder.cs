@@ -12,14 +12,14 @@ namespace HatTrick.DbEx.Sql.Builder
         protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression)
             : base(config, expression)
         {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
 
         protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression, EntityExpression entity)
             : base(config, expression)
         {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
-            Expression.BaseEntity = entity ?? throw new ArgumentNullException($"{nameof(entity)} is required.");
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
 
 

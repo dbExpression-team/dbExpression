@@ -16,7 +16,7 @@ namespace HatTrick.DbEx.Sql.Mapper
             where TEntity : class, IDbEntity
         {
             if (converter is null)
-                throw new ArgumentNullException($"{nameof(converter)} is required.");
+                throw new ArgumentNullException(nameof(converter));
 
             entityMappers.AddOrUpdate(typeof(TEntity), () => new EntityMapper<TEntity>(converter), (t, f) => () => new EntityMapper<TEntity>(converter));
         }

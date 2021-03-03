@@ -20,7 +20,7 @@ namespace HatTrick.DbEx.Sql.Executor
         public Row(int index, IList<ISqlField> fields)
         {
             Index = index;
-            this.fields = fields ?? throw new ArgumentNullException($"{nameof(fields)} is required.");
+            this.fields = fields ?? throw new ArgumentNullException(nameof(fields));
         }
         #endregion
 

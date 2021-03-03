@@ -53,7 +53,7 @@
         protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
         {{
             if (alias is null)
-                throw new ArgumentNullException($"{{nameof(alias)}} is required.");
+                throw new ArgumentNullException(nameof(alias));
 
             SelectExpressionSet set = null;
             string aliased = null;

@@ -41,10 +41,10 @@ namespace HatTrick.DbEx.Sql.Expression
         
         protected EntityExpression(string identifier, string name, Type dbEntityType, SchemaExpression schema, string alias)
         {
-            this.identifier = identifier ?? throw new ArgumentNullException($"{nameof(identifier)} is required.");
-            this.name = name ?? throw new ArgumentNullException($"{nameof(name)} is required.");
-            this.dbEntityType = dbEntityType ?? throw new ArgumentNullException($"{nameof(dbEntityType)} is required.");
-            this.schema = schema ?? throw new ArgumentNullException($"{nameof(schema)} is required.");
+            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            this.dbEntityType = dbEntityType ?? throw new ArgumentNullException(nameof(dbEntityType));
+            this.schema = schema ?? throw new ArgumentNullException(nameof(schema));
             this.alias = alias;
         }
         #endregion

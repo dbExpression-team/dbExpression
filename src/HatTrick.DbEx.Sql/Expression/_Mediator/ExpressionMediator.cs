@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql.Expression
 
         protected ExpressionMediator(IExpressionElement expression, Type declaredType, string alias)
         {
-            Expression = expression ?? throw new ArgumentNullException($"{nameof(expression)} is required.");
-            this.declaredType = declaredType ?? throw new ArgumentNullException($"{nameof(declaredType)} is required.");
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
         }
         #endregion
 
