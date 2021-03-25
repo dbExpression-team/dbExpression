@@ -107,7 +107,24 @@ namespace HatTrick.DbEx.MsSql.Assembler
             var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
 
             if (size.HasValue)
-                parameter.Size = size.Value;
+            {
+                //database column may be out of sync with metadata and the database may actually be able to hold the value that
+				//has a length greater than that specified by metadata.  let sql server decide if it can handle the value or
+				//throw an exception
+                if (value is string stringValue && stringValue.Length > size.Value)
+                {
+                    parameter.Size = stringValue.Length;
+                }
+                else if (value is byte[] byteValue && byteValue.Length > size.Value)
+                {
+                    parameter.Size = byteValue.Length;
+                }
+                else
+                { 
+                    parameter.Size = size.Value;                
+                }
+            }
+
             if (precision.HasValue)
                 parameter.Precision = precision.Value;
             if (scale.HasValue)
