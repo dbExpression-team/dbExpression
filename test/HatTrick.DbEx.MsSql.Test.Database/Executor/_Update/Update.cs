@@ -273,5 +273,20 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var firstName = db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == id).Execute();
             firstName.Should().Be(expectedFirstName);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Does_truncate_with_update_statement_throw_exception_as_expected(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var ex = await Assert.ThrowsAsync<SqlException>(async () => await db.Update(dbo.Person.FirstName.Set(new string(Enumerable.Repeat('a', 1000).ToArray())))
+                .From(dbo.Person)
+                .ExecuteAsync());
+
+            ex.Should().NotBeNull();
+            ex.Message.Should().Contain("truncated");
+        }
     }
 }
