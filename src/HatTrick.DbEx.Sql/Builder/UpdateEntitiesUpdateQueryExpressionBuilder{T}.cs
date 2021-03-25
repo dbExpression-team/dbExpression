@@ -66,8 +66,11 @@ namespace HatTrick.DbEx.Sql.Builder
         JoinOnWithAlias<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.FullJoin(AnySelectSubquery subquery)
             => new UpdateEntitiesJoinBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
 
-        JoinOn<UpdateEntitiesContinuation<TEntity>> UpdateEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
-            => new UpdateEntitiesJoinBuilder<TEntity>(Expression, entity, JoinOperationExpressionOperator.CROSS, this);
+        UpdateEntitiesContinuation<TEntity> UpdateEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
+        {
+            CrossJoin(entity);
+            return this;
+        }
 
         UpdateEntities<TEntity> UpdateEntities<TEntity>.Top(int value)
         {

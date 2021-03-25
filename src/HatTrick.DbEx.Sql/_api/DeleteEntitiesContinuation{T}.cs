@@ -122,7 +122,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>
-        /// <returns><see cref="JoinOn{DeleteEntitiesContinuation{TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for deleting <typeparamref name="TEntity"/> entities.</returns>
-        JoinOn<DeleteEntitiesContinuation<TEntity>> CrossJoin(AnyEntity entity);
+        /// <returns><see cref="DeleteEntitiesContinuation{TEntity}"/>, a fluent continuation for the construction of a sql DELETE query expression for deleting <typeparamref name="TEntity"/> entities.</returns>
+        DeleteEntitiesContinuation<TEntity> CrossJoin(AnyEntity entity);
     }
 }
