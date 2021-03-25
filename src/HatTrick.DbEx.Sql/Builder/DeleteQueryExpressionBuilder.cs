@@ -19,6 +19,7 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -66,6 +67,14 @@ namespace HatTrick.DbEx.Sql.Builder
                 Expression.Where = set;
             else
                 Expression.Where &= set;
+        }
+
+        protected void CrossJoin(AnyEntity entity)
+        {
+            Expression.Joins = Expression.Joins is null ?
+                new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
+                :
+                new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
         }
     }
 }

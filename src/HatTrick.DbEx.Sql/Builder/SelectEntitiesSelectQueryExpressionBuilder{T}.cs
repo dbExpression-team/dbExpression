@@ -19,6 +19,7 @@
 ﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
@@ -122,8 +123,11 @@ namespace HatTrick.DbEx.Sql.Builder
         JoinOnWithAlias<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.FullJoin(AnySelectSubquery subquery)
             => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
 
-        JoinOn<SelectEntitiesContinuation<TEntity>> SelectEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
-            => new SelectEntitiesJoinExpressionBuilder<TEntity>(Expression, entity, JoinOperationExpressionOperator.CROSS, this);
+        SelectEntitiesContinuation<TEntity> SelectEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
+        {
+            CrossJoin(entity);
+            return this;
+        }
 
         SelectEntitiesSkipContinuation<TEntity> SelectEntitiesOrderByContinuation<TEntity>.Skip(int value)
         {

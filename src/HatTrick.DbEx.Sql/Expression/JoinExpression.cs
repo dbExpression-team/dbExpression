@@ -43,7 +43,9 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             JoinToo = joinToo ?? throw new ArgumentNullException(nameof(joinToo));
             JoinType = joinType;
-            JoinOnExpression = onCondition ?? throw new ArgumentNullException(nameof(onCondition));
+            JoinOnExpression = onCondition;
+            if (joinType != JoinOperationExpressionOperator.CROSS && onCondition is null)
+                throw new ArgumentNullException(nameof(onCondition));
             Alias = alias;
         }
         #endregion

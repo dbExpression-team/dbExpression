@@ -116,8 +116,11 @@ namespace HatTrick.DbEx.Sql.Builder
         JoinOnWithAlias<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.FullJoin(AnySelectSubquery subquery)
             => new SelectValuesJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
 
-        JoinOn<SelectValuesContinuation<TValue>> SelectValuesContinuation<TValue>.CrossJoin(AnyEntity entity)
-            => new SelectValuesJoinBuilder<TValue>(Expression, entity, JoinOperationExpressionOperator.CROSS, this);
+        SelectValuesContinuation<TValue> SelectValuesContinuation<TValue>.CrossJoin(AnyEntity entity)
+        {
+            CrossJoin(entity);
+            return this;
+        }
 
         SelectValuesSkipContinuation<TValue> SelectValuesOrderByContinuation<TValue>.Skip(int value)
         {

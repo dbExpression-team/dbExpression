@@ -172,7 +172,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="entity">Any expression of type <see cref="AnyEntity"/> specifying the database entity to join to.</param>
-        /// <returns><see cref="JoinOn{SelectEntitiesContinuation{TEntity}}"/>, a fluent continuation for the construction of a sql JOIN expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        JoinOn<SelectEntitiesContinuation<TEntity>> CrossJoin(AnyEntity entity);
+        /// <returns><see cref="SelectEntitiesContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        SelectEntitiesContinuation<TEntity> CrossJoin(AnyEntity entity);
     }
 }

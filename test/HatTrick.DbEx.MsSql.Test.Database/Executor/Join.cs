@@ -1,5 +1,6 @@
 ﻿using DbEx.Data;
 using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -92,6 +93,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             addressIds.Should().HaveCount(expectedCount);
             ((int)addressIds.First()).Should().Be(expectedId);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "CROSS JOIN")]
+        public void Does_persons_cross_joined_to_personaddress_with_where_clause_succeed(int version, string firstName = "Kyle", int expectedCount = 52)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbex.SelectAllFor(dbo.Person, "Person").Concat(dbex.SelectAllFor(dbo.PersonAddress, "PersonAddress"))
+                )
+                .From(dbo.Person)
+                .CrossJoin(dbo.PersonAddress)
+                .Where(dbo.Person.FirstName == firstName);
+
+            //when               
+            var persons = exp.Execute();
+
+            //then
+            persons.Should().HaveCount(expectedCount);
         }
     }
 }

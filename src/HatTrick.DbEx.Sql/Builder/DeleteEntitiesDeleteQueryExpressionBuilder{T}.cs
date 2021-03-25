@@ -64,8 +64,11 @@ namespace HatTrick.DbEx.Sql.Builder
         JoinOnWithAlias<DeleteEntitiesContinuation<TEntity>> DeleteEntitiesContinuation<TEntity>.FullJoin(AnySelectSubquery subquery)
             => new DeleteEntitiesJoinExpressionBuilder<TEntity>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
 
-        JoinOn<DeleteEntitiesContinuation<TEntity>> DeleteEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
-            => new DeleteEntitiesJoinExpressionBuilder<TEntity>(Expression, entity, JoinOperationExpressionOperator.CROSS, this);
+        DeleteEntitiesContinuation<TEntity> DeleteEntitiesContinuation<TEntity>.CrossJoin(AnyEntity entity)
+        {
+            CrossJoin(entity);
+            return this;
+        }
         #endregion
     }
 }

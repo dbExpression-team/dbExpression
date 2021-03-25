@@ -98,6 +98,14 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression.Having &= new HavingExpression(set);
         }
 
+        protected void CrossJoin(AnyEntity entity)
+        {
+            Expression.Joins = Expression.Joins is null ?
+                new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
+                :
+                new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
+        }
+
         protected void Skip(int value)
             => Expression.Skip = value;
 
