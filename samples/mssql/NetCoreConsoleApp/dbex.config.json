@@ -1,128 +1,137 @@
 {
-  "source": { 
-    "type": "MsSqlDb",
-    "connectionString": {
-      "value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
-    }
-  },
-  "workingDirectory": "./",
-  "outputDirectory": "./Data/_Generated",
-  "rootNamespace": "SimpleConsole",
-  "enums": [
-    "SimpleConsole.Data.AddressType",
-    "SimpleConsole.Data.GenderType",
-    "SimpleConsole.Data.ProductCategoryType",
-    "SimpleConsole.Data.PaymentMethodType",
-    "SimpleConsole.Data.PaymentSourceType"
-  ],
-  "overrides": [
-    {
-      "apply": {
-        "ignore": true,
-        "to": { "path": "dbo.sysdiagrams" }
-      }
-    },
-    {
-      "apply": {
-        "ignore": true,
-        "to": { "path": "sec.sysdiagrams" }
+	"source": {
+		"type": "MsSqlDb",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"workingDirectory": "./",
+	"outputDirectory": "./Data/_Generated",
+	"rootNamespace": "SimpleConsole",
+	"enums": [
+		"SimpleConsole.Data.AddressType",
+		"SimpleConsole.Data.GenderType",
+		"SimpleConsole.Data.ProductCategoryType",
+		"SimpleConsole.Data.PaymentMethodType",
+		"SimpleConsole.Data.PaymentSourceType",
+		"SimpleConsole.Data.AccessAuditResult"
+	],
+	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
 
-      }
-    },
-    {
-      "apply": {
-        "name": "SimpleConsoleDb",
-        "to": {
-          "path": "."
-        }
-      }
-    },
-    {
-      "apply": {
-        "interfaces": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ], /* apply IUpdateableEntity to all tables */
-        "to": {
-          "path": "*.*",
-          "objectType": "table"
-        }
-      }
-    },
-    {
-      "apply": {
-        "interfaces": null, /* remove IUpdateableEntity from association tables */
-        "to": {
-          "path": "*.*_*",
-          "objectType": "table"
-        }
-      }
-    },
-    {
-      "apply": {
-        "name": "PersonAddress",
-        "to": {
-          "path": "dbo.Person_Address"
-        }
-      }
-    },
-    {
-      "apply": {
-        "clrType": "SimpleConsole.Data.AddressType?",
-        "to": {
-          "path": "dbo.Address.AddressType"
-        }
-      }
-    },
-    {
-      "apply": {
-        "clrType": "SimpleConsole.Data.GenderType",
-        "to": {
-          "path": "dbo.Person.GenderType"
-        }
-      }
-    },
+			}
+		},
+		{
+			"apply": {
+				"name": "SimpleConsoleDb",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"interfaces": [ "NetCoreConsoleApp.Data.IUpdateableEntity" ], /* apply IUpdateableEntity to all tables */
+				"to": {
+					"path": "*.*",
+					"objectType": "table"
+				}
+			}
+		},
+		{
+			"apply": {
+				"interfaces": null, /* remove IUpdateableEntity from association tables */
+				"to": {
+					"path": "*.*_*",
+					"objectType": "table"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "SimpleConsole.Data.AddressType?",
+				"to": {
+					"path": "dbo.Address.AddressType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "SimpleConsole.Data.GenderType",
+				"to": {
+					"path": "dbo.Person.GenderType"
+				}
+			}
+		},
 
-    {
-      "apply": {
-        "clrType": "SimpleConsole.Data.ProductCategoryType?",
-        "to": {
-          "path": "dbo.Product.ProductCategoryType"
-        }
-      }
-    },
-    {
-      "apply": {
-        "clrType": "SimpleConsole.Data.PaymentMethodType",
-        "to": {
-          "path": "dbo.Purchase.PaymentMethodType"
-        }
-      }
-    },
-    {
-      "apply": {
-        "clrType": "SimpleConsole.Data.PaymentSourceType?",
-        "to": {
-          "path": "dbo.Purchase.PaymentSourceType"
-        }
-      }
-    },
-    {
-      "apply": {
-        "allowInsert": false,
-        "allowUpdate": false,
-        "to": {
-          "path": "*.*.DateCreated",
-          "objectType": "tablecolumn"
-        }
-      }
-    },
-    {
-      "apply": {
-        "allowInsert": false,
-        "allowUpdate": false,
-        "to": {
-          "path": "*.*.DateUpdated",
-          "objectType": "tablecolumn"
-        }
-      }
-    }
-  ]
+		{
+			"apply": {
+				"clrType": "SimpleConsole.Data.ProductCategoryType?",
+				"to": {
+					"path": "dbo.Product.ProductCategoryType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "SimpleConsole.Data.PaymentMethodType",
+				"to": {
+					"path": "dbo.Purchase.PaymentMethodType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "SimpleConsole.Data.PaymentSourceType?",
+				"to": {
+					"path": "dbo.Purchase.PaymentSourceType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "SimpleConsole.Data.AccessAuditResult",
+				"to": {
+					"path": "dbo.AccessAuditLog.AccessResult"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateCreated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateUpdated",
+					"objectType": "tablecolumn"
+				}
+			}
+		}
+	]
 }

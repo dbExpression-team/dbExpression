@@ -47,6 +47,7 @@ namespace SimpleConsole.dboDataService
             Database = database;
             Identifier = identifier;
             Name = name;
+            Entities.Add($"{identifier}.AccessAuditLog", new AccessAuditLogEntityMetadata(this, $"{identifier}.AccessAuditLog", "AccessAuditLog"));
             Entities.Add($"{identifier}.Address", new AddressEntityMetadata(this, $"{identifier}.Address", "Address"));
             Entities.Add($"{identifier}.Person", new PersonEntityMetadata(this, $"{identifier}.Person", "Person"));
             Entities.Add($"{identifier}.Person_Address", new PersonAddressEntityMetadata(this, $"{identifier}.Person_Address", "Person_Address"));
@@ -54,6 +55,31 @@ namespace SimpleConsole.dboDataService
             Entities.Add($"{identifier}.Purchase", new PurchaseEntityMetadata(this, $"{identifier}.Purchase", "Purchase"));
             Entities.Add($"{identifier}.PurchaseLine", new PurchaseLineEntityMetadata(this, $"{identifier}.PurchaseLine", "PurchaseLine"));
             Entities.Add($"{identifier}.PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this, $"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView"));
+        }
+        #endregion
+    }
+    #endregion
+
+    #region access audit log
+	public class AccessAuditLogEntityMetadata : ISqlEntityMetadata
+	{
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlFieldMetadata> Fields { get; } = new Dictionary<string, ISqlFieldMetadata>();
+        #endregion
+		
+        #region constructors
+        public AccessAuditLogEntityMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Fields.Add($"{identifier}.Id", new MsSqlFieldMetadata(this, $"{identifier}.Id", "Id", SqlDbType.Int) { IsIdentity = true });
+            Fields.Add($"{identifier}.PersonId", new MsSqlFieldMetadata(this, $"{identifier}.PersonId", "PersonId", SqlDbType.Int));
+            Fields.Add($"{identifier}.AccessResult", new MsSqlFieldMetadata(this, $"{identifier}.AccessResult", "AccessResult", SqlDbType.Int));
+            Fields.Add($"{identifier}.DateCreated", new MsSqlFieldMetadata(this, $"{identifier}.DateCreated", "DateCreated", SqlDbType.DateTime));
         }
         #endregion
     }

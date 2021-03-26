@@ -12,6 +12,8 @@ DELETE FROM [dbo].[Person];
 GO
 DELETE FROM [dbo].[Product];
 GO
+DELETE FROM [dbo].[AccessAuditLog];
+GO
 DELETE FROM [sec].[Person];
 GO
 
@@ -267,3 +269,57 @@ INSERT INTO [dbo].[PurchaseLine] ([Id], [PurchaseId], [ProductId], [PurchasePric
 INSERT INTO [dbo].[PurchaseLine] ([Id], [PurchaseId], [ProductId], [PurchasePrice], [Quantity], [DateCreated], [DateUpdated]) VALUES (18, 15, 7, 9.00, 2, '11/6/2019', '11/6/2019');
 
 SET IDENTITY_INSERT [dbo].[PurchaseLine] OFF;
+SET IDENTITY_INSERT [dbo].[AccessAuditLog] ON;
+
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (1, 1, 0, '2016-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (2, 2, 0, '2016-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (3, 3, 0, '2016-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (4, 4, 0, '2016-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (5, 5, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (6, 6, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (7, 7, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (8, 8, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (9, 9, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (10, 10, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (11, 11, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (12, 12, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (13, 13, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (14, 14, 0, '2017-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (15, 15, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (16, 16, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (17, 17, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (18, 18, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (19, 19, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (20, 20, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (21, 21, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (22, 22, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (23, 23, 0, '2018-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (24, 24, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (25, 25, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (26, 26, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (27, 27, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (28, 28, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (29, 29, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (30, 30, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (31, 31, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (32, 32, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (33, 33, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (34, 34, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (35, 35, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (36, 36, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (37, 37, 0, '2019-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (38, 38, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (39, 39, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (40, 40, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (41, 41, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (42, 42, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (43, 43, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (44, 44, 0, '2020-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (45, 45, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (46, 46, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (47, 47, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (48, 48, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (49, 49, 0, '2021-01-03');
+INSERT INTO dbo.AccessAuditLog ([Id], [PersonId], [AccessResult], [DateCreated]) VALUES (50, 50, 0, '2021-01-03');
+
+SET IDENTITY_INSERT [dbo].[AccessAuditLog] OFF;

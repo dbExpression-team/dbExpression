@@ -272,6 +272,15 @@ CREATE TRIGGER [dbo].[TR_PurchaseLine_DateUpdated]
 		INNER JOIN [dbo].[PurchaseLine] a ON a.Id = i.Id
 GO
 
+CREATE TABLE [dbo].[AccessAuditLog](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PersonId] [int] NOT NULL,
+	[AccessResult] [int] NOT NULL,
+	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_AccessAuditLog_DateCreated]  DEFAULT (getdate()),
+	CONSTRAINT [PK_AccessAuditLog] PRIMARY KEY CLUSTERED ([Id])
+)
+GO
+
 CREATE SCHEMA [sec]
 GO
 
