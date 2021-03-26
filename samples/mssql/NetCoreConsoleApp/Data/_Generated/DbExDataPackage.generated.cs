@@ -4,6 +4,24 @@ using HatTrick.DbEx.Sql;
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace SimpleConsole.dboData
 {
+    #region access audit log
+    public partial class AccessAuditLog : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
+    {
+        #region interface
+        public virtual int Id { get; set; }
+        public virtual int PersonId { get; set; }
+        public virtual SimpleConsole.Data.AccessAuditResult AccessResult { get; set; }
+        public virtual DateTime DateCreated { get; set; }
+        #endregion
+
+        #region constructor
+        public AccessAuditLog()
+        {
+        }
+        #endregion
+    }
+    #endregion
+
     #region address
     public partial class Address : IDbEntity, NetCoreConsoleApp.Data.IUpdateableEntity
     {

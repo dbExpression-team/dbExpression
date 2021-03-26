@@ -57,4 +57,15 @@ namespace SimpleConsole.Data
 		Books = 3,
 	}
 	#endregion
+
+	#region access audit result
+	public enum AccessAuditResult : int
+	{
+		Authorized = 0,
+		InvalidUsername = 1,
+		InvalidPassword = 2,
+		AccessDenied = 3,
+		OauthTimeout = 4
+	}
+	#endregion
 }
