@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Tools.Builder
     public static class TypeModelBuilder
     {
         private static Func<bool, TypeModel> NewBooleanTypeModel = isNullable => new TypeModel(nameof(Boolean), "bool", isNullable);
-        private static Func<bool, TypeModel> NewByteTypeModel = isNullable => new TypeModel(nameof(Int32), "byte", isNullable);
+        private static Func<bool, TypeModel> NewByteTypeModel = isNullable => new TypeModel(nameof(Byte), "byte", isNullable);
         private static Func<bool, TypeModel> NewByteArrayTypeModel = isNullable => new TypeModel("ByteArray", "byte[]", false, true);
         private static Func<bool, TypeModel> NewDateTimeTypeModel = isNullable => new TypeModel(nameof(DateTime), nameof(DateTime), isNullable);
         private static Func<bool, TypeModel> NewDateTimeOffsetTypeModel = isNullable => new TypeModel(nameof(DateTimeOffset), nameof(DateTimeOffset), isNullable);
@@ -48,6 +48,9 @@ namespace HatTrick.DbEx.Tools.Builder
         {
             TypeModelFactories.Add(nameof(Boolean), NewBooleanTypeModel);
             TypeModelFactories.Add("bool", NewBooleanTypeModel);
+
+            TypeModelFactories.Add("byte", NewByteTypeModel);
+            TypeModelFactories.Add(nameof(Byte), NewByteTypeModel);
 
             TypeModelFactories.Add("byte[]", NewByteArrayTypeModel);
             TypeModelFactories.Add("Byte[]", NewByteArrayTypeModel);
