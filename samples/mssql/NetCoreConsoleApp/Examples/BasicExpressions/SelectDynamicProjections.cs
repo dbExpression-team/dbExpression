@@ -43,7 +43,7 @@ namespace NetCoreConsoleApp
 			//select 
 			//dbo.Person.Id, dbo.Person.FirstName, dbo.Person.LastName, dbo.Person.GenderType
 			//from dbo.Person
-			//where dbo.Person.LastLoginDate > {lastLoginDate}
+			//where dbo.Person.LastLoginDate > {lastLogin}
 			var info = db.SelectMany(
 					dbo.Person.Id, dbo.Person.FirstName, dbo.Person.LastName, dbo.Person.GenderType
 					)

@@ -24,6 +24,13 @@ namespace NetCoreConsoleApp
 		#region column aliasing
 		public dynamic GetPersonMaxPurchaseInfo(int personId)
 		{
+			//select
+			//dbo.Person.Id as PersonId,
+			//dbo.Purchase.Id as PurchaseId,
+			//dbo.Purchase.TotalPurchaseAmount as PurchaseAmount
+			//from dbo.Person
+			//inner join dbo.Purchase on dbo.Purchase.PersonId = dbo.Person.Id
+			//where dbo.Person.Id = {personId};
 			var result = db.SelectOne(
 						dbo.Person.Id.As("PersonId"),
 						dbo.Purchase.Id.As("PurchaseId"),
@@ -42,6 +49,12 @@ namespace NetCoreConsoleApp
 
 		public (string, string) GetPersonFullNameAndCityAndStateAndZipCode(int personId)
 		{
+			//select
+			//*
+			//from dbo.Person
+			//inner join dbo.Person_Address on dbo.Person_Address.PersonId = dbo.Person.Id
+			//inner join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
+			//where dbo.Person.Id = {personId};
 			var result = db.SelectOne(
 					db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("FullName"),
 					db.fx.Concat(dbo.Address.City, ", ", dbo.Address.State, db.fx.Concat(" ", dbo.Address.Zip)).As("Locality")
@@ -59,8 +72,16 @@ namespace NetCoreConsoleApp
 		#region table aliasing
 		public (int, string, string) GetPersonIdAndPersonFullNameAndPersonSSN(int personId)
 		{
-			//both schemas contain a Person table -- sec.Person and dbo.Person
+			//NOTE:  both schemas contain a Person table -- sec.Person and dbo.Person
 			//sec.Person contains secure data (Social Security Number)
+
+			//select
+			//dbo.Person.Id,
+			//CONCAT(dbo.Person.FirstName, ' ', dbo.Person.LastName) as FullName,
+			//secure.SSN
+			//from dbo.Person
+			//inner join sec.Person secure on secure.Id = dbo.Person.Id
+			//where dbo.Person.Id = {personId};
 			var result = db.SelectOne(
 					dbo.Person.Id,
 					db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("FullName"),

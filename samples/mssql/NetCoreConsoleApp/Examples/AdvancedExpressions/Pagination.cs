@@ -28,6 +28,12 @@ namespace NetCoreConsoleApp
 		#region get people
 		public IList<Person> GetPeople(int pageSize, int pageNum, AnyOrderByClause orderBy)
 		{
+			//select
+			//*
+			//from dbo.Person
+			//order by dbo.Person.Id desc
+			//offset {pageSize * pageNum} rows
+			//fetch next {pageSize} rows only;
 			IList<Person> people = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.OrderBy(orderBy ?? dbo.Person.Id.Desc)

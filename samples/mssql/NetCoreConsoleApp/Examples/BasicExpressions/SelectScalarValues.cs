@@ -23,7 +23,7 @@ namespace NetCoreConsoleApp
 		#region select one scalar value (simple)
 		public string SelectProductNameByid(int id)
 		{
-			//select * from dbo.Product where dbo.Product.Id = {id};
+			//select dbo.Product.Name from dbo.Product where dbo.Product.Id = {id};
 			string name = db.SelectOne(dbo.Product.Name)
 				.From(dbo.Product)
 				.Where(dbo.Product.Id == id)
@@ -51,7 +51,11 @@ namespace NetCoreConsoleApp
 			//distinct
 			//dbo.Address.Zip
 			//from dbo.Address;
-			IList<string> zips = db.SelectMany(dbo.Address.Zip).Distinct().From(dbo.Address).Execute();
+			IList<string> zips = db.SelectMany(dbo.Address.Zip)
+				.Distinct()
+				.From(dbo.Address)
+				.Execute();
+
 			return zips;
 		}
 		#endregion

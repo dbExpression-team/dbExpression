@@ -36,6 +36,10 @@ namespace NetCoreConsoleApp
 		#region select top
 		public IList<Person> GetPeopleTop10CreditLimits()
 		{
+			//select
+			//top 10 *
+			//from dbo.Person
+			//order by dbo.Person.CreditLimit desc
 			IList<Person> people = db.SelectMany<Person>()
 				.Top(10)
 				.From(dbo.Person)
@@ -49,6 +53,12 @@ namespace NetCoreConsoleApp
 		#region update top
 		public int EnsureMininumCreditLimts(int minimumCreditLimit, int updateSetLimit)
 		{
+			//update
+			//top({updateSetLimit})
+			//dbo.Person
+			//set dbo.Person.CreditLimit = {minimumCreditLimit}
+			//from dbo.Person
+			//where dbo.Person.CreditLimit < {minimumCreditLimit};
 			int cnt = db.Update(dbo.Person.CreditLimit.Set(minimumCreditLimit))
 				.Top(updateSetLimit)
 				.From(dbo.Person)
@@ -62,6 +72,11 @@ namespace NetCoreConsoleApp
 		#region delete top
 		public int PurgePurchaseLines(DateTime olderThan, int purgeSetLimit)
 		{
+			//delete
+			//top({purgeSetLimit})
+			//dbo.AccessAuditLog
+			//from dbo.AccessAuditLog
+			//where dbo.AccessAuditLog.DateCreated < {olderThan};
 			int deleted = db.Delete()
 				.Top(purgeSetLimit)
 				.From(dbo.AccessAuditLog)
