@@ -26,6 +26,9 @@ namespace NetCoreConsoleApp
 
 			//full
 			IList<dynamic> purchases = GetPeoplePurchaseInfo();
+
+			//cross
+			IList<dynamic> possible = GetAllTwoProductPurchaseVariations();
 		}
 		#endregion
 
@@ -112,7 +115,7 @@ namespace NetCoreConsoleApp
 			//dbo.Person.Id,
 			//dbo.Person.FirstName,
 			//dbo.Person.LastName,
-			//dbo.Purchase.OrderNumber,
+			//IsNull(dbo.Purchase.OrderNumber, '') as OrderNumber,
 			//IsNull(dbo.Purchase.TotalPurchaseAmount, 0.0) as TotalPurchaseAmount
 			//from dbo.Person
 			//full join dbo.Purchase on dbo.Purchase.PersonId = dbo.Person.Id
@@ -128,6 +131,31 @@ namespace NetCoreConsoleApp
 				.Execute();
 			//TODO: @P1 order number declared as char(8000) 
 			return purchases;
+		}
+		#endregion
+
+		#region cross join
+		public IList<dynamic> GetAllTwoProductPurchaseVariations()
+		{
+			//select
+			//[dbo].[Product].[Id] as [LeftId],
+			//[dbo].[Product].[Name] as [LeftName],
+			//[p2].[Id] as [RightId],
+			//[p2].[Name] as [RightName]
+			//from
+			//[dbo].[Product]
+			//cross join[dbo].[Product] as [p2];
+			IList<dynamic> result = db.SelectMany(
+					dbo.Product.Id.As("LeftId"), 
+					dbo.Product.Name.As("LeftName"), 
+					dbo.Product.As("p2").Id.As("RightId"), 
+					dbo.Product.As("p2").Name.As("RightName")
+				)
+				.From(dbo.Product)
+				.CrossJoin(dbo.Product.As("p2"))
+				.Execute();
+
+			return result;
 		}
 		#endregion
 	}

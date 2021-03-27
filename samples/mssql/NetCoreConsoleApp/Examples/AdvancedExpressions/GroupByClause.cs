@@ -23,6 +23,10 @@ namespace NetCoreConsoleApp
 		#region group by
 		public IList<string> GetUniqueLastNames()
 		{
+			//select
+			//dbo.Person.LastName
+			//from dbo.Person
+			//group by dbo.Person.LastName
 			IList<string> lastNames = db.SelectMany(dbo.Person.LastName)
 				.From(dbo.Person)
 				.GroupBy(dbo.Person.LastName)
@@ -33,6 +37,11 @@ namespace NetCoreConsoleApp
 
 		public IList<(string, string)> GetUniqueFullNames()
 		{
+			//select
+			//dbo.Person.FirstName,
+			//dbo.Person.LastName
+			//from dbo.Person
+			//group by dbo.Person.FirstName, dbo.Person.LastName
 			IList<dynamic> names = db.SelectMany(
 					dbo.Person.FirstName,
 					dbo.Person.LastName

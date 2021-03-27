@@ -23,7 +23,10 @@ namespace NetCoreConsoleApp
 		#region like
 		public IList<Person> FindAllPeopleWithLastNameStartingWith(char c)//P
 		{
-			//select * from dbo.Person where dbo.Person.LastName like('{c}%') order by dbo.Person.LastName Asc;
+			//select * 
+			//from dbo.Person 
+			//where dbo.Person.LastName like('{c}%') 
+			//order by dbo.Person.LastName Asc;
 			var peopleLastNameStartsWithChar = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.Where(dbo.Person.LastName.Like($"{c}%"))
@@ -35,7 +38,10 @@ namespace NetCoreConsoleApp
 
 		public IList<string> GetAllLastNamesOfPeopleWhereSecondPositionOfLastNameIsChar(char c)//t
 		{
-			//select * from dbo.Person where dbo.Person.LastName Like('_{c}%') order by dbo.Person.BirthDate Asc;
+			//select *
+			//from dbo.Person 
+			//where dbo.Person.LastName Like('_{c}%') 
+			//order by dbo.Person.BirthDate Asc;
 			var result = db.SelectMany(dbo.Person.LastName)
 				.From(dbo.Person)
 				.Where(dbo.Person.LastName.Like($"_{c}%"))

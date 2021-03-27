@@ -23,7 +23,7 @@ namespace NetCoreConsoleApp
 			string fullName = this.GetFullName(6);
 			IList<(int, int)> personIdCreditLimit = this.GetCreditLimitForPersonSet(1, 2, 3, 4, 5, 6, 8, 9, 10);
 			DateTimeOffset lastActivity = this.GetLastActivityTimestamp(5);
-			(double, double) maxAndMin = this.GetMaxAndMinPurchasesRoundedToNearestDollar(6);
+			(double, double) maxAndMin = this.GetMaxAndMinPurchasesRoundedToNearestDollar(9);
 		}
 		#endregion
 
@@ -79,7 +79,7 @@ namespace NetCoreConsoleApp
 			//select
 			//count(dbo.PurchaseLine.Id)
 			//from dbo.PurchaseLine
-			//where dbo.PurchaseLine.ProductId = {id};
+			//where dbo.PurchaseLine.ProductId = {productId};
 			int count = db.SelectOne(db.fx.Count(dbo.PurchaseLine.Id))
 				.From(dbo.PurchaseLine)
 				.Where(dbo.PurchaseLine.ProductId == productId)
@@ -90,6 +90,18 @@ namespace NetCoreConsoleApp
 
 		public Stats GetPurchaseStatistics(DateTime from, DateTime to)
 		{
+			//select
+			//Max(dbo.Purchase.TotalPurchaseAmount) As[Max],
+			//Min(dbo.Purchase.TotalPurchaseAmount) As[Min],
+			//Sum(dbo.Purchase.TotalPurchaseAmount) As[Sum],
+			//Avg(dbo.Purchase.TotalPurchaseAmount) AS[Avg],
+			//Count(dbo.Purchase.TotalPurchaseAmount) As[Count],
+			//StDev(dbo.Purchase.TotalPurchaseAmount) As[StDev],
+			//StDevP(dbo.Purchase.TotalPurchaseAmount) As[StDevP],
+			//Var(dbo.Purchase.TotalPurchaseAmount) As[Var],
+			//VarP(dbo.Purchase.TotalPurchaseAmount) As[VarP]
+			//from dbo.Purchase
+			//where dbo.Purchase.PurchaseDate >= {from} and dbo.Purchase.PurchaseDate <= {to};
 			var x = db.SelectOne(
 					db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("Max"),
 					db.fx.Min(dbo.Purchase.TotalPurchaseAmount).As("Min"),
@@ -125,6 +137,10 @@ namespace NetCoreConsoleApp
 		#region concat
 		public string GetFullName(int personId)
 		{
+			//select
+			//CONCAT(dbo.Person.FirstName, ' ', dbo.Person.LastName)
+			//from dbo.Person
+			//where dbo.Person.Id = {personId};
 			string name = db.SelectOne(
 					db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName)
 				)
@@ -139,7 +155,11 @@ namespace NetCoreConsoleApp
 		#region isnull, coalesce
 		public IList<(int, int)> GetCreditLimitForPersonSet(params int[] personIds)
 		{
-
+			//select
+			//dbo.Person.Id,
+			//ISNULL(dbo.Person.CreditLimit, 0) as CreditLimit
+			//from dbo.Person
+			//where dbo.Person.Id in ({personIds});
 			IList<dynamic> creditLimits = db.SelectMany(
 					dbo.Person.Id,
 					db.fx.IsNull(dbo.Person.CreditLimit, 0).As("CreditLimit"))
@@ -152,6 +172,10 @@ namespace NetCoreConsoleApp
 
 		public DateTimeOffset GetLastActivityTimestamp(int personId)
 		{
+			//select
+			//Coalesce(dbo.Person.LastLoginDate, dbo.Person.RegistrationDate)
+			//from dbo.Person
+			//where dbo.Person.Id = {personId});
 			DateTimeOffset? timestamp = db.SelectOne(
 					db.fx.Coalesce(
 						dbo.Person.LastLoginDate, 
@@ -168,6 +192,11 @@ namespace NetCoreConsoleApp
 		#region isnull, floor, ceiling
 		public (double, double) GetMaxAndMinPurchasesRoundedToNearestDollar(int personId)
 		{
+			//select
+			//ISNULL(CEILING(MAX(dbo.Purchase.TotalPurchaseAmount)), 0.0) as [Max],
+			//ISNULL(FLOOR(MIN(dbo.Purchase.TotalPurchaseAmount)), 0.0) as [Min]
+			//from dbo.Purchase
+			//where dbo.Purchase.PersonId = {personId};
 			var result = db.SelectOne(
 					db.fx.IsNull(db.fx.Ceiling(db.fx.Max(dbo.Purchase.TotalPurchaseAmount)), 0.0).As("Max"),
 					db.fx.IsNull(db.fx.Floor(db.fx.Min(dbo.Purchase.TotalPurchaseAmount)), 0.0).As("Min")

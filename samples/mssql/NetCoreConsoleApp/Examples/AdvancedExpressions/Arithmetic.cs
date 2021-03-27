@@ -37,7 +37,8 @@ namespace NetCoreConsoleApp
 		#region server side arithmetic select
 		public double GetTotalValueOfProductOnHandById(int id)
 		{
-			//select (dbo.Product.Quantity * dbo.Product.Price) 
+			//select 
+			//(dbo.Product.Quantity * dbo.Product.Price) 
 			//from dbo.Product where dbo.Product.Id = {id};
 			double value = db.SelectOne(dbo.Product.Quantity * dbo.Product.Price)
 				.From(dbo.Product)
@@ -63,6 +64,13 @@ namespace NetCoreConsoleApp
 
 		public InventoryStats[] GetBasicInventoryStats()
 		{
+			//select
+			//dbo.Product.Id,
+			//dbo.Product.Name,
+			//dbo.Product.Quantity as QuantityOnHand,
+			//(dbo.Product.Quantity * dbo.Product.Price) as InventoryCost,
+			//((dbo.Product.Quantity * dbo.Product.ListPrice) - (dbo.Product.Quantity * dbo.Product.Price)) as ProjectedMargin
+			//from dbo.Product;
 			var stats = db.SelectMany(
 					dbo.Product.Id,
 					dbo.Product.Name,
@@ -93,7 +101,12 @@ namespace NetCoreConsoleApp
 		#region server side increment / decrement
 		public void DecrementQuantityOnHand(int productId)
 		{
-			 int _ = db.Update(
+			//update
+			//dbo.Product
+			//set dbo.Product.Quantity = (dbo.Product.Quantity - 1)
+			//from dbo.Product
+			//where dbo.Product.id = {productId};
+			int _ = db.Update(
 					dbo.Product.Quantity.Set(dbo.Product.Quantity - 1)
 					)
 				.From(dbo.Product)
@@ -103,6 +116,7 @@ namespace NetCoreConsoleApp
 
 		public void IncreaseCreditLimit(int personId, int percent)
 		{
+			//TODO: needs research, should this be possible?  currently the param sent over for the required double is sent as int
 			int _ = db.Update(
 					dbo.Person.CreditLimit.Set(
 							dbo.Person.CreditLimit + db.fx.Cast(

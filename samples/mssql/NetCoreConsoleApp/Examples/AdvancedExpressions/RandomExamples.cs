@@ -32,11 +32,13 @@ namespace NetCoreConsoleApp
 		#region cross table delete (join based deletes)
 		public int DeleteProductsNeverPurchased()
 		{
-			//delete dbo.Product from dbo.Product
+			//delete dbo.Product 
+			//from dbo.Product
 			//left join dbo.PurchaseLine on dbo.PurchaseLine.ProductId = dbo.Product.Id
 			//left join dbo.Purchase on dbo.Purchase.Id = dbo.PurchaseLine.PurchaseId
 			//where dbo.Purchase.Id is null;
-			int count = db.Delete().From(dbo.Product)
+			int count = db.Delete()
+				.From(dbo.Product)
 				.LeftJoin(dbo.PurchaseLine).On(dbo.PurchaseLine.ProductId == dbo.Product.Id)
 				.LeftJoin(dbo.Purchase).On(dbo.Purchase.Id == dbo.PurchaseLine.PurchaseId)
 				.Where(dbo.Purchase.Id == (int?)null)
@@ -81,7 +83,7 @@ namespace NetCoreConsoleApp
 			//inner join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
 			//where dbo.Person.BirthDate < DATEADD(y, -18, GETDATE()) and dbo.Address.Zip in ('02101', '02124', '02446', '02801', '03820', '08053', '80456')
 			//order by dbo.Person.LastName desc
-			//OFFSET 10 ROWS FETCH NEXT 5 ROWS ONLY;
+			//offset 10 rows fetch next 5 rows only;
 			var pageOfPeopleOver18 = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.InnerJoin(dbo.PersonAddress).On(dbo.PersonAddress.PersonId == dbo.Person.Id)
@@ -202,7 +204,7 @@ namespace NetCoreConsoleApp
 			//from dbo.Person
 			//inner join dbo.Person_Address on dbo.Person_Address.PersonId = dbo.Person.Id
 			//inner join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
-			//where dbo.Person.Id = {id} and dbo.Address.AddressType = {type};
+			//where dbo.Person.Id = {personId} and dbo.Address.AddressType = 2;
 			var addressInfo = db.SelectOne(
 					db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("FullName"),
 					db.fx.Concat(dbo.Address.Line1, " ", dbo.Address.Line2).As("Street"),

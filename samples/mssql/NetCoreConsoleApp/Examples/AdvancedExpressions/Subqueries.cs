@@ -78,7 +78,7 @@ namespace NetCoreConsoleApp
 			//		group by
 			//			[dbo].[Purchase].[PersonId], datepart(year, [dbo].[Purchase].[PurchaseDate])
 			//		having 
-			//			(count([dbo].[Purchase].[PurchaseDate]) >= 3 AND datepart(year, [dbo].[Purchase].[PurchaseDate]) = 2017)
+			//			(count([dbo].[Purchase].[PurchaseDate]) >= {purchaseCount} AND datepart(year, [dbo].[Purchase].[PurchaseDate]) = {year})
 			//) as [vips] on [dbo].[Person].[Id]=[vips].[PersonId]
 			//order by
 			//[dbo].[Person].[LastName] asc, [vips].[PurchaseCount] desc
