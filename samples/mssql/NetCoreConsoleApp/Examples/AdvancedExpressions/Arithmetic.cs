@@ -116,12 +116,11 @@ namespace NetCoreConsoleApp
 
 		public void IncreaseCreditLimit(int personId, int percent)
 		{
-			//TODO: needs research, should this be possible?  currently the param sent over for the required double is sent as int
 			int _ = db.Update(
 					dbo.Person.CreditLimit.Set(
 							dbo.Person.CreditLimit + db.fx.Cast(
-								dbo.Person.CreditLimit * (double)((percent + 0.0) / 100)
-							).AsInt()
+								 dbo.Person.CreditLimit * ((decimal)(percent + 0.0) / 100)
+								).AsInt()
 						)
 					)
 				.From(dbo.Person)
