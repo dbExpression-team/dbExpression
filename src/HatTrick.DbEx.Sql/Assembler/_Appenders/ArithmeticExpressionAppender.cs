@@ -33,45 +33,21 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender.Write("(");
 
             //left part of arithmetic operation
-            if (typeof(IComparable).IsAssignableFrom(expression.LeftArg.GetType()))
-            {
-                //left part is primitive type, build a parameter for the primitive
-                if (expression.RightArg.AsFieldExpression() is FieldExpression field)
-                {
-                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg, context, builder.FindMetadata(field)).Parameter.ParameterName);
-                }
-                else
-                {
-                    builder.Appender.Write(builder.Parameters.Add(expression.LeftArg, expression.LeftArg.GetType(), context).ParameterName);
-                }
-            }
+            if (expression.LeftArg is LiteralExpression leftLiteral)
+                builder.Appender.Write(builder.Parameters.Add(leftLiteral.Expression, context).ParameterName);
             else
-            {
                 //left part isn't a primitive type, append using builder
                 builder.AppendElement(expression.LeftArg, context);
-            }
 
             //append the operator
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
 
             //right part of arithmetic operation
-            if (typeof(IComparable).IsAssignableFrom(expression.RightArg.GetType()))
-            {
-                //right part is primitive type, build a parameter for the primitive
-                if (expression.LeftArg.AsFieldExpression() is FieldExpression field)
-                {
-                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg, context, builder.FindMetadata(field)).Parameter.ParameterName);
-                }
-                else
-                {
-                    builder.Appender.Write(builder.Parameters.Add(expression.RightArg, expression.RightArg.GetType(), context).ParameterName);
-                }
-            }
-            else
-            {
-                //right part isn't a primitive type, append using builder
-                builder.AppendElement(expression.RightArg, context);
-            }
+            if (expression.RightArg is LiteralExpression rightLiteral)
+				builder.Appender.Write(builder.Parameters.Add(rightLiteral.Expression, context).ParameterName);
+			else
+				//right part isn't a primitive type, append using builder
+				builder.AppendElement(expression.RightArg, context);
 
             builder.Appender.Write(")");
         }
