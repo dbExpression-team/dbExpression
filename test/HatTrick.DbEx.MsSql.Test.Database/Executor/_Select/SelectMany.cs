@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .Distinct()
                 .From(dbo.Purchase)
                 .OrderBy(dbo.Purchase.PersonId)
-                .Skip(5)
+                .Offset(5)
                 .Limit(1000);
 
             //when               

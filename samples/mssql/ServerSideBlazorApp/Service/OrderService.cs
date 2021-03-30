@@ -56,7 +56,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? OrderSummarySortingFields[s.Field].Asc : OrderSummarySortingFields[s.Field].Desc)
                 )
-                .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
+                .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(reader =>
                     new OrderSummaryModel
                     {
@@ -112,7 +112,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? OrderSummarySortingFields[s.Field].Asc : OrderSummarySortingFields[s.Field].Desc)
                 )
-                .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
+                .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(reader =>
                     new OrderSummaryModel
                     {

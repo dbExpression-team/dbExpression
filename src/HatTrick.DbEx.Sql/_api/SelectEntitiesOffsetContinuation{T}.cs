@@ -19,10 +19,11 @@
 ﻿namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValuesSkipContinuation<TValue> :
+    public interface SelectEntitiesOffsetContinuation<TEntity> :
 #pragma warning restore IDE1006 // Naming Styles
-        Limit<SelectValuesOrderByContinuation<TValue>>,
-        SelectValuesTermination<TValue>
+        Limit<SelectEntitiesOrderByContinuation<TEntity>>,
+        SelectEntitiesTermination<TEntity>
+        where TEntity : class, IDbEntity
     {
     }
 }

@@ -45,7 +45,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? ProductSummarySortingFields[s.Field].Asc : ProductSummarySortingFields[s.Field].Desc)
                 )
-                .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
+                .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(reader =>
                     new ProductSummaryModel
                     {

@@ -106,8 +106,8 @@ namespace HatTrick.DbEx.Sql.Builder
                 new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
         }
 
-        protected void Skip(int value)
-            => Expression.Skip = value;
+        protected void Offset(int value)
+            => Expression.Offset = value;
 
         protected void Limit(int value)
             => Expression.Limit = value;

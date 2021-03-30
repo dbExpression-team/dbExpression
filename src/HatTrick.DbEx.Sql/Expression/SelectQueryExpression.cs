@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Expression
         public SelectExpressionSet Select { get; set; }
         public bool? Distinct { get; set; }
         public int? Top { get; set; }
-        public int? Skip { get; set; }
+        public int? Offset { get; set; }
         public int? Limit { get; set; }
         public FilterExpressionSet Where { get; set; }
         public JoinExpressionSet Joins { get; set; }
