@@ -20,7 +20,7 @@ namespace NetCoreConsoleApp
 			IList<Person> page = null;
 			do
 			{
-				page = this.GetPeople(pageSize, ++pageNum, dbo.Person.Id.Desc);
+				page = this.GetPeople(pageSize, pageNum++, dbo.Person.Id.Desc);
 			} while (page.Count > 0);
 		}
 		#endregion

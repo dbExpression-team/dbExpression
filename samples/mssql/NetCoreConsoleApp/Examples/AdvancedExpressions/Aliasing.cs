@@ -96,6 +96,28 @@ namespace NetCoreConsoleApp
 
 			return ValueTuple.Create(result.Id, result.FullName, result.SSN);
 		}
+
+		public IList<dynamic> GetAllTwoProductPurchaseVariations()
+		{
+			//select
+			//p1.Name as Product1,
+			//p2.Name as Product2,
+			//(p1.Price + p2.Price) as Price
+			//from dbo.Product p1
+			//cross join dbo.Product p2
+			//where p1.Id <> p2.Id
+			IList<dynamic> result = db.SelectMany(
+				dbo.Product.As("p1").Name.As("Product1"),
+				dbo.Product.As("p2").Name.As("Product2"),
+				(dbo.Product.As("p1").Price + dbo.Product.As("p2").Price).As("Price")
+			)
+			.From(dbo.Product.As("p1"))
+			.CrossJoin(dbo.Product.As("p2"))
+			.Where(dbo.Product.As("p1").Id != dbo.Product.As("p2").Id)
+			.Execute();
+
+			return result;
+		}
 		#endregion
 	}
 }
