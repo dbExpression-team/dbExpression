@@ -31,8 +31,8 @@ namespace HatTrick.DbEx.Sql
         /// Specify a number of records to ignore while reading before beginning to return records.
         /// </summary>
         /// <param name="value">The number of records to ignore.</param>
-        /// <returns><see cref="SelectEntitiesSkipContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
-        SelectEntitiesSkipContinuation<TEntity> Skip(int value);
+        /// <returns><see cref="SelectEntitiesOffsetContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
+        SelectEntitiesOffsetContinuation<TEntity> Offset(int value);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.

@@ -73,7 +73,7 @@ namespace NetCoreConsoleApp
 		}
 		#endregion
 
-		#region select many entity, skip/limit, inner join, order by, complex filter
+		#region select many entity, offset/limit, inner join, order by, complex filter
 		public IList<Person> GetPageOfPeopleGreaterThan18YrsOldWithinZipCodeSet(int pageIndex, int pageCount, params string[] zipCodes)//(2, 5)
 		{
 			//select
@@ -90,7 +90,7 @@ namespace NetCoreConsoleApp
 				.InnerJoin(dbo.Address).On(dbo.Address.Id == dbo.PersonAddress.AddressId)
 				.Where(dbo.Person.BirthDate < DateTime.Now.AddYears(-18).Date & dbo.Address.Zip.In(zipCodes))
 				.OrderBy(dbo.Person.LastName.Desc)
-				.Skip(pageIndex * pageCount)
+				.Offset(pageIndex * pageCount)
 				.Limit(pageCount)
 				.Execute();
 

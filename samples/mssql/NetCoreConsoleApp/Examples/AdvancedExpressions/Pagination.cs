@@ -37,7 +37,7 @@ namespace NetCoreConsoleApp
 			IList<Person> people = db.SelectMany<Person>()
 				.From(dbo.Person)
 				.OrderBy(orderBy ?? dbo.Person.Id.Desc)
-				.Skip(pageSize * pageNum)
+				.Offset(pageSize * pageNum)
 				.Limit(pageSize)
 				.Execute();
 

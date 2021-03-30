@@ -26,13 +26,13 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2017
         protected override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             base.AssembleStatement(expression, builder, context);
-            if (expression.Skip.HasValue)
+            if (expression.Offset.HasValue)
             {
                 builder.Appender
                     .Indentation++
                     .Indent()
                     .Write("OFFSET ")
-                    .Write(builder.Parameters.Add(expression.Skip.Value, context).ParameterName)
+                    .Write(builder.Parameters.Add(expression.Offset.Value, context).ParameterName)
                     .Indent().Write(" ROWS")
                     .LineBreak()
                     .Indentation--;

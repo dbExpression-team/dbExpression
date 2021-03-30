@@ -86,7 +86,7 @@ namespace ServerSideBlazorApp.Service
                 .OrderBy(
                     pagingParameters.Sorting?.Select(s => s.Direction == OrderExpressionDirection.ASC ? CustomerSummaryOrderByClauseElements[s.Field].Asc : CustomerSummaryOrderByClauseElements[s.Field].Desc)
                 )
-                .Skip(pagingParameters.Offset).Limit(pagingParameters.Limit)
+                .Offset(pagingParameters.Offset).Limit(pagingParameters.Limit)
                 .ExecuteAsync(MapToCustomerSummary);
 
             var countOfCustomers = await

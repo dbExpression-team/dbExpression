@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IExpressionBuilder<TEntity>,
         SelectEntities<TEntity>,
         SelectEntitiesContinuation<TEntity>,
-        SelectEntitiesSkipContinuation<TEntity>,
+        SelectEntitiesOffsetContinuation<TEntity>,
         SelectEntitiesOrderByContinuation<TEntity>
         where TEntity : class, IDbEntity
     {
@@ -129,9 +129,9 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        SelectEntitiesSkipContinuation<TEntity> SelectEntitiesOrderByContinuation<TEntity>.Skip(int value)
+        SelectEntitiesOffsetContinuation<TEntity> SelectEntitiesOrderByContinuation<TEntity>.Offset(int value)
         {
-            Skip(value);
+            Offset(value);
             return this;
         }
 

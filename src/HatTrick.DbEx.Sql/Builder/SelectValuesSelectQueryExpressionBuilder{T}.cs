@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Builder
         IExpressionBuilder<TValue>,
         SelectValues<TValue>,
         SelectValuesContinuation<TValue>,
-        SelectValuesSkipContinuation<TValue>,
+        SelectValuesOffsetContinuation<TValue>,
         SelectValuesOrderByContinuation<TValue>
     {
         #region constructors
@@ -122,9 +122,9 @@ namespace HatTrick.DbEx.Sql.Builder
             return this;
         }
 
-        SelectValuesSkipContinuation<TValue> SelectValuesOrderByContinuation<TValue>.Skip(int value)
+        SelectValuesOffsetContinuation<TValue> SelectValuesOrderByContinuation<TValue>.Offset(int value)
         {
-            Skip(value);
+            Offset(value);
             return this;
         }
 

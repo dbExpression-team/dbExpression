@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql
         /// <summary>
         /// Specify the maximum number of records to return for a SELECT query expression.
         /// </summary>
-        /// <remarks>If a Skip operation was specified for the SELECT query expression, the <paramref name="value"/> does not begin until after skipping/ignoring the number of records specified in the Skip operation.</remarks>
+        /// <remarks>If a Offset operation was specified for the SELECT query expression, the <paramref name="value"/> does not begin until ignoring the offset number of records specified.</remarks>
         /// <param name="value">The maximum number of records to return.</param>
         /// <returns><see cref="{TCaller}"/>, a fluent continuation for the construction of a sql SELECT query expression.</returns>
         TCaller Limit(int value);
