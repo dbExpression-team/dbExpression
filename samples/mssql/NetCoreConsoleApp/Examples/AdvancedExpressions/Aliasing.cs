@@ -50,10 +50,12 @@ namespace NetCoreConsoleApp
 		public (string, string) GetPersonFullNameAndCityAndStateAndZipCode(int personId)
 		{
 			//select
-			//*
+			//CONCAT(dbo.Person.FirstName, dbo.Person.LastName) as FullName,
+			//CONCAT(dbo.Address.City, ', ', dbo.Address.State, ' ', dbo.Address.Zip) as Locality
 			//from dbo.Person
 			//inner join dbo.Person_Address on dbo.Person_Address.PersonId = dbo.Person.Id
-			//inner join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
+			//inner
+			//join dbo.Address on dbo.Address.Id = dbo.Person_Address.AddressId
 			//where dbo.Person.Id = {personId};
 			var result = db.SelectOne(
 					db.fx.Concat(dbo.Person.FirstName, " ", dbo.Person.LastName).As("FullName"),
