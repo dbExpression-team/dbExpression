@@ -22,13 +22,15 @@ namespace NetCoreConsoleApp
 		public string GetFullAddress(int addressId)
 		{
 			//select
-			//dbo.Address.Line1 + ' ' + dbo.Address.Line2
+			//dbo.Address.Line1 + ' ' + ISNULL(dbo.Address.Line2, '')
 			//+ (CHAR(13) + CHAR(10))
 			//+ dbo.Address.City + ', ' + dbo.Address.State + ' ' + dbo.Address.Zip
 			//from dbo.Address
 			//where dbo.Address.Id = {addressId};
 			string address = db.SelectOne(
-				dbo.Address.Line1 + " " + dbo.Address.Line2 + Environment.NewLine + dbo.Address.City + ", " + dbo.Address.State + " " + dbo.Address.Zip 
+				dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, " ") 
+				+ Environment.NewLine 
+				+ dbo.Address.City + ", " + dbo.Address.State + " " + dbo.Address.Zip 
 				).From(dbo.Address)
 				.Where(dbo.Address.Id == addressId)
 				.Execute();
