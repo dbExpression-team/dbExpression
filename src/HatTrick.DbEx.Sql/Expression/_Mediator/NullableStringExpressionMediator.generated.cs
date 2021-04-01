@@ -97,7 +97,19 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region mediator
-        public static NullableStringExpressionMediator operator +(NullableStringExpressionMediator a, string b) => new NullableStringExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
+
+
+
+
+
+
+
+
+
+
+
+
+
         #endregion
 
         #region alias

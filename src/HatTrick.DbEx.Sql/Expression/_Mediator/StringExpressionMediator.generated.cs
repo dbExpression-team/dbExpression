@@ -115,9 +115,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region mediators
-
-        public static StringExpressionMediator operator +(StringExpressionMediator a, StringExpressionMediator b) => new StringExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
-
         #endregion
 
         #region alias
