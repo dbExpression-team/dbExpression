@@ -55,5 +55,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
+
+        #region arithmetic operators
+        public static NullableStringExpressionMediator operator +(NullableStringExpressionMediator a, string b) => new NullableStringExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<string>(b), ArithmeticExpressionOperator.Add));
+
+        public static NullableStringExpressionMediator operator +(string a, NullableStringExpressionMediator b) => new NullableStringExpressionMediator(new ArithmeticExpression(new LiteralExpression<string>(a), b, ArithmeticExpressionOperator.Add));
+        #endregion
     }
 }
