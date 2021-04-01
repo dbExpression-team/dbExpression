@@ -122,27 +122,41 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         protected virtual DbParameter CreateDbParameter<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)
         {
-            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
+            //if a sizable value is passed in with length of zero (i.e. string.Empty) we must switch the SqlDbType to the variable 
+            //type or the framework will default the parameter size to Max (i.e. Char(8000)).
 
-            if (size.HasValue)
+            //database column may be out of sync with metadata and the database may actually be able to hold the value that
+            //has a length greater than that specified by metadata.  let sql server decide if it can handle the value or
+            //throw an exception
+            if (value is string stringValue)
             {
-                //database column may be out of sync with metadata and the database may actually be able to hold the value that
-				//has a length greater than that specified by metadata.  let sql server decide if it can handle the value or
-				//throw an exception
-                if (value is string stringValue && stringValue.Length > size.Value)
+                if (!size.HasValue || size < stringValue.Length)
                 {
-                    parameter.Size = stringValue.Length;
+                    size = stringValue.Length;
                 }
-                else if (value is byte[] byteValue && byteValue.Length > size.Value)
+                if (size == 0)
                 {
-                    parameter.Size = byteValue.Length;
+                    size = 1;
+                    dbType = SqlDbType.VarChar;
                 }
-                else
-                { 
-                    parameter.Size = size.Value;                
+            }
+            else if (value is byte[] byteValue)
+            {
+                if (!size.HasValue || size < byteValue.Length)
+                {
+                    size = byteValue.Length;
+                }
+                if (size == 0)
+                {
+                    size = 1;
+                    dbType = SqlDbType.VarBinary;
                 }
             }
 
+            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
+
+            if (size.HasValue)
+                parameter.Size = size.Value;
             if (precision.HasValue)
                 parameter.Precision = precision.Value;
             if (scale.HasValue)
