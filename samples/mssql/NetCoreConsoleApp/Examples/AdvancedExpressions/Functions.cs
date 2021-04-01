@@ -24,6 +24,7 @@ namespace NetCoreConsoleApp
 			IList<(int, int)> personIdCreditLimit = this.GetCreditLimitForPersonSet(1, 2, 3, 4, 5, 6, 8, 9, 10);
 			DateTimeOffset lastActivity = this.GetLastActivityTimestamp(5);
 			(double, double) maxAndMin = this.GetMaxAndMinPurchasesRoundedToNearestDollar(9);
+			this.SetYearOfLastCreditReviewToCurrentYear(5);
 		}
 		#endregion
 
@@ -209,16 +210,27 @@ namespace NetCoreConsoleApp
 		}
 		#endregion
 
-		#region dateadd, datepart, datediff
-		//TODO: need examples
-		#endregion
-
 		#region cast
 		//TODO: need examples
 		#endregion
 
-		#region current_timestamp, getdate, getutcdate, sysdatetime, sysdatetimeoffset, sysutcdatetime
-		//TODO: need examples
+		#region dateadd, datepart, datediff, current_timestamp, getdate, getutcdate, sysdatetime, sysdatetimeoffset, sysutcdatetime
+		public void SetYearOfLastCreditReviewToCurrentYear(int personId)
+		{
+			//update
+			//dbo.Person
+			//set dbo.Person.YearOfLastCreditLimitReview = DATEPART(year, GETDATE())
+			//from dbo.Person
+			//where dbo.Person.Id = {personId};
+			int _ = db.Update(
+				dbo.Person.YearOfLastCreditLimitReview.Set(
+						db.fx.DatePart(DateParts.Year, db.fx.GetDate())
+						)
+				)
+			.From(dbo.Person)
+			.Where(dbo.Person.Id == personId)
+			.Execute();
+		}
 		#endregion
 
 		#region newid
