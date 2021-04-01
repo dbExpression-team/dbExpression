@@ -28,7 +28,7 @@ namespace NetCoreConsoleApp
 			//from dbo.Address
 			//where dbo.Address.Id = {addressId};
 			string address = db.SelectOne(
-				dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, " ") 
+				dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, string.Empty) 
 				+ Environment.NewLine 
 				+ dbo.Address.City + ", " + dbo.Address.State + " " + dbo.Address.Zip 
 				).From(dbo.Address)
