@@ -116,6 +116,11 @@ namespace NetCoreConsoleApp
 
 		public void IncreaseCreditLimit(int personId, int percent)
 		{
+			//update
+			//dbo.Person
+			//set dbo.Person.CreditLimit = dbo.Person.CreditLimit + (dbo.Person.CreditLimit * (({percent} + 0.0) / 100))
+			//from dbo.Person
+			//where dbo.Person.Id = {personId};
 			int _ = db.Update(
 					dbo.Person.CreditLimit.Set(
 							dbo.Person.CreditLimit + db.fx.Cast(

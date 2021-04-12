@@ -51,8 +51,15 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region to lower
-        public string ToLower(string value)
+        #region resolve database accessor name
+        public string ResolveDatabaseAccessor()
+        {
+            return _config.DatabaseAccessor.TrimEnd('.');
+        }
+		#endregion
+
+		#region to lower
+		public string ToLower(string value)
         {
             return value is object ? value.ToLower() : value;
         }

@@ -31,7 +31,8 @@ namespace HatTrick.DbEx.Tools.Builder
                      database,
                      new DatabaseExpressionModel(
                          helpers.ResolveName(database), 
-                         helpers.ResolveRootNamespace()
+                         helpers.ResolveRootNamespace(),
+                         helpers.ResolveDatabaseAccessor()
                     )
                 );
 

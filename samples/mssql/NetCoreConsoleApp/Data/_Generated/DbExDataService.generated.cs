@@ -14,8 +14,8 @@ using System.Linq;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace SimpleConsole.DataService
 {
-	using SimpleConsole.dboDataService;
-	using SimpleConsole.secDataService;
+	using _dboDataService =  SimpleConsole.dboDataService;
+	using _secDataService =  SimpleConsole.secDataService;
 
     #region runtime db
     public abstract class SimpleConsoleDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
@@ -29,18 +29,20 @@ namespace SimpleConsole.DataService
 
         #region interface
         IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        public static _dboDataService.dboSchemaExpression dbo => (_dboDataService.dboSchemaExpression)schemas.Single(s => s.Identifier == "dbo");
+        public static _secDataService.secSchemaExpression sec => (_secDataService.secSchemaExpression)schemas.Single(s => s.Identifier == "sec");
         #endregion
 
         #region constructors
         static SimpleConsoleDbRuntimeSqlDatabase()
         {
-            var dboSchema = new dboSchemaExpression("dbo");
+            var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             schemas.Add(dboSchema);
-            dbo.UseSchema(dboSchema);
+            _dboDataService.dbo.UseSchema(dboSchema);
 
-            var secSchema = new secSchemaExpression("sec");
+            var secSchema = new _secDataService.secSchemaExpression("sec");
             schemas.Add(secSchema);
-            sec.UseSchema(secSchema);
+            _secDataService.sec.UseSchema(secSchema);
 
         }
         #endregion

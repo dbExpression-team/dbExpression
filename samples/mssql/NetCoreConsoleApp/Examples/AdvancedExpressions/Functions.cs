@@ -25,6 +25,7 @@ namespace NetCoreConsoleApp
 			DateTimeOffset lastActivity = this.GetLastActivityTimestamp(5);
 			(double, double) maxAndMin = this.GetMaxAndMinPurchasesRoundedToNearestDollar(9);
 			this.SetYearOfLastCreditReviewToCurrentYear(5);
+			decimal avgPrice = this.GetAvgProductListPrice();
 		}
 		#endregion
 
@@ -211,7 +212,16 @@ namespace NetCoreConsoleApp
 		#endregion
 
 		#region cast
-		//TODO: need examples
+		public decimal GetAvgProductListPrice()
+		{
+			decimal avgPrice = db.SelectOne(
+					db.fx.Avg(db.fx.Cast(dbo.Product.ListPrice).AsDecimal(12,2))
+					)
+				.From(dbo.Product)
+				.Execute();
+
+			return avgPrice;
+		}
 		#endregion
 
 		#region dateadd, datepart, datediff, current_timestamp, getdate, getutcdate, sysdatetime, sysdatetimeoffset, sysutcdatetime
@@ -231,10 +241,12 @@ namespace NetCoreConsoleApp
 			.Where(dbo.Person.Id == personId)
 			.Execute();
 		}
+
+		//TODO: examples
 		#endregion
 
 		#region newid
-		//TODO: need examples
+		//TODO: examples
 		#endregion
 	}
 }

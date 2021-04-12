@@ -14,8 +14,8 @@ using System.Linq;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace DbEx.DataService
 {
-	using DbEx.dboDataService;
-	using DbEx.secDataService;
+	using _dboDataService =  DbEx.dboDataService;
+	using _secDataService =  DbEx.secDataService;
 
     #region runtime db
     public abstract class MsSqlDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
@@ -29,18 +29,20 @@ namespace DbEx.DataService
 
         #region interface
         IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        public static _dboDataService.dboSchemaExpression dbo => (_dboDataService.dboSchemaExpression)schemas.Single(s => s.Identifier == "dbo");
+        public static _secDataService.secSchemaExpression sec => (_secDataService.secSchemaExpression)schemas.Single(s => s.Identifier == "sec");
         #endregion
 
         #region constructors
         static MsSqlDbRuntimeSqlDatabase()
         {
-            var dboSchema = new dboSchemaExpression("dbo");
+            var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             schemas.Add(dboSchema);
-            dbo.UseSchema(dboSchema);
+            _dboDataService.dbo.UseSchema(dboSchema);
 
-            var secSchema = new secSchemaExpression("sec");
+            var secSchema = new _secDataService.secSchemaExpression("sec");
             schemas.Add(secSchema);
-            sec.UseSchema(secSchema);
+            _secDataService.sec.UseSchema(secSchema);
 
         }
         #endregion
@@ -53,7 +55,7 @@ namespace DbEx.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
         /// <para>
-        /// To retrieve a <see cref="DbEx.dboData.Address" />, use a type param of <see cref="DbEx.dboData.Address" />
+        /// To retrieve a <see cref="DbEx.dboData.AccessAuditLog" />, use a type param of <see cref="DbEx.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -188,7 +190,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DateTimeElement" />
-        ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
+        ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<DateTime> SelectOne(DateTimeElement element)
@@ -341,7 +343,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int32Element" />
-        ///, for example "dbo.Address.Id" or "db.fx.Avg(dbo.Address.Id)"
+        ///, for example "dbo.AccessAuditLog.Id" or "db.fx.Avg(dbo.AccessAuditLog.Id)"
         ///</param>
         /// <returns><see cref="SelectValue{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValue<int> SelectOne(Int32Element element)
@@ -500,7 +502,7 @@ namespace DbEx.DataService
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of entities.
         /// <para>
-        /// To retrieve a list of <see cref="DbEx.dboData.Address" />(s), use a type param of <see cref="DbEx.dboData.Address" />
+        /// To retrieve a list of <see cref="DbEx.dboData.AccessAuditLog" />(s), use a type param of <see cref="DbEx.dboData.AccessAuditLog" />
         /// </para>
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
@@ -633,7 +635,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="DateTimeElement" />
-        ///, for example "dbo.Address.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.Address.DateCreated) or "db.fx.IsNull(dbo.Address.DateCreated, DateTime.Now)"
+        ///, for example "dbo.AccessAuditLog.DateCreated", "db.fx.DateAdd(DateParts.Year, 1, dbo.AccessAuditLog.DateCreated) or "db.fx.IsNull(dbo.AccessAuditLog.DateCreated, DateTime.Now)"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<DateTime> SelectMany(DateTimeElement element)
@@ -786,7 +788,7 @@ namespace DbEx.DataService
         /// </para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="Int32Element" />
-        ///, for example "dbo.Address.Id"
+        ///, for example "dbo.AccessAuditLog.Id"
         ///</param>
         /// <returns><see cref="SelectValues{TValue}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
         public static SelectValues<int> SelectMany(Int32Element element)
@@ -1073,6 +1075,7 @@ namespace DbEx.dboDataService
     public class dboSchemaExpression : SchemaExpression
     {
         #region interface
+        public readonly AccessAuditLogEntity AccessAuditLog;
         public readonly AddressEntity Address;
         public readonly PersonEntity Person;
         public readonly PersonAddressEntity PersonAddress;
@@ -1085,6 +1088,7 @@ namespace DbEx.dboDataService
         #region constructors
         public dboSchemaExpression(string identifier) : base(identifier, null)
         {
+            Entities.Add($"{identifier}.AccessAuditLog", AccessAuditLog = new AccessAuditLogEntity($"{identifier}.AccessAuditLog", "AccessAuditLog", this));
             Entities.Add($"{identifier}.Address", Address = new AddressEntity($"{identifier}.Address", "Address", this));
             Entities.Add($"{identifier}.Person", Person = new PersonEntity($"{identifier}.Person", "Person", this));
             Entities.Add($"{identifier}.Person_Address", PersonAddress = new PersonAddressEntity($"{identifier}.Person_Address", "Person_Address", this));
@@ -1093,6 +1097,276 @@ namespace DbEx.dboDataService
             Entities.Add($"{identifier}.PurchaseLine", PurchaseLine = new PurchaseLineEntity($"{identifier}.PurchaseLine", "PurchaseLine", this));
             Entities.Add($"{identifier}.PersonTotalPurchasesView", PersonTotalPurchasesView = new PersonTotalPurchasesViewEntity($"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView", this));
         }
+        #endregion
+    }
+    #endregion
+
+    #region access audit log entity expression
+    public partial class AccessAuditLogEntity : EntityExpression<AccessAuditLog>
+    {
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
+        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.IdField"/> representing the "dbo.AccessAuditLog.Id" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.IdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>Id</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>identity</term><description>yes</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly IdField Id;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> representing the "dbo.AccessAuditLog.PersonId" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.PersonIdField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>PersonId</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly PersonIdField PersonId;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> representing the "dbo.AccessAuditLog.AccessResult" column in the database, 
+        /// with a .NET type of <see cref="int"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.AccessResultField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyInt32Element"/> or <see cref="HatTrick.DbEx.Sql.Int32Element"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>AccessResult</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>int</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly AccessResultField AccessResult;
+
+        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> representing the "dbo.AccessAuditLog.DateCreated" column in the database, 
+        /// with a .NET type of <see cref="DateTime"/>.  The <see cref="DbEx.dboDataService.AccessAuditLogEntity.DateCreatedField"/> can be 
+        /// used with any operation accepting a <see cref="HatTrick.DbEx.Sql.AnyDateTimeElement"/> or <see cref="HatTrick.DbEx.Sql.DateTimeElement"/>.
+        /// <para>Database Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>DateCreated</description>
+        /// </item>
+        /// <item>
+        /// <term>sql type</term><description>datetime</description>
+        /// </item>
+        /// <item>
+        /// <term>allow null</term><description>no</description>
+        /// </item>
+        /// <item>
+        /// <term>default</term><description>(getdate())</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public readonly DateCreatedField DateCreated;
+
+        #endregion
+
+        #region constructors
+        private AccessAuditLogEntity() : base(null, null, null, null)
+        {
+        }
+
+		public AccessAuditLogEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        {
+        }
+
+        private AccessAuditLogEntity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        {
+            Fields.Add($"{identifier}.Id", Id = new IdField($"{identifier}.Id", "Id", this));
+            Fields.Add($"{identifier}.PersonId", PersonId = new PersonIdField($"{identifier}.PersonId", "PersonId", this));
+            Fields.Add($"{identifier}.AccessResult", AccessResult = new AccessResultField($"{identifier}.AccessResult", "AccessResult", this));
+            Fields.Add($"{identifier}.DateCreated", DateCreated = new DateCreatedField($"{identifier}.DateCreated", "DateCreated", this));
+        }
+        #endregion
+
+        #region methods
+        public AccessAuditLogEntity As(string name)
+            => new AccessAuditLogEntity(this.identifier, this.name, this.schema, name);
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        {
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+                new Int32SelectExpression(Id)
+                ,new Int32SelectExpression(PersonId)
+                ,new Int32SelectExpression(AccessResult)
+                ,new DateTimeSelectExpression(DateCreated)
+            ));
+        }
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {
+            if (alias is null)
+                throw new ArgumentNullException(nameof(alias));
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            aliased = alias(nameof(Id));
+            set &= aliased != nameof(Id) ? new Int32SelectExpression(Id).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(Id));
+
+            aliased = alias(nameof(PersonId));
+            set &= aliased != nameof(PersonId) ? new Int32SelectExpression(PersonId).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(PersonId));
+
+            aliased = alias(nameof(AccessResult));
+            set &= aliased != nameof(AccessResult) ? new Int32SelectExpression(AccessResult).As(aliased) as Int32SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(AccessResult));
+
+            aliased = alias(nameof(DateCreated));
+            set &= aliased != nameof(DateCreated) ? new DateTimeSelectExpression(DateCreated).As(aliased) as DateTimeSelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof(DateCreated));
+
+            return set;
+        }
+		
+        protected override InsertExpressionSet<AccessAuditLog> GetInclusiveInsertExpression(AccessAuditLog accessAuditLog)
+        {
+            return new InsertExpressionSet<AccessAuditLog>(accessAuditLog 
+                ,new InsertExpression<int>(PersonId, accessAuditLog.PersonId)
+                ,new InsertExpression<int>(AccessResult, accessAuditLog.AccessResult)
+            );
+        }
+
+        protected override AssignmentExpressionSet GetAssignmentExpression(AccessAuditLog target, AccessAuditLog source)
+        {
+            AssignmentExpressionSet expr = new AssignmentExpressionSet();
+
+            if (target.PersonId != source.PersonId) { expr &= PersonId.Set(source.PersonId); }
+            if (target.AccessResult != source.AccessResult) { expr &= AccessResult.Set(source.AccessResult); }
+            return expr;
+        }
+
+        protected override void HydrateEntity(ISqlFieldReader reader, AccessAuditLog accessAuditLog)
+        {
+			accessAuditLog.Id = reader.ReadField().GetValue<int>();
+			accessAuditLog.PersonId = reader.ReadField().GetValue<int>();
+			accessAuditLog.AccessResult = reader.ReadField().GetValue<int>();
+			accessAuditLog.DateCreated = reader.ReadField().GetValue<DateTime>();
+        }
+		#endregion
+
+        #region classes
+        #region id field expression
+        public partial class IdField : Int32FieldExpression<AccessAuditLog>
+        {
+            #region constructors
+            public IdField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
+            #endregion
+
+            #region set
+            #endregion
+        }
+        #endregion
+
+        #region person id field expression
+        public partial class PersonIdField : Int32FieldExpression<AccessAuditLog>
+        {
+            #region constructors
+            public PersonIdField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region access result field expression
+        public partial class AccessResultField : Int32FieldExpression<AccessAuditLog>
+        {
+            #region constructors
+            public AccessResultField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override Int32Element As(string alias)
+            {
+                return new Int32SelectExpression(this).As(alias);
+            }
+            #endregion
+
+            #region set
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
+            #endregion
+        }
+        #endregion
+
+        #region date created field expression
+        public partial class DateCreatedField : DateTimeFieldExpression<AccessAuditLog>
+        {
+            #region constructors
+            public DateCreatedField(string identifier, string name, AccessAuditLogEntity entity) : base(identifier, name, entity)
+            {
+
+            }
+            #endregion
+
+            #region as
+            public override DateTimeElement As(string alias)
+            {
+                return new DateTimeSelectExpression(this).As(alias);
+            }
+            #endregion
+
+            #region set
+            #endregion
+        }
+        #endregion
+
         #endregion
     }
     #endregion
@@ -4873,6 +5147,30 @@ namespace DbEx.dboDataService
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         #region interface
+        /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        /// <item>
+        /// <term>name</term><description>AccessAuditLog</description>
+        /// </item>
+        /// </list>
+        /// </para>
+        /// <para>Indexes:</para>
+        /// <para>
+        /// <list type="bullet">PK_AccessAuditLog
+        /// <list type="table">
+        /// <item>
+        /// <term>primary key</term><description>yes</description>
+        /// </item>
+        /// <item>
+        /// <term>columns</term><description>Id</description>
+        /// </item>
+        /// </list>
+        /// </list>
+        /// </para>
+        /// </summary>
+        public static AccessAuditLogEntity AccessAuditLog { get; private set; }
+
         /// <summary>A <see cref="DbEx.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
         /// <list type="table">
@@ -5036,6 +5334,7 @@ namespace DbEx.dboDataService
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
 
+            AccessAuditLog = schema.AccessAuditLog;
             Address = schema.Address;
             Person = schema.Person;
             PersonAddress = schema.PersonAddress;

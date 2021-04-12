@@ -1,5 +1,5 @@
 ﻿    #region db
-    public partial class db : {$.DatabaseExpression.Name}RuntimeSqlDatabase
+    public partial class {$.DatabaseExpression.AccessorName} : {$.DatabaseExpression.Name}RuntimeSqlDatabase
     {{
     	
     }}

@@ -44,6 +44,7 @@ namespace HatTrick.DbEx.Tools.Service
             "--output", "-o" //command line override of output path
         };
         private readonly string DEFAULT_ROOT_NAMESPACE = "DbEx";
+        private readonly string DEFAULT_DATABASE_ACCESSOR = "db";
         private readonly string DEFAULT_CONFIG_PATH = "./";
         private readonly string DEFAULT_CONFIG_NAME = "dbex.config.json";
         private readonly string DEFAULT_OUTPUT_PATH = "./DbEx";
@@ -215,6 +216,12 @@ namespace HatTrick.DbEx.Tools.Service
                 //just provide a root namespace default...
                 config.RootNamespace = DEFAULT_ROOT_NAMESPACE;
                 svc.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.RootNamespace)}, defaulting to '{DEFAULT_ROOT_NAMESPACE}'");
+            }
+
+            if (string.IsNullOrEmpty(config.DatabaseAccessor))
+            {
+                config.DatabaseAccessor = DEFAULT_DATABASE_ACCESSOR;
+                //svc.Feedback.Push(To.Warn, $"DbEx configuration file does not contain a value for key: {nameof(config.DatabaseAccessor)}, defaulting to '{DEFAULT_DATABASE_ACCESSOR}'");
             }
         }
         #endregion

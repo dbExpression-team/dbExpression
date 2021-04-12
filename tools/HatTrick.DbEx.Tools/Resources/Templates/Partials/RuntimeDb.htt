@@ -10,15 +10,18 @@
 
         #region interface
         IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
+        {#each $.Items}
+        public static _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression {$.SchemaExpression.Name} => (_{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression)schemas.Single(s => s.Identifier == "{$.SchemaExpression.Name}");
+        {/each}
         #endregion
 
         #region constructors
         static {$.DatabaseExpression.Name}RuntimeSqlDatabase()
         {{
             {#each $.Items}
-            var {$.SchemaExpression.Name}Schema = new {$.SchemaExpression.Name}SchemaExpression("{$.SchemaExpression.Name}");
+            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression("{$.SchemaExpression.Name}");
             schemas.Add({$.SchemaExpression.Name}Schema);
-            {$.SchemaExpression.Name}.UseSchema({$.SchemaExpression.Name}Schema);
+            _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}.UseSchema({$.SchemaExpression.Name}Schema);
 
             {/each}
         }}

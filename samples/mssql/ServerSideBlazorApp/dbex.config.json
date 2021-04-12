@@ -31,6 +31,13 @@
 		},
 		{
 			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.AccessAuditLog" }
+
+			}
+		},
+		{
+			"apply": {
 				"name": "CRMDatabase",
 				"to": {
 					"path": "."
