@@ -22,11 +22,13 @@
     {
         public string NamespaceRoot { get; }
         public string Name { get; }
+        public string AccessorName { get; }
 
-        public DatabaseExpressionModel(string name, string namespaceRoot)
+        public DatabaseExpressionModel(string name, string namespaceRoot, string accessorName)
         {
             Name = name;
             NamespaceRoot = namespaceRoot;
+            AccessorName = accessorName;
         }
 
         public override string ToString()

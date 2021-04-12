@@ -15,7 +15,7 @@ using System.Linq;
 namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {{
 	{#each $.Items}
-	using {$.SchemaExpression.NamespaceRoot}DataService;
+	using _{$.SchemaExpression.Name}DataService =  {$.SchemaExpression.NamespaceRoot}DataService;
 	{/each}
 
 {>("RuntimeDb") => GetTemplatePartial+}

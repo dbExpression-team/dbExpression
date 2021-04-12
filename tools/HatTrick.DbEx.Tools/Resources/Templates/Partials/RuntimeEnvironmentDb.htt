@@ -2,7 +2,7 @@
     {?var:dbName = $.DatabaseExpression.Name}
     public class {:dbName} : RuntimeEnvironmentSqlDatabase
     {{
-        public {:dbName}() : base(new db(), new SqlDatabaseMetadataProvider(new {:dbName}SqlDatabaseMetadata("{:dbName}", "{$.Database.Name}")))
+        public {:dbName}() : base(new {$.DatabaseExpression.AccessorName}(), new SqlDatabaseMetadataProvider(new {:dbName}SqlDatabaseMetadata("{:dbName}", "{$.Database.Name}")))
         {{ }}
     }}
     #endregion

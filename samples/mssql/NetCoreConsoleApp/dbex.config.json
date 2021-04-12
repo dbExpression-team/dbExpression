@@ -8,6 +8,7 @@
 	"workingDirectory": "./",
 	"outputDirectory": "./Data/_Generated",
 	"rootNamespace": "SimpleConsole",
+	"databaseAccessor":  "db",
 	"enums": [
 		"SimpleConsole.Data.AddressType",
 		"SimpleConsole.Data.GenderType",

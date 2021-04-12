@@ -32,6 +32,8 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public string RootNamespace { get; set; }
 
+        public string DatabaseAccessor { get; set; }
+
         public string WorkingDirectory { get; set; }
 
         public string OutputDirectory { get; set; }
