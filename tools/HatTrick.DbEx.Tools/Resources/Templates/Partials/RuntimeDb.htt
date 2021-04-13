@@ -19,7 +19,7 @@
         static {$.DatabaseExpression.Name}RuntimeSqlDatabase()
         {{
             {#each $.Items}
-            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression("{$.SchemaExpression.Name}");
+            var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression("{$.Schema.Name}");
             schemas.Add({$.SchemaExpression.Name}Schema);
             _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}.UseSchema({$.SchemaExpression.Name}Schema);
 
