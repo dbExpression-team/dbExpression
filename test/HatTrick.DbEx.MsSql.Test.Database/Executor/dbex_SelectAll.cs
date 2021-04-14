@@ -169,5 +169,38 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ((int)persons.First().PersonId).Should().BeGreaterThan(0);
             ((string)persons.First().Line1).Should().NotBeNull();
         }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_use_select_all_for_multiple_entities_and_alias_successfully_with_overriden_data_type(int version, int expected = 15)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            static string alias(string entity, string name)
+            {
+                switch (name)
+                {
+                    case nameof(dbo.Person.Id):
+                    case nameof(dbo.Person.DateCreated):
+                    case nameof(dbo.Person.DateUpdated):
+                    case nameof(dbo.Purchase.PersonId): return $"{entity}{name}";
+                    default: return name;
+                }
+            };
+
+            //when
+            var persons = db.SelectMany(
+                dbex.SelectAllFor(dbo.Person, name => alias(nameof(Person), name))
+                .Concat(dbex.SelectAllFor(dbo.Purchase, name => alias(nameof(Purchase), name)))
+            )
+            .From(dbo.Person)
+            .InnerJoin(dbo.Purchase).On(dbo.Person.Id == dbo.Purchase.PersonId)
+            .Execute();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
     }
 }

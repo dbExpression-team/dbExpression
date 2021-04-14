@@ -50,7 +50,7 @@ namespace HatTrick.DbEx.Sql.Converter
         private static readonly IValueConverter nullableShortConverter = new NullableValueConverter(typeof(short?));
         private static readonly IValueConverter nullableTimeSpanConverter = new NullableValueConverter(typeof(TimeSpan?));
         
-        private static readonly IValueConverter stringConverter = new NullableValueConverter(typeof(string));
+        private static readonly IValueConverter stringConverter = new StringValueConverter();
         private static readonly IValueConverter byteArrayConverter = new NullableValueConverter(typeof(byte[]));
 
         private static readonly IValueConverter objectConverter = new ObjectConverter();

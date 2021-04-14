@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Test
                 );
 
                 database.Conversions.UseDefaultFactory(x =>
-                    x.OverrideForEnumType<PaymentMethodType, StringEnumValueConverter>()
+                    x.OverrideForEnumType<PaymentMethodType>().PersistAsString()
                         .OverrideForEnumType<PaymentSourceType>().PersistAsString()
                 );
 
