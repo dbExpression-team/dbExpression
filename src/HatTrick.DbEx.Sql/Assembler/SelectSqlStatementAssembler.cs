@@ -47,14 +47,14 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.Appender
                 .Indent().Write("SELECT");
 
-            if (expression.Top.HasValue)
-            {
-                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
-            }
-
             if (expression.Distinct == true)
             {
                 builder.Appender.Write(" DISTINCT");
+            }
+
+            if (expression.Top.HasValue)
+            {
+                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
             }
 
             builder.Appender.LineBreak()

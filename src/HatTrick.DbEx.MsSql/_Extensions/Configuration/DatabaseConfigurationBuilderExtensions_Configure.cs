@@ -269,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .ElementAppender.Use<MsSqlExpressionElementAppenderFactory>()
                     .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration.ValueConverterFactory))
                     .ConfigureOutputSettings(
-                        a => a.PrependCommaOnSelectClause = true
+                        a => a.PrependCommaOnSelectClause = false
                     )
                 .Execution
                     .Executor.UseDefaultFactory()

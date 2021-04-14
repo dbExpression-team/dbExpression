@@ -16,20 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-
 namespace HatTrick.DbEx.Sql.Converter
 {
-    public class StringEnumValueConverter : IValueConverter
+
+    public class StringEnumValueConverter<T> : StringEnumValueConverter
     {
-        private static Type type = typeof(string);
-        public object ConvertFromDatabase(object value)
-            => value is null ? default : Enum.Parse(type, value as string, true);
+        public StringEnumValueConverter() : base(typeof(T))
+        {
 
-        public T ConvertFromDatabase<T>(object value)
-            => value is null ? default : (T)Enum.Parse(typeof(T), value as string);
-
-        public (Type, object) ConvertToDatabase(object value)
-            => value is null ? (type, null) : (type, value.ToString());
+        }
     }
 }

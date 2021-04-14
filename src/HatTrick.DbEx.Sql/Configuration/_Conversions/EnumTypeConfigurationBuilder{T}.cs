@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         #region methods
         public IValueConverterFactoryContinuationConfigurationBuilder PersistAsString()
         {
-            factory.RegisterConverter<T, StringEnumValueConverter>();
+            factory.RegisterConverter<T>(new StringEnumValueConverter<T>());
             return caller;
         }
         #endregion

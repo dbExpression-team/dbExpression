@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using DbEx.secDataService;
@@ -369,6 +370,54 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             ((string)persons.First().SocialSecurityNumber).Should().NotBeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "TOP")]
+        [Trait("Operation", "ORDER BY")]
+        public void Can_top_person_records_select_successfully(int version, int expected = 5)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .Top(expected)
+                .From(dbo.Person)
+                .OrderBy(dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc);
+
+            //when               
+            var persons = exp.Execute();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "TOP")]
+        [Trait("Operation", "ORDER BY")]
+        public void Can_top_distinct_person_records_select_successfully(int version, int expected = 5)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Person.FirstName,
+                    dbo.Person.LastName
+                )
+                .Top(expected)
+                .Distinct()
+                .From(dbo.Person)
+                .OrderBy(dbo.Person.LastName.Asc, dbo.Person.FirstName.Asc);
+
+            //when               
+            var persons = exp.Execute();
+
+            //then
+            persons.Should().HaveCount(expected);
         }
     }
 }
