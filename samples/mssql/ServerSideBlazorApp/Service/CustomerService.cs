@@ -111,6 +111,7 @@ namespace ServerSideBlazorApp.Service
                 Name = row.ReadField().GetValue<string>(),
                 LifetimeValue = row.ReadField().GetValue<double>(),
                 CurrentAge = row.ReadField().GetValue<short?>(),
+                IsVIP = row.GetValue<double>(2) >= Rules.LifetimeValueAmountToBeAVIPCustomer
             };
         #endregion
 
