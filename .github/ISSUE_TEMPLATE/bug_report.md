@@ -7,29 +7,33 @@ assignees: ''
 
 ---
 
-**1) Describe the bug**
+**1) Describe the issue**
 
 _A clear and concise description of the issue._
 
-**2) Is the issue with query execution or code generation?**
+**2) What is the issue related to?**
 
-- [ ] Query execution
+- [ ] Installation
 - [ ] Code generation
+- [ ] Query execution
+- [ ] Documentation
+- [ ] Other
 
-**3) What platform are you working against?**
+**3) What version of Microsoft SQL Server are you experiencing the issue?**
 
-- [ ] Microsoft SQL Server version 2005
-- [ ] Microsoft SQL Server version 2008
-- [ ] Microsoft SQL Server version 2012
-- [ ] Microsoft SQL Server version 2014
-- [ ] Microsoft SQL Server version 2016
-- [ ] Microsoft SQL Server version 2017
-- [ ] Microsoft SQL Server version 2019
-- [ ] Microsoft Azure Sql Database
+- [ ] 2005
+- [ ] 2008
+- [ ] 2012
+- [ ] 2014
+- [ ] 2016
+- [ ] 2017
+- [ ] 2019
+- [ ] Azure
+- [ ] *Doesn't matter, happens in All versions*
 
 **4) What, if any, error message are you receiving?**
 
-**5) What query are you executing (if applicable)?**
+**5) What QueryExpression are you executing (if applicable)?**
 
 _for example:_
 
@@ -38,7 +42,7 @@ _for example:_
       .From(dbo.Person)
       .Execute()
 ```
-**6) If accessible through a profile tool, what query is executing against the database platform (if applicable)?**
+**6) If accessible through a profile tool, what query is executed against the database (if applicable)?**
 
 _for example:_
 
@@ -56,4 +60,4 @@ _If applicable, add screenshots to help explain the issue._
 
 **8) Additional context**
 
-_Add any other context about the problem here, for example any startup configuration you have applied to DbExpression and/or the configuration used to generate code._
+_Add any other context about the issue, for example any startup configuration you have applied to dbExpression and/or the configuration used to generate code._

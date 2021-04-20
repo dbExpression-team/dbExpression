@@ -7,28 +7,29 @@ assignees: ''
 
 ---
 
-**If the request is a an existing issue or defect, please submit a Bug**
+***If the request is a an issue or defect, please submit a Bug***
 
-**1) Is your feature request related to a problem? Please describe.**
+**1) What are you trying to achieve? Please describe.**
 
-_A clear and concise description of what you are trying to achieve but isn't supported by DbExpression._
+_A clear and concise description of what you are trying to achieve but isn't supported by dbExpression._
 
-**2) Does the feature request apply to a specific database platform currently supported by DbExpression?**
+**2) Does the feature request apply to a specific Microsoft SQL Server version currently supported by dbExpression?**
 
-- [ ] Microsoft SQL Server version 2005
-- [ ] Microsoft SQL Server version 2008
-- [ ] Microsoft SQL Server version 2012
-- [ ] Microsoft SQL Server version 2014
-- [ ] Microsoft SQL Server version 2016
-- [ ] Microsoft SQL Server version 2017
-- [ ] Microsoft SQL Server version 2019
-- [ ] Microsoft Azure Sql Database
+- [ ] 2005
+- [ ] 2008
+- [ ] 2012
+- [ ] 2014
+- [ ] 2016
+- [ ] 2017
+- [ ] 2019
+- [ ] Azure
+- [ ] *Applies to all versions*
 
 **2) Describe the solution you'd like**
 
 _A clear and concise description of what you want to happen._
 
-**3) If the feature request relates directly to a query that could be executed against the database platform, please provide a sample of the query.**
+**3) If the feature request relates directly to a query that could be executed against the database, please provide a sample of the query.**
 
 **4) Describe alternatives/workarounds you've considered**
 
