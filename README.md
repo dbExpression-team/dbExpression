@@ -1,4 +1,4 @@
-![dbExpression](https://dbexpressionpublic.blob.core.windows.net/web/dbex-logo.png)
+<img src="https://dbexpressionpublic.blob.core.windows.net/web/dbex-logo.png" alt="dbExpression" width="200"/>
 
 dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly within compiled code.
 
