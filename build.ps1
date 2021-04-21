@@ -93,14 +93,10 @@ try
 {
     $props = New-DirectoryBuildPropsFile `
        -OutputPath $PropertiesPath `
-       -Configuration $Configuration `
-       -BranchName $BranchName `
-       -CommitSHA $CommitSHA `
-       -BuildIdentifier $BuildIdentifier `
        -AssemblyVersion $version `
        -IncludeBuildNumberPartsInPackageVersion ($BranchName -ne $PublicReleaseBranchName)
 
-    $props.RewriteDirectoryBuildPropsFile()
+	$props.ReplaceVersionPrefixInDirectoryBuildPropsFile()
 }
 catch
 {

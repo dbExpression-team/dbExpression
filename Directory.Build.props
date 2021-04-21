@@ -2,5 +2,9 @@
 <Project>
 	<PropertyGroup>
 		<VersionPrefix>0.7.0</VersionPrefix>
+		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
 	</PropertyGroup>
+	<ItemGroup>
+		<None Include="../../build/htl-nuget-logo.png" Pack="true" Visible="false" PackagePath="images/htl-nuget-logo.png" />
+	</ItemGroup>
 </Project>
