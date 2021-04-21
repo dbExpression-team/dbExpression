@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
@@ -8,7 +8,7 @@
         <Company>HatTrick Labs, LLC</Company>
         <Authors>gwgrubbs,jerrod.eiman</Authors>
         <Description>
-            Provides integration implementation between dbExpression and Microsoft's dependency injection.
+            dbExpression extensions for ASP.NET Core.
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>

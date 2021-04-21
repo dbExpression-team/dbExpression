@@ -96,7 +96,7 @@ try
        -AssemblyVersion $version `
        -IncludeBuildNumberPartsInPackageVersion ($BranchName -ne $PublicReleaseBranchName)
 
-    $props.RewriteDirectoryBuildPropsFile()
+	$props.ReplaceVersionPrefixInDirectoryBuildPropsFile()
 }
 catch
 {
