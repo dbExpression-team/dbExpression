@@ -6,10 +6,7 @@
         <IsPackable>true</IsPackable>
         <Company>HatTrick Labs, LLC</Company>
         <Authors>gwgrubbs,jerrod.eiman</Authors>
-        <Description>
-            dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution
-            of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide
-            efficiencies, uniformity and consistency between database schema and your application code.
+        <Description>dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>

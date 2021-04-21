@@ -1,4 +1,4 @@
-<img src="https://dbexpressionpublic.blob.core.windows.net/web/dbex-logo.png" alt="dbExpression" width="200"/>
+![dbExpression](https://dbexpressionpublic.blob.core.windows.net/web/dbex-logo.png)
 
 dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly within compiled code.
 
@@ -23,8 +23,10 @@ dbExpression was created to close the gap between application code and raw SQL, 
 
 With dbExpression, the code that handles the basics of pushing and pulling data in and out of your target database is generated via a CLI tool.  The code contains all of the classes and functional plumbing necessary to insert, update, delete and query your data with expressions that live directly within your application code.  When you modify your database in any way, regenerating the code exposes those changes to your application, keeping schema changes in sync with your application code.
 
-With dbExpression, you can easily write queries like this:
+With dbExpression, you can easily write queries in code like this:
 ```c#
+//query composed and compiled in c#
+
 dynamic purchases_shipped_by_year = await db.SelectMany(
         dbo.Person.Id,
         (dbo.Person.FirstName + " " + dbo.Person.LastName).As("CustomerName"),
@@ -42,7 +44,7 @@ dynamic purchases_shipped_by_year = await db.SelectMany(
     )
     .ExecuteAsync();
 ```
-Which look like this when executed using dbExpression:
+And here's the SQL statement dbExpression assembled and executed against the target database:
 ```sql
 exec sp_executesql N'SELECT
 	[dbo].[Person].[Id]
