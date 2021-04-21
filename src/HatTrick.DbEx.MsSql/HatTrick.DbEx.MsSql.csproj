@@ -1,14 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
-    <LangVersion>7.3</LangVersion>
-    <IsPackable>true</IsPackable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
+        <LangVersion>7.3</LangVersion>
+        <IsPackable>true</IsPackable>
+        <Company>HatTrick Labs, LLC</Company>
+        <Authors>gwgrubbs,jerrod.eiman</Authors>
+        <Description>
+            dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution
+            of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide
+            efficiencies, uniformity and consistency between database schema and your application code.
+        </Description>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-    <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
-  </ItemGroup>
-  
+    <ItemGroup>
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+        <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
+    </ItemGroup>
+
 </Project>

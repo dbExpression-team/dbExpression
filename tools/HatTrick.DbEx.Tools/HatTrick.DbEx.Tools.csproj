@@ -1,58 +1,68 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
-    <ToolCommandName>dbex</ToolCommandName>
-    <PackAsTool>true</PackAsTool>
-    <IsPackable>true</IsPackable>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Resources\DbExConfig\DbEx.Config.Example.json" />
-    <None Remove="Resources\Templates\DbExDataPackage._cs.htt" />
-    <None Remove="Resources\Templates\DbExDataService._cs.htt" />
-    <None Remove="Resources\Templates\DbExMetadata._cs.htt" />
-    <None Remove="Resources\Templates\Partials\DataPackage.htt" />
-    <None Remove="Resources\Templates\Partials\Db.htt" />
-    <None Remove="Resources\Templates\Partials\DbMetadata.htt" />
-    <None Remove="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
-    <None Remove="Resources\Templates\Partials\EntityExpression.htt" />
-    <None Remove="Resources\Templates\Partials\EntityMetadata.htt" />
-    <None Remove="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
-    <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
-    <None Remove="Resources\Templates\Partials\Fx.htt" />
-    <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
-    <None Remove="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
-    <None Remove="Resources\Templates\Partials\Schema.htt" />
-    <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
-    <None Remove="Resources\Templates\Partials\SchemaMetadata.htt" />
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+        <ToolCommandName>dbex</ToolCommandName>
+        <PackAsTool>true</PackAsTool>
+        <IsPackable>true</IsPackable>
+        <Company>HatTrick Labs, LLC</Company>
+        <Authors>gwgrubbs,jerrod.eiman</Authors>
+        <Description>
+            dbExpression is a database connector that enables fluent composition and execution
+            of type safe SQL queries directly from Microsoft .NET.  This tool provides for generation
+            of code scaffolding for use with dbExpression.
+        </Description>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Resources\DbExConfig\DbEx.Config.Example.json" />
+        <None Remove="Resources\Templates\DbExDataPackage._cs.htt" />
+        <None Remove="Resources\Templates\DbExDataService._cs.htt" />
+        <None Remove="Resources\Templates\DbExMetadata._cs.htt" />
+        <None Remove="Resources\Templates\Partials\DataPackage.htt" />
+        <None Remove="Resources\Templates\Partials\Db.htt" />
+        <None Remove="Resources\Templates\Partials\DbMetadata.htt" />
+        <None Remove="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
+        <None Remove="Resources\Templates\Partials\EntityExpression.htt" />
+        <None Remove="Resources\Templates\Partials\EntityMetadata.htt" />
+        <None Remove="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
+        <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
+        <None Remove="Resources\Templates\Partials\Fx.htt" />
+        <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
+        <None Remove="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
+        <None Remove="Resources\Templates\Partials\Schema.htt" />
+        <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
+        <None Remove="Resources\Templates\Partials\SchemaMetadata.htt" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\DbExConfig\DbEx.Config.Example.json" />
-    <EmbeddedResource Include="Resources\Templates\DbExDataPackage._cs.htt" />
-    <EmbeddedResource Include="Resources\Templates\DbExDataService._cs.htt" />
-    <EmbeddedResource Include="Resources\Templates\DbExMetadata._cs.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\DataPackage.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\Db.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\DbMetadata.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\EntityMetadata.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\Fx.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
-    <EmbeddedResource Include="Resources\Templates\Partials\SchemaMetadata.htt" />
-  </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\DbExConfig\DbEx.Config.Example.json" />
+        <EmbeddedResource Include="Resources\Templates\DbExDataPackage._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\DbExDataService._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\DbExMetadata._cs.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\DataPackage.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Db.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\DbMetadata.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\EntityExpression.Documentation.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\EntityMetadata.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Fx.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\SchemaMetadata.htt" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="HatTrick.Model.MsSql" Version="2.1.1" />
-    <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
-    <PackageReference Include="HatTrick.Text.Templating" Version="2.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="HatTrick.Model.MsSql" Version="2.1.1" />
+        <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
+        <PackageReference Include="HatTrick.Text.Templating" Version="2.1.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    </ItemGroup>
 </Project>
