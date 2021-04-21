@@ -8,7 +8,7 @@
         <Company>HatTrick Labs, LLC</Company>
         <Authors>gwgrubbs,jerrod.eiman</Authors>
         <Description>
-            dbExpression extensions for ASP.NET Core.
+            Extensions for configuring dbExpression for use with ASP.NET Core and Microsoft SQL Server.
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
