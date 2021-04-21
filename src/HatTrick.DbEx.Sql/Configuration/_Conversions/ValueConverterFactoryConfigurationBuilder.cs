@@ -25,7 +25,6 @@ namespace HatTrick.DbEx.Sql.Configuration
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration configuration;
-        private readonly ValueConverterFactoryContinuationConfigurationBuilder continuationBuilder;
         #endregion
 
         #region constructors
@@ -66,7 +65,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         {
             if (!(configuration.ValueConverterFactory is ValueConverterFactory))
                 configuration.ValueConverterFactory = new ValueConverterFactory();
-            configureFactory?.Invoke(continuationBuilder ?? new ValueConverterFactoryContinuationConfigurationBuilder(configuration.ValueConverterFactory as ValueConverterFactory));
+            configureFactory?.Invoke(new ValueConverterFactoryContinuationConfigurationBuilder(configuration.ValueConverterFactory as ValueConverterFactory));
         }
         #endregion
     }

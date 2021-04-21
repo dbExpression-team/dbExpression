@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
                 connection.CommitTransaction();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 connection.RollbackTransaction();
                 isRolledBack = true;

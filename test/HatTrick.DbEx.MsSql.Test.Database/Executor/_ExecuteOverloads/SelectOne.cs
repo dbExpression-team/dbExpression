@@ -295,7 +295,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_map_delegate_override_succeed(int version, int expected = 50)
+        public void Does_execute_type_with_map_delegate_override_succeed(int version)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -313,7 +313,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        public void Does_execute_type_with_commandTimeout_and_map_delegate_overrides_succeed(int version)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -332,7 +332,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version, int expected = 50)
+        public void Does_execute_type_with_connection_and_commandTimeout_and_map_delegate_overrides_succeed(int version)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -351,7 +351,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_map_to_entity_delegate_override_succeed(int version, int expected = 50)
+        public void Does_execute_type_with_map_to_entity_delegate_override_succeed(int version)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -369,7 +369,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        public void Does_execute_type_with_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);
@@ -388,7 +388,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Does_execute_type_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version, int expected = 50)
+        public void Does_execute_type_with_connection_and_commandTimeout_and_map_to_entity_delegate_overrides_succeed(int version)
         {
             //given
             var config = ConfigureForMsSqlVersion(version);

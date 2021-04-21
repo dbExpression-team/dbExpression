@@ -43,7 +43,7 @@ namespace HatTrick.DbEx.Sql.Executor
         {
             SqlConnection = sqlConnection;
             DataReader = dataReader;
-            CancellationToken = ct == null ? CancellationToken.None : ct;
+            CancellationToken = ct;
             Converters = converters;
             CancellationToken.Register(() => Dispose(true));
         }
