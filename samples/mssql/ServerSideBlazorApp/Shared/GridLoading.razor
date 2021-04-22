@@ -1,0 +1,15 @@
+﻿@if (RecordCount == 0)
+{
+    <CardSubtitle Margin="Margin.Is3">No records found.</CardSubtitle>
+
+}
+else if (!RecordCount.HasValue)
+{
+    <CardSubtitle Margin="Margin.Is3">Loading...</CardSubtitle>
+}
+
+@code {
+
+    [Parameter] public int? RecordCount { get; set; }
+
+}

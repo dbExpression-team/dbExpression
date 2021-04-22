@@ -1,0 +1,8 @@
+﻿<LineChart Class="@(Type != ChartType.Line ? "d-none" : string.Empty)" @ref="lineChart" TItem="object" OptionsObject="@ChartOptions" />
+<PieChart Class="@(Type != ChartType.Pie ? "d-none" : string.Empty)" @ref="pieChart" TItem="object" OptionsObject="@ChartOptions" />
+<BarChart Class="@(Type != ChartType.Bar ? "d-none" : string.Empty)" @ref="barChart" TItem="object" OptionsObject="@ChartOptions" />
+<DoughnutChart Class="@(Type != ChartType.Doughnut ? "d-none" : string.Empty)" @ref="doughnutChart" TItem="object" OptionsObject="@ChartOptions" />
+
+@code {
+
+}

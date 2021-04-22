@@ -1,0 +1,66 @@
+#region license
+// Copyright (c) HatTrick Labs, LLC.  All rights reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
+#endregion
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+using Newtonsoft.Json;
+
+namespace HatTrick.DbEx.Tools.Service
+{
+    public class ExceptionFeedback
+    {
+        #region internals
+        private Exception _ex;
+        #endregion
+
+        #region constructors
+        public ExceptionFeedback(Exception ex)
+        {
+            _ex = ex;
+        }
+        #endregion
+
+        #region to string
+        public override string ToString()
+        {
+            Exception ex = _ex.GetBaseException();
+            string msg = $"Message:{Environment.NewLine}   {ex.Message}{Environment.NewLine}Stack Trace:{Environment.NewLine}{ex.StackTrace}";
+            return msg;
+        }
+        #endregion
+
+        #region to json string
+        public string ToJsonString()
+        {
+            Exception ex = _ex.GetBaseException();
+            var obj = new
+            {
+                Message = ex.Message,
+                StackTrace = ex.StackTrace,
+                Source = ex.Source
+            };
+
+            return JsonConvert.SerializeObject(obj);
+        }
+        #endregion
+    }
+}

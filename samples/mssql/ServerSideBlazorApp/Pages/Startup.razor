@@ -1,0 +1,38 @@
+﻿@page "/startup"
+<h3>Uh-Oh!</h3>
+
+<p>It doesn't look like your environment is configured to run the sample application for dbExpression.  Please complete the following checklist before perusing around the application:</p>
+
+<Card>
+    <CardBody>
+        <CardText>
+            <Blazorise.Table>
+                <TableBody>
+                    <Blazorise.TableRow>
+                        <TableRowCell Style="width:5%"><i class="@GetFontAwesome(1)" style="@GetColor(1)"></i></TableRowCell>
+                        <TableRowCell>Ensure the connection string (named "Default") specified in <code>appsettings.json</code> is a valid connection string.</TableRowCell>
+                    </Blazorise.TableRow>
+                    <Blazorise.TableRow>
+                        <TableRowCell><i class="@GetFontAwesome(2)" style="@GetColor(2)"></i></TableRowCell>
+                        <TableRowCell>Ensure the database schema has been created by executing the sql code located at <code>/test/HatTrick.DbEx.MsSql.Test.Database/schema.sql</code>.</TableRowCell>
+                    </Blazorise.TableRow>
+                    <Blazorise.TableRow>
+                        <TableRowCell><i class="@GetFontAwesome(3)" style="@GetColor(3)"></i></TableRowCell>
+                        <TableRowCell>Add some data by executing the sql code located at <code>/test/HatTrick.DbEx.MsSql.Test.Database/data.sql</code>.</TableRowCell>
+                    </Blazorise.TableRow>
+                    <Blazorise.TableRow>
+                        <TableRowCell><i class="@GetFontAwesome(4)" style="@GetColor(4)"></i></TableRowCell>
+                        <TableRowCell>(Optionally) Add some product images by executing the sql code located at <code>/test/HatTrick.DbEx.MsSql.Test.Database/images.sql</code>.</TableRowCell>
+                    </Blazorise.TableRow>
+                </TableBody>
+            </Blazorise.Table>
+            <Paragraph Alignment="TextAlignment.Right" Margin="Margin.Is5.FromTop">
+                <Button Margin="Margin.Is3.FromRight" Type="ButtonType.Reset" Clicked="Refresh"><i class="fas fa-sync-alt mr-2" style="color:green"></i>Refresh</Button>
+            </Paragraph>
+        </CardText>
+    </CardBody>
+</Card>
+
+@code {
+    
+}

@@ -1,0 +1,141 @@
+{
+	"source": {
+		"type": "MsSqlDb",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"workingDirectory": "./",
+	"outputDirectory": "./Data/_Generated",
+	"rootNamespace": "ServerSideBlazorApp",
+	"enums": [
+		"ServerSideBlazorApp.Data.AddressType",
+		"ServerSideBlazorApp.Data.GenderType",
+		"ServerSideBlazorApp.Data.ProductCategoryType",
+		"ServerSideBlazorApp.Data.PaymentMethodType",
+		"ServerSideBlazorApp.Data.PaymentSourceType"
+	],
+	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.AccessAuditLog" }
+
+			}
+		},
+		{
+			"apply": {
+				"name": "CRMDatabase",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "Customer",
+				"to": {
+					"path": "dbo.Person"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "CustomerId",
+				"to": {
+					"path": "dbo.Purchase.PersonId"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "CustomerAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "CustomerId",
+				"to": {
+					"path": "dbo.Person_Address.PersonId"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.AddressType?",
+				"to": {
+					"path": "dbo.Address.AddressType"
+				}
+			}
+
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.GenderType",
+				"to": {
+					"path": "dbo.Person.GenderType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.ProductCategoryType?",
+				"to": {
+					"path": "dbo.Product.ProductCategoryType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.PaymentMethodType",
+				"to": {
+					"path": "dbo.Purchase.PaymentMethodType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "ServerSideBlazorApp.Data.PaymentSourceType?",
+				"to": {
+					"path": "dbo.Purchase.PaymentSourceType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateCreated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateUpdated",
+					"objectType": "tablecolumn"
+				}
+			}
+		}
+	]
+}

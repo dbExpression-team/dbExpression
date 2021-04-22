@@ -1,0 +1,23 @@
+﻿    #region {($.SchemaExpression.Name) => InsertSpaceOnCapitalizationAndToLower}
+	public class {$.SchemaExpression.Name}SchemaMetadata : ISqlSchemaMetadata
+    {{
+		#region interface
+        public ISqlDatabaseMetadata Database {{ get; }}
+        public string Identifier {{ get; }}
+        public string Name {{ get; }}
+        public IDictionary<string, ISqlEntityMetadata> Entities {{ get; }} = new Dictionary<string, ISqlEntityMetadata>();
+		#endregion
+
+        #region constructors
+        public {$.SchemaExpression.Name}SchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
+        {{
+            Database = database;
+            Identifier = identifier;
+            Name = name;
+			{#each $.Items}
+            Entities.Add($"{{identifier}}.{$.Entity.Name}", new {$.EntityExpression.Name}EntityMetadata(this, $"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}"));
+			{/each}
+        }}
+        #endregion
+    }}
+    #endregion

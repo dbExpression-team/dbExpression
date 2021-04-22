@@ -1,0 +1,25 @@
+﻿@page "/orders/{id}"
+@inject GlobalProgressBar ProgressBar
+@inject OrderService OrderService
+@inject NavigationManager NavigationManager
+
+<Breadcrumb>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="@ReturnUrl"><i class="fas fa-chevron-left"></i>&nbsp;Back</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
+
+@if (Model is object)
+{
+    <h3>@Model.OrderNumber</h3>
+    <Divider></Divider>
+    <Card>
+        <CardBody>
+            <OrderView Order="@Model" />
+        </CardBody>
+    </Card>
+}
+
+@code {
+
+}

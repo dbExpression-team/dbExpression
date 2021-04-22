@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0</TargetFrameworks>
+        <LangVersion>7.3</LangVersion>
+        <RootNamespace>Microsoft.Extensions.DependencyInjection</RootNamespace>
+        <IsPackable>true</IsPackable>
+        <Company>HatTrick Labs, LLC</Company>
+        <Authors>gwgrubbs,jerrod.eiman</Authors>
+        <Description>Extensions for configuring dbExpression for use with ASP.NET Core and Microsoft SQL Server.
+        </Description>
+        <PackageTags>microsoft;sql;server;dependency;injection;dbexpression</PackageTags>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    </ItemGroup>
+
+</Project>

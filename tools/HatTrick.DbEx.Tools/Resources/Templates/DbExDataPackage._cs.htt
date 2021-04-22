@@ -1,0 +1,13 @@
+﻿using System;
+using HatTrick.DbEx.Sql;
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+{#each $.Items}
+namespace {$.SchemaExpression.NamespaceRoot}Data
+{{
+	{#each $.Items}
+{>("DataPackage") => GetTemplatePartial+}
+	{/each}
+}}
+{/each}
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

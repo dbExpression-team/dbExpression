@@ -1,0 +1,45 @@
+using HatTrick.DbEx.MsSql.Builder;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning disable CA1034 // Nested types should not be visible
+namespace {$.DatabaseExpression.NamespaceRoot}DataService
+{{
+	{#each $.Items}
+	using _{$.SchemaExpression.Name}DataService =  {$.SchemaExpression.NamespaceRoot}DataService;
+	{/each}
+
+{>("RuntimeDb") => GetTemplatePartial+}
+
+{>("RuntimeEnvironmentDb") => GetTemplatePartial+}
+
+{>("Db") => GetTemplatePartial+}
+}}
+
+{#each $.Items}
+namespace {$.SchemaExpression.NamespaceRoot}DataService
+{{
+	using {$.SchemaExpression.NamespaceRoot}Data;
+
+{>("SchemaExpression") => GetTemplatePartial+}
+
+	{#each $.Items}
+{>("EntityExpression") => GetTemplatePartial+}
+
+    {/each}
+{>("Schema") => GetTemplatePartial+}
+}}
+{/if}
+{/each}
+#pragma warning restore IDE1006 // Naming Styles
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+#pragma warning restore CA1034 // Nested types should not be visible

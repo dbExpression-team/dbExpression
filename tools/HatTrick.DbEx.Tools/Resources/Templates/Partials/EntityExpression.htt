@@ -1,0 +1,119 @@
+﻿    #region {($.EntityExpression.Name) => InsertSpaceOnCapitalizationAndToLower} entity expression
+    public partial class {$.EntityExpression.Name}Entity : EntityExpression<{$.EntityExpression.Name}>
+    {{
+        #region internals
+        private SelectExpressionSet _inclusiveSelectExpressionSet;
+        #endregion
+
+        #region interface
+		{#each $.Items}
+        {>("FieldExpression.Documentation") => GetTemplatePartial+}
+        public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
+
+		{/each}
+        #endregion
+
+        #region constructors
+        private {$.EntityExpression.Name}Entity() : base(null, null, null, null)
+        {{
+        }}
+
+		public {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        {{
+        }}
+
+        private {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
+        {{
+			{#each $.Items}
+            Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{{identifier}}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
+			{/each}
+        }}
+        #endregion
+
+        #region methods
+        public {$.EntityExpression.Name}Entity As(string name)
+            => new {$.EntityExpression.Name}Entity(this.identifier, this.name, this.schema, name);
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression()
+        {{
+            {?var :applyComma = false}
+            return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
+				{#each $.Items}
+                {#if !$.FieldExpression.Type.IsEnum}
+                {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name})
+                {/if}
+                {#if $.FieldExpression.Type.IsEnum}
+                {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>({$.FieldExpression.Name})
+                {/if}
+                {? :applyComma = true}
+				{/each}
+            ));
+        }}
+
+        protected override SelectExpressionSet GetInclusiveSelectExpression(Func<string, string> alias)
+        {{
+            if (alias is null)
+                throw new ArgumentNullException(nameof(alias));
+
+            SelectExpressionSet set = null;
+            string aliased = null;
+
+            {#each $.Items}
+            aliased = alias(nameof({$.FieldExpression.Name}));
+            {#if !$.FieldExpression.Type.IsEnum}
+            set &= aliased != nameof({$.FieldExpression.Name}) ? new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name}).As(aliased) as {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
+			{/if}
+            {#if $.FieldExpression.Type.IsEnum}
+            set &= aliased != nameof({$.FieldExpression.Name}) ? new {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}>({$.FieldExpression.Name}).As(aliased) as {+#if $.Column.IsNullable}Nullable{/if}EnumSelectExpression<{$.FieldExpression.Type.TypeName}> : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
+            {/if}
+
+            {/each}
+            return set;
+        }}
+		
+        protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
+        {{
+            return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase} 
+				{#each $.Items}
+                {#if !$.Column.IsIdentity}
+                {#if !$.Column.IsComputed}
+                {#if $.FieldExpression.AllowInsert}
+                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({$.FieldExpression.Name}, {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name})
+                {/if}
+                {/if}
+                {/if}
+                {/each}                
+            );
+        }}
+
+        protected override AssignmentExpressionSet GetAssignmentExpression({$.EntityExpression.Name} target, {$.EntityExpression.Name} source)
+        {{
+            AssignmentExpressionSet expr = new AssignmentExpressionSet();
+
+            {#each $.Items}
+			{#if !$.Column.IsIdentity}
+            {#if !$.Column.IsComputed}
+            {#if $.FieldExpression.AllowUpdate}
+            if (target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
+            {/if}
+            {/if}
+            {/if}
+            {/each}
+            return expr;
+        }}
+
+        protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
+        {{
+			{#each $.Items}
+			{($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField().GetValue<{$.FieldExpression.Type.NullableAlias}>();
+			{/each}
+        }}
+		#endregion
+
+        #region classes
+        {#each $.Items}
+		{>("FieldExpression") => GetTemplatePartial+}
+	    {/each}
+        #endregion
+    }}
+    #endregion

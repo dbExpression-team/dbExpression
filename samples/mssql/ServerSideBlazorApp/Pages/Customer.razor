@@ -1,0 +1,92 @@
+﻿@page "/customers/{id}"
+@inject GlobalProgressBar ProgressBar
+@inject CustomerService CustomerService
+@inject OrderService OrderService
+@inject NavigationManager NavigationManager
+
+<Breadcrumb>
+    <BreadcrumbItem>
+        <BreadcrumbLink To="@ReturnUrl"><i class="fas fa-chevron-left"></i>&nbsp;Back</BreadcrumbLink>
+    </BreadcrumbItem>
+</Breadcrumb>
+
+@if (Model is object)
+{
+    <h3>
+        @if (@Model.IsVIP)
+        {
+            <i class='fas fa-crown pr-2'></i>
+        }
+        @Model.FirstName @Model.LastName
+    </h3>
+    <Divider></Divider>
+
+    <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified="true">
+        <Items>
+            <Tab Name="@Tabs.Details.Id">@Tabs.Details.Label</Tab>
+            <Tab Name="@Tabs.Orders.Id">@Tabs.Orders.Label</Tab>
+        </Items>
+        <Content>
+            <TabPanel Name="@Tabs.Details.Id" Padding="Padding.Is5.FromTop">
+                <CardDeck>
+                    <Card ColumnSize="ColumnSize.IsThird.OnDesktop">
+                        <CardBody>
+                            <CardTitle>Demographics</CardTitle>
+                            <Divider DividerType="DividerType.Dotted"></Divider>
+                            <CardText>
+                                <dl>
+                                    <dt>First Name</dt>
+                                    <dd>@Model.FirstName</dd>
+                                    <dt>Last Name</dt>
+                                    <dd>@Model.LastName</dd>
+                                    <dt>Lifetime Value</dt>
+                                    <dd>@Model.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)</dd>
+                                    <dt>Gender</dt>
+                                    <dd>@Model.Gender</dd>
+                                    <dt>Current Age</dt>
+                                    <dd>@Model.CurrentAge</dd>
+                                    <dt>Birth Date</dt>
+                                    <dd>@Model.BirthDate?.ToString("d", CultureInfo.CurrentUICulture)</dd>
+                                </dl>
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                    <Card>
+                        <CardBody>
+                            <CardTitle>Credit Status</CardTitle>
+                            <Divider DividerType="DividerType.Dotted"></Divider>
+                            <CardText>
+                                <dl>
+                                    <dt>Credit Limit</dt>
+                                    <dd>@Model.CreditLimit?.ToString("c", CultureInfo.CurrentUICulture)</dd>
+                                    <dt>Last Reviewed</dt>
+                                    <dd>@Model.YearOfLastCreditLimitReview</dd>
+                                </dl>
+                            </CardText>
+                        </CardBody>
+                    </Card>
+                </CardDeck>
+                <CardDeck>
+                    @foreach (var addressType in (AddressType[])Enum.GetValues(typeof(AddressType)))
+                    {
+                        <AddressEdit Address="@ResolveAddress(addressType)" OnSave="@SaveAsync" />
+                    }
+                </CardDeck>
+            </TabPanel>
+            <TabPanel Name="@Tabs.Orders.Id" Padding="Padding.Is5.FromTop">
+                <Card>
+                    <CardBody>
+                        @if (ShowOrdersView)
+                        {
+                            <CustomerOrdersView OnGetOrderPageAsync="GetOrderSummaryPageAsync" OnGetOrderDetailAsync="GetOrderDetailAsync" />
+                        }
+                    </CardBody>
+                </Card>
+            </TabPanel>
+        </Content>
+    </Tabs>
+}
+
+@code {
+
+}

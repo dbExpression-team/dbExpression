@@ -1,0 +1,8 @@
+﻿    #region runtime environment db
+    {?var:dbName = $.DatabaseExpression.Name}
+    public class {:dbName} : RuntimeEnvironmentSqlDatabase
+    {{
+        public {:dbName}() : base(new {$.DatabaseExpression.AccessorName}(), new SqlDatabaseMetadataProvider(new {:dbName}SqlDatabaseMetadata("{:dbName}", "{$.Database.Name}")))
+        {{ }}
+    }}
+    #endregion

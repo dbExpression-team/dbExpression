@@ -1,0 +1,27 @@
+﻿        /// <summary>A <see cref="{$.EntityExpression.NamespaceRoot}DataService.{$.EntityExpression.Name}Entity"/> representing the "{$.Entity.Schema.Name}.{$.Entity.Name}" {$.Entity.TypeIdentifier} in the database.
+        /// <para>Properties:
+        /// <list type="table">
+        {#each $.Entity.Properties}
+        /// <item>
+        /// <term>{Key}</term><description>{Value}</description>
+        /// </item>
+        {/each}
+        /// </list>
+        /// </para>
+        {#if $.Entity.Indexes}
+        /// <para>Indexes:</para>
+        /// <para>
+        {#each $.Entity.Indexes}
+        /// <list type="bullet">{$.Item1}
+        /// <list type="table">
+        {#each $.Item2}
+        /// <item>
+        /// <term>{Key}</term><description>{Value}</description>
+        /// </item>
+        {/each}
+        /// </list>
+        /// </list>
+        {/each}
+        /// </para>
+        {/if}
+        /// </summary>

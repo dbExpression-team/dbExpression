@@ -1,0 +1,91 @@
+﻿@namespace ServerSideBlazorApp.Shared
+
+<CardDeck>
+    <Card Style="box-shadow:none;">
+        <CardBody>
+            <CardTitle>Order</CardTitle>
+            <Divider DividerType="DividerType.Dotted" />
+            <CardText>
+                <dl>
+                    <dt>Order Number</dt>
+                    <dd>@Order.OrderNumber</dd>
+                    <dt>Customer</dt>
+                    <dd>
+                        @if (@Order.IsVIP)
+                        {
+                            <i class='fas fa-crown pr-2'></i>
+                        }
+                        @Order.CustomerName
+                    </dd>
+                    <dt>Payment Method</dt>
+                    <dd>@Order.PaymentMethod</dd>
+                    <dt>Purchase Date</dt>
+                    <dd>@Order.PurchaseDate.ToString("d", CultureInfo.CurrentUICulture)</dd>
+                    <dt>Ship Date</dt>
+                    <dd>@Order.ShipDate?.ToString("d", CultureInfo.CurrentUICulture)</dd>
+                    <dt>Expected Delivery Date</dt>
+                    <dd>@Order.ExpectedDeliveryDate?.ToString("d", CultureInfo.CurrentUICulture)</dd>
+                    <dt>Tracking Number</dt>
+                    <dd>@Order.TrackingIdentifier?.ToString("N")</dd>
+                </dl>
+            </CardText>
+        </CardBody>
+    </Card>
+    <Card Style="box-shadow:none;">
+        <CardBody>
+            <CardTitle>Billing Address</CardTitle>
+            <Divider DividerType="DividerType.Dotted" />
+            <CardText>
+                <AddressView Address="@Order.BillingAddress" />
+            </CardText>
+        </CardBody>
+    </Card>
+    <Card Style="box-shadow:none;">
+        <CardBody>
+            <CardTitle>Shipping Address</CardTitle>
+            <Divider DividerType="DividerType.Dotted"></Divider>
+            <CardText>
+                <AddressView Address="@Order.ShippingAddress" />
+            </CardText>
+        </CardBody>
+    </Card>
+</CardDeck>
+<Card Style="box-shadow:none;">
+    <CardBody>
+        <CardTitle>Items</CardTitle>
+        <Divider DividerType="DividerType.Dotted" />
+        <CardText>
+            <Table Striped="true">
+                <TableHeader>
+                    <Blazorise.TableRow>
+                        <TableHeaderCell Style="width:25%">Product</TableHeaderCell>
+                        <TableHeaderCell Style="width:20%">Category</TableHeaderCell>
+                        <TableHeaderCell Style="width:15%">Quantity</TableHeaderCell>
+                        <TableHeaderCell Style="width:15%">Price</TableHeaderCell>
+                        <TableHeaderCell>Total</TableHeaderCell>
+                    </Blazorise.TableRow>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var line in Order.Lines)
+                    {
+                        <Blazorise.TableRow>
+                            <TableRowCell>@line.Name</TableRowCell>
+                            <TableRowCell>@line.Category</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.Right">@line.Quantity</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.Right">@line.PurchasePrice.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.Right">@line.Subtotal.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                        </Blazorise.TableRow>
+                    }
+                    <Blazorise.TableRow Casing="CharacterCasing.Upper">
+                        <TableRowCell ColumnSpan="4" TextAlignment="TextAlignment.Right" Style="font-weight:900;">Total:</TableRowCell>
+                        <TableRowCell TextAlignment="TextAlignment.Right" Style="font-weight:900;">@Order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                    </Blazorise.TableRow>
+                </TableBody>
+            </Table>
+        </CardText>
+    </CardBody>
+</Card>
+
+@code {
+
+}

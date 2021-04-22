@@ -1,0 +1,13 @@
+﻿{
+  "source": {
+    "type": "MsSql",
+    "connectionString": {
+      "value": "{connectionString}"
+    }
+  },
+  "workingDirectory":  null,
+  "rootNamespace": null,
+  "enums": [],
+  "outputDirectory": null,
+  "overrides": []
+}

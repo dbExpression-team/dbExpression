@@ -1,0 +1,18 @@
+﻿@namespace ServerSideBlazorApp.Shared
+
+<dl>
+    <dt>Line1</dt>
+    <dd>@Address.Line1</dd>
+    <dt>Line2</dt>
+    <dd>@Address.Line2</dd>
+    <dt>City</dt>
+    <dd>@Address.City</dd>
+    <dt>State</dt>
+    <dd>@(string.IsNullOrWhiteSpace(Address.State) ? string.Empty : $"{ListProvider.States[Address.State]} ({Address.State})")</dd>
+    <dt>ZIP</dt>
+    <dd>@Address.ZIP</dd>
+</dl>
+
+@code {
+
+}

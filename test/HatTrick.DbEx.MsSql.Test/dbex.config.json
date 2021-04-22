@@ -1,0 +1,126 @@
+{
+	"source": {
+		"type": "MsSqlDb",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"workingDirectory": "./",
+	"outputDirectory": "./Generated",
+	"rootNamespace": "DbEx",
+	"enums": [
+		"DbEx.Data.AddressType",
+		"DbEx.Data.GenderType",
+		"DbEx.Data.ProductCategoryType",
+		"DbEx.Data.PaymentMethodType",
+		"DbEx.Data.PaymentSourceType"
+	],
+	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
+			}
+		},
+		{
+			"apply": {
+				"name": "MsSqlDb",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DbEx.Data.AddressType?",
+				"to": {
+					"path": "dbo.Address.AddressType"
+				}
+			}
+
+		},
+		{
+			"apply": {
+				"clrType": "DbEx.Data.GenderType",
+				"to": {
+					"path": "dbo.Person.GenderType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DbEx.Data.ProductCategoryType?",
+				"to": {
+					"path": "dbo.Product.ProductCategoryType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DbEx.Data.PaymentMethodType",
+				"to": {
+					"path": "dbo.Purchase.PaymentMethodType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "DbEx.Data.PaymentSourceType?",
+				"to": {
+					"path": "dbo.Purchase.PaymentSourceType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "string",
+				"to": {
+					"path": "dbo.Purchase.TotalPurchaseQuantity"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateCreated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateUpdated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "SocialSecurityNumber",
+				"to": {
+					"path": "sec.Person.SSN"
+				}
+			}
+		}
+	]
+}

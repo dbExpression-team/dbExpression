@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="dbex.config.json" />
+    <Content Remove="Pages\FetchData.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql.Extensions.DependencyInjection\HatTrick.DbEx.MsSql.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
+    <ProjectReference Include="..\..\..\src\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="dbex.config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Charts" Version="0.9.2.4" />
+    <PackageReference Include="Blazorise.Components" Version="0.9.2.4" />
+    <PackageReference Include="Blazorise.DataGrid" Version="0.9.2.4" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.2.4" />
+    <PackageReference Include="Blazorise.Icons.Material" Version="0.9.2.4" />
+    <PackageReference Include="Blazorise.Material" Version="0.9.2.4" />
+    <PackageReference Include="MatBlazor" Version="2.8.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+</Project>
