@@ -15,7 +15,8 @@ dbExpression is a Microsoft SQL Server database connector that enables fluent co
 dbExpression was created to close the gap between application code and raw SQL, bringing Microsoft SQL Server functionality into .NET.  dbExpression isn't centered around object relational mapping (ORM) concepts, but instead focuses on allowing you to write powerful type-checked SQL queries comparable to queries written directly in TSQL.
 
 * **Extensible by design**
-* Fluently build queries with a clear focus on **WYSIWYG**
+* **Fluent** query builder using natural SQL syntax
+* **WYSIWYG** - What you write looks like SQL, what we execute looks like SQL
 * **Compile-time checking** of SQL queries
 * Build queries **without magic strings** or string interpolation
 * Tooling to easily keep **application code in sync with database schema**
