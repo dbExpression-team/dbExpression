@@ -75,7 +75,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_an_overriden_property_name_return_the_overridden_property_name_when_retrieved_as_a_dynamic(int version)
+        public async Task Can_select_two_person_fields_as_a_dynamic(int version)
         {
             //given
             ConfigureForMsSqlVersion(version);
@@ -92,7 +92,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task xCan_an_overriden_property_name_aliased_return_the_correct_data_type_when_selecting_value(int version)
+        public async Task Can_an_overriden_property_name_aliased_return_the_correct_data_type_when_selecting_value(int version)
         {
             //given
             ConfigureForMsSqlVersion(version);

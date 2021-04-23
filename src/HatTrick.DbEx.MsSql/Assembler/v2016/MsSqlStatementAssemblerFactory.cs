@@ -19,9 +19,9 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Assembler.v2014
+namespace HatTrick.DbEx.MsSql.Assembler.v2016
 {
-    public class MsSqlStatementBuilderFactory : SqlStatementBuilderFactory
+    public class MsSqlStatementAssemblerFactory : SqlStatementAssemblerFactory
     {
         private static readonly MsSqlSelectSqlStatementAssembler selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
         private static readonly MsSqlInsertSqlStatementAssembler insertManySqlStatementAssembler = new MsSqlInsertSqlStatementAssembler();
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2014
         private static readonly MsSqlUpdateSqlStatementAssembler updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
 
         #region constructors
-        public MsSqlStatementBuilderFactory()
+        public MsSqlStatementAssemblerFactory()
         {
             RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(selectSqlStatementAssembler);
             RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(insertManySqlStatementAssembler);

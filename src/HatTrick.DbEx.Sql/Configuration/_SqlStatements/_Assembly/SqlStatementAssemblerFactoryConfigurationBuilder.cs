@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,39 +22,33 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class SqlStatementBuilderFactoryConfigurationBuilder : ISqlStatementBuilderFactoryConfigurationBuilder
+    public class SqlStatementAssemblerFactoryConfigurationBuilder : ISqlStatementAssemblerFactoryConfigurationBuilder
     {
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
         private readonly RuntimeSqlDatabaseConfiguration configuration;
 
-        public SqlStatementBuilderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
+        public SqlStatementAssemblerFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
-        public ISqlStatementAssemblyGroupingConfigurationBuilders Use(ISqlStatementBuilderFactory factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders Use(ISqlStatementAssemblerFactory factory)
         {
-            configuration.StatementBuilderFactory = factory;
+            configuration.StatementAssemblerFactory = factory;
             return caller;
         }
 
-        public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TSqlStatementBuilderFactory>()
-            where TSqlStatementBuilderFactory : class, ISqlStatementBuilderFactory, new()
+        public ISqlStatementAssemblyGroupingConfigurationBuilders Use<TSqlStatementAssemblerFactory>()
+            where TSqlStatementAssemblerFactory : class, ISqlStatementAssemblerFactory, new()
         {
-            configuration.StatementBuilderFactory = new TSqlStatementBuilderFactory();
+            configuration.StatementAssemblerFactory = new TSqlStatementAssemblerFactory();
             return caller;
         }
 
-        public ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory)
+        public ISqlStatementAssemblyGroupingConfigurationBuilders Use(Func<QueryExpression, ISqlStatementAssembler> factory)
         {
-            configuration.StatementBuilderFactory = new DelegateSqlStatementBuilderFactory(factory);
-            return caller;
-        }
-
-        public ISqlStatementAssemblyGroupingConfigurationBuilders UseDefaultFactory()
-        {
-            configuration.StatementBuilderFactory = new SqlStatementBuilderFactory();
+            configuration.StatementAssemblerFactory = new DelegateSqlStatementAssemblerFactory(factory);
             return caller;
         }
     }

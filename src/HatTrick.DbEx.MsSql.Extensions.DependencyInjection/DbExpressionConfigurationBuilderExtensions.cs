@@ -61,13 +61,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -97,13 +97,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -133,13 +133,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2012.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -169,13 +169,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2014.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -205,13 +205,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2016.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -241,13 +241,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2017.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -277,13 +277,13 @@ namespace Microsoft.Extensions.DependencyInjection
                 throw new ArgumentNullException(nameof(configureRuntime));
 
             var services = builder as ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder ?? throw new DbExpressionConfigurationException($"Expected {nameof(builder)} to be of type {typeof(ServiceCollectionRuntimeSqlDatabaseConfigurationBuilder)}, but actual type is {builder.GetType()}");
-            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementBuilderFactory>();
-            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementBuilderFactory>()));
+            services.Services.TryAddSingleton<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementAssemblerFactory>();
+            services.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory>(sp => sp.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementAssemblerFactory>()));
 
             services.AddMsSql<T>(
                 (serviceProvider, configBuilder) =>
                 {
-                    configBuilder.SqlStatements.Assembly.StatementBuilder.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementBuilderFactory>());
+                    configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2019.MsSqlStatementAssemblerFactory>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -308,6 +308,8 @@ namespace Microsoft.Extensions.DependencyInjection
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IEntityFactory, EntityFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IMapperFactory, MapperFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IValueConverterFactory, ValueConverterFactory>());
+            builder.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementBuilderFactory, SqlStatementBuilderFactory>());
+            builder.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementAssemblerFactory, SqlStatementAssemblerFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IAppenderFactory, AppenderFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<ISqlStatementExecutorFactory, SqlStatementExecutorFactory>());
             builder.Services.TryAdd(ServiceDescriptor.Singleton<IExecutionPipelineFactory, ExecutionPipelineFactory>());
@@ -336,6 +338,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                         builder.SqlStatements
                             .Assembly
+                                .StatementBuilder.Use(serviceProvider.GetService<ISqlStatementBuilderFactory>())
                                 .StatementAppender.Use(serviceProvider.GetService<IAppenderFactory>())
                                 .ElementAppender.Use(serviceProvider.GetService<IExpressionElementAppenderFactory>())
                                 .ParameterBuilder.Use(serviceProvider.GetService<ISqlParameterBuilderFactory>())

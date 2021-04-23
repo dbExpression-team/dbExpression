@@ -2,6 +2,13 @@
 
 dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly within compiled code.
 
+## Get dbExpression
+| Package            						|  												|
+| :-------------------------------------------------------------| :---------------------------------------------------------------------------------------------|
+| ```HatTrick.DbEx.MsSql```					| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.MsSql)					|
+| ```HatTrick.DbEx.Tools```					| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.Tools)					|
+| ```HatTrick.DbEx.MsSql.Extensions.DependencyInjection```	| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.MsSql.Extensions.DependencyInjection)	|
+
 ## Build Status
 
 [![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)

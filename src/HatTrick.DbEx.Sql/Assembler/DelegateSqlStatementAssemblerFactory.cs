@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,28 +16,27 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public class DelegateSqlStatementBuilderFactory : ISqlStatementBuilderFactory
+    public class DelegateSqlStatementAssemblerFactory : ISqlStatementAssemblerFactory
     {
         #region internals
-        private readonly Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory;
+        private readonly Func<QueryExpression, ISqlStatementAssembler> factory;
         #endregion
 
         #region constructors
-        public DelegateSqlStatementBuilderFactory(Func<RuntimeSqlDatabaseConfiguration, QueryExpression, ISqlStatementBuilder> factory)
+        public DelegateSqlStatementAssemblerFactory(Func<QueryExpression, ISqlStatementAssembler> factory)
         {
-            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a sql statement builder.");
+            this.factory = factory ?? throw new DbExpressionConfigurationException($"{nameof(factory)} is required to initialize a sql statement assembler.");
         }
         #endregion
 
         #region methods
-        public ISqlStatementBuilder CreateSqlStatementBuilder(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
-            => factory(database, expression) ?? throw new DbExpressionConfigurationException("Could not resolve a statement builder, please ensure an statement builder factory has been properly registered.");
+        public ISqlStatementAssembler CreateSqlStatementAssembler(QueryExpression expression)
+            => factory(expression) ?? throw new DbExpressionConfigurationException("Could not resolve a statement builder, please ensure an statement builder factory has been properly registered.");
         #endregion
     }
 }

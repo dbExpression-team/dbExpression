@@ -29,6 +29,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         private IAppenderFactoryConfigurationBuilder _appender;
         private ISqlParameterBuilderFactoryConfigurationBuilder _parameter;
         private ISqlStatementBuilderFactoryConfigurationBuilder _statement;
+        private ISqlStatementAssemblerFactoryConfigurationBuilder _assembler;
         #endregion
 
         #region interface
@@ -36,6 +37,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public IAppenderFactoryConfigurationBuilder StatementAppender => _appender ?? (_appender = new AppenderFactoryConfigurationBuilder(this, configuration));
         public ISqlParameterBuilderFactoryConfigurationBuilder ParameterBuilder => _parameter ?? (_parameter = new SqlParameterBuilderFactoryConfigurationBuilder(this, configuration));
         public ISqlStatementBuilderFactoryConfigurationBuilder StatementBuilder => _statement ?? (_statement = new SqlStatementBuilderFactoryConfigurationBuilder(this, configuration));
+        public ISqlStatementAssemblerFactoryConfigurationBuilder StatementAssembler => _assembler ?? (_assembler = new SqlStatementAssemblerFactoryConfigurationBuilder(this, configuration));
         public ISqlStatementExecutionGroupingConfigurationBuilders Execution => caller.Execution;
         #endregion
 
