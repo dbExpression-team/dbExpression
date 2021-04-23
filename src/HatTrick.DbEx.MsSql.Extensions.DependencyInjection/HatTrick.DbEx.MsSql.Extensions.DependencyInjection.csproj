@@ -9,9 +9,11 @@
         <Authors>gwgrubbs,jerrod.eiman</Authors>
         <Description>Extensions for configuring dbExpression for use with ASP.NET Core and Microsoft SQL Server.
         </Description>
-        <PackageTags>microsoft;sql;server;dependency;injection;dbexpression</PackageTags>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
+		<PackageTags>microsoft sqlserver sql sql-server orm dependency-injection</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

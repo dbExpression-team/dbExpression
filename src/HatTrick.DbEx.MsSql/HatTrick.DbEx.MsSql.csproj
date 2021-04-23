@@ -8,9 +8,11 @@
         <Authors>gwgrubbs,jerrod.eiman</Authors>
         <Description>dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly from Microsoft .NET.  dbExpression tooling and workflows provide efficiencies, uniformity and consistency between database schema and your application code.
         </Description>
-        <PackageTags>microsoft;sql;server</PackageTags>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
+		<PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>		
     </PropertyGroup>
 
     <ItemGroup>
