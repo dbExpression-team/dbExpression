@@ -2,14 +2,21 @@
 
 dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly within compiled code.
 
+## Get dbExpression
+| Package            						|  												|
+| :-------------------------------------------------------------| :---------------------------------------------------------------------------------------------|
+| ```HatTrick.DbEx.MsSql```					| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.MsSql)					|
+| ```HatTrick.DbEx.Tools```					| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.Tools)					|
+| ```HatTrick.DbEx.MsSql.Extensions.DependencyInjection```	| ![Nuget](https://img.shields.io/nuget/v/HatTrick.DbEx.MsSql.Extensions.DependencyInjection)	|
+
 ## Build Status
 
-[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=release%2F0.7)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=release%2F0.7)
+[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)
 
-| Platform            		| Status 					|
-| :---            			| :---    					|
-|	MSSQL 2017				|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=release%2F0.7&stageName=Test%20MSSQL%20Platforms&jobName=Test%20MSSQL%202017)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=release%2F0.7)	|
-|	MSSQL 2019				|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=release%2F0.7&stageName=Test%20MSSQL%20Platforms&jobName=Test%20MSSQL%202019)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=release%2F0.7)	|
+| Platform            	| Status 					|
+| :---------------------| :---------------------------------------------|
+|	MSSQL 2017	|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=Test%20MSSQL%202017)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)	|
+|	MSSQL 2019	|	[![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master&stageName=Test%20MSSQL%20Platforms&jobName=Test%20MSSQL%202019)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)	|
 
 ## Why dbExpression?
 dbExpression was created to close the gap between application code and raw SQL, bringing Microsoft SQL Server functionality into .NET.  dbExpression isn't centered around object relational mapping (ORM) concepts, but instead focuses on allowing you to write powerful type-checked SQL queries comparable to queries written directly in TSQL.
