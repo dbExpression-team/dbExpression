@@ -75,7 +75,7 @@ GROUP BY
 
 ## Using dbExpression
 dbExpression is quick and easy to get up and running using two packages available on NuGet:
-1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/profiles/HatTrickLabs)
-2) [dbExpression dotnet CLI tool](https://www.nuget.org/profiles/HatTrickLabs)
+1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/packages/HatTrick.DbEx.MsSql/)
+2) [dbExpression dotnet CLI tool](https://www.nuget.org/packages/HatTrick.DbEx.Tools/)
 
 Jump to the [docs](https://github.com/HatTrickLabs/dbExpression/wiki) for installation and configuration instructions and how to author and execute beautiful queries.
