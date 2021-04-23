@@ -34,18 +34,26 @@ class DirectoryBuildPropsFile
 		$packageVersionNode = $xml.CreateElement("PackageVersion")
 		$informationalVersionNode = $xml.CreateElement("InformationalVersion")
 
+		# set the version to the AssemblyVersion
+		$versionNode.InnerText = $this.AssemblyVersion.AssemblyVersion
+		
+		# construct a new version for packaging
+		$version = "{0}.{1}.{2}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch
         if ($this.IncludeBuildNumberPartsInPackageVersion)
         {
-            $versionNode.InnerText = ("{0}.{1}.{2}-{3}{4}-{5}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch, $this.AssemblyVersion.Build, $this.AssemblyVersion.Revision, $this.AssemblyVersion.Suffix)
-            $packageVersionNode.InnerText = ("{0}.{1}.{2}-{3}{4}-{5}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch, $this.AssemblyVersion.Build, $this.AssemblyVersion.Revision, $this.AssemblyVersion.Suffix)
-			$informationalVersionNode.InnerText = ("{0}.{1}.{2}-{3}{4}-{5}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch, $this.AssemblyVersion.Build, $this.AssemblyVersion.Revision, $this.AssemblyVersion.Suffix)
+            $version = "{0}-{1}-{2}" -f $version, $this.AssemblyVersion.Build, $this.AssemblyVersion.Revision
+            if (![string]::IsNullOrWhiteSpace($this.AssemblyVersion.Suffix))
+			{	
+				$version = "{0}-{1}" -f $version, $this.AssemblyVersion.Suffix
+			}
         }
-        else
-        {
-            $versionNode.InnerText = ("{0}.{1}.{2}-{3}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch, $this.AssemblyVersion.Suffix)
-            $packageVersionNode.InnerText = ("{0}.{1}.{2}-{3}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch, $this.AssemblyVersion.Suffix)
-			$informationalVersionNode.InnerText = ("{0}.{1}.{2}-{3}" -f $this.AssemblyVersion.Major, $this.AssemblyVersion.Minor, $this.AssemblyVersion.Patch, $this.AssemblyVersion.Suffix)
-        }
+        elseif (![string]::IsNullOrWhiteSpace($this.AssemblyVersion.Suffix))
+		{
+			$version = "{0}-{1}" -f $version, $this.AssemblyVersion.Suffix
+		} 
+		$packageVersionNode.InnerText = $version
+		$informationalVersionNode.InnerText = $version
+		
 		$propertyGroupNode.AppendChild($versionNode)
 		$propertyGroupNode.AppendChild($packageVersionNode)
 		$propertyGroupNode.AppendChild($informationalVersionNode)
