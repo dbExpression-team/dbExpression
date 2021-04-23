@@ -29,9 +29,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             {
                 builder.Appender.Write(
                    builder.Parameters.Add(
-                       expression.Expression is null || expression.Expression is DBNull ? DBNull.Value : expression.Expression,
+                       expression.Expression,
                        context,
-                       context.Field is object ? builder.FindMetadata(context.Field) : null
+                       builder.FindMetadata(context.Field)
                    )
                    .Parameter.ParameterName
                );

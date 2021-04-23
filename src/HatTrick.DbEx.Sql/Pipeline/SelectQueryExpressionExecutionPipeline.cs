@@ -1139,17 +1139,15 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            var appender = database.AppenderFactory.CreateAppender();
-            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
 
-            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)));
+            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
             var statement = statementBuilder.CreateSqlStatement();
-            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)));
+            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
             var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression);
 
-            beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, parameterBuilder)));
+            beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
 
             var reader = executor.ExecuteQuery(
                 statement, 
@@ -1184,26 +1182,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            var appender = database.AppenderFactory.CreateAppender();
-            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
 
             if (beforeAssembly is object)
             {
-                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)), ct).ConfigureAwait(false);
+                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {
-                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)), ct).ConfigureAwait(false);
+                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             if (beforeSelect is object)
             {
-                await beforeSelect.InvokeAsync(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, parameterBuilder)), ct).ConfigureAwait(false);
+                await beforeSelect.InvokeAsync(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 

@@ -47,6 +47,7 @@ namespace HatTrick.DbEx.Sql.Configuration
                 addIfNull(nameof(configuration.ParameterBuilderFactory), configuration.ParameterBuilderFactory);
                 addIfNull(nameof(configuration.QueryExpressionFactory), configuration.QueryExpressionFactory);
                 addIfNull(nameof(configuration.StatementBuilderFactory), configuration.StatementBuilderFactory);
+                addIfNull(nameof(configuration.StatementAssemblerFactory), configuration.StatementAssemblerFactory);
                 addIfNull(nameof(configuration.StatementExecutorFactory), configuration.StatementExecutorFactory);
                 addIfNull(nameof(configuration.ValueConverterFactory), configuration.ValueConverterFactory);
             }

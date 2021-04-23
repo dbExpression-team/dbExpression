@@ -26,21 +26,19 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .From(sec.Person)
                     .Where(sec.Person.Id > 0);
 
-            SelectQueryExpression expressionSet = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
-            IAppender appender = database.AppenderFactory.CreateAppender();
-            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expressionSet, appender, parameterBuilder);
+            SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             string whereClause;
 
             //when
-            builder.AppendElement(expressionSet.Where.LeftArg, new AssemblyContext(new SqlStatementAssemblerConfiguration()));
+            builder.AppendElement(queryExpression.Where.LeftArg, new AssemblyContext(new SqlStatementAssemblerConfiguration()));
             whereClause = builder.Appender.ToString();
 
             //then
             whereClause.Should().NotBeNullOrWhiteSpace();
             whereClause.Should().Be($"[sec].[Person].[Id] > @P1");
 
-            parameterBuilder.Parameters.Should().ContainSingle()
+            builder.Parameters.Parameters.Should().ContainSingle()
                 .Which.Parameter.ParameterName.Should().Be("@P1");
         }
     }

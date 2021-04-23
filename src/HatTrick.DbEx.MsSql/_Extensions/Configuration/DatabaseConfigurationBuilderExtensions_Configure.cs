@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
             configBuilder.ConfigureMsSqlCommon(b => 
                 { 
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2005.MsSqlStatementBuilderFactory>(); 
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2005.MsSqlStatementAssemblerFactory>(); 
                     configureRuntime.Invoke(b); 
                 }, 
                 runtime.Metadata
@@ -80,7 +80,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
                 configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2008.MsSqlStatementBuilderFactory>();
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2008.MsSqlStatementAssemblerFactory>();
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -112,7 +112,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
                 configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2012.MsSqlStatementBuilderFactory>();
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2012.MsSqlStatementAssemblerFactory>();
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
             configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2014.MsSqlStatementBuilderFactory>();
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2014.MsSqlStatementAssemblerFactory>();
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -176,7 +176,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
             configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2016.MsSqlStatementBuilderFactory>();
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2016.MsSqlStatementAssemblerFactory>();
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -208,7 +208,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
                 configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2017.MsSqlStatementBuilderFactory>();
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2017.MsSqlStatementAssemblerFactory>();
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -240,7 +240,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
                 configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementBuilder.Use<Assembler.v2019.MsSqlStatementBuilderFactory>();
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2019.MsSqlStatementAssemblerFactory>();
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -265,6 +265,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             builder.SqlStatements
                 .Assembly
+                    .StatementBuilder.UseDefaultFactory()
                     .StatementAppender.UseDefaultFactory()
                     .ElementAppender.Use<MsSqlExpressionElementAppenderFactory>()
                     .ParameterBuilder.Use(new MsSqlParameterBuilderFactory(new MsSqlTypeMapFactory(), (builder as IRuntimeSqlDatabaseConfigurationProvider).Configuration.ValueConverterFactory))

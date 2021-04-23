@@ -32,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public ISqlDatabaseMetadataProvider MetadataProvider { get; set; }
         public IQueryExpressionFactory QueryExpressionFactory { get; set; }
         public IExecutionPipelineFactory ExecutionPipelineFactory { get; set;  }
+        public ISqlStatementAssemblerFactory StatementAssemblerFactory { get; set; }
         public ISqlStatementBuilderFactory StatementBuilderFactory { get; set; }
         public IExpressionElementAppenderFactory ExpressionElementAppenderFactory { get; set; }
         public IAppenderFactory AppenderFactory { get; set; }

@@ -16,73 +16,24 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
-using System;
-using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
-    public abstract class SqlStatementBuilderFactory : ISqlStatementBuilderFactory
+    public class SqlStatementBuilderFactory : ISqlStatementBuilderFactory
     {
-        #region internals
-        private Func<Type, ISqlStatementAssembler> statementAssemblerFactory;
-
-        private readonly ConcurrentDictionary<Type, Func<ISqlStatementAssembler>> statementAssemblers = new ConcurrentDictionary<Type, Func<ISqlStatementAssembler>>();
-        #endregion
-
-        #region interface
-        public virtual Func<Type, ISqlStatementAssembler> AssemblerFactory
-            => statementAssemblerFactory ?? (
-                    statementAssemblerFactory = sqlExecutionType =>
-                        ResolveAssemblerFactory(sqlExecutionType, sqlExecutionType)?.Invoke() 
-                            ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler, please ensure an executor has been registered for sql statement execution type of '{sqlExecutionType}'")
-                    );
-        #endregion
-
         #region methods
-        public virtual void RegisterStatementAssembler<T, U>()
-            where T : QueryExpression
-            where U : class, ISqlStatementAssembler, new()
-            => RegisterStatementAssembler<T, U>(() => new U());
-
-        public virtual void RegisterStatementAssembler<T, U>(U assembler)
-            where T : QueryExpression
-            where U : class, ISqlStatementAssembler
-            => RegisterStatementAssembler<T, U>(() => assembler);
-
-        public virtual void RegisterStatementAssembler<T, U>(Func<U> assemblerFactory)
-            where T : QueryExpression
-            where U : class, ISqlStatementAssembler
-            => statementAssemblers.AddOrUpdate(typeof(T), assemblerFactory, (t,f) => assemblerFactory);
-
-        public virtual ISqlStatementBuilder CreateSqlStatementBuilder(ISqlDatabaseMetadataProvider databaseMetadata, IExpressionElementAppenderFactory partAppenderFactory, SqlStatementAssemblerConfiguration config, QueryExpression expression, IAppender appender, ISqlParameterBuilder parameterBuilder)
+        public virtual ISqlStatementBuilder CreateSqlStatementBuilder(RuntimeSqlDatabaseConfiguration database, QueryExpression expression)
             => new SqlStatementBuilder(
-                databaseMetadata, 
-                partAppenderFactory, 
-                config, 
-                expression, 
-                e => AssemblerFactory(e.GetType()), 
-                appender, 
-                parameterBuilder
+                expression,
+                database.MetadataProvider ?? throw new DbExpressionConfigurationException($"Could not resolve a metadata provider, please ensure a metadata provider has been registered during startup initialization of dbExpression."),
+                database.StatementAssemblerFactory?.CreateSqlStatementAssembler(expression) ?? throw new DbExpressionConfigurationException($"Could not resolve a sql statement assembler for type '{expression.GetType()}', please ensure a sql statement assembler has been registered during startup initialization of dbExpression."),
+                database.AssemblerConfiguration ?? throw new DbExpressionConfigurationException($"Could not resolve assembler configuration, please ensure assembler configuration has been registered during startup initialization of dbExpression."),
+                database.ExpressionElementAppenderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve an expression element appender, please ensure an expression element appender has been registered during startup initialization of dbExpression."),
+                database.AppenderFactory?.CreateAppender() ?? throw new DbExpressionConfigurationException($"Could not resolve an appender, please ensure a an appender has been registered during startup initialization of dbExpression."),
+                database.ParameterBuilderFactory?.CreateSqlParameterBuilder() ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder, please ensure a parameter builder has been registered during startup initialization of dbExpression.")
             );
-
-        private Func<ISqlStatementAssembler> ResolveAssemblerFactory(Type current, Type original)
-        {
-            if (statementAssemblers.TryGetValue(current, out Func<ISqlStatementAssembler> factory))
-                return factory;
-
-            if (current.BaseType is null)
-                return null;
-
-            factory = ResolveAssemblerFactory(current.BaseType, original);
-
-            if (factory is object && current == original)
-                //reduce runtime recursion by "registering" the original with the found factory
-                statementAssemblers.TryAdd(original, factory);
-
-            return ResolveAssemblerFactory(current.BaseType, original);
-        }
         #endregion
     }
 }
