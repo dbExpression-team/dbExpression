@@ -73,7 +73,7 @@ GROUP BY
 ```
 - - -
 
-## Using dbExpression
+## Use dbExpression
 dbExpression is quick and easy to get up and running using two packages available on NuGet:
 1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/packages/HatTrick.DbEx.MsSql/)
 2) [dbExpression dotnet CLI tool](https://www.nuget.org/packages/HatTrick.DbEx.Tools/)
