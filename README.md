@@ -78,4 +78,4 @@ dbExpression is quick and easy to get up and running using two packages availabl
 1) [dbExpression Microsoft SQL Server package](https://www.nuget.org/profiles/HatTrickLabs)
 2) [dbExpression dotnet CLI tool](https://www.nuget.org/profiles/HatTrickLabs)
 
-Jump to the [docs](https://github.com/HatTrickLabs/db-ex/wiki) for installation and configuration instructions and how to author and execute beautiful queries.
+Jump to the [docs](https://github.com/HatTrickLabs/dbExpression/wiki) for installation and configuration instructions and how to author and execute beautiful queries.
