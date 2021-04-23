@@ -25,9 +25,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
-            IAppender appender = database.AppenderFactory.CreateAppender();
-            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
@@ -52,9 +50,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .From(dbo.Person);
 
             SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
-            IAppender appender = database.AppenderFactory.CreateAppender();
-            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 
@@ -81,9 +77,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
                     .GroupBy(table.FirstName);
 
             SelectQueryExpression queryExpression = (exp as IQueryExpressionProvider).Expression as SelectQueryExpression;
-            IAppender appender = database.AppenderFactory.CreateAppender();
-            ISqlParameterBuilder parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, queryExpression, appender, parameterBuilder);
+            ISqlStatementBuilder builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, queryExpression);
             var context = new AssemblyContext(new SqlStatementAssemblerConfiguration());
             context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
 

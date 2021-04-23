@@ -1,8 +1,10 @@
 ﻿using DbEx.Data;
 using DbEx.DataService;
+using DbEx.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Test

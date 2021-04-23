@@ -16,10 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
-using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -28,6 +25,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
     }
 
+    //TODO: is this used?
     public interface ISqlStatementAssembler<T> : ISqlStatementAssembler
         where T : AssemblyContext
     {

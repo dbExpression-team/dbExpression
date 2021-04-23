@@ -68,18 +68,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region methods
         public virtual void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
-            var appender = database.AppenderFactory.CreateAppender();
-            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
 
-            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)));
+            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
             var statement = statementBuilder.CreateSqlStatement();
-            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)));
+            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
             if (beforeInsert is object)
             {
                 foreach (var insert in expression.Inserts.Values)
-                    beforeInsert?.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert.Entity, parameterBuilder, statement)));
+                    beforeInsert?.Invoke(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert.Entity, statementBuilder.Parameters, statement)));
             }
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Outputs).ToList();
@@ -122,20 +120,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         public virtual async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
-            var appender = database.AppenderFactory.CreateAppender();
-            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
 
             if (beforeAssembly is object)
             {
-                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)), ct).ConfigureAwait(false);
+                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {
-                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)), ct).ConfigureAwait(false);
+                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
@@ -143,7 +139,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             {
                 foreach (var insert in expression.Inserts.Values)
                 {
-                    await beforeInsert.InvokeAsync(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert.Entity, parameterBuilder, statement)), ct).ConfigureAwait(false);
+                    await beforeInsert.InvokeAsync(new Lazy<BeforeInsertPipelineExecutionContext>(() => new BeforeInsertPipelineExecutionContext(database, expression, insert.Entity, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                     ct.ThrowIfCancellationRequested();
                 }
             }

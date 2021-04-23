@@ -526,7 +526,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string productDescription = "1234";
 
@@ -551,7 +551,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             string firstName = "xxx";
 
@@ -576,7 +576,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             double productPrice = 12.99;
 
@@ -600,7 +600,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
         {
             //given
             var database = ConfigureForMsSqlVersion(version);
-            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>(), database.AppenderFactory.CreateAppender(), database.ParameterBuilderFactory.CreateSqlParameterBuilder());
+            var builder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, database.QueryExpressionFactory.CreateQueryExpression<SelectQueryExpression>());
             var context = new AssemblyContext(database.AssemblerConfiguration);
             byte[] image = new byte[] { 1, 2, 3 };
 

@@ -63,15 +63,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region methods
         public int ExecuteUpdate(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
-            var appender = database.AppenderFactory.CreateAppender();
-            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
 
-            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)));
+            beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
             var statement = statementBuilder.CreateSqlStatement();
-            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)));
+            afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
-            beforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, parameterBuilder)));
+            beforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
 
             var rowsAffected = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
                 statement,
@@ -90,25 +88,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         public async Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
-            var appender = database.AppenderFactory.CreateAppender();
-            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database.MetadataProvider, database.ExpressionElementAppenderFactory, database.AssemblerConfiguration, expression, appender, parameterBuilder);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
 
             if (beforeAssembly is object)
             {
-                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, parameterBuilder)), ct).ConfigureAwait(false);
+                await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
             var statement = statementBuilder.CreateSqlStatement();
             if (afterAssembly is object)
             {
-                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, parameterBuilder, statement)), ct).ConfigureAwait(false);
+                await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 
             if (beforeUpdate is object)
             {
-                await beforeUpdate.InvokeAsync(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, parameterBuilder)), ct).ConfigureAwait(false);
+                await beforeUpdate.InvokeAsync(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
 

@@ -43,6 +43,11 @@ namespace HatTrick.DbEx.Sql.Configuration
         ISqlStatementBuilderFactoryConfigurationBuilder StatementBuilder { get; }
 
         /// <summary>
+        /// Configure the factory used to create the assembler responsible for assembling a sql statement from a query expression.
+        /// </summary>
+        ISqlStatementAssemblerFactoryConfigurationBuilder StatementAssembler { get; }
+
+        /// <summary>
         /// Configure the settings used to construct a sql statement.
         /// </summary>
         /// <param name="configure">Configure the settings used while constructing sql statements.</param>

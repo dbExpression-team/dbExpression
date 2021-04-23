@@ -26,33 +26,33 @@ namespace HatTrick.DbEx.Sql.Assembler
         ISqlStatementBuilder
     {
         #region internals
+        private readonly QueryExpression query;
+        private readonly ISqlDatabaseMetadataProvider databaseMetadata;
+        private readonly ISqlStatementAssembler assembler;
+        private readonly SqlStatementAssemblerConfiguration assemblerConfiguration;
+        private readonly IExpressionElementAppenderFactory elementAppenderFactory;
         private int _currentAliasCounter;
         private SqlStatement _sqlStatement;
         #endregion
 
-        public ISqlDatabaseMetadataProvider DatabaseMetadata { get; }
-        public SqlStatementAssemblerConfiguration AssemblerConfiguration { get; }
-        public QueryExpression Query { get; }
-        public Func<QueryExpression, ISqlStatementAssembler> AssemblerFactory { get; }
-        public IExpressionElementAppenderFactory ElementAppenderFactory { get; }
         public IAppender Appender { get; }
         public ISqlParameterBuilder Parameters { get; }
 
         public SqlStatementBuilder(
-            ISqlDatabaseMetadataProvider databaseMetadata,
-            IExpressionElementAppenderFactory elementAppenderFactory,
-            SqlStatementAssemblerConfiguration assemblerConfiguration,
             QueryExpression query,
-            Func<QueryExpression, ISqlStatementAssembler> assemblerFactory,
+            ISqlDatabaseMetadataProvider databaseMetadata,
+            ISqlStatementAssembler assembler,
+            SqlStatementAssemblerConfiguration assemblerConfiguration,
+            IExpressionElementAppenderFactory elementAppenderFactory,
             IAppender appender,
             ISqlParameterBuilder parameterBuilder
         )
         {
-            DatabaseMetadata = databaseMetadata ?? throw new ArgumentNullException(nameof(databaseMetadata));
-            AssemblerConfiguration = assemblerConfiguration ?? throw new ArgumentNullException(nameof(assemblerConfiguration));
-            Query = query ?? throw new ArgumentNullException(nameof(query));
-            AssemblerFactory = assemblerFactory ?? throw new ArgumentNullException(nameof(assemblerFactory));
-            ElementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
+            this.query = query ?? throw new ArgumentNullException(nameof(query));
+            this.databaseMetadata = databaseMetadata ?? throw new ArgumentNullException(nameof(databaseMetadata));
+            this.assembler = assembler ?? throw new ArgumentNullException(nameof(assembler));
+            this.assemblerConfiguration = assemblerConfiguration ?? throw new ArgumentNullException(nameof(assemblerConfiguration));
+            this.elementAppenderFactory = elementAppenderFactory ?? throw new ArgumentNullException(nameof(elementAppenderFactory));
             Appender = appender ?? throw new ArgumentNullException(nameof(appender));
             Parameters = parameterBuilder ?? throw new ArgumentNullException(nameof(parameterBuilder));
         }
@@ -62,12 +62,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (_sqlStatement is object)
                 return _sqlStatement;
 
-            var context = new AssemblyContext(AssemblerConfiguration);
+            var context = new AssemblyContext(assemblerConfiguration);
 
-            var assembler = AssemblerFactory(Query)
-                ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for statement execution type '{Query}', please ensure an assembler has been registered during startup initialization of DbExpression.");
-
-            assembler.AssembleStatement(Query, this, context);
+            assembler.AssembleStatement(query, this, context);
 
             return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
         }
@@ -75,7 +72,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement
         {           
-            var appender = ElementAppenderFactory.CreateElementAppender(element);
+            var appender = elementAppenderFactory.CreateElementAppender(element);
             if (appender is object)
             { 
                 appender.AppendElement(element, this, context);
@@ -92,17 +89,12 @@ namespace HatTrick.DbEx.Sql.Assembler
         }
 
         public void AssembleStatement(QueryExpression expression, AssemblyContext context)
-        {
-            var assembler = AssemblerFactory(expression)
-                ?? throw new DbExpressionConfigurationException($"Could not resolve an assembler for type '{expression.GetType()}', please ensure an assembler has been registered during startup initialization of DbExpression.");
-            
-            assembler.AssembleStatement(expression, this, context);
-        }
+            => assembler.AssembleStatement(expression, this, context);
 
         public string GenerateAlias() => $"_t{++_currentAliasCounter}";
 
-        public ISqlSchemaMetadata FindMetadata(SchemaExpression schema) => DatabaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlEntityMetadata FindMetadata(EntityExpression entity) => DatabaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifierProvider).Identifier);
-        public ISqlFieldMetadata FindMetadata(FieldExpression field) => DatabaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlSchemaMetadata FindMetadata(SchemaExpression schema) => databaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlEntityMetadata FindMetadata(EntityExpression entity) => databaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlFieldMetadata FindMetadata(FieldExpression field) => databaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier);
     }
 }
