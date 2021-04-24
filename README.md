@@ -2,9 +2,13 @@
 
 dbExpression is a Microsoft SQL Server database connector that enables fluent composition and execution of type safe SQL queries directly within compiled code.
 
+**dbExpression supports Microsoft SQL Server versions 2005+.**  
+
 ## Build Status
 
 [![Build Status](https://dev.azure.com/hattricklabs/DbEx/_apis/build/status/HatTrickLabs.db-ex?branchName=master)](https://dev.azure.com/hattricklabs/DbEx/_build/latest?definitionId=2&branchName=master)
+
+Using linux versions of Microsoft SQL Server on Docker images, integration tests are executed against the following versions:
 
 | Platform            	| Status 					|
 | :---------------------| :---------------------------------------------|
