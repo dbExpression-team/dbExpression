@@ -13,7 +13,10 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 		<PackageTags>microsoft sqlserver sql sql-server orm dependency-injection</PackageTags>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<Copyright>HatTrick Labs, LLC</Copyright>
     </PropertyGroup>
 
     <ItemGroup>
