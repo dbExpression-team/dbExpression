@@ -52,6 +52,12 @@ namespace HatTrick.DbEx.Sql.Configuration
             where TValueConverterFactory : class, IValueConverterFactory, new();
 
         /// <summary>
+        /// Use a custom factory to create a value converter used to convert data to and from the target database.
+        /// </summary>
+        /// <param name="factory">A delegate responsible for creating an <see cref="IValueConverter"/> for the provided value type.</param>
+        void Use(Func<Type, IValueConverter> factory);
+
+        /// <summary>
         /// Use the default factory to create a value converter used to convert data to and from the target database.
         /// </summary>
         void UseDefaultFactory();

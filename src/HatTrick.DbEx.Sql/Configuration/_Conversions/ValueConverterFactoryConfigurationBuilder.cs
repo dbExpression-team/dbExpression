@@ -52,6 +52,13 @@ namespace HatTrick.DbEx.Sql.Configuration
             configureFactory?.Invoke(configuration.ValueConverterFactory as TValueConverterFactory);
         }
 
+        public void Use(Func<Type, IValueConverter> factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+            configuration.ValueConverterFactory = new DelegateValueConverterFactory(factory);
+        }
+
         public void UseDefaultFactory()
             => UseDefaultFactory(null);
 
