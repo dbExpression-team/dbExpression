@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region constructors
         public CurrentTimestampFunctionExpression() 
-            : base(null, typeof(DateTime))
+            : base(typeof(DateTime))
         {
 
         }

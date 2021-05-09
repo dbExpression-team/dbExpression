@@ -16,8 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Expression
+using HatTrick.DbEx.Sql.Converter;
+using System;
+
+namespace HatTrick.DbEx.Sql.Executor
 {
-    public interface INullableDateFunctionExpression : IFunctionExpression
-    { }
+    public interface IValueConverterProvider
+
+    {
+        IValueConverter FindConverter(int fieldIndex, Type databaseType, object value);
+    }
 }

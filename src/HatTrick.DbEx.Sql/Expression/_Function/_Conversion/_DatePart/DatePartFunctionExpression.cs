@@ -21,21 +21,30 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DatePartFunctionExpression : ConversionFunctionExpression,
+        IExpressionProvider<IExpressionElement>,
+        IExpressionProvider<DatePartsExpression>,
         IEquatable<DatePartFunctionExpression>
     {
+        #region internals
+        private readonly IExpressionElement expression;
+        private readonly DatePartsExpression datePart;
+        #endregion
+
         #region interface
-        public DatePartsExpression DatePart { get; private set; }
+        IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
+        DatePartsExpression IExpressionProvider<DatePartsExpression>.Expression => datePart;
         #endregion
 
         #region constructors
-        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType) : base(expression, declaredType)
+        protected DatePartFunctionExpression(DatePartsExpression datePart, IExpressionElement expression, Type declaredType) : base(declaredType)
         {
-            DatePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
+            this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            this.datePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEPART({DatePart.ToString().ToLower()}, {Expression})";
+        public override string ToString() => $"DATEPART({datePart.ToString().ToLower()}, {expression})";
         #endregion
 
         #region equals
@@ -43,9 +52,13 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (this.DatePart is null && obj.DatePart is object) return false;
-            if (this.DatePart is object && obj.DatePart is null) return false;
-            if (!this.DatePart.Equals(obj.DatePart)) return false;
+            if (expression is null && obj.expression is object) return false;
+            if (expression is object && obj.expression is null) return false;
+            if (!expression.Equals(obj.expression)) return false;
+
+            if (this.datePart is null && obj.datePart is object) return false;
+            if (this.datePart is object && obj.datePart is null) return false;
+            if (!this.datePart.Equals(obj.datePart)) return false;
 
             return true;
         }
@@ -60,7 +73,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (DatePart is object ? DatePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (datePart is object ? datePart.GetHashCode() : 0);
                 return hash;
             }
         }

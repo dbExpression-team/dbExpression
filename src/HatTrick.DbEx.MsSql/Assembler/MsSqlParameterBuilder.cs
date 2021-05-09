@@ -19,6 +19,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Types;
 using System;
 using System.Data;
@@ -43,9 +44,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #endregion
 
         #region methods
-        public override DbParameter Add<T>(T value, AssemblyContext context)
+        public override ParameterizedExpression Add<T>(T value, AssemblyContext context)
         {
-            var (type, converted) = ConvertDbParameterValue(value);
+            var (type, converted) = ConvertDbParameterValue(value is object ? value.GetType() : typeof(T), value);
             var typeMap = typeMaps.FindByClrType(type)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the supplied clr type {typeof(T)}.  This is an internal issue that cannot be resolved; please report as an issue.");
 
@@ -53,16 +54,16 @@ namespace HatTrick.DbEx.MsSql.Assembler
             {
                 var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
                 if (existing?.Parameter is object)
-                    return existing.Parameter;
+                    return existing;
             }
 
             var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null);
             var parameterized = new ParameterizedExpression(type, parameter, null);
             Parameters.Add(parameterized);
-            return parameter;
+            return parameterized;
         }
 
-        public override DbParameter Add(object value, Type valueType, AssemblyContext context)
+        public override ParameterizedExpression Add(object value, Type valueType, AssemblyContext context)
         {
             var (type, converted) = ConvertDbParameterValue(valueType, value);
             var typeMap = typeMaps.FindByClrType(type)
@@ -72,18 +73,18 @@ namespace HatTrick.DbEx.MsSql.Assembler
             {
                 var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
                 if (existing?.Parameter is object)
-                    return existing.Parameter;
+                    return existing;
             }
 
             var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null);
             var parameterized = new ParameterizedExpression(type, parameter, null);
             Parameters.Add(parameterized);
-            return parameter;
+            return parameterized;
         }
 
-        public override ParameterizedExpression Add<T>(T value, AssemblyContext context, ISqlFieldMetadata meta)
+        public override ParameterizedExpression Add<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
         {
-            var (type, converted) = ConvertDbParameterValue(value);
+            var (type, converted) = ConvertDbParameterValue(declaredType, value);
             var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType) 
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the {nameof(SqlDbType)} {(SqlDbType)meta.DbType}.  This is an internal issue that cannot be resolved; please report as an issue.");
             
@@ -94,30 +95,31 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     return existing;
             }
 
-            var parameter = CreateDbParameter(value, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale);
+            var parameter = CreateDbParameter(converted, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale);
             var parameterized = new ParameterizedExpression(typeMap.ClrType, parameter, meta);
             Parameters.Add(parameterized);
             return parameterized;
         }
 
-        protected virtual (Type, object) ConvertDbParameterValue<T>(T value)
-        {
-            if (value is DBNull || !(value is object))
-            {
-                return (typeof(T), value);
-            }
-            var converter = valueConverterFactory.CreateConverter(value.GetType());
-            return converter.ConvertToDatabase(value);
-        }
+        protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue<T>(Type type, T value)
+            => ConvertDbParameterValue(type, value, valueConverterFactory.CreateConverter(type));
 
-        protected virtual (Type, object) ConvertDbParameterValue(Type type, object value)
+        protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue(Type type, object value)
         {
-            if (value is DBNull || value is null)
+            if ((value is DBNull || value is null) && !type.IsNullableType())
             {
                 return (type, value);
             }
             var converter = valueConverterFactory.CreateConverter(type);
-            return converter.ConvertToDatabase(value);
+            return ConvertDbParameterValue(type, value, converter);
+        }
+
+        protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue(Type type, object value, IValueConverter converter)
+        {
+            var converted = value is DBNull || !(value is object) ? converter.ConvertToDatabase(null) : converter.ConvertToDatabase(value);
+            if (converted.ConvertedValue is null)
+                converted.ConvertedValue = DBNull.Value;
+            return converted;
         }
 
         protected virtual DbParameter CreateDbParameter<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)

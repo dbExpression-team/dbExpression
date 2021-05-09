@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(CeilingFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("CEILING(");
-            builder.AppendElement(expression.Expression, context);
+            builder.AppendElement((expression as IExpressionProvider<IExpressionElement>).Expression, context);
             builder.Appender.Write(")");
         }
         #endregion

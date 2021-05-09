@@ -1372,12 +1372,12 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<Address> GetInclusiveInsertExpression(Address address)
         {
             return new InsertExpressionSet<Address>(address 
-                ,new InsertExpression<ServerSideBlazorApp.Data.AddressType?>(AddressType, address.AddressType)
-                ,new InsertExpression<string>(Line1, address.Line1)
-                ,new InsertExpression<string>(Line2, address.Line2)
-                ,new InsertExpression<string>(City, address.City)
-                ,new InsertExpression<string>(State, address.State)
-                ,new InsertExpression<string>(Zip, address.Zip)
+                ,new InsertExpression<ServerSideBlazorApp.Data.AddressType?>(address.AddressType, AddressType)
+                ,new InsertExpression<string>(address.Line1, Line1)
+                ,new InsertExpression<string>(address.Line2, Line2)
+                ,new InsertExpression<string>(address.City, City)
+                ,new InsertExpression<string>(address.State, State)
+                ,new InsertExpression<string>(address.Zip, Zip)
             );
         }
 
@@ -1449,11 +1449,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType>(value, this));
             public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.AddressType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType?>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.AddressType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType?>(value, this));
             public AssignmentExpression Set(NullableEnumElement<ServerSideBlazorApp.Data.AddressType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.AddressType>(value, this));
             #endregion
         }
         #endregion
@@ -1476,7 +1476,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -1500,10 +1500,10 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             #endregion
         }
         #endregion
@@ -1526,7 +1526,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -1550,7 +1550,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -1574,7 +1574,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -1952,14 +1952,14 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<Customer> GetInclusiveInsertExpression(Customer customer)
         {
             return new InsertExpressionSet<Customer>(customer 
-                ,new InsertExpression<string>(FirstName, customer.FirstName)
-                ,new InsertExpression<string>(LastName, customer.LastName)
-                ,new InsertExpression<DateTime?>(BirthDate, customer.BirthDate)
-                ,new InsertExpression<ServerSideBlazorApp.Data.GenderType>(GenderType, customer.GenderType)
-                ,new InsertExpression<int?>(CreditLimit, customer.CreditLimit)
-                ,new InsertExpression<int?>(YearOfLastCreditLimitReview, customer.YearOfLastCreditLimitReview)
-                ,new InsertExpression<DateTimeOffset>(RegistrationDate, customer.RegistrationDate)
-                ,new InsertExpression<DateTimeOffset?>(LastLoginDate, customer.LastLoginDate)
+                ,new InsertExpression<string>(customer.FirstName, FirstName)
+                ,new InsertExpression<string>(customer.LastName, LastName)
+                ,new InsertExpression<DateTime?>(customer.BirthDate, BirthDate)
+                ,new InsertExpression<ServerSideBlazorApp.Data.GenderType>(customer.GenderType, GenderType)
+                ,new InsertExpression<int?>(customer.CreditLimit, CreditLimit)
+                ,new InsertExpression<int?>(customer.YearOfLastCreditLimitReview, YearOfLastCreditLimitReview)
+                ,new InsertExpression<DateTimeOffset>(customer.RegistrationDate, RegistrationDate)
+                ,new InsertExpression<DateTimeOffset?>(customer.LastLoginDate, LastLoginDate)
             );
         }
 
@@ -2035,7 +2035,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -2059,7 +2059,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -2083,11 +2083,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
         #endregion
@@ -2110,7 +2110,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.GenderType>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.GenderType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.GenderType>(value, this));
             public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.GenderType> value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -2134,11 +2134,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value));
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
         #endregion
@@ -2161,11 +2161,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value));
+            public AssignmentExpression Set(int? value) => new AssignmentExpression(this, new LiteralExpression<int?>(value, this));
             public AssignmentExpression Set(NullableInt32Element value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             #endregion
         }
         #endregion
@@ -2188,7 +2188,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -2212,11 +2212,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value));
+            public AssignmentExpression Set(DateTimeOffset value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             public AssignmentExpression Set(DateTimeOffsetElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value));
+            public AssignmentExpression Set(DateTimeOffset? value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset?>(value, this));
             public AssignmentExpression Set(NullableDateTimeOffsetElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTimeOffset>(value, this));
             #endregion
         }
         #endregion
@@ -2419,8 +2419,8 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<CustomerAddress> GetInclusiveInsertExpression(CustomerAddress customerAddress)
         {
             return new InsertExpressionSet<CustomerAddress>(customerAddress 
-                ,new InsertExpression<int>(CustomerId, customerAddress.CustomerId)
-                ,new InsertExpression<int>(AddressId, customerAddress.AddressId)
+                ,new InsertExpression<int>(customerAddress.CustomerId, CustomerId)
+                ,new InsertExpression<int>(customerAddress.AddressId, AddressId)
             );
         }
 
@@ -2483,7 +2483,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -2507,7 +2507,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3004,20 +3004,20 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<Product> GetInclusiveInsertExpression(Product product)
         {
             return new InsertExpressionSet<Product>(product 
-                ,new InsertExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(ProductCategoryType, product.ProductCategoryType)
-                ,new InsertExpression<string>(Name, product.Name)
-                ,new InsertExpression<string>(Description, product.Description)
-                ,new InsertExpression<double>(ListPrice, product.ListPrice)
-                ,new InsertExpression<double>(Price, product.Price)
-                ,new InsertExpression<int>(Quantity, product.Quantity)
-                ,new InsertExpression<byte[]>(Image, product.Image)
-                ,new InsertExpression<decimal?>(Height, product.Height)
-                ,new InsertExpression<decimal?>(Width, product.Width)
-                ,new InsertExpression<decimal?>(Depth, product.Depth)
-                ,new InsertExpression<decimal?>(Weight, product.Weight)
-                ,new InsertExpression<decimal>(ShippingWeight, product.ShippingWeight)
-                ,new InsertExpression<TimeSpan?>(ValidStartTimeOfDayForPurchase, product.ValidStartTimeOfDayForPurchase)
-                ,new InsertExpression<TimeSpan?>(ValidEndTimeOfDayForPurchase, product.ValidEndTimeOfDayForPurchase)
+                ,new InsertExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(product.ProductCategoryType, ProductCategoryType)
+                ,new InsertExpression<string>(product.Name, Name)
+                ,new InsertExpression<string>(product.Description, Description)
+                ,new InsertExpression<double>(product.ListPrice, ListPrice)
+                ,new InsertExpression<double>(product.Price, Price)
+                ,new InsertExpression<int>(product.Quantity, Quantity)
+                ,new InsertExpression<byte[]>(product.Image, Image)
+                ,new InsertExpression<decimal?>(product.Height, Height)
+                ,new InsertExpression<decimal?>(product.Width, Width)
+                ,new InsertExpression<decimal?>(product.Depth, Depth)
+                ,new InsertExpression<decimal?>(product.Weight, Weight)
+                ,new InsertExpression<decimal>(product.ShippingWeight, ShippingWeight)
+                ,new InsertExpression<TimeSpan?>(product.ValidStartTimeOfDayForPurchase, ValidStartTimeOfDayForPurchase)
+                ,new InsertExpression<TimeSpan?>(product.ValidEndTimeOfDayForPurchase, ValidEndTimeOfDayForPurchase)
             );
         }
 
@@ -3105,11 +3105,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType>(value, this));
             public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.ProductCategoryType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType?>(value, this));
             public AssignmentExpression Set(NullableEnumElement<ServerSideBlazorApp.Data.ProductCategoryType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.ProductCategoryType>(value, this));
             #endregion
         }
         #endregion
@@ -3132,7 +3132,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3156,10 +3156,10 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(NullableStringElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             #endregion
         }
         #endregion
@@ -3182,7 +3182,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3206,7 +3206,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3230,7 +3230,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3254,10 +3254,10 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value));
+            public AssignmentExpression Set(byte[] value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             public AssignmentExpression Set(ByteArrayElement value) => new AssignmentExpression(this, value);
             public AssignmentExpression Set(NullableByteArrayElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<byte[]>(value, this));
             #endregion
         }
         #endregion
@@ -3280,11 +3280,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
         #endregion
@@ -3307,11 +3307,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
         #endregion
@@ -3334,11 +3334,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
         #endregion
@@ -3361,11 +3361,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value));
+            public AssignmentExpression Set(decimal? value) => new AssignmentExpression(this, new LiteralExpression<decimal?>(value, this));
             public AssignmentExpression Set(NullableDecimalElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             #endregion
         }
         #endregion
@@ -3388,7 +3388,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3412,11 +3412,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value));
+            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             #endregion
         }
         #endregion
@@ -3439,11 +3439,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value));
+            public AssignmentExpression Set(TimeSpan value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             public AssignmentExpression Set(TimeSpanElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value));
+            public AssignmentExpression Set(TimeSpan? value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan?>(value, this));
             public AssignmentExpression Set(NullableTimeSpanElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<TimeSpan>(value, this));
             #endregion
         }
         #endregion
@@ -3865,16 +3865,16 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<Purchase> GetInclusiveInsertExpression(Purchase purchase)
         {
             return new InsertExpressionSet<Purchase>(purchase 
-                ,new InsertExpression<int>(CustomerId, purchase.CustomerId)
-                ,new InsertExpression<string>(OrderNumber, purchase.OrderNumber)
-                ,new InsertExpression<int>(TotalPurchaseQuantity, purchase.TotalPurchaseQuantity)
-                ,new InsertExpression<double>(TotalPurchaseAmount, purchase.TotalPurchaseAmount)
-                ,new InsertExpression<DateTime>(PurchaseDate, purchase.PurchaseDate)
-                ,new InsertExpression<DateTime?>(ShipDate, purchase.ShipDate)
-                ,new InsertExpression<DateTime?>(ExpectedDeliveryDate, purchase.ExpectedDeliveryDate)
-                ,new InsertExpression<Guid?>(TrackingIdentifier, purchase.TrackingIdentifier)
-                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentMethodType>(PaymentMethodType, purchase.PaymentMethodType)
-                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(PaymentSourceType, purchase.PaymentSourceType)
+                ,new InsertExpression<int>(purchase.CustomerId, CustomerId)
+                ,new InsertExpression<string>(purchase.OrderNumber, OrderNumber)
+                ,new InsertExpression<int>(purchase.TotalPurchaseQuantity, TotalPurchaseQuantity)
+                ,new InsertExpression<double>(purchase.TotalPurchaseAmount, TotalPurchaseAmount)
+                ,new InsertExpression<DateTime>(purchase.PurchaseDate, PurchaseDate)
+                ,new InsertExpression<DateTime?>(purchase.ShipDate, ShipDate)
+                ,new InsertExpression<DateTime?>(purchase.ExpectedDeliveryDate, ExpectedDeliveryDate)
+                ,new InsertExpression<Guid?>(purchase.TrackingIdentifier, TrackingIdentifier)
+                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentMethodType>(purchase.PaymentMethodType, PaymentMethodType)
+                ,new InsertExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(purchase.PaymentSourceType, PaymentSourceType)
             );
         }
 
@@ -3954,7 +3954,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -3978,7 +3978,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4002,7 +4002,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4026,7 +4026,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value));
+            public AssignmentExpression Set(double value) => new AssignmentExpression(this, new LiteralExpression<double>(value, this));
             public AssignmentExpression Set(DoubleElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4050,7 +4050,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4074,11 +4074,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
         #endregion
@@ -4101,11 +4101,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value));
+            public AssignmentExpression Set(DateTime value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             public AssignmentExpression Set(DateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value));
+            public AssignmentExpression Set(DateTime? value) => new AssignmentExpression(this, new LiteralExpression<DateTime?>(value, this));
             public AssignmentExpression Set(NullableDateTimeElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<DateTime>(value, this));
             #endregion
         }
         #endregion
@@ -4128,11 +4128,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value));
+            public AssignmentExpression Set(Guid value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
             public AssignmentExpression Set(GuidElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value));
+            public AssignmentExpression Set(Guid? value) => new AssignmentExpression(this, new LiteralExpression<Guid?>(value, this));
             public AssignmentExpression Set(NullableGuidElement value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<Guid>(value, this));
             #endregion
         }
         #endregion
@@ -4155,7 +4155,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentMethodType>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentMethodType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentMethodType>(value, this));
             public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.PaymentMethodType> value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4179,11 +4179,11 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType>(value, this));
             public AssignmentExpression Set(EnumElement<ServerSideBlazorApp.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(value));
+            public AssignmentExpression Set(ServerSideBlazorApp.Data.PaymentSourceType? value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType?>(value, this));
             public AssignmentExpression Set(NullableEnumElement<ServerSideBlazorApp.Data.PaymentSourceType> value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<ServerSideBlazorApp.Data.PaymentSourceType>(value, this));
             #endregion
         }
         #endregion
@@ -4461,10 +4461,10 @@ namespace ServerSideBlazorApp.dboDataService
         protected override InsertExpressionSet<PurchaseLine> GetInclusiveInsertExpression(PurchaseLine purchaseLine)
         {
             return new InsertExpressionSet<PurchaseLine>(purchaseLine 
-                ,new InsertExpression<int>(PurchaseId, purchaseLine.PurchaseId)
-                ,new InsertExpression<int>(ProductId, purchaseLine.ProductId)
-                ,new InsertExpression<decimal>(PurchasePrice, purchaseLine.PurchasePrice)
-                ,new InsertExpression<int>(Quantity, purchaseLine.Quantity)
+                ,new InsertExpression<int>(purchaseLine.PurchaseId, PurchaseId)
+                ,new InsertExpression<int>(purchaseLine.ProductId, ProductId)
+                ,new InsertExpression<decimal>(purchaseLine.PurchasePrice, PurchasePrice)
+                ,new InsertExpression<int>(purchaseLine.Quantity, Quantity)
             );
         }
 
@@ -4532,7 +4532,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4556,7 +4556,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4580,7 +4580,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value));
+            public AssignmentExpression Set(decimal value) => new AssignmentExpression(this, new LiteralExpression<decimal>(value, this));
             public AssignmentExpression Set(DecimalElement value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -4604,7 +4604,7 @@ namespace ServerSideBlazorApp.dboDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -5221,8 +5221,8 @@ namespace ServerSideBlazorApp.secDataService
         protected override InsertExpressionSet<Person> GetInclusiveInsertExpression(Person person)
         {
             return new InsertExpressionSet<Person>(person 
-                ,new InsertExpression<int>(Id, person.Id)
-                ,new InsertExpression<string>(SSN, person.SSN)
+                ,new InsertExpression<int>(person.Id, Id)
+                ,new InsertExpression<string>(person.SSN, SSN)
             );
         }
 
@@ -5263,7 +5263,7 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value));
+            public AssignmentExpression Set(int value) => new AssignmentExpression(this, new LiteralExpression<int>(value, this));
             public AssignmentExpression Set(Int32Element value) => new AssignmentExpression(this, value);
             #endregion
         }
@@ -5287,7 +5287,7 @@ namespace ServerSideBlazorApp.secDataService
             #endregion
 
             #region set
-            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value));
+            public AssignmentExpression Set(string value) => new AssignmentExpression(this, new LiteralExpression<string>(value, this));
             public AssignmentExpression Set(StringElement value) => new AssignmentExpression(this, value);
             #endregion
         }

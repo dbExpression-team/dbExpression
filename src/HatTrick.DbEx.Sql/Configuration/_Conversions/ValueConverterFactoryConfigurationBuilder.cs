@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
@@ -49,13 +50,6 @@ namespace HatTrick.DbEx.Sql.Configuration
             if (!(configuration.ValueConverterFactory is TValueConverterFactory))
                 configuration.ValueConverterFactory = new TValueConverterFactory();
             configureFactory?.Invoke(configuration.ValueConverterFactory as TValueConverterFactory);
-        }
-
-        public void Use(Func<Type, IValueConverter> factory)
-        {
-            if (factory is null)
-                throw new ArgumentNullException(nameof(factory));
-            configuration.ValueConverterFactory = new DelegateValueConverterFactory(factory);
         }
 
         public void UseDefaultFactory()

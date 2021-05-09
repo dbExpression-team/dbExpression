@@ -501,10 +501,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableInt32ExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<int?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableInt32ExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<int?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<int?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<int?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableInt32ExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<int?>(b, field) : new LiteralExpression<int?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableInt32ExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<int?>(b, field) : new LiteralExpression<int?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<int?>(a), b.Expression is FieldExpression field ? new LiteralExpression<int?>(a, field) : new LiteralExpression<int?>(a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableInt32ExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<int?>(a), b.Expression is FieldExpression field ? new LiteralExpression<int?>(a, field) : new LiteralExpression<int?>(a), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data type

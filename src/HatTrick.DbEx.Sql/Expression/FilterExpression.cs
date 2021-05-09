@@ -21,7 +21,8 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class FilterExpression :
-        IFilterExpressionElement
+        IFilterExpressionElement,
+        IEquatable<FilterExpression>
     {
         #region interface
         public IExpressionElement LeftArg { get; private set; }
@@ -56,6 +57,47 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             string expression = $"{LeftArg} {ExpressionOperator} {RightArg}";
             return (Negate) ? $" NOT ({expression})" : expression;
+        }
+        #endregion
+
+        #region equals
+        public bool Equals(FilterExpression obj)
+        {
+            if (obj is null) return false;
+            if (ReferenceEquals(this, obj)) return true;
+
+            if (ExpressionOperator != obj.ExpressionOperator) return false;
+
+            if (Negate != obj.Negate) return false;
+
+            if (LeftArg is null && obj.LeftArg is object) return false;
+            if (LeftArg is object && obj.LeftArg is null) return false;
+            if (!LeftArg.Equals(obj.LeftArg)) return false;
+
+            if (RightArg is null && obj.RightArg is object) return false;
+            if (RightArg is object && obj.RightArg is null) return false;
+            if (!RightArg.Equals(obj.RightArg)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+            => obj is FilterExpression exp && base.Equals(exp);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ (LeftArg is object ? LeftArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (RightArg is object ? RightArg.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ ExpressionOperator.GetHashCode();
+                hash = (hash * multiplier) ^ Negate.GetHashCode();
+                return hash;
+            }
         }
         #endregion
 
