@@ -16,13 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
     public interface IValueConverter
     {
-        (Type, object) ConvertToDatabase(object value);
+        (Type Type, object ConvertedValue) ConvertToDatabase(object value);
         object ConvertFromDatabase(object value);
         T ConvertFromDatabase<T>(object value);
     }

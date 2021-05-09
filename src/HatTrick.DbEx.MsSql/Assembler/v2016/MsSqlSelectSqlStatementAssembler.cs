@@ -32,8 +32,8 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2016
                     .Indentation++
                     .Indent()
                     .Write("OFFSET ")
-                    .Write(builder.Parameters.Add(expression.Offset.Value, context).ParameterName)
-                    .Indent().Write(" ROWS")
+                    .Write(builder.Parameters.Add(expression.Offset.Value, context).Parameter.ParameterName)
+                    .Write(" ROWS")
                     .LineBreak()
                     .Indentation--;
             }
@@ -43,8 +43,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2016
                     .Indentation++
                     .Indent()
                     .Write("FETCH NEXT ")
-                    .Write(builder.Parameters.Add(expression.Limit.Value, context).ParameterName)
-                    .Indent()
+                    .Write(builder.Parameters.Add(expression.Limit.Value, context).Parameter.ParameterName)
                     .Write(" ROWS ONLY")
                     .LineBreak()
                     .Indentation--;

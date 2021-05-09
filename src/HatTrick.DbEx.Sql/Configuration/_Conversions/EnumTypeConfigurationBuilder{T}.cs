@@ -16,13 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Converter;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public class EnumTypeValueConverterConfigurationBuilder<T> : IEnumTypeValueConverterConfigurationBuilder<T>
-        where T : struct, Enum, IComparable
+    public class EnumTypeValueConverterConfigurationBuilder<TEnum> : IEnumTypeValueConverterConfigurationBuilder<TEnum>
+        where TEnum : struct, Enum, IComparable
     {
         #region internals
         private readonly IValueConverterFactoryContinuationConfigurationBuilder caller;
@@ -38,9 +38,44 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region methods
+        public IValueConverterFactoryContinuationConfigurationBuilder Use(IValueConverter converter)
+        {
+            factory.RegisterConverter<TEnum>(converter);
+            return caller;
+        }
+
+        public IValueConverterFactoryContinuationConfigurationBuilder Use<TConverter>()
+            where TConverter : class, IValueConverter, new()
+        {
+            factory.RegisterConverter<TEnum, TConverter>();
+            return caller;
+        }
+
+        public IValueConverterFactoryContinuationConfigurationBuilder Use(Func<TEnum?, object> convertToDatabase, Func<object, TEnum?> convertFromDatabase)
+        {
+            var converter = new DelegateValueConverter<TEnum?>(convertToDatabase, convertFromDatabase);
+            factory.RegisterConverter<TEnum>(converter);
+            factory.RegisterConverter<TEnum?>(converter);
+            return caller;
+        }
+
         public IValueConverterFactoryContinuationConfigurationBuilder PersistAsString()
         {
-            factory.RegisterConverter<T>(new StringEnumValueConverter<T>());
+            //ensure to register both the enum type and the nullable version of the enum type
+            var enumType = typeof(TEnum);
+            if (enumType.IsNullableType() && enumType.GetGenericArguments()[0].IsEnum)
+            {
+                var converter = new StringNullableEnumValueConverter<TEnum>();
+                factory.RegisterConverter(enumType, converter);
+                factory.RegisterConverter(enumType.GetGenericArguments()[0], converter);
+            }
+            else if (enumType.IsEnum)
+            {
+                var nullableEnumType = typeof(Nullable<>).MakeGenericType(enumType);
+                var converter = new StringNullableEnumValueConverter(nullableEnumType);
+                factory.RegisterConverter(enumType, converter);
+                factory.RegisterConverter(nullableEnumType, converter);
+            }
             return caller;
         }
         #endregion

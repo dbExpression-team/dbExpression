@@ -32,7 +32,6 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        public IExpressionElement Expression { get; }
         Type IExpressionTypeProvider.DeclaredType => DeclaredType;
         #endregion
 
@@ -41,9 +40,8 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        protected FunctionExpression(IExpressionElement expression, Type declaredType)
+        protected FunctionExpression(Type declaredType)
         {
-            Expression = expression; //expression may be fully managed in subclass
             DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
         }
         #endregion
@@ -56,12 +54,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region equals
         public bool Equals(FunctionExpression obj)
         {
-            if (Expression is null && obj.Expression is object) return false;
-            if (Expression is object && obj.Expression is null) return false;
-            if (!Expression.Equals(obj.Expression)) return false;
-            if (DeclaredType != obj.DeclaredType) return false;
-
-            return true;
+            return DeclaredType == obj.DeclaredType;
         }
 
         public override bool Equals(object obj)
@@ -75,7 +68,6 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (DeclaredType is object ? DeclaredType.GetHashCode() : 0);
                 return hash;
             }

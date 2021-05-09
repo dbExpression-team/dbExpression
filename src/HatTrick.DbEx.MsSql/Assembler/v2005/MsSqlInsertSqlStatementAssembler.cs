@@ -103,15 +103,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
 
                 builder.Appender.Indent();
 
-                context.PushField((insertSet[i] as IAssignmentExpressionProvider).Assignee);
-                try
-                {
-                    builder.AppendElement((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
-                }
-                finally
-                {
-                    context.PopField();
-                }
+                builder.AppendElement((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
 
                 if (i < insertSet.Count - 1)
                     builder.Appender.Write(", ").LineBreak();

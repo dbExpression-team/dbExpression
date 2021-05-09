@@ -42,16 +42,8 @@ namespace HatTrick.DbEx.Sql.Assembler
                 builder.AppendElement(expression.LeftArg, context);
 
                 builder.Appender.Write(FilterOperatorMap[expression.ExpressionOperator]);
-                context.PushField(expression.LeftArg.AsFieldExpression());
-                try
-                {
-                    builder.AppendElement(expression.RightArg, context);
-                }
-                finally
-                {
-                    context.PopField();
-                }
-
+                builder.AppendElement(expression.RightArg, context);
+                
                 if (expression.Negate)
                 {
                     builder.Appender.Write(')');

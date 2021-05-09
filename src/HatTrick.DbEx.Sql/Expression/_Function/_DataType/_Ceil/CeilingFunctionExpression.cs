@@ -21,23 +21,38 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CeilingFunctionExpression : DataTypeFunctionExpression,
+        IExpressionProvider<IExpressionElement>,
         IEquatable<CeilingFunctionExpression>
     {
-        #region constructors
-        protected CeilingFunctionExpression(IExpressionElement expression, Type declaredType) : base(expression, declaredType)
-        {
+        #region internals
+        private readonly IExpressionElement expression;
+        #endregion
 
+        #region interface
+        IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
+        #endregion
+
+        #region constructors
+        protected CeilingFunctionExpression(IExpressionElement expression, Type declaredType) : base(declaredType)
+        {
+            this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"FLOOR({Expression})";
+        public override string ToString() => $"FLOOR({expression})";
         #endregion
 
         #region equals
         public bool Equals(CeilingFunctionExpression obj)
         {
-            return base.Equals(obj);
+            if (!base.Equals(obj)) return false;
+
+            if (expression is null && obj.expression is object) return false;
+            if (expression is object && obj.expression is null) return false;
+            if (!expression.Equals(obj.expression)) return false;
+
+            return true;
         }
 
         public override bool Equals(object obj)
@@ -45,7 +60,14 @@ namespace HatTrick.DbEx.Sql.Expression
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            unchecked
+            {
+                const int multiplier = 16777619;
+
+                int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
+                return hash;
+            }
         }
         #endregion
     }

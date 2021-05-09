@@ -16,17 +16,30 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using System;
 ﻿using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InExpression<TValue> : InExpression
+    public class InExpression<TValue> : InExpression,
+        IEquatable<InExpression<TValue>>
     {
         #region constructors
-        public InExpression(IEnumerable<TValue> values) : base(values)
+        public InExpression(FieldExpression field, IEnumerable<TValue> values) : base(field, values)
         {
 
         }
+        #endregion
+
+        #region equals
+        public bool Equals(InExpression<TValue> obj)
+            => obj is InExpression<TValue> && base.Equals(obj);
+
+        public override bool Equals(object obj)
+            => obj is InExpression<TValue> exp && base.Equals(exp);
+
+        public override int GetHashCode()
+            => base.GetHashCode();
         #endregion
     }
 }

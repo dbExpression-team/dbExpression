@@ -78,7 +78,7 @@
                 {#if !$.Column.IsIdentity}
                 {#if !$.Column.IsComputed}
                 {#if $.FieldExpression.AllowInsert}
-                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({$.FieldExpression.Name}, {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name})
+                ,new InsertExpression<{$.FieldExpression.Type.NullableAlias}>({($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name}, {$.FieldExpression.Name})
                 {/if}
                 {/if}
                 {/if}

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DbEx.Data
 {
-    public enum AddressType : int
+    public enum AddressType : long
 	{
 		[Display(Name = "Shipping", Description = "Shipping Address")]
 		Shipping = 0,

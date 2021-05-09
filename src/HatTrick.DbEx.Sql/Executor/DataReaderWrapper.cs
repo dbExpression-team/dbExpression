@@ -16,10 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
@@ -28,17 +29,18 @@ namespace HatTrick.DbEx.Sql.Executor
         #region internals
         private bool disposed;
         private int currentRowIndex;
+        private readonly Dictionary<int, IValueConverter> fieldConverters = new Dictionary<int, IValueConverter>();
         protected ISqlConnection SqlConnection { get; private set; }
         protected IDataReader DataReader { get; private set; }
-        protected IValueConverterFinder Converters { get; private set; }
+        protected IValueConverterProvider Converters { get; private set; }
         #endregion
 
         #region constructors
-        public DataReaderWrapper(ISqlConnection sqlConnection, IDataReader dataReader, IValueConverterFinder converters)
+        public DataReaderWrapper(ISqlConnection sqlConnection, IDataReader dataReader, IValueConverterProvider converters)
         {
-            SqlConnection = sqlConnection;
-            DataReader = dataReader;
-            Converters = converters;
+            SqlConnection = sqlConnection ?? throw new ArgumentNullException(nameof(dataReader));
+            DataReader = dataReader ?? throw new ArgumentNullException(nameof(dataReader));
+            Converters = converters ?? throw new ArgumentNullException(nameof(converters));
         }
         #endregion
 
@@ -58,8 +60,8 @@ namespace HatTrick.DbEx.Sql.Executor
                             i, 
                             DataReader.GetName(i), 
                             DataReader.GetFieldType(i), 
-                            values[i] == DBNull.Value ? null : values[i], 
-                            Converters.FindConverter(i) ?? Converters.FindConverter(DataReader.GetFieldType(i))
+                            values[i],
+                            FindConverter
                         );
                     }
                     return new Row(currentRowIndex++, row);
@@ -77,13 +79,25 @@ namespace HatTrick.DbEx.Sql.Executor
             return null;
         }
 
+        protected IValueConverter FindConverter(ISqlField field)
+        {
+            if (fieldConverters.ContainsKey(field.Index))
+                return fieldConverters[field.Index];
+            var converter = Converters.FindConverter(field.Index, field.DataType, field.RawValue);
+            fieldConverters.Add(field.Index, converter);
+            return converter;
+        }
+
         public void Close()
         {
-            if (DataReader is object && !DataReader.IsClosed)
-                DataReader.Close();
+            if (DataReader is object)
+            {
+                if (!DataReader.IsClosed)
+                    DataReader.Close();
 
-            DataReader.Dispose();
-            DataReader = null;
+                DataReader.Dispose();
+                DataReader = null;
+            }
         }
 
         protected virtual void Dispose(bool disposing)

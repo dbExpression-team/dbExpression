@@ -30,13 +30,11 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region internals
         private readonly Stack<FieldExpressionAppendStyle> fieldStyles = new Stack<FieldExpressionAppendStyle>();
         private readonly Stack<EntityExpressionAppendStyle> entityStyles = new Stack<EntityExpressionAppendStyle>();
-        private readonly Stack<FieldExpression> fields = new Stack<FieldExpression>();
         private readonly IDictionary<Type,object> state = new ConcurrentDictionary<Type,object>();
         #endregion
 
         #region interface
         public SqlStatementAssemblerConfiguration Configuration { get; set; } = new SqlStatementAssemblerConfiguration();
-        public FieldExpression Field => fields.FirstOrDefault(f => f is object);
         public FieldExpressionAppendStyle FieldExpressionAppendStyle => fieldStyles.FirstOrDefault();
         public EntityExpressionAppendStyle EntityExpressionAppendStyle => entityStyles.FirstOrDefault();
         public bool TrySharingExistingParameter { get; set; }
@@ -65,9 +63,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         public void PushEntityAppendStyle(EntityExpressionAppendStyle entityAppendStyle)
             => entityStyles.Push(entityAppendStyle);
 
-        public void PushField(FieldExpression field)
-            => fields.Push(field);
-
         public void PopAppendStyles()
         {
             if (entityStyles.Any())
@@ -87,9 +82,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             if (fieldStyles.Any())
                 fieldStyles.Pop();
         }
-
-        public void PopField()
-            => fields.Pop();
 
         public void SetState<T>()
             where T : class, new()

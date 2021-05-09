@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration

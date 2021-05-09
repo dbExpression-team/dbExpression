@@ -17,29 +17,38 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DateDiffFunctionExpression : ConversionFunctionExpression,
+        IExpressionListProvider<IExpressionElement>,
+        IExpressionProvider<DatePartsExpression>,
         IEquatable<DateDiffFunctionExpression>
     {
+        #region internals
+        private readonly IExpressionElement startDate;
+        private readonly IExpressionElement endDate;
+        private readonly DatePartsExpression datePart;
+        #endregion
+
         #region interface
-        public DatePartsExpression DatePart { get; private set; }
-        public IExpressionElement StartDate => base.Expression;
-        public IExpressionElement EndDate { get; private set; }
+        IList<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => new List<IExpressionElement>() { startDate, endDate };
+        DatePartsExpression IExpressionProvider<DatePartsExpression>.Expression => datePart;
         #endregion
 
         #region constructors
         protected DateDiffFunctionExpression(DatePartsExpression datePart, IExpressionElement startDate, IExpressionElement endDate, Type convertToType)
-            : base(startDate, convertToType)
+            : base(convertToType)
         {
-            DatePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
-            EndDate = endDate ?? throw new ArgumentNullException(nameof(endDate));
+            this.datePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
+            this.startDate = startDate ?? throw new ArgumentNullException(nameof(startDate));
+            this.endDate = endDate ?? throw new ArgumentNullException(nameof(endDate));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"DATEDIFF({DatePart.ToString().ToLower()}, {StartDate}, {EndDate})";
+        public override string ToString() => $"DATEDIFF({datePart.ToString().ToLower()}, {startDate}, {endDate})";
         #endregion
 
         #region equals
@@ -47,17 +56,17 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (StartDate is null && obj.StartDate is object) return false;
-            if (StartDate is object && obj.StartDate is null) return false;
-            if (!StartDate.Equals(obj.StartDate)) return false;
+            if (startDate is null && obj.startDate is object) return false;
+            if (startDate is object && obj.startDate is null) return false;
+            if (!startDate.Equals(obj.startDate)) return false;
 
-            if (EndDate is null && obj.EndDate is object) return false;
-            if (EndDate is object && obj.EndDate is null) return false;
-            if (!EndDate.Equals(obj.EndDate)) return false;
+            if (endDate is null && obj.endDate is object) return false;
+            if (endDate is object && obj.endDate is null) return false;
+            if (!endDate.Equals(obj.endDate)) return false;
 
-            if (DatePart is null && obj.DatePart is object) return false;
-            if (DatePart is object && obj.DatePart is null) return false;
-            if (!DatePart.Equals(obj.DatePart)) return false;
+            if (datePart is null && obj.datePart is object) return false;
+            if (datePart is object && obj.datePart is null) return false;
+            if (!datePart.Equals(obj.datePart)) return false;
 
             return true;
         }
@@ -72,9 +81,9 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (StartDate is object ? StartDate.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (EndDate is object ? EndDate.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (DatePart is object ? DatePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (startDate is object ? startDate.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (endDate is object ? endDate.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (datePart is object ? datePart.GetHashCode() : 0);
                 return hash;
             }
         }

@@ -23,23 +23,26 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class ConcatFunctionExpression : DataTypeFunctionExpression,
+        IExpressionListProvider<IExpressionElement>,
         IEquatable<ConcatFunctionExpression>
     {
+        #region internals
+        private readonly IEnumerable<IExpressionElement> expressions;
+        #endregion
+
         #region interface
-        public new IList<IExpressionElement> Expression { get; private set; }
+        IList<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => expressions.ToList();
         #endregion
 
         #region constructors
-        protected ConcatFunctionExpression(IList<IExpressionElement> expressions, Type declaredType) : base(null, declaredType)
+        protected ConcatFunctionExpression(IList<IExpressionElement> expressions, Type declaredType) : base(declaredType)
         {
-            Expression = expressions ?? throw new ArgumentNullException(nameof(expressions));
-            if (!expressions.Any())
-                throw new ArgumentException($"Expected {nameof(expressions)} to contain at least one element.");
+            this.expressions = expressions ?? throw new ArgumentNullException(nameof(expressions));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"CONCAT({string.Join(", ", Expression)})";
+        public override string ToString() => $"CONCAT({string.Join(", ", expressions)})";
         #endregion
 
         #region equals
@@ -47,10 +50,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (Expression.Count != obj.Expression.Count) return false;
+            if (expressions.Count() != obj.expressions.Count()) return false;
 
-            foreach (var exp in Expression)
-                if (!obj.Expression.Any(e => e.Equals(exp))) return false;
+            foreach (var exp in expressions)
+                if (!obj.expressions.Any(e => e.Equals(exp))) return false;
 
             return true;
         }

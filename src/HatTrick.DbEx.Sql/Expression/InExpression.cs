@@ -27,13 +27,15 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<InExpression>
     {
         #region interface
+        public FieldExpression Field { get; private set; }
         public IEnumerable Expression { get; private set; }
         #endregion
 
         #region constructors
-        protected InExpression(IEnumerable expression)
+        protected InExpression(FieldExpression field, IEnumerable expression)
         {
-            Expression = expression;
+            Field = field ?? throw new ArgumentNullException(nameof(field));
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
 
@@ -72,6 +74,10 @@ namespace HatTrick.DbEx.Sql.Expression
             if (Expression is object && obj.Expression is null) return false;
             if (!Expression.Equals(obj.Expression)) return false;
 
+            if (Field is null && obj.Field is object) return false;
+            if (Field is object && obj.Field is null) return false;
+            if (!Field.Equals(obj.Field)) return false;
+
             return true;
         }
 
@@ -87,6 +93,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
                 int hash = @base;
                 hash = (hash * multiplier) ^ (Expression is object ? Expression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (Field is object ? Field.GetHashCode() : 0);
                 return hash;
             }
         }

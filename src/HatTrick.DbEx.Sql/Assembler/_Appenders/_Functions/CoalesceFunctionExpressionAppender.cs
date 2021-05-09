@@ -26,14 +26,16 @@ namespace HatTrick.DbEx.Sql.Assembler
         #region methods
         public override void AppendElement(CoalesceFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (!expression.Expression.Any())
+            var expressions = (expression as IExpressionListProvider<IExpressionElement>).Expressions;
+            
+            if(!expressions.Any())
                 return;
 
             builder.Appender.Write("COALESCE(");
-            for (var i = 0; i < expression.Expression.Count; i++)
+            for (var i = 0; i < expressions.Count; i++)
             {
-                builder.AppendElement(expression.Expression[i], context);
-                if (i < expression.Expression.Count - 1)
+                builder.AppendElement(expressions[i], context);
+                if (i < expressions.Count - 1)
                     builder.Appender.Write(", ");
             }
             builder.Appender.Write(")");

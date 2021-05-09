@@ -22,46 +22,26 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public class EnumValueConverter : IValueConverter
     {
-        private Type type;
+        private readonly Type type;
+        private readonly Type underlyingType;
+        private readonly StringEnumValueConverter stringConverter;
 
         public EnumValueConverter(Type type)
         {
-            this.type = type;
+            this.type = type ?? throw new ArgumentNullException(nameof(type));
+            if (!type.IsEnum)
+                throw new ArgumentException($"Expected an enum type, but was provided the type '{type}'");
+            this.underlyingType = type.GetFields()[0].FieldType;
+            this.stringConverter = new StringEnumValueConverter(type);
         }
 
         public virtual object ConvertFromDatabase(object value)
-        {
-            if (value is null)
-                return default;
-
-            if (value is string persistedAsString)
-            {
-                try
-                {
-                    return Enum.Parse(type, persistedAsString, true);
-                }
-                catch { }
-            }
-            return Enum.ToObject(type, value);
-        }
+            => value is string ? stringConverter.ConvertFromDatabase(value) : Enum.ToObject(type, value);
 
         public virtual T ConvertFromDatabase<T>(object value)
-        {
-            if (value is null)
-                return default;
+            => value is string ? (T)stringConverter.ConvertFromDatabase(value) : (T)Enum.ToObject(typeof(T), value);
 
-            if (value is string persistedAsString)
-            {
-                try
-                {
-                    return (T)Enum.Parse(typeof(T), persistedAsString, true);
-                }
-                catch { }
-            }
-            return (T)Enum.ToObject(typeof(T), value);
-        }
-
-        public virtual (Type, object) ConvertToDatabase(object value)
-            => (typeof(int), Convert.ToInt32(value));
+        public virtual (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+            => (underlyingType, Convert.ChangeType(value, underlyingType));
     }
 }

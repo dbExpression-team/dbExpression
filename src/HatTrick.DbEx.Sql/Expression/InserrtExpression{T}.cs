@@ -22,8 +22,8 @@
         InsertExpression
     {
         #region constructors
-        public InsertExpression(FieldExpression field, T assignment)
-            : base(field, new LiteralExpression<T>(assignment))
+        public InsertExpression(T assignment, FieldExpression field)
+            : base(new LiteralExpression<T>(assignment, field), field)
         {
         }
         #endregion

@@ -23,22 +23,27 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class CoalesceFunctionExpression : DataTypeFunctionExpression,
+        IExpressionListProvider<IExpressionElement>,
         IEquatable<CoalesceFunctionExpression>
     {
+        #region internals
+        private readonly IEnumerable<IExpressionElement> expressions;
+        #endregion
+
         #region interface
-        public new IList<IExpressionElement> Expression { get; private set; }
+        IList<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => expressions.ToList();
         #endregion
 
         #region constructors
         protected CoalesceFunctionExpression(IEnumerable<IExpressionElement> expressions, Type declaredType) 
-            : base(null, declaredType)
+            : base(declaredType)
         {
-            Expression = expressions.ToList();
+            this.expressions = expressions;
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"COALESCE({string.Join(", ", Expression)})";
+        public override string ToString() => $"COALESCE({string.Join(", ", expressions)})";
         #endregion
 
         #region equals
@@ -46,10 +51,10 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (Expression.Count != obj.Expression.Count) return false;
+            if (expressions.Count() != obj.expressions.Count()) return false;
 
-            foreach (var exp in Expression)
-                if (!obj.Expression.Any(e => e.Equals(exp))) return false;
+            foreach (var exp in expressions)
+                if (!obj.expressions.Any(e => e.Equals(exp))) return false;
 
             return true;
         }

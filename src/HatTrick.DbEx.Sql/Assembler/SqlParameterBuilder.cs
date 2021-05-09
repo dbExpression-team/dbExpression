@@ -16,10 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -28,9 +27,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         public IList<ParameterizedExpression> Parameters { get; set; } = new List<ParameterizedExpression>();
 
         #region abstract methods
-        public abstract DbParameter Add<T>(T value, AssemblyContext context);
-        public abstract ParameterizedExpression Add<T>(T value, AssemblyContext context, ISqlFieldMetadata meta);
-        public abstract DbParameter Add(object value, Type valueType, AssemblyContext context);
+        public abstract ParameterizedExpression Add<T>(T value, AssemblyContext context);
+        public abstract ParameterizedExpression Add<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        public abstract ParameterizedExpression Add(object value, Type valueType, AssemblyContext context);
         #endregion
 
         protected virtual ParameterizedExpression FindExistingParameter<T>(T value, Type declaredType, DbType dbType, ParameterDirection direction, int? size, byte? precision, byte? scale)
