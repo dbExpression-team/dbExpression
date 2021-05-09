@@ -3,6 +3,24 @@
 	<PropertyGroup>
 		<VersionPrefix>0.7.1</VersionPrefix>
 		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
+		<PackageReleaseNotes>
+<![CDATA[
+### New
+
+#### Improve Value Converters: additional configuration and features in using Value Converters have been implemented and various issue fixes with existing value converter implementation.
+- Created reference to a FieldExpression in LiteralExpression, AssignmentExpression, and InsertExpression to have a direct correlation between the source FieldExpression and the using Expression.
+- Deprecated FieldExpression from AssemblyContext.  As FieldExpression is now part of the creation of Expressions related to the FieldExpression, using the Push/Pop methods for a FieldExpression during assembly were no longer needed.
+- Refactored parameter builders to provide consistency across all creation methods by always returning a ParameterizedExpression.
+- Refactored function expressions to "hide" properties via IExpressionProvider implementation.  This ensures no confusion in the API when used (i.e. db.fx.DatePart(year, date1, date1).DatePart is confusing)
+- Cosmetic change for assembling SQL statements: removed extraneous indentation while building queries containing offset and limit specifications.
+
+### Fixes
+- Scaffolding generation now honors ignore configuration option.  Previous to this release, all views for a database would be scaffolded.
+
+### Breaking Changes:
+- Overriding type definitions for the default value converter factory now uses syntax consistent with overriding Enums; i.e. ```x.OverrideForType<int>().Use<MyValueConverter>()``` instead of ```x.OverrideForType<int,MyValueConverter>()```
+]]>
+	</PackageReleaseNotes>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="../../build/htl-nuget-logo.png" Pack="true" Visible="false" PackagePath="images/htl-nuget-logo.png" />
