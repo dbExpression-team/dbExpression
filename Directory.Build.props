@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<VersionPrefix>0.7.1</VersionPrefix>
 		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
-		<PackageReleaseNotes>\</PackageReleaseNotes>
+		<PackageReleaseNotes></PackageReleaseNotes>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="../../build/htl-nuget-logo.png" Pack="true" Visible="false" PackagePath="images/htl-nuget-logo.png" />
