@@ -23,6 +23,25 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
+#pragma warning disable IDE1006 // Naming Styles
+    public interface StoredProcedureTermination : ITerminationExpressionBuilder
+#pragma warning restore IDE1006 // Naming Styles
+    {
+    }
+
+    public class StoredProcedureQueryExpressionBuilder : QueryExpressionBuilder,
+        StoredProcedureTermination
+    {
+        protected StoredProcedureQueryExpression Expression { get; private set; }
+
+        public StoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, StoredProcedureExpression entity)
+            : base(config, expression)
+        {
+            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
+            Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
+        }
+    }
+
     public abstract class DeleteQueryExpressionBuilder : QueryExpressionBuilder,
         DeleteEntities
     {
@@ -40,8 +59,6 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
-
-
 
         DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Entity<TEntity> entity)
             => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
