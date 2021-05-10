@@ -18,10 +18,9 @@
 
 namespace HatTrick.DbEx.Sql.Converter
 {
-
-    public class StringEnumValueConverter<T> : StringEnumValueConverter
+    public class StringEnumValueConverter<TEnum> : StringEnumValueConverter
     {
-        public StringEnumValueConverter() : base(typeof(T))
+        public StringEnumValueConverter() : base(typeof(TEnum))
         {
 
         }

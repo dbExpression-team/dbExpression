@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             //left part of arithmetic operation
             if (expression.LeftArg is LiteralExpression leftLiteral)
-                builder.Appender.Write(builder.Parameters.Add(leftLiteral.Expression, context).ParameterName);
+                builder.Appender.Write(builder.Parameters.Add(leftLiteral.Expression, context).Parameter.ParameterName);
             else
                 //left part isn't a primitive type, append using builder
                 builder.AppendElement(expression.LeftArg, context);
@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             //right part of arithmetic operation
             if (expression.RightArg is LiteralExpression rightLiteral)
-				builder.Appender.Write(builder.Parameters.Add(rightLiteral.Expression, context).ParameterName);
+				builder.Appender.Write(builder.Parameters.Add(rightLiteral.Expression, context).Parameter.ParameterName);
 			else
 				//right part isn't a primitive type, append using builder
 				builder.AppendElement(expression.RightArg, context);

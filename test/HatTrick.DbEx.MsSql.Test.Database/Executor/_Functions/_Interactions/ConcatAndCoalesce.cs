@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -45,6 +46,28 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             purchases.Should().HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_concat_of_ship_date_and_purchase_date_succeed(int version, int expected = 10)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    db.fx.Concat(dbo.Product.Description, db.fx.Cast(dbo.Purchase.PaymentSourceType).AsVarChar(20))
+                ).From(dbo.Product)
+                .InnerJoin(dbo.PurchaseLine).On(dbo.Product.Id == dbo.PurchaseLine.ProductId)
+                .InnerJoin(dbo.Purchase).On(dbo.PurchaseLine.PurchaseId == dbo.Purchase.Id)
+                .Where(dbo.Purchase.PaymentSourceType == PaymentSourceType.Web);
+
+            //when               
+            var values = exp.Execute();
+
+            //then
+            values.Should().HaveCount(expected);
+            values.Should().OnlyContain(x => x.EndsWith(PaymentSourceType.Web.ToString()));
         }
     }
 }

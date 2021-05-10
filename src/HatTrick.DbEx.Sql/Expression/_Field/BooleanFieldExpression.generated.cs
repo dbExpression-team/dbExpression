@@ -24,8 +24,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class BooleanFieldExpression
     {
         #region in value set
-        public override FilterExpressionSet In(params bool[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<bool>(value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<bool> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<bool>(value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params bool[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<bool>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<bool> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<bool>(this, value), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region implicit operators
@@ -48,25 +48,25 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(BooleanFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(BooleanFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(BooleanFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(BooleanFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data types
         #region bool
-        public static FilterExpressionSet operator ==(BooleanFieldExpression a, bool b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(BooleanFieldExpression a, bool b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<bool>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(BooleanFieldExpression a, bool b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<bool>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(BooleanFieldExpression a, bool b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<bool>(b, a), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(bool a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(bool a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<bool>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(bool a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<bool>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(bool a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<bool>(a, b), b, FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(BooleanFieldExpression a, bool? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(BooleanFieldExpression a, bool? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(BooleanFieldExpression a, bool? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(BooleanFieldExpression a, bool? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<bool?>(b, a), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(bool? a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(bool? a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(bool? a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(bool? a, BooleanFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<bool?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
 

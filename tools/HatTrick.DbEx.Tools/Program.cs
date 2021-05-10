@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Tools
         }
         #endregion
 
-        #region handle error feedback
+        #region handle warning feedback
         static void HandleWarningFeedback(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;

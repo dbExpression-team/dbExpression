@@ -23,15 +23,20 @@ namespace HatTrick.DbEx.Sql.Configuration
 {
     public class ExpressionElementAppenderFactoryConfigurationBuilder : IExpressionElementAppenderFactoryConfigurationBuilder
     {
+        #region internals
         private readonly ISqlStatementAssemblyGroupingConfigurationBuilders caller;
         private readonly RuntimeSqlDatabaseConfiguration configuration;
+        #endregion
 
+        #region constructors
         public ExpressionElementAppenderFactoryConfigurationBuilder(ISqlStatementAssemblyGroupingConfigurationBuilders caller, RuntimeSqlDatabaseConfiguration configuration)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
+        #endregion
 
+        #region methods
         public ISqlStatementAssemblyGroupingConfigurationBuilders Use(IExpressionElementAppenderFactory factory)
         {
             configuration.ExpressionElementAppenderFactory = factory;
@@ -62,5 +67,6 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.ExpressionElementAppenderFactory = new ExpressionElementAppenderFactory();
             return caller;
         }
+        #endregion
     }
 }

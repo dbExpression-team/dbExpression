@@ -21,10 +21,16 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class LiteralExpression<TValue> : LiteralExpression,
-        IExpressionElement<TValue>
+        IExpressionElement<TValue>,
+        IEquatable<LiteralExpression<TValue>>
     {
         #region constructors
         public LiteralExpression(TValue value) : base(value)
+        {
+
+        }
+
+        public LiteralExpression(TValue value, FieldExpression field) : base(value, field)
         {
 
         }
@@ -33,6 +39,22 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public LiteralExpression(DBNull value, FieldExpression field) : base(value, field)
+        {
+
+        }
+        #endregion
+
+        #region equals
+        public bool Equals(LiteralExpression<TValue> obj)
+            => obj is LiteralExpression<TValue> && base.Equals(obj);
+
+        public override bool Equals(object obj)
+            => obj is LiteralExpression<TValue> exp && base.Equals(exp);
+
+        public override int GetHashCode()
+            => base.GetHashCode();
         #endregion
     }
 }

@@ -25,14 +25,14 @@
             {#if !$.Column.IsComputed}
             {#if !$.Column.IsIdentity}
             {#if $.FieldExpression.AllowUpdate}
-            public AssignmentExpression Set({$.FieldExpression.Type.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value));
+            public AssignmentExpression Set({$.FieldExpression.Type.Alias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value, this));
             public AssignmentExpression Set({+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
             {#if $.Column.IsNullable}
             {#if $.FieldExpression.Type.IsNullable}
-            public AssignmentExpression Set({$.FieldExpression.Type.NullableAlias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.NullableAlias}>(value));
+            public AssignmentExpression Set({$.FieldExpression.Type.NullableAlias} value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.NullableAlias}>(value, this));
             {/if}
             public AssignmentExpression Set(Nullable{+#if :isEnum}Enum{/if}{+#if !:isEnum}{$.FieldExpression.Type.TypeName}{/if}Element{+#if :isEnum}<{$.FieldExpression.Type.TypeName}>{/if+} value) => new AssignmentExpression(this, value);
-            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<object>(DBNull.Value));
+            public AssignmentExpression Set(DBNull value) => new AssignmentExpression(this, new LiteralExpression<{$.FieldExpression.Type.Alias}>(value, this));
             {/if}
             {/if}
             {/if}

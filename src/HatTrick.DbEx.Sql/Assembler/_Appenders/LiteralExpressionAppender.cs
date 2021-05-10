@@ -25,13 +25,14 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         public override void AppendElement(LiteralExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            if (context.Field is object)
+            if (expression.Field is object)
             {
                 builder.Appender.Write(
                    builder.Parameters.Add(
                        expression.Expression,
-                       context,
-                       builder.FindMetadata(context.Field)
+                       (expression.Field as IExpressionTypeProvider).DeclaredType,
+                       builder.FindMetadata(expression.Field),
+                       context
                    )
                    .Parameter.ParameterName
                );
@@ -50,7 +51,7 @@ namespace HatTrick.DbEx.Sql.Assembler
                             expression.Expression.GetType(),
                             context
                         )
-                        .ParameterName
+                        .Parameter.ParameterName
                     );
                 }
             }

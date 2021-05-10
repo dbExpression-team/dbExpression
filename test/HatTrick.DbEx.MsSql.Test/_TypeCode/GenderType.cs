@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace DbEx.Data
 {
     #region GenderType
-    public enum GenderType : int
+    public enum GenderType : long
 	{
 		[Display(Name = "Mail", Description = "Male")]
 		Male = 1,

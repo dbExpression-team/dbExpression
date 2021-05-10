@@ -24,8 +24,8 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class SingleFieldExpression
     {
         #region in value set
-        public override FilterExpressionSet In(params float[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<float>(value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<float> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<float>(value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params float[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<float>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<float> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<float>(this, value), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region implicit operators
@@ -35,213 +35,213 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data types
         #region byte
-        public static SingleExpressionMediator operator +(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleFieldExpression a, byte b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static SingleExpressionMediator operator +(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(byte a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, byte? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(byte? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region decimal
-        public static DecimalExpressionMediator operator +(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
-        public static DecimalExpressionMediator operator -(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
-        public static DecimalExpressionMediator operator *(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Multiply));
-        public static DecimalExpressionMediator operator /(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Divide));
-        public static DecimalExpressionMediator operator %(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Modulo));
+        public static DecimalExpressionMediator operator +(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Add));
+        public static DecimalExpressionMediator operator -(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static DecimalExpressionMediator operator *(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static DecimalExpressionMediator operator /(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Divide));
+        public static DecimalExpressionMediator operator %(SingleFieldExpression a, decimal b) => new DecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static DecimalExpressionMediator operator +(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
-        public static DecimalExpressionMediator operator -(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static DecimalExpressionMediator operator *(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static DecimalExpressionMediator operator /(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Divide));
-        public static DecimalExpressionMediator operator %(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static DecimalExpressionMediator operator +(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static DecimalExpressionMediator operator -(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static DecimalExpressionMediator operator *(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static DecimalExpressionMediator operator /(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static DecimalExpressionMediator operator %(decimal a, SingleFieldExpression b) => new DecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableDecimalExpressionMediator operator +(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDecimalExpressionMediator operator -(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableDecimalExpressionMediator operator *(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableDecimalExpressionMediator operator /(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableDecimalExpressionMediator operator %(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(SingleFieldExpression a, decimal? b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableDecimalExpressionMediator operator +(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDecimalExpressionMediator operator -(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableDecimalExpressionMediator operator *(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableDecimalExpressionMediator operator /(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableDecimalExpressionMediator operator %(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDecimalExpressionMediator operator +(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDecimalExpressionMediator operator -(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDecimalExpressionMediator operator *(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDecimalExpressionMediator operator /(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableDecimalExpressionMediator operator %(decimal? a, SingleFieldExpression b) => new NullableDecimalExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region DateTime
-        public static DateTimeExpressionMediator operator +(SingleFieldExpression a, DateTime b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(SingleFieldExpression a, DateTime b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(SingleFieldExpression a, DateTime b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b, a), ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(SingleFieldExpression a, DateTime b) => new DateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static DateTimeExpressionMediator operator +(DateTime a, SingleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Add));
-        public static DateTimeExpressionMediator operator -(DateTime a, SingleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeExpressionMediator operator +(DateTime a, SingleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static DateTimeExpressionMediator operator -(DateTime a, SingleFieldExpression b) => new DateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(SingleFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(SingleFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(SingleFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(SingleFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(DateTime? a, SingleFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTime? a, SingleFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(DateTime? a, SingleFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(DateTime? a, SingleFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion
         
         #region DateTimeOffset
-        public static DateTimeOffsetExpressionMediator operator +(SingleFieldExpression a, DateTimeOffset b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Add));
-        public static DateTimeOffsetExpressionMediator operator -(SingleFieldExpression a, DateTimeOffset b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Subtract));
+        public static DateTimeOffsetExpressionMediator operator +(SingleFieldExpression a, DateTimeOffset b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b, a), ArithmeticExpressionOperator.Add));
+        public static DateTimeOffsetExpressionMediator operator -(SingleFieldExpression a, DateTimeOffset b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static DateTimeOffsetExpressionMediator operator +(DateTimeOffset a, SingleFieldExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Add));
-        public static DateTimeOffsetExpressionMediator operator -(DateTimeOffset a, SingleFieldExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static DateTimeOffsetExpressionMediator operator +(DateTimeOffset a, SingleFieldExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static DateTimeOffsetExpressionMediator operator -(DateTimeOffset a, SingleFieldExpression b) => new DateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeOffsetExpressionMediator operator +(SingleFieldExpression a, DateTimeOffset? b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(SingleFieldExpression a, DateTimeOffset? b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeOffsetExpressionMediator operator +(SingleFieldExpression a, DateTimeOffset? b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeOffsetExpressionMediator operator -(SingleFieldExpression a, DateTimeOffset? b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeOffset? a, SingleFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffset? a, SingleFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeOffsetExpressionMediator operator +(DateTimeOffset? a, SingleFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeOffsetExpressionMediator operator -(DateTimeOffset? a, SingleFieldExpression b) => new NullableDateTimeOffsetExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion
         
         #region double
-        public static DoubleExpressionMediator operator +(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
-        public static DoubleExpressionMediator operator -(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
-        public static DoubleExpressionMediator operator *(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Multiply));
-        public static DoubleExpressionMediator operator /(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Divide));
-        public static DoubleExpressionMediator operator %(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Modulo));
+        public static DoubleExpressionMediator operator +(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Add));
+        public static DoubleExpressionMediator operator -(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static DoubleExpressionMediator operator *(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static DoubleExpressionMediator operator /(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Divide));
+        public static DoubleExpressionMediator operator %(SingleFieldExpression a, double b) => new DoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static DoubleExpressionMediator operator +(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
-        public static DoubleExpressionMediator operator -(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static DoubleExpressionMediator operator *(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static DoubleExpressionMediator operator /(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Divide));
-        public static DoubleExpressionMediator operator %(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static DoubleExpressionMediator operator +(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static DoubleExpressionMediator operator -(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static DoubleExpressionMediator operator *(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static DoubleExpressionMediator operator /(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static DoubleExpressionMediator operator %(double a, SingleFieldExpression b) => new DoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableDoubleExpressionMediator operator +(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDoubleExpressionMediator operator -(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableDoubleExpressionMediator operator *(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableDoubleExpressionMediator operator /(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableDoubleExpressionMediator operator %(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(SingleFieldExpression a, double? b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableDoubleExpressionMediator operator +(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDoubleExpressionMediator operator -(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableDoubleExpressionMediator operator *(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableDoubleExpressionMediator operator /(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableDoubleExpressionMediator operator %(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableDoubleExpressionMediator operator +(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDoubleExpressionMediator operator -(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDoubleExpressionMediator operator *(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableDoubleExpressionMediator operator /(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableDoubleExpressionMediator operator %(double? a, SingleFieldExpression b) => new NullableDoubleExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region float
-        public static SingleExpressionMediator operator +(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleFieldExpression a, float b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static SingleExpressionMediator operator +(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(float a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, float? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(float? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region short
-        public static SingleExpressionMediator operator +(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleFieldExpression a, short b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static SingleExpressionMediator operator +(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(short a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, short? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(short? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region int
-        public static SingleExpressionMediator operator +(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleFieldExpression a, int b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static SingleExpressionMediator operator +(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(int a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, int? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(int? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region long
-        public static SingleExpressionMediator operator +(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(SingleFieldExpression a, long b) => new SingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static SingleExpressionMediator operator +(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
-        public static SingleExpressionMediator operator -(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static SingleExpressionMediator operator *(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static SingleExpressionMediator operator /(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Divide));
-        public static SingleExpressionMediator operator %(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static SingleExpressionMediator operator +(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static SingleExpressionMediator operator -(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static SingleExpressionMediator operator *(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static SingleExpressionMediator operator /(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static SingleExpressionMediator operator %(long a, SingleFieldExpression b) => new SingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(SingleFieldExpression a, long? b) => new NullableSingleExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Modulo));
 
-        public static NullableSingleExpressionMediator operator +(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableSingleExpressionMediator operator -(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
-        public static NullableSingleExpressionMediator operator *(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Multiply));
-        public static NullableSingleExpressionMediator operator /(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Divide));
-        public static NullableSingleExpressionMediator operator %(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Modulo));
+        public static NullableSingleExpressionMediator operator +(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableSingleExpressionMediator operator -(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableSingleExpressionMediator operator *(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Multiply));
+        public static NullableSingleExpressionMediator operator /(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Divide));
+        public static NullableSingleExpressionMediator operator %(long? a, SingleFieldExpression b) => new NullableSingleExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         
         #region string
@@ -518,41 +518,41 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(SingleFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(SingleFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data types
         #region float
-        public static FilterExpressionSet operator ==(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(SingleFieldExpression a, float b) => new FilterExpressionSet(new FilterExpression<bool>(a, new LiteralExpression<float>(b, a), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a, b), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a, b), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a, b), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(float a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool>(new LiteralExpression<float>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(SingleFieldExpression a, float? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<float?>(b, a), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(float? a, SingleFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<float?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
 

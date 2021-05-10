@@ -16,9 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Expression
+using System;
+
+namespace HatTrick.DbEx.Sql.Expression
 {
-    public class FilterExpression<T> : FilterExpression
+    public class FilterExpression<T> : FilterExpression,
+        IEquatable<FilterExpression<T>>
     {
         #region constructors
         public FilterExpression(IExpressionElement leftArg, IExpressionElement rightArg, FilterExpressionOperator expressionOperator)
@@ -32,6 +35,17 @@
         {
 
         }
+        #endregion
+
+        #region equals
+        public bool Equals(FilterExpression<T> obj)
+            => obj is FilterExpression<T> && base.Equals(obj);
+
+        public override bool Equals(object obj)
+            => obj is FilterExpression<T> exp && base.Equals(exp);
+
+        public override int GetHashCode()
+            => base.GetHashCode();
         #endregion
 
         #region implicit operators

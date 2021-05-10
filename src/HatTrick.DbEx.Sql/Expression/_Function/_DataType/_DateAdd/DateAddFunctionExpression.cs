@@ -17,28 +17,38 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class DateAddFunctionExpression : DataTypeFunctionExpression,
+        IExpressionListProvider<IExpressionElement>,
+        IExpressionProvider<DatePartsExpression>,
         IEquatable<DateAddFunctionExpression>
     {
+        #region internals
+        private readonly DatePartsExpression datePart;
+        private readonly IExpressionElement number;
+        private readonly IExpressionElement date;
+        #endregion
+
         #region interface
-        public DatePartsExpression DatePart { get; private set; }
-        public IExpressionElement Value { get; private set; }
+        IList<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => new List<IExpressionElement> { number, date };
+        DatePartsExpression IExpressionProvider<DatePartsExpression>.Expression => datePart;
         #endregion
 
         #region constructors
-        protected DateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement value, IExpressionElement expression, Type declaredType) 
-            : base(expression, declaredType)
+        protected DateAddFunctionExpression(DatePartsExpression datePart, IExpressionElement number, IExpressionElement date, Type declaredType) 
+            : base(declaredType)
         {
-            DatePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
-            Value = value ?? throw new ArgumentNullException(nameof(value));
+            this.datePart = datePart ?? throw new ArgumentNullException(nameof(datePart));
+            this.number = number ?? throw new ArgumentNullException(nameof(number));
+            this.date = date ?? throw new ArgumentNullException(nameof(date));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"DateAdd({Expression})";
+        public override string ToString() => $"DateAdd({datePart}, {number}, {date})";
         #endregion
 
         #region equals
@@ -46,13 +56,17 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (this.DatePart is null && obj.DatePart is object) return false;
-            if (this.DatePart is object && obj.DatePart is null) return false;
-            if (!this.DatePart.Equals(obj.DatePart)) return false;
+            if (datePart is null && obj.datePart is object) return false;
+            if (datePart is object && obj.datePart is null) return false;
+            if (!datePart.Equals(obj.datePart)) return false;
 
-            if (this.Value is null && obj.Value is object) return false;
-            if (this.Value is object && obj.Value is null) return false;
-            if (!this.Value.Equals(obj.Value)) return false;
+            if (this.number is null && obj.number is object) return false;
+            if (this.number is object && obj.number is null) return false;
+            if (!this.number.Equals(obj.number)) return false;
+
+            if (this.date is null && obj.date is object) return false;
+            if (this.date is object && obj.date is null) return false;
+            if (!this.date.Equals(obj.date)) return false;
 
             return true;
         }
@@ -67,8 +81,9 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (DatePart is object ? DatePart.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (Value is object ? Value.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (datePart is object ? datePart.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (number is object ? number.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (date is object ? date.GetHashCode() : 0);
                 return hash;
             }
         }

@@ -22,25 +22,20 @@ namespace HatTrick.DbEx.Sql.Converter
 {
     public class NullableEnumValueConverter : EnumValueConverter
     {
-        private Type type;
+        private readonly Type underlyingType;
 
         public NullableEnumValueConverter(Type type) : base(Nullable.GetUnderlyingType(type))
         {
-            this.type = type;
+            this.underlyingType = Nullable.GetUnderlyingType(type).GetFields()[0].FieldType;
         }
 
         public override object ConvertFromDatabase(object value)
-            => value is object ? base.ConvertFromDatabase(value) : default;
+            => value is null ? default : base.ConvertFromDatabase(value);
 
         public override T ConvertFromDatabase<T>(object value)
-            => value is object ? (T)base.ConvertFromDatabase(value) : default;
+            => value is null ? default : (T)base.ConvertFromDatabase(value);
 
-        public override (Type, object) ConvertToDatabase(object value)
-        {
-            if (value is null)
-                return (type, DBNull.Value);
-            
-            return (type, Convert.ToInt32(value));
-        }
+        public override (Type Type, object ConvertedValue) ConvertToDatabase(object value)
+            => value is null ? (underlyingType, default) : base.ConvertToDatabase(value);
     }
 }

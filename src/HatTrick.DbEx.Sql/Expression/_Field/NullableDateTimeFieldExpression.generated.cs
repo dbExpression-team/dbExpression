@@ -24,10 +24,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableDateTimeFieldExpression
     {
         #region in value set
-        public override FilterExpressionSet In(params DateTime[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<DateTime>(value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<DateTime> value) => value is object ? new FilterExpression<bool>(this, new InExpression<DateTime>(value), FilterExpressionOperator.None) : null;
-        public override FilterExpressionSet In(params DateTime?[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<DateTime?>(value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<DateTime?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<DateTime?>(value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params DateTime[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<DateTime>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<DateTime> value) => value is object ? new FilterExpression<bool>(this, new InExpression<DateTime>(this, value), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params DateTime?[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<DateTime?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<DateTime?>(this, value), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region implicit operators
@@ -37,129 +37,129 @@ namespace HatTrick.DbEx.Sql.Expression
         #region arithmetic operators
         #region data types
         #region byte
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, byte b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, byte b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, byte b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, byte b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(byte a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(byte a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(byte a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(byte a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, byte? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, byte? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, byte? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, byte? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<byte?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(byte? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(byte? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(byte? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(byte? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<byte?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region decimal
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, decimal b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, decimal b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, decimal b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, decimal b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(decimal a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(decimal a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(decimal a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(decimal a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, decimal? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, decimal? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, decimal? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, decimal? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<decimal?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(decimal? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(decimal? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(decimal? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(decimal? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<decimal?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region DateTime
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTime b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTime b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTime b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTime b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(DateTime a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTime a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(DateTime a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(DateTime a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTime? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTime?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(DateTime? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTime? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(DateTime? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(DateTime? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTime?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region DateTimeOffset
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTimeOffset b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTimeOffset b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTimeOffset b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTimeOffset b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeOffset a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeOffset a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(DateTimeOffset a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(DateTimeOffset a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTimeOffset? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTimeOffset? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, DateTimeOffset? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, DateTimeOffset? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<DateTimeOffset?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(DateTimeOffset? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(DateTimeOffset? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(DateTimeOffset? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(DateTimeOffset? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<DateTimeOffset?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region double
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, double b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, double b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, double b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, double b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(double a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(double a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(double a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(double a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, double? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, double? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, double? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, double? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<double?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(double? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(double? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(double? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(double? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<double?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region float
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, float b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, float b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, float b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, float b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(float a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(float a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(float a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(float a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, float? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, float? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, float? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, float? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<float?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(float? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(float? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(float? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(float? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<float?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region short
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, short b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, short b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, short b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, short b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(short a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(short a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(short a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(short a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, short? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, short? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, short? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, short? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<short?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(short? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(short? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(short? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(short? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<short?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region int
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, int b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, int b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, int b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, int b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(int a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(int a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(int a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(int a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, int? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, int? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, int? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, int? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<int?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(int? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(int? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(int? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(int? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<int?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region long
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, long b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, long b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, long b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, long b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(long a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(long a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(long a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(long a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long>(a, b), b, ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, long? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, long? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b), ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(NullableDateTimeFieldExpression a, long? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(NullableDateTimeFieldExpression a, long? b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(a, new LiteralExpression<long?>(b, a), ArithmeticExpressionOperator.Subtract));
 
-        public static NullableDateTimeExpressionMediator operator +(long? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Add));
-        public static NullableDateTimeExpressionMediator operator -(long? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a), b, ArithmeticExpressionOperator.Subtract));
+        public static NullableDateTimeExpressionMediator operator +(long? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Add));
+        public static NullableDateTimeExpressionMediator operator -(long? a, NullableDateTimeFieldExpression b) => new NullableDateTimeExpressionMediator(new ArithmeticExpression(new LiteralExpression<long?>(a, b), b, ArithmeticExpressionOperator.Subtract));
         #endregion        
 
         #region string
@@ -337,41 +337,41 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data types
         #region DateTime
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTime b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime>(b, a), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(DateTime a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b), FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b), FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b), FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b), FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(NullableDateTimeFieldExpression a, DateTime? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(b, a), FilterExpressionOperator.GreaterThanOrEqual));
 
-        public static FilterExpressionSet operator ==(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator <(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.LessThan));
-        public static FilterExpressionSet operator >(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.GreaterThan));
-        public static FilterExpressionSet operator <=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.LessThanOrEqual));
-        public static FilterExpressionSet operator >=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(DateTime? a, NullableDateTimeFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a, b), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
 

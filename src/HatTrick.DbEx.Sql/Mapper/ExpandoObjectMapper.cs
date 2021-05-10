@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Executor;
+using HatTrick.DbEx.Sql.Executor;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class ExpandoObjectMapper : IExpandoObjectMapper
     {
-        public void Map(ExpandoObject expandoObject, ISqlFieldReader reader, IValueConverterFinder finder)
+        public void Map(ExpandoObject expandoObject, ISqlFieldReader reader, IValueConverterProvider finder)
         {
             var expando = expandoObject as IDictionary<string, object>;
             ISqlField field;
@@ -35,21 +35,14 @@ namespace HatTrick.DbEx.Sql.Mapper
                 {
                     throw new DbExpressionException($"A field name or alias has not been supplied for field index {field.Index}, therefore the retrieved value can't be mapped to a property of the dynamic object.");
                 }
-                var converter = finder.FindConverter(field.Index) ?? finder.FindConverter(field.DataType);
-                if (converter is object)
+
+                try
                 {
-                    try
-                    {
-                        expando.Add(field.Name, converter.ConvertFromDatabase(field.Value));
-                    }
-                    catch (ArgumentException e)
-                    {
-                        throw new DbExpressionException(e.Message, e);
-                    }
+                    expando.Add(field.Name, field.GetValue());
                 }
-                else
+                catch (ArgumentException e)
                 {
-                    expando.Add(field.Name, field.Value);
+                    throw new DbExpressionException(e.Message, e);
                 }
             }
         }

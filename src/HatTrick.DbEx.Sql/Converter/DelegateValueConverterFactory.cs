@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 
 namespace HatTrick.DbEx.Sql.Converter
 {
@@ -41,14 +41,14 @@ namespace HatTrick.DbEx.Sql.Converter
             => factory(type) ?? throw new DbExpressionConfigurationException($"Could not resolve a converter for type '{type}', please ensure a converter has been registered.");
 
         public void RegisterConverter<T>(IValueConverter converter)
-            => throw new DbExpressionConfigurationException($"Value converters are deferred to a lambda expression, custom registration is not supported.");
+            => throw new DbExpressionConfigurationException($"Value converters are deferred to a delegate, custom registration is not supported.");
 
         public void RegisterConverter<T, U>()
             where U : class, IValueConverter, new()
-            => throw new DbExpressionConfigurationException($"Value converters are deferred to a lambda expression, custom registration is not supported.");
+            => throw new DbExpressionConfigurationException($"Value converters are deferred to a delegate, custom registration is not supported.");
 
         public void RegisterConverter(Type type, Func<IValueConverter> converter)
-            => throw new DbExpressionConfigurationException($"Value converters are deferred to a lambda expression, custom registration is not supported.");
+            => throw new DbExpressionConfigurationException($"Value converters are deferred to a delegate, custom registration is not supported.");
         #endregion
     }
 }

@@ -17,25 +17,33 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class IsNullFunctionExpression : DataTypeFunctionExpression,
+        IExpressionListProvider<IExpressionElement>,
         IEquatable<IsNullFunctionExpression>
     {
+        #region internals
+        private readonly IExpressionElement checkExpression;
+        private readonly IExpressionElement replacementValue;
+        #endregion
+
         #region interface
-        public IExpressionElement Value { get; }
+        IList<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => new List<IExpressionElement>() { checkExpression, replacementValue };
         #endregion
 
         #region constructors
-        protected IsNullFunctionExpression(IExpressionElement expression, Type declaredType, IExpressionElement value) : base(expression, declaredType)
+        protected IsNullFunctionExpression(IExpressionElement expression, Type declaredType, IExpressionElement value) : base(declaredType)
         {
-            Value = value ?? throw new ArgumentNullException(nameof(value));
+            checkExpression = expression ?? throw new ArgumentNullException(nameof(expression));
+            replacementValue = value ?? throw new ArgumentNullException(nameof(value));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"ISNULL({Expression}, {Value})";
+        public override string ToString() => $"ISNULL({checkExpression}, {replacementValue})";
         #endregion
 
         #region equals
@@ -43,9 +51,13 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (!base.Equals(obj)) return false;
 
-            if (this.Value is null && obj.Value is object) return false;
-            if (this.Value is object && obj.Value is null) return false;
-            if (!this.Value.Equals(obj.Value)) return false;
+            if (this.checkExpression is null && obj.checkExpression is object) return false;
+            if (this.checkExpression is object && obj.checkExpression is null) return false;
+            if (!this.checkExpression.Equals(obj.checkExpression)) return false;
+
+            if (this.replacementValue is null && obj.replacementValue is object) return false;
+            if (this.replacementValue is object && obj.replacementValue is null) return false;
+            if (!this.replacementValue.Equals(obj.replacementValue)) return false;
 
             return true;
         }
@@ -60,7 +72,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
-                hash = (hash * multiplier) ^ (Value is object ? Value.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (checkExpression is object ? checkExpression.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (replacementValue is object ? replacementValue.GetHashCode() : 0);
                 return hash;
             }
         }

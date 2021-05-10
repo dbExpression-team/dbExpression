@@ -24,10 +24,10 @@ namespace HatTrick.DbEx.Sql.Expression
     public partial class NullableGuidFieldExpression
     {
         #region in value set
-        public override FilterExpressionSet In(params Guid[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<Guid>(value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(this, new InExpression<Guid>(value), FilterExpressionOperator.None) : null;
-        public override FilterExpressionSet In(params Guid?[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<Guid?>(value), FilterExpressionOperator.None)) : null;
-        public override FilterExpressionSet In(IEnumerable<Guid?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<Guid?>(value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(params Guid[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool>(this, new InExpression<Guid>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<Guid> value) => value is object ? new FilterExpression<bool>(this, new InExpression<Guid>(this, value), FilterExpressionOperator.None) : null;
+        public override FilterExpressionSet In(params Guid?[] value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<Guid?>(this, value), FilterExpressionOperator.None)) : null;
+        public override FilterExpressionSet In(IEnumerable<Guid?> value) => value is object ? new FilterExpressionSet(new FilterExpression<bool?>(this, new InExpression<Guid?>(this, value), FilterExpressionOperator.None)) : null;
         #endregion
 
         #region implicit operators
@@ -50,25 +50,25 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableGuidFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableGuidFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableGuidFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableGuidFieldExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b, a), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data types
         #region Guid
-        public static FilterExpressionSet operator ==(NullableGuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableGuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableGuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableGuidFieldExpression a, Guid b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid>(b, a), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(Guid a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(Guid a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(Guid a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Guid a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a, b), b, FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(NullableGuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableGuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableGuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b, a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableGuidFieldExpression a, Guid? b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<Guid?>(b, a), FilterExpressionOperator.NotEqual));
 
-        public static FilterExpressionSet operator ==(Guid? a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(Guid? a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(Guid? a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a, b), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(Guid? a, NullableGuidFieldExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<Guid?>(a, b), b, FilterExpressionOperator.NotEqual));
         #endregion
         #endregion
 

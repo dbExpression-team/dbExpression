@@ -50,8 +50,11 @@ namespace HatTrick.DbEx.Tools.Builder
 
                 databasePair.Items.Add(schemaPair);
 
-                foreach (var entity in schema.Tables.Values.Where(c => !helpers.IsIgnored(c)).Cast<INamedMeta>().Concat(schema.Views.Values))
+                foreach (var entity in schema.Tables.Values.Cast<INamedMeta>().Concat(schema.Views.Values.Cast<INamedMeta>()))
                 {
+                    if (helpers.IsIgnored(entity))
+                        continue;
+
                     EntityPairModel entityPair = null;
                     if (entity is MsSqlTable table)
                     {

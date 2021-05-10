@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Converter
             //then
             converter.Should().NotBeOfType<SomeValueConverter>();
         }
-
+        
         private class SomeValueConverter : IValueConverter
         {
             public object ConvertFromDatabase(object value) => throw new NotImplementedException();

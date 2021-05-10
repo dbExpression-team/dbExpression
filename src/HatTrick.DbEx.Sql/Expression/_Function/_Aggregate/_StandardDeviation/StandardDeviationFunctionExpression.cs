@@ -21,32 +21,39 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class StandardDeviationFunctionExpression : AggregateFunctionExpression,
+        IExpressionProvider<IExpressionElement>,
         IExpressionIsDistinctProvider,
         IEquatable<StandardDeviationFunctionExpression>
     {
         #region internals
+        private readonly IExpressionElement expression;
         protected bool IsDistinct { get; set; }
         #endregion
 
         #region interface
+        IExpressionElement IExpressionProvider<IExpressionElement>.Expression => expression;
         bool IExpressionIsDistinctProvider.IsDistinct => IsDistinct;
         #endregion
 
         #region constructors
-        protected StandardDeviationFunctionExpression(IExpressionElement expression, Type declaredType) : base(expression, declaredType)
+        protected StandardDeviationFunctionExpression(IExpressionElement expression, Type declaredType) : base(declaredType)
         {
-
+            this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"STDEV({(IsDistinct ? "DISTINCT " : string.Empty)}{Expression})";
+        public override string ToString() => $"STDEV({(IsDistinct ? "DISTINCT " : string.Empty)}{expression})";
         #endregion
 
         #region equals
         public bool Equals(StandardDeviationFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
+
+            if (expression is null && obj.expression is object) return false;
+            if (expression is object && obj.expression is null) return false;
+            if (!expression.Equals(obj.expression)) return false;
 
             if (this.IsDistinct != obj.IsDistinct) return false;
 
@@ -63,6 +70,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = base.GetHashCode();
+                hash = (hash * multiplier) ^ (expression is object ? expression.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ IsDistinct.GetHashCode();
                 return hash;
             }

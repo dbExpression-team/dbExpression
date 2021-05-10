@@ -501,10 +501,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableDecimalExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDecimalExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<decimal?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<decimal?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<decimal?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableDecimalExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : new LiteralExpression<decimal?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableDecimalExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<decimal?>(b, field) : new LiteralExpression<decimal?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : new LiteralExpression<decimal?>(a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableDecimalExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<decimal?>(a), b.Expression is FieldExpression field ? new LiteralExpression<decimal?>(a, field) : new LiteralExpression<decimal?>(a), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data type

@@ -24,8 +24,8 @@ namespace HatTrick.DbEx.Sql.Expression
         AnyGroupByClause
     {
         #region constructors
-        protected DataTypeFunctionExpression(IExpressionElement expression, Type declaredType) 
-            : base(expression, declaredType)
+        protected DataTypeFunctionExpression(Type declaredType) 
+            : base(declaredType)
         {
 
         }

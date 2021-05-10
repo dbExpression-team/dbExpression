@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
@@ -26,11 +27,17 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// <summary>
         /// Use a custom factory to create a value converter used to convert data to and from the target database.
         /// </summary>
+        /// <remarks><see cref="FieldExpression"/> converters have precedence over type converters.  If a specialized converter is not required for a field, return "null" when a value converter is requested for a <see cref="FieldExpression"/>.
+        /// It is expected that the factory will return a value converter for every type requested.
+        /// </remarks>
         void Use(IValueConverterFactory factory);
 
         /// <summary>
         /// Use a custom factory to create a value converter used to convert data to and from the target database.
         /// </summary>
+        /// <remarks><see cref="FieldExpression"/> converters have precedence over type converters.  If a specialized converter is not required for a field, return "null" when a value converter is requested for a <see cref="FieldExpression"/>.
+        /// It is expected that the factory will return a value converter for every type requested.
+        /// </remarks>
         void Use<TValueConverterFactory>()
             where TValueConverterFactory : class, IValueConverterFactory, new();
 
@@ -38,6 +45,9 @@ namespace HatTrick.DbEx.Sql.Configuration
         /// Use a custom factory to create a value converter used to convert data to and from the target database.
         /// </summary>
         /// <param name="configureFactory">A delegate for configuring the <typeparamref name="TValueConverterFactory"/>.</param>
+        /// <remarks><see cref="FieldExpression"/> converters have precedence over type converters.  If a specialized converter is not required for a field, return "null" when a value converter is requested for a <see cref="FieldExpression"/>.
+        /// It is expected that the factory will return a value converter for every type requested.
+        /// </remarks>
         void Use<TValueConverterFactory>(Action<TValueConverterFactory> configureFactory)
             where TValueConverterFactory : class, IValueConverterFactory, new();
 

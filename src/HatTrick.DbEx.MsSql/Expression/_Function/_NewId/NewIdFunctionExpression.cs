@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<NewIdFunctionExpression>
     {
         #region constructors
-        public NewIdFunctionExpression() : base(null, typeof(Guid))
+        public NewIdFunctionExpression() : base(typeof(Guid))
         {
 
         }

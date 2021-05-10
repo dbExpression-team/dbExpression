@@ -27,15 +27,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(InExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("IN (");
-            AddParametersFromList(builder, context, expression.Expression);
+            AddParametersFromList(expression, builder, context);
             builder.Appender.Write(")");
         }
 
-        private void AddParametersFromList(ISqlStatementBuilder builder, AssemblyContext context, IEnumerable expression)
+        private void AddParametersFromList(InExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var meta = context.Field is object ? builder.FindMetadata(context.Field) : null;
             var hasElements = false;
-            var enumerator = expression.GetEnumerator();
+            var enumerator = expression.Expression.GetEnumerator();
             var firstElement = true;
             while (enumerator.MoveNext())
             {
@@ -50,38 +49,22 @@ namespace HatTrick.DbEx.Sql.Assembler
                 {
                     firstElement = false;
                 }
-                AddParameter(builder, context, meta, enumerator.Current);
+                
+                builder.Appender.Write(
+                   builder.Parameters.Add(
+                       enumerator.Current is null || enumerator.Current is DBNull ? DBNull.Value : enumerator.Current,
+                       (expression.Field as IExpressionTypeProvider).DeclaredType,
+                       builder.FindMetadata(expression.Field),
+                       context
+                   )
+                   .Parameter.ParameterName
+                );
+
                 hasElements = true;
             }
 
             if (!hasElements)
                 builder.Appender.Write("NULL");
-        }
-
-        private void AddParameter(ISqlStatementBuilder builder, AssemblyContext context, ISqlFieldMetadata meta, object expression)
-        {
-            if (context.Field is object)
-            {
-                builder.Appender.Write(
-                   builder.Parameters.Add(
-                       expression is null || expression is DBNull ? DBNull.Value : expression,
-                       context, 
-                       meta
-                   )
-                   .Parameter.ParameterName
-               );
-            }
-            else
-            {
-                if (expression is null || expression is DBNull)
-                {
-                    return;
-                }
-                else
-                {
-                    builder.Appender.Write(builder.Parameters.Add(expression, expression.GetType(), context).ParameterName);
-                }
-            }
         }
     }
 }

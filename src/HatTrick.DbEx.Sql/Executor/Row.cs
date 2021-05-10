@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Sql.Executor
         public T GetValue<T>(int index)
         {
             var field = fields[index];
-            if (field.Value == default)
+            if (field.RawValue == default)
                 return default;
             return field.GetValue<T>();
         }

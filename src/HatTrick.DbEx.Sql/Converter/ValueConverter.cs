@@ -30,7 +30,7 @@ namespace HatTrick.DbEx.Sql.Converter
             this.type = type;
         }
 
-        public virtual (Type, object) ConvertToDatabase(object value)
+        public virtual (Type Type, object ConvertedValue) ConvertToDatabase(object value)
         {
             if (type == value.GetType())
                 return (type, value);
