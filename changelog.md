@@ -1,8 +1,8 @@
 # Changelog
 
-## [0.7.1]
+## [0.7.1] - 2021-05-10
 
-### New
+### Added
 
 #### Improve Value Converters: additional configuration and features in using Value Converters have been implemented and various issue fixes with existing value converter implementation.
 - Created reference to a FieldExpression in LiteralExpression, AssignmentExpression, and InsertExpression to have a direct correlation between the source FieldExpression and the using Expression.
@@ -11,8 +11,8 @@
 - Refactored function expressions to "hide" properties via IExpressionProvider implementation.  This ensures no confusion in the API when used (i.e. db.fx.DatePart(year, date1, date1).DatePart is confusing)
 - Cosmetic change for assembling SQL statements: removed extraneous indentation while building queries containing offset and limit specifications.
 
-### Fixes
-- Scaffolding generation now honors ignore configuration option.  Previous to this release, all views for a database would be scaffolded.
+### Changed
+- [issue #225](https://github.com/HatTrickLabs/dbExpression/issues/225): Scaffolding generation now honors ignore configuration option.  Previous to this release, all views for a database would be scaffolded.
 
-### Breaking Changes:
+### Breaking Changes
 - Overriding type definitions for the default value converter factory now uses syntax consistent with overriding Enums; i.e. ```x.OverrideForType<int>().Use<MyValueConverter>()``` instead of ```x.OverrideForType<int,MyValueConverter>()```

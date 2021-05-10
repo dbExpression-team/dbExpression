@@ -10,7 +10,7 @@ using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
-    public class FieldExpressionValueConverter : ExecutorTestBase
+    public class ValueConverters : ExecutorTestBase
     {
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -581,7 +581,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             DateTime? expected = DateTime.UtcNow;
-            bool toFired = true;
+            bool toFired = false;
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
@@ -621,7 +621,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
-            bool toFired = true;
+            bool toFired = false;
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
@@ -741,7 +741,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             DateTime? expected = DateTime.UtcNow;
-            bool toFired = true;
+            bool toFired = false;
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
@@ -784,7 +784,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
-            bool toFired = true;
+            bool toFired = false;
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
@@ -944,7 +944,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             DateTime? expected = DateTime.UtcNow;
-            bool toFired = true;
+            bool toFired = false;
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
@@ -984,7 +984,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         {
             //given
             DateTimeOffset expected = DateTimeOffset.UtcNow;
-            bool toFired = true;
+            bool toFired = false;
             bool fromFired = false;
 
             ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
@@ -1036,6 +1036,48 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             purchases.Should().HaveCount(expectedCount);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_insert_and_select_purchase_with_alteration_of_payment_method_type_enum_result_in_correct_output(int version)
+        {
+            //given
+            bool toFired = false;
+            bool fromFired = false;
+            ConfigureForMsSqlVersion(version, database => database.Conversions.UseDefaultFactory(x =>
+                    x.OverrideForEnumType<PaymentMethodType>().Use(
+                        to => {
+                            toFired = true;
+                            if (to == PaymentMethodType.PayPal)
+                                return $"_{PaymentMethodType.PayPal}";
+                            return to;
+                        },
+                        from => {
+                            fromFired = true;
+                            var paymentType = from as string;
+                            if (string.IsNullOrWhiteSpace(paymentType))
+                                return null;
+                            if (paymentType == $"_{PaymentMethodType.PayPal}")
+                                return PaymentMethodType.PayPal;
+                            return (PaymentMethodType?)Enum.Parse(typeof(PaymentMethodType), paymentType, true);
+                        }
+                    )
+                )
+            );
+
+            var purchase = new Purchase { OrderNumber = "abc", PaymentMethodType = PaymentMethodType.PayPal, PaymentSourceType = PaymentSourceType.Web, PersonId = 1, PurchaseDate = DateTime.UtcNow, TotalPurchaseQuantity = "1", TotalPurchaseAmount = 1.0 };
+            db.Insert(purchase).Into(dbo.Purchase).Execute();
+
+            //when
+            var persisted = db.SelectOne<Purchase>()
+                .From(dbo.Purchase)
+                .Where(dbo.Purchase.Id == purchase.Id).Execute();
+
+            //then
+            persisted.PaymentMethodType.Should().Be(PaymentMethodType.PayPal);
+            toFired.Should().BeTrue();
+            fromFired.Should().BeTrue();
         }
     }
 }
