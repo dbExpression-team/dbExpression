@@ -16,16 +16,17 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Executor
 {
-    public class SqlStatementValueConverterResolver : IValueConverterFinder
+    public class SqlStatementValueConverterProvider
+
+        : IValueConverterProvider
     {
         #region internals
         private readonly IEnumerable<IExpressionTypeProvider> fieldExpressions;
@@ -33,13 +34,13 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region constructors
-        public SqlStatementValueConverterResolver(IEnumerable<FieldExpression> fieldExpressions, IValueConverterFactory valueConverterFactory)
+        public SqlStatementValueConverterProvider(IEnumerable<FieldExpression> fieldExpressions, IValueConverterFactory valueConverterFactory)
         {
             this.fieldExpressions = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
-        public SqlStatementValueConverterResolver(SelectExpressionSet selectExpressionSet, IValueConverterFactory valueConverterFactory)
+        public SqlStatementValueConverterProvider(SelectExpressionSet selectExpressionSet, IValueConverterFactory valueConverterFactory)
         {
             if (selectExpressionSet is null)
                 throw new ArgumentNullException(nameof(selectExpressionSet));
@@ -49,18 +50,15 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region methods
-        public IValueConverter FindConverter(Type declaredType)
-            => valueConverterFactory.CreateConverter(declaredType);
-
-        public IValueConverter FindConverter(int index)
-            =>  FindConverter(fieldExpressions.ElementAt(index));
-
-        private IValueConverter FindConverter(IExpressionTypeProvider provider)
+        public IValueConverter FindConverter(int fieldIndex, Type databaseType, object value)
         {
-            if (provider is null)
-                return null;
+            var provider = fieldExpressions.ElementAt(fieldIndex);
 
-            return valueConverterFactory.CreateConverter(provider.DeclaredType);
+            IValueConverter converter = null;
+            if (provider is object)
+                converter = valueConverterFactory.CreateConverter(provider.DeclaredType);
+
+            return converter ?? valueConverterFactory.CreateConverter(databaseType);
         }
         #endregion
     }

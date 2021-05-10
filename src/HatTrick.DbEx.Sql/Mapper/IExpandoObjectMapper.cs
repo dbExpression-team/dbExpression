@@ -23,6 +23,6 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public interface IExpandoObjectMapper : IMapper
     {
-        void Map(ExpandoObject xpando, ISqlFieldReader reader, IValueConverterFinder finder);
+        void Map(ExpandoObject xpando, ISqlFieldReader reader, IValueConverterProvider finder);
     }
 }

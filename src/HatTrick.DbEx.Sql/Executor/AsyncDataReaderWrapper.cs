@@ -16,9 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Converter;
 using System;
-using System.Data;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,21 +31,22 @@ namespace HatTrick.DbEx.Sql.Executor
         #region internals
         private bool disposed;
         private int currentRowIndex;
+        private readonly Dictionary<int, IValueConverter> fieldConverters = new Dictionary<int, IValueConverter>();
         protected ISqlConnection SqlConnection { get; private set; }
         protected DbDataReader DataReader { get; private set; }
         protected CancellationToken CancellationToken { get; private set; }
-        protected IValueConverterFinder Converters { get; private set; }
+        protected IValueConverterProvider Converters { get; private set; }
         #endregion
 
         #region constructors
-        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterFinder converters) : this(sqlConnection, dataReader, converters, CancellationToken.None) { }
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterProvider converters) : this(sqlConnection, dataReader, converters, CancellationToken.None) { }
 
-        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterFinder converters, CancellationToken ct)
+        public AsyncDataReaderWrapper(ISqlConnection sqlConnection, DbDataReader dataReader, IValueConverterProvider converters, CancellationToken ct)
         {
-            SqlConnection = sqlConnection;
-            DataReader = dataReader;
+            SqlConnection = sqlConnection ?? throw new ArgumentNullException(nameof(dataReader));
+            DataReader = dataReader ?? throw new ArgumentNullException(nameof(dataReader));
             CancellationToken = ct;
-            Converters = converters;
+            Converters = converters ?? throw new ArgumentNullException(nameof(converters));
             CancellationToken.Register(() => Dispose(true));
         }
         #endregion
@@ -67,14 +69,14 @@ namespace HatTrick.DbEx.Sql.Executor
                             i, 
                             DataReader.GetName(i), 
                             DataReader.GetFieldType(i), 
-                            values[i] == DBNull.Value ? null : values[i],
-                            Converters.FindConverter(i) ?? Converters.FindConverter(DataReader.GetFieldType(i))
+                            values[i],
+                            FindConverter
                         );
                     }
                     return new Row(currentRowIndex++, row);
                 }
                 //asking for a row and the reader has finished, proactively shut everything down.
-                DataReader.Close();
+                Close();
             }
             catch
             {
@@ -82,6 +84,15 @@ namespace HatTrick.DbEx.Sql.Executor
                 throw;
             }
             return null;
+        }
+
+        protected IValueConverter FindConverter(ISqlField field)
+        {
+            if (fieldConverters.ContainsKey(field.Index))
+                return fieldConverters[field.Index];
+            var converter = Converters.FindConverter(field.Index, field.DataType, field.RawValue);
+            fieldConverters.Add(field.Index, converter);
+            return converter;
         }
 
         public void Close()

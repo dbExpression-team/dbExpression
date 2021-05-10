@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Converter;
-using HatTrick.DbEx.Sql.Expression;
 using System;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Converter
 {
-    public interface IValueConverterFinder
+    public class StringNullableEnumValueConverter<T> : StringNullableEnumValueConverter
     {
-        IValueConverter FindConverter(Type declaredType);
-        IValueConverter FindConverter(int index);
+        public StringNullableEnumValueConverter() : base(typeof(T))
+        {
+
+        }
     }
 }

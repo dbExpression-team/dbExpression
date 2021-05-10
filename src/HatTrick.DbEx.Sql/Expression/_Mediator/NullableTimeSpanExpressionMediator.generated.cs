@@ -191,10 +191,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableTimeSpanExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableTimeSpanExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TimeSpan?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableTimeSpanExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<TimeSpan?>(b, field) : new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableTimeSpanExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<TimeSpan?>(b, field) : new LiteralExpression<TimeSpan?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b.Expression is FieldExpression field ? new LiteralExpression<TimeSpan?>(a, field) : new LiteralExpression<TimeSpan?>(a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableTimeSpanExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TimeSpan?>(a), b.Expression is FieldExpression field ? new LiteralExpression<TimeSpan?>(a, field) : new LiteralExpression<TimeSpan?>(a), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data type

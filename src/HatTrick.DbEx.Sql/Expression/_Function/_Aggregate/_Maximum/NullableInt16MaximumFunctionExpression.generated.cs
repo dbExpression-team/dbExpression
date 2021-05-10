@@ -425,10 +425,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableInt16MaximumFunctionExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<short?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableInt16MaximumFunctionExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<short?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableInt16MaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<short?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableInt16MaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<short?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableInt16MaximumFunctionExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableInt16MaximumFunctionExpression a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<short?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableInt16MaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableInt16MaximumFunctionExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<short?>(a), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data type

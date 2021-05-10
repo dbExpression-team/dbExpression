@@ -1,7 +1,9 @@
 ﻿using DbEx.Data;
+using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using Xunit;
 
@@ -50,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_type_converter_override_using_generic_method_succeed(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int, NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use<NoOpValueConverter>()));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -64,7 +66,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_type_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int, NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use<NoOpValueConverter>()));
             var converter = config.ValueConverterFactory.CreateConverter<int>();
 
             //when & then
@@ -77,7 +79,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_type_converter_override_using_instance_method_succeed(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use(new NoOpValueConverter())));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -91,7 +93,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_type_using_instance_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<int>().Use(new NoOpValueConverter())));
             var converter = config.ValueConverterFactory.CreateConverter<int>();
 
             //when & then
@@ -104,7 +106,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_enum_type_converter_override_using_generic_method_succeed(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType, NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use<NoOpValueConverter>()));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -118,7 +120,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_enum_type_using_generic_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType, NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use<NoOpValueConverter>()));
             var converter = config.ValueConverterFactory.CreateConverter<AddressType>();
 
             //when & then
@@ -131,7 +133,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_enum_type_converter_override_using_instance_method_succeed(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use(new NoOpValueConverter())));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -145,7 +147,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_of_a_enum_type_using_instance_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<AddressType>(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use(new NoOpValueConverter())));
             var converter = config.ValueConverterFactory.CreateConverter<AddressType>();
 
             //when & then
@@ -158,7 +160,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_using_generic_for_enum_type_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType, NoOpValueConverter>()));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use<NoOpValueConverter>()));
 
             //when
             var matchingType = config.ValueConverterFactory is IValueConverterFactory;
@@ -172,13 +174,28 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         public void Does_configuration_using_instance_for_enum_type_method_return_correct_converter_of_a_type_converter_override(int version)
         {
             //given
-            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForType<AddressType>(new NoOpValueConverter())));
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use(new NoOpValueConverter())));
             var converter = config.ValueConverterFactory.CreateConverter<AddressType>();
 
             //when & then
             Assert.Throws<NotImplementedException>(() => converter.ConvertFromDatabase(1));
             converter.Should().BeOfType<NoOpValueConverter>();
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_configuration_using_delegates_for_enum_type_method_return_correct_converter_of_a_enum_type_converter_override(int version)
+        {
+            //given
+            var config = ConfigureForMsSqlVersion(version, builder => builder.Conversions.UseDefaultFactory(x => x.OverrideForEnumType<AddressType>().Use(a => throw new NotImplementedException(), a => AddressType.Mailing)));
+            var converter = config.ValueConverterFactory.CreateConverter<AddressType>();
+
+            //when
+            var value = converter.ConvertFromDatabase(AddressType.Billing);
+
+            //then
+            value.Should().Be(AddressType.Mailing);
+        }        
 
         public class NoOpValueConverter : IValueConverter
         {
@@ -191,6 +208,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
         {
             public IValueConverter CreateConverter<T>() => throw new NotImplementedException();
             public IValueConverter CreateConverter(Type type) => throw new NotImplementedException();
+            public IValueConverter CreateConverter(FieldExpression field) => throw new NotImplementedException();
         }
     }
 }

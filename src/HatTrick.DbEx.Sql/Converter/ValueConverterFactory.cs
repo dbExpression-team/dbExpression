@@ -16,7 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql.Converter
@@ -98,16 +99,27 @@ namespace HatTrick.DbEx.Sql.Converter
             RegisterConverter<T>(() => converter);
         }
 
+        public virtual void RegisterConverter(Type type, IValueConverter converter)
+        {
+            if (converter is null)
+                throw new ArgumentNullException(nameof(converter));
+
+            RegisterConverter(type, () => converter);
+        }
+
         public virtual void RegisterConverter<T, U>()
             where U : class, IValueConverter, new()
             => RegisterConverter<T>(new U());
 
         public virtual void RegisterConverter<T>(Func<IValueConverter> converter)
+            =>  RegisterConverter(typeof(T), converter);
+
+        public virtual void RegisterConverter(Type type, Func<IValueConverter> converter)
         {
             if (converter is null)
                 throw new ArgumentNullException(nameof(converter));
 
-            valueConverters.AddOrUpdate(typeof(T), converter, (type, @return) => converter);
+            valueConverters.AddOrUpdate(type, converter, (_, @return) => converter);
         }
 
         public virtual IValueConverter CreateConverter(Type type)

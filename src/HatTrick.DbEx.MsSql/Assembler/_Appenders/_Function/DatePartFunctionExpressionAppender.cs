@@ -18,6 +18,7 @@
 
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
+using System.Linq;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
@@ -26,12 +27,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #region methods
         public override void AppendElement(DatePartFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
+            var datePart = (expression as IExpressionProvider<DatePartsExpression>).Expression;
+            var part = (expression as IExpressionProvider<IExpressionElement>).Expression;
+
             builder.Appender
                 .Write("DATEPART(")
-                .Write(expression.DatePart.Expression.ToString().ToLower())
+                .Write(datePart.Expression.ToString().ToLower())
                 .Write(", ");
 
-            builder.AppendElement(expression.Expression, context);
+            builder.AppendElement(part, context);
             builder.Appender.Write(")");
         }
         #endregion

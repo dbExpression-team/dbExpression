@@ -330,10 +330,10 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableDateTimeExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableDateTimeExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<DateTime?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableDateTimeExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableDateTimeExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableDateTimeExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<DateTime?>(b, field) : new LiteralExpression<DateTime?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableDateTimeExpressionMediator a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, a.Expression is FieldExpression field ? new LiteralExpression<DateTime?>(b, field) : new LiteralExpression<DateTime?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableDateTimeExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b.Expression is FieldExpression field ? new LiteralExpression<DateTime?>(a, field) : new LiteralExpression<DateTime?>(a), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableDateTimeExpressionMediator b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<DateTime?>(a), b.Expression is FieldExpression field ? new LiteralExpression<DateTime?>(a, field) : new LiteralExpression<DateTime?>(a), FilterExpressionOperator.NotEqual));
         #endregion
 
         #region data type

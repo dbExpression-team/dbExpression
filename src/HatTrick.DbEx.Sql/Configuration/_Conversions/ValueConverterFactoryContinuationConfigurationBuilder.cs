@@ -17,6 +17,7 @@
 #endregion
 
 ﻿using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
@@ -35,41 +36,13 @@ namespace HatTrick.DbEx.Sql.Configuration
         #endregion
 
         #region methods
-        public IValueConverterFactoryContinuationConfigurationBuilder OverrideForType<T>(IValueConverter converter)
-            where T : IComparable
-        {
-            factory.RegisterConverter<T>(converter);
-            return this;
-        }
-
-        public IValueConverterFactoryContinuationConfigurationBuilder OverrideForType<T, TConverter>()
-            where T : IComparable
-            where TConverter : class, IValueConverter, new()
-        {
-            factory.RegisterConverter<T,TConverter>();
-            return this;
-        }
+        public IValueTypeValueConverterConfigurationBuilder<TValue> OverrideForType<TValue>()
+            where TValue : struct, IComparable
+            => new ValueTypeValueConverterConfigurationBuilder<TValue>(this, factory);
 
         public IEnumTypeValueConverterConfigurationBuilder<TEnum> OverrideForEnumType<TEnum>()
             where TEnum : struct, Enum, IComparable
-        {
-            return new EnumTypeValueConverterConfigurationBuilder<TEnum>(this, factory);
-        }
-
-        public IValueConverterFactoryContinuationConfigurationBuilder OverrideForEnumType<TEnum>(IValueConverter converter)
-            where TEnum : struct, Enum, IComparable
-        {
-            factory.RegisterConverter<TEnum>(converter);
-            return this;
-        }
-
-        public IValueConverterFactoryContinuationConfigurationBuilder OverrideForEnumType<TEnum, TConverter>()
-            where TEnum : struct, Enum, IComparable
-            where TConverter : class, IValueConverter, new()
-        {
-            factory.RegisterConverter<TEnum, TConverter>();
-            return this;
-        }
+            => new EnumTypeValueConverterConfigurationBuilder<TEnum>(this, factory);
         #endregion
     }
 }

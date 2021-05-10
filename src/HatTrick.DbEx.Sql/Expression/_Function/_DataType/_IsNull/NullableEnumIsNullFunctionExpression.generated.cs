@@ -28,10 +28,10 @@ namespace HatTrick.DbEx.Sql.Expression
         
         #region filter operators
         #region DBNull
-        public static FilterExpressionSet operator ==(NullableEnumIsNullFunctionExpression<TEnum> a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(DBNull.Value), FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(NullableEnumIsNullFunctionExpression<TEnum> a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(DBNull.Value), FilterExpressionOperator.NotEqual));
-        public static FilterExpressionSet operator ==(DBNull a, NullableEnumIsNullFunctionExpression<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TEnum?>(DBNull.Value), b, FilterExpressionOperator.Equal));
-        public static FilterExpressionSet operator !=(DBNull a, NullableEnumIsNullFunctionExpression<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TEnum?>(DBNull.Value), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(NullableEnumIsNullFunctionExpression<TEnum> a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(NullableEnumIsNullFunctionExpression<TEnum> a, DBNull b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new LiteralExpression<TEnum?>(b), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator ==(DBNull a, NullableEnumIsNullFunctionExpression<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DBNull a, NullableEnumIsNullFunctionExpression<TEnum> b) => new FilterExpressionSet(new FilterExpression<bool?>(new LiteralExpression<TEnum?>(a), b, FilterExpressionOperator.NotEqual));
         #endregion
 
         #region TEnum

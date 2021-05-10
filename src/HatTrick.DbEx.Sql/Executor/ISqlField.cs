@@ -25,7 +25,8 @@ namespace HatTrick.DbEx.Sql.Executor
         int Index { get; }
         string Name { get; }
         Type DataType { get; }
-        object Value { get; }
+        object RawValue { get; }
         T GetValue<T>();
+        object GetValue();
     }
 }

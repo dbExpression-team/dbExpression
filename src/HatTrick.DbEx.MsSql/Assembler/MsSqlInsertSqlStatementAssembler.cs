@@ -62,7 +62,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
                     var originalTryShareParameterSetting = context.TrySharingExistingParameter;
                     context.TrySharingExistingParameter = true;
-                    context.PushField((inserts[j] as IAssignmentExpressionProvider).Assignee);
                     try
                     {
                         builder.AppendElement((inserts[j] as IAssignmentExpressionProvider).Assignment, context);
@@ -70,7 +69,6 @@ namespace HatTrick.DbEx.MsSql.Assembler
                     finally
                     {
                         context.TrySharingExistingParameter = originalTryShareParameterSetting;
-                        context.PopField();
                     }
                     builder.Appender.Write(", ");
                     if (j == inserts.Count - 1)
@@ -148,15 +146,8 @@ namespace HatTrick.DbEx.MsSql.Assembler
                         .Write(context.Configuration.IdentifierDelimiter.End)
                         .Write(".");
 
-                    context.PushField((templateInserts[i] as IAssignmentExpressionProvider).Assignee);
-                    try
-                    {
-                        builder.AppendElement((templateInserts[i] as IAssignmentExpressionProvider).Assignee, context);
-                    }
-                    finally
-                    {
-                        context.PopField();
-                    }
+                    builder.AppendElement((templateInserts[i] as IAssignmentExpressionProvider).Assignee, context);
+
                     if (i < templateInserts.Count - 1)
                         builder.Appender.Write(", ");
                     builder.Appender.LineBreak();

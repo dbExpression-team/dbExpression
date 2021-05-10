@@ -35,10 +35,10 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region constructors
-        protected InsertExpression(FieldExpression field, IExpressionElement assignment)
+        protected InsertExpression(IExpressionElement assignment, FieldExpression field)
         {
-            this.assignee = field ?? throw new ArgumentNullException(nameof(field));
             this.assignment = assignment ?? throw new ArgumentNullException(nameof(assignment));
+            this.assignee = field ?? throw new ArgumentNullException(nameof(field));
         }
         #endregion
     }

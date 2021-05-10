@@ -16,7 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Expression;
+using System;
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
@@ -24,8 +26,31 @@ namespace HatTrick.DbEx.Sql.Configuration
         where TEnum : struct, Enum, IComparable
     {
         /// <summary>
+        /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different value type using the provided value converter. 
+        /// </summary>
+        /// <param name="converter">The custom converter that will convert data to and from the database.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder Use(IValueConverter converter);
+
+        /// <summary>
+        /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different value type using the specified value converter. 
+        /// </summary>
+        /// <typeparam name="TConverter">The custom converter that will convert data to and from the database.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder Use<TConverter>()
+            where TConverter : class, IValueConverter, new();
+
+        /// <summary>
+        /// Override the default behaviour of converting <typeparamref name="TEnum"/> values to and from a different value type using provided delegates. 
+        /// </summary>
+        /// <typeparam name="convertToDatabase">A custom delegate that will convert a <typeparamref name="TEnum"/>? into an <see cref="object"/> for persistence in the database.</param>
+        /// <typeparam name="convertFromDatabase">A custom delegate that will convert an <see cref="object"/> read from the database into the type <typeparamref name="TEnum"/>?.</param>
+        IValueConverterFactoryContinuationConfigurationBuilder Use(Func<TEnum?, object> convertToDatabase, Func<object, TEnum?> convertFromDatabase);
+
+        /// <summary>
         /// Persist enumeration values as strings in the target database.
         /// </summary>
+        /// <remarks>
+        /// Using this method will register converters for both the nullable and non-nullable versions of the enum.
+        /// </remarks>
         IValueConverterFactoryContinuationConfigurationBuilder PersistAsString();
     }
 }

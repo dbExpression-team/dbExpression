@@ -30,7 +30,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             builder.AppendElement(field, context);
             builder.Appender.Write(" = ");
 
-            context.PushField(field);
             context.TrySharingExistingParameter = true;
             try
             {
@@ -39,7 +38,6 @@ namespace HatTrick.DbEx.Sql.Assembler
             finally
             {
                 context.TrySharingExistingParameter = originalTryShareParameterSetting;
-                context.PopField();
             }
         }
     }

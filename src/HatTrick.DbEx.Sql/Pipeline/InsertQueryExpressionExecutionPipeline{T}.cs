@@ -85,7 +85,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
                 connection,
-                new SqlStatementValueConverterResolver(fields, database.ValueConverterFactory),
+                new SqlStatementValueConverterProvider(fields, database.ValueConverterFactory),
                 cmd => { 
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)));
                     configureCommand?.Invoke(cmd);
@@ -147,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
                 statement,
                 connection,
-                new SqlStatementValueConverterResolver(new List<FieldExpression> { null }.Concat(expression.Outputs).ToList(), database.ValueConverterFactory),
+                new SqlStatementValueConverterProvider(new List<FieldExpression> { null }.Concat(expression.Outputs).ToList(), database.ValueConverterFactory),
                 async cmd =>
                 {
                     if (beforeExecution is object)

@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.MsSql.Expression
         IEquatable<SysDateTimeOffsetFunctionExpression>
     {
         #region constructors
-        public SysDateTimeOffsetFunctionExpression() : base(null, typeof(DateTimeOffset))
+        public SysDateTimeOffsetFunctionExpression() : base(typeof(DateTimeOffset))
         {
 
         }
