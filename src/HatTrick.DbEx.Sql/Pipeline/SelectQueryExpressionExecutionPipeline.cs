@@ -16,15 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Dynamic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,7 +49,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution,
             PipelineEventHook<AfterExecutionPipelineExecutionContext> afterExecution,
             PipelineEventHook<BeforeSelectPipelineExecutionContext> beforeSelect,
-            PipelineEventHook<AfterSelectPipelineExecutionContext> afterSelectEntity
+            PipelineEventHook<AfterSelectPipelineExecutionContext> afterSelect
         )
         {
             this.database = database;
@@ -60,7 +58,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             this.beforeExecution = beforeExecution;
             this.afterExecution = afterExecution;
             this.beforeSelect = beforeSelect;
-            this.afterSelect = afterSelectEntity;
+            this.afterSelect = afterSelect;
         }
         #endregion
 
@@ -723,7 +721,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public dynamic ExecuteSelectDynamic(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             dynamic value = default;
-            var converters = new SqlStatementValueConverterProvider(expression.Select, database.ValueConverterFactory);
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -738,7 +735,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row, converters);
+                    mapper.Map(value, row);
                 }
             );
             return value;
@@ -773,7 +770,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public async Task<dynamic> ExecuteSelectDynamicAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             dynamic value = default;
-            var converters = new SqlStatementValueConverterProvider(expression.Select, database.ValueConverterFactory);
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -788,7 +784,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-                    mapper.Map(value, row, converters);
+                    mapper.Map(value, row);
                 },
                 ct
             ).ConfigureAwait(false);
@@ -855,7 +851,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-            var converters = new SqlStatementValueConverterProvider(expression.Select, database.ValueConverterFactory);
             ExecuteSelectQuery(
                 expression,
                 connection,
@@ -866,7 +861,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = reader.ReadRow()) is object)
                     {
                         var value = new ExpandoObject();
-                        mapper.Map(value, row, converters);
+                        mapper.Map(value, row);
                         values.Add(value);
                     }
                 }
@@ -895,7 +890,6 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
-            var converters = new SqlStatementValueConverterProvider(expression.Select, database.ValueConverterFactory);
             await ExecuteSelectQueryAsync(
                 expression,
                 connection,
@@ -906,7 +900,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
                     {
                         var value = new ExpandoObject();
-                        mapper.Map(value, row, converters);
+                        mapper.Map(value, row);
                         values.Add(value);
                     }
                 },
@@ -1152,8 +1146,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = executor.ExecuteQuery(
                 statement, 
                 connection,
-                new SqlStatementValueConverterProvider(expression.Select, database.ValueConverterFactory),
-                cmd => { 
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
+                cmd => {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -1208,9 +1205,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,
-                new SqlStatementValueConverterProvider(expression.Select, database.ValueConverterFactory),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, expression.Select),
                 async cmd =>
                 {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     if (beforeExecution is object)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);

@@ -36,6 +36,7 @@ namespace HatTrick.DbEx.Sql.Executor
             RegisterExecutor<InsertQueryExpression>(sqlStatementExecutor);
             RegisterExecutor<UpdateQueryExpression>(sqlStatementExecutor);
             RegisterExecutor<DeleteQueryExpression>(sqlStatementExecutor);
+            RegisterExecutor<StoredProcedureQueryExpression>(sqlStatementExecutor);
         }
         #endregion
 

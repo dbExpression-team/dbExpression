@@ -16,21 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class StoredProcedureQueryExpression : QueryExpression
     {
-        #region interface
-        public string Name { get; set; }
-        public IDictionary<string, object> Parameters { get; set; } = new Dictionary<string, object>();
-        #endregion
 
-        #region to string
-        public override string ToString()
-            => Name;
-        #endregion
     }
-
 }

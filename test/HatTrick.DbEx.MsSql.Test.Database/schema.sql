@@ -302,3 +302,25 @@ GROUP BY
 	[dbo].[Person].[Id]
 
 GO
+
+CREATE PROCEDURE dbo.UpdatePersonCreditLimitAndReturnPerson
+	@P1 INT,
+	@P2 INT
+AS
+	UPDATE [dbo].[Person] SET [dbo].[Person].[CreditLimit] = @P2 WHERE [dbo].[Person].[Id] = @P1;
+
+	SELECT [dbo].[Person].[Id], [dbo].[Person].[FirstName], [dbo].[Person].[LastName] FROM [dbo].[Person];
+GO
+
+CREATE PROCEDURE dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson
+	@P1 INT NULL = 3,
+	@P2 INT,
+	@Id INT OUTPUT,
+	@FullName VARCHAR(40) OUTPUT
+AS
+	UPDATE [dbo].[Person] SET [dbo].[Person].[CreditLimit] = @P2 WHERE [dbo].[Person].[Id] = @P1;
+
+	SELECT @Id = [dbo].[Person].[Id], @FullName = [dbo].[Person].[FirstName] +  ' ' + [dbo].[Person].[LastName]
+		FROM [dbo].[Person];
+
+	SELECT [dbo].[Person].[Id], [dbo].[Person].[FirstName], [dbo].[Person].[LastName], @P1 AS ReturnedParam FROM [dbo].[Person];

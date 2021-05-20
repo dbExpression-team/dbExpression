@@ -3617,6 +3617,474 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
         #endregion
+
+        #region StoredProcedureTermination
+        public static void Execute(this StoredProcedureTermination builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        public static void Execute(this StoredProcedureTermination builder, ISqlConnection connection)
+        {
+            builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        public static void Execute<T>(this StoredProcedureTermination builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                builder.ExecutePipeline(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout
+                );
+        }
+
+        public static void Execute(this StoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
+        {
+            builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static async Task ExecuteAsync(this StoredProcedureTermination builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task ExecuteAsync(this StoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task ExecuteAsync(this StoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task ExecuteAsync(this StoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region MapValuesStoredProcedureTermination
+        public static void Execute(this MapValuesStoredProcedureTermination builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        public static void Execute(this MapValuesStoredProcedureTermination builder, ISqlConnection connection)
+        {
+            builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        public static void Execute(this MapValuesStoredProcedureTermination builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                builder.ExecutePipeline(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout
+                );
+        }
+
+        public static void Execute(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
+        {
+            builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region SelectValueStoredProcedureTermination
+        public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region SelectValuesStoredProcedureTermination
+        public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region SelectDynamicStoredProcedureTermination
+        public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region SelectDynamicsStoredProcedureTermination
+        public static IList<dynamic> Execute(this SelectDynamicsStoredProcedureTermination builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        public static IList<dynamic> Execute(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        public static IList<dynamic> Execute(this SelectDynamicsStoredProcedureTermination builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static IList<dynamic> Execute<T>(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        public static async Task<IList<dynamic>> ExecuteAsync(this SelectDynamicsStoredProcedureTermination builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<IList<dynamic>> ExecuteAsync(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        public static async Task<IList<dynamic>> ExecuteAsync(this SelectDynamicsStoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        public static async Task<IList<dynamic>> ExecuteAsync<T>(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
         #endregion
 
         #region execute pipeline
@@ -3671,7 +4139,7 @@ namespace HatTrick.DbEx.Sql
         }
         #endregion
 
-        #region SelectValueTermination (T)
+        #region SelectValueTermination<T>
         private static T ExecutePipeline<T>(this SelectValueTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
             => builder.CreateSelectExecutionPipeline<T>().ExecuteSelectValue<T>(builder.GetQueryExpression<SelectQueryExpression>(), connection, configureCommand);
 
@@ -3679,7 +4147,7 @@ namespace HatTrick.DbEx.Sql
             => await builder.CreateSelectExecutionPipeline<T>().ExecuteSelectValueAsync<T>(builder.GetQueryExpression<SelectQueryExpression>(), connection, configureCommand, cancellationToken).ConfigureAwait(false);
         #endregion
 
-        #region SelectValuesTermination (T)
+        #region SelectValuesTermination<T>
         private static IList<T> ExecutePipeline<T>(this SelectValuesTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
             => builder.CreateSelectExecutionPipeline<T>().ExecuteSelectValueList<T>(builder.GetQueryExpression<SelectQueryExpression>(), connection, configureCommand);
 
@@ -3720,7 +4188,6 @@ namespace HatTrick.DbEx.Sql
 
         private static void ExecutePipeline(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read)
             => builder.CreateSelectExecutionPipeline<ExpandoObject>().ExecuteSelectDynamicList(builder.GetQueryExpression<SelectQueryExpression>(), connection, configureCommand, read);
-
 
         private static async Task<IList<dynamic>> ExecutePipelineAsync(this SelectValuesTermination<ExpandoObject> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
             => await builder.CreateSelectExecutionPipeline<dynamic>().ExecuteSelectDynamicListAsync(builder.GetQueryExpression<SelectQueryExpression>(), connection, configureCommand, cancellationToken).ConfigureAwait(false);
@@ -3836,13 +4303,73 @@ namespace HatTrick.DbEx.Sql
         private static async Task<IList<T>> ExecutePipelineAsync<T>(this SelectEntitiesTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken cancellationToken)
             where T : class, IDbEntity, new()
             => await builder.CreateSelectExecutionPipeline<T>().ExecuteSelectEntityListAsync(builder.GetQueryExpression<SelectQueryExpression>(), connection, configureCommand, map, cancellationToken).ConfigureAwait(false);
+        #endregion
 
         private static ISelectQueryExpressionExecutionPipeline CreateSelectExecutionPipeline<T>(this ITerminationExpressionBuilder builder)
         {
             var config = builder.GetDatabaseConfiguration();
             return config.ExecutionPipelineFactory?.CreateExecutionPipeline(config, builder.GetQueryExpression<SelectQueryExpression>()) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{builder.GetType()}',  please review and ensure the correct configuration for DbExpression.");
         }
+
+        #region StoredProcedureTermination
+        private static void ExecutePipeline(this StoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline().Execute(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand);
+
+        private static async Task ExecutePipelineAsync(this StoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline().ExecuteAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
+
+        #region MapValuesStoredProcedureTermination
+        private static void ExecutePipeline(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline().Execute(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+
+        private static async Task ExecutePipelineAsync(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline().ExecuteAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        #region SelectValueStoredProcedureTermination
+        private static T ExecutePipeline<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValue(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+
+        private static async Task<T> ExecutePipelineAsync<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        #region SelectValuesStoredProcedureTermination
+        private static IList<T> ExecutePipeline<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueList(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+
+        private static async Task<IList<T>> ExecutePipelineAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueListAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        #region SelectDynamicStoredProcedureTermination
+        private static dynamic ExecutePipeline(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline<dynamic>().ExecuteSelectDynamic(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand);
+
+        private static async Task<dynamic> ExecutePipelineAsync(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline<dynamic>().ExecuteSelectDynamicAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        #region SelectDynamicsStoredProcedureTermination
+        private static IList<dynamic> ExecutePipeline(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline<dynamic>().ExecuteSelectDynamicList(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand);
+
+        private static async Task<IList<dynamic>> ExecutePipelineAsync(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline<dynamic>().ExecuteSelectDynamicListAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        private static IStoredProcedureQueryExpressionExecutionPipeline CreateStoredProcedureExecutionPipeline(this ITerminationExpressionBuilder builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            return config.ExecutionPipelineFactory?.CreateExecutionPipeline(config, builder.GetQueryExpression<StoredProcedureQueryExpression>()) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{builder.GetType()}', please review and ensure the correct configuration for DbExpression.");
+        }
+
+        private static IStoredProcedureQueryExpressionExecutionPipeline CreateStoredProcedureExecutionPipeline<T>(this ITerminationExpressionBuilder builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            return config.ExecutionPipelineFactory?.CreateExecutionPipeline(config, builder.GetQueryExpression<StoredProcedureQueryExpression>()) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{builder.GetType()}', please review and ensure the correct configuration for DbExpression.");
+        }
         #endregion
 
         #region get database configuration

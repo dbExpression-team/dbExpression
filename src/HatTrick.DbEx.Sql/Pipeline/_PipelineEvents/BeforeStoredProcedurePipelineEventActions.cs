@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +16,22 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class AfterSelectEntityPipelineEventActions : PipelineEventActions<Func<AfterSelectPipelineExecutionContext, CancellationToken, Task>, Action<AfterSelectPipelineExecutionContext>, AfterSelectPipelineExecutionContext>
+    public class BeforeStoredProcedurePipelineEventActions : PipelineEventActions<Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task>, Action<BeforeStoredProcedurePipelineExecutionContext>, BeforeStoredProcedurePipelineExecutionContext>
     {
-        protected override Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> MakeAsync(Action<AfterSelectPipelineExecutionContext> action)
-            => new Func<AfterSelectPipelineExecutionContext, CancellationToken, Task>((ctx, ct) =>
+        protected override Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> MakeAsync(Action<BeforeStoredProcedurePipelineExecutionContext> action)
+            => new Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task>((ctx, ct) =>
             {
                 action.Invoke(ctx);
                 return Task.FromResult<object>(null);
             });
 
-        protected override Action<AfterSelectPipelineExecutionContext> MakeSync(Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> action)
-           => new Action<AfterSelectPipelineExecutionContext>(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
+        protected override Action<BeforeStoredProcedurePipelineExecutionContext> MakeSync(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action)
+           => new Action<BeforeStoredProcedurePipelineExecutionContext>(ctx => action.Invoke(ctx, CancellationToken.None).GetAwaiter().GetResult());
     }
 }

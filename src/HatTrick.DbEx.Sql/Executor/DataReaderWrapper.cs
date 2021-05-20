@@ -79,11 +79,12 @@ namespace HatTrick.DbEx.Sql.Executor
             return null;
         }
 
-        protected IValueConverter FindConverter(ISqlField field)
+        protected IValueConverter FindConverter(ISqlField field, Type requestedType)
         {
             if (fieldConverters.ContainsKey(field.Index))
                 return fieldConverters[field.Index];
-            var converter = Converters.FindConverter(field.Index, field.DataType, field.RawValue);
+
+            var converter = Converters.FindConverter(field.Index, requestedType == typeof(object) ? field.DataType : requestedType, field.RawValue);
             fieldConverters.Add(field.Index, converter);
             return converter;
         }

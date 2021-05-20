@@ -19,7 +19,7 @@
 ﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Assembler.v2016
+namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlStatementAssemblerFactory : SqlStatementAssemblerFactory
     {
@@ -27,6 +27,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2016
         private static readonly MsSqlInsertSqlStatementAssembler insertManySqlStatementAssembler = new MsSqlInsertSqlStatementAssembler();
         private static readonly MsSqlDeleteSqlStatementAssembler deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
         private static readonly MsSqlUpdateSqlStatementAssembler updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
+        private static readonly MsSqlStoredProcedureSqlStatementAssembler storedProcedureSqlStaementAssembler = new MsSqlStoredProcedureSqlStatementAssembler();
 
         #region constructors
         public MsSqlStatementAssemblerFactory()
@@ -35,6 +36,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2016
             RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(insertManySqlStatementAssembler);
             RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(deleteSqlStatementAssembler);
             RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(updateSqlStatementAssembler);
+            RegisterStatementAssembler<StoredProcedureQueryExpression, MsSqlStoredProcedureSqlStatementAssembler>(storedProcedureSqlStaementAssembler);
         }
         #endregion
     }

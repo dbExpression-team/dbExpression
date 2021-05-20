@@ -25,7 +25,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(LikeExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             builder.Appender.Write("LIKE ");
-            builder.Appender.Write(builder.Parameters.Add(expression.Expression, context).Parameter.ParameterName);
+            var param = builder.Parameters.CreateInputParameter(expression.Expression, context);
+            builder.Parameters.AddParameter(param);
+            builder.Appender.Write(param.Parameter.ParameterName);
         }
     }
 }

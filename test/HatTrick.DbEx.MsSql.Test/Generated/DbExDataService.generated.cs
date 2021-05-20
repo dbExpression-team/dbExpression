@@ -1029,6 +1029,11 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entities);
         #endregion
 
+        #region stored procedure
+        public static StoredProcedureContinuation sp(StoredProcedureExpression sp)
+            => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, sp);
+
+        #endregion
         #region get connection
         /// <summary>
         /// Creates a connection to the database.
@@ -1070,6 +1075,8 @@ namespace DbEx.DataService
 namespace DbEx.dboDataService
 {
 	using DbEx.dboData;
+    using HatTrick.DbEx.Sql.Builder;
+    using System.Data;
 
     #region dbo schema expression
     public class dboSchemaExpression : SchemaExpression
@@ -5139,6 +5146,49 @@ namespace DbEx.dboDataService
     }
     #endregion
 
+    //SPROC: BEGIN
+    public partial class UpdatePersonCreditLimitAndReturnPersonStoredProcedure : StoredProcedureExpression
+    {
+        public UpdatePersonCreditLimitAndReturnPersonStoredProcedure(
+            string identifier,
+            string name,
+            SchemaExpression schema,
+            int p1,
+            int p2
+        ) : base($"{identifier}.UpdatePersonCreditLimitAndReturnPerson", name, schema, new List<ParameterExpression> { new ParameterExpression<int>("p1", p1, ParameterDirection.Input), new ParameterExpression<int>("p2", p2, ParameterDirection.Input) })
+        {
+
+        }
+    }
+
+    public partial class UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure : StoredProcedureExpression
+    {
+        public UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(
+            string identifier,
+            string name,
+            SchemaExpression schema,
+            int? p1,
+            int p2,
+            Action<string, object> outputParameters
+        ) : base(
+                $"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson",
+                name,
+                schema,
+                new List<ParameterExpression>
+                {
+                    new ParameterExpression<int?>("p1", p1, ParameterDirection.Input),
+                    new ParameterExpression<int>("p2", p2, ParameterDirection.Input),
+                    new ParameterExpression<int>("Id", ParameterDirection.Output),
+                    new ParameterExpression<string>("FullName", ParameterDirection.Output),
+                },
+                outputParameters
+            )
+        {
+
+        }
+    }
+    //SPROC: END
+
     #region dbo
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
@@ -5146,6 +5196,7 @@ namespace DbEx.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static dboSchemaExpression schema;
         #region interface
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
         /// <para>Properties:
@@ -5334,6 +5385,8 @@ namespace DbEx.dboDataService
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
 
+            dbo.schema = schema;
+
             AccessAuditLog = schema.AccessAuditLog;
             Address = schema.Address;
             Person = schema.Person;
@@ -5343,6 +5396,14 @@ namespace DbEx.dboDataService
             PurchaseLine = schema.PurchaseLine;
             PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
         }
+
+        //SPROC: BEGIN
+        public static UpdatePersonCreditLimitAndReturnPersonStoredProcedure UpdatePersonCreditLimitAndReturnPerson(int p1, int p2)
+            => new UpdatePersonCreditLimitAndReturnPersonStoredProcedure("UpdatePersonCreditLimitAndReturnPerson", "UpdatePersonCreditLimitAndReturnPerson", schema, p1, p2);
+
+        public static UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? p1, int p2, Action<string, object> outputParameters)
+            => new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure("UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", schema, p1, p2, outputParameters);
+        //SPROC: END
         #endregion
     }
     #endregion

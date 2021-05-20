@@ -24,11 +24,4 @@ namespace HatTrick.DbEx.Sql.Assembler
     {
         void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context);
     }
-
-    //TODO: is this used?
-    public interface ISqlStatementAssembler<T> : ISqlStatementAssembler
-        where T : AssemblyContext
-    {
-        void AssembleStatement(QueryExpression expression, ISqlStatementBuilder builder, T context);
-    }
 }

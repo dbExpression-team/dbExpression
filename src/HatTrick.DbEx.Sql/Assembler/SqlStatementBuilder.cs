@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             assembler.AssembleStatement(query, this, context);
 
-            return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
+            return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters);
         }
 
         public void AppendElement<T>(T element, AssemblyContext context)

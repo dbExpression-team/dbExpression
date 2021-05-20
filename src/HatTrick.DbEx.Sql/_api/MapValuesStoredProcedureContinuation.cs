@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-using System.Data.Common;
 
-namespace HatTrick.DbEx.Sql.Assembler
+namespace HatTrick.DbEx.Sql
 {
-    public class ParameterizedExpression
+#pragma warning disable IDE1006 // Naming Styles
+    public interface MapValuesStoredProcedureContinuation : MapValuesStoredProcedureTermination
+#pragma warning restore IDE1006 // Naming Styles
     {
-        public Type DeclaredType { get; private set; }
-        public DbParameter Parameter { get; private set; }
-        public ISqlFieldMetadata Metadata { get; private set; }
 
-        public ParameterizedExpression(Type declaredType, DbParameter parameter, ISqlFieldMetadata metadata)
-        {
-            DeclaredType = declaredType;
-            Parameter = parameter;
-            Metadata = metadata;
-        }
     }
+
 }

@@ -28,7 +28,7 @@ using System.Data.SqlClient;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
-    public class MsSqlParameterBuilder : SqlParameterBuilder
+    public class MsSqlParameterBuilder : SqlParameterBuilder, ISqlParameterBuilder
     {
         #region internals
         private readonly IDbTypeMapFactory<SqlDbType> typeMaps;
@@ -44,7 +44,60 @@ namespace HatTrick.DbEx.MsSql.Assembler
         #endregion
 
         #region methods
-        public override ParameterizedExpression Add<T>(T value, AssemblyContext context)
+        public virtual ParameterizedExpression CreateInputParameter<T>(T value, AssemblyContext context)
+            => CreateParameter(value, context, ParameterDirection.Input);
+
+        public virtual ParameterizedExpression CreateInputParameter(object value, Type valueType, AssemblyContext context)
+            => CreateParameter(value, valueType, context, ParameterDirection.Input);
+
+        public virtual ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+            => CreateParameter(value, declaredType, meta, context, ParameterDirection.Input);
+
+        public virtual void AddInputParameter<T>(T value, AssemblyContext context)
+            => Parameters.Add(CreateInputParameter(value, context));
+
+        public virtual void AddInputParameter(object value, Type valueType, AssemblyContext context)
+            => Parameters.Add(CreateInputParameter(value, valueType, context));
+
+        public virtual void AddInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+            => Parameters.Add(CreateInputParameter(value, declaredType, meta, context));
+
+        public virtual ParameterizedExpression CreateInputOutputParameter<T>(T value, AssemblyContext context)
+            => CreateParameter(value, context, ParameterDirection.InputOutput);
+
+        public virtual ParameterizedExpression CreateInputOutputParameter(object value, Type valueType, AssemblyContext context)
+            => CreateParameter(value, valueType, context, ParameterDirection.InputOutput);
+
+        public virtual ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+            => CreateParameter(value, declaredType, meta, context, ParameterDirection.InputOutput);
+
+        public virtual void AddInputOutputParameter<T>(T value, AssemblyContext context)
+            => Parameters.Add(CreateParameter(value, context, ParameterDirection.InputOutput));
+
+        public virtual void AddInputOutputParameter(object value, Type valueType, AssemblyContext context)
+            => Parameters.Add(CreateParameter(value, valueType, context, ParameterDirection.InputOutput));
+
+        public virtual void AddInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+            => Parameters.Add(CreateParameter(value, declaredType, meta, context, ParameterDirection.InputOutput));
+
+        public ParameterizedExpression CreateOutputParameter<T>(AssemblyContext context)
+            => CreateOutputParameter(typeof(T), context);
+
+        public ParameterizedExpression CreateOutputParameter(Type valueType, AssemblyContext context)
+        {
+            var typeMap = typeMaps.FindByClrType(valueType)
+                ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the clr type {valueType}.  This is an internal issue that cannot be resolved; please report as an issue.");
+            var parameter = CreateDbParameter(typeMap.PlatformType, valueType == typeof(string) ? 40 : (int?)null, null, null, ParameterDirection.Output);
+            parameter.Direction = ParameterDirection.Output;
+            return new ParameterizedExpression(typeMap.ClrType, parameter);
+        }
+
+        public void AddOutputParameter<T>(AssemblyContext context)
+            => Parameters.Add(CreateOutputParameter<T>(context));
+        public void AddOutputParameter(Type valueType, AssemblyContext context)
+            => Parameters.Add(CreateParameter(valueType, context, ParameterDirection.InputOutput));
+
+        protected virtual ParameterizedExpression CreateParameter<T>(T value, AssemblyContext context, ParameterDirection direction)
         {
             var (type, converted) = ConvertDbParameterValue(value is object ? value.GetType() : typeof(T), value);
             var typeMap = typeMaps.FindByClrType(type)
@@ -52,18 +105,16 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             if (context.TrySharingExistingParameter)
             {
-                var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
+                var existing = FindExistingParameter(converted, type, typeMap.DbType, direction, null, null, null);
                 if (existing?.Parameter is object)
                     return existing;
             }
 
-            var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null);
-            var parameterized = new ParameterizedExpression(type, parameter, null);
-            Parameters.Add(parameterized);
-            return parameterized;
+            var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null, direction);
+            return new ParameterizedExpression(type, parameter);
         }
 
-        public override ParameterizedExpression Add(object value, Type valueType, AssemblyContext context)
+        protected virtual ParameterizedExpression CreateParameter(object value, Type valueType, AssemblyContext context, ParameterDirection direction)
         {
             var (type, converted) = ConvertDbParameterValue(valueType, value);
             var typeMap = typeMaps.FindByClrType(type)
@@ -71,34 +122,30 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
             if (context.TrySharingExistingParameter)
             {
-                var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, null, null, null);
+                var existing = FindExistingParameter(converted, type, typeMap.DbType, direction, null, null, null);
                 if (existing?.Parameter is object)
                     return existing;
             }
 
-            var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null);
-            var parameterized = new ParameterizedExpression(type, parameter, null);
-            Parameters.Add(parameterized);
-            return parameterized;
+            var parameter = CreateDbParameter(converted, typeMap.PlatformType, null, null, null, direction);
+            return new ParameterizedExpression(type, parameter);
         }
 
-        public override ParameterizedExpression Add<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context)
+        protected virtual ParameterizedExpression CreateParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context, ParameterDirection direction)
         {
             var (type, converted) = ConvertDbParameterValue(declaredType, value);
-            var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType) 
+            var typeMap = typeMaps.FindByPlatformType((SqlDbType)meta.DbType)
                 ?? throw new DbExpressionException($"Type resolution failed, cannot construct a {nameof(SqlParameter)} based on the {nameof(SqlDbType)} {(SqlDbType)meta.DbType}.  This is an internal issue that cannot be resolved; please report as an issue.");
-            
+
             if (context.TrySharingExistingParameter)
             {
-                var existing = FindExistingParameter(converted, type, typeMap.DbType, ParameterDirection.Input, meta.Size, meta.Precision, meta.Scale);
+                var existing = FindExistingParameter(converted, type, typeMap.DbType, direction, meta.Size, meta.Precision, meta.Scale);
                 if (existing?.Parameter is object)
                     return existing;
             }
 
-            var parameter = CreateDbParameter(converted, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale);
-            var parameterized = new ParameterizedExpression(typeMap.ClrType, parameter, meta);
-            Parameters.Add(parameterized);
-            return parameterized;
+            var parameter = CreateDbParameter(converted, typeMap.PlatformType, meta.Size, meta.Precision, meta.Scale, direction);
+            return new ParameterizedExpression(typeMap.ClrType, parameter, meta);
         }
 
         protected virtual (Type Type, object ConvertedValue) ConvertDbParameterValue<T>(Type type, T value)
@@ -122,7 +169,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             return converted;
         }
 
-        protected virtual DbParameter CreateDbParameter<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale)
+        protected virtual DbParameter CreateDbParameter<T>(T value, SqlDbType dbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
         {
             //if a sizable value is passed in with length of zero (i.e. string.Empty) we must switch the SqlDbType to the variable 
             //type or the framework will default the parameter size to Max (i.e. Char(8000)).
@@ -155,7 +202,15 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 }
             }
 
-            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Value = value };
+            var parameter = CreateDbParameter(dbType, size, precision, scale, direction);
+            parameter.Value = value;
+
+            return parameter;
+        }
+
+        protected virtual DbParameter CreateDbParameter(SqlDbType dbType, int? size, byte? precision, byte? scale, ParameterDirection direction)
+        {
+            var parameter = new SqlParameter($"@P{Parameters.Count + 1}", dbType) { Direction = direction };
 
             if (size.HasValue)
                 parameter.Size = size.Value;

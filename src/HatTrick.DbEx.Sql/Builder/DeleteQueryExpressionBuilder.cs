@@ -16,32 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-#pragma warning disable IDE1006 // Naming Styles
-    public interface StoredProcedureTermination : ITerminationExpressionBuilder
-#pragma warning restore IDE1006 // Naming Styles
-    {
-    }
-
-    public class StoredProcedureQueryExpressionBuilder : QueryExpressionBuilder,
-        StoredProcedureTermination
-    {
-        protected StoredProcedureQueryExpression Expression { get; private set; }
-
-        public StoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, StoredProcedureExpression entity)
-            : base(config, expression)
-        {
-            Expression = expression ?? throw new ArgumentNullException(nameof(expression));
-            Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
-        }
-    }
-
     public abstract class DeleteQueryExpressionBuilder : QueryExpressionBuilder,
         DeleteEntities
     {

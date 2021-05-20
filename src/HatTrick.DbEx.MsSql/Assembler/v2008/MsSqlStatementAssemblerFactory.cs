@@ -16,25 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler.v2008
 {
-    public class MsSqlStatementAssemblerFactory : SqlStatementAssemblerFactory
+    public class MsSqlStatementAssemblerFactory : HatTrick.DbEx.MsSql.Assembler.MsSqlStatementAssemblerFactory
     {
-        private static readonly MsSqlSelectSqlStatementAssembler selectSqlStatementAssembler = new MsSqlSelectSqlStatementAssembler();
-        private static readonly MsSqlInsertSqlStatementAssembler insertManySqlStatementAssembler = new MsSqlInsertSqlStatementAssembler();
-        private static readonly MsSqlDeleteSqlStatementAssembler deleteSqlStatementAssembler = new MsSqlDeleteSqlStatementAssembler();
-        private static readonly MsSqlUpdateSqlStatementAssembler updateSqlStatementAssembler = new MsSqlUpdateSqlStatementAssembler();
+        private static readonly HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlSelectSqlStatementAssembler selectSqlStatementAssembler = new HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlSelectSqlStatementAssembler();
 
         #region constructors
         public MsSqlStatementAssemblerFactory()
         {
             RegisterStatementAssembler<SelectQueryExpression, MsSqlSelectSqlStatementAssembler>(selectSqlStatementAssembler);
-            RegisterStatementAssembler<InsertQueryExpression, MsSqlInsertSqlStatementAssembler>(insertManySqlStatementAssembler);
-            RegisterStatementAssembler<DeleteQueryExpression, MsSqlDeleteSqlStatementAssembler>(deleteSqlStatementAssembler);
-            RegisterStatementAssembler<UpdateQueryExpression, MsSqlUpdateSqlStatementAssembler>(updateSqlStatementAssembler);
         }
         #endregion
     }

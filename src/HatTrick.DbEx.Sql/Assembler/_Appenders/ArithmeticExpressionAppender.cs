@@ -16,9 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
 using HatTrick.DbEx.Sql.Attribute;
-using System;
+using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -34,20 +33,32 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             //left part of arithmetic operation
             if (expression.LeftArg is LiteralExpression leftLiteral)
-                builder.Appender.Write(builder.Parameters.Add(leftLiteral.Expression, context).Parameter.ParameterName);
+            {
+                var param = builder.Parameters.CreateInputParameter(leftLiteral.Expression, context);
+                builder.Parameters.AddParameter(param);
+                builder.Appender.Write(param.Parameter.ParameterName);
+            }
             else
+            {
                 //left part isn't a primitive type, append using builder
                 builder.AppendElement(expression.LeftArg, context);
+            }
 
             //append the operator
             builder.Appender.Write(ArithmeticOperatorMap[expression.ExpressionOperator]);
 
             //right part of arithmetic operation
             if (expression.RightArg is LiteralExpression rightLiteral)
-				builder.Appender.Write(builder.Parameters.Add(rightLiteral.Expression, context).Parameter.ParameterName);
-			else
-				//right part isn't a primitive type, append using builder
-				builder.AppendElement(expression.RightArg, context);
+            {
+                var param = builder.Parameters.CreateInputParameter(rightLiteral.Expression, context);
+                builder.Parameters.AddParameter(param);
+                builder.Appender.Write(param.Parameter.ParameterName);
+            }
+            else
+            {
+                //right part isn't a primitive type, append using builder
+                builder.AppendElement(expression.RightArg, context);
+            }
 
             builder.Appender.Write(")");
         }
