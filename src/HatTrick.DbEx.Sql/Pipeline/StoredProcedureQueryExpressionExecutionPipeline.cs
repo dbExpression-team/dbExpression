@@ -497,9 +497,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         private static void MapOutputParameters(StoredProcedureQueryExpression expression, IDataParameterCollection executedParameters, IList<ParameterizedExpression> statementParameters, IValueConverterFactory valueConverterFactory)
         {
-            var handler = (expression.BaseEntity as IOutputParameterDelgatingHandlerProvider)?.DelegatingHandler;
+            var map = (expression.BaseEntity as IOutputParameterMappingDelegateProvider)?.MapDelegate;
 
-            if (handler is null)
+            if (map is null)
                 return;
 
             IValueConverterProvider converters = null;
@@ -516,7 +516,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     converters = new SqlStatementValueConverterProvider(valueConverterFactory, statementParameters.Where(p => p.Parameter.Direction == ParameterDirection.Output));
                 
                 var converter = converters.FindConverter(index, statementParameters.ElementAt(index).DeclaredType, parameter.Value);
-                handler(parameter.ParameterName, converter.ConvertFromDatabase(parameter.Value));
+                map(parameter.ParameterName, converter.ConvertFromDatabase(parameter.Value));
                 index++;
             }
         }
