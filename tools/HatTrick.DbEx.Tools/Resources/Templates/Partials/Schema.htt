@@ -5,6 +5,8 @@
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
+        private static {$.SchemaExpression.Name}SchemaExpression schema;
+
         #region interface
 		{#each $.Items}
         {>("EntityExpression.Documentation") => GetTemplatePartial+}
@@ -13,16 +15,27 @@
 		{/each}
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema({$.SchemaExpression.Name}SchemaExpression schema)
         {{ 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
 
+            {$.SchemaExpression.Name}.schema = schema;
+
 		    {#each $.Items}
             {$.EntityExpression.Name} = schema.{$.EntityExpression.Name};
 		    {/each}
         }}
+        #endregion
+
+        #region procedures
+        {#each $.Procedures}
+        {?var:isFirstParameter = true}
+        public static {$.ProcedureExpression.Name}StoredProcedure {$.ProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {+/if+}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}Action<string, object> outputParameters{/if})
+            => new {$.ProcedureExpression.Name}StoredProcedure(schema{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if});
+
+        {/each}
         #endregion
     }}
     #endregion

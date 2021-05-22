@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -129,8 +130,26 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
-        #region has clr type override
-        public string GetClrTypeOverride(INamedMeta namedMeta)
+        #region resolve parameter direction
+        public ParameterDirection ResolveParameterDirection(MsSqlParameter parameter)
+        {
+
+            if (this.TryResolveMeta(parameter as INamedMeta, "Direction", out string direction))
+            {
+                if (string.Compare(direction, "Input", true) == 0)
+                    return ParameterDirection.Input;
+                if (string.Compare(direction, "Output", true) == 0)
+                    return ParameterDirection.Output;
+                if (string.Compare(direction, "InputOutput", true) == 0)
+                    return ParameterDirection.InputOutput;
+            }
+
+            return parameter.IsOutput ? ParameterDirection.Output : ParameterDirection.Input;
+        }
+		#endregion
+
+		#region has clr type override
+		public string GetClrTypeOverride(INamedMeta namedMeta)
         {
             return this.TryResolveMeta(namedMeta, "ClrType", out string dataTypeOverride) ? dataTypeOverride : null;
         }

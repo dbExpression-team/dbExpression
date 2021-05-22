@@ -74,6 +74,8 @@ namespace HatTrick.DbEx.Tools.Configuration
 
         public bool? AllowUpdate { get; set; }
 
+        public string Direction { get; set; }
+
         public ApplyTo To { get; set; }
 
         public string ToJson()

@@ -5150,29 +5150,31 @@ namespace DbEx.dboDataService
     public partial class UpdatePersonCreditLimitAndReturnPersonStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimitAndReturnPersonStoredProcedure(
-            string identifier,
-            string name,
             SchemaExpression schema,
             int p1,
             int p2
-        ) : base($"{identifier}.UpdatePersonCreditLimitAndReturnPerson", name, schema, new List<ParameterExpression> { new ParameterExpression<int>("p1", p1, ParameterDirection.Input), new ParameterExpression<int>("p2", p2, ParameterDirection.Input) })
-        {
-
-        }
+        ) : base(
+                "UpdatePersonCreditLimitAndReturnPerson.UpdatePersonCreditLimitAndReturnPerson",
+                "UpdatePersonCreditLimitAndReturnPerson", 
+                schema, 
+                new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int>("p1", p1, ParameterDirection.Input), new ParameterExpression<int>("p2", p2, ParameterDirection.Input) 
+                }
+            )
+        { }
     }
 
     public partial class UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(
-            string identifier,
-            string name,
             SchemaExpression schema,
             int? p1,
             int p2,
             Action<string, object> outputParameters
         ) : base(
-                $"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson",
-                name,
+                "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", //identifier.name
+                "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", //name
                 schema,
                 new List<ParameterExpression>
                 {
@@ -5183,9 +5185,7 @@ namespace DbEx.dboDataService
                 },
                 outputParameters
             )
-        {
-
-        }
+        { }
     }
     //SPROC: END
 
@@ -5399,10 +5399,10 @@ namespace DbEx.dboDataService
 
         //SPROC: BEGIN
         public static UpdatePersonCreditLimitAndReturnPersonStoredProcedure UpdatePersonCreditLimitAndReturnPerson(int p1, int p2)
-            => new UpdatePersonCreditLimitAndReturnPersonStoredProcedure("UpdatePersonCreditLimitAndReturnPerson", "UpdatePersonCreditLimitAndReturnPerson", schema, p1, p2);
+            => new UpdatePersonCreditLimitAndReturnPersonStoredProcedure(schema, p1, p2);
 
         public static UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? p1, int p2, Action<string, object> outputParameters)
-            => new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure("UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", schema, p1, p2, outputParameters);
+            => new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(schema, p1, p2, outputParameters);
         //SPROC: END
         #endregion
     }

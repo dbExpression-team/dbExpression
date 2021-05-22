@@ -1029,6 +1029,11 @@ namespace SimpleConsole.DataService
             => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entities);
         #endregion
 
+        #region stored procedure
+        public static StoredProcedureContinuation sp(StoredProcedureExpression sp)
+            => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, sp);
+        #endregion
+
         #region get connection
         /// <summary>
         /// Creates a connection to the database.
@@ -1070,6 +1075,7 @@ namespace SimpleConsole.DataService
 namespace SimpleConsole.dboDataService
 {
 	using SimpleConsole.dboData;
+	using System.Data;
 
     #region dbo schema expression
     public class dboSchemaExpression : SchemaExpression
@@ -5139,6 +5145,49 @@ namespace SimpleConsole.dboDataService
     }
     #endregion
 
+	#region procedures
+	public partial class UpdatePersonCreditLimitAndReturnPersonStoredProcedure : StoredProcedureExpression
+    {
+        public UpdatePersonCreditLimitAndReturnPersonStoredProcedure(
+            SchemaExpression schema
+            ,int? @P1
+            ,int? @P2
+        ) : base(
+                "UpdatePersonCreditLimitAndReturnPerson.UpdatePersonCreditLimitAndReturnPerson",
+                "UpdatePersonCreditLimitAndReturnPerson", 
+                schema,
+                new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>("@P1", @P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>("@P2", @P2, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+	public partial class UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure : StoredProcedureExpression
+    {
+        public UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(
+            SchemaExpression schema
+            ,int? @P1
+            ,int? @P2
+            , Action<string, object> outputParameters
+        ) : base(
+                "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson",
+                "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", 
+                schema,
+                new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>("@P1", @P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>("@P2", @P2, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>("@Id", ParameterDirection.Output)
+                    ,new ParameterExpression<string>("@FullName", ParameterDirection.Output)
+                }
+                , outputParameters
+            )
+        { }
+    }
+	#endregion
+
     #region dbo
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
@@ -5146,6 +5195,8 @@ namespace SimpleConsole.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static dboSchemaExpression schema;
+
         #region interface
         /// <summary>A <see cref="SimpleConsole.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
         /// <para>Properties:
@@ -5328,11 +5379,13 @@ namespace SimpleConsole.dboDataService
 
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema(dboSchemaExpression schema)
         { 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
+
+            dbo.schema = schema;
 
             AccessAuditLog = schema.AccessAuditLog;
             Address = schema.Address;
@@ -5344,6 +5397,15 @@ namespace SimpleConsole.dboDataService
             PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
         }
         #endregion
+
+        #region procedures
+        public static UpdatePersonCreditLimitAndReturnPersonStoredProcedure UpdatePersonCreditLimitAndReturnPerson(int? @P1,int? @P2)
+            => new UpdatePersonCreditLimitAndReturnPersonStoredProcedure(schema, @P1, @P2);
+
+        public static UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? @P1,int? @P2, Action<string, object> outputParameters)
+            => new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(schema, @P1, @P2, outputParameters);
+
+        #endregion
     }
     #endregion
 }
@@ -5351,6 +5413,7 @@ namespace SimpleConsole.dboDataService
 namespace SimpleConsole.secDataService
 {
 	using SimpleConsole.secData;
+	using System.Data;
 
     #region sec schema expression
     public class secSchemaExpression : SchemaExpression
@@ -5638,6 +5701,9 @@ namespace SimpleConsole.secDataService
     }
     #endregion
 
+	#region procedures
+	#endregion
+
     #region sec
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
@@ -5645,6 +5711,8 @@ namespace SimpleConsole.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static secSchemaExpression schema;
+
         #region interface
         /// <summary>A <see cref="SimpleConsole.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
@@ -5672,14 +5740,19 @@ namespace SimpleConsole.secDataService
 
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema(secSchemaExpression schema)
         { 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
 
+            sec.schema = schema;
+
             Person = schema.Person;
         }
+        #endregion
+
+        #region procedures
         #endregion
     }
     #endregion

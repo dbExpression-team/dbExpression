@@ -117,6 +117,29 @@ namespace HatTrick.DbEx.Tools.Builder
 
                     schemaPair.Items.Add(entityPair);
                 }
+
+				foreach (var procedure in schema.Procedures.Values.Where(p => !helpers.IsIgnored(p)))
+				{
+                    ProcedureModel procedureModel = new ProcedureModel(schemaPair.Schema, procedure);
+                    ProcedureExpressionModel procedureExpression = new ProcedureExpressionModel(schemaPair.SchemaExpression, helpers.ResolveName(procedure));
+                    ProcedurePairModel procedurePair = new ProcedurePairModel(procedureModel, procedureExpression);
+
+					foreach (var parameter in procedure.Parameters.Values.Where(p => !helpers.IsIgnored(p)))
+					{
+                        ParameterModel parameterModel = new ParameterModel(procedureModel, parameter);
+                        ParameterExpressionModel parameterExpression = new ParameterExpressionModel(
+                            procedureExpression,
+                            parameter,
+                            helpers.ResolveName(parameter),
+                            helpers.GetClrTypeOverride(parameter),
+                            helpers.IsEnum(parameter),
+                            helpers.ResolveParameterDirection(parameter)
+                        ); 
+                        ParameterPairModel parameterPair = new ParameterPairModel(parameterModel, parameterExpression);
+                        procedurePair.Parameters.Add(parameterPair);
+                    }
+                    schemaPair.Procedures.Add(procedurePair);
+				}
             }
 
             databasePair.Documentation = new DocumentationItemsModel(databasePair);

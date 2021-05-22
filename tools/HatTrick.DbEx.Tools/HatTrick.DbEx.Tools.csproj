@@ -32,6 +32,7 @@
         <None Remove="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
         <None Remove="Resources\Templates\Partials\FieldExpression.htt" />
         <None Remove="Resources\Templates\Partials\Fx.htt" />
+        <None Remove="Resources\Templates\Partials\Procedure.htt" />
         <None Remove="Resources\Templates\Partials\RuntimeDb.htt" />
         <None Remove="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
         <None Remove="Resources\Templates\Partials\Schema.htt" />
@@ -53,6 +54,9 @@
         <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\FieldExpression.Documentation.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\Fx.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Procedure.htt">
+          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </EmbeddedResource>
         <EmbeddedResource Include="Resources\Templates\Partials\RuntimeDb.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\RuntimeEnvironmentDb.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
@@ -61,11 +65,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HatTrick.Model.MsSql" Version="2.1.1" />
+        <PackageReference Include="HatTrick.Model.MsSql" Version="2.2.0" />
         <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
         <PackageReference Include="HatTrick.Text.Templating" Version="2.1.2" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     </ItemGroup>
 </Project>

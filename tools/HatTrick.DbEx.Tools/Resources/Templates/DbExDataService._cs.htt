@@ -29,13 +29,20 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
 namespace {$.SchemaExpression.NamespaceRoot}DataService
 {{
 	using {$.SchemaExpression.NamespaceRoot}Data;
+	using System.Data;
 
 {>("SchemaExpression") => GetTemplatePartial+}
 
 	{#each $.Items}
 {>("EntityExpression") => GetTemplatePartial+}
 
-    {/each}
+    {-/each-}
+	#region procedures
+	{-#each $.Procedures}
+	{>("Procedure") => GetTemplatePartial+}
+	{/each}
+	#endregion
+
 {>("Schema") => GetTemplatePartial+}
 }}
 {/if}

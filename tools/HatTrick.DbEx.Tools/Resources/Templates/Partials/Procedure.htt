@@ -1,0 +1,29 @@
+﻿	public partial class {$.ProcedureExpression.Name}StoredProcedure : StoredProcedureExpression
+    {{
+        public {$.ProcedureExpression.Name}StoredProcedure(
+            SchemaExpression schema
+            {#each $.Parameters}
+            {#if $.ParameterExpression.RequiresInput}
+            ,{$.ParameterExpression.Type.NullableAlias} {$.ParameterExpression.Name}
+            {/if}
+            {/each}
+            {#if $.HasOutputParameters}
+            , Action<string, object> outputParameters
+            {/if}
+        ) : base(
+                "{$.Procedure.Name}.{$.ProcedureExpression.Name}",
+                "{$.ProcedureExpression.Name}", 
+                schema,
+                {?var:isFirst = true}
+                new List<ParameterExpression> 
+                {{ 
+                    {#each $.Parameters}
+                    {+#if !:isFirst},{+/if}{+?:isFirst = false}new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>("{$.Parameter.Name}"{#if $.ParameterExpression.RequiresInput}, {$.ParameterExpression.Name}{/if}, ParameterDirection.{$.ParameterExpression.Direction})
+                    {/each}
+                }}
+                {#if $.HasOutputParameters}
+                , outputParameters
+                {/if}
+            )
+        {{ }}
+    }}

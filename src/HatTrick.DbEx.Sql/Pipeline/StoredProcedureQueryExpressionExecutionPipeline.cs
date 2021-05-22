@@ -509,11 +509,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
             while (enumerator.MoveNext())
             {
                 var parameter = enumerator.Current as DbParameter;
-                if (parameter.Direction != ParameterDirection.Output)
+                if (parameter.Direction == ParameterDirection.Input)
                     continue;
 
                 if (converters is null)
-                    converters = new SqlStatementValueConverterProvider(valueConverterFactory, statementParameters.Where(p => p.Parameter.Direction == ParameterDirection.Output));
+                    converters = new SqlStatementValueConverterProvider(valueConverterFactory, statementParameters.Where(p => p.Parameter.Direction != ParameterDirection.Input));
                 
                 var converter = converters.FindConverter(index, statementParameters.ElementAt(index).DeclaredType, parameter.Value);
                 map(parameter.ParameterName, converter.ConvertFromDatabase(parameter.Value));

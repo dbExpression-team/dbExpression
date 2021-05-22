@@ -1238,6 +1238,11 @@
             => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entities);
         #endregion
 
+        #region stored procedure
+        public static StoredProcedureContinuation sp(StoredProcedureExpression sp)
+            => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, sp);
+        #endregion
+
         #region get connection
         /// <summary>
         /// Creates a connection to the database.

@@ -26,6 +26,7 @@ namespace HatTrick.DbEx.Tools.Model
         public SchemaModel Schema { get; }
         public SchemaExpressionModel SchemaExpression { get; }
         public IList<EntityPairModel> Items { get; } = new List<EntityPairModel>();
+        public IList<ProcedurePairModel> Procedures { get; } = new List<ProcedurePairModel>();
 
         public SchemaPairModel(SchemaModel schema, SchemaExpressionModel schemaExpression)
         {
