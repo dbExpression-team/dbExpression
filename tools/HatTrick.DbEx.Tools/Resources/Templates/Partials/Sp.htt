@@ -1,0 +1,18 @@
+﻿        #region sp
+        public partial class sp
+        {{
+            {-#each $.Items}
+            {?var :schemaName = $.SchemaExpression.Name}
+            public partial class {:schemaName}
+            {{
+                {#each $.Procedures}
+                {?var:isFirstParameter = true}
+                public static StoredProcedureContinuation {$.ProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {+/if+}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new {$.ProcedureExpression.Name}StoredProcedure("{:schemaName}", schemas.Single(s => s.Identifier == "dbo"){#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+
+                {/each}
+            }}
+
+            {/each}
+        }}
+	    #endregion

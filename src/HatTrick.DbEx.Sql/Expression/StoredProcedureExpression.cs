@@ -37,7 +37,7 @@ namespace HatTrick.DbEx.Sql.Expression
         protected readonly string name;
         protected readonly SchemaExpression schema;
         protected readonly IList<ParameterExpression> parameters;
-        protected readonly Action<string, object> outputParameterMappingDelegate;
+        protected readonly Action<ISqlOutputParameterList> outputParameterMappingDelegate;
         #endregion
 
         #region interface
@@ -45,7 +45,7 @@ namespace HatTrick.DbEx.Sql.Expression
         SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
         string IExpressionNameProvider.Name => name;
         IList<ParameterExpression> IExpressionListProvider<ParameterExpression>.Expressions => parameters;
-        Action<string, object> IOutputParameterMappingDelegateProvider.MapDelegate => outputParameterMappingDelegate;
+        Action<ISqlOutputParameterList> IOutputParameterMappingDelegateProvider.MapDelegate => outputParameterMappingDelegate;
         #endregion
 
         #region constructors
@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Expression
             this.parameters = parameters;
         }
 
-        public StoredProcedureExpression(string identifier, string name, SchemaExpression schema, IList<ParameterExpression> parameters, Action<string, object> outputParameterMappingDelegate)
+        public StoredProcedureExpression(string identifier, string name, SchemaExpression schema, IList<ParameterExpression> parameters, Action<ISqlOutputParameterList> outputParameterMappingDelegate)
         {
             this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
             this.name = name ?? throw new ArgumentNullException(nameof(name));

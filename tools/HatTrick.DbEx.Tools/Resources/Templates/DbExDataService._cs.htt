@@ -15,7 +15,10 @@ using System.Linq;
 namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {{
 	{#each $.Items}
-	using _{$.SchemaExpression.Name}DataService =  {$.SchemaExpression.NamespaceRoot}DataService;
+	using {$.SchemaExpression.NamespaceRoot}DataService;
+	{/each}
+	{#each $.Items}
+	using _{$.SchemaExpression.Name}DataService = {$.SchemaExpression.NamespaceRoot}DataService;
 	{/each}
 
 {>("RuntimeDb") => GetTemplatePartial+}
@@ -37,12 +40,10 @@ namespace {$.SchemaExpression.NamespaceRoot}DataService
 {>("EntityExpression") => GetTemplatePartial+}
 
     {-/each-}
-	#region procedures
 	{-#each $.Procedures}
-	{>("Procedure") => GetTemplatePartial+}
-	{/each}
-	#endregion
+{>("Procedure") => GetTemplatePartial+}
 
+	{/each}
 {>("Schema") => GetTemplatePartial+}
 }}
 {/if}

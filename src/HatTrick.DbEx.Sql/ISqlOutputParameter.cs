@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace HatTrick.DbEx.Sql.Executor
+namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlField
+    public interface ISqlOutputParameter
     {
         int Index { get; }
         string Name { get; }
@@ -28,5 +30,28 @@ namespace HatTrick.DbEx.Sql.Executor
         object RawValue { get; }
         T GetValue<T>();
         object GetValue();
+    }
+
+    public interface ISqlOutputParameterList : IList<ISqlOutputParameter>
+    { 
+        ISqlOutputParameter this[string parameterName] { get; }
+    }
+
+    public class SqlOutputParameterList : List<ISqlOutputParameter>, ISqlOutputParameterList
+    {
+        public ISqlOutputParameter this[string parameterName]
+        {
+            get
+            {
+                if (parameterName.Length == 0)
+                    return null;
+
+                if (parameterName[0] == '@')
+                    return this.SingleOrDefault(x => x.Name == parameterName);
+
+                var withAtSymbol = $"@{parameterName}";
+                return this.SingleOrDefault(x => x.Name == withAtSymbol);
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,15 @@
 
 using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql
 {
-    public interface IOutputParameterMappingDelegateProvider
+    public interface ISqlField
     {
-        Action<ISqlOutputParameterList> MapDelegate { get; }
+        int Index { get; }
+        string Name { get; }
+        Type DataType { get; }
+        object RawValue { get; }
+        T GetValue<T>();
+        object GetValue();
     }
 }

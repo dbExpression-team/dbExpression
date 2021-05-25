@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,10 +21,10 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class Field : ISqlField
+    public class OutputParameter : ISqlOutputParameter
     {
         #region internals
-        protected Func<ISqlField, Type, IValueConverter> FindValueConverter { get; private set; }
+        protected Func<ISqlOutputParameter, Type, IValueConverter> FindValueConverter { get; private set; }
         #endregion
 
         #region interface
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region constructors
-        public Field(int index, string name, Type dataType, object value, Func<ISqlField, Type, IValueConverter> findValueConverter)
+        public OutputParameter(int index, string name, Type dataType, object value, Func<ISqlOutputParameter, Type, IValueConverter> findValueConverter)
         {
             Index = index;
             Name = name;

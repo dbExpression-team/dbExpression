@@ -1,5 +1,5 @@
 ﻿    #region runtime db
-    public abstract class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
+    public abstract partial class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {{
         #region internals
         protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
@@ -1238,11 +1238,6 @@
             => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entities);
         #endregion
 
-        #region stored procedure
-        public static StoredProcedureContinuation sp(StoredProcedureExpression sp)
-            => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, sp);
-        #endregion
-
         #region get connection
         /// <summary>
         /// Creates a connection to the database.
@@ -1257,5 +1252,8 @@
         #endregion
 
 {+>("Fx") => GetTemplatePartial+}
+
+{+>("Sp") => GetTemplatePartial+}
+
     }}
     #endregion

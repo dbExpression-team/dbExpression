@@ -19,17 +19,18 @@ namespace NetCoreConsoleApp
 
 		private void UpdatePersonCreditLimitAndReturnPerson()
 		{
-			db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 1)).Execute();
+			db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 1).Execute();
 		}
 
 		private void UpdatePersonCreditLimitWithOutputParametersAndReturnPerson()
 		{
-			Action<string, object> map = (name, value) =>
+			Action<IList<ISqlOutputParameter>> map = values =>
 			{
-				Console.WriteLine(name + "\t" + value);
+				foreach (var param in values)
+					Console.WriteLine(param.Name + "\t" + param.RawValue);
 			};
 
-			db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 1, map)).Execute();
+			db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 1, map).Execute();
 		}
 	}
 }

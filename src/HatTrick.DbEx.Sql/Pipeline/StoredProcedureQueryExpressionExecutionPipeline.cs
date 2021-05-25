@@ -497,12 +497,22 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         private static void MapOutputParameters(StoredProcedureQueryExpression expression, IDataParameterCollection executedParameters, IList<ParameterizedExpression> statementParameters, IValueConverterFactory valueConverterFactory)
         {
+            IValueConverter finder(ISqlOutputParameter p, Type t)
+            {
+                if (p.RawValue is DBNull && !t.IsNullableType())
+                    return valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(t));
+
+                return valueConverterFactory.CreateConverter(t);
+            }
+
             var map = (expression.BaseEntity as IOutputParameterMappingDelegateProvider)?.MapDelegate;
 
-            if (map is null)
+            //map not provided or there are no output parameters, nothing to do
+            if (map is null || !statementParameters.Any(p => p.Parameter.Direction != ParameterDirection.Input))
                 return;
 
-            IValueConverterProvider converters = null;
+            var provider = new SqlStatementValueConverterProvider(valueConverterFactory, statementParameters.Where(p => p.Parameter.Direction != ParameterDirection.Input));
+            var values = new SqlOutputParameterList();
 
             var index = 0;
             var enumerator = (executedParameters as DbParameterCollection).GetEnumerator();
@@ -512,13 +522,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 if (parameter.Direction == ParameterDirection.Input)
                     continue;
 
-                if (converters is null)
-                    converters = new SqlStatementValueConverterProvider(valueConverterFactory, statementParameters.Where(p => p.Parameter.Direction != ParameterDirection.Input));
-                
-                var converter = converters.FindConverter(index, statementParameters.ElementAt(index).DeclaredType, parameter.Value);
-                map(parameter.ParameterName, converter.ConvertFromDatabase(parameter.Value));
+                var statementParameter = statementParameters.Single(x => x.Parameter.ParameterName == parameter.ParameterName);
+
+                var outputParameter = new OutputParameter(index, parameter.ParameterName, statementParameter.DeclaredType, parameter.Value, finder);
+
+                values.Add(outputParameter);
+
                 index++;
             }
+
+            map(values);
         }
     }
 }

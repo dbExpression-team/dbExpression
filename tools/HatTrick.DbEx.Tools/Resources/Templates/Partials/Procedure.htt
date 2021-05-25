@@ -1,29 +1,32 @@
-﻿	public partial class {$.ProcedureExpression.Name}StoredProcedure : StoredProcedureExpression
+﻿	#region {($.ProcedureExpression.Name) => InsertSpaceOnCapitalizationAndToLower} stored procedure expression
+    public partial class {$.ProcedureExpression.Name}StoredProcedure : StoredProcedureExpression
     {{
         public {$.ProcedureExpression.Name}StoredProcedure(
-            SchemaExpression schema
+            string identifier
+            ,SchemaExpression schema
             {#each $.Parameters}
             {#if $.ParameterExpression.RequiresInput}
             ,{$.ParameterExpression.Type.NullableAlias} {$.ParameterExpression.Name}
             {/if}
             {/each}
             {#if $.HasOutputParameters}
-            , Action<string, object> outputParameters
+            ,Action<ISqlOutputParameterList> outputParameters
             {/if}
         ) : base(
-                "{$.Procedure.Name}.{$.ProcedureExpression.Name}",
-                "{$.ProcedureExpression.Name}", 
-                schema,
+                $"{{identifier}}.{$.Procedure.Name}"
+                ,"{$.ProcedureExpression.Name}"
+                ,schema
                 {?var:isFirst = true}
-                new List<ParameterExpression> 
+                ,new List<ParameterExpression> 
                 {{ 
                     {#each $.Parameters}
                     {+#if !:isFirst},{+/if}{+?:isFirst = false}new ParameterExpression<{$.ParameterExpression.Type.NullableAlias}>("{$.Parameter.Name}"{#if $.ParameterExpression.RequiresInput}, {$.ParameterExpression.Name}{/if}, ParameterDirection.{$.ParameterExpression.Direction})
                     {/each}
                 }}
                 {#if $.HasOutputParameters}
-                , outputParameters
+                ,outputParameters
                 {/if}
             )
         {{ }}
     }}
+    #endregion

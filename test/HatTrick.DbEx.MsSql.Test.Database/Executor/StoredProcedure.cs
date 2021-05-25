@@ -23,43 +23,46 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             IList<int> _int_list = null;
             IList<dynamic> _dynamic_list = null;
 
-            //sync
-            db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).Execute();
+            //NEED to move .Configuration from base ITerminationExpressionBuilder...? THIS EXISTS ON ALL FLUENT INTERFACES
+            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
 
             //sync
-            db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).MapValues(row => row.ReadField().GetValue<int>()).Execute();
+            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
 
-            _nullable_int = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue<int?>().Execute();
-            var x = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue<AddressType>().Execute();
-            _int_list = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValues<int>().Execute();
-            db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).MapValues(row => row.ReadField().GetValue<int>()).Execute();
-            _dynamic = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue().Execute();
-            _dynamic_list = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValues().Execute();
+            //sync
+            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => row.ReadField().GetValue<int>()).Execute();
+
+            _nullable_int = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue<int?>().Execute();
+            var x = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue<AddressType>().Execute();
+            _int_list = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues<int>().Execute();
+            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => row.ReadField().GetValue<int>()).Execute();
+            _dynamic = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().Execute();
+            _dynamic_list = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().Execute();
 
 
             //async
-            await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).ExecuteAsync();
 
-            _nullable_int = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue<int>().ExecuteAsync();
-            _int_list = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValues<int>().ExecuteAsync();
-            await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).MapValues(row => row.ReadField().GetValue<int>()).ExecuteAsync();
-            _dynamic = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue().ExecuteAsync();
-            _dynamic_list = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValues().ExecuteAsync();
+            _nullable_int = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue<int>().ExecuteAsync();
+            _int_list = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues<int>().ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => row.ReadField().GetValue<int>()).ExecuteAsync();
+            _dynamic = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().ExecuteAsync();
+            _dynamic_list = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().ExecuteAsync();
 
             //sync
-            db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).Execute();
-            _nullable_int = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).GetValue<int>().Execute();
-            db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).MapValues(row => row.ReadField().GetValue<int>()).Execute();
-            _dynamic = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).GetValue().Execute();
-            _dynamic_list = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).GetValues().Execute();
+            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).Execute();
+            _nullable_int = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue<int>().Execute();
+            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).MapValues(row => row.ReadField().GetValue<int>()).Execute();
+            _dynamic = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue().Execute();
+            _dynamic_list = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValues().Execute();
 
 
             //async
-            await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).ExecuteAsync();
-            _nullable_int = await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).GetValue<int>().ExecuteAsync();
-            await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).MapValues(row => row.ReadField().GetValue<int>()).ExecuteAsync();
-            _dynamic = await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).GetValue().ExecuteAsync();
-            _dynamic_list = await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, (name, value) => { })).GetValues().ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).ExecuteAsync();
+            _nullable_int = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue<int>().ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).MapValues(row => row.ReadField().GetValue<int>()).ExecuteAsync();
+            _dynamic = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue().ExecuteAsync();
+            _dynamic_list = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValues().ExecuteAsync();
         }
 
         [Theory]
@@ -70,7 +73,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).Execute();
+            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
 
             //then
             //no exceptions
@@ -84,7 +87,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int scalarValue = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2)).GetValue<int>().Execute();
+            int scalarValue = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int>().Execute();
 
             //then
             scalarValue.Should().Be(expected);
@@ -98,7 +101,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int? scalarValue = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2)).GetValue<int?>().Execute();
+            int? scalarValue = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int?>().Execute();
 
             //then
             scalarValue.Value.Should().Be(expected);
@@ -113,7 +116,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = new List<int>();
 
             //when               
-            db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
+            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
 
             //then
             ids.Should().HaveCountGreaterOrEqualTo(2);
@@ -127,7 +130,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            dynamic person = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue().Execute();
+            dynamic person = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().Execute();
 
             //then
             ((int)person.Id).Should().Be(expected);
@@ -142,7 +145,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            IList<dynamic> persons = db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValues().Execute();
+            IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -157,16 +160,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).Execute();
+            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -182,16 +183,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            int? scalarValue = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).GetValue<int>().Execute();
+            int? scalarValue = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue<int>().Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -209,16 +208,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = new List<int>();
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
+            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -235,16 +232,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(ISqlOutputParameterList parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
-            var person = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).GetValue().Execute();
+            var person = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue().Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -261,16 +256,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            IList<dynamic> persons = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).GetValues().Execute();
+            IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValues().Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -289,22 +282,20 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            IList<dynamic> persons = db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson((int?)null, 2, map)).GetValues().Execute();
+            IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson((int?)null, 2, map).GetValues().Execute();
 
             //map is Action<MyStoredProcedureWithOutputParameters_OutputParameters>
             //code gen MyStoredProcedureWithOutputParameters_Parameters and MyStoredProcedureWithOutputParameters_OutputParameters, if the parameter is InputOutput, it would appear in both classes.
             //note that dbo.MyStoredProcedureWithOutputParameters is property, no longer a method
 
-            //IList<dynamic> persons = db.Exec(dbo.MyStoredProcedureWithOutputParameters.WithInputParameters(new MyStoredProcedureWithOutputParameters_Parameters { P1 = 1, P2 = 2 }).WithOutputParameters(map))).MapDynamicList().Execute();
+            //IList<dynamic> persons = db.Exec(dbo.MyStoredProcedureWithOutputParameters.WithInputParameters(new MyStoredProcedureWithOutputParameters_Parameters { P1 = 1, P2 = 2 }).WithOutputParameters(map)).MapDynamicList().Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -321,18 +312,18 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         //{
         //    //given
         //    ConfigureForMsSqlVersion(version);
-        //    int Id = 0;
+        //    int @Id = 0;
         //    string FullName = null;
         //    void map(string name, object value)
         //    {
-        //        if (name == nameof(Id))
+        //        if (name == nameof(@Id))
         //            Id = (int)value;
         //        if (name == nameof(FullName))
         //            FullName = (string)value;
         //    };
 
         //    //when               
-        //    IList<AddressType> persons = db.sp(dbo.MyStoredProcedure(1, 2)).GetValues<AddressType>().Execute();
+        //    IList<AddressType> persons = db.sp.dbo.MyStoredProcedure(1, 2).GetValues<AddressType>().Execute();
 
         //    //then
         //}
@@ -346,7 +337,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).ExecuteAsync();
 
             //then
             //no exceptions
@@ -360,7 +351,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int scalarValue = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2)).GetValue<int>().ExecuteAsync();
+            int scalarValue = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int>().ExecuteAsync();
 
             //then
             scalarValue.Should().Be(expected);
@@ -374,7 +365,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int? scalarValue = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2)).GetValue<int?>().ExecuteAsync();
+            int? scalarValue = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int?>().ExecuteAsync();
 
             //then
             scalarValue.Value.Should().Be(expected);
@@ -389,7 +380,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = new List<int>();
 
             //when               
-            await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).ExecuteAsync();
 
             //then
             ids.Should().HaveCountGreaterOrEqualTo(2);
@@ -403,7 +394,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            dynamic person = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValue().ExecuteAsync();
+            dynamic person = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().ExecuteAsync();
 
             //then
             ((int)person.Id).Should().Be(expected);
@@ -418,7 +409,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             //when               
-            IList<dynamic> persons = await db.sp(dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2)).GetValues().ExecuteAsync();
+            IList<dynamic> persons = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expected);
@@ -433,16 +424,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).ExecuteAsync();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -458,16 +447,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            int scalarValue = await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).GetValue<int>().ExecuteAsync();
+            int scalarValue = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue<int>().ExecuteAsync();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -485,16 +472,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = new List<int>();
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).ExecuteAsync();
+            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).ExecuteAsync();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -511,16 +496,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            var person = await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).GetValue().ExecuteAsync();
+            var person = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue().ExecuteAsync();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -537,16 +520,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(string name, object value)
+            void map(IList<ISqlOutputParameter> parameters)
             {
-                if (name == nameof(Id))
-                    Id = (int)value;
-                if (name == nameof(FullName))
-                    FullName = (string)value;
+                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
+                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
             //when               
-            IList<dynamic> persons = await db.sp(dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map)).GetValues().ExecuteAsync();
+            IList<dynamic> persons = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValues().ExecuteAsync();
 
             //then
             Id.Should().BeGreaterThan(0);

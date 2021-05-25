@@ -28,14 +28,5 @@
 		    {/each}
         }}
         #endregion
-
-        #region procedures
-        {#each $.Procedures}
-        {?var:isFirstParameter = true}
-        public static {$.ProcedureExpression.Name}StoredProcedure {$.ProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {+/if+}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}Action<string, object> outputParameters{/if})
-            => new {$.ProcedureExpression.Name}StoredProcedure(schema{#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if});
-
-        {/each}
-        #endregion
     }}
     #endregion

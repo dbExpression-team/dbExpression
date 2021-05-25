@@ -38,6 +38,7 @@
         <None Remove="Resources\Templates\Partials\Schema.htt" />
         <None Remove="Resources\Templates\Partials\SchemaExpression.htt" />
         <None Remove="Resources\Templates\Partials\SchemaMetadata.htt" />
+        <None Remove="Resources\Templates\Partials\Sp.htt" />
     </ItemGroup>
 
     <ItemGroup>
@@ -62,6 +63,7 @@
         <EmbeddedResource Include="Resources\Templates\Partials\Schema.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\SchemaExpression.htt" />
         <EmbeddedResource Include="Resources\Templates\Partials\SchemaMetadata.htt" />
+        <EmbeddedResource Include="Resources\Templates\Partials\Sp.htt" />
     </ItemGroup>
 
     <ItemGroup>

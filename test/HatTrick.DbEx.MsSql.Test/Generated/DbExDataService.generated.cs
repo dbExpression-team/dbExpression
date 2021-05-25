@@ -14,11 +14,13 @@ using System.Linq;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace DbEx.DataService
 {
-	using _dboDataService =  DbEx.dboDataService;
-	using _secDataService =  DbEx.secDataService;
+	using DbEx.dboDataService;
+	using DbEx.secDataService;
+	using _dboDataService = DbEx.dboDataService;
+	using _secDataService = DbEx.secDataService;
 
     #region runtime db
-    public abstract class MsSqlDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
+    public abstract partial class MsSqlDbRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {
         #region internals
         protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
@@ -1029,11 +1031,6 @@ namespace DbEx.DataService
             => expressionBuilderFactory.CreateInsertExpressionBuilder(configuration, entities);
         #endregion
 
-        #region stored procedure
-        public static StoredProcedureContinuation sp(StoredProcedureExpression sp)
-            => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, sp);
-
-        #endregion
         #region get connection
         /// <summary>
         /// Creates a connection to the database.
@@ -1053,6 +1050,27 @@ namespace DbEx.DataService
         {
         }
         #endregion
+
+        #region sp
+        public partial class sp
+        {
+            public partial class dbo
+            {
+                public static StoredProcedureContinuation UpdatePersonCreditLimitAndReturnPerson(int? @P1,int? @P2)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimitAndReturnPersonStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), @P1, @P2));
+
+                public static StoredProcedureContinuation UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? @P1,int? @P2, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), @P1, @P2, outputParameters));
+
+            }
+
+            public partial class sec
+            {
+            }
+
+        }
+	    #endregion
+
     }
     #endregion
 
@@ -1075,8 +1093,7 @@ namespace DbEx.DataService
 namespace DbEx.dboDataService
 {
 	using DbEx.dboData;
-    using HatTrick.DbEx.Sql.Builder;
-    using System.Data;
+	using System.Data;
 
     #region dbo schema expression
     public class dboSchemaExpression : SchemaExpression
@@ -5146,48 +5163,53 @@ namespace DbEx.dboDataService
     }
     #endregion
 
-    //SPROC: BEGIN
+	#region update person credit limit and return person stored procedure expression
     public partial class UpdatePersonCreditLimitAndReturnPersonStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimitAndReturnPersonStoredProcedure(
-            SchemaExpression schema,
-            int p1,
-            int p2
+            string identifier
+            ,SchemaExpression schema
+            ,int? @P1
+            ,int? @P2
         ) : base(
-                "UpdatePersonCreditLimitAndReturnPerson.UpdatePersonCreditLimitAndReturnPerson",
-                "UpdatePersonCreditLimitAndReturnPerson", 
-                schema, 
-                new List<ParameterExpression> 
+                $"{identifier}.UpdatePersonCreditLimitAndReturnPerson"
+                ,"UpdatePersonCreditLimitAndReturnPerson"
+                ,schema
+                ,new List<ParameterExpression> 
                 { 
-                    new ParameterExpression<int>("p1", p1, ParameterDirection.Input), new ParameterExpression<int>("p2", p2, ParameterDirection.Input) 
+                    new ParameterExpression<int?>("@P1", @P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>("@P2", @P2, ParameterDirection.Input)
                 }
             )
         { }
     }
+    #endregion
 
+	#region update person credit limit with output parameters and return person stored procedure expression
     public partial class UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(
-            SchemaExpression schema,
-            int? p1,
-            int p2,
-            Action<string, object> outputParameters
+            string identifier
+            ,SchemaExpression schema
+            ,int? @P1
+            ,int? @P2
+            ,Action<ISqlOutputParameterList> outputParameters
         ) : base(
-                "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", //identifier.name
-                "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", //name
-                schema,
-                new List<ParameterExpression>
-                {
-                    new ParameterExpression<int?>("p1", p1, ParameterDirection.Input),
-                    new ParameterExpression<int>("p2", p2, ParameterDirection.Input),
-                    new ParameterExpression<int>("Id", ParameterDirection.Output),
-                    new ParameterExpression<string>("FullName", ParameterDirection.Output),
-                },
-                outputParameters
+                $"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson"
+                ,"UpdatePersonCreditLimitWithOutputParametersAndReturnPerson"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>("@P1", @P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>("@P2", @P2, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>("@Id", ParameterDirection.Output)
+                    ,new ParameterExpression<string>("@FullName", ParameterDirection.Output)
+                }
+                ,outputParameters
             )
         { }
     }
-    //SPROC: END
+    #endregion
 
     #region dbo
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
@@ -5197,6 +5219,7 @@ namespace DbEx.dboDataService
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         private static dboSchemaExpression schema;
+
         #region interface
         /// <summary>A <see cref="DbEx.dboDataService.AccessAuditLogEntity"/> representing the "dbo.AccessAuditLog" table in the database.
         /// <para>Properties:
@@ -5379,7 +5402,7 @@ namespace DbEx.dboDataService
 
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema(dboSchemaExpression schema)
         { 
             if (schema == null)
@@ -5396,14 +5419,6 @@ namespace DbEx.dboDataService
             PurchaseLine = schema.PurchaseLine;
             PersonTotalPurchasesView = schema.PersonTotalPurchasesView;
         }
-
-        //SPROC: BEGIN
-        public static UpdatePersonCreditLimitAndReturnPersonStoredProcedure UpdatePersonCreditLimitAndReturnPerson(int p1, int p2)
-            => new UpdatePersonCreditLimitAndReturnPersonStoredProcedure(schema, p1, p2);
-
-        public static UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? p1, int p2, Action<string, object> outputParameters)
-            => new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(schema, p1, p2, outputParameters);
-        //SPROC: END
         #endregion
     }
     #endregion
@@ -5412,6 +5427,7 @@ namespace DbEx.dboDataService
 namespace DbEx.secDataService
 {
 	using DbEx.secData;
+	using System.Data;
 
     #region sec schema expression
     public class secSchemaExpression : SchemaExpression
@@ -5706,6 +5722,8 @@ namespace DbEx.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static secSchemaExpression schema;
+
         #region interface
         /// <summary>A <see cref="DbEx.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
@@ -5733,11 +5751,13 @@ namespace DbEx.secDataService
 
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema(secSchemaExpression schema)
         { 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
+
+            sec.schema = schema;
 
             Person = schema.Person;
         }
