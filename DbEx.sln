@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{F642B40A-E26D-4E67-94EB-8E9DA192E642}"
 	ProjectSection(SolutionItems) = preProject
 		build\dockerfile-dotnetcore = build\dockerfile-dotnetcore
+		build\htl-nuget-logo.png = build\htl-nuget-logo.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "mssql", "mssql", "{F1FF2A42-3E7E-4EDC-AFD5-9C632FD2B48D}"
