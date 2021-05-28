@@ -35,6 +35,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         ISqlSchemaMetadata FindMetadata(SchemaExpression schema);
         ISqlEntityMetadata FindMetadata(EntityExpression entity);
         ISqlFieldMetadata FindMetadata(FieldExpression field);
+        ISqlParameterMetadata FindMetadata(ParameterExpression parameter);
         #endregion
     }
 }

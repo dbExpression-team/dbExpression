@@ -1,18 +1,23 @@
 ﻿        #region sp
-        public partial class sp
+        /// <inheritdoc />
+        public partial class sp : MsSqlStoredProcedureExpressionBuilder
         {{
-            {-#each $.Items}
+            {-#each $.Schemas}
             {?var :schemaName = $.SchemaExpression.Name}
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the {:schemaName} schema.
+            /// </summary>
             public partial class {:schemaName}
             {{
-                {#each $.Procedures}
+                {#each $.StoredProcedures}
                 {?var:isFirstParameter = true}
-                public static StoredProcedureContinuation {$.ProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {+/if+}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new {$.ProcedureExpression.Name}StoredProcedure("{:schemaName}", schemas.Single(s => s.Identifier == "dbo"){#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {$.ParameterExpression.Name}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+                {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
+                public static StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", schemas.Single(s => s.Identifier == "dbo"){#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
 
                 {/each}
             }}
 
             {/each}
         }}
-	    #endregion
+        #endregion

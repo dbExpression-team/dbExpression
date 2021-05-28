@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #region interface
         public Type DeclaredType { get; private set; }
         public DbParameter Parameter { get; private set; }
-        public ISqlFieldMetadata Metadata { get; private set; }
+        public ISqlMetadata Metadata { get; private set; }
         #endregion
 
         #region constructors
@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
         {
         }
 
-        public ParameterizedExpression(Type declaredType, DbParameter parameter, ISqlFieldMetadata metadata)
+        public ParameterizedExpression(Type declaredType, DbParameter parameter, ISqlMetadata metadata)
         {
             DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
             Parameter = parameter ?? throw new ArgumentNullException(nameof(parameter));

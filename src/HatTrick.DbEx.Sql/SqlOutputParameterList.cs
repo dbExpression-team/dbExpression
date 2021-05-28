@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,31 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlSchemaMetadata : ISqlMetadata
+    public class SqlOutputParameterList : List<ISqlOutputParameter>, ISqlOutputParameterList
     {
-        ISqlDatabaseMetadata Database { get; }
-        IDictionary<string, ISqlEntityMetadata> Entities { get; }
-        IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; }
+        /// <inheritdoc/>
+        public ISqlOutputParameter this[string parameterName]
+        {
+            get
+            {
+                if ((parameterName?.Length ?? 0) == 0)
+                    return null;
+
+                if (parameterName[0] == '@')
+                    return this.SingleOrDefault(x => x.Name == parameterName);
+
+                parameterName = $"@{parameterName}";
+                return this.SingleOrDefault(x => x.Name == parameterName);
+            }
+        }
+
+        /// <inheritdoc/>
+        public ISqlOutputParameter FindByName(string name)
+            => this[name];
     }
 }

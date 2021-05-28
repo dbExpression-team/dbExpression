@@ -24,35 +24,39 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class ParameterExpression :
         IExpressionElement,
+        ISqlMetadataIdentifierProvider,
+        IExpressionNameProvider,
         IExpressionTypeProvider,
         IEquatable<ParameterExpression>
     {
+        #region internals
+        protected readonly string identifier;
+        protected readonly Type declaredType;
+        protected readonly string name;
+        #endregion
+
         #region interface
-        public string Name { get; set; }
-        public Type DeclaredType { get; private set; }
         public object Value { get; private set; }
         public ParameterDirection Direction { get; set; }
-        Type IExpressionTypeProvider.DeclaredType => DeclaredType;
+        string ISqlMetadataIdentifierProvider.Identifier => identifier;
+        string IExpressionNameProvider.Name => name;
+        Type IExpressionTypeProvider.DeclaredType => declaredType;
         #endregion
 
         #region constructors
-        protected ParameterExpression(string name, Type declaredType, ParameterDirection direction)
+        protected ParameterExpression(string identifier, string name, Type declaredType, ParameterDirection direction)
+            : this(identifier, name, declaredType, null, direction)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException($"{nameof(name)} is required.");
-            if (direction == ParameterDirection.Input)
-                throw new ArgumentException($"Parameter direction {ParameterDirection.Input} requires a value.");
-            Name = name;
-            DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
-            Direction = direction;
+
         }
 
-        protected ParameterExpression(string name, Type declaredType, object expression, ParameterDirection direction)
+        protected ParameterExpression(string identifier, string name, Type declaredType, object expression, ParameterDirection direction)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"{nameof(name)} is required.");
-            Name = name;
-            DeclaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
+            this.identifier = identifier ?? throw new ArgumentNullException(nameof(identifier));
+            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
             Value = expression;
             Direction = direction;
         }
@@ -62,21 +66,21 @@ namespace HatTrick.DbEx.Sql.Expression
         public override string ToString()
         {
             if (Direction == ParameterDirection.Output)
-                return $"{Name} OUTPUT";
+                return $"{name} OUTPUT";
 
             if (Value is null)
-                return $"{Name} = null";
+                return $"{name} = null";
 
             if (Value is DBNull)
-                return $"{Name} = DBNull";
+                return $"{name} = DBNull";
 
             if (Value is string exp)
             {
                 if (exp.All(char.IsWhiteSpace))
-                    return $"{Name} = '{Value}'";
+                    return $"{name} = '{Value}'";
             }
 
-            return $"{Name} = {Value}";
+            return $"{name} = {Value}";
         }
         #endregion
 
@@ -85,13 +89,13 @@ namespace HatTrick.DbEx.Sql.Expression
         {
             if (obj is null) return false;
 
-            if (Name is null && obj.Name is object) return false;
-            if (Name is object && obj.Name is null) return false;
-            if (!Name.Equals(obj.Name)) return false;
+            if (name is null && obj.name is object) return false;
+            if (name is object && obj.name is null) return false;
+            if (!name.Equals(obj.name)) return false;
 
-            if (DeclaredType is null && obj.DeclaredType is object) return false;
-            if (DeclaredType is object && obj.DeclaredType is null) return false;
-            if (!DeclaredType.Equals(obj.DeclaredType)) return false;
+            if (declaredType is null && obj.declaredType is object) return false;
+            if (declaredType is object && obj.declaredType is null) return false;
+            if (!declaredType.Equals(obj.declaredType)) return false;
 
             if (Value is null && obj.Value is object) return false;
             if (Value is object && obj.Value is null) return false;
@@ -113,8 +117,8 @@ namespace HatTrick.DbEx.Sql.Expression
                 const int multiplier = 16777619;
 
                 int hash = @base;
-                hash = (hash * multiplier) ^ (Name is object ? Name.GetHashCode() : 0);
-                hash = (hash * multiplier) ^ (DeclaredType is object ? DeclaredType.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (name is object ? name.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ (declaredType is object ? declaredType.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (Value is object ? Value.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ Direction.GetHashCode();
                 return hash;

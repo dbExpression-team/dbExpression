@@ -17,8 +17,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -30,28 +28,5 @@ namespace HatTrick.DbEx.Sql
         object RawValue { get; }
         T GetValue<T>();
         object GetValue();
-    }
-
-    public interface ISqlOutputParameterList : IList<ISqlOutputParameter>
-    { 
-        ISqlOutputParameter this[string parameterName] { get; }
-    }
-
-    public class SqlOutputParameterList : List<ISqlOutputParameter>, ISqlOutputParameterList
-    {
-        public ISqlOutputParameter this[string parameterName]
-        {
-            get
-            {
-                if (parameterName.Length == 0)
-                    return null;
-
-                if (parameterName[0] == '@')
-                    return this.SingleOrDefault(x => x.Name == parameterName);
-
-                var withAtSymbol = $"@{parameterName}";
-                return this.SingleOrDefault(x => x.Name == withAtSymbol);
-            }
-        }
     }
 }

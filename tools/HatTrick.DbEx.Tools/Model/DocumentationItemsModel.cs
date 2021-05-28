@@ -40,7 +40,7 @@ namespace HatTrick.DbEx.Tools.Model
                 if (_entity is object)
                     return _entity.EntityExpression;
 
-                _entity = database.Items.FirstOrDefault()?.Items.FirstOrDefault();
+                _entity = database.Schemas.FirstOrDefault()?.Entities.FirstOrDefault();
 
                 return _entity?.EntityExpression;
             }
@@ -250,10 +250,10 @@ namespace HatTrick.DbEx.Tools.Model
                 if (enumField is object)
                     return enumField.Column;
 
-                foreach (var schema in database.Items)
-                    foreach (var entity in schema.Items)
+                foreach (var schema in database.Schemas)
+                    foreach (var entity in schema.Entities)
                     {
-                        var field = entity.Items.FirstOrDefault(x => x.FieldExpression.Type.IsEnum && !x.FieldExpression.Type.IsNullable);
+                        var field = entity.Columns.FirstOrDefault(x => x.FieldExpression.Type.IsEnum && !x.FieldExpression.Type.IsNullable);
                         if (field is object)
                         {
                             enumField = field;
@@ -272,10 +272,10 @@ namespace HatTrick.DbEx.Tools.Model
                 if (nullableEnumField is object)
                     return nullableEnumField.Column;
 
-                foreach (var schema in database.Items)
-                    foreach (var entity in schema.Items)
+                foreach (var schema in database.Schemas)
+                    foreach (var entity in schema.Entities)
                     {
-                        var field = entity.Items.FirstOrDefault(x => x.FieldExpression.Type.IsEnum && x.FieldExpression.Type.IsNullable);
+                        var field = entity.Columns.FirstOrDefault(x => x.FieldExpression.Type.IsEnum && x.FieldExpression.Type.IsNullable);
                         if (field is object)
                         {
                             nullableEnumField = field;
@@ -305,10 +305,10 @@ namespace HatTrick.DbEx.Tools.Model
                 return columns[key];
 
 
-            foreach (var schema in database.Items)
-                foreach (var entity in schema.Items)
+            foreach (var schema in database.Schemas)
+                foreach (var entity in schema.Entities)
                     { 
-                        var field = entity.Items.FirstOrDefault(x => x.FieldExpression.Type.TypeName == typeName && x.FieldExpression.Type.IsNullable == isNullable);
+                        var field = entity.Columns.FirstOrDefault(x => x.FieldExpression.Type.TypeName == typeName && x.FieldExpression.Type.IsNullable == isNullable);
                         if (field is object)
                         { 
                             columns.Add(key, field);

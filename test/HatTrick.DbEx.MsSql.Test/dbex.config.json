@@ -116,6 +116,22 @@
 		},
 		{
 			"apply": {
+				"name": "foo",
+				"to": {
+					"path": "dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.@P1"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "bar",
+				"to": {
+					"path": "dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.@P2"
+				}
+			}
+		},
+		{
+			"apply": {
 				"name": "SocialSecurityNumber",
 				"to": {
 					"path": "sec.Person.SSN"

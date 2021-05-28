@@ -4,12 +4,12 @@ using System.Text;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-	public class ProcedureExpressionModel
+	public class StoredProcedureExpressionModel
 	{
         public SchemaExpressionModel SchemaExpression { get; }
         public string Name { get; }
 
-        public ProcedureExpressionModel(SchemaExpressionModel schemaExpression, string name)
+        public StoredProcedureExpressionModel(SchemaExpressionModel schemaExpression, string name)
         {
             SchemaExpression = schemaExpression;
             Name = name;

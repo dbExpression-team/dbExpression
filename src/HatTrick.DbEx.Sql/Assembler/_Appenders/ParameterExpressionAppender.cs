@@ -27,25 +27,29 @@ namespace HatTrick.DbEx.Sql.Assembler
         public override void AppendElement(ParameterExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             ParameterizedExpression param;
+            ISqlParameterMetadata meta = builder.FindMetadata(expression) ?? throw new DbExpressionException($"Could not resolve parameter metadata for {(expression as IExpressionNameProvider).Name}");
             switch (expression.Direction)
             {
                 case ParameterDirection.Input:
                     param = builder.Parameters.CreateInputParameter(
                             expression.Value,
-                            expression.DeclaredType,
+                            (expression as IExpressionTypeProvider).DeclaredType,
+                            meta,
                             context
                         );
                     break;
                 case ParameterDirection.InputOutput:
                     param = builder.Parameters.CreateInputOutputParameter(
                             expression.Value,
-                            expression.DeclaredType,
+                            (expression as IExpressionTypeProvider).DeclaredType,
+                            meta,
                             context
                         );
                     break;
                 case ParameterDirection.Output:
                     param = builder.Parameters.CreateOutputParameter(
-                        expression.DeclaredType,
+                        (expression as IExpressionTypeProvider).DeclaredType,
+                        meta,
                         context
                     );
                     break;
@@ -53,7 +57,6 @@ namespace HatTrick.DbEx.Sql.Assembler
                     throw new DbExpressionException($"Parameter direction {expression.Direction} has not been implemented.", new NotImplementedException($"Parameter direction {expression.Direction} has not been implemented."));
             }
             builder.Parameters.AddParameter(param);
-            param.Parameter.ParameterName = expression.Name;
         }
     }
 }

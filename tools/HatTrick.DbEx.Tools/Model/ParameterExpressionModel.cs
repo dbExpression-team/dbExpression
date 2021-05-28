@@ -9,13 +9,13 @@ namespace HatTrick.DbEx.Tools.Model
 {
 	public class ParameterExpressionModel
 	{
-		public ProcedureExpressionModel ProcedureExpression { get; }
+		public StoredProcedureExpressionModel ProcedureExpression { get; }
 		public string Name { get; }
 		public TypeModel Type { get; }
 		public ParameterDirection Direction { get; }
 		public bool RequiresInput => (Direction == ParameterDirection.Input || Direction == ParameterDirection.InputOutput);
 
-		public ParameterExpressionModel(ProcedureExpressionModel procedureExpression, MsSqlParameter parameter, string name, string clrTypeOverride, bool isEnum, ParameterDirection direction)
+		public ParameterExpressionModel(StoredProcedureExpressionModel procedureExpression, MsSqlParameter parameter, string name, string clrTypeOverride, bool isEnum, ParameterDirection direction)
 		{
 			ProcedureExpression = procedureExpression;
 			Name = name;

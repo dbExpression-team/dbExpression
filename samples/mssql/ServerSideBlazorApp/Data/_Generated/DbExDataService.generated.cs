@@ -1046,30 +1046,106 @@ namespace ServerSideBlazorApp.DataService
 
         #region fx
         /// <inheritdoc />
-        public class fx : MsSqlFunctionExpressionBuilder
+        public partial class fx : MsSqlFunctionExpressionBuilder
         {
         }
         #endregion
 
         #region sp
-        public partial class sp
+        /// <inheritdoc />
+        public partial class sp : MsSqlStoredProcedureExpressionBuilder
         {
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
+            /// </summary>
             public partial class dbo
             {
-                public static StoredProcedureContinuation UpdatePersonCreditLimitAndReturnPerson(int? @P1,int? @P2)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimitAndReturnPersonStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), @P1, @P2));
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimitAndReturnPerson stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="P2">The value to use for creating the database parameter @P2.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P2</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation UpdatePersonCreditLimitAndReturnPerson(int? P1,int? P2)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimitAndReturnPersonStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, P2));
 
-                public static StoredProcedureContinuation UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? @P1,int? @P2, Action<ISqlOutputParameterList> outputParameters)
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), @P1, @P2, outputParameters));
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimitWithOutputParametersAndReturnPerson stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="P2">The value to use for creating the database parameter @P2.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P2</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(int? P1,int? P2, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, P2, outputParameters));
 
             }
 
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the sec schema.
+            /// </summary>
             public partial class sec
             {
             }
 
         }
-	    #endregion
+        #endregion
 
     }
     #endregion
@@ -1318,7 +1394,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -1420,15 +1496,15 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Address address)
         {
-			address.Id = reader.ReadField().GetValue<int>();
-			address.AddressType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.AddressType?>();
-			address.Line1 = reader.ReadField().GetValue<string>();
-			address.Line2 = reader.ReadField().GetValue<string>();
-			address.City = reader.ReadField().GetValue<string>();
-			address.State = reader.ReadField().GetValue<string>();
-			address.Zip = reader.ReadField().GetValue<string>();
-			address.DateCreated = reader.ReadField().GetValue<DateTime>();
-			address.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            address.Id = reader.ReadField().GetValue<int>();
+            address.AddressType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.AddressType?>();
+            address.Line1 = reader.ReadField().GetValue<string>();
+            address.Line2 = reader.ReadField().GetValue<string>();
+            address.City = reader.ReadField().GetValue<string>();
+            address.State = reader.ReadField().GetValue<string>();
+            address.Zip = reader.ReadField().GetValue<string>();
+            address.DateCreated = reader.ReadField().GetValue<DateTime>();
+            address.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -1888,7 +1964,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public CustomerEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public CustomerEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -2004,17 +2080,17 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Customer customer)
         {
-			customer.Id = reader.ReadField().GetValue<int>();
-			customer.FirstName = reader.ReadField().GetValue<string>();
-			customer.LastName = reader.ReadField().GetValue<string>();
-			customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
-			customer.GenderType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.GenderType>();
-			customer.CreditLimit = reader.ReadField().GetValue<int?>();
-			customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-			customer.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
-			customer.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
-			customer.DateCreated = reader.ReadField().GetValue<DateTime>();
-			customer.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            customer.Id = reader.ReadField().GetValue<int>();
+            customer.FirstName = reader.ReadField().GetValue<string>();
+            customer.LastName = reader.ReadField().GetValue<string>();
+            customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
+            customer.GenderType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.GenderType>();
+            customer.CreditLimit = reader.ReadField().GetValue<int?>();
+            customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+            customer.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
+            customer.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
+            customer.DateCreated = reader.ReadField().GetValue<DateTime>();
+            customer.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -2390,7 +2466,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public CustomerAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public CustomerAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -2459,10 +2535,10 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, CustomerAddress customerAddress)
         {
-			customerAddress.Id = reader.ReadField().GetValue<int>();
-			customerAddress.CustomerId = reader.ReadField().GetValue<int>();
-			customerAddress.AddressId = reader.ReadField().GetValue<int>();
-			customerAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
+            customerAddress.Id = reader.ReadField().GetValue<int>();
+            customerAddress.CustomerId = reader.ReadField().GetValue<int>();
+            customerAddress.AddressId = reader.ReadField().GetValue<int>();
+            customerAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -2910,7 +2986,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -3068,23 +3144,23 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Product product)
         {
-			product.Id = reader.ReadField().GetValue<int>();
-			product.ProductCategoryType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
-			product.Name = reader.ReadField().GetValue<string>();
-			product.Description = reader.ReadField().GetValue<string>();
-			product.ListPrice = reader.ReadField().GetValue<double>();
-			product.Price = reader.ReadField().GetValue<double>();
-			product.Quantity = reader.ReadField().GetValue<int>();
-			product.Image = reader.ReadField().GetValue<byte[]>();
-			product.Height = reader.ReadField().GetValue<decimal?>();
-			product.Width = reader.ReadField().GetValue<decimal?>();
-			product.Depth = reader.ReadField().GetValue<decimal?>();
-			product.Weight = reader.ReadField().GetValue<decimal?>();
-			product.ShippingWeight = reader.ReadField().GetValue<decimal>();
-			product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-			product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-			product.DateCreated = reader.ReadField().GetValue<DateTime>();
-			product.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            product.Id = reader.ReadField().GetValue<int>();
+            product.ProductCategoryType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
+            product.Name = reader.ReadField().GetValue<string>();
+            product.Description = reader.ReadField().GetValue<string>();
+            product.ListPrice = reader.ReadField().GetValue<double>();
+            product.Price = reader.ReadField().GetValue<double>();
+            product.Quantity = reader.ReadField().GetValue<int>();
+            product.Image = reader.ReadField().GetValue<byte[]>();
+            product.Height = reader.ReadField().GetValue<decimal?>();
+            product.Width = reader.ReadField().GetValue<decimal?>();
+            product.Depth = reader.ReadField().GetValue<decimal?>();
+            product.Weight = reader.ReadField().GetValue<decimal?>();
+            product.ShippingWeight = reader.ReadField().GetValue<decimal>();
+            product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            product.DateCreated = reader.ReadField().GetValue<DateTime>();
+            product.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -3791,7 +3867,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -3921,19 +3997,19 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Purchase purchase)
         {
-			purchase.Id = reader.ReadField().GetValue<int>();
-			purchase.CustomerId = reader.ReadField().GetValue<int>();
-			purchase.OrderNumber = reader.ReadField().GetValue<string>();
-			purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
-			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
-			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
-			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
-			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
-			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-			purchase.PaymentMethodType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentMethodType>();
-			purchase.PaymentSourceType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentSourceType?>();
-			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
-			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            purchase.Id = reader.ReadField().GetValue<int>();
+            purchase.CustomerId = reader.ReadField().GetValue<int>();
+            purchase.OrderNumber = reader.ReadField().GetValue<string>();
+            purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
+            purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
+            purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
+            purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
+            purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
+            purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
+            purchase.PaymentMethodType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentMethodType>();
+            purchase.PaymentSourceType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentSourceType?>();
+            purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
+            purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4417,7 +4493,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -4505,13 +4581,13 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine purchaseLine)
         {
-			purchaseLine.Id = reader.ReadField().GetValue<int>();
-			purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
-			purchaseLine.ProductId = reader.ReadField().GetValue<int>();
-			purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
-			purchaseLine.Quantity = reader.ReadField().GetValue<int>();
-			purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
-			purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            purchaseLine.Id = reader.ReadField().GetValue<int>();
+            purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
+            purchaseLine.ProductId = reader.ReadField().GetValue<int>();
+            purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
+            purchaseLine.Quantity = reader.ReadField().GetValue<int>();
+            purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
+            purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4754,7 +4830,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -4814,9 +4890,9 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView personTotalPurchasesView)
         {
-			personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
-			personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
-			personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
+            personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
+            personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
+            personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
 
@@ -4891,36 +4967,36 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
-	#region update person credit limit and return person stored procedure expression
+    #region update person credit limit and return person stored procedure expression
     public partial class UpdatePersonCreditLimitAndReturnPersonStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimitAndReturnPersonStoredProcedure(
             string identifier
             ,SchemaExpression schema
-            ,int? @P1
-            ,int? @P2
+            ,int? P1
+            ,int? P2
         ) : base(
                 $"{identifier}.UpdatePersonCreditLimitAndReturnPerson"
                 ,"UpdatePersonCreditLimitAndReturnPerson"
                 ,schema
                 ,new List<ParameterExpression> 
                 { 
-                    new ParameterExpression<int?>("@P1", @P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>("@P2", @P2, ParameterDirection.Input)
+                    new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimitAndReturnPerson.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimitAndReturnPerson.@P2", "P2", P2, ParameterDirection.Input)
                 }
             )
         { }
     }
     #endregion
 
-	#region update person credit limit with output parameters and return person stored procedure expression
+    #region update person credit limit with output parameters and return person stored procedure expression
     public partial class UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure : StoredProcedureExpression
     {
         public UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedure(
             string identifier
             ,SchemaExpression schema
-            ,int? @P1
-            ,int? @P2
+            ,int? P1
+            ,int? P2
             ,Action<ISqlOutputParameterList> outputParameters
         ) : base(
                 $"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson"
@@ -4928,10 +5004,10 @@ namespace ServerSideBlazorApp.dboDataService
                 ,schema
                 ,new List<ParameterExpression> 
                 { 
-                    new ParameterExpression<int?>("@P1", @P1, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>("@P2", @P2, ParameterDirection.Input)
-                    ,new ParameterExpression<int?>("@Id", ParameterDirection.Output)
-                    ,new ParameterExpression<string>("@FullName", ParameterDirection.Output)
+                    new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.@P2", "P2", P2, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.@Id", "Id", ParameterDirection.Output)
+                    ,new ParameterExpression<string>($"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson.@FullName", "FullName", ParameterDirection.Output)
                 }
                 ,outputParameters
             )
@@ -5245,7 +5321,7 @@ namespace ServerSideBlazorApp.secDataService
         {
         }
 
-		public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -5314,10 +5390,10 @@ namespace ServerSideBlazorApp.secDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person person)
         {
-			person.Id = reader.ReadField().GetValue<int>();
-			person.SSN = reader.ReadField().GetValue<string>();
-			person.DateCreated = reader.ReadField().GetValue<DateTime>();
-			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            person.Id = reader.ReadField().GetValue<int>();
+            person.SSN = reader.ReadField().GetValue<string>();
+            person.DateCreated = reader.ReadField().GetValue<DateTime>();
+            person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 

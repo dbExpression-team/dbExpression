@@ -19,7 +19,7 @@
 ﻿using HatTrick.DbEx.Sql;
 using System.Data;
 
-namespace HatTrick.DbEx.MsSql.Expression
+namespace HatTrick.DbEx.MsSql
 {
     public class MsSqlFieldMetadata : SqlFieldMetadata
     {

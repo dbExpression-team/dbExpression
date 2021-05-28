@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,14 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace HatTrick.DbEx.Sql
 {
-    public interface ISqlSchemaMetadata : ISqlMetadata
+    public interface ISqlParameterMetadata : ISqlMetadata
     {
-        ISqlDatabaseMetadata Database { get; }
-        IDictionary<string, ISqlEntityMetadata> Entities { get; }
-        IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; }
+        ISqlStoredProcedureMetadata StoredProcedure { get; }
+        int? Size { get; }
+        byte? Precision { get; }
+        byte? Scale { get; }
+        object DbType { get; }
     }
 }

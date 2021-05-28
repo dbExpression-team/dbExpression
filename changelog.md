@@ -16,10 +16,12 @@
 - LOOK at deprecating IExpressionSet in favor of IExpressionListProvider
 - Pipelines: "var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression);" need " ?? throw null"
 - DONE: Pipeline events for sprocs
-- SPROC METADATA: hard-coded 40 for string length in AddOutput of MsSqlParameterBuilder
 - DONE: Collapsed common MsSql assemblers for versions 2012+ and simplified startup configuration
 - DONE: Reworked parameter builder to support output and input/output parameters. Provided consistency with other factories by adding Create methods that create parameters and Add to add it to the list (Add no longer creates and adds)
-
+- DONE: ParameterExpressionAppender: name should be the database param name, not the expression param name.
+- Changed fx class to a partial class
+- Moved MsSqlFieldMetadata and SqlFieldMetadata to root namespaces.
+- Renamed "Items" property on code generation models to more specific names like "Columns", "Entities", and "Fields"
 
 ## [0.7.1] - 2021-05-10
 

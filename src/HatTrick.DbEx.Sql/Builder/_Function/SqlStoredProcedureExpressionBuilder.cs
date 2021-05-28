@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface ISqlSchemaMetadata : ISqlMetadata
+    /// <summary>
+    /// Accessors to construct and execute stored procedure query expressions.
+    /// </summary>
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+    public partial class SqlStoredProcedureExpressionBuilder
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
-        ISqlDatabaseMetadata Database { get; }
-        IDictionary<string, ISqlEntityMetadata> Entities { get; }
-        IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; }
     }
 }

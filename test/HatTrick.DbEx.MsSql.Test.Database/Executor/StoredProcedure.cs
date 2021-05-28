@@ -22,9 +22,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             dynamic _dynamic = null;
             IList<int> _int_list = null;
             IList<dynamic> _dynamic_list = null;
+            
 
             //NEED to move .Configuration from base ITerminationExpressionBuilder...? THIS EXISTS ON ALL FLUENT INTERFACES
-            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
 
             //sync
             db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
@@ -214,7 +214,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
             };
 
-            //when               
+            //when
             db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
 
             //then
@@ -256,10 +256,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
@@ -282,20 +282,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
             IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson((int?)null, 2, map).GetValues().Execute();
-
-            //map is Action<MyStoredProcedureWithOutputParameters_OutputParameters>
-            //code gen MyStoredProcedureWithOutputParameters_Parameters and MyStoredProcedureWithOutputParameters_OutputParameters, if the parameter is InputOutput, it would appear in both classes.
-            //note that dbo.MyStoredProcedureWithOutputParameters is property, no longer a method
-
-            //IList<dynamic> persons = db.Exec(dbo.MyStoredProcedureWithOutputParameters.WithInputParameters(new MyStoredProcedureWithOutputParameters_Parameters { P1 = 1, P2 = 2 }).WithOutputParameters(map)).MapDynamicList().Execute();
 
             //then
             Id.Should().BeGreaterThan(0);
@@ -424,10 +418,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
@@ -447,10 +441,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
@@ -472,10 +466,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var ids = new List<int>();
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
@@ -496,10 +490,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               
@@ -520,10 +514,10 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
             int Id = 0;
             string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
+            void map(ISqlOutputParameterList parameters)
             {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
+                Id = parameters[nameof(Id)].GetValue<int>();
+                FullName = parameters[nameof(FullName)].GetValue<string>();
             };
 
             //when               

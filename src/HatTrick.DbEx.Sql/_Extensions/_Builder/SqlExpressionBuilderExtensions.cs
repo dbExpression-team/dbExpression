@@ -3619,6 +3619,9 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region StoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
         public static void Execute(this StoredProcedureTermination builder)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3629,6 +3632,10 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         public static void Execute(this StoredProcedureTermination builder, ISqlConnection connection)
         {
             builder.ExecutePipeline(
@@ -3637,6 +3644,10 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         public static void Execute<T>(this StoredProcedureTermination builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3647,6 +3658,11 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         public static void Execute(this StoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
         {
             builder.ExecutePipeline(
@@ -3655,6 +3671,10 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this StoredProcedureTermination builder, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3666,6 +3686,11 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this StoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
@@ -3675,6 +3700,11 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this StoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3686,6 +3716,12 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this StoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
@@ -3697,6 +3733,9 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region MapValuesStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
         public static void Execute(this MapValuesStoredProcedureTermination builder)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3707,6 +3746,10 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
         public static void Execute(this MapValuesStoredProcedureTermination builder, ISqlConnection connection)
         {
             builder.ExecutePipeline(
@@ -3715,6 +3758,10 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         public static void Execute(this MapValuesStoredProcedureTermination builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3725,6 +3772,11 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
         public static void Execute(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
         {
             builder.ExecutePipeline(
@@ -3733,6 +3785,10 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3744,6 +3800,11 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
@@ -3753,6 +3814,11 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3764,6 +3830,12 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
         public static async Task ExecuteAsync(this MapValuesStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
         {
             await builder.ExecutePipelineAsync(
@@ -3775,6 +3847,10 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region SelectValueStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3785,6 +3861,11 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
@@ -3793,6 +3874,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3803,6 +3889,12 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static T Execute<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout)
         {
             return builder.ExecutePipeline(
@@ -3811,6 +3903,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3822,6 +3919,12 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -3831,6 +3934,12 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, int commandTimeout, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3842,6 +3951,13 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<T> ExecuteAsync<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -3853,6 +3969,10 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region SelectValuesStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3863,6 +3983,11 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
@@ -3871,6 +3996,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3881,6 +4011,12 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static IList<T> Execute<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout)
         {
             return builder.ExecutePipeline(
@@ -3889,6 +4025,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3900,6 +4041,12 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -3909,6 +4056,12 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, int commandTimeout, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3920,6 +4073,13 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
         public static async Task<IList<T>> ExecuteAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -3931,6 +4091,10 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region SelectDynamicStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3941,6 +4105,11 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
@@ -3949,6 +4118,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3959,6 +4133,12 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static dynamic Execute(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
         {
             return builder.ExecutePipeline(
@@ -3967,6 +4147,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3978,6 +4163,12 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -3987,6 +4178,12 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -3998,6 +4195,13 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A dynamic object created from the return rowset from execution of the stored procedure.</returns>
         public static async Task<dynamic> ExecuteAsync(this SelectDynamicStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -4009,6 +4213,10 @@ namespace HatTrick.DbEx.Sql
         #endregion
 
         #region SelectDynamicsStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static IList<dynamic> Execute(this SelectDynamicsStoredProcedureTermination builder)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -4019,6 +4227,11 @@ namespace HatTrick.DbEx.Sql
                 );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static IList<dynamic> Execute(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection)
         {
             return builder.ExecutePipeline(
@@ -4027,6 +4240,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static IList<dynamic> Execute(this SelectDynamicsStoredProcedureTermination builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -4037,6 +4255,12 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static IList<dynamic> Execute<T>(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout)
         {
             return builder.ExecutePipeline(
@@ -4045,6 +4269,11 @@ namespace HatTrick.DbEx.Sql
             );
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static async Task<IList<dynamic>> ExecuteAsync(this SelectDynamicsStoredProcedureTermination builder, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -4056,6 +4285,12 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static async Task<IList<dynamic>> ExecuteAsync(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(
@@ -4065,6 +4300,12 @@ namespace HatTrick.DbEx.Sql
             ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static async Task<IList<dynamic>> ExecuteAsync(this SelectDynamicsStoredProcedureTermination builder, int commandTimeout, CancellationToken cancellationToken = default)
         {
             var config = builder.GetDatabaseConfiguration();
@@ -4076,6 +4317,13 @@ namespace HatTrick.DbEx.Sql
                 ).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Assemble and execute a stored procedure and retrieve a list of dynamic objects.  The properties of each dynamic object are defined by the column attributes of the returned rowset.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of dynamic objects created from the return rowset(s) from execution of the stored procedure.</returns>
         public static async Task<IList<dynamic>> ExecuteAsync<T>(this SelectDynamicsStoredProcedureTermination builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
         {
             return await builder.ExecutePipelineAsync(

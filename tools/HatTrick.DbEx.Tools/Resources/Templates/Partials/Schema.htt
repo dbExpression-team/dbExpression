@@ -8,7 +8,7 @@
         private static {$.SchemaExpression.Name}SchemaExpression schema;
 
         #region interface
-		{#each $.Items}
+        {#each $.Entities}
         {>("EntityExpression.Documentation") => GetTemplatePartial+}
         public static {$.EntityExpression.Name}Entity {$.EntityExpression.Name} {{ get; private set; }}
 
@@ -23,9 +23,9 @@
 
             {$.SchemaExpression.Name}.schema = schema;
 
-		    {#each $.Items}
+            {#each $.Entities}
             {$.EntityExpression.Name} = schema.{$.EntityExpression.Name};
-		    {/each}
+            {/each}
         }}
         #endregion
     }}

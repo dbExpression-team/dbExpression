@@ -19,7 +19,6 @@
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
@@ -31,20 +30,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         ParameterizedExpression CreateInputParameter<T>(T value, AssemblyContext context);
         ParameterizedExpression CreateInputParameter(object value, Type valueType, AssemblyContext context);
         ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
-        void AddInputParameter<T>(T value, AssemblyContext context);
-        void AddInputParameter(object value, Type valueType, AssemblyContext context);
-        void AddInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context);
 
         ParameterizedExpression CreateInputOutputParameter<T>(T value, AssemblyContext context);
         ParameterizedExpression CreateInputOutputParameter(object value, Type valueType, AssemblyContext context);
         ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
-        void AddInputOutputParameter<T>(T value, AssemblyContext context);
-        void AddInputOutputParameter(object value, Type valueType, AssemblyContext context);
-        void AddInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context);
 
-        ParameterizedExpression CreateOutputParameter<T>(AssemblyContext context);
-        ParameterizedExpression CreateOutputParameter(Type valueType, AssemblyContext context);
-        void AddOutputParameter<T>(AssemblyContext context);
-        void AddOutputParameter(Type valueType, AssemblyContext context);
+        ParameterizedExpression CreateOutputParameter(Type valueType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateOutputParameter(Type valueType, ISqlParameterMetadata meta, AssemblyContext context);
     }
 }

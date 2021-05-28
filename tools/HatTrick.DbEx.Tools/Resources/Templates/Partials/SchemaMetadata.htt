@@ -6,7 +6,8 @@
         public string Identifier {{ get; }}
         public string Name {{ get; }}
         public IDictionary<string, ISqlEntityMetadata> Entities {{ get; }} = new Dictionary<string, ISqlEntityMetadata>();
-		#endregion
+        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures {{ get; }} = new Dictionary<string, ISqlStoredProcedureMetadata>();
+        #endregion
 
         #region constructors
         public {$.SchemaExpression.Name}SchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
@@ -14,9 +15,12 @@
             Database = database;
             Identifier = identifier;
             Name = name;
-			{#each $.Items}
+            {#each $.Entities}
             Entities.Add($"{{identifier}}.{$.Entity.Name}", new {$.EntityExpression.Name}EntityMetadata(this, $"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}"));
-			{/each}
+            {/each}
+            {#each $.StoredProcedures}
+            StoredProcedures.Add($"{{identifier}}.{$.StoredProcedure.Name}", new {$.StoredProcedureExpression.Name}StoredProcedureMetadata(this, $"{{identifier}}.{$.StoredProcedure.Name}", "{$.StoredProcedure.Name}"));
+            {/each}
         }}
         #endregion
     }}

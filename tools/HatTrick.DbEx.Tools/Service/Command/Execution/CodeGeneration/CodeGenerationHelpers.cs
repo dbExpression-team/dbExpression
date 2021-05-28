@@ -109,6 +109,13 @@ namespace HatTrick.DbEx.Tools.Service
         }
         #endregion
 
+        #region trim start
+        public string TrimStart(string value, string ifValueStartsWith)
+        {
+            return value.Length > ifValueStartsWith.Length && value.StartsWith(ifValueStartsWith) ? value.Substring(ifValueStartsWith.Length) : value;
+        }
+        #endregion
+
         #region concat
         public string Concat(string item1, string item2)
         {

@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Tools.Model
 {
-	public class ProcedurePairModel
+	public class StoredProcedurePairModel
 	{
-        public ProcedureModel Procedure { get; }
-        public ProcedureExpressionModel ProcedureExpression { get; }
+        public StoredProcedureModel StoredProcedure { get; }
+        public StoredProcedureExpressionModel StoredProcedureExpression { get; }
         public IList<ParameterPairModel> Parameters { get; } = new List<ParameterPairModel>();
         public IList<ParameterPairModel> InputParameters => GetInputParameters();
         public IList<ParameterPairModel> OutputParameters => GetOutputParameters();
@@ -18,10 +18,10 @@ namespace HatTrick.DbEx.Tools.Model
         public bool HasOutputParameters => OutputParameters.Any() || InputOutputParameters.Any();
         public bool HasInputParameters => InputParameters.Any() || InputOutputParameters.Any();
 
-        public ProcedurePairModel(ProcedureModel procedure, ProcedureExpressionModel procedureExpression)
+        public StoredProcedurePairModel(StoredProcedureModel procedure, StoredProcedureExpressionModel procedureExpression)
         {
-            Procedure = procedure ?? throw new ArgumentNullException(nameof(procedure));
-            ProcedureExpression = procedureExpression ?? throw new ArgumentNullException(nameof(procedureExpression));
+            StoredProcedure = procedure ?? throw new ArgumentNullException(nameof(procedure));
+            StoredProcedureExpression = procedureExpression ?? throw new ArgumentNullException(nameof(procedureExpression));
         }
 
         private List<ParameterPairModel> GetInputParameters()
@@ -33,6 +33,6 @@ namespace HatTrick.DbEx.Tools.Model
         private List<ParameterPairModel> GetInputOutputParameters()
             => Parameters.Where(p => p.ParameterExpression.Direction == ParameterDirection.InputOutput).ToList();
 
-        public override string ToString() => $"({Procedure}, {ProcedureExpression})";
+        public override string ToString() => $"({StoredProcedure}, {StoredProcedureExpression})";
     }
 }

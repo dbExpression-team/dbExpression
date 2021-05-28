@@ -1,5 +1,6 @@
 ﻿using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -187,6 +188,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             newParameter.Should().Be(parameter);
+            newParameter.Parameter.Size.Should().Be("HelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
         [Theory]
@@ -204,6 +207,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Size.Should().Be("xHelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
         [Theory]
@@ -223,6 +228,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             newParameter.Should().Be(parameter);
+            newParameter.Parameter.Size.Should().Be("HelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
         [Theory]
@@ -240,6 +247,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Size.Should().Be("xHelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
         [Theory]
@@ -257,6 +266,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Size.Should().Be("xHelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
         [Theory]
@@ -276,6 +287,8 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
 
             //then
             newParameter.Should().Be(parameter);
+            newParameter.Parameter.Size.Should().Be("HelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
         [Theory]
@@ -550,11 +563,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.NVarChar);
+            meta.DbType.Should().Be(SqlDbType.NVarChar);
             parameter.Parameter.DbType.Should().Be(DbType.String);
-            parameter.Parameter.Size.Should().Be(parameter.Metadata.Size);
+            parameter.Parameter.Size.Should().Be(meta.Size);
             parameter.Parameter.Value.Should().Be(productDescription);
         }
 
@@ -575,11 +589,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.VarChar);
+            meta.DbType.Should().Be(SqlDbType.VarChar);
             parameter.Parameter.DbType.Should().Be(DbType.AnsiString);
-            parameter.Parameter.Size.Should().Be(parameter.Metadata.Size);
+            parameter.Parameter.Size.Should().Be(meta.Size);
             parameter.Parameter.Value.Should().Be(firstName);
         }
 
@@ -600,9 +615,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.Money);
+            meta.DbType.Should().Be(SqlDbType.Money);
             parameter.Parameter.DbType.Should().Be(DbType.Currency);
             parameter.Parameter.Value.Should().Be(productPrice);
         }
@@ -624,11 +640,139 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.VarBinary);
+            meta.DbType.Should().Be(SqlDbType.VarBinary);
             parameter.Parameter.DbType.Should().Be(DbType.Binary);
             parameter.Parameter.Value.Should().Be(image);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_share_the_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            context.TrySharingExistingParameter = true;
+            var newParameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+
+            //then
+            newParameter.Should().Be(parameter);
+            newParameter.Parameter.Precision.Should().Be(4);
+            newParameter.Parameter.Scale.Should().Be(2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_different_value_result_in_new_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            var newParameter = parameterBuilder.CreateInputParameter(value + .001m, typeof(decimal), context);
+
+            //then
+            newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Precision.Should().Be(5);
+            newParameter.Parameter.Scale.Should().Be(3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_using_generic_version_share_the_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            context.TrySharingExistingParameter = true;
+            var newParameter = parameterBuilder.CreateInputParameter(value, context);
+
+            //then
+            newParameter.Should().Be(parameter);
+            newParameter.Parameter.Precision.Should().Be(4);
+            newParameter.Parameter.Scale.Should().Be(2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, context);
+
+            //when
+            var newParameter = parameterBuilder.CreateInputParameter(value + .001m, context);
+
+            //then
+            newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Precision.Should().Be(5);
+            newParameter.Parameter.Scale.Should().Be(3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+
+            //when
+            var newParameter = parameterBuilder.CreateInputParameter<decimal>(value + .001m, context);
+
+            //then
+            newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Precision.Should().Be(5);
+            newParameter.Parameter.Scale.Should().Be(3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            context.TrySharingExistingParameter = true;
+            var newParameter = parameterBuilder.CreateInputParameter<decimal>(value, context);
+
+            //then
+            newParameter.Should().Be(parameter);
+            newParameter.Parameter.Precision.Should().Be(4);
+            newParameter.Parameter.Scale.Should().Be(2);
         }
     }
 }

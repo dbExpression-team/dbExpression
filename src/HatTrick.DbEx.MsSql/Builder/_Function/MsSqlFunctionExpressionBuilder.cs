@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
@@ -1060,7 +1060,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetElement startDate, DateTime? endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTime?>(endDate)));
-        
+
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datediff-transact-sql">Microsoft docs on DATEDIFF</see></para>

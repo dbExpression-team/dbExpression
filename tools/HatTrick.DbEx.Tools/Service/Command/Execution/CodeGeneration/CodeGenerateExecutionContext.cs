@@ -631,6 +631,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.FirstOrDefault), (Func<IEnumerable, object>)helpers.FirstOrDefault);
             repo.Register(nameof(helpers.Concat), (Func<string, string, string>)helpers.Concat);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
+            repo.Register(nameof(helpers.TrimStart), (Func<string, string, string>)helpers.TrimStart);
 
             string output = null;
             try
