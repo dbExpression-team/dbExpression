@@ -23,7 +23,13 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SelectQueryExpressionBuilder : QueryExpressionBuilder
+    public abstract class SelectQueryExpressionBuilder : QueryExpressionBuilder,
+        SelectDynamic,
+        SelectDynamics,
+        SelectDynamicContinuation,
+        SelectDynamicsContinuation,
+        SelectDynamicsOffsetContinuation,
+        SelectDynamicsOrderByContinuation
     {
         #region internals
         protected SelectQueryExpression Expression { get; private set; }
@@ -38,6 +44,202 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
+        #region dynamics
+        SelectDynamics SelectDynamics.Top(int value)
+        {
+            Top(value);
+            return this;
+        }
+
+        SelectDynamics SelectDynamics.Distinct()
+        {
+            Distinct();
+            return this;
+        }
+
+        SelectDynamicsContinuation SelectDynamics.From<TEntity>(Entity<TEntity> entity)
+        {
+            From(entity);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation SelectDynamicsContinuation.OrderBy(params AnyOrderByClause[] orderBy)
+        {
+            OrderBy(orderBy);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation SelectDynamicsContinuation.OrderBy(IEnumerable<AnyOrderByClause> orderBy)
+        {
+            OrderBy(orderBy);
+            return this;
+        }
+
+        SelectDynamicsContinuation SelectDynamicsContinuation.GroupBy(params AnyGroupByClause[] groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        SelectDynamicsContinuation SelectDynamicsContinuation.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        SelectDynamicsContinuation SelectDynamicsContinuation.Having(AnyHavingClause having)
+        {
+            Having(having);
+            return this;
+        }
+
+        SelectDynamicsContinuation SelectDynamicsContinuation.Where(AnyWhereClause where)
+        {
+            Where(where);
+            return this;
+        }
+
+        JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.InnerJoin(AnyEntity entity)
+            => new SelectDynamicsJoinBuilder(Expression, entity, JoinOperationExpressionOperator.INNER, this);
+
+        JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.InnerJoin(AnySelectSubquery subquery)
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this);
+
+        JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.LeftJoin(AnyEntity entity)
+            => new SelectDynamicsJoinBuilder(Expression, entity, JoinOperationExpressionOperator.LEFT, this);
+
+        JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.LeftJoin(AnySelectSubquery subquery)
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this);
+
+        JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.RightJoin(AnyEntity entity)
+            => new SelectDynamicsJoinBuilder(Expression, entity, JoinOperationExpressionOperator.RIGHT, this);
+
+        JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.RightJoin(AnySelectSubquery subquery)
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this);
+
+        JoinOn<SelectDynamicsContinuation> SelectDynamicsContinuation.FullJoin(AnyEntity entity)
+            => new SelectDynamicsJoinBuilder(Expression, entity, JoinOperationExpressionOperator.FULL, this);
+
+        JoinOnWithAlias<SelectDynamicsContinuation> SelectDynamicsContinuation.FullJoin(AnySelectSubquery subquery)
+            => new SelectDynamicsJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
+
+        SelectDynamicsContinuation SelectDynamicsContinuation.CrossJoin(AnyEntity entity)
+        {
+            CrossJoin(entity);
+            return this;
+        }
+
+        SelectDynamicsOffsetContinuation SelectDynamicsOrderByContinuation.Offset(int value)
+        {
+            Offset(value);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation Limit<SelectDynamicsOrderByContinuation>.Limit(int value)
+        {
+            Limit(value);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.GroupBy(params AnyGroupByClause[] groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation SelectDynamicsOrderByContinuation.Having(AnyHavingClause having)
+        {
+            Having(having);
+            return this;
+        }
+        #endregion
+
+        #region dynamic
+        SelectDynamicContinuation SelectDynamic.From<TEntity>(Entity<TEntity> entity)
+        {
+            From(entity);
+            return this;
+        }
+
+        SelectDynamicContinuation SelectDynamicContinuation.OrderBy(params AnyOrderByClause[] orderBy)
+        {
+            OrderBy(orderBy);
+            return this;
+        }
+
+        SelectDynamicContinuation SelectDynamicContinuation.OrderBy(IEnumerable<AnyOrderByClause> orderBy)
+        {
+            OrderBy(orderBy);
+            return this;
+        }
+
+        SelectDynamicContinuation SelectDynamicContinuation.Where(AnyWhereClause where)
+        {
+            Where(where);
+            return this;
+        }
+
+        SelectDynamicsOrderByContinuation Limit<SelectDynamicsOrderByContinuation>.Having(AnyHavingClause having)
+        {
+            Having(having);
+            return this;
+        }
+
+        JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.InnerJoin(AnyEntity entity)
+            => new SelectDynamicJoinBuilder(Expression, entity, JoinOperationExpressionOperator.INNER, this);
+
+        JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.InnerJoin(AnySelectSubquery subquery)
+            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this);
+
+        JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.LeftJoin(AnyEntity entity)
+            => new SelectDynamicJoinBuilder(Expression, entity, JoinOperationExpressionOperator.LEFT, this);
+
+        JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.LeftJoin(AnySelectSubquery subquery)
+            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this);
+
+        JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.RightJoin(AnyEntity entity)
+            => new SelectDynamicJoinBuilder(Expression, entity, JoinOperationExpressionOperator.RIGHT, this);
+
+        JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.RightJoin(AnySelectSubquery subquery)
+            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this);
+
+        JoinOn<SelectDynamicContinuation> SelectDynamicContinuation.FullJoin(AnyEntity entity)
+            => new SelectDynamicJoinBuilder(Expression, entity, JoinOperationExpressionOperator.FULL, this);
+
+        JoinOnWithAlias<SelectDynamicContinuation> SelectDynamicContinuation.FullJoin(AnySelectSubquery subquery)
+            => new SelectDynamicJoinBuilder(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
+
+        SelectDynamicContinuation SelectDynamicContinuation.CrossJoin(AnyEntity entity)
+        {
+            CrossJoin(entity);
+            return this;
+        }
+
+        SelectDynamicContinuation SelectDynamicContinuation.GroupBy(params AnyGroupByClause[] groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        SelectDynamicContinuation SelectDynamicContinuation.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
+        {
+            GroupBy(groupBy);
+            return this;
+        }
+
+        SelectDynamicContinuation SelectDynamicContinuation.Having(AnyHavingClause having)
+        {
+            Having(having);
+            return this;
+        }
+        #endregion
+
         protected virtual void From<T>(Entity<T> entity)
             where T : class, IDbEntity
         {

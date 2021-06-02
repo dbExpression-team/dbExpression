@@ -38,7 +38,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new MsSqlSelectEntityQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
-        public SelectValue<ExpandoObject> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
+        public SelectDynamic CreateSelectDynamicBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
@@ -49,14 +49,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             expressions.AddRange(fields.Select(field => field.ToSelectExpression(configuration.MetadataProvider)));
             expression.Top = 1;
             expression.Select = new SelectExpressionSet(expressions);
-            return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
+            return new MsSqlSelectQueryExpressionBuilder(configuration, expression);
         }
 
-        public SelectValue<ExpandoObject> CreateSelectValueBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
+        public SelectDynamic CreateSelectDynamicBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
-            return new MsSqlSelectValueSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
+            return new MsSqlSelectQueryExpressionBuilder(configuration, expression);
         }
 
         public SelectValue<TEnum> CreateSelectValueBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)
@@ -181,7 +181,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             return new MsSqlSelectEntitiesSelectQueryExpressionBuilder<TEntity>(configuration, expression);
         }
 
-        public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
+        public SelectDynamics CreateSelectDynamicsBuilder(RuntimeSqlDatabaseConfiguration configuration, AnyElement field1, AnyElement field2, params AnyElement[] fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             var expressions = new List<SelectExpression>(fields.Length + 2)
@@ -191,14 +191,14 @@ namespace HatTrick.DbEx.MsSql.Builder
             };
             expressions.AddRange(fields.Select(field => field.ToSelectExpression(configuration.MetadataProvider)));
             expression.Select = new SelectExpressionSet(expressions);
-            return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
+            return new MsSqlSelectQueryExpressionBuilder(configuration, expression);
         }
 
-        public SelectValues<ExpandoObject> CreateSelectValuesBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
+        public SelectDynamics CreateSelectDynamicsBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<AnyElement> fields)
         {
             var expression = (configuration ?? throw new ArgumentNullException(nameof(configuration))).QueryExpressionFactory?.CreateQueryExpression<SelectQueryExpression>() ?? throw new DbExpressionConfigurationException($"Expected query expression factory to return a query expression.");
             expression.Select = new SelectExpressionSet(fields.Select(field => field?.ToSelectExpression(configuration.MetadataProvider) ?? throw new ArgumentNullException(nameof(field))));
-            return new MsSqlSelectValuesSelectQueryExpressionBuilder<ExpandoObject>(configuration, expression);
+            return new MsSqlSelectQueryExpressionBuilder(configuration, expression);
         }
 
         public SelectValues<TEnum> CreateSelectValuesBuilder<TEnum>(RuntimeSqlDatabaseConfiguration configuration, EnumElement<TEnum> field)

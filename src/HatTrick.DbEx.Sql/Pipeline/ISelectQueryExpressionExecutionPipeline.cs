@@ -101,11 +101,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         #region value list
         IList<T> ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand);
-        void ExecuteSelectValueList(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<object> read);
+        void ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<T> read);
 
         Task<IList<T>> ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
-        Task ExecuteSelectValueListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<object> read, CancellationToken ct);
-        Task ExecuteSelectValueListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<object, Task> read, CancellationToken ct);
+        Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<T> read, CancellationToken ct);
+        Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<T, Task> read, CancellationToken ct);
         #endregion
 
         #region dynamic

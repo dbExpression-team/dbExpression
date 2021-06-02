@@ -16,12 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System.Collections.Generic;
-
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.Sql
 {
-    public class StoredProcedureQueryExpression : QueryExpression
+#pragma warning disable IDE1006 // Naming Styles
+    public interface SelectDynamicsOffsetContinuation :
+#pragma warning restore IDE1006 // Naming Styles
+        Limit<SelectDynamicsOrderByContinuation>,
+        SelectDynamicsTermination
     {
-        
     }
 }

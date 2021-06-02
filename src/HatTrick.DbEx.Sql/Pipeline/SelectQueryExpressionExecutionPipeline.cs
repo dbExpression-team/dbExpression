@@ -639,7 +639,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public void ExecuteSelectValueList(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<object> read)
+        public void ExecuteSelectValueList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<T> read)
         {
             ExecuteSelectQuery(
                 expression,
@@ -650,7 +650,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader row;
                     while ((row = reader.ReadRow()) is object)
                     {
-                        read(row.ReadField().RawValue);
+                        read(row.ReadField().GetValue<T>());
                     }
                 }
             );
@@ -680,7 +680,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public async Task ExecuteSelectValueListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<object> read, CancellationToken ct)
+        public async Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<T> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
                 expression,
@@ -691,14 +691,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
                     {
-                        read(row.ReadField().RawValue);
+                        read(row.ReadField().GetValue<T>());
                     }
                 },
                 ct
             ).ConfigureAwait(false);
         }
 
-        public async Task ExecuteSelectValueListAsync(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<object, Task> read, CancellationToken ct)
+        public async Task ExecuteSelectValueListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<T, Task> read, CancellationToken ct)
         {
             await ExecuteSelectQueryAsync(
                 expression,
@@ -709,7 +709,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     ISqlFieldReader row;
                     while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
                     {
-                        await read(row.ReadField().RawValue).ConfigureAwait(false);
+                        await read(row.ReadField().GetValue<T>()).ConfigureAwait(false);
                     }
                 },
                 ct

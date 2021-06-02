@@ -16,12 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System.Collections.Generic;
+using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.MsSql.Builder
 {
-    public class StoredProcedureQueryExpression : QueryExpression
+    public class MsSqlSelectQueryExpressionBuilder : SelectQueryExpressionBuilder
     {
-        
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression)
+            : base(config, expression)
+        {
+
+        }
     }
 }

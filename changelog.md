@@ -12,6 +12,7 @@
 - Support for stored procedures
 
 ### Changed
+- Separated fluent interfaces for selecting scalar values from dynamic objects (they were implemented using same interfaces).
 - Deprecated IValueConverterProvider parameter from Map method of IExpandoObjectMapper (it's part of the field that is passed to the mapper).
 - Collapsed common MsSql assemblers for versions 2012+ and simplified startup configuration.
 - Reworked parameter builder to support output and input/output parameters. Provided consistency with other factories by adding Create methods that create parameters and Add method to add it to the list (Add no longer creates and adds).
