@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +16,21 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValue<TValue>
+    public interface SelectDynamic
 #pragma warning restore IDE1006 // Naming Styles
     {
         /// <summary>
-        /// Construct the FROM clause of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.
+        /// Construct the FROM clause of a sql SELECT query expression for a single <typeparamref name="System.Dynamic.Dynamic"/> value.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-us/sql/t-sql/queries/from-transact-sql">Microsoft docs on FROM</see>
         /// </para>
         /// </summary>
-        /// <returns><see cref="SelectValueContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
-        SelectValueContinuation<TValue> From<TEntity>(Entity<TEntity> entity)
+        /// <returns><see cref="SelectDynamicContinuation"/>, a fluent continuation for the construction of a sql SELECT query expression for a single <typeparamref name="TValue"/> value.</returns>
+        SelectDynamicContinuation From<TEntity>(Entity<TEntity> entity)
             where TEntity : class, IDbEntity;
     }
 }

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +16,22 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
+using System.Dynamic;
 
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValuesOrderByContinuation<TValue>
+    public interface SelectDynamicsOrderByContinuation
 #pragma warning restore IDE1006 // Naming Styles
-        : SelectValuesTermination<TValue>
+        : SelectDynamicsTermination
     {
         /// <summary>
         /// Specify a number of records to ignore while reading before beginning to return records.
         /// </summary>
         /// <param name="value">The number of records to ignore.</param>
-        /// <returns><see cref="SelectValuesOffsetContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOffsetContinuation<TValue> Offset(int value);
+        /// <returns><see cref="SelectValuesOffsetContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
+        SelectDynamicsOffsetContinuation Offset(int value);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -40,8 +40,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
-        /// <returns><see cref="SelectValuesOrderByContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TValue> GroupBy(params AnyGroupByClause[] groupBy);
+        /// <returns><see cref="SelectValuesOrderByContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
+        SelectDynamicsOrderByContinuation GroupBy(params AnyGroupByClause[] groupBy);
 
         /// <summary>
         /// Construct the GROUP BY clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -50,8 +50,8 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="groupBy">A list of expressions of type <see cref="AnyGroupByClause"/> specifying how to group the selected results.</param>
-        /// <returns><see cref="SelectValuesOrderByContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TValue> GroupBy(IEnumerable<AnyGroupByClause> groupBy);
+        /// <returns><see cref="SelectValuesOrderByContinuation{TValue}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
+        SelectDynamicsOrderByContinuation GroupBy(IEnumerable<AnyGroupByClause> groupBy);
 
         /// <summary>
         /// Construct the HAVING clause of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.
@@ -60,7 +60,7 @@ namespace HatTrick.DbEx.Sql
         /// </para>
         /// </summary>
         /// <param name="having">A list of expressions of type <see cref="AnyHavingClause"/> specifying conditions on the grouping or aggregation of selected results.</param>
-        /// <returns><see cref="SelectValuesOrderByContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="TValue"/> values.</returns>
-        SelectValuesOrderByContinuation<TValue> Having(AnyHavingClause having);
+        /// <returns><see cref="SelectValuesOrderByContinuation{TEntity}"/>, a fluent continuation for the construction of a sql SELECT query expression for a list of <typeparamref name="System.Dynamic.ExpandoObject"/> values.</returns>
+        SelectDynamicsOrderByContinuation Having(AnyHavingClause having);
     }
 }

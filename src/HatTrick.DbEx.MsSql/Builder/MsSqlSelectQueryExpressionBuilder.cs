@@ -16,13 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Converter;
-using System;
+using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Executor
+namespace HatTrick.DbEx.MsSql.Builder
 {
-    public interface IValueConverterProvider
+    public class MsSqlSelectQueryExpressionBuilder : SelectQueryExpressionBuilder
     {
-        IValueConverter FindConverter(int fieldIndex, Type requestedType, object value);
+        public MsSqlSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression)
+            : base(config, expression)
+        {
+
+        }
     }
 }

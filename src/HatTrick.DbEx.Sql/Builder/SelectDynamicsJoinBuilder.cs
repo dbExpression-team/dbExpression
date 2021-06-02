@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,16 +21,16 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class SelectValuesJoinBuilder<TValue> : SelectJoinExpressionBuilder<SelectValuesContinuation<TValue>>,
-        JoinOn<SelectValuesContinuation<TValue>>,
-        JoinOnWithAlias<SelectValuesContinuation<TValue>>
+    public class SelectDynamicsJoinBuilder : SelectJoinExpressionBuilder<SelectDynamicsContinuation>,
+        JoinOn<SelectDynamicsContinuation>,
+        JoinOnWithAlias<SelectDynamicsContinuation>
     {
         #region internals
-        private readonly SelectValuesContinuation<TValue> caller;
+        private readonly SelectDynamicsContinuation caller;
         #endregion
 
         #region constructors
-        public SelectValuesJoinBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, SelectValuesContinuation<TValue> caller)
+        public SelectDynamicsJoinBuilder(SelectQueryExpression expression, IExpressionElement joinTo, JoinOperationExpressionOperator joinType, SelectDynamicsContinuation caller)
             : base(expression, joinTo, joinType)
         {
             this.caller = caller ?? throw new ArgumentNullException(nameof(caller));
@@ -38,13 +38,13 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
-        JoinOn<SelectValuesContinuation<TValue>> JoinOnWithAlias<SelectValuesContinuation<TValue>>.As(string alias)
+        JoinOn<SelectDynamicsContinuation> JoinOnWithAlias<SelectDynamicsContinuation>.As(string alias)
         {
             As(alias);
             return this;
         }
 
-        SelectValuesContinuation<TValue> JoinOn<SelectValuesContinuation<TValue>>.On(AnyJoinOnClause joinOn)
+        SelectDynamicsContinuation JoinOn<SelectDynamicsContinuation>.On(AnyJoinOnClause joinOn)
         {
             On(joinOn);
             return caller;

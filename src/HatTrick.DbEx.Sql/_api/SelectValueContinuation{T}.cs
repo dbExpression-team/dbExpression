@@ -16,7 +16,8 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Dynamic;
 
 namespace HatTrick.DbEx.Sql
 {

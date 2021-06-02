@@ -16,13 +16,15 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Converter;
-using System;
+using HatTrick.DbEx.Sql.Builder;
 
-namespace HatTrick.DbEx.Sql.Executor
+namespace HatTrick.DbEx.Sql
 {
-    public interface IValueConverterProvider
+#pragma warning disable IDE1006 // Naming Styles
+    public interface SelectDynamicTermination :
+#pragma warning restore IDE1006 // Naming Styles
+        IExpressionBuilder,
+        ISelectTerminationExpressionBuilder
     {
-        IValueConverter FindConverter(int fieldIndex, Type requestedType, object value);
     }
 }

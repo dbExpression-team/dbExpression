@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.Sql.Executor
             if (provider is object)
                 return valueConverterFactory.CreateConverter(provider.DeclaredType);
 
-            if (value is DBNull && !requestedType.IsNullableType() && requestedType.IsConvertibleToNullableType())
+            if (value is DBNull && !requestedType.IsNullableType())
                 return valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(requestedType));
 
             return valueConverterFactory.CreateConverter(requestedType);

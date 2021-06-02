@@ -548,7 +548,7 @@
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
@@ -556,33 +556,33 @@
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectValue{{ExpandoObject}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element1, element2, elements);
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, element1, element2, elements);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectValue{{ExpandoObject}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, elements);
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, elements);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectValues{{ExpandoObject}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -1111,9 +1111,9 @@
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectValues{{ExpandoObject}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element1, element2, elements);
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1122,9 +1122,9 @@
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectValues{{ExpandoObject}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, elements);
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, elements);
 
             /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -1134,9 +1134,9 @@
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectValues{{ExpandoObject}}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update

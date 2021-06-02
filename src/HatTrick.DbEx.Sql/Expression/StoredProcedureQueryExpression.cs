@@ -16,11 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class StoredProcedureQueryExpression : QueryExpression
     {
+        
+	}
 
-    }
 }
