@@ -91,7 +91,11 @@ namespace HatTrick.DbEx.Sql.Executor
             if (fieldConverters.ContainsKey(field.Index))
                 return fieldConverters[field.Index];
 
-            var converter = Converters.FindConverter(field.Index, requestedType == typeof(object) ? field.DataType : requestedType, field.RawValue);
+            if (requestedType == typeof(object))
+            {
+                requestedType = field.DataType.IsConvertibleToNullableType() ? typeof(Nullable<>).MakeGenericType(field.DataType) : field.DataType;
+            }
+            var converter = Converters.FindConverter(field.Index, requestedType, field.RawValue);
             fieldConverters.Add(field.Index, converter);
             return converter;
         }

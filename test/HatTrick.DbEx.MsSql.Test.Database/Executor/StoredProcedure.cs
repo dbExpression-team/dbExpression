@@ -16,520 +16,479 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
     [Trait("Statement", "STORED_PROCEDURE")]
     public partial class StoredProcedure : ExecutorTestBase
     {
-        private async Task ScratchPad(int version)
-        {
-            int? _nullable_int = 0;
-            dynamic _dynamic = null;
-            IList<int> _int_list = null;
-            IList<dynamic> _dynamic_list = null;
-            
-
-            //NEED to move .Configuration from base ITerminationExpressionBuilder...? THIS EXISTS ON ALL FLUENT INTERFACES
-
-            //sync
-            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
-
-            //sync
-            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => row.ReadField().GetValue<int>()).Execute();
-
-            _nullable_int = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue<int?>().Execute();
-            var x = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue<AddressType>().Execute();
-            _int_list = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues<int>().Execute();
-            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => row.ReadField().GetValue<int>()).Execute();
-            _dynamic = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().Execute();
-            _dynamic_list = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().Execute();
-
-
-            //async
-            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).ExecuteAsync();
-
-            _nullable_int = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue<int>().ExecuteAsync();
-            _int_list = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues<int>().ExecuteAsync();
-            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => row.ReadField().GetValue<int>()).ExecuteAsync();
-            _dynamic = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().ExecuteAsync();
-            _dynamic_list = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().ExecuteAsync();
-
-            //sync
-            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).Execute();
-            _nullable_int = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue<int>().Execute();
-            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).MapValues(row => row.ReadField().GetValue<int>()).Execute();
-            _dynamic = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue().Execute();
-            _dynamic_list = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValues().Execute();
-
-
-            //async
-            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).ExecuteAsync();
-            _nullable_int = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue<int>().ExecuteAsync();
-            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).MapValues(row => row.ReadField().GetValue<int>()).ExecuteAsync();
-            _dynamic = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValue().ExecuteAsync();
-            _dynamic_list = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, parameters => { }).GetValues().ExecuteAsync();
-        }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_no_output_pararameters_and_no_return(int version)
+        public void Can_execute_stored_procedure_with_ignored_input_parameter_with_default_and_return_scalar_value(int version, int expected = 3)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).Execute();
+            var id = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value().GetValue<int>().Execute();
 
             //then
-            //no exceptions
+            id.Should().Be(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_return_scalar_value(int version, int expected = 1)
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_dynamic(int version, int id = 1)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int scalarValue = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int>().Execute();
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().Execute();
 
             //then
-            scalarValue.Should().Be(expected);
+            ((int)person.Id).Should().Be(id);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_return_nullable_scalar_value(int version, int expected = 1)
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic(int version, int? id = null)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int? scalarValue = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int?>().Execute();
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().Execute();
 
             //then
-            scalarValue.Value.Should().Be(expected);
+            ((object)person).Should().BeNull();
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_map_to_list_of_scalar_values(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            var ids = new List<int>();
-
-            //when               
-            db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
-
-            //then
-            ids.Should().HaveCountGreaterOrEqualTo(2);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_return_dynamic_value(int version, int expected = 1)
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_dynamic_list(int version, int id = 0, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            dynamic person = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().Execute();
-
-            //then
-            ((int)person.Id).Should().Be(expected);
-            ((string)person.FirstName).Should().NotBeNullOrWhiteSpace();
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_return_dynamic_list(int version, int expected = 50)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            //when               
-            IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().Execute();
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().Execute();
 
             //then
             persons.Should().HaveCount(expected);
-            persons.Select(p => p.Id).Should().BeEquivalentTo(Enumerable.Range(1, 50));
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_output_pararameters_and_no_return(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
-            {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
-            };
-
-            //when               
-            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).Execute();
-
-            //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_output_pararameters_and_scalar_return(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
-            {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
-            };
-
-            //when               
-            int? scalarValue = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue<int>().Execute();
-
-            //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            scalarValue.Should().BeGreaterThan(0);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_output_pararameters_and_list_of_int_return(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            var ids = new List<int>();
-            int Id = 0;
-            string FullName = null;
-            void map(IList<ISqlOutputParameter> parameters)
-            {
-                Id = parameters.Single(x => x.Name == "@Id").GetValue<int>();
-                FullName = parameters.Single(x => x.Name == "@FullName").GetValue<string>();
-            };
-
-            //when
-            db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).Execute();
-
-            //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            ids.Should().HaveCount(50);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_output_pararameters_and_dynamic_return(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
-
-            //when               
-            var person = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue().Execute();
-
-            //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            ((string)person.FirstName).Should().NotBeNullOrWhiteSpace();
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_output_pararameters_and_dynamic_list_return(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
-
-            //when               
-            IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValues().Execute();
-
-            //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            persons.Should().HaveCount(50);
-            persons.Select(p => p.Id).Should().BeEquivalentTo(Enumerable.Range(1, 50));
-
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameters_and_output_pararameters_with_input_parameter_with_null_value_and_dynamic_list_return(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
-
-            //when               
-            IList<dynamic> persons = db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson((int?)null, 2, map).GetValues().Execute();
-
-            //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            persons.Should().HaveCount(50);
-            persons.Select(p => p.Id).Should().BeEquivalentTo(Enumerable.Range(1, 50));
-
-        }
-
-        //[Theory]
-        //[MsSqlVersions.AllVersions]
-        //public void enum_test(int version)
-        //{
-        //    //given
-        //    ConfigureForMsSqlVersion(version);
-        //    int @Id = 0;
-        //    string FullName = null;
-        //    void map(string name, object value)
-        //    {
-        //        if (name == nameof(@Id))
-        //            Id = (int)value;
-        //        if (name == nameof(FullName))
-        //            FullName = (string)value;
-        //    };
-
-        //    //when               
-        //    IList<AddressType> persons = db.sp.dbo.MyStoredProcedure(1, 2).GetValues<AddressType>().Execute();
-
-        //    //then
-        //}
-
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_no_output_pararameters_and_no_return(int version)
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).ExecuteAsync();
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues().Execute();
 
             //then
-            //no exceptions
+            persons.Should().BeEmpty();
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_return_scalar_value(int version, int expected = 1)
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_scalar_value(int version, int id = 1)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int scalarValue = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int>().ExecuteAsync();
+            var value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int>().Execute();
 
             //then
-            scalarValue.Should().Be(expected);
+            value.Should().Be(id);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_return_nullable_scalar_value(int version, int expected = 1)
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_scalar_value(int version, int? id = null)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            int? scalarValue = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(expected, 2).GetValue<int?>().ExecuteAsync();
+            var value = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int?>().Execute();
 
             //then
-            scalarValue.Value.Should().Be(expected);
+            value.Should().BeNull();
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_map_to_list_of_scalar_values(int version)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-            var ids = new List<int>();
-
-            //when               
-            await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).ExecuteAsync();
-
-            //then
-            ids.Should().HaveCountGreaterOrEqualTo(2);
-        }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_return_dynamic_value(int version, int expected = 1)
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_scalar_value_list(int version, int id = 0, int expected = 50)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            dynamic person = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValue().ExecuteAsync();
+            var values = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(id).GetValues<int>().Execute();
 
             //then
-            ((int)person.Id).Should().Be(expected);
-            ((string)person.FirstName).Should().NotBeNullOrWhiteSpace();
+            values.Should().HaveCount(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_return_dynamic_list(int version, int expected = 50)
+        public void Can_execute_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
         {
             //given
             ConfigureForMsSqlVersion(version);
 
             //when               
-            IList<dynamic> persons = await db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 2).GetValues().ExecuteAsync();
+            var values = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValues<int?>().Execute();
+
+            //then
+            values.Should().BeEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_and_output_parameters_and_return_dynamic(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var count = 0;
+
+            //when               
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValue().Execute();
+
+            //then
+            ((int)person.Id).Should().Be(id);
+            count.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var count = 0;
+
+            //when               
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValues().Execute();
 
             //then
             persons.Should().HaveCount(expected);
-            persons.Select(p => p.Id).Should().BeEquivalentTo(Enumerable.Range(1, 50));
+            count.Should().Be(expected);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_output_pararameters_and_no_return(int version)
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value(int version, int id = 1, int creditLimit = 10000)
         {
             //given
             ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
+            var outCreditLimit = 0;
 
             //when               
-            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).ExecuteAsync();
+            var personId = db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue<int>().Execute();
 
             //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
+            personId.Should().Be(id);
+            outCreditLimit.Should().Be(creditLimit * 2);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_output_pararameters_and_scalar_return(int version)
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
         {
             //given
             ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
+            var outCreditLimit = 0;
 
             //when               
-            int scalarValue = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue<int>().ExecuteAsync();
+            var persons = db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().Execute();
 
             //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            scalarValue.Should().BeGreaterThan(0);
+            persons.Should().HaveCount(expected);
+            outCreditLimit.Should().Be(creditLimit * 2);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_output_pararameters_and_list_of_int_return(int version)
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int version, int id = 1, int creditLimit = 10000)
         {
             //given
             ConfigureForMsSqlVersion(version);
-            var ids = new List<int>();
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
+            var outCreditLimit = 0;
 
             //when               
-            await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).MapValues(row => ids.Add(row.ReadField().GetValue<int>())).ExecuteAsync();
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue().Execute();
 
             //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            ids.Should().HaveCount(50);
+            ((int)person.Id).Should().Be(id);
+            outCreditLimit.Should().Be(creditLimit * 2);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_output_pararameters_and_dynamic_return(int version)
+        public void Can_execute_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
         {
             //given
             ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
+            var outCreditLimit = 0;
 
             //when               
-            var person = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValue().ExecuteAsync();
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().Execute();
 
             //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            ((string)person.FirstName).Should().NotBeNullOrWhiteSpace();
+            persons.Should().HaveCount(expected);
+            outCreditLimit.Should().Be(creditLimit * 2);
         }
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameters_and_output_pararameters_and_dynamic_list_return(int version)
+        public void Can_execute_stored_procedure_with_input_and_output_parameter_with_no_return(int version, int id = 1, int creditLimit = 99999)
         {
             //given
             ConfigureForMsSqlVersion(version);
-            int Id = 0;
-            string FullName = null;
-            void map(ISqlOutputParameterList parameters)
-            {
-                Id = parameters[nameof(Id)].GetValue<int>();
-                FullName = parameters[nameof(FullName)].GetValue<string>();
-            };
 
             //when               
-            IList<dynamic> persons = await db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 2, map).GetValues().ExecuteAsync();
+            db.sp.dbo.UpdatePersonCreditLimit_With_Inputs(id, creditLimit).Execute();
 
             //then
-            Id.Should().BeGreaterThan(0);
-            FullName.Should().NotBeNullOrWhiteSpace();
-            FullName.Should().Contain(" ");
-            persons.Should().HaveCount(50);
-            persons.Select(p => p.Id).Should().BeEquivalentTo(Enumerable.Range(1, 50));
+            var updated = db.SelectOne(dbo.Person.CreditLimit).From(dbo.Person).Where(dbo.Person.Id == id).Execute();
+            updated.Should().Be(creditLimit);
+        }
 
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_ignored_input_parameter_with_default_and_return_scalar_value(int version, int expected = 3)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var id = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value().GetValue<int>().ExecuteAsync();
+
+            //then
+            id.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_dynamic(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().ExecuteAsync();
+
+            //then
+            ((int)person.Id).Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic(int version, int? id = null)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue().ExecuteAsync();
+
+            //then
+            ((object)person).Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic_list(int version, int? id = null)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().BeEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_scalar_value(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int>().ExecuteAsync();
+
+            //then
+            value.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value(int version, int? id = null)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var value = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue<int?>().ExecuteAsync();
+
+            //then
+            value.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_scalar_value_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var values = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input(id).GetValues<int>().ExecuteAsync();
+
+            //then
+            values.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_scalar_value_list(int version, int? id = null)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var values = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValues<int?>().ExecuteAsync();
+
+            //then
+            values.Should().BeEmpty();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameters_and_return_dynamic(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var count = 0;
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValue().ExecuteAsync();
+
+            //then
+            ((int)person.Id).Should().Be(id);
+            count.Should().Be(id);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameters_and_return_dynamic_list(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var count = 0;
+
+            //when               
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_Output(id, p => count = p[nameof(count)].GetValue<int>()).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+            count.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value(int version, int id = 1, int creditLimit = 10000)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var outCreditLimit = 0;
+
+            //when               
+            var personId = await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue<int>().ExecuteAsync();
+
+            //then
+            personId.Should().Be(id);
+            outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_scalar_value_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var outCreditLimit = 0;
+
+            //when               
+            var persons = await db.sp.dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+            outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_value(int version, int id = 1, int creditLimit = 10000)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var outCreditLimit = 0;
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValue().ExecuteAsync();
+
+            //then
+            ((int)person.Id).Should().Be(id);
+            outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_inputoutput_parameter_and_return_dynamic_list(int version, int id = 1, int creditLimit = 10000, int expected = 11)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var outCreditLimit = 0;
+
+            //when               
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput(id, creditLimit, p => outCreditLimit = p[nameof(creditLimit)].GetValue<int>()).GetValues().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+            outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_and_output_parameter_with_no_return(int version, int id = 1, int creditLimit = 99999)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            await db.sp.dbo.UpdatePersonCreditLimit_With_Inputs(id, creditLimit).ExecuteAsync();
+
+            //then
+            var updated = await db.SelectOne(dbo.Person.CreditLimit).From(dbo.Person).Where(dbo.Person.Id == id).ExecuteAsync();
+            updated.Should().Be(creditLimit);
         }
     }
 }

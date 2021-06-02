@@ -303,24 +303,291 @@ GROUP BY
 
 GO
 
-CREATE PROCEDURE dbo.UpdatePersonCreditLimitAndReturnPerson
-	@P1 INT,
-	@P2 INT
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValue_With_Input_And_Default_Value]
+	@P1 INT NULL = 3
 AS
-	UPDATE [dbo].[Person] SET [dbo].[Person].[CreditLimit] = @P2 WHERE [dbo].[Person].[Id] = @P1;
-
-	SELECT [dbo].[Person].[Id], [dbo].[Person].[FirstName], [dbo].[Person].[LastName] FROM [dbo].[Person];
+	SELECT 
+		[dbo].[Person].[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
 GO
 
-CREATE PROCEDURE dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson
-	@P1 INT NULL = 3,
-	@P2 INT,
-	@Id INT OUTPUT,
-	@FullName VARCHAR(40) OUTPUT
+CREATE PROCEDURE [dbo].[SelectPerson_As_Dynamic_With_Input]
+	@P1 INT NULL
 AS
-	UPDATE [dbo].[Person] SET [dbo].[Person].[CreditLimit] = @P2 WHERE [dbo].[Person].[Id] = @P1;
+	SELECT  
+		[dbo].[Person].[Id]
+		,[dbo].[Person].[FirstName]
+		,[dbo].[Person].[LastName]
+		,[dbo].[Person].[BirthDate]
+		,[dbo].[Person].[GenderType]
+		,[dbo].[Person].[CreditLimit]
+		,[dbo].[Person].[YearOfLastCreditLimitReview]
+		,[dbo].[Person].[RegistrationDate]
+		,[dbo].[Person].[LastLoginDate]
+		,[dbo].[Person].[DateCreated]
+		,[dbo].[Person].[DateUpdated]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+GO
 
-	SELECT @Id = [dbo].[Person].[Id], @FullName = [dbo].[Person].[FirstName] +  ' ' + [dbo].[Person].[LastName]
-		FROM [dbo].[Person];
+CREATE PROCEDURE [dbo].[SelectPerson_As_DynamicList_With_Input]
+	@P1 INT NULL 
+AS
+	SELECT  
+		[dbo].[Person].[Id]
+		,[dbo].[Person].[FirstName]
+		,[dbo].[Person].[LastName]
+		,[dbo].[Person].[BirthDate]
+		,[dbo].[Person].[GenderType]
+		,[dbo].[Person].[CreditLimit]
+		,[dbo].[Person].[YearOfLastCreditLimitReview]
+		,[dbo].[Person].[RegistrationDate]
+		,[dbo].[Person].[LastLoginDate]
+		,[dbo].[Person].[DateCreated]
+		,[dbo].[Person].[DateUpdated]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] > @P1;
+GO
 
-	SELECT [dbo].[Person].[Id], [dbo].[Person].[FirstName], [dbo].[Person].[LastName], @P1 AS ReturnedParam FROM [dbo].[Person];
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValue_With_Input]
+	@P1 INT NULL
+AS
+	SELECT 
+		[dbo].[Person].[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValueList_With_Input]
+	@P1 INT NULL
+AS
+	SELECT 
+		[dbo].[Person].[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] > @P1;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPerson_As_Dynamic_With_Input_And_Output]
+	@P1 INT,
+	@Count INT OUTPUT
+AS
+	SELECT  
+		[dbo].[Person].[Id]
+		,[dbo].[Person].[FirstName]
+		,[dbo].[Person].[LastName]
+		,[dbo].[Person].[BirthDate]
+		,[dbo].[Person].[GenderType]
+		,[dbo].[Person].[CreditLimit]
+		,[dbo].[Person].[YearOfLastCreditLimitReview]
+		,[dbo].[Person].[RegistrationDate]
+		,[dbo].[Person].[LastLoginDate]
+		,[dbo].[Person].[DateCreated]
+		,[dbo].[Person].[DateUpdated]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+
+	SELECT @Count = 1;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPerson_As_DynamicList_With_Input_And_Output]
+	@P1 INT,
+	@Count INT OUTPUT
+AS
+	SELECT  
+		[dbo].[Person].[Id]
+		,[dbo].[Person].[FirstName]
+		,[dbo].[Person].[LastName]
+		,[dbo].[Person].[BirthDate]
+		,[dbo].[Person].[GenderType]
+		,[dbo].[Person].[CreditLimit]
+		,[dbo].[Person].[YearOfLastCreditLimitReview]
+		,[dbo].[Person].[RegistrationDate]
+		,[dbo].[Person].[LastLoginDate]
+		,[dbo].[Person].[DateCreated]
+		,[dbo].[Person].[DateUpdated]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] > @P1;
+
+	SELECT 
+		@Count = COUNT(*) 
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] > @P1;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValue_With_Input_And_Output]
+	@P1 INT NULL,
+	@Count INT OUTPUT
+AS
+	SELECT  
+		[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+
+	SELECT 
+		@Count = COUNT(*) 
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValueList_With_Input_And_Output]
+	@P1 INT NULL,
+	@Count INT OUTPUT
+AS
+	SELECT  
+		[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] > @P1;
+
+	SELECT 
+		@Count = COUNT(*) 
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] > @P1;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPerson_As_Dynamic_With_Input_And_InputOutput]
+	@P1 INT,
+	@CreditLimit INT OUTPUT
+AS
+	SELECT  
+		[dbo].[Person].[Id]
+		,[dbo].[Person].[FirstName]
+		,[dbo].[Person].[LastName]
+		,[dbo].[Person].[BirthDate]
+		,[dbo].[Person].[GenderType]
+		,[dbo].[Person].[CreditLimit]
+		,[dbo].[Person].[YearOfLastCreditLimitReview]
+		,[dbo].[Person].[RegistrationDate]
+		,[dbo].[Person].[LastLoginDate]
+		,[dbo].[Person].[DateCreated]
+		,[dbo].[Person].[DateUpdated]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+
+	SELECT 
+		@CreditLimit = [dbo].[Person].[CreditLimit] * 2
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPerson_As_DynamicList_With_Input_And_InputOutput]
+	@P1 INT,
+	@CreditLimit INT OUTPUT
+AS
+	SELECT  
+		[dbo].[Person].[Id]
+		,[dbo].[Person].[FirstName]
+		,[dbo].[Person].[LastName]
+		,[dbo].[Person].[BirthDate]
+		,[dbo].[Person].[GenderType]
+		,[dbo].[Person].[CreditLimit]
+		,[dbo].[Person].[YearOfLastCreditLimitReview]
+		,[dbo].[Person].[RegistrationDate]
+		,[dbo].[Person].[LastLoginDate]
+		,[dbo].[Person].[DateCreated]
+		,[dbo].[Person].[DateUpdated]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] >= @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+
+	SELECT 
+		@CreditLimit = [dbo].[Person].[CreditLimit] * 2
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+GO
+
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValue_With_Input_And_InputOutput]
+	@P1 INT,
+	@CreditLimit INT OUTPUT
+AS
+	SELECT  
+		[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+
+	SELECT 
+		@CreditLimit = [dbo].[Person].[CreditLimit] * 2
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+GO
+
+
+CREATE PROCEDURE [dbo].[SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput]
+	@P1 INT,
+	@CreditLimit INT OUTPUT
+AS
+	SELECT  
+		[Id]
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] >= @P1
+		AND
+		[dbo].[Person].[CreditLimit] = @CreditLimit;
+
+	SELECT 
+		@CreditLimit = [dbo].[Person].[CreditLimit] * 2
+	FROM 
+		[dbo].[Person]
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+GO
+
+CREATE PROCEDURE [dbo].[UpdatePersonCreditLimit_With_Inputs]
+	@P1 INT,
+	@CreditLimit INT
+AS
+	UPDATE 
+		[dbo].[Person]
+	SET
+		[dbo].[Person].[CreditLimit] = @CreditLimit
+	WHERE 
+		[dbo].[Person].[Id] = @P1;
+GO

@@ -12,8 +12,8 @@
                 {#each $.StoredProcedures}
                 {?var:isFirstParameter = true}
                 {>("StoredProcedureExpression.Documentation") => GetTemplatePartial+}
-                public static StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
-                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", schemas.Single(s => s.Identifier == "dbo"){#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.OutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
+                public static StoredProcedureContinuation {$.StoredProcedureExpression.Name}({#each $.Parameters}{#if $.ParameterExpression.RequiresInput}{#if !:isFirstParameter}, {/if}{?:isFirstParameter = false}{$.ParameterExpression.Type.NullableAlias} {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}Action<ISqlOutputParameterList> outputParameters{/if})
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new {$.StoredProcedureExpression.Name}StoredProcedure("{:schemaName}", schemas.Single(s => s.Identifier == "dbo"){#each $.Parameters}{#if $.ParameterExpression.RequiresInput}, {($.ParameterExpression.Name, "@") => TrimStart}{/if}{/each}{#if $.HasOutputParameters}{#if $.HasInputParameters}, {+/if}outputParameters{/if}));
 
                 {/each}
             }}

@@ -23,6 +23,7 @@ namespace HatTrick.DbEx.Sql
     public static class TypeExtensions
     { 
         public static bool IsNullableType(this Type t) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
+        public static bool IsConvertibleToNullableType(this Type t) => t != typeof(string);
         public static Type EnsureUnderlyingType(this Type t) => t.IsNullableType() ? Nullable.GetUnderlyingType(t) : t;        
         public static Type GetUnderlyingEnumType(this Type t)
         {

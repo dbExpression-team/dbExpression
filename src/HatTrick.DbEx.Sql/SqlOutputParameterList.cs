@@ -32,10 +32,10 @@ namespace HatTrick.DbEx.Sql
                     return null;
 
                 if (parameterName[0] == '@')
-                    return this.SingleOrDefault(x => x.Name == parameterName);
+                    return this.SingleOrDefault(x => string.Compare(x.Name, parameterName, true) == 0);
 
                 parameterName = $"@{parameterName}";
-                return this.SingleOrDefault(x => x.Name == parameterName);
+                return this.SingleOrDefault(x => string.Compare(x.Name, parameterName, true) == 0);
             }
         }
 

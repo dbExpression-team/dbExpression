@@ -499,7 +499,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             IValueConverter finder(ISqlOutputParameter p, Type t)
             {
-                if (p.RawValue is DBNull && !t.IsNullableType())
+                if (p.RawValue is DBNull && !t.IsNullableType() && t.IsConvertibleToNullableType())
                     return valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(t));
 
                 return valueConverterFactory.CreateConverter(t);

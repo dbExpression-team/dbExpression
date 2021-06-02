@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using HatTrick.DbEx.Sql;
+﻿using HatTrick.DbEx.Sql;
 using SimpleConsole.DataService;
-using SimpleConsole.dboDataService;
-using SimpleConsole.secDataService;
+using System;
+using System.Collections.Generic;
 
 namespace NetCoreConsoleApp
 {
-	public class StoredProcedures : IExecute
+    public class StoredProcedures : IExecute
 	{
 		#region execute
 		public void Execute()
 		{
-			UpdatePersonCreditLimitAndReturnPerson();
+			UpdatePersonCreditLimit();
 			UpdatePersonCreditLimitWithOutputParametersAndReturnPerson();
 		}
 		#endregion
 
-		private void UpdatePersonCreditLimitAndReturnPerson()
+		private void UpdatePersonCreditLimit()
 		{
-			db.sp.dbo.UpdatePersonCreditLimitAndReturnPerson(1, 1).Execute();
+			db.sp.dbo.UpdatePersonCreditLimit_With_Inputs(1, 2000).Execute();
 		}
 
 		private void UpdatePersonCreditLimitWithOutputParametersAndReturnPerson()
@@ -30,7 +28,7 @@ namespace NetCoreConsoleApp
 					Console.WriteLine(param.Name + "\t" + param.RawValue);
 			};
 
-			db.sp.dbo.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson(1, 1, map).Execute();
+			db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input_And_Output(1, map).Execute();
 		}
 	}
 }
