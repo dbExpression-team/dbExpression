@@ -2,7 +2,7 @@
     public class {$.SchemaExpression.Name}SchemaExpression : SchemaExpression
     {{
         #region interface
-		{#each $.Items}
+        {#each $.Entities}
         public readonly {$.EntityExpression.Name}Entity {$.EntityExpression.Name};
 		{/each}
         #endregion
@@ -10,9 +10,9 @@
         #region constructors
         public {$.SchemaExpression.Name}SchemaExpression(string identifier) : base(identifier, null)
         {{
-			{#each $.Items}
+            {#each $.Entities}
             Entities.Add($"{{identifier}}.{$.Entity.Name}", {$.EntityExpression.Name} = new {$.EntityExpression.Name}Entity($"{{identifier}}.{$.Entity.Name}", "{$.Entity.Name}", this));
-			{/each}
+            {/each}
         }}
         #endregion
     }}

@@ -52,11 +52,11 @@ namespace HatTrick.DbEx.Sql.Expression
             if (Expression is DBNull)
                 return "DBNull";
 
-            if (!(Expression is string))
-                return Expression.ToString();
-
-            string exp = Expression as string;
-            if (exp.All(char.IsWhiteSpace)) return $"'{Expression}'";
+            if (Expression is string exp)
+            {
+                if (exp.All(char.IsWhiteSpace)) return $"'{Expression}'";
+                return exp;
+            }
 
             return Expression.ToString();
         }

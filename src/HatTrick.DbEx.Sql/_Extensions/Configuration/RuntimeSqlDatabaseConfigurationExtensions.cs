@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Sql.Configuration
         public static void Validate(this RuntimeSqlDatabaseConfiguration configuration)
         {
             if (!configuration.TryValidate(out List<string> validationErrors))
-                throw new DbExpressionConfigurationException($"Database configuration is not valid.  The following factories/providers have not been configured: {string.Join(", ", validationErrors)}.");
+                throw new DbExpressionConfigurationException($"Database configuration is invalid.  The following factories/providers have not been configured: {string.Join(", ", validationErrors)}.");
         }
 
         public static bool TryValidate(this RuntimeSqlDatabaseConfiguration configuration, out List<string> validationErrors)

@@ -1,5 +1,6 @@
 ﻿using DbEx.dboDataService;
 using FluentAssertions;
+using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 using System;
@@ -19,11 +20,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
+            parameterBuilder.Parameters.Add(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add(1, typeof(long), context);
+            var newParameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -37,10 +39,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
-            var newParameter = parameterBuilder.Add(2, typeof(long), context);
+            var newParameter = parameterBuilder.CreateInputParameter(2, typeof(long), context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -54,10 +56,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
-            var newParameter = parameterBuilder.Add(1, typeof(int), context);
+            var newParameter = parameterBuilder.CreateInputParameter(1, typeof(int), context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -71,10 +73,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
-            var newParameter = parameterBuilder.Add(2, typeof(int), context);
+            var newParameter = parameterBuilder.CreateInputParameter(2, typeof(int), context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -88,11 +90,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, context);
+            var parameter = parameterBuilder.CreateInputParameter(1, context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add(1, context);
+            var newParameter = parameterBuilder.CreateInputParameter(1, context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -106,10 +109,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, context);
+            var parameter = parameterBuilder.CreateInputParameter(1, context);
 
             //when
-            var newParameter = parameterBuilder.Add(2, context);
+            var newParameter = parameterBuilder.CreateInputParameter(2, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -123,10 +126,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
-            var newParameter = parameterBuilder.Add<int>(1, context);
+            var newParameter = parameterBuilder.CreateInputParameter<int>(1, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -140,10 +143,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
 
             //when
-            var newParameter = parameterBuilder.Add<int>(2, context);
+            var newParameter = parameterBuilder.CreateInputParameter<int>(2, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -157,11 +160,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(1, typeof(long), context);
+            var parameter = parameterBuilder.CreateInputParameter(1, typeof(long), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add<long>(1, context);
+            var newParameter = parameterBuilder.CreateInputParameter<long>(1, context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -175,14 +179,17 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add("HelloWorld", typeof(string), context);
+            var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add("HelloWorld", typeof(string), context);
+            var newParameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
             //then
             newParameter.Should().Be(parameter);
+            newParameter.Parameter.Size.Should().Be("HelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
         [Theory]
@@ -193,13 +200,15 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add("HelloWorld", typeof(string), context);
+            var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
             //when
-            var newParameter = parameterBuilder.Add("xHelloWorld", typeof(string), context);
+            var newParameter = parameterBuilder.CreateInputParameter("xHelloWorld", typeof(string), context);
 
             //then
             newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Size.Should().Be("xHelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
         [Theory]
@@ -210,14 +219,17 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add("HelloWorld", context);
+            var parameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add("HelloWorld", context);
+            var newParameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
 
             //then
             newParameter.Should().Be(parameter);
+            newParameter.Parameter.Size.Should().Be("HelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
         [Theory]
@@ -228,13 +240,15 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add("HelloWorld", context);
+            var parameter = parameterBuilder.CreateInputParameter("HelloWorld", context);
 
             //when
-            var newParameter = parameterBuilder.Add("xHelloWorld", context);
+            var newParameter = parameterBuilder.CreateInputParameter("xHelloWorld", context);
 
             //then
             newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Size.Should().Be("xHelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
         [Theory]
@@ -245,13 +259,15 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add("HelloWorld", typeof(string), context);
+            var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
 
             //when
-            var newParameter = parameterBuilder.Add<string>("xHelloWorld", context);
+            var newParameter = parameterBuilder.CreateInputParameter<string>("xHelloWorld", context);
 
             //then
             newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Size.Should().Be("xHelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("xHelloWorld");
         }
 
         [Theory]
@@ -262,14 +278,17 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add("HelloWorld", typeof(string), context);
+            var parameter = parameterBuilder.CreateInputParameter("HelloWorld", typeof(string), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add<string>("HelloWorld", context);
+            var newParameter = parameterBuilder.CreateInputParameter<string>("HelloWorld", context);
 
             //then
             newParameter.Should().Be(parameter);
+            newParameter.Parameter.Size.Should().Be("HelloWorld".Length);
+            newParameter.Parameter.Value.Should().Be("HelloWorld");
         }
 
         [Theory]
@@ -281,11 +300,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(now, typeof(DateTime), context);
+            var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add(now, typeof(DateTime), context);
+            var newParameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -300,10 +320,11 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(now, typeof(DateTime), context);
+            var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
-            var newParameter = parameterBuilder.Add(now.AddMilliseconds(1).Date, typeof(DateTime), context);
+            var newParameter = parameterBuilder.CreateInputParameter(now.AddMilliseconds(1).Date, typeof(DateTime), context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -318,11 +339,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(now, context);
+            var parameter = parameterBuilder.CreateInputParameter(now, context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add(now, context);
+            var newParameter = parameterBuilder.CreateInputParameter(now, context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -337,10 +359,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(now, context);
+            var parameter = parameterBuilder.CreateInputParameter(now, context);
 
             //when
-            var newParameter = parameterBuilder.Add(now.AddMilliseconds(1).Date, context);
+            var newParameter = parameterBuilder.CreateInputParameter(now.AddMilliseconds(1).Date, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -355,10 +377,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(now, typeof(DateTime), context);
+            var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
 
             //when
-            var newParameter = parameterBuilder.Add<DateTime>(now.AddMilliseconds(1).Date, context);
+            var newParameter = parameterBuilder.CreateInputParameter<DateTime>(now.AddMilliseconds(1).Date, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -373,11 +395,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(now, typeof(DateTime), context);
+            var parameter = parameterBuilder.CreateInputParameter(now, typeof(DateTime), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add<DateTime>(now, context);
+            var newParameter = parameterBuilder.CreateInputParameter<DateTime>(now, context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -392,11 +415,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(value, typeof(byte[]), context);
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add(value, typeof(byte[]), context);
+            var newParameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -412,10 +436,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(value, typeof(byte[]), context);
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //when
-            var newParameter = parameterBuilder.Add(newValue, typeof(byte[]), context);
+            var newParameter = parameterBuilder.CreateInputParameter(newValue, typeof(byte[]), context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -430,11 +454,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(value, context);
+            var parameter = parameterBuilder.CreateInputParameter(value, context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add(value, context);
+            var newParameter = parameterBuilder.CreateInputParameter(value, context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -450,10 +475,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(value, context);
+            var parameter = parameterBuilder.CreateInputParameter(value, context);
 
             //when
-            var newParameter = parameterBuilder.Add(newValue, context);
+            var newParameter = parameterBuilder.CreateInputParameter(newValue, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -469,10 +494,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(value, typeof(byte[]), context);
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //when
-            var newParameter = parameterBuilder.Add<byte[]>(newValue, context);
+            var newParameter = parameterBuilder.CreateInputParameter<byte[]>(newValue, context);
 
             //then
             newParameter.Should().NotBe(parameter);
@@ -487,12 +512,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            parameterBuilder.Add(value, typeof(byte[]), context);
+            parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
 
             //when
             try
             {
-                var newParameter = parameterBuilder.Add<byte[]>(value, context);
+                var newParameter = parameterBuilder.CreateInputParameter<byte[]>(value, context);
                 newParameter.Should().BeNull();
             }
             catch (Exception)
@@ -510,11 +535,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             var database = ConfigureForMsSqlVersion(version);
             var context = new AssemblyContext(database.AssemblerConfiguration);
             var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
-            var parameter = parameterBuilder.Add(value, typeof(byte[]), context);
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(byte[]), context);
+            parameterBuilder.AddParameter(parameter);
 
             //when
             context.TrySharingExistingParameter = true;
-            var newParameter = parameterBuilder.Add<byte[]>(value, context);
+            var newParameter = parameterBuilder.CreateInputParameter<byte[]>(value, context);
 
             //then
             newParameter.Should().Be(parameter);
@@ -537,11 +563,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.NVarChar);
+            meta.DbType.Should().Be(SqlDbType.NVarChar);
             parameter.Parameter.DbType.Should().Be(DbType.String);
-            parameter.Parameter.Size.Should().Be(parameter.Metadata.Size);
+            parameter.Parameter.Size.Should().Be(meta.Size);
             parameter.Parameter.Value.Should().Be(productDescription);
         }
 
@@ -562,11 +589,12 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.VarChar);
+            meta.DbType.Should().Be(SqlDbType.VarChar);
             parameter.Parameter.DbType.Should().Be(DbType.AnsiString);
-            parameter.Parameter.Size.Should().Be(parameter.Metadata.Size);
+            parameter.Parameter.Size.Should().Be(meta.Size);
             parameter.Parameter.Value.Should().Be(firstName);
         }
 
@@ -587,9 +615,10 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.Money);
+            meta.DbType.Should().Be(SqlDbType.Money);
             parameter.Parameter.DbType.Should().Be(DbType.Currency);
             parameter.Parameter.Value.Should().Be(productPrice);
         }
@@ -611,11 +640,139 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Assembler
             //when
             appender.AppendElement(predicate, builder, context);
             var parameter = builder.Parameters.Parameters.SingleOrDefault();
+            var meta = parameter.Metadata as ISqlFieldMetadata;
 
             //then
-            parameter.Metadata.DbType.Should().Be(SqlDbType.VarBinary);
+            meta.DbType.Should().Be(SqlDbType.VarBinary);
             parameter.Parameter.DbType.Should().Be(DbType.Binary);
             parameter.Parameter.Value.Should().Be(image);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_share_the_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            context.TrySharingExistingParameter = true;
+            var newParameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+
+            //then
+            newParameter.Should().Be(parameter);
+            newParameter.Parameter.Precision.Should().Be(4);
+            newParameter.Parameter.Scale.Should().Be(2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_different_value_result_in_new_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            var newParameter = parameterBuilder.CreateInputParameter(value + .001m, typeof(decimal), context);
+
+            //then
+            newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Precision.Should().Be(5);
+            newParameter.Parameter.Scale.Should().Be(3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_using_generic_version_share_the_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            context.TrySharingExistingParameter = true;
+            var newParameter = parameterBuilder.CreateInputParameter(value, context);
+
+            //then
+            newParameter.Should().Be(parameter);
+            newParameter.Parameter.Precision.Should().Be(4);
+            newParameter.Parameter.Scale.Should().Be(2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_different_value_using_generic_version_result_in_new_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, context);
+
+            //when
+            var newParameter = parameterBuilder.CreateInputParameter(value + .001m, context);
+
+            //then
+            newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Precision.Should().Be(5);
+            newParameter.Parameter.Scale.Should().Be(3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_different_value_and_type_using_generic_version_result_in_new_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+
+            //when
+            var newParameter = parameterBuilder.CreateInputParameter<decimal>(value + .001m, context);
+
+            //then
+            newParameter.Should().NotBe(parameter);
+            newParameter.Parameter.Precision.Should().Be(5);
+            newParameter.Parameter.Scale.Should().Be(3);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Does_adding_a_decimal_parameter_with_same_value_and_type_first_by_object_then_by_generic_share_the_parameter(int version)
+        {
+            //given
+            var value = 11.11m;
+            var database = ConfigureForMsSqlVersion(version);
+            var context = new AssemblyContext(database.AssemblerConfiguration);
+            var parameterBuilder = database.ParameterBuilderFactory.CreateSqlParameterBuilder();
+            var parameter = parameterBuilder.CreateInputParameter(value, typeof(decimal), context);
+            parameterBuilder.AddParameter(parameter);
+
+            //when
+            context.TrySharingExistingParameter = true;
+            var newParameter = parameterBuilder.CreateInputParameter<decimal>(value, context);
+
+            //then
+            newParameter.Should().Be(parameter);
+            newParameter.Parameter.Precision.Should().Be(4);
+            newParameter.Parameter.Scale.Should().Be(2);
         }
     }
 }

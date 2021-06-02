@@ -1,0 +1,22 @@
+﻿    {?var:procedureName = $.StoredProcedure.Name}
+    public class {:procedureName}StoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {{
+        #region interface
+        public ISqlSchemaMetadata Schema {{ get; }}
+        public string Identifier {{ get; }}
+        public string Name {{ get; }}
+        public IDictionary<string, ISqlParameterMetadata> Parameters {{ get; }} = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public {:procedureName}StoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {{
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            {#each $.Parameters}
+            Parameters.Add($"{{identifier}}.{$.Parameter.Name}", new MsSqlParameterMetadata(this, $"{{identifier}}.{$.Parameter.Name}", "{$.Parameter.Name}", SqlDbType.{$.Parameter.SqlType}{#if $.Parameter.Size}, {$.Parameter.Size}{/if}{#if $.Parameter.Precision}, {$.Parameter.Precision}{/if}{#if $.Parameter.Scale}, {$.Parameter.Scale}{/if}));
+            {/each}
+        }}
+        #endregion
+    }}

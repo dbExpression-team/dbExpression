@@ -20,17 +20,23 @@ namespace NetCoreConsoleApp
             sw.Stop();
             Console.WriteLine($"Configured in {sw.ElapsedMilliseconds} milliseconds.{Environment.NewLine}");
 
-            sw.Reset();
-            sw.Start();
-            RunBasicExpressions();
-            sw.Stop();
-            Console.WriteLine($"Basic expressions completed in {sw.ElapsedMilliseconds} milliseconds.{Environment.NewLine}");
+			sw.Reset();
+			sw.Start();
+			RunBasicExpressions();
+			sw.Stop();
+			Console.WriteLine($"Basic expressions completed in {sw.ElapsedMilliseconds} milliseconds.{Environment.NewLine}");
 
-            sw.Reset();
+			sw.Reset();
+			sw.Start();
+			RunAdvancedExpressions();
+			sw.Stop();
+			Console.WriteLine($"Advanced expressions completed in {sw.ElapsedMilliseconds} milliseconds.{Environment.NewLine}");
+
+			sw.Reset();
             sw.Start();
-            RunAdvancedExpressions();
+            RunStoredProcedures();
             sw.Stop();
-            Console.WriteLine($"Advanced expressions completed in {sw.ElapsedMilliseconds} milliseconds.{Environment.NewLine}");
+            Console.WriteLine($"Stored procedure expressions completed in {sw.ElapsedMilliseconds} milliseconds.{Environment.NewLine}");
 #if DEBUG
             Console.WriteLine("Press [Enter] to exit");
             Console.ReadLine();
@@ -131,6 +137,14 @@ namespace NetCoreConsoleApp
             var where = new WhereClause();
             where.Execute();
         }
-		#endregion
-	}
+        #endregion
+
+        #region run stored procedures
+        static void RunStoredProcedures()
+        {
+            StoredProcedures sprocs = new StoredProcedures();
+            sprocs.Execute();
+        }
+        #endregion
+    }
 }

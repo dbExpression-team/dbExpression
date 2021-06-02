@@ -1,4 +1,4 @@
-using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.Sql;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +39,8 @@ namespace DbEx.dboDataService
         public string Identifier { get; }
         public string Name { get; }
         public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
-		#endregion
+        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
+        #endregion
 
         #region constructors
         public dboSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
@@ -55,6 +56,20 @@ namespace DbEx.dboDataService
             Entities.Add($"{identifier}.Purchase", new PurchaseEntityMetadata(this, $"{identifier}.Purchase", "Purchase"));
             Entities.Add($"{identifier}.PurchaseLine", new PurchaseLineEntityMetadata(this, $"{identifier}.PurchaseLine", "PurchaseLine"));
             Entities.Add($"{identifier}.PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this, $"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView"));
+            StoredProcedures.Add($"{identifier}.SelectPerson_As_Dynamic_With_Input", new SelectPerson_As_Dynamic_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_Dynamic_With_Input", "SelectPerson_As_Dynamic_With_Input"));
+            StoredProcedures.Add($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput", new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput", "SelectPerson_As_Dynamic_With_Input_And_InputOutput"));
+            StoredProcedures.Add($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output", new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output", "SelectPerson_As_Dynamic_With_Input_And_Output"));
+            StoredProcedures.Add($"{identifier}.SelectPerson_As_DynamicList_With_Input", new SelectPerson_As_DynamicList_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_DynamicList_With_Input", "SelectPerson_As_DynamicList_With_Input"));
+            StoredProcedures.Add($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput", new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput", "SelectPerson_As_DynamicList_With_Input_And_InputOutput"));
+            StoredProcedures.Add($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output", new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output", "SelectPerson_As_DynamicList_With_Input_And_Output"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input", new SelectPersonId_As_ScalarValue_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input", "SelectPersonId_As_ScalarValue_With_Input"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value", "SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output", new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output", "SelectPersonId_As_ScalarValue_With_Input_And_Output"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input", new SelectPersonId_As_ScalarValueList_With_InputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input", "SelectPersonId_As_ScalarValueList_With_Input"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput", "SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"));
+            StoredProcedures.Add($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output", new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedureMetadata(this, $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output", "SelectPersonId_As_ScalarValueList_With_Input_And_Output"));
+            StoredProcedures.Add($"{identifier}.UpdatePersonCreditLimit_With_Inputs", new UpdatePersonCreditLimit_With_InputsStoredProcedureMetadata(this, $"{identifier}.UpdatePersonCreditLimit_With_Inputs", "UpdatePersonCreditLimit_With_Inputs"));
         }
         #endregion
     }
@@ -296,6 +311,294 @@ namespace DbEx.dboDataService
     }
     #endregion
 
+    public class SelectPerson_As_Dynamic_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPerson_As_Dynamic_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPerson_As_DynamicList_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPerson_As_DynamicList_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValue_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValue_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValueList_With_InputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValueList_With_InputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@Count", new MsSqlParameterMetadata(this, $"{identifier}.@Count", "@Count", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class UpdatePersonCreditLimit_With_InputsStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public UpdatePersonCreditLimit_With_InputsStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@CreditLimit", new MsSqlParameterMetadata(this, $"{identifier}.@CreditLimit", "@CreditLimit", SqlDbType.Int));
+        }
+        #endregion
+    }
+
 }
 namespace DbEx.secDataService
 {
@@ -307,7 +610,8 @@ namespace DbEx.secDataService
         public string Identifier { get; }
         public string Name { get; }
         public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
-		#endregion
+        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
+        #endregion
 
         #region constructors
         public secSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)

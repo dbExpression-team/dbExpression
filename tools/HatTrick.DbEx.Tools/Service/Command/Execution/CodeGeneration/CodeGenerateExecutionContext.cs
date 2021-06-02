@@ -513,6 +513,11 @@ namespace HatTrick.DbEx.Tools.Service
                 svc.Feedback.Push(To.Warn, $"override.apply.interfaces at overrides[{atIndex}] is invalid");
                 svc.Feedback.Push(To.Warn, $"interfaces are only valid on tables and views");
             }
+            if (ovrd.Apply.Direction != null && !distinct.All(m => m is MsSqlParameter))
+            {
+                svc.Feedback.Push(To.Warn, $"override.apply.direction at overrides[{atIndex}] is invalid");
+                svc.Feedback.Push(To.Warn, $"direction is only valid on procedure parameters");
+            }
         }
 		#endregion
 
@@ -626,6 +631,7 @@ namespace HatTrick.DbEx.Tools.Service
             repo.Register(nameof(helpers.FirstOrDefault), (Func<IEnumerable, object>)helpers.FirstOrDefault);
             repo.Register(nameof(helpers.Concat), (Func<string, string, string>)helpers.Concat);
             repo.Register(nameof(helpers.GetTemplatePartial), (Func<string, string>)helpers.GetTemplatePartial);
+            repo.Register(nameof(helpers.TrimStart), (Func<string, string, string>)helpers.TrimStart);
 
             string output = null;
             try

@@ -48,7 +48,7 @@ namespace HatTrick.DbEx.Tools.Builder
                         )
                     );
 
-                databasePair.Items.Add(schemaPair);
+                databasePair.Schemas.Add(schemaPair);
 
                 foreach (var entity in schema.Tables.Values.Cast<INamedMeta>().Concat(schema.Views.Values.Cast<INamedMeta>()))
                 {
@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Tools.Builder
                                 )
                             );
 
-                            entityPair.Items.Add(columnPair);
+                            entityPair.Columns.Add(columnPair);
                         }
                     }
                     else if (entity is MsSqlView view)
@@ -111,12 +111,35 @@ namespace HatTrick.DbEx.Tools.Builder
                                 )
                             );
 
-                            entityPair.Items.Add(columnPair);
+                            entityPair.Columns.Add(columnPair);
                         }
                     }
 
-                    schemaPair.Items.Add(entityPair);
+                    schemaPair.Entities.Add(entityPair);
                 }
+
+				foreach (var procedure in schema.Procedures.Values.Where(p => !helpers.IsIgnored(p)))
+				{
+                    StoredProcedureModel procedureModel = new StoredProcedureModel(schemaPair.Schema, procedure);
+                    StoredProcedureExpressionModel procedureExpression = new StoredProcedureExpressionModel(schemaPair.SchemaExpression, helpers.ResolveName(procedure));
+                    StoredProcedurePairModel procedurePair = new StoredProcedurePairModel(procedureModel, procedureExpression);
+
+					foreach (var parameter in procedure.Parameters.Values.Where(p => !helpers.IsIgnored(p)))
+					{
+                        ParameterModel parameterModel = new ParameterModel(procedureModel, parameter);
+                        ParameterExpressionModel parameterExpression = new ParameterExpressionModel(
+                            procedureExpression,
+                            parameter,
+                            helpers.ResolveName(parameter),
+                            helpers.GetClrTypeOverride(parameter),
+                            helpers.IsEnum(parameter),
+                            helpers.ResolveParameterDirection(parameter)
+                        ); 
+                        ParameterPairModel parameterPair = new ParameterPairModel(parameterModel, parameterExpression);
+                        procedurePair.Parameters.Add(parameterPair);
+                    }
+                    schemaPair.StoredProcedures.Add(procedurePair);
+				}
             }
 
             databasePair.Documentation = new DocumentationItemsModel(databasePair);

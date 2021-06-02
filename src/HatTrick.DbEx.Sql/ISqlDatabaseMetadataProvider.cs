@@ -24,5 +24,6 @@
         ISqlSchemaMetadata FindSchemaMetadata(string identifier);
         ISqlEntityMetadata FindEntityMetadata(string identifier);
         ISqlFieldMetadata FindFieldMetadata(string identifier);
+        ISqlParameterMetadata FindParameterMetadata(string identifier);
     }
 }

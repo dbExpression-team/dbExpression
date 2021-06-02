@@ -22,8 +22,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Executor
 {
     public interface IValueConverterProvider
-
     {
-        IValueConverter FindConverter(int fieldIndex, Type databaseType, object value);
+        IValueConverter FindConverter(int fieldIndex, Type requestedType, object value);
     }
 }

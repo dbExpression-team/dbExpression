@@ -14,8 +14,11 @@ using System.Linq;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {{
-	{#each $.Items}
-	using _{$.SchemaExpression.Name}DataService =  {$.SchemaExpression.NamespaceRoot}DataService;
+	{#each $.Schemas}
+	using {$.SchemaExpression.NamespaceRoot}DataService;
+	{/each}
+	{#each $.Schemas}
+	using _{$.SchemaExpression.Name}DataService = {$.SchemaExpression.NamespaceRoot}DataService;
 	{/each}
 
 {>("RuntimeDb") => GetTemplatePartial+}
@@ -25,17 +28,22 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {>("Db") => GetTemplatePartial+}
 }}
 
-{#each $.Items}
+{#each $.Schemas}
 namespace {$.SchemaExpression.NamespaceRoot}DataService
 {{
 	using {$.SchemaExpression.NamespaceRoot}Data;
+	using System.Data;
 
 {>("SchemaExpression") => GetTemplatePartial+}
 
-	{#each $.Items}
+	{#each $.Entities}
 {>("EntityExpression") => GetTemplatePartial+}
 
-    {/each}
+    {-/each-}
+	{-#each $.StoredProcedures}
+{>("StoredProcedureExpression") => GetTemplatePartial+}
+
+	{/each}
 {>("Schema") => GetTemplatePartial+}
 }}
 {/if}

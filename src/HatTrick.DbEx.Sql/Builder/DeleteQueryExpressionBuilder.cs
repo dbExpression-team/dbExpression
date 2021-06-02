@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Linq;
@@ -40,8 +40,6 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
-
-
 
         DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Entity<TEntity> entity)
             => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));

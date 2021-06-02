@@ -67,6 +67,8 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly InExpressionAppender inAppender = new InExpressionAppender();
         private static readonly LikeExpressionAppender likeAppender = new LikeExpressionAppender();
         private static readonly DbTypeExpressionAppender dbTypeAppender = new DbTypeExpressionAppender();
+        private static readonly StoredProcedureExpressionAppender storedProcedureAppender = new StoredProcedureExpressionAppender();
+        private static readonly ParameterExpressionAppender parameterAppender = new ParameterExpressionAppender();
 
         private readonly ConcurrentDictionary<Type, Func<IExpressionElementAppender>> elementAppenders = new ConcurrentDictionary<Type, Func<IExpressionElementAppender>>();
         #endregion
@@ -116,6 +118,8 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(inAppender);
             RegisterElementAppender(likeAppender);
             RegisterElementAppender(dbTypeAppender);
+            RegisterElementAppender(storedProcedureAppender);
+            RegisterElementAppender(parameterAppender);
         }
         #endregion
 

@@ -1,8 +1,8 @@
-using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.Sql;
 using System.Collections.Generic;
 using System.Data;
-{#each $.Items}
+{#each $.Schemas}
 using {$.SchemaExpression.NamespaceRoot}DataService;
 {/each}
 
@@ -11,13 +11,17 @@ namespace {$.DatabaseExpression.NamespaceRoot}DataService
 {+>("DbMetadata") => GetTemplatePartial+}
 }}
 
-{#each $.Items}
+{#each $.Schemas}
 namespace {$.SchemaExpression.NamespaceRoot}DataService
 {{
 {+>("SchemaMetadata") => GetTemplatePartial+}
 
-	{#each $.Items}
+	{#each $.Entities}
 {+>("EntityMetadata") => GetTemplatePartial+}
+
+	{/each}
+		{#each $.StoredProcedures}
+{+>("StoredProcedureMetadata") => GetTemplatePartial+}
 
 	{/each}
 }}

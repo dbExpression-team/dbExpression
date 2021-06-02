@@ -1,5 +1,5 @@
 ﻿    #region runtime db
-    public abstract class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
+    public abstract partial class {$.DatabaseExpression.Name}RuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {{
         #region internals
         protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
@@ -10,7 +10,7 @@
 
         #region interface
         IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
-        {#each $.Items}
+        {#each $.Schemas}
         public static _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression {$.SchemaExpression.Name} => (_{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression)schemas.Single(s => s.Identifier == "{$.SchemaExpression.Name}");
         {/each}
         #endregion
@@ -18,7 +18,7 @@
         #region constructors
         static {$.DatabaseExpression.Name}RuntimeSqlDatabase()
         {{
-            {#each $.Items}
+            {#each $.Schemas}
             var {$.SchemaExpression.Name}Schema = new _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression("{$.Schema.Name}");
             schemas.Add({$.SchemaExpression.Name}Schema);
             _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}.UseSchema({$.SchemaExpression.Name}Schema);
@@ -1252,5 +1252,8 @@
         #endregion
 
 {+>("Fx") => GetTemplatePartial+}
+
+{+>("Sp") => GetTemplatePartial+}
+
     }}
     #endregion

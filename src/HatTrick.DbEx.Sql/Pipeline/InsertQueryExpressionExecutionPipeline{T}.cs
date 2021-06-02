@@ -16,15 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,8 +83,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
                 connection,
-                new SqlStatementValueConverterProvider(fields, database.ValueConverterFactory),
-                cmd => { 
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, fields),
+                cmd => {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)));
                     configureCommand?.Invoke(cmd);
                 },
@@ -147,9 +148,12 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = await database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
                 statement,
                 connection,
-                new SqlStatementValueConverterProvider(new List<FieldExpression> { null }.Concat(expression.Outputs).ToList(), database.ValueConverterFactory),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, new List<FieldExpression> { null }.Concat(expression.Outputs).ToList()),
                 async cmd =>
                 {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     if (beforeExecution is object)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);

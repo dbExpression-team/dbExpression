@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Assembler
 
             assembler.AssembleStatement(query, this, context);
 
-            return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters, DbCommandType.SqlText);
+            return _sqlStatement = new SqlStatement(Appender, Parameters.Parameters);
         }
 
         public void AppendElement<T>(T element, AssemblyContext context)
@@ -96,5 +96,6 @@ namespace HatTrick.DbEx.Sql.Assembler
         public ISqlSchemaMetadata FindMetadata(SchemaExpression schema) => databaseMetadata.FindSchemaMetadata((schema as ISqlMetadataIdentifierProvider).Identifier);
         public ISqlEntityMetadata FindMetadata(EntityExpression entity) => databaseMetadata.FindEntityMetadata((entity as ISqlMetadataIdentifierProvider).Identifier);
         public ISqlFieldMetadata FindMetadata(FieldExpression field) => databaseMetadata.FindFieldMetadata((field as ISqlMetadataIdentifierProvider).Identifier);
+        public ISqlParameterMetadata FindMetadata(ParameterExpression parameter) => databaseMetadata.FindParameterMetadata((parameter as ISqlMetadataIdentifierProvider).Identifier);
     }
 }

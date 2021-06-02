@@ -1,4 +1,4 @@
-using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.Sql;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +39,8 @@ namespace ServerSideBlazorApp.dboDataService
         public string Identifier { get; }
         public string Name { get; }
         public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
-		#endregion
+        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
+        #endregion
 
         #region constructors
         public dboSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
@@ -54,6 +55,8 @@ namespace ServerSideBlazorApp.dboDataService
             Entities.Add($"{identifier}.Purchase", new PurchaseEntityMetadata(this, $"{identifier}.Purchase", "Purchase"));
             Entities.Add($"{identifier}.PurchaseLine", new PurchaseLineEntityMetadata(this, $"{identifier}.PurchaseLine", "PurchaseLine"));
             Entities.Add($"{identifier}.PersonTotalPurchasesView", new PersonTotalPurchasesViewEntityMetadata(this, $"{identifier}.PersonTotalPurchasesView", "PersonTotalPurchasesView"));
+            StoredProcedures.Add($"{identifier}.UpdatePersonCreditLimitAndReturnPerson", new UpdatePersonCreditLimitAndReturnPersonStoredProcedureMetadata(this, $"{identifier}.UpdatePersonCreditLimitAndReturnPerson", "UpdatePersonCreditLimitAndReturnPerson"));
+            StoredProcedures.Add($"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", new UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedureMetadata(this, $"{identifier}.UpdatePersonCreditLimitWithOutputParametersAndReturnPerson", "UpdatePersonCreditLimitWithOutputParametersAndReturnPerson"));
         }
         #endregion
     }
@@ -270,6 +273,50 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
+    public class UpdatePersonCreditLimitAndReturnPersonStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public UpdatePersonCreditLimitAndReturnPersonStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@P2", new MsSqlParameterMetadata(this, $"{identifier}.@P2", "@P2", SqlDbType.Int));
+        }
+        #endregion
+    }
+
+    public class UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedureMetadata : ISqlStoredProcedureMetadata
+    {
+        #region interface
+        public ISqlSchemaMetadata Schema { get; }
+        public string Identifier { get; }
+        public string Name { get; }
+        public IDictionary<string, ISqlParameterMetadata> Parameters { get; } = new Dictionary<string, ISqlParameterMetadata>();
+        #endregion
+
+        #region constructors
+        public UpdatePersonCreditLimitWithOutputParametersAndReturnPersonStoredProcedureMetadata(ISqlSchemaMetadata schema, string identifier, string name)
+        {
+            Schema = schema;
+            Identifier = identifier;
+            Name = name;
+            Parameters.Add($"{identifier}.@P1", new MsSqlParameterMetadata(this, $"{identifier}.@P1", "@P1", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@P2", new MsSqlParameterMetadata(this, $"{identifier}.@P2", "@P2", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@Id", new MsSqlParameterMetadata(this, $"{identifier}.@Id", "@Id", SqlDbType.Int));
+            Parameters.Add($"{identifier}.@FullName", new MsSqlParameterMetadata(this, $"{identifier}.@FullName", "@FullName", SqlDbType.VarChar, 40));
+        }
+        #endregion
+    }
+
 }
 namespace ServerSideBlazorApp.secDataService
 {
@@ -281,7 +328,8 @@ namespace ServerSideBlazorApp.secDataService
         public string Identifier { get; }
         public string Name { get; }
         public IDictionary<string, ISqlEntityMetadata> Entities { get; } = new Dictionary<string, ISqlEntityMetadata>();
-		#endregion
+        public IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; } = new Dictionary<string, ISqlStoredProcedureMetadata>();
+        #endregion
 
         #region constructors
         public secSchemaMetadata(ISqlDatabaseMetadata database, string identifier, string name)
