@@ -23,6 +23,5 @@ namespace HatTrick.DbEx.Sql.Expression
     public class StoredProcedureQueryExpression : QueryExpression
     {
         
-	}
-
+    }
 }
