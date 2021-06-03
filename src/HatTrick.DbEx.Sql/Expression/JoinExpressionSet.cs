@@ -23,8 +23,8 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class JoinExpressionSet : 
-        IExpressionElement, 
-        IExpressionSet<JoinExpression>
+        IExpressionElement,
+        IExpressionListProvider<JoinExpression>
     {
         #region interface
         public IEnumerable<JoinExpression> Expressions { get; private set; }  = new List<JoinExpression>();

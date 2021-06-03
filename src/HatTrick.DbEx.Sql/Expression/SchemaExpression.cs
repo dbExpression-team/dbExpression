@@ -36,7 +36,7 @@ namespace HatTrick.DbEx.Sql.Expression
 
         #region interface
         public string Identifier => identifier;
-        IList<IEntityExpression> IExpressionListProvider<IEntityExpression>.Expressions => Entities.Values.ToList();
+        IEnumerable<IEntityExpression> IExpressionListProvider<IEntityExpression>.Expressions => Entities.Values;
         #endregion
 
         #region constructors
