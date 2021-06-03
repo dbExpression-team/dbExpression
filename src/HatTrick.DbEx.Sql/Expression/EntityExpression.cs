@@ -46,7 +46,7 @@ namespace HatTrick.DbEx.Sql.Expression
         string ISqlMetadataIdentifierProvider.Identifier => identifier;
         Type IDbEntityTypeProvider.EntityType => dbEntityType;
         SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
-        IList<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values.ToList();
+        IEnumerable<FieldExpression> IExpressionListProvider<FieldExpression>.Expressions => Fields.Values;
         string IExpressionAliasProvider.Alias => alias;
         string IExpressionNameProvider.Name => name;
         #endregion

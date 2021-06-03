@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class AssignmentExpressionSet : 
         IExpressionElement,
-        IExpressionSet<AssignmentExpression>
+        IExpressionListProvider<AssignmentExpression>
     {
         #region interface
         public IEnumerable<AssignmentExpression> Expressions { get; private set; }

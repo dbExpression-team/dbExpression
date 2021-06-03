@@ -23,8 +23,8 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class OrderByExpressionSet :
-        AnyOrderByClause, 
-        IExpressionSet<AnyOrderByClause>
+        AnyOrderByClause,
+        IExpressionListProvider<AnyOrderByClause>
     {
         #region interface
         public IEnumerable<AnyOrderByClause> Expressions { get; private set; }  = new List<AnyOrderByClause>();

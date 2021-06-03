@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public class SelectExpressionSet : 
         IExpressionElement,
-        IExpressionSet<SelectExpression>
+        IExpressionListProvider<SelectExpression>
     {
         #region interface
         public IEnumerable<SelectExpression> Expressions { get; private set; } = new List<SelectExpression>();

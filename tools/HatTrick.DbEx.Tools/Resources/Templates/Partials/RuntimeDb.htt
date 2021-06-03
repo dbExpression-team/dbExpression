@@ -9,10 +9,7 @@
         #endregion
 
         #region interface
-        IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
-        {#each $.Schemas}
-        public static _{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression {$.SchemaExpression.Name} => (_{$.SchemaExpression.Name}DataService.{$.SchemaExpression.Name}SchemaExpression)schemas.Single(s => s.Identifier == "{$.SchemaExpression.Name}");
-        {/each}
+        IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
         #endregion
 
         #region constructors

@@ -30,9 +30,7 @@ namespace DbEx.DataService
         #endregion
 
         #region interface
-        IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
-        public static _dboDataService.dboSchemaExpression dbo => (_dboDataService.dboSchemaExpression)schemas.Single(s => s.Identifier == "dbo");
-        public static _secDataService.secSchemaExpression sec => (_secDataService.secSchemaExpression)schemas.Single(s => s.Identifier == "sec");
+        IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
         #endregion
 
         #region constructors

@@ -44,7 +44,7 @@ namespace HatTrick.DbEx.Sql.Expression
         string ISqlMetadataIdentifierProvider.Identifier => identifier;
         SchemaExpression IExpressionProvider<SchemaExpression>.Expression => schema;
         string IExpressionNameProvider.Name => name;
-        IList<ParameterExpression> IExpressionListProvider<ParameterExpression>.Expressions => parameters;
+        IEnumerable<ParameterExpression> IExpressionListProvider<ParameterExpression>.Expressions => parameters;
         Action<ISqlOutputParameterList> IOutputParameterMappingDelegateProvider.MapDelegate => outputParameterMappingDelegate;
         #endregion
 
