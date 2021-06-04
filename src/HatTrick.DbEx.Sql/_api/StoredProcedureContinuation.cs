@@ -29,6 +29,6 @@ namespace HatTrick.DbEx.Sql
         SelectDynamicStoredProcedureContinuation GetValue();
         SelectDynamicsStoredProcedureContinuation GetValues();
         SelectValuesStoredProcedureContinuation<TValue> GetValues<TValue>();
-        MapValuesStoredProcedureContinuation MapValues(Action<ISqlFieldReader> reader);
+        MapValuesStoredProcedureContinuation MapValues(Action<ISqlFieldReader> row);
     }
 }

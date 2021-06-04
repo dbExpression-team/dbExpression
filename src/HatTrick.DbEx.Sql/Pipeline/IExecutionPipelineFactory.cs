@@ -36,6 +36,8 @@ namespace HatTrick.DbEx.Sql.Pipeline
         PipelineEventActions<Func<AfterUpdatePipelineExecutionContext, CancellationToken, Task>, Action<AfterUpdatePipelineExecutionContext>, AfterUpdatePipelineExecutionContext> AfterUpdate { get; set; }
         PipelineEventActions<Func<BeforeSelectPipelineExecutionContext, CancellationToken, Task>, Action<BeforeSelectPipelineExecutionContext>, BeforeSelectPipelineExecutionContext> BeforeSelect { get; set; }
         PipelineEventActions<Func<AfterSelectPipelineExecutionContext, CancellationToken, Task>, Action<AfterSelectPipelineExecutionContext>, AfterSelectPipelineExecutionContext> AfterSelect { get; set; }
+        PipelineEventActions<Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task>, Action<BeforeStoredProcedurePipelineExecutionContext>, BeforeStoredProcedurePipelineExecutionContext> BeforeStoredProcedure { get; set; }
+        PipelineEventActions<Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task>, Action<AfterStoredProcedurePipelineExecutionContext>, AfterStoredProcedurePipelineExecutionContext> AfterStoredProcedure { get; set; }
         PipelineEventActions<Func<BeforeExecutionPipelineExecutionContext, CancellationToken, Task>, Action<BeforeExecutionPipelineExecutionContext>, BeforeExecutionPipelineExecutionContext> BeforeExecution { get; set; }
         PipelineEventActions<Func<AfterExecutionPipelineExecutionContext, CancellationToken, Task>, Action<AfterExecutionPipelineExecutionContext>, AfterExecutionPipelineExecutionContext> AfterExecution { get; set; }
 
