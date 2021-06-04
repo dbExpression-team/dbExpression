@@ -5,6 +5,7 @@ using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Executor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -237,6 +238,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Should().HaveCount(expected);
             outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_use_mapping_delegate(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var persons = new List<Person>();
+            var mapToPerson = dbex.GetDefaultMappingFor(dbo.Person);
+
+            //when               
+            db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).MapValues(row => 
+            {
+                var person = new Person();
+                mapToPerson(row, person);
+                persons.Add(person);
+            }).Execute();
+
+            //then
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]
@@ -474,6 +496,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Should().HaveCount(expected);
             outCreditLimit.Should().Be(creditLimit * 2);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_use_mapping_delegate(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+            var persons = new List<Person>();
+            var mapToPerson = dbex.GetDefaultMappingFor(dbo.Person);
+
+            //when               
+            await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).MapValues(row =>
+            {
+                var person = new Person();
+                mapToPerson(row, person);
+                persons.Add(person);
+            }).ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
         }
 
         [Theory]

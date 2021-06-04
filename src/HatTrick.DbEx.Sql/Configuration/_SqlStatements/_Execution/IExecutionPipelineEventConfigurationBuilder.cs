@@ -364,6 +364,74 @@ namespace HatTrick.DbEx.Sql.Configuration
         IExecutionPipelineEventConfigurationBuilder OnAfterSelectQueryExecution(Func<AfterSelectPipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterSelectPipelineExecutionContext> predicate);
         #endregion
 
+        #region stored procedure
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Action<BeforeStoredProcedurePipelineExecutionContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Action<BeforeStoredProcedurePipelineExecutionContext> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, Task> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to executing a stored procedure against the target database.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Action<AfterStoredProcedurePipelineExecutionContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Action<AfterStoredProcedurePipelineExecutionContext> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, Task> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> after executing a stored procedure against the target database.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate);
+        #endregion
+
         #region execution
         /// <summary>
         /// Execute the delegate <paramref name="action"/> prior to executing any sql statement against the target database.

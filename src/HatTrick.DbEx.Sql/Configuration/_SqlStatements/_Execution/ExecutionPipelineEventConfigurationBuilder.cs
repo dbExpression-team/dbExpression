@@ -447,6 +447,87 @@ namespace HatTrick.DbEx.Sql.Configuration
         }
         #endregion
 
+        #region stored procedure
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Action<BeforeStoredProcedurePipelineExecutionContext> action)
+        {
+            configuration.ExecutionPipelineFactory.BeforeStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Action<BeforeStoredProcedurePipelineExecutionContext> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.BeforeStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, Task> action)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.BeforeStoredProcedure.AddToEnd((c, ct) => action(c));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, Task> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.BeforeStoredProcedure.AddToEnd((c, ct) => action(c), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action)
+        {
+            configuration.ExecutionPipelineFactory.BeforeStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeStoredProcedureExecution(Func<BeforeStoredProcedurePipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeStoredProcedurePipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.BeforeStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Action<AfterStoredProcedurePipelineExecutionContext> action)
+        {
+            configuration.ExecutionPipelineFactory.AfterStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Action<AfterStoredProcedurePipelineExecutionContext> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.AfterStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, Task> action)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.AfterStoredProcedure.AddToEnd((c, ct) => action(c));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, Task> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.AfterStoredProcedure.AddToEnd((c, ct) => action(c), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task> action)
+        {
+            configuration.ExecutionPipelineFactory.AfterStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnAfterStoredProcedureExecution(Func<AfterStoredProcedurePipelineExecutionContext, CancellationToken, Task> action, Predicate<AfterStoredProcedurePipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.AfterStoredProcedure.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+        #endregion
 
         #region execution
         public IExecutionPipelineEventConfigurationBuilder OnBeforeSqlStatementExecution(Action<BeforeExecutionPipelineExecutionContext> action)
