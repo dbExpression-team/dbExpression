@@ -232,7 +232,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual T ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual T ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             T value = default;
             ExecuteStoredProcedure(
@@ -259,7 +259,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual async Task<T> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<T> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             T value = default;
             await ExecuteStoredProcedureAsync(
@@ -291,7 +291,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public virtual IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var values = new List<T>();
             ExecuteStoredProcedure(
@@ -307,16 +307,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        T value = default;
                         try
                         {
-                            value = field.GetValue<T>();
+                            values.Add(field.GetValue<T>());
                         }
                         catch (Exception e)
                         {
                             throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
                         }
-                        values.Add(value);
                     }
                     reader.Close();
                 }
@@ -324,7 +322,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return values;
         }
 
-        public virtual async Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteStoredProcedureAsync(
@@ -340,16 +338,124 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        T value = default;
                         try
                         {
-                            value = field.GetValue<T>();
+                            values.Add(field.GetValue<T>());
                         }
                         catch (Exception e)
                         {
                             throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
                         }
-                        values.Add(value);
+                    }
+                    reader.Close();
+                },
+                ct
+            ).ConfigureAwait(false);
+            return values;
+        }
+
+        public virtual T ExecuteSelectObject<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        {
+            T value = default;
+            ExecuteStoredProcedure(
+                expression,
+                connection,
+                configureCommand,
+                reader =>
+                {
+                    var row = reader.ReadRow();
+                    reader.Close();
+                    if (row is null)
+                        return;
+
+                    try
+                    {
+                        value = map(row);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionException($"Error converting values to {typeof(T)}.", e);
+                    }
+                }
+            );
+            return value;
+        }
+
+        public virtual async Task<T> ExecuteSelectObjectAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        {
+            T value = default;
+            await ExecuteStoredProcedureAsync(
+                expression,
+                connection,
+                configureCommand,
+                async reader =>
+                {
+                    var row = await reader.ReadRowAsync().ConfigureAwait(false);
+                    reader.Close();
+                    if (row is null)
+                        return;
+
+                    try
+                    {
+                        value = map(row);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionException($"Error converting values to {typeof(T)}.", e);
+                    }
+                },
+                ct
+            ).ConfigureAwait(false);
+            return value;
+        }
+
+        public virtual IList<T> ExecuteSelectObjectList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        {
+            var values = new List<T>();
+            ExecuteStoredProcedure(
+                expression,
+                connection,
+                configureCommand,
+                reader =>
+                {
+                    ISqlFieldReader row;
+                    while ((row = reader.ReadRow()) is object)
+                    {
+                        try
+                        {
+                            values.Add(map(row));
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DbExpressionException($"Error mapping data reader to {typeof(T)}.", e);
+                        }
+                    }
+                    reader.Close();
+                }
+            );
+            return values;
+        }
+
+        public virtual async Task<IList<T>> ExecuteSelectObjectListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        {
+            var values = new List<T>();
+            await ExecuteStoredProcedureAsync(
+                expression,
+                connection,
+                configureCommand,
+                async reader =>
+                {
+                    ISqlFieldReader row;
+                    while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
+                    {
+                        try
+                        {
+                            values.Add(map(row));
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DbExpressionException($"Error mapping data reader to {typeof(T)}.", e);
+                        }
                     }
                     reader.Close();
                 },

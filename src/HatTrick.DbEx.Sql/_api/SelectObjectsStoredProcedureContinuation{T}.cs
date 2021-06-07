@@ -16,15 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Executor;
-using System;
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValuesStoredProcedureTermination<T> : ITerminationExpressionBuilder
-#pragma warning restore IDE1006 // Naming Styles    
+    public interface SelectObjectsStoredProcedureContinuation<TValue> : SelectObjectsStoredProcedureTermination<TValue>
+#pragma warning restore IDE1006 // Naming Styles
     {
+
     }
+
 }

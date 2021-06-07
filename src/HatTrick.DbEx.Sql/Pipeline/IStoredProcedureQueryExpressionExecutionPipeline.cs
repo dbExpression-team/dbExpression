@@ -35,13 +35,23 @@ namespace HatTrick.DbEx.Sql.Pipeline
         Task ExecuteAsync(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
 
         #region value
-        T ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand);
-        Task<T> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
+        T ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand);
+        Task<T> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
         #endregion
 
         #region value list
-        IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand);
-        Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
+        IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand);
+        Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
+        #endregion
+
+        #region object
+        T ExecuteSelectObject<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand);
+        Task<T> ExecuteSelectObjectAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
+        #endregion
+
+        #region object list
+        IList<T> ExecuteSelectObjectList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand);
+        Task<IList<T>> ExecuteSelectObjectListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
         #endregion
 
         #region dynamic

@@ -17,25 +17,27 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class SelectValueStoredProcedureQueryExpressionBuilder<TValue> : StoredProcedureQueryExpressionBuilder,
+    public class SelectObjectsStoredProcedureQueryExpressionBuilder<TValue> : StoredProcedureQueryExpressionBuilder,
         StoredProcedureContinuation,
-        SelectValueStoredProcedureContinuation<TValue>
+        SelectValuesStoredProcedureContinuation<TValue>,
+        SelectObjectsStoredProcedureContinuation<TValue>
     {
-        private readonly Action<TValue> map;
-        Action<TValue> SelectValueStoredProcedureTermination<TValue>.Map => map;
+        Func<ISqlFieldReader, TValue> map;
+        Func<ISqlFieldReader, TValue> SelectObjectsStoredProcedureTermination<TValue>.Map => map;
 
-        public SelectValueStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
+        public SelectObjectsStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
             : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
         {
 
         }
 
-        public SelectValueStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Action<TValue> map)
+        public SelectObjectsStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Func<ISqlFieldReader, TValue> map)
             : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));

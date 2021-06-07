@@ -48,6 +48,20 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_person(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField().GetValue<int>() }).Execute();
+
+            //then
+            ((int)person.Id).Should().Be(id);
+        }
+        
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public void Can_execute_stored_procedure_with_null_input_parameter_and_return_dynamic(int version, int? id = null)
         {
             //given
@@ -69,6 +83,20 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().Execute();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_execute_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var persons = db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField().GetValue<int>() }).Execute();
 
             //then
             persons.Should().HaveCount(expected);
@@ -306,6 +334,21 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_person(int version, int id = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField().GetValue<int>() }).ExecuteAsync();
+
+            //then
+            ((int)person.Id).Should().Be(id);
+        }
+
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Can_execute_async_stored_procedure_with_null_input_parameter_and_return_dynamic(int version, int? id = null)
         {
             //given
@@ -327,6 +370,20 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //when               
             var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues<int?>().ExecuteAsync();
+
+            //then
+            persons.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_list_of_person(int version, int id = 0, int expected = 50)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            //when               
+            var persons = await db.sp.dbo.SelectPerson_As_DynamicList_With_Input(id).GetValues(row => new Person { Id = row.ReadField().GetValue<int>() }).ExecuteAsync();
 
             //then
             persons.Should().HaveCount(expected);

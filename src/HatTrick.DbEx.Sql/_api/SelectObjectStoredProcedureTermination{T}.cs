@@ -23,8 +23,9 @@ using System;
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface SelectValuesStoredProcedureTermination<T> : ITerminationExpressionBuilder
-#pragma warning restore IDE1006 // Naming Styles    
+    public interface SelectObjectStoredProcedureTermination<T> : IStoredProcedureTermination
+#pragma warning restore IDE1006 // Naming Styles
     {
+        Func<ISqlFieldReader, T> Map { get; }
     }
 }

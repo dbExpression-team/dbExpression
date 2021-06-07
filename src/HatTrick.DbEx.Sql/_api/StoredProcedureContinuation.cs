@@ -26,9 +26,14 @@ namespace HatTrick.DbEx.Sql
 #pragma warning restore IDE1006 // Naming Styles
     {
         SelectValueStoredProcedureContinuation<TValue> GetValue<TValue>();
+        SelectValuesStoredProcedureContinuation<TValue> GetValues<TValue>();
+        SelectObjectStoredProcedureContinuation<T> GetValue<T>(Func<ISqlFieldReader, T> map)
+            where T : class;
+        SelectObjectsStoredProcedureContinuation<T> GetValues<T>(Func<ISqlFieldReader, T> map)
+            where T : class;
         SelectDynamicStoredProcedureContinuation GetValue();
         SelectDynamicsStoredProcedureContinuation GetValues();
-        SelectValuesStoredProcedureContinuation<TValue> GetValues<TValue>();
+        MapValueStoredProcedureContinuation MapValue(Action<ISqlFieldReader> read);
         MapValuesStoredProcedureContinuation MapValues(Action<ISqlFieldReader> row);
     }
 }

@@ -23,20 +23,21 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class MapValuesStoredProcedureQueryExpressionBuilder : StoredProcedureQueryExpressionBuilder,
+    public class SelectObjectStoredProcedureQueryExpressionBuilder<TValue> : StoredProcedureQueryExpressionBuilder,
         StoredProcedureContinuation,
-        MapValuesStoredProcedureContinuation
+        SelectValueStoredProcedureContinuation<TValue>,
+        SelectObjectStoredProcedureContinuation<TValue>
     {
-        Action<ISqlFieldReader> map;
-        Action<ISqlFieldReader> MapValuesStoredProcedureTermination.Map => map;
+        Func<ISqlFieldReader, TValue> map;
+        Func<ISqlFieldReader, TValue> SelectObjectStoredProcedureTermination<TValue>.Map => map;
 
-        public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
+        public SelectObjectStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
             : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
         {
 
         }
 
-        public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map)
+        public SelectObjectStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Func<ISqlFieldReader, TValue> map)
             : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
         {
             this.map = map ?? throw new ArgumentNullException(nameof(map));

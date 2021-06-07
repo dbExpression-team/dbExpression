@@ -17,7 +17,6 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Builder;
-using System;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -25,6 +24,6 @@ namespace HatTrick.DbEx.Sql
     public interface SelectValueStoredProcedureTermination<T> : IStoredProcedureTermination
 #pragma warning restore IDE1006 // Naming Styles
     {
-        Action<T> Map { get; }
+
     }
 }

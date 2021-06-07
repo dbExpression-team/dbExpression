@@ -4090,6 +4090,255 @@ namespace HatTrick.DbEx.Sql
         }
         #endregion
 
+        #region SelectObjectStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static T Execute<T>(this SelectObjectStoredProcedureTermination<T> builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static T Execute<T>(this SelectObjectStoredProcedureTermination<T> builder, ISqlConnection connection)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static T Execute<T>(this SelectObjectStoredProcedureTermination<T> builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static T Execute<T>(this SelectObjectStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<T> ExecuteAsync<T>(this SelectObjectStoredProcedureTermination<T> builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<T> ExecuteAsync<T>(this SelectObjectStoredProcedureTermination<T> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<T> ExecuteAsync<T>(this SelectObjectStoredProcedureTermination<T> builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return the scalar value.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>The scalar value of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<T> ExecuteAsync<T>(this SelectObjectStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region SelectObjectsStoredProcedureTermination
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static IList<T> Execute<T>(this SelectObjectsStoredProcedureTermination<T> builder)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static IList<T> Execute<T>(this SelectObjectsStoredProcedureTermination<T> builder, ISqlConnection connection)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                null
+            );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static IList<T> Execute<T>(this SelectObjectsStoredProcedureTermination<T> builder, int commandTimeout)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static IList<T> Execute<T>(this SelectObjectsStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout)
+        {
+            return builder.ExecutePipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectObjectsStoredProcedureTermination<T> builder, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectObjectsStoredProcedureTermination<T> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectObjectsStoredProcedureTermination<T> builder, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            var config = builder.GetDatabaseConfiguration();
+            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+                return await builder.ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        public static async Task<IList<T>> ExecuteAsync<T>(this SelectObjectsStoredProcedureTermination<T> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            return await builder.ExecutePipelineAsync(
+                connection,
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+
+
+
+
+
         #region SelectDynamicStoredProcedureTermination
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.
@@ -4577,18 +4826,34 @@ namespace HatTrick.DbEx.Sql
 
         #region SelectValueStoredProcedureTermination
         private static T ExecutePipeline<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
-            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValue(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValue<T>(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand);
 
         private static async Task<T> ExecutePipelineAsync<T>(this SelectValueStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
-            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
+            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueAsync<T>(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
 
         #region SelectValuesStoredProcedureTermination
         private static IList<T> ExecutePipeline<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
-            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueList(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueList<T>(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand);
 
         private static async Task<IList<T>> ExecutePipelineAsync<T>(this SelectValuesStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
-            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueListAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
+            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectValueListAsync<T>(builder.GetQueryExpression<StoredProcedureQueryExpression>(), connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        #region SelectObjectStoredProcedureTermination
+        private static T ExecutePipeline<T>(this SelectObjectStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectObject<T>(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+
+        private static async Task<T> ExecutePipelineAsync<T>(this SelectObjectStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectObjectAsync<T>(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
+        #endregion
+
+        #region SelectObjectsStoredProcedureTermination
+        private static IList<T> ExecutePipeline<T>(this SelectObjectsStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectObjectList(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand);
+
+        private static async Task<IList<T>> ExecutePipelineAsync<T>(this SelectObjectsStoredProcedureTermination<T> builder, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await builder.CreateStoredProcedureExecutionPipeline<T>().ExecuteSelectObjectListAsync(builder.GetQueryExpression<StoredProcedureQueryExpression>(), builder.Map, connection, configureCommand, ct).ConfigureAwait(false);
         #endregion
 
         #region SelectDynamicStoredProcedureTermination
