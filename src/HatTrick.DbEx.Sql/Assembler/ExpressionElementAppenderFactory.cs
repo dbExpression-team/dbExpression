@@ -61,6 +61,9 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly CurrentTimestampFunctionExpressionAppender currentTimestampFunctionAppender = new CurrentTimestampFunctionExpressionAppender();
         private static readonly FloorFunctionExpressionAppender floorFunctionAppender = new FloorFunctionExpressionAppender();
         private static readonly CeilingFunctionExpressionAppender ceilingFunctionAppender = new CeilingFunctionExpressionAppender();
+        private static readonly TrimFunctionExpressionAppender trimFunctionAppender = new TrimFunctionExpressionAppender();
+        private static readonly LTrimFunctionExpressionAppender lTrimFunctionAppender = new LTrimFunctionExpressionAppender();
+        private static readonly RTrimFunctionExpressionAppender rTrimFunctionAppender = new RTrimFunctionExpressionAppender();
         private static readonly LiteralExpressionAppender literalAppender = new LiteralExpressionAppender();
         private static readonly RawExpressionAppender rawAppender = new RawExpressionAppender();
         private static readonly AliasExpressionAppender aliasAppender = new AliasExpressionAppender();
@@ -112,6 +115,9 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(currentTimestampFunctionAppender);
             RegisterElementAppender(floorFunctionAppender);
             RegisterElementAppender(ceilingFunctionAppender);
+            RegisterElementAppender(trimFunctionAppender);
+            RegisterElementAppender(lTrimFunctionAppender);
+            RegisterElementAppender(rTrimFunctionAppender);
             RegisterElementAppender(literalAppender);
             RegisterElementAppender(rawAppender);
             RegisterElementAppender(aliasAppender);

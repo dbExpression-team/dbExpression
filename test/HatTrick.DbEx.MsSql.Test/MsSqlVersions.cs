@@ -32,18 +32,23 @@ namespace HatTrick.DbEx.MsSql.Test
         [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "Helper class to simplify specification of target Sql Server version for tests.")]
         public sealed class AllVersionsExceptAttribute : ClassDataAttribute
         {
-            private readonly int version;
+            private readonly IList<int> versions;
 
             public AllVersionsExceptAttribute(int version) : base(typeof(MsSqlVersions))
             {
-                this.version = version;
+                this.versions = new List<int>(version);
+            }
+
+            public AllVersionsExceptAttribute(params int[] versions) : base(typeof(MsSqlVersions))
+            {
+                this.versions = versions;
             }
 
             /// <inheritdoc/>
             public override IEnumerable<object[]> GetData(MethodInfo testMethod)
             {
                 var config = ConfigurationProvider.MsSqlVersion;
-                return config.HasValue && config != version ?
+                return config.HasValue && !versions.Contains(config.Value) ?
                     new List<object[]> { new object[] { config.Value } }
                     : Enumerable.Empty<object[]>();
             }
