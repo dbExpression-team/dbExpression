@@ -66,7 +66,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public void Execute(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual void Execute(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             ExecuteStoredProcedure(
                 expression,
@@ -76,7 +76,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public void Execute(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual void Execute(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             ExecuteStoredProcedure(
                 expression,
@@ -91,10 +91,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         {
                             map(row);
                         }
-                        catch
+                        catch (Exception e)
                         {
                             reader.Close();
-                            throw;
+                            throw new DbExpressionException("Error in delegate managing the field reader.", e);
                         }
                     }
                     reader.Close();
@@ -102,7 +102,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public Task ExecuteAsync(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual Task ExecuteAsync(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             return ExecuteStoredProcedureAsync(
                 expression,
@@ -113,7 +113,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public async Task ExecuteAsync(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task ExecuteAsync(StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             await ExecuteStoredProcedureAsync(
                 expression,
@@ -128,10 +128,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         {
                             map(row);
                         }
-                        catch
+                        catch (Exception e)
                         {
                             reader.Close();
-                            throw;
+                            throw new DbExpressionException("Error in delegate managing the field reader.", e);
                         }
                     }
                     reader.Close();
@@ -140,7 +140,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             ).ConfigureAwait(false);
         }
         
-        public dynamic ExecuteSelectDynamic(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual dynamic ExecuteSelectDynamic(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             dynamic value = default;
             ExecuteStoredProcedure(
@@ -150,10 +150,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var row = reader.ReadRow();
-                    if (row == default)
+                    reader.Close();
+                    if (row is null)
                         return;
-                    else
-                        reader.Close();
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -163,7 +162,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public async Task<dynamic> ExecuteSelectDynamicAsync(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<dynamic> ExecuteSelectDynamicAsync(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             dynamic value = default;
             await ExecuteStoredProcedureAsync(
@@ -173,10 +172,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
-                    if (row == default)
+                    reader.Close();
+                    if (row is null)
                         return;
-                    else
-                        reader.Close();
 
                     value = new ExpandoObject();
                     var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -187,7 +185,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return value;
         }
 
-        public IList<dynamic> ExecuteSelectDynamicList(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual IList<dynamic> ExecuteSelectDynamicList(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -204,12 +202,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         mapper.Map(value, row);
                         values.Add(value);
                     }
+                    reader.Close();
                 }
             );
             return values;
         }
 
-        public async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<IList<dynamic>> ExecuteSelectDynamicListAsync(StoredProcedureQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var values = new List<dynamic>();
             var mapper = database.MapperFactory.CreateExpandoObjectMapper();
@@ -226,13 +225,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         mapper.Map(value, row);
                         values.Add(value);
                     }
+                    reader.Close();
                 },
                 ct
             ).ConfigureAwait(false);
             return values;
         }
 
-        public T ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual T ExecuteSelectValue<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             T value = default;
             ExecuteStoredProcedure(
@@ -242,18 +242,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 reader =>
                 {
                     var field = reader.ReadRow()?.ReadField();
+                    reader.Close();
                     if (field is null)
                         return;
-                    else
-                        reader.Close();
 
-                    value = field.GetValue<T>();
+                    try
+                    {
+                        value = field.GetValue<T>();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
+                    }
                 }
             );
             return value;
         }
 
-        public async Task<T> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<T> ExecuteSelectValueAsync<T>(StoredProcedureQueryExpression expression, Action<T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             T value = default;
             await ExecuteStoredProcedureAsync(
@@ -263,23 +269,29 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 async reader =>
                 {
                     var row = await reader.ReadRowAsync().ConfigureAwait(false);
+                    reader.Close();
                     if (row is null)
                         return;
 
                     var field = row.ReadField();
                     if (field is null)
                         return;
-                    else
-                        reader.Close();
 
-                    value = field.GetValue<T>();
+                    try
+                    {
+                        value = field.GetValue<T>();
+                    }
+                    catch (Exception e)
+                    {
+                        throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
+                    }
                 },
                 ct
             ).ConfigureAwait(false);
             return value;
         }
 
-        public IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual IList<T> ExecuteSelectValueList<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
             var values = new List<T>();
             ExecuteStoredProcedure(
@@ -295,14 +307,24 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        values.Add(field.GetValue<T>());
+                        T value = default;
+                        try
+                        {
+                            value = field.GetValue<T>();
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
+                        }
+                        values.Add(value);
                     }
+                    reader.Close();
                 }
             );
             return values;
         }
 
-        public async Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<IList<T>> ExecuteSelectValueListAsync<T>(StoredProcedureQueryExpression expression, Func<ISqlFieldReader, T> map, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
             var values = new List<T>();
             await ExecuteStoredProcedureAsync(
@@ -318,8 +340,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
                         if (field is null)
                             return;
 
-                        values.Add(field.GetValue<T>());
+                        T value = default;
+                        try
+                        {
+                            value = field.GetValue<T>();
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DbExpressionException($"Error converting value to {typeof(T)}, actual type in reader is {field.DataType}.", e);
+                        }
+                        values.Add(value);
                     }
+                    reader.Close();
                 },
                 ct
             ).ConfigureAwait(false);
@@ -340,13 +372,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute a stored procedure without a statement builder to construct the sql statement.");
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement();
+            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a stored procedure without a sql statement.");
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression);
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a stored procedure without a statement executor to execute the sql statement.");
 
             beforeStoredProcedure?.Invoke(new Lazy<BeforeStoredProcedurePipelineExecutionContext>(() => new BeforeStoredProcedurePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
 
@@ -411,7 +443,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
 
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute a stored procedure without a statement builder to construct the sql statement.");
 
             if (beforeAssembly is object)
             {
@@ -419,7 +451,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var statement = statementBuilder.CreateSqlStatement();
+            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a stored procedure without a sql statement.");
             if (afterAssembly is object)
             {
                 await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
@@ -432,7 +464,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression);
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a stored procedure without a statement executor to execute the sql statement.");
 
             var converters = new SqlStatementValueConverterProvider(database.ValueConverterFactory);
 
