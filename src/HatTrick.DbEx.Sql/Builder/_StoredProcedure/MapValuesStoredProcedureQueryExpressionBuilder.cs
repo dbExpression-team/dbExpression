@@ -25,11 +25,9 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public class MapValuesStoredProcedureQueryExpressionBuilder : StoredProcedureQueryExpressionBuilder,
         StoredProcedureContinuation,
-        MapValueStoredProcedureContinuation,
         MapValuesStoredProcedureContinuation
     {
         Action<ISqlFieldReader> map;
-        Action<ISqlFieldReader> MapValueStoredProcedureTermination.Map => map;
         Action<ISqlFieldReader> MapValuesStoredProcedureTermination.Map => map;
 
         public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)

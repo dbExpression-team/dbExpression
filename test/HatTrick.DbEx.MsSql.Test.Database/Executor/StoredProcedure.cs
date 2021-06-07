@@ -45,20 +45,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             ((int)person.Id).Should().Be(id);
         }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public void Can_execute_stored_procedure_with_input_parameter_and_return_person(int version, int id = 1)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            //when               
-            var person = db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField().GetValue<int>() }).Execute();
-
-            //then
-            ((int)person.Id).Should().Be(id);
-        }
         
         [Theory]
         [MsSqlVersions.AllVersions]
@@ -331,21 +317,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             ((int)person.Id).Should().Be(id);
         }
-
-        [Theory]
-        [MsSqlVersions.AllVersions]
-        public async Task Can_execute_async_stored_procedure_with_input_parameter_and_return_person(int version, int id = 1)
-        {
-            //given
-            ConfigureForMsSqlVersion(version);
-
-            //when               
-            var person = await db.sp.dbo.SelectPerson_As_Dynamic_With_Input(id).GetValue(row => new Person { Id = row.ReadField().GetValue<int>() }).ExecuteAsync();
-
-            //then
-            ((int)person.Id).Should().Be(id);
-        }
-
 
         [Theory]
         [MsSqlVersions.AllVersions]

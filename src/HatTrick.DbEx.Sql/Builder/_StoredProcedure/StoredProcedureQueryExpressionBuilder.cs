@@ -58,9 +58,6 @@ namespace HatTrick.DbEx.Sql.Builder
         MapValuesStoredProcedureContinuation StoredProcedureContinuation.MapValues(Action<ISqlFieldReader> row)
             => new MapValuesStoredProcedureQueryExpressionBuilder(Configuration, Expression, row);
 
-        MapValueStoredProcedureContinuation StoredProcedureContinuation.MapValue(Action<ISqlFieldReader> row)
-            => new MapValuesStoredProcedureQueryExpressionBuilder(Configuration, Expression, row);
-
         SelectDynamicStoredProcedureContinuation StoredProcedureContinuation.GetValue()
             => this;
 
