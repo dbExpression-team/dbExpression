@@ -68,6 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2005.MsSqlStatementAssemblerFactory>());
+                    configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2005.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -104,6 +105,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<HatTrick.DbEx.MsSql.Assembler.v2008.MsSqlStatementAssemblerFactory>());
+                    configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2008.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -140,6 +142,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
+                    configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2012.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -176,6 +179,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
+                    configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2014.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime
@@ -212,6 +216,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 (serviceProvider, configBuilder) =>
                 {
                     configBuilder.SqlStatements.Assembly.StatementAssembler.Use(serviceProvider.GetRequiredService<MsSqlStatementAssemblerFactory>());
+                    configBuilder.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, HatTrick.DbEx.MsSql.Assembler.v2016.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(serviceProvider, configBuilder);
                 },
                 configurationLifetime

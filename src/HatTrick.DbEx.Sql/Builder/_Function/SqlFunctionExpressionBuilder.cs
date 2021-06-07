@@ -4090,5 +4090,38 @@ namespace HatTrick.DbEx.Sql.Builder
         public static NullableDecimalCeilingFunctionExpression Ceiling(NullableDecimalElement element)
             => new NullableDecimalCeilingFunctionExpression(element);
         #endregion
+
+        #region trim
+        /// <summary>
+        /// Construct an expression for the TRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// </summary>
+        /// <param name="elements">An expression of type <see cref="AnyStringElement"/> to trim leading and trailing spaces from.</param>
+        /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringTrimFunctionExpression Trim(AnyStringElement element)
+            => new StringTrimFunctionExpression(element);
+        #endregion
+
+        #region ltrim
+        /// <summary>
+        /// Construct an expression for the LTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
+        /// </summary>
+        /// <param name="elements">An expression of type <see cref="AnyStringElement"/> to trim leading spaces from.</param>
+        /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringLTrimFunctionExpression LTrim(AnyStringElement element)
+            => new StringLTrimFunctionExpression(element);
+        #endregion
+
+        #region rtrim
+        /// <summary>
+        /// Construct an expression for the RTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
+        /// </summary>
+        /// <param name="elements">An expression of type <see cref="AnyStringElement"/> to trim trailing spaces from.</param>
+        /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringRTrimFunctionExpression RTrim(AnyStringElement element)
+            => new StringRTrimFunctionExpression(element);
+        #endregion
     }
 }

@@ -4,6 +4,7 @@
 
 ### Added
 - Support for stored procedures
+- Trim, LTrim, and RTrim database functions
 
 ### Changed
 - Separated fluent interfaces for selecting scalar values from dynamic objects (they were implemented using same interfaces).
