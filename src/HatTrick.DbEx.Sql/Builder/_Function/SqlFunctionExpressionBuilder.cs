@@ -4096,10 +4096,19 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the TRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
         /// </summary>
-        /// <param name="elements">An expression of type <see cref="AnyStringElement"/> to trim leading and trailing spaces from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading and trailing spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
-        public static StringTrimFunctionExpression Trim(AnyStringElement element)
+        public static StringTrimFunctionExpression Trim(StringElement element)
             => new StringTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the TRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading and trailing spaces from.</param>
+        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringTrimFunctionExpression Trim(NullableStringElement element)
+            => new NullableStringTrimFunctionExpression(element);
         #endregion
 
         #region ltrim
@@ -4107,10 +4116,19 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the LTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyStringElement"/> to trim leading spaces from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
-        public static StringLTrimFunctionExpression LTrim(AnyStringElement element)
+        public static StringLTrimFunctionExpression LTrim(StringElement element)
             => new StringLTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the LTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading spaces from.</param>
+        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringLTrimFunctionExpression LTrim(NullableStringElement element)
+            => new NullableStringLTrimFunctionExpression(element);
         #endregion
 
         #region rtrim
@@ -4118,10 +4136,19 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the RTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="AnyStringElement"/> to trim trailing spaces from.</param>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim trailing spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
-        public static StringRTrimFunctionExpression RTrim(AnyStringElement element)
+        public static StringRTrimFunctionExpression RTrim(StringElement element)
             => new StringRTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the RTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim trailing spaces from.</param>
+        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringRTrimFunctionExpression RTrim(NullableStringElement element)
+            => new NullableStringRTrimFunctionExpression(element);
         #endregion
 
         #region left
