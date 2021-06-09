@@ -1244,5 +1244,25 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="NewIdFunctionExpression"/> for use with any operation accepting a <see cref="AnyGuidElement"/> or <see cref="GuidElement"/>.</returns>
         public static NewIdFunctionExpression NewId()
              => new NewIdFunctionExpression();
+
+        #region len
+        /// <summary>
+        /// Construct an expression for the DATEDIFF transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
+        /// </summary>
+        /// <param name="element">A <see cref="AnyStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
+        /// <returns><see cref="Int64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64LengthFunctionExpression Len(StringElement element)
+            => new Int64LengthFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the DATEDIFF transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
+        /// </summary>
+        /// <param name="element">A <see cref="NullableStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
+        /// <returns><see cref="NullableInt64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64LengthFunctionExpression Len(NullableStringElement element)
+            => new NullableInt64LengthFunctionExpression(element);
+        #endregion
     }
 }
