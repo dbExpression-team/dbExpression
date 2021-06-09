@@ -4107,7 +4107,7 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the LTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
         /// </summary>
-        /// <param name="elements">An expression of type <see cref="AnyStringElement"/> to trim leading spaces from.</param>
+        /// <param name="element">An expression of type <see cref="AnyStringElement"/> to trim leading spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
         public static StringLTrimFunctionExpression LTrim(AnyStringElement element)
             => new StringLTrimFunctionExpression(element);
@@ -4118,10 +4118,94 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the RTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
         /// </summary>
-        /// <param name="elements">An expression of type <see cref="AnyStringElement"/> to trim trailing spaces from.</param>
+        /// <param name="element">An expression of type <see cref="AnyStringElement"/> to trim trailing spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
         public static StringRTrimFunctionExpression RTrim(AnyStringElement element)
             => new StringRTrimFunctionExpression(element);
+        #endregion
+
+        #region left
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringLeftFunctionExpression Left(StringElement element, int characterCount)
+            => new StringLeftFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringLeftFunctionExpression Left(StringElement element, Int32Element characterCount)
+            => new StringLeftFunctionExpression(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringLeftFunctionExpression Left(NullableStringElement element, int characterCount)
+            => new NullableStringLeftFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringLeftFunctionExpression Left(NullableStringElement element, Int32Element characterCount)
+            => new NullableStringLeftFunctionExpression(element, characterCount);
+        #endregion
+
+        #region right
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringRightFunctionExpression Right(StringElement element, int characterCount)
+            => new StringRightFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the RIGHT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/right-transact-sql">Microsoft docs on RIGHT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringRightFunctionExpression Right(StringElement element, Int32Element characterCount)
+            => new StringRightFunctionExpression(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringRightFunctionExpression Right(NullableStringElement element, int characterCount)
+            => new NullableStringRightFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the RIGHT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on RIGHT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringRightFunctionExpression Right(NullableStringElement element, Int32Element characterCount)
+            => new NullableStringRightFunctionExpression(element, characterCount);
         #endregion
     }
 }

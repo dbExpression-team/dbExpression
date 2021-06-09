@@ -1247,7 +1247,7 @@ namespace HatTrick.DbEx.MsSql.Builder
 
         #region len
         /// <summary>
-        /// Construct an expression for the DATEDIFF transact sql function.
+        /// Construct an expression for the LEN transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
         /// </summary>
         /// <param name="element">A <see cref="AnyStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
@@ -1256,7 +1256,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             => new Int64LengthFunctionExpression(element);
 
         /// <summary>
-        /// Construct an expression for the DATEDIFF transact sql function.
+        /// Construct an expression for the LEN transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
         /// </summary>
         /// <param name="element">A <see cref="NullableStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
