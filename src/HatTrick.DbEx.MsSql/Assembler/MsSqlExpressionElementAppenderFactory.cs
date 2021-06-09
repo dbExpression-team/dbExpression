@@ -31,6 +31,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         private static readonly SysDateTimeFunctionExpressionAppender sysDateTimeFunctionAppender = new SysDateTimeFunctionExpressionAppender();
         private static readonly SysDateTimeOffsetFunctionExpressionAppender sysDateTimeOffsetFunctionAppender = new SysDateTimeOffsetFunctionExpressionAppender();
         private static readonly SysUtcDateTimeFunctionExpressionAppender sysUtcDateTimeFunctionAppender = new SysUtcDateTimeFunctionExpressionAppender();
+        private static readonly LengthFunctionExpressionAppender lengthFunctionAppender = new LengthFunctionExpressionAppender();
 
         public MsSqlExpressionElementAppenderFactory()
         {
@@ -43,6 +44,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             base.RegisterElementAppender(sysDateTimeFunctionAppender);
             base.RegisterElementAppender(sysDateTimeOffsetFunctionAppender);
             base.RegisterElementAppender(sysUtcDateTimeFunctionAppender);
+            base.RegisterElementAppender(lengthFunctionAppender);
         }
     }
 }
