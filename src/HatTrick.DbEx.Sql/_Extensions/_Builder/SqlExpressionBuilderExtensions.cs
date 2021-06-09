@@ -4212,11 +4212,6 @@ namespace HatTrick.DbEx.Sql
         }
         #endregion
 
-
-
-
-
-
         #region SelectDynamicStoredProcedureTermination
         /// <summary>
         /// Assemble and execute a stored procedure and retrieve a dynamic object.  The properties of the dynamic object are defined by the column attributes of the returned rowset.

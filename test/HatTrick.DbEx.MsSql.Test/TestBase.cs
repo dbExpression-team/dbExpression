@@ -72,7 +72,7 @@ namespace HatTrick.DbEx.MsSql.Test
                     }
                 case 2019:
                     {
-                        dbExpression.Configure(c => c.AddMsSql2019Database<MsSqlDb>(configureRuntime));
+                        dbExpression.Configure(c => c.AddMsSql2012Database<MsSqlDb>(configureRuntime));
                         break;
                     }
                 default: throw new NotImplementedException($"MsSql version {version} has not been implemented");

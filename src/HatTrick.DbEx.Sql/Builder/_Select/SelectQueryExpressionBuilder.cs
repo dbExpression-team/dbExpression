@@ -258,7 +258,6 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression.Distinct = true;
         }
 
-
         protected void Where(AnyWhereClause expression)
         {
             if (expression is null)
