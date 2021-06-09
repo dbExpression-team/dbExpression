@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Expression
         IEquatable<StringRTrimFunctionExpression>
     {
         #region constructors
-        public StringRTrimFunctionExpression(AnyStringElement expression) : base(expression)
+        public StringRTrimFunctionExpression(StringElement expression) : base(expression)
         {
 
         }

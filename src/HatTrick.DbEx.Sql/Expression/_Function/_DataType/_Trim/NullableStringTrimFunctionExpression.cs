@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,30 +20,31 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class StringLTrimFunctionExpression :
-        LTrimFunctionExpression<string>,
-        StringElement,
+    public partial class NullableStringTrimFunctionExpression :
+        NullableTrimFunctionExpression<string,string>,
+        NullableStringElement,
         AnyStringElement,
-        IEquatable<StringLTrimFunctionExpression>
+        IEquatable<NullableStringTrimFunctionExpression>
     {
         #region constructors
-        public StringLTrimFunctionExpression(StringElement expression) : base(expression)
+        public NullableStringTrimFunctionExpression(NullableStringElement expression) 
+            : base(expression)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public NullableStringElement As(string alias)
+            => new NullableStringSelectExpression(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(StringLTrimFunctionExpression obj)
-            => obj is StringLTrimFunctionExpression && base.Equals(obj);
+        public bool Equals(NullableStringTrimFunctionExpression obj)
+            => obj is NullableStringTrimFunctionExpression && base.Equals(obj);
 
         public override bool Equals(object obj)
-            => obj is StringLTrimFunctionExpression exp && base.Equals(exp);
+            => obj is NullableStringTrimFunctionExpression exp && base.Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
