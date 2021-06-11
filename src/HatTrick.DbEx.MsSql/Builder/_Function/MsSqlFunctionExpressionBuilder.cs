@@ -1264,5 +1264,55 @@ namespace HatTrick.DbEx.MsSql.Builder
         public static NullableInt64LengthFunctionExpression Len(NullableStringElement element)
             => new NullableInt64LengthFunctionExpression(element);
         #endregion
+
+        #region patindex
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static Int64PatIndexFunctionExpression PatIndex(string pattern, StringElement element)
+        {
+            if (string.IsNullOrWhiteSpace(pattern))
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64PatIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="AnyStringElement"/> that contains the expression to be found.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static Int64PatIndexFunctionExpression PatIndex(AnyStringElement pattern, StringElement element)
+            => new Int64PatIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64PatIndexFunctionExpression PatIndex(string pattern, NullableStringElement element)
+        {
+            if (string.IsNullOrWhiteSpace(pattern))
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64PatIndexFunctionExpression(new NullableStringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="AnyStringElement"/> that contains the expression to be found.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64PatIndexFunctionExpression PatIndex(AnyStringElement pattern, NullableStringElement element)
+            => new NullableInt64PatIndexFunctionExpression(pattern, element);
+        #endregion
     }
 }
