@@ -20,12 +20,21 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class PatIndexFunctionExpression<TValue> : PatIndexFunctionExpression,
+    public abstract class CharIndexFunctionExpression<TValue> : CharIndexFunctionExpression,
         IExpressionElement<TValue>
     {
         #region constructors
-        protected PatIndexFunctionExpression(StringElement pattern, StringElement expression)
-            : base(pattern, expression, typeof(TValue))
+        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        {
+
+        }
+
+        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
         {
 
         }

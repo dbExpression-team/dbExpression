@@ -21,16 +21,23 @@ using HatTrick.DbEx.Sql.Expression;
 
 namespace HatTrick.DbEx.MsSql.Assembler
 {
-    public class PatIndexFunctionExpressionAppender : ExpressionElementAppender<PatIndexFunctionExpression>
+    public class CharIndexFunctionExpressionAppender : ExpressionElementAppender<CharIndexFunctionExpression>
     {
         #region methods
-        public override void AppendElement(PatIndexFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        public override void AppendElement(CharIndexFunctionExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            var elements = (expression as IExpressionProvider<PatIndexFunctionExpression.PatIndexFunctionExpressionElements>).Expression;
-            builder.Appender.Write("PATINDEX(");
+            var elements = (expression as IExpressionProvider<CharIndexFunctionExpression.CharIndexFunctionExpressionElements>).Expression;
+            builder.Appender.Write("CHARINDEX(");
             builder.AppendElement(elements.Pattern, context);
             builder.Appender.Write(", ");
             builder.AppendElement(elements.ToSearch, context);
+
+            if (elements.StartSearchPosition is object)
+            {
+                builder.Appender.Write(", ");
+                builder.AppendElement(elements.StartSearchPosition, context);
+            }
+
             builder.Appender.Write(")");
         }
         #endregion

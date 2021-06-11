@@ -115,7 +115,11 @@ namespace HatTrick.DbEx.CodeTemplating
                 .Generate<SysUtcDateTimeFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_SysUtcDateTime")
 
                 .Generate<PatIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_PatIndex")
-                .Generate<NullablePatIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_PatIndex");
+                .Generate<NullablePatIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_PatIndex")
+
+                .Generate<CharIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_CharIndex")
+                .Generate<NullableCharIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_CharIndex");
+
         }
     }
 }

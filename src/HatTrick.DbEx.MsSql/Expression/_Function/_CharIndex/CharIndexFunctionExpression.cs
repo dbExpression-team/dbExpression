@@ -20,32 +20,38 @@
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class PatIndexFunctionExpression : ConversionFunctionExpression,
-        IExpressionProvider<PatIndexFunctionExpression.PatIndexFunctionExpressionElements>,
-        IEquatable<PatIndexFunctionExpression>
+    public abstract class CharIndexFunctionExpression : ConversionFunctionExpression,
+        IExpressionProvider<CharIndexFunctionExpression.CharIndexFunctionExpressionElements>,
+        IEquatable<CharIndexFunctionExpression>
     {
         #region internals
-        private readonly PatIndexFunctionExpressionElements elements;
+        private readonly CharIndexFunctionExpressionElements elements;
         #endregion
 
         #region interface
-        PatIndexFunctionExpressionElements IExpressionProvider<PatIndexFunctionExpressionElements>.Expression => elements;
+        CharIndexFunctionExpressionElements IExpressionProvider<CharIndexFunctionExpressionElements>.Expression => elements;
         #endregion
 
         #region constructors
-        protected PatIndexFunctionExpression(IExpressionElement pattern, IExpressionElement expression, Type convertToType)
+        protected CharIndexFunctionExpression(IExpressionElement pattern, IExpressionElement expression, Type convertToType)
             : base(convertToType)
         {
-            this.elements = new PatIndexFunctionExpressionElements(pattern, expression);
+            this.elements = new CharIndexFunctionExpressionElements(pattern, expression, null);
+        }
+
+        protected CharIndexFunctionExpression(IExpressionElement pattern, IExpressionElement expression, IExpressionElement startSearchPosition, Type convertToType)
+            : base(convertToType)
+        {
+            this.elements = new CharIndexFunctionExpressionElements(pattern, expression, startSearchPosition);
         }
         #endregion
 
         #region to string
-        public override string ToString() => $"PATINDEX({elements.Pattern}, {elements.ToSearch})";
+        public override string ToString() => $"CHARINDEX({elements.Pattern}, {elements.ToSearch}{(elements.StartSearchPosition is object ? $", {elements.StartSearchPosition}" : string.Empty)})";
         #endregion
 
         #region equals
-        public bool Equals(PatIndexFunctionExpression obj)
+        public bool Equals(CharIndexFunctionExpression obj)
         {
             if (!base.Equals(obj)) return false;
 
@@ -57,7 +63,7 @@ namespace HatTrick.DbEx.Sql.Expression
         }
 
         public override bool Equals(object obj)
-         => obj is PatIndexFunctionExpression exp && Equals(exp);
+         => obj is CharIndexFunctionExpression exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -73,24 +79,26 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region classes
-        public class PatIndexFunctionExpressionElements : IExpressionElement,
-            IEquatable<PatIndexFunctionExpressionElements>
+        public class CharIndexFunctionExpressionElements : IExpressionElement,
+            IEquatable<CharIndexFunctionExpressionElements>
         {
             #region interface
             public IExpressionElement Pattern { get; private set; }
             public IExpressionElement ToSearch { get; private set; }
+            public IExpressionElement StartSearchPosition { get; private set; }
             #endregion
 
             #region constructors
-            public PatIndexFunctionExpressionElements(IExpressionElement pattern, IExpressionElement toSearch)
+            public CharIndexFunctionExpressionElements(IExpressionElement pattern, IExpressionElement toSearch, IExpressionElement startSearchPosition)
             {
                 this.Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
                 this.ToSearch = toSearch ?? throw new ArgumentNullException(nameof(toSearch));
+                this.StartSearchPosition = startSearchPosition;
             }
             #endregion
 
             #region equals
-            public bool Equals(PatIndexFunctionExpressionElements obj)
+            public bool Equals(CharIndexFunctionExpressionElements obj)
             {
                 if (Pattern is null && obj.Pattern is object) return false;
                 if (Pattern is object && obj.Pattern is null) return false;
@@ -100,11 +108,15 @@ namespace HatTrick.DbEx.Sql.Expression
                 if (ToSearch is object && obj.ToSearch is null) return false;
                 if (!ToSearch.Equals(obj.ToSearch)) return false;
 
+                if (StartSearchPosition is null && obj.StartSearchPosition is object) return false;
+                if (StartSearchPosition is object && obj.StartSearchPosition is null) return false;
+                if (!StartSearchPosition.Equals(obj.StartSearchPosition)) return false;
+
                 return true;
             }
 
             public override bool Equals(object obj)
-                => Equals(obj as PatIndexFunctionExpressionElements);
+                => Equals(obj as CharIndexFunctionExpressionElements);
 
             public override int GetHashCode()
             {
@@ -115,6 +127,7 @@ namespace HatTrick.DbEx.Sql.Expression
                     int hash = base.GetHashCode();
                     hash = (hash * multiplier) ^ (Pattern is object ? Pattern.GetHashCode() : 0);
                     hash = (hash * multiplier) ^ (ToSearch is object ? ToSearch.GetHashCode() : 0);
+                    hash = (hash * multiplier) ^ (StartSearchPosition is object ? StartSearchPosition.GetHashCode() : 0);
                     return hash;
                 }
             }
