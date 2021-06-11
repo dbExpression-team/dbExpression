@@ -20,14 +20,24 @@ using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class Int64PatIndexFunctionExpression :
-        PatIndexFunctionExpression<long>,
+    public partial class Int64CharIndexFunctionExpression :
+        CharIndexFunctionExpression<long>,
         Int64Element,
         AnyInt64Element,
-        IEquatable<Int64PatIndexFunctionExpression>
+        IEquatable<Int64CharIndexFunctionExpression>
     {
         #region constructors
-        public Int64PatIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression)
+        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition)
+        {
+
+        }
+
+        public Int64CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition)
         {
 
         }
@@ -39,11 +49,11 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region equals
-        public bool Equals(Int64PatIndexFunctionExpression obj)
-            => obj is Int64PatIndexFunctionExpression && base.Equals(obj);
+        public bool Equals(Int64CharIndexFunctionExpression obj)
+            => obj is Int64CharIndexFunctionExpression && base.Equals(obj);
 
         public override bool Equals(object obj)
-            => obj is Int64PatIndexFunctionExpression exp && base.Equals(exp);
+            => obj is Int64CharIndexFunctionExpression exp && base.Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();
