@@ -1,9 +1,11 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
 using HatTrick.DbEx.Sql;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
@@ -82,6 +84,24 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                     db.fx.PatIndex((string)null, dbo.Person.FirstName)
                 ).From(dbo.Person)
             );
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void xDoes_patindex_of_person_first_name_with_static_value_pattern_succeed(int version, string pattern = "K%", int expected = 3)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany<Person>()
+                .From(dbo.Person)
+                .Where(db.fx.PatIndex(pattern, dbo.Person.FirstName) == 1);
+
+            //when               
+            var persons = exp.Execute();
+
+            //then
+            persons.Should().HaveCount(expected);
         }
     }
 }
