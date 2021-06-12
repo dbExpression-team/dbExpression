@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -48,6 +49,30 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             result.Should().BeNull();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_rtrim_of_aliased_field_succeed(int version, string expected = "100 1st St")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.RTrim(dbex.Alias("_address", "Line1")).As("address_line1")
+                ).From(dbo.Address)
+                .InnerJoin(
+                    db.SelectOne<Address>()
+                    .From(dbo.Address)
+                    .Where(dbo.Address.Id == 1)
+                ).As("_address").On(dbo.Address.Id == dbex.Alias("_address", "Id"));
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<string>().Which.Should().Be(expected);
         }
     }
 }

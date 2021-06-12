@@ -4096,8 +4096,17 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the TRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
         /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to trim leading and trailing spaces from.</param>
+        /// <returns><see cref="ObjectTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectTrimFunctionExpression Trim(AnyObjectElement element)
+            => new ObjectTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the TRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading and trailing spaces from.</param>
-        /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        /// <returns><see cref="StringTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
         public static StringTrimFunctionExpression Trim(StringElement element)
             => new StringTrimFunctionExpression(element);
 
@@ -4106,12 +4115,21 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading and trailing spaces from.</param>
-        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        /// <returns><see cref="NullableStringTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
         public static NullableStringTrimFunctionExpression Trim(NullableStringElement element)
             => new NullableStringTrimFunctionExpression(element);
         #endregion
 
         #region ltrim
+        /// <summary>
+        /// Construct an expression for the LTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to trim leading spaces from.</param>
+        /// <returns><see cref="ObjectLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectLTrimFunctionExpression LTrim(AnyObjectElement element)
+            => new ObjectLTrimFunctionExpression(element);
+
         /// <summary>
         /// Construct an expression for the LTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
@@ -4136,6 +4154,15 @@ namespace HatTrick.DbEx.Sql.Builder
         /// Construct an expression for the RTRIM transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
         /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to trim trailing spaces from.</param>
+        /// <returns><see cref="ObjectRTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectRTrimFunctionExpression RTrim(AnyObjectElement element)
+            => new ObjectRTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the RTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
+        /// </summary>
         /// <param name="element">An expression of type <see cref="StringElement"/> to trim trailing spaces from.</param>
         /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
         public static StringRTrimFunctionExpression RTrim(StringElement element)
@@ -4152,6 +4179,26 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region left
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectLeftFunctionExpression Left(AnyObjectElement element, int characterCount)
+            => new ObjectLeftFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectLeftFunctionExpression Left(AnyObjectElement element, Int32Element characterCount)
+            => new ObjectLeftFunctionExpression(element, characterCount);
+
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
@@ -4194,6 +4241,26 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region right
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectRightFunctionExpression Right(AnyObjectElement element, int characterCount)
+            => new ObjectRightFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the RIGHT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/right-transact-sql">Microsoft docs on RIGHT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectRightFunctionExpression Right(AnyObjectElement element, Int32Element characterCount)
+            => new ObjectRightFunctionExpression(element, characterCount);
+
         /// <summary>
         /// Construct an expression for the LEFT transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>

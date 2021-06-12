@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,23 +16,37 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public abstract class TrimFunctionExpression<TValue> : TrimFunctionExpression,
-        IExpressionElement<TValue>
+    public partial class ObjectTrimFunctionExpression :
+        TrimFunctionExpression<object>,
+        ObjectElement,
+        AnyObjectElement,
+        IEquatable<ObjectTrimFunctionExpression>
     {
         #region constructors
-        protected TrimFunctionExpression(StringElement expression) : base(expression, typeof(TValue))
+        public ObjectTrimFunctionExpression(AnyObjectElement expression) : base(expression)
         {
 
         }
+        #endregion
 
-        protected TrimFunctionExpression(AnyObjectElement expression) : base(expression, typeof(TValue))
-        {
+        #region as
+        public ObjectElement As(string alias)
+            => new ObjectSelectExpression(this).As(alias);
+        #endregion
 
-        }
+        #region equals
+        public bool Equals(ObjectTrimFunctionExpression obj)
+            => obj is ObjectTrimFunctionExpression && base.Equals(obj);
+
+        public override bool Equals(object obj)
+            => obj is ObjectTrimFunctionExpression exp && base.Equals(exp);
+
+        public override int GetHashCode()
+            => base.GetHashCode();
         #endregion
     }
 }

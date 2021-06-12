@@ -22,10 +22,14 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class LTrimFunctionExpression<TValue> : LTrimFunctionExpression,
         IExpressionElement<TValue>
-        where TValue : IComparable
     {
         #region constructors
-        protected LTrimFunctionExpression(IExpressionElement expression) : base(expression, typeof(TValue))
+        protected LTrimFunctionExpression(StringElement expression) : base(expression, typeof(TValue))
+        {
+
+        }
+
+        protected LTrimFunctionExpression(AnyObjectElement expression) : base(expression, typeof(TValue))
         {
 
         }

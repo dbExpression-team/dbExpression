@@ -31,6 +31,11 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        public StringLTrimFunctionExpression(AnyObjectElement expression) : base(expression)
+        {
+
+        }
         #endregion
 
         #region as
