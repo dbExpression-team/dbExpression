@@ -9,7 +9,7 @@ using Xunit;
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
     [Trait("Statement", "SELECT")]
-    [Trait("Function", "CHARINDEX")]
+    [Trait("Function", "SUBSTRING")]
     public partial class Substring : ExecutorTestBase
     {
         [Theory]
