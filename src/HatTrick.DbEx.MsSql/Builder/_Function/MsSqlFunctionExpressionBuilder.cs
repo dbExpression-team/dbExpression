@@ -1271,6 +1271,30 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
         /// </summary>
         /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectPatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static ObjectPatIndexFunctionExpression PatIndex(string pattern, ObjectElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectPatIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectPatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static ObjectPatIndexFunctionExpression PatIndex(StringElement pattern, ObjectElement element)
+            => new ObjectPatIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
         /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
         /// <returns><see cref="Int64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
         public static Int64PatIndexFunctionExpression PatIndex(string pattern, StringElement element)
@@ -1316,6 +1340,134 @@ namespace HatTrick.DbEx.MsSql.Builder
         #endregion
 
         #region charindex
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="AnyStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, long startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, int startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, Int32Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, Int64Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element)
+            => new ObjectCharIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, long startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, int startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, Int32Element startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, Int64Element startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, startSearchPosition);
+
         /// <summary>
         /// Construct an expression for the CHARINDEX transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>

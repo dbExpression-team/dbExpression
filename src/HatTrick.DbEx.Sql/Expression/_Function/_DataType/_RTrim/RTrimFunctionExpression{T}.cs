@@ -17,17 +17,19 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
     public abstract class RTrimFunctionExpression<TValue> : RTrimFunctionExpression,
         IExpressionElement<TValue>
-        where TValue : IComparable
     {
         #region constructors
-        protected RTrimFunctionExpression(IExpressionElement expression) : base(expression, typeof(TValue))
+        protected RTrimFunctionExpression(StringElement expression) : base(expression, typeof(TValue))
+        {
+
+        }
+
+        protected RTrimFunctionExpression(AnyObjectElement expression) : base(expression, typeof(TValue))
         {
 
         }

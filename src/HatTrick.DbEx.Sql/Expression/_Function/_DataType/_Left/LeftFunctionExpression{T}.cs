@@ -29,6 +29,12 @@ namespace HatTrick.DbEx.Sql.Expression
         {
 
         }
+
+        protected LeftFunctionExpression(AnyObjectElement expression, Int32Element characterCount)
+            : base(expression, characterCount, typeof(TValue))
+        {
+
+        }
         #endregion
     }
 }

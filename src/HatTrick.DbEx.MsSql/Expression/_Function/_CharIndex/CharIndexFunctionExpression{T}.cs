@@ -24,17 +24,12 @@ namespace HatTrick.DbEx.Sql.Expression
         IExpressionElement<TValue>
     {
         #region constructors
-        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression) : base(pattern, expression, typeof(TValue))
+        protected CharIndexFunctionExpression(StringElement pattern, IExpressionElement expression) : base(pattern, expression, typeof(TValue))
         {
 
         }
 
-        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int64Element startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
-        {
-
-        }
-
-        protected CharIndexFunctionExpression(StringElement pattern, StringElement expression, Int32Element startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
+        protected CharIndexFunctionExpression(StringElement pattern, IExpressionElement expression, IExpressionElement startSearchPosition) : base(pattern, expression, startSearchPosition, typeof(TValue))
         {
 
         }

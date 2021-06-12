@@ -103,5 +103,29 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             //then
             persons.Should().HaveCount(expected);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_patindex_of_aliased_field_succeed(int version, int expected = 0)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.PatIndex("P", dbex.Alias("_address", "Line1")).As("address_line1")
+                ).From(dbo.Address)
+                .InnerJoin(
+                    db.SelectOne<Address>()
+                    .From(dbo.Address)
+                    .Where(dbo.Address.Id == 1)
+                ).As("_address").On(dbo.Address.Id == dbex.Alias("_address", "Id"));
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<int>().Which.Should().Be(expected);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,39 +16,34 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-using System;
+﻿using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class StringTrimFunctionExpression :
-        TrimFunctionExpression<string>,
-        StringElement,
-        AnyStringElement,
-        IEquatable<StringTrimFunctionExpression>
+    public partial class ObjectLeftFunctionExpression :
+        LeftFunctionExpression<object>,
+        ObjectElement,
+        AnyObjectElement,
+        IEquatable<ObjectLeftFunctionExpression>
     {
         #region constructors
-        public StringTrimFunctionExpression(StringElement expression) : base(expression)
-        {
-
-        }
-
-        public StringTrimFunctionExpression(AnyObjectElement expression) : base(expression)
+        public ObjectLeftFunctionExpression(AnyObjectElement expression, Int32Element characterCount) : base(expression, characterCount)
         {
 
         }
         #endregion
 
         #region as
-        public StringElement As(string alias)
-            => new StringSelectExpression(this).As(alias);
+        public ObjectElement As(string alias)
+            => new ObjectSelectExpression(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(StringTrimFunctionExpression obj)
-            => obj is StringTrimFunctionExpression && base.Equals(obj);
+        public bool Equals(ObjectLeftFunctionExpression obj)
+            => obj is ObjectLeftFunctionExpression && base.Equals(obj);
 
         public override bool Equals(object obj)
-            => obj is StringTrimFunctionExpression exp && base.Equals(exp);
+            => obj is ObjectLeftFunctionExpression exp && base.Equals(exp);
 
         public override int GetHashCode()
             => base.GetHashCode();

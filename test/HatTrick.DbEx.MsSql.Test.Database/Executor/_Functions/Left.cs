@@ -1,4 +1,5 @@
 ﻿using DbEx.DataService;
+using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
 using HatTrick.DbEx.MsSql.Test.Executor;
@@ -49,6 +50,30 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             left.Should().HaveLength(leftLength);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        [Trait("Operation", "SUBQUERY")]
+        public void Does_left_of_aliased_field_succeed(int version, int leftLength = 3, string expected = "100")
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectOne(
+                    db.fx.Left(dbex.Alias("_address", "Line1"), leftLength).As("address_line1")
+                ).From(dbo.Address)
+                .InnerJoin(
+                    db.SelectOne<Address>()
+                    .From(dbo.Address)
+                    .Where(dbo.Address.Id == 1)
+                ).As("_address").On(dbo.Address.Id == dbex.Alias("_address", "Id"));
+
+            //when               
+            object result = exp.Execute();
+
+            //then
+            result.Should().BeOfType<string>().Which.Should().Be(expected);
         }
     }
 }
