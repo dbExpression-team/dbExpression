@@ -16,9 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using HatTrick.DbEx.Sql.Expression;
+using System;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.MsSql.Expression
 {
     public abstract class PatIndexFunctionExpression : ConversionFunctionExpression,
         IExpressionProvider<PatIndexFunctionExpression.PatIndexFunctionExpressionElements>,

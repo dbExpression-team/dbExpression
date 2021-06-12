@@ -15,6 +15,9 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         {
             base.PopulateModel(model, @namespace, typeModel);
             model.FunctionName = functionName;
+
+            model.Namespace = @namespace;
+            model.Usings.Add("HatTrick.DbEx.Sql.Expression");
             model.ArithmeticOperations = TypeBuilder.CreateBuilder().AddNumericTypes().ToList().Select(@type => new ArithmeticOperationsTemplateModel
             {
                 OperationType = @type,
@@ -24,6 +27,6 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
         }
 
         public override void Generate(string templatePath, string outputSubdirectory)
-            => Generate(templatePath, outputSubdirectory, $"Nullable{TypeBuilder.Get<long>()}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.Sql.Expression", TypeBuilder.Get<long>()));
+            => Generate(templatePath, outputSubdirectory, $"Nullable{TypeBuilder.Get<long>()}{functionName}FunctionExpression.generated.cs", CreateModel("HatTrick.DbEx.MsSql.Expression", TypeBuilder.Get<long>()));
     }
 }

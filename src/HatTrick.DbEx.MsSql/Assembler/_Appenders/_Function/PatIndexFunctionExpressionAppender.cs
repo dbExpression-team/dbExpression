@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql.Assembler;
 using HatTrick.DbEx.Sql.Expression;
 

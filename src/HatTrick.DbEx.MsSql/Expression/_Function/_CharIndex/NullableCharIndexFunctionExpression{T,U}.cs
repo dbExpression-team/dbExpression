@@ -17,8 +17,10 @@
 #endregion
 
 ﻿using System;
+using HatTrick.DbEx.Sql;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.MsSql.Expression
 {
     public abstract class NullableCharIndexFunctionExpression<TValue, TNullableValue> : CharIndexFunctionExpression,
         IExpressionElement<TValue, TNullableValue>

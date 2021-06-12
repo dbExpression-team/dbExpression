@@ -17,8 +17,9 @@
 #endregion
 
 ﻿using System;
+using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.Sql.Expression
+namespace HatTrick.DbEx.MsSql.Expression
 {
     public abstract class CharIndexFunctionExpression : ConversionFunctionExpression,
         IExpressionProvider<CharIndexFunctionExpression.CharIndexFunctionExpressionElements>,
