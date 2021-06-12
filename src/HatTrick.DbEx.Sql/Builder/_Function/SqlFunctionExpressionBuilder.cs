@@ -4438,5 +4438,227 @@ namespace HatTrick.DbEx.Sql.Builder
         public static NullableDecimalAbsFunctionExpression Abs(NullableDecimalElement element)
             => new NullableDecimalAbsFunctionExpression(element);
         #endregion
+
+        #region replace
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, string pattern, string replacement)
+            => new ObjectReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, StringElement pattern, string replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, string pattern, StringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, StringElement pattern, StringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, NullableStringElement pattern, string replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, string pattern, NullableStringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, NullableStringElement pattern, NullableStringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, string pattern, string replacement)
+            => new StringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, string replacement)
+            => new StringReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, string pattern, StringElement replacement)
+            => new StringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, StringElement replacement)
+            => new StringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string pattern, string replacement)
+            => new NullableStringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, string replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string pattern, StringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, StringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, NullableStringElement pattern, string replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string pattern, NullableStringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, NullableStringElement pattern, NullableStringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, NullableStringElement pattern, StringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, NullableStringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+        #endregion
     }
 }
