@@ -67,6 +67,7 @@ namespace HatTrick.DbEx.Sql.Assembler
         private static readonly LeftFunctionExpressionAppender leftFunctionAppender = new LeftFunctionExpressionAppender();
         private static readonly RightFunctionExpressionAppender rightFunctionAppender = new RightFunctionExpressionAppender();
         private static readonly AbsFunctionExpressionAppender absFunctionAppender = new AbsFunctionExpressionAppender();
+        private static readonly SubstringFunctionExpressionAppender substringFunctionAppender = new SubstringFunctionExpressionAppender();
         private static readonly LiteralExpressionAppender literalAppender = new LiteralExpressionAppender();
         private static readonly RawExpressionAppender rawAppender = new RawExpressionAppender();
         private static readonly AliasExpressionAppender aliasAppender = new AliasExpressionAppender();
@@ -124,6 +125,7 @@ namespace HatTrick.DbEx.Sql.Assembler
             RegisterElementAppender(leftFunctionAppender);
             RegisterElementAppender(rightFunctionAppender);
             RegisterElementAppender(absFunctionAppender);
+            RegisterElementAppender(substringFunctionAppender);
             RegisterElementAppender(literalAppender);
             RegisterElementAppender(rawAppender);
             RegisterElementAppender(aliasAppender);
