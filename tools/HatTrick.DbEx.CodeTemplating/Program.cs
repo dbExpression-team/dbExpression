@@ -106,6 +106,9 @@ namespace HatTrick.DbEx.CodeTemplating
                 .Generate<RightFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Right")
                 .Generate<NullableRightFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Right")
 
+                .Generate<AbsFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Abs")
+                .Generate<NullableAbsFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{sqlSrcDirectory}\_Function\_DataType\_Abs")
+
                 //mssql function
                 .Generate<GetDateFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_GetDate")
                 .Generate<GetUtcDateFunctionExpressionCodeGenerator, FunctionTemplateModel>(msSqlFunctionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_GetUtcDate")
