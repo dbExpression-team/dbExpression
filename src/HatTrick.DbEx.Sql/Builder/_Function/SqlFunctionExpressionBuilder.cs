@@ -4234,5 +4234,142 @@ namespace HatTrick.DbEx.Sql.Builder
         public static NullableStringRightFunctionExpression Right(NullableStringElement element, Int32Element characterCount)
             => new NullableStringRightFunctionExpression(element, characterCount);
         #endregion
+
+        #region abs
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/>.</returns>
+        public static ObjectAbsFunctionExpression Abs(AnyObjectElement element)
+            => new ObjectAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ByteElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="ByteAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyByteElement"/> or <see cref="ByteElement"/>.</returns>
+        public static ByteAbsFunctionExpression Abs(ByteElement element)
+            => new ByteAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableByteAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyByteElement"/> or <see cref="NullableByteElement"/>.</returns>
+        public static NullableByteAbsFunctionExpression Abs(NullableByteElement element)
+            => new NullableByteAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="Int16Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="Int16AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16AbsFunctionExpression Abs(Int16Element element)
+            => new Int16AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableInt16AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16AbsFunctionExpression Abs(NullableInt16Element element)
+            => new NullableInt16AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="Int32Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="Int32AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32AbsFunctionExpression Abs(Int32Element element)
+            => new Int32AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableInt32AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32AbsFunctionExpression Abs(NullableInt32Element element)
+            => new NullableInt32AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="Int64Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="Int64AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64AbsFunctionExpression Abs(Int64Element element)
+            => new Int64AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableInt64AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64AbsFunctionExpression Abs(NullableInt64Element element)
+            => new NullableInt64AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="SingleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleAbsFunctionExpression Abs(SingleElement element)
+            => new SingleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableSingleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleAbsFunctionExpression Abs(NullableSingleElement element)
+            => new NullableSingleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="DoubleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="DoubleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleAbsFunctionExpression Abs(DoubleElement element)
+            => new DoubleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableDoubleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleAbsFunctionExpression Abs(NullableDoubleElement element)
+            => new NullableDoubleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="DecimalElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="DecimalAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalAbsFunctionExpression Abs(DecimalElement element)
+            => new DecimalAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableDecimalAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalAbsFunctionExpression Abs(NullableDecimalElement element)
+            => new NullableDecimalAbsFunctionExpression(element);
+        #endregion
     }
 }
