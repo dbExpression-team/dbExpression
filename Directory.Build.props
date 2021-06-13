@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<VersionPrefix>0.8.0</VersionPrefix>
 		<PackageIcon>images/htl-nuget-logo.png</PackageIcon>
-		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageReleaseNotes>See release notes on at https://github.com/HatTrickLabs/dbExpression/releases/tag/v0.8.0</PackageReleaseNotes>
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="../../build/htl-nuget-logo.png" Pack="true" Visible="false" PackagePath="images/htl-nuget-logo.png" />
