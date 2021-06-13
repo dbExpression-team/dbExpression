@@ -26,6 +26,12 @@ namespace NetCoreConsoleApp
 			(double, double) maxAndMin = this.GetMaxAndMinPurchasesRoundedToNearestDollar(9);
 			this.SetYearOfLastCreditReviewToCurrentYear(5);
 			decimal avgPrice = this.GetAvgProductListPrice();
+			decimal? difference = this.GetAbsoluteDifferenceBetweenProductWidthAndHeight(1);
+			IList<Person> persons = this.GetPersonsWithFirstNameStartingWith("K");
+			this.UpdateAddressLine2WithAbbreviation("Apartment", "Apt.");
+			var lines = this.GetFormattedAddressLinesUsingTrim();
+			lines = this.GetFormattedAddressLinesUsingLTrim();
+			lines = this.GetFormattedAddressLinesUsingRTrim();
 		}
 		#endregion
 
@@ -247,6 +253,127 @@ namespace NetCoreConsoleApp
 
 		#region newid
 		//TODO: examples
+		#endregion
+
+		//abs, substring, replace, trim, ltrim, rtrim, len, charindex, patindex, right left
+
+		#region abs, substring, replace, trim, ltrim, rtrim
+		public decimal? GetAbsoluteDifferenceBetweenProductWidthAndHeight(int productId)
+		{
+			/*
+			SELECT
+				ABS([dbo].[Product].[Width] - [dbo].[Product].[Height])
+			FROM
+				[dbo].[Product]
+			WHERE
+				[dbo].[Product].[Id] = 1
+			*/
+
+			decimal? difference = db.SelectOne(
+						db.fx.Abs(dbo.Product.Width - dbo.Product.Height)
+					)
+					.From(dbo.Product)
+					.Where(dbo.Product.Id == productId)
+					.Execute();
+
+			return difference;
+		}
+
+		public IList<Person> GetPersonsWithFirstNameStartingWith(string startsWith)
+		{
+			/*
+			SELECT
+				*
+			FROM
+				[dbo].[Person]
+			WHERE
+				SUBSTRING([dbo].[Person].[FirstName], 1, 1) = 'K'
+			 */
+
+			IList<Person> persons = db.SelectMany<Person>()
+				.From(dbo.Person)
+				.Where(db.fx.Substring(dbo.Person.FirstName, 1, startsWith.Length) == startsWith)
+				.Execute();
+
+			return persons;
+		}
+
+		public void UpdateAddressLine2WithAbbreviation(string full, string abbreviation)
+		{
+			/*
+			UPDATE
+				[dbo].[Address]
+			SET
+				[Line2] = REPLACE([Line2], 'Apartment', 'Apt.')
+			FROM
+				[dbo].[Address]
+			WHERE
+				LEFT([dbo].[Address].[Line2], 9) = 'Apartment'
+			*/
+
+			int _ = db.Update(
+					dbo.Address.Line2.Set(db.fx.Replace(dbo.Address.Line2, full, abbreviation))
+				)
+				.From(dbo.Address)
+				.Where(db.fx.Left(dbo.Address.Line2, full.Length) == full)
+				.Execute();
+		}
+
+		public IList<string> GetFormattedAddressLinesUsingTrim()
+		{
+			/*
+			SELECT
+				TRIM([dbo].[Address].[Line1] + ' ' + ISNULL([dbo].[Address].[Line2], ' '))
+			FROM
+				[dbo].[Address]
+			*/
+
+			var formatted = db.SelectMany(
+					db.fx.Trim(dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, " "))
+				)
+				.From(dbo.Address)
+				.Execute();
+
+			return formatted;
+		}
+
+		public IList<string> GetFormattedAddressLinesUsingLTrim()
+		{
+			/*
+			SELECT
+				LTRIM([dbo].[Address].[Line1] + ' ' + ISNULL([dbo].[Address].[Line2], ''))
+			FROM
+				[dbo].[Address]
+			*/
+
+			var formatted = db.SelectMany(
+					db.fx.LTrim(dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, string.Empty))
+				)
+				.From(dbo.Address)
+				.Execute();
+
+			return formatted;
+		}
+
+		public IList<string> GetFormattedAddressLinesUsingRTrim()
+		{
+			/*
+			SELECT
+				RTRIM([dbo].[Address].[Line1] + ' ' + ISNULL([dbo].[Address].[Line2], ''))
+			FROM
+				[dbo].[Address]
+			*/
+
+			var formatted = db.SelectMany(
+					db.fx.RTrim(dbo.Address.Line1 + " " + db.fx.IsNull(dbo.Address.Line2, string.Empty))
+				)
+				.From(dbo.Address)
+				.Execute();
+
+			return formatted;
+		}
+
+		//TODO: len, charindex, patindex, right left
 		#endregion
 	}
 }
