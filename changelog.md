@@ -1,24 +1,30 @@
 # Changelog
 
-## [unversioned]
+## [0.8.0] - 2021-06-14
 
 ### Added
 - Support for stored procedures
-- Trim, LTrim, and RTrim database functions
+- Added additional database functions:
+	- Trim
+	- LTrim
+	- RTrim
+	- Abs
+	- Substring
+	- Replace
+	- Len
+	- CharIndex
+	- PatIndex
+	- Right
+	- Left
 
 ### Changed
 - Separated fluent interfaces for selecting scalar values from dynamic objects (they were implemented using same interfaces).
-- Deprecated IValueConverterProvider parameter from Map method of IExpandoObjectMapper (it's part of the field that is passed to the mapper).
 - Collapsed common MsSql assemblers for versions 2012+ and simplified startup configuration.
 - Reworked parameter builder to support output and input/output parameters. Provided consistency with other factories by adding Create methods that create parameters and Add method to add it to the list (Add no longer creates and adds).
-- Moved MsSqlFieldMetadata and SqlFieldMetadata to root namespaces.
-- Renamed "Items" property on code generation models to more specific names; i.e. "Columns", "Entities", and "Fields"
-- Consistency on pipelines that check for null values returned from factories
-- Consistency on try/catch on any pipeline execution where the user has control of the reader
-- Deprecated IExpressionSet in favor of IExpressionListProvider
+- Deprecated IExpressionSet in favor of IExpressionListProvider (internal)
 
 ### Breaking Changes
-- Change SELECT operation methods that accept Action<object> (for custom mapping) to Action<T>.  This ensures all returned value(s) go through value conversion.
+- Changed SELECT operation methods that accept Action\<object\> (for custom mapping) to Action\<T\>, which ensures all returned value(s) go through value conversion.
 
 ## [0.7.1] - 2021-05-10
 
