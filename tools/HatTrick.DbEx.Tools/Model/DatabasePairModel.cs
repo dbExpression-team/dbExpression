@@ -26,7 +26,7 @@ namespace HatTrick.DbEx.Tools.Model
     { 
         public MsSqlModel Database { get; set; }
         public DatabaseExpressionModel DatabaseExpression { get; set; }
-        public IList<SchemaPairModel> Items { get; set; } = new List<SchemaPairModel>();
+        public IList<SchemaPairModel> Schemas { get; set; } = new List<SchemaPairModel>();
         public DocumentationItemsModel Documentation { get; set; }
 
         public DatabasePairModel(MsSqlModel database, DatabaseExpressionModel databaseExpression)

@@ -26,5 +26,6 @@ namespace HatTrick.DbEx.Sql
     {
         ISqlDatabaseMetadata Database { get; }
         IDictionary<string, ISqlEntityMetadata> Entities { get; }
+        IDictionary<string, ISqlStoredProcedureMetadata> StoredProcedures { get; }
     }
 }

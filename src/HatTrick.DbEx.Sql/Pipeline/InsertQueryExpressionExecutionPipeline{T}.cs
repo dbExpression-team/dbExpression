@@ -16,15 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Converter;
 using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -68,10 +66,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region methods
         public virtual void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an insert query without a statement builder to construct the sql statement.");
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement();
+            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an insert query without a sql statement.");
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
             if (beforeInsert is object)
@@ -85,15 +89,18 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
                 statement,
                 connection,
-                new SqlStatementValueConverterProvider(fields, database.ValueConverterFactory),
-                cmd => { 
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, fields),
+                cmd => {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)));
                     configureCommand?.Invoke(cmd);
                 },
                 cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
             );
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>);
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
             ISqlFieldReader row;
             while ((row = reader.ReadRow()) is object)
@@ -120,7 +127,13 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         public virtual async Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an insert query without a statement builder to construct the sql statement.");
 
             if (beforeAssembly is object)
             {
@@ -128,7 +141,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var statement = statementBuilder.CreateSqlStatement();
+            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an insert query without a sql statement.");
             if (afterAssembly is object)
             {
                 await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
@@ -144,12 +157,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
             }
 
-            var reader = await database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQueryAsync(
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a delete query without a statement executor to execute the sql statement.");
+            var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,
-                new SqlStatementValueConverterProvider(new List<FieldExpression> { null }.Concat(expression.Outputs).ToList(), database.ValueConverterFactory),
+                new SqlStatementValueConverterProvider(database.ValueConverterFactory, new List<FieldExpression> { null }.Concat(expression.Outputs).ToList()),
                 async cmd =>
                 {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     if (beforeExecution is object)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statementBuilder.CreateSqlStatement())), ct).ConfigureAwait(false);
@@ -168,7 +185,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>);
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
             ISqlFieldReader row;
             while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)

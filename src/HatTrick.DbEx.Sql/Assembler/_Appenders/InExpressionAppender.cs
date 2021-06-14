@@ -50,15 +50,14 @@ namespace HatTrick.DbEx.Sql.Assembler
                     firstElement = false;
                 }
                 
-                builder.Appender.Write(
-                   builder.Parameters.Add(
+                var param = builder.Parameters.CreateInputParameter(
                        enumerator.Current is null || enumerator.Current is DBNull ? DBNull.Value : enumerator.Current,
                        (expression.Field as IExpressionTypeProvider).DeclaredType,
                        builder.FindMetadata(expression.Field),
                        context
-                   )
-                   .Parameter.ParameterName
                 );
+                builder.Parameters.AddParameter(param);
+                builder.Appender.Write(param.Parameter.ParameterName);
 
                 hasElements = true;
             }

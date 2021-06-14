@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Tools.Model
     {
         public ISqlEntityModel Entity { get; }
         public EntityExpressionModel EntityExpression { get; }
-        public IList<ColumnPairModel> Items { get; } = new List<ColumnPairModel>();
+        public IList<ColumnPairModel> Columns { get; } = new List<ColumnPairModel>();
 
         public EntityPairModel(ISqlEntityModel entity, EntityExpressionModel entityExpression)
         {

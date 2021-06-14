@@ -22,7 +22,8 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpressionSet : IExpression
+    public class InsertExpressionSet : IExpression,
+        IExpressionListProvider<InsertExpression>
     {
         #region interface
         public IDbEntity Entity { get; }

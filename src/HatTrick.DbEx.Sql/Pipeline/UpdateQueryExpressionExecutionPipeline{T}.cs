@@ -61,20 +61,30 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public int ExecuteUpdate(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
+        public virtual int ExecuteUpdate(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand)
         {
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an update query without a statement builder to construct the sql statement.");
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
-            var statement = statementBuilder.CreateSqlStatement();
+            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
             beforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
 
-            var rowsAffected = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalar<int>(
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
+            var rowsAffected = executor.ExecuteScalar<int>(
                 statement,
                 connection,
-                cmd => { 
+                cmd => {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     beforeExecution?.Invoke(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement))); 
                     configureCommand?.Invoke(cmd); 
                 },
@@ -86,16 +96,22 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return rowsAffected;
         }
 
-        public async Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+        public virtual async Task<int> ExecuteUpdateAsync(UpdateQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
         {
-            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression);
+            if (expression is null)
+                throw new ArgumentNullException(nameof(expression));
+
+            if (connection is null)
+                throw new ArgumentNullException(nameof(connection));
+
+            var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an update query without a statement builder to construct the sql statement.");
 
             if (beforeAssembly is object)
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
-            var statement = statementBuilder.CreateSqlStatement();
+            var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
             if (afterAssembly is object)
             {
                 await afterAssembly.InvokeAsync(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)), ct).ConfigureAwait(false);
@@ -108,11 +124,14 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var rowsAffected = await database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteScalarAsync<int>(
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
+            var rowsAffected = await executor.ExecuteScalarAsync<int>(
                 statement,
                 connection,
-                async cmd =>
-                {
+                async cmd => {
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+                    cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
                     if (beforeExecution is object)
                     {
                         await beforeExecution.InvokeAsync(new Lazy<BeforeExecutionPipelineExecutionContext>(() => new BeforeExecutionPipelineExecutionContext(database, expression, cmd, statement)), ct).ConfigureAwait(false);

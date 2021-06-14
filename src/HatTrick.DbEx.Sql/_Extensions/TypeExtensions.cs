@@ -17,22 +17,16 @@
 #endregion
 
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
 {
     public static class TypeExtensions
-    { 
-        public static bool IsNullableType(this Type t) => (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>));
-        public static Type EnsureUnderlyingType(this Type t) => t.IsNullableType() ? Nullable.GetUnderlyingType(t) : t;        
-        public static Type GetUnderlyingEnumType(this Type t)
-        {
-            //ensure underlying to ensure we dont have a nullable..
-            Type underlying = t.EnsureUnderlyingType();
+    {
+        private static readonly List<Type> nonNullableTypes = new List<Type> { typeof(string), typeof(byte[]), typeof(object) };
 
-            if (!underlying.IsEnum) { return null; }
+        public static bool IsNullableType(this Type t) => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>);
 
-            //return the integral base of this enum...
-            return Enum.GetUnderlyingType(underlying);
-        }
+        public static bool IsConvertibleToNullableType(this Type t) => !nonNullableTypes.Contains(t);
     }
 }

@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.8.0] - 2021-06-14
+
+### Added
+- Support for stored procedures
+- Added additional database functions:
+	- Trim
+	- LTrim
+	- RTrim
+	- Abs
+	- Substring
+	- Replace
+	- Len
+	- CharIndex
+	- PatIndex
+	- Right
+	- Left
+
+### Changed
+- Separated fluent interfaces for selecting scalar values from dynamic objects (they were implemented using same interfaces).
+- Collapsed common MsSql assemblers for versions 2012+ and simplified startup configuration.
+- Reworked parameter builder to support output and input/output parameters. Provided consistency with other factories by adding Create methods that create parameters and Add method to add it to the list (Add no longer creates and adds).
+- Deprecated IExpressionSet in favor of IExpressionListProvider (internal)
+
+### Breaking Changes
+- Changed SELECT operation methods that accept Action\<object\> (for custom mapping) to Action\<T\>, which ensures all returned value(s) go through value conversion.
+
 ## [0.7.1] - 2021-05-10
 
 ### Added

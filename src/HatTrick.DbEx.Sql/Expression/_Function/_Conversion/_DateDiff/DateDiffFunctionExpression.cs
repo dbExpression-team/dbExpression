@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Sql.Expression
         #endregion
 
         #region interface
-        IList<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => new List<IExpressionElement>() { startDate, endDate };
+        IEnumerable<IExpressionElement> IExpressionListProvider<IExpressionElement>.Expressions => new List<IExpressionElement>() { startDate, endDate };
         DatePartsExpression IExpressionProvider<DatePartsExpression>.Expression => datePart;
         #endregion
 

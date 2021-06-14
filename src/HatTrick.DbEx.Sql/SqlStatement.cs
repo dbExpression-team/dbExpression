@@ -16,26 +16,24 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Assembler;
+using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql
 {
     public class SqlStatement
     {
         public IAppender CommandTextWriter { get; set; }
-        public DbCommandType CommandType { get; set; } = DbCommandType.SqlText;
         public IList<ParameterizedExpression> Parameters { get; set; } = new List<ParameterizedExpression>();
 
         public SqlStatement()
         { }
 
-        public SqlStatement(IAppender commandTextWriter, IList<ParameterizedExpression> parameters, DbCommandType commandType)
+        public SqlStatement(IAppender commandTextWriter, IList<ParameterizedExpression> parameters)
         {
             CommandTextWriter = commandTextWriter;
             Parameters = parameters;
-            CommandType = commandType;
         }
     }
 }

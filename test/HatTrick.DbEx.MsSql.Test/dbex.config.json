@@ -116,6 +116,46 @@
 		},
 		{
 			"apply": {
+				"ignore": true,
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
 				"name": "SocialSecurityNumber",
 				"to": {
 					"path": "sec.Person.SSN"

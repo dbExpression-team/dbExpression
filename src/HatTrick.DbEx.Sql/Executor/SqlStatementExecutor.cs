@@ -35,13 +35,14 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 cmd.Connection = connection.DbConnection;
                 cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+                cmd.CommandType = CommandType.Text;
                 (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
                 beforeExecution?.Invoke(cmd);
+
+                if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                    cmd.CommandText = statement.CommandTextWriter.ToString();
+
                 connection.EnsureOpen();
                 @return = cmd.ExecuteNonQuery();
                 afterExecution?.Invoke(cmd);
@@ -56,14 +57,16 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 cmd.Connection = connection.DbConnection;
                 cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+                cmd.CommandText = statement.CommandTextWriter.ToString();
+                cmd.CommandType = CommandType.Text;
                 (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
                 beforeExecution?.Invoke(cmd);
                 ct.ThrowIfCancellationRequested();
+
+                if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                    cmd.CommandText = statement.CommandTextWriter.ToString();
+
                 await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
                 @return = await (cmd as DbCommand).ExecuteNonQueryAsync(ct).ConfigureAwait(false);
                 afterExecution?.Invoke(cmd);
@@ -78,13 +81,14 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 cmd.Connection = connection.DbConnection;
                 cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+                cmd.CommandType = CommandType.Text;
                 (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
                 beforeExecution?.Invoke(cmd);
+
+                if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                    cmd.CommandText = statement.CommandTextWriter.ToString();
+
                 connection.EnsureOpen();
                 var reader = cmd.ExecuteReader();
                 afterExecution?.Invoke(cmd);
@@ -98,14 +102,16 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 cmd.Connection = connection.DbConnection;
                 cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+                cmd.CommandText = statement.CommandTextWriter.ToString();
+                cmd.CommandType = CommandType.Text;
                 (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
                 beforeExecution?.Invoke(cmd);
                 ct.ThrowIfCancellationRequested();
+
+                if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                    cmd.CommandText = statement.CommandTextWriter.ToString();
+
                 await connection.EnsureOpenAsync(ct).ConfigureAwait(false);
                 var reader = await (cmd as DbCommand).ExecuteReaderAsync(ct).ConfigureAwait(false);
                 afterExecution?.Invoke(cmd);
@@ -121,13 +127,14 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 cmd.Connection = connection.DbConnection;
                 cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+                cmd.CommandType = CommandType.Text;
                 (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
                 beforeExecution?.Invoke(cmd);
+
+                if (string.IsNullOrWhiteSpace(cmd.CommandText))
+                    cmd.CommandText = statement.CommandTextWriter.ToString();
+
                 connection.EnsureOpen();
                 output = cmd.ExecuteScalar();
                 afterExecution?.Invoke(cmd);
@@ -142,10 +149,8 @@ namespace HatTrick.DbEx.Sql.Executor
             {
                 cmd.Connection = connection.DbConnection;
                 cmd.Transaction = connection.IsTransactional ? connection.DbTransaction : null;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandText = statement.CommandTextWriter.Write(";").ToString();
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-                cmd.CommandType = (statement.CommandType == DbCommandType.Sproc) ? CommandType.StoredProcedure : CommandType.Text;
+                cmd.CommandText = statement.CommandTextWriter.ToString();
+                cmd.CommandType = CommandType.Text;
                 (cmd.Parameters as DbParameterCollection).AddRange(statement.Parameters.Select(x => x.Parameter).ToArray());
 
                 beforeExecution?.Invoke(cmd);

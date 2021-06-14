@@ -1,0 +1,22 @@
+﻿                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the {$.StoredProcedureExpression.Name} stored procedure.
+                /// </summary>
+                {#each $.Parameters}
+                {#if !$.Parameter.IsOutput}
+                /// <param name="{($.ParameterExpression.Name, "@") => TrimStart}">The value to use for creating the database parameter {$.Parameter.Name}.
+                /// <para>Database Properties:
+                /// <list type="table">
+                {#each $.Parameter.Properties}
+                /// <item>
+                /// <term>{Key}</term><description>{Value}</description>
+                /// </item>
+                {/each}
+                /// </list>
+                /// </para>
+                /// </param>
+                {/if}
+                {/each}
+                {#if $.OutputParameters}
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                {/if}
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>

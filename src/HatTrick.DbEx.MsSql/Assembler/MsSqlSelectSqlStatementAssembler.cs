@@ -25,6 +25,37 @@ namespace HatTrick.DbEx.MsSql.Assembler
 {
     public class MsSqlSelectSqlStatementAssembler : SelectSqlStatementAssembler
     {
+        protected override void AssembleStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
+        {
+            base.AssembleStatement(expression, builder, context);
+            if (expression.Offset.HasValue)
+            {
+                var param = builder.Parameters.CreateInputParameter(expression.Offset.Value, context);
+                builder.Parameters.AddParameter(param);
+                builder.Appender
+                    .Indentation++
+                    .Indent()
+                    .Write("OFFSET ")
+                    .Write(param.Parameter.ParameterName)
+                    .Write(" ROWS")
+                    .LineBreak()
+                    .Indentation--;
+            }
+            if (expression.Limit.HasValue)
+            {
+                var param = builder.Parameters.CreateInputParameter(expression.Limit.Value, context);
+                builder.Parameters.AddParameter(param);
+                builder.Appender
+                    .Indentation++
+                    .Indent()
+                    .Write("FETCH NEXT ")
+                    .Write(param.Parameter.ParameterName)
+                    .Write(" ROWS ONLY")
+                    .LineBreak()
+                    .Indentation--;
+            }
+        }
+
         protected virtual void AssembleMsSqlCTESelectStatement(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
             //start CTE
@@ -77,6 +108,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
             AppendHavingClause(expression, builder, context);
 
             //end CTE
+            var offsetParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + 1, context);
+            builder.Parameters.AddParameter(offsetParam);
+            var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0 + expression.Limit ?? expression.Offset ?? -1) + 1, context);
+            builder.Parameters.AddParameter(limitParam);
+
             builder.Appender.Indent().Write("AS ")
                     .Write(context.Configuration.IdentifierDelimiter.Begin)
                     .Write((expression.BaseEntity as ISqlMetadataIdentifierProvider).Identifier)
@@ -85,9 +121,9 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++
                     .Write("[__index] BETWEEN ")
-                    .Write(builder.Parameters.Add((expression.Offset ?? 0) + 1, context).Parameter.ParameterName)
+                    .Write(offsetParam.Parameter.ParameterName)
                     .Write(" AND ")
-                    .Write(builder.Parameters.Add((expression.Offset ?? 0 + expression.Limit ?? expression.Offset ?? -1) + 1, context).Parameter.ParameterName)
+                    .Write(limitParam.Parameter.ParameterName)
                     .LineBreak()
                 .Indentation--.Indent().Write("ORDER BY").LineBreak()
                 .Indentation++.Indent().Write("[__index]");
@@ -109,51 +145,71 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //append the select list, which is the "final" select from the CTE
-            context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            try
+            var select_list = expression.Select.Expressions.ToList();
+            for (var i = 0; i < select_list.Count; i++)
             {
-                builder.AppendElement(expression.Select, context);
-            }
-            finally
-            {
-                context.PopAppendStyles();
+                var select = select_list[i];
+                var isAliased = !string.IsNullOrWhiteSpace((select as IExpressionAliasProvider).Alias);
+                context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+                try
+                {
+                    builder.Appender.Indent();
+                    if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                        builder.Appender.Write(",");
+                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".");
+                    try
+                    {
+                        context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
+                        builder.AppendElement(select, context);
+                    }
+                    finally
+                    {
+                        context.PopFieldAppendStyle();
+                    }
+                    if (!context.Configuration.PrependCommaOnSelectClause && i < select_list.Count - 1)
+                        builder.Appender.Write(",");
+                    builder.Appender.LineBreak();
+                }
+                finally
+                {
+                    context.PopEntityAppendStyle();
+                }
             }
 
             builder.Appender
                 .Indentation--
                 .Indent().Write("FROM (").LineBreak();
 
-            //append select for "inner" which has the ROW_NUMBER() function for paging
-            builder.Appender
-                .Indentation++
-                .Indent()
-                .Write("SELECT ").LineBreak()
-                .Indentation++;
-
-            //append the select list
-            context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            try
-            {
-                builder.AppendElement(expression.Select, context);
-            }
-            finally
-            {
-                context.PopAppendStyles();
-            }
+            builder.Appender.Indentation++;
+            AppendNonAliasedSelectClause(expression, builder, context, EntityExpressionAppendStyle.None, false, null);
 
             //append the function providing the windowed index
+            builder.Appender.Indentation++;
             builder.Appender
-                .Indent().Write(", ROW_NUMBER() OVER (ORDER BY").LineBreak()
+                .Indent().Write(",ROW_NUMBER() OVER (ORDER BY").LineBreak()
                 .Indentation++;
 
-            context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            try
+            //append the order by list, which is the "final" select from the CTE
+            var order_by_list = expression.OrderBy.Expressions.ToList();
+            for (var i = 0; i < order_by_list.Count; i++)
             {
-                builder.AppendElement(expression.OrderBy, context);
-            }
-            finally
-            {
-                context.PopAppendStyles();
+                var order_by = order_by_list[i];
+                context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
+                try
+                {
+                    builder.Appender.Indent();
+                    if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                        builder.Appender.Write(",");
+                    builder.Appender.Write(context.Configuration.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".");
+                    builder.AppendElement(order_by, context);
+                    if (!context.Configuration.PrependCommaOnSelectClause && i < order_by_list.Count - 1)
+                        builder.Appender.Write(",");
+                    builder.Appender.LineBreak();
+                }
+                finally
+                {
+                    context.PopEntityAppendStyle();
+                }
             }
 
             builder.Appender
@@ -164,7 +220,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //now append the "original" select statement
-            AppendSelectClause(expression, builder, context);
+            AppendNonAliasedSelectClause(expression, builder, context, EntityExpressionAppendStyle.Declaration, expression.Distinct, expression.Top);
             AppendFromClause(expression, builder, context);
             AppendJoinClause(expression, builder, context);
             AppendWhereClause(expression, builder, context);
@@ -175,24 +231,80 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation--
                 .Indent().Write(") AS ").Write(context.Configuration.IdentifierDelimiter.Begin).Write(innerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).LineBreak();
 
+            builder.Appender.Indentation--;
+
+            var offsetParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + 1, context);
+            builder.Parameters.AddParameter(offsetParam);
             builder.Appender
                 .Indentation--.Indent().Write(") AS ").Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).LineBreak()
                 .Indentation--.Indent().Write("WHERE").LineBreak()
                 .Indentation++.Indent().Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End)
                     .Write(".").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).Write(" BETWEEN ")
-                    .Write(builder.Parameters.Add((expression.Offset ?? 0) + 1, context).Parameter.ParameterName);
+                    .Write(offsetParam.Parameter.ParameterName);
 
             if (expression.Limit.HasValue)
             {
+                var limitParam = builder.Parameters.CreateInputParameter((expression.Offset ?? 0) + expression.Limit.Value + 1, context);
+                builder.Parameters.AddParameter(limitParam);
                 builder.Appender
                     .Write(" AND ")
-                    .Write(builder.Parameters.Add((expression.Offset ?? 0) + expression.Limit.Value + 1, context).Parameter.ParameterName)
+                    .Write(limitParam.Parameter.ParameterName)
                     .LineBreak();
             }
             builder.Appender
                 .Indentation--.Indent().Write("ORDER BY").LineBreak()
                 .Indentation++.Indent().Write(context.Configuration.IdentifierDelimiter.Begin).Write(outerTableAlias).Write(context.Configuration.IdentifierDelimiter.End).Write(".").Write(context.Configuration.IdentifierDelimiter.Begin).Write("_index").Write(context.Configuration.IdentifierDelimiter.End).LineBreak();
 
+        }
+
+        private void AppendNonAliasedSelectClause(SelectQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context, EntityExpressionAppendStyle entityAppendStyle, bool? isDistinct, int? top)
+        {
+            builder.Appender
+                .Indent().Write("SELECT");
+
+            if (isDistinct == true)
+            {
+                builder.Appender.Write(" DISTINCT");
+            }
+
+            if (top.HasValue)
+            {
+                builder.Appender.Write(" TOP(").Write(expression.Top.ToString()).Write(")");
+            }
+
+            builder.Appender.LineBreak()
+                .Indentation++;
+
+            var select_list = expression.Select.Expressions.ToList();
+            for (var i = 0; i < select_list.Count; i++)
+            {
+                var select = select_list[i];
+                context.PushEntityAppendStyle(entityAppendStyle);
+                try
+                {
+                    builder.Appender.Indent();
+                    if (context.Configuration.PrependCommaOnSelectClause && i > 0)
+                        builder.Appender.Write(",");
+                    try
+                    {
+                        context.PushFieldAppendStyle(FieldExpressionAppendStyle.Declaration);
+                        builder.AppendElement(select.Expression, context);
+                    }
+                    finally
+                    {
+                        context.PopFieldAppendStyle();
+                    }
+                    if (!context.Configuration.PrependCommaOnSelectClause && i < select_list.Count - 1)
+                        builder.Appender.Write(",");
+                    builder.Appender.LineBreak();
+                }
+                finally
+                {
+                    context.PopEntityAppendStyle();
+                }
+            }
+
+            builder.Appender.Indentation--;
         }
     }
 }

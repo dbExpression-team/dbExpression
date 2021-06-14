@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.Sql.Assembler
@@ -27,15 +27,14 @@ namespace HatTrick.DbEx.Sql.Assembler
         {
             if (expression.Field is object)
             {
-                builder.Appender.Write(
-                   builder.Parameters.Add(
-                       expression.Expression,
-                       (expression.Field as IExpressionTypeProvider).DeclaredType,
-                       builder.FindMetadata(expression.Field),
-                       context
-                   )
-                   .Parameter.ParameterName
-               );
+                var param = builder.Parameters.CreateInputParameter(
+                    expression.Expression,
+                    (expression.Field as IExpressionTypeProvider).DeclaredType,
+                    builder.FindMetadata(expression.Field),
+                    context
+                );
+                builder.Parameters.AddParameter(param);
+                builder.Appender.Write(param.Parameter.ParameterName);
             }
             else
             {
@@ -45,14 +44,13 @@ namespace HatTrick.DbEx.Sql.Assembler
                 }
                 else
                 {
-                    builder.Appender.Write(
-                        builder.Parameters.Add(
-                            expression.Expression, 
+                    var param = builder.Parameters.CreateInputParameter(
+                            expression.Expression,
                             expression.Expression.GetType(),
                             context
-                        )
-                        .Parameter.ParameterName
-                    );
+                        );
+                    builder.Parameters.AddParameter(param);
+                    builder.Appender.Write(param.Parameter.ParameterName);
                 }
             }
         }

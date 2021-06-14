@@ -24,41 +24,53 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Executor
 {
-    public class SqlStatementValueConverterProvider
-
-        : IValueConverterProvider
+    public class SqlStatementValueConverterProvider : IValueConverterProvider
     {
         #region internals
-        private readonly IEnumerable<IExpressionTypeProvider> fieldExpressions;
+        private readonly IEnumerable<IExpressionTypeProvider> typeProviders;
         private readonly IValueConverterFactory valueConverterFactory;
         #endregion
 
         #region constructors
-        public SqlStatementValueConverterProvider(IEnumerable<FieldExpression> fieldExpressions, IValueConverterFactory valueConverterFactory)
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory)
         {
-            this.fieldExpressions = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
             this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
         }
 
-        public SqlStatementValueConverterProvider(SelectExpressionSet selectExpressionSet, IValueConverterFactory valueConverterFactory)
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<FieldExpression> fieldExpressions)
         {
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
+            this.typeProviders = fieldExpressions ?? throw new ArgumentNullException(nameof(fieldExpressions));
+        }
+
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, IEnumerable<ParameterizedExpression> outputParameters)
+        {
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
+            this.typeProviders = outputParameters ?? throw new ArgumentNullException(nameof(typeProviders));
+        }
+
+        public SqlStatementValueConverterProvider(IValueConverterFactory valueConverterFactory, SelectExpressionSet selectExpressionSet)
+        {
+            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
             if (selectExpressionSet is null)
                 throw new ArgumentNullException(nameof(selectExpressionSet));
-            this.fieldExpressions = selectExpressionSet.Expressions.Cast<IExpressionTypeProvider>();
-            this.valueConverterFactory = valueConverterFactory ?? throw new ArgumentNullException(nameof(valueConverterFactory));
+            this.typeProviders = selectExpressionSet.Expressions.Cast<IExpressionTypeProvider>();
         }
         #endregion
 
         #region methods
-        public IValueConverter FindConverter(int fieldIndex, Type databaseType, object value)
+        public IValueConverter FindConverter(int fieldIndex, Type requestedType, object value)
         {
-            var provider = fieldExpressions.ElementAt(fieldIndex);
+            var provider = typeProviders?.ElementAt(fieldIndex);
 
-            IValueConverter converter = null;
+            //provider's declared type takes precedence over requested type (could be requesting an "int", when the declared type is "int?")
             if (provider is object)
-                converter = valueConverterFactory.CreateConverter(provider.DeclaredType);
+                return valueConverterFactory.CreateConverter(provider.DeclaredType);
 
-            return converter ?? valueConverterFactory.CreateConverter(databaseType);
+            if (value is DBNull && !requestedType.IsNullableType() && requestedType.IsConvertibleToNullableType())
+                return valueConverterFactory.CreateConverter(typeof(Nullable<>).MakeGenericType(requestedType));
+
+            return valueConverterFactory.CreateConverter(requestedType);
         }
         #endregion
     }

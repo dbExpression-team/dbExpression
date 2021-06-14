@@ -25,18 +25,18 @@ namespace HatTrick.DbEx.Sql.Expression
     public abstract class SchemaExpression : 
         IExpressionElement,
         ISqlMetadataIdentifierProvider,
-        IExpressionListProvider<EntityExpression>,
+        IExpressionListProvider<IEntityExpression>,
         IEquatable<SchemaExpression>
     {
         #region internals
         protected readonly string identifier;
-        protected IDictionary<string, EntityExpression> Entities { get; } = new Dictionary<string, EntityExpression>();
+        protected IDictionary<string, IEntityExpression> Entities { get; } = new Dictionary<string, IEntityExpression>();
         protected string Alias { get; }
         #endregion
 
         #region interface
         public string Identifier => identifier;
-        IList<EntityExpression> IExpressionListProvider<EntityExpression>.Expressions => Entities.Values.ToList();
+        IEnumerable<IEntityExpression> IExpressionListProvider<IEntityExpression>.Expressions => Entities.Values;
         #endregion
 
         #region constructors

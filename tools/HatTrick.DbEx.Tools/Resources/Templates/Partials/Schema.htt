@@ -5,23 +5,27 @@
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {{
+        private static {$.SchemaExpression.Name}SchemaExpression schema;
+
         #region interface
-		{#each $.Items}
+        {#each $.Entities}
         {>("EntityExpression.Documentation") => GetTemplatePartial+}
         public static {$.EntityExpression.Name}Entity {$.EntityExpression.Name} {{ get; private set; }}
 
 		{/each}
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema({$.SchemaExpression.Name}SchemaExpression schema)
         {{ 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
 
-		    {#each $.Items}
+            {$.SchemaExpression.Name}.schema = schema;
+
+            {#each $.Entities}
             {$.EntityExpression.Name} = schema.{$.EntityExpression.Name};
-		    {/each}
+            {/each}
         }}
         #endregion
     }}

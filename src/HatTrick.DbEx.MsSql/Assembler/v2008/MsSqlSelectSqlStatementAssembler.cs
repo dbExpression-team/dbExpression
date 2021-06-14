@@ -27,16 +27,18 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2008
         {
             if (!expression.Offset.HasValue && !expression.Limit.HasValue)
             {
-                //no  paging, so no special handling required
+                //no paging, so no special handling required
                 base.AssembleStatement(expression, builder, context);
             }
-            else if (!(expression.Select as IExpressionIsDistinctProvider).IsDistinct) //no distinct, return standard CTE for page
+            else if (expression.Distinct == true)
             {
-                AssembleMsSqlCTESelectStatement(expression, builder, context);
+                //distinct, return modified CTE for page
+                AssembleMsSqlDistinctCTESelectStatement(expression, builder, context);
             }
             else
             {
-                AssembleMsSqlDistinctCTESelectStatement(expression, builder, context);
+                //no distinct, return standard CTE for page
+                AssembleMsSqlCTESelectStatement(expression, builder, context);
             }
         }
     }

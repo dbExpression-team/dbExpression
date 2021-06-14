@@ -23,8 +23,8 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Expression
 {
     public class GroupByExpressionSet : 
-        IExpressionElement, 
-        IExpressionSet<AnyGroupByClause>
+        IExpressionElement,
+        IExpressionListProvider<AnyGroupByClause>
     {
         #region interface
         public IEnumerable<AnyGroupByClause> Expressions { get; private set; } = new List<AnyGroupByClause>();

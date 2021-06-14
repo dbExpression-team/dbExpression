@@ -16,6 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
+using System;
 ﻿using System.Collections.Concurrent;
 
 namespace HatTrick.DbEx.Sql
@@ -25,6 +26,7 @@ namespace HatTrick.DbEx.Sql
         #region internals
         private ConcurrentDictionary<string, ISqlEntityMetadata> _discoveredEntities = new ConcurrentDictionary<string, ISqlEntityMetadata>();
         private ConcurrentDictionary<string, ISqlFieldMetadata> _discoveredFields = new ConcurrentDictionary<string, ISqlFieldMetadata>();
+        private ConcurrentDictionary<string, ISqlParameterMetadata> _discoveredParameters = new ConcurrentDictionary<string, ISqlParameterMetadata>();
         #endregion
 
         #region interface
@@ -34,7 +36,7 @@ namespace HatTrick.DbEx.Sql
         #region constructors
         public SqlDatabaseMetadataProvider(ISqlDatabaseMetadata metadata)
         {
-            Database = metadata;
+            Database = metadata ?? throw new ArgumentNullException(nameof(metadata));
         }
         #endregion
 
@@ -71,6 +73,22 @@ namespace HatTrick.DbEx.Sql
                     if (table.Value.Fields.TryGetValue(identifier, out var meta))
                     {
                         _discoveredFields.TryAdd(identifier, meta);
+                        return meta;
+                    }
+
+            return null;
+        }
+
+        public ISqlParameterMetadata FindParameterMetadata(string identifier)
+        {
+            if (_discoveredParameters.TryGetValue(identifier, out var parameter))
+                return parameter;
+
+            foreach (var schema in Database.Schemas)
+                foreach (var procedure in schema.Value.StoredProcedures)
+                    if (procedure.Value.Parameters.TryGetValue(identifier, out var meta))
+                    {
+                        _discoveredParameters.TryAdd(identifier, meta);
                         return meta;
                     }
 

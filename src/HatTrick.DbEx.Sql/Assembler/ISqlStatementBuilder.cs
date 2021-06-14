@@ -29,15 +29,13 @@ namespace HatTrick.DbEx.Sql.Assembler
 
         #region methods
         SqlStatement CreateSqlStatement();
-
         void AppendElement<T>(T element, AssemblyContext context)
             where T : class, IExpressionElement;
-
         string GenerateAlias();
-
         ISqlSchemaMetadata FindMetadata(SchemaExpression schema);
         ISqlEntityMetadata FindMetadata(EntityExpression entity);
         ISqlFieldMetadata FindMetadata(FieldExpression field);
+        ISqlParameterMetadata FindMetadata(ParameterExpression parameter);
         #endregion
     }
 }

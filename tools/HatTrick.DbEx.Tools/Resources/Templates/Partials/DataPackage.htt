@@ -2,7 +2,7 @@
     public partial class {$.EntityExpression.Name} : IDbEntity{#each $.EntityExpression.AppliedInterfaces}, {$}{/each+}
     {{
         #region interface
-	    {#each $.Items}
+	    {#each $.Columns}
         public virtual {$.FieldExpression.Type.NullableAlias} {$.FieldExpression.Name} {{ get; set; }}
 	    {/each}
         #endregion

@@ -6,7 +6,7 @@
         #endregion
 
         #region interface
-		{#each $.Items}
+        {#each $.Columns}
         {>("FieldExpression.Documentation") => GetTemplatePartial+}
         public readonly {$.FieldExpression.Name}Field {$.FieldExpression.Name};
 
@@ -18,15 +18,15 @@
         {{
         }}
 
-		public {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {{
         }}
 
         private {$.EntityExpression.Name}Entity(string identifier, string name, SchemaExpression schema, string alias) : base(identifier, name, schema, alias)
         {{
-			{#each $.Items}
+            {#each $.Columns}
             Fields.Add($"{{identifier}}.{$.Column.Name}", {$.FieldExpression.Name} = new {$.FieldExpression.Name}Field($"{{identifier}}.{$.Column.Name}", "{$.FieldExpression.Name}", this));
-			{/each}
+            {/each}
         }}
         #endregion
 
@@ -38,7 +38,7 @@
         {{
             {?var :applyComma = false}
             return _inclusiveSelectExpressionSet ?? (_inclusiveSelectExpressionSet = new SelectExpressionSet(
-				{#each $.Items}
+                {#each $.Columns}
                 {#if !$.FieldExpression.Type.IsEnum}
                 {+#if :applyComma},{/if}new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name})
                 {/if}
@@ -58,7 +58,7 @@
             SelectExpressionSet set = null;
             string aliased = null;
 
-            {#each $.Items}
+            {#each $.Columns}
             aliased = alias(nameof({$.FieldExpression.Name}));
             {#if !$.FieldExpression.Type.IsEnum}
             set &= aliased != nameof({$.FieldExpression.Name}) ? new {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression({$.FieldExpression.Name}).As(aliased) as {+#if $.Column.IsNullable}Nullable{/if}{$.FieldExpression.Type.TypeName}SelectExpression : GetInclusiveSelectExpression().Expressions.Single(x => (x.Expression as IExpressionNameProvider).Name == nameof({$.FieldExpression.Name}));
@@ -74,7 +74,7 @@
         protected override InsertExpressionSet<{$.EntityExpression.Name}> GetInclusiveInsertExpression({$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
         {{
             return new InsertExpressionSet<{$.EntityExpression.Name}>({($.EntityExpression.Name) => ToCamelCase} 
-				{#each $.Items}
+                {#each $.Columns}
                 {#if !$.Column.IsIdentity}
                 {#if !$.Column.IsComputed}
                 {#if $.FieldExpression.AllowInsert}
@@ -90,8 +90,8 @@
         {{
             AssignmentExpressionSet expr = new AssignmentExpressionSet();
 
-            {#each $.Items}
-			{#if !$.Column.IsIdentity}
+            {#each $.Columns}
+            {#if !$.Column.IsIdentity}
             {#if !$.Column.IsComputed}
             {#if $.FieldExpression.AllowUpdate}
             if (target.{$.FieldExpression.Name} != source.{$.FieldExpression.Name}) {{ expr &= {$.FieldExpression.Name}.Set(source.{$.FieldExpression.Name}); }}
@@ -104,16 +104,16 @@
 
         protected override void HydrateEntity(ISqlFieldReader reader, {$.EntityExpression.Name} {($.EntityExpression.Name) => ToCamelCase})
         {{
-			{#each $.Items}
-			{($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField().GetValue<{$.FieldExpression.Type.NullableAlias}>();
-			{/each}
+            {#each $.Columns}
+            {($.FieldExpression.EntityExpression.Name) => ToCamelCase}.{$.FieldExpression.Name} = reader.ReadField().GetValue<{$.FieldExpression.Type.NullableAlias}>();
+            {/each}
         }}
 		#endregion
 
         #region classes
-        {#each $.Items}
-		{>("FieldExpression") => GetTemplatePartial+}
-	    {/each}
+        {#each $.Columns}
+        {>("FieldExpression") => GetTemplatePartial+}
+        {/each}
         #endregion
     }}
     #endregion

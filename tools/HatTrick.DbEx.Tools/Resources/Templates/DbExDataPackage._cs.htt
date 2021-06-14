@@ -2,10 +2,10 @@
 using HatTrick.DbEx.Sql;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-{#each $.Items}
+{#each $.Schemas}
 namespace {$.SchemaExpression.NamespaceRoot}Data
 {{
-	{#each $.Items}
+	{#each $.Entities}
 {>("DataPackage") => GetTemplatePartial+}
 	{/each}
 }}

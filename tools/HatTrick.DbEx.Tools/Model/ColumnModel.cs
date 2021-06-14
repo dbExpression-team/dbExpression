@@ -44,9 +44,9 @@ namespace HatTrick.DbEx.Tools.Model
             IsNullable = column.IsNullable;
             IsIdentity = column.IsIdentity;
             IsComputed = column.IsComputed;
-            Size = SupportsSize(column) ? column.MaxLength == 0 ? (short?)null : column.MaxLength : null;
-            Precision = SupportsPrecision(column) ? column.Precision == 0 ? (byte?)null : column.Precision : null;
-            Scale = SupportsPrecision(column) ? column.Scale == 0 ? (byte?)null : column.Scale : null;
+            Size = column.SqlType.SupportsSize() ? column.MaxLength == 0 ? (short?)null : column.MaxLength : null;
+            Precision = column.SqlType.SupportsPrecision() ? column.Precision == 0 ? (byte?)null : column.Precision : null;
+            Scale = column.SqlType.SupportsPrecision() ? column.Scale == 0 ? (byte?)null : column.Scale : null;
             SqlType = column.SqlType;
         }
 
@@ -58,7 +58,7 @@ namespace HatTrick.DbEx.Tools.Model
             var attributes = new Dictionary<string, string>();
 
             attributes.Add("name", column.Name);
-            attributes.Add("sql type", GetDocumentationTypeName(column));
+            attributes.Add("sql type", column.SqlType.ToFriendlyName(column.MaxLength, column.Precision, column.Scale));
             attributes.Add("allow null", column.IsNullable ? "yes" : "no");
             if (!string.IsNullOrWhiteSpace(column.DefaultDefinition))
                 attributes.Add("default", column.DefaultDefinition);
@@ -68,58 +68,6 @@ namespace HatTrick.DbEx.Tools.Model
                 attributes.Add("computed", "yes");
 
             return attributes;
-        }
-
-        private string GetDocumentationTypeName(MsSqlColumn column)
-        {
-            switch (column.SqlType)
-            {
-                case SqlDbType.Binary:
-                case SqlDbType.VarBinary:
-                case SqlDbType.Char:
-                case SqlDbType.VarChar: return $"{column.SqlType.ToString().ToLower()}({(column.MaxLength == -1 ? "MAX" : column.MaxLength.ToString())})";
-                
-                case SqlDbType.NChar:
-                case SqlDbType.NVarChar: return $"{column.SqlType.ToString().ToLower()}({(column.MaxLength == -1 ? "MAX" : (column.MaxLength / 2).ToString())})";
-
-                case SqlDbType.Decimal:
-                    return $"{column.SqlType.ToString().ToLower()}({column.Precision}{(column.Scale > 0 ? $",{column.Scale}" : string.Empty)})";
-
-                default:
-                    return column.SqlType.ToString().ToLower();
-            }
-        }
-
-        private bool SupportsSize(MsSqlColumn column)
-        {
-            switch (column.SqlType)
-            {
-                case SqlDbType.Binary:
-                case SqlDbType.Char:
-                case SqlDbType.DateTime2:
-                case SqlDbType.DateTimeOffset:
-                case SqlDbType.VarBinary:
-                case SqlDbType.VarChar:
-                case SqlDbType.NChar:
-                case SqlDbType.NVarChar:
-                case SqlDbType.Time:
-                    return true;
-
-                default:
-                    return false;
-            }
-        }
-
-        private bool SupportsPrecision(MsSqlColumn column)
-        {
-            switch (column.SqlType)
-            {
-                case SqlDbType.Decimal:
-                    return true;
-
-                default:
-                    return false;
-            }
         }
     }
 }

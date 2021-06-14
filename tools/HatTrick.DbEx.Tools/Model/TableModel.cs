@@ -34,7 +34,7 @@ namespace HatTrick.DbEx.Tools.Model
         public TableModel(SchemaModel schema, MsSqlTable table)
         {
             Schema = schema ?? throw new ArgumentNullException(nameof(schema));
-            Name = table?.Name ?? throw new ArgumentNullException(nameof(schema));
+            Name = table?.Name ?? throw new ArgumentNullException(nameof(table));
             Properties = new Dictionary<string, string> { { "name", table.Name } };
             Indexes = BuildIndexDocumentationMetadata(table).ToList();
         }

@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -4089,6 +4089,576 @@ namespace HatTrick.DbEx.Sql.Builder
         /// <returns><see cref="NullableDecimalCeilingFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
         public static NullableDecimalCeilingFunctionExpression Ceiling(NullableDecimalElement element)
             => new NullableDecimalCeilingFunctionExpression(element);
+        #endregion
+
+        #region trim
+        /// <summary>
+        /// Construct an expression for the TRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to trim leading and trailing spaces from.</param>
+        /// <returns><see cref="ObjectTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectTrimFunctionExpression Trim(AnyObjectElement element)
+            => new ObjectTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the TRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading and trailing spaces from.</param>
+        /// <returns><see cref="StringTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringTrimFunctionExpression Trim(StringElement element)
+            => new StringTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the TRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/trim-transact-sql">Microsoft docs on TRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading and trailing spaces from.</param>
+        /// <returns><see cref="NullableStringTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringTrimFunctionExpression Trim(NullableStringElement element)
+            => new NullableStringTrimFunctionExpression(element);
+        #endregion
+
+        #region ltrim
+        /// <summary>
+        /// Construct an expression for the LTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to trim leading spaces from.</param>
+        /// <returns><see cref="ObjectLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectLTrimFunctionExpression LTrim(AnyObjectElement element)
+            => new ObjectLTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the LTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim leading spaces from.</param>
+        /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringLTrimFunctionExpression LTrim(StringElement element)
+            => new StringLTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the LTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/ltrim-transact-sql">Microsoft docs on LTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim leading spaces from.</param>
+        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringLTrimFunctionExpression LTrim(NullableStringElement element)
+            => new NullableStringLTrimFunctionExpression(element);
+        #endregion
+
+        #region rtrim
+        /// <summary>
+        /// Construct an expression for the RTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to trim trailing spaces from.</param>
+        /// <returns><see cref="ObjectRTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectRTrimFunctionExpression RTrim(AnyObjectElement element)
+            => new ObjectRTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the RTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to trim trailing spaces from.</param>
+        /// <returns><see cref="StringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringRTrimFunctionExpression RTrim(StringElement element)
+            => new StringRTrimFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the RTRIM transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/rtrim-transact-sql">Microsoft docs on RTRIM</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to trim trailing spaces from.</param>
+        /// <returns><see cref="NullableStringLTrimFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringRTrimFunctionExpression RTrim(NullableStringElement element)
+            => new NullableStringRTrimFunctionExpression(element);
+        #endregion
+
+        #region left
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectLeftFunctionExpression Left(AnyObjectElement element, int characterCount)
+            => new ObjectLeftFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectLeftFunctionExpression Left(AnyObjectElement element, Int32Element characterCount)
+            => new ObjectLeftFunctionExpression(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringLeftFunctionExpression Left(StringElement element, int characterCount)
+            => new StringLeftFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringLeftFunctionExpression Left(StringElement element, Int32Element characterCount)
+            => new StringLeftFunctionExpression(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringLeftFunctionExpression Left(NullableStringElement element, int characterCount)
+            => new NullableStringLeftFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringLeftFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringLeftFunctionExpression Left(NullableStringElement element, Int32Element characterCount)
+            => new NullableStringLeftFunctionExpression(element, characterCount);
+        #endregion
+
+        #region right
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectRightFunctionExpression Right(AnyObjectElement element, int characterCount)
+            => new ObjectRightFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the RIGHT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/right-transact-sql">Microsoft docs on RIGHT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectRightFunctionExpression Right(AnyObjectElement element, Int32Element characterCount)
+            => new ObjectRightFunctionExpression(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringRightFunctionExpression Right(StringElement element, int characterCount)
+            => new StringRightFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the RIGHT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/right-transact-sql">Microsoft docs on RIGHT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringRightFunctionExpression Right(StringElement element, Int32Element characterCount)
+            => new StringRightFunctionExpression(element, characterCount);
+
+        /// <summary>
+        /// Construct an expression for the LEFT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on LEFT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="int"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringRightFunctionExpression Right(NullableStringElement element, int characterCount)
+            => new NullableStringRightFunctionExpression(element, new Int32ExpressionMediator(new LiteralExpression<int>(characterCount)));
+
+        /// <summary>
+        /// Construct an expression for the RIGHT transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/left-transact-sql">Microsoft docs on RIGHT</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to take the number of characters from.</param>
+        /// <param name="characterCount">An expression of type <see cref="Int32Element"/> providing the number of characters to return from the left of <paramref name="element"/>.</param>
+        /// <returns><see cref="StringRightFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringRightFunctionExpression Right(NullableStringElement element, Int32Element characterCount)
+            => new NullableStringRightFunctionExpression(element, characterCount);
+        #endregion
+
+        #region abs
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/>.</returns>
+        public static ObjectAbsFunctionExpression Abs(AnyObjectElement element)
+            => new ObjectAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="ByteElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="ByteAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyByteElement"/> or <see cref="ByteElement"/>.</returns>
+        public static ByteAbsFunctionExpression Abs(ByteElement element)
+            => new ByteAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableByteElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableByteAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyByteElement"/> or <see cref="NullableByteElement"/>.</returns>
+        public static NullableByteAbsFunctionExpression Abs(NullableByteElement element)
+            => new NullableByteAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="Int16Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="Int16AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16AbsFunctionExpression Abs(Int16Element element)
+            => new Int16AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableInt16Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableInt16AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16AbsFunctionExpression Abs(NullableInt16Element element)
+            => new NullableInt16AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="Int32Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="Int32AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32AbsFunctionExpression Abs(Int32Element element)
+            => new Int32AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableInt32Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableInt32AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32AbsFunctionExpression Abs(NullableInt32Element element)
+            => new NullableInt32AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="Int64Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="Int64AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64AbsFunctionExpression Abs(Int64Element element)
+            => new Int64AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableInt64Element"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableInt64AbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64AbsFunctionExpression Abs(NullableInt64Element element)
+            => new NullableInt64AbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="SingleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="SingleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleAbsFunctionExpression Abs(SingleElement element)
+            => new SingleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableSingleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableSingleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleAbsFunctionExpression Abs(NullableSingleElement element)
+            => new NullableSingleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="DoubleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="DoubleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleAbsFunctionExpression Abs(DoubleElement element)
+            => new DoubleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableDoubleElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableDoubleAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleAbsFunctionExpression Abs(NullableDoubleElement element)
+            => new NullableDoubleAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="DecimalElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="DecimalAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalAbsFunctionExpression Abs(DecimalElement element)
+            => new DecimalAbsFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the ABS transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/abs-transact-sql">Microsoft docs on MIN</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableDecimalElement"/>, the value to use for calculating the absolute value of <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableDecimalAbsFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalAbsFunctionExpression Abs(NullableDecimalElement element)
+            => new NullableDecimalAbsFunctionExpression(element);
+        #endregion
+
+        #region replace
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, string pattern, string replacement)
+            => new ObjectReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, StringElement pattern, string replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, string pattern, StringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, StringElement pattern, StringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, NullableStringElement pattern, string replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, string pattern, NullableStringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="AnyObjectElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="ObjectReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static ObjectReplaceFunctionExpression Replace(AnyObjectElement element, NullableStringElement pattern, NullableStringElement replacement)
+            => new ObjectReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, string pattern, string replacement)
+            => new StringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, string replacement)
+            => new StringReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, string pattern, StringElement replacement)
+            => new StringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="StringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringReplaceFunctionExpression Replace(StringElement element, StringElement pattern, StringElement replacement)
+            => new StringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string pattern, string replacement)
+            => new NullableStringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, string replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string pattern, StringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="StringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="StringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="StringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, StringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, NullableStringElement pattern, string replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, new StringExpressionMediator(new LiteralExpression<string>(replacement)));
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, string pattern, NullableStringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, new StringExpressionMediator(new LiteralExpression<string>(pattern)), replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, NullableStringElement pattern, NullableStringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="string"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, NullableStringElement pattern, StringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
+
+        /// <summary>
+        /// Construct an expression for the REPLACE transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/replace-transact-sql">Microsoft docs on REPLACE</see></para>
+        /// </summary>
+        /// <param name="element">An expression of type <see cref="NullableStringElement"/> to replace all occurrences of <paramref name="pattern"/> with <paramref name="replacement"/>.</param>
+        /// <param name="pattern">A <see cref="string"/> literal to match in <paramref name="element"/>.</param>
+        /// <param name="replacement">An expression of type <see cref="NullableStringElement"/> which will replace all occurences of <paramref name="pattern"/> in <paramref name="element"/>.</param>
+        /// <returns><see cref="NullableStringReplaceFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableStringElement"/> or <see cref="NullableStringElement"/>.</returns>
+        public static NullableStringReplaceFunctionExpression Replace(NullableStringElement element, StringElement pattern, NullableStringElement replacement)
+            => new NullableStringReplaceFunctionExpression(element, pattern, replacement);
         #endregion
     }
 }

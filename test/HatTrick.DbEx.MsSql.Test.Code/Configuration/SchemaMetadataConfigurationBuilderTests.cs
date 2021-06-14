@@ -138,6 +138,7 @@ namespace HatTrick.DbEx.MsSql.Test.Code.Configuration
             public ISqlEntityMetadata FindEntityMetadata(string identifier) => throw new NotImplementedException();
             public ISqlFieldMetadata FindFieldMetadata(string identifier) => throw new NotImplementedException();
             public ISqlSchemaMetadata FindSchemaMetadata(string identifier) => throw new NotImplementedException();
+            public ISqlParameterMetadata FindParameterMetadata(string identifier) => throw new NotImplementedException();
         }
     }
 }

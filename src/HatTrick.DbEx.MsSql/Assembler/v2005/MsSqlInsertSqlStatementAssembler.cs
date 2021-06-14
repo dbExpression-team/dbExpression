@@ -40,26 +40,18 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
             builder.Appender.Write(" (").LineBreak();
             builder.Appender.Indentation++;
 
-            context.PushAppendStyles(EntityExpressionAppendStyle.None, FieldExpressionAppendStyle.Alias);
-            try
+            for (var i = 0; i < insertSet.Count; i++)
             {
-                for (var i = 0; i < insertSet.Count; i++)
-                {
-                    if (identity is object && (insertSet[i] as IAssignmentExpressionProvider).Assignee == identity)
-                        continue; //don't emit identity columns with the values; they can't be inserted into the table
+                if (identity is object && (insertSet[i] as IAssignmentExpressionProvider).Assignee == identity)
+                    continue; //don't emit identity columns with the values; they can't be inserted into the table
 
-                    builder.Appender.Indent();
-                    builder.AppendElement(
-                        (insertSet[i] as IAssignmentExpressionProvider).Assignee,
-                        context
-                    );
-                    if (i < insertSet.Count - 1)
-                        builder.Appender.Write(", ").LineBreak();
-                }
-            }
-            finally
-            {
-                context.PopAppendStyles();
+                builder.Appender.Indent();
+                builder.AppendElement(
+                    (insertSet[i] as IAssignmentExpressionProvider).Assignee,
+                    context
+                );
+                if (i < insertSet.Count - 1)
+                    builder.Appender.Write(", ").LineBreak();
             }
 
             builder.Appender.LineBreak()
@@ -74,14 +66,14 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
             context.PushEntityAppendStyle(EntityExpressionAppendStyle.None);
             try
             {
-                for (var i = 0; i < insertSet.Count; i++)
+                for (var i = 0; i < expression.Outputs.Count; i++)
                 {
                     builder.Appender.Indent().Write("INSERTED.");
                     builder.AppendElement(
-                        (insertSet[i] as IAssignmentExpressionProvider).Assignee,
+                        expression.Outputs[i],
                         context
                     );
-                    if (i < insertSet.Count - 1)
+                    if (i < expression.Outputs.Count - 1)
                         builder.Appender.Write(",");
 
                     builder.Appender.LineBreak();
@@ -94,6 +86,9 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
 
             builder.Appender.Indentation--.Indent().Write("VALUES (").LineBreak()
                 .Indentation++;
+
+            //write the ordinal position for the single entity (required to support standard executor)
+            //builder.Appender.Indent().Write("0,").LineBreak();
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
             for (var i = 0; i < insertSet.Count; i++)

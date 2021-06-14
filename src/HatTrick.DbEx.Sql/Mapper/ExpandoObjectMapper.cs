@@ -25,7 +25,7 @@ namespace HatTrick.DbEx.Sql.Mapper
 {
     public class ExpandoObjectMapper : IExpandoObjectMapper
     {
-        public void Map(ExpandoObject expandoObject, ISqlFieldReader reader, IValueConverterProvider finder)
+        public void Map(ExpandoObject expandoObject, ISqlFieldReader reader)
         {
             var expando = expandoObject as IDictionary<string, object>;
             ISqlField field;

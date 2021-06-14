@@ -19,15 +19,25 @@
 using HatTrick.DbEx.Sql.Expression;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 
 namespace HatTrick.DbEx.Sql.Assembler
 {
     public interface ISqlParameterBuilder
     {
         IList<ParameterizedExpression> Parameters { get; }
-        ParameterizedExpression Add<T>(T value, AssemblyContext context);
-        ParameterizedExpression Add(object value, Type valueType, AssemblyContext context);
-        ParameterizedExpression Add<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        void AddParameter(ParameterizedExpression parameter);
+
+        ParameterizedExpression CreateInputParameter<T>(T value, AssemblyContext context);
+        ParameterizedExpression CreateInputParameter(object value, Type valueType, AssemblyContext context);
+        ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateInputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context);
+
+        ParameterizedExpression CreateInputOutputParameter<T>(T value, AssemblyContext context);
+        ParameterizedExpression CreateInputOutputParameter(object value, Type valueType, AssemblyContext context);
+        ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateInputOutputParameter<T>(T value, Type declaredType, ISqlParameterMetadata meta, AssemblyContext context);
+
+        ParameterizedExpression CreateOutputParameter(Type valueType, ISqlFieldMetadata meta, AssemblyContext context);
+        ParameterizedExpression CreateOutputParameter(Type valueType, ISqlParameterMetadata meta, AssemblyContext context);
     }
 }

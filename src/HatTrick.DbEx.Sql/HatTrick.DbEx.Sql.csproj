@@ -18,8 +18,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Expression\IExpressionSet.cs" />
+      <Compile Remove="Expression\IExpressionSet{T}.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     </ItemGroup>
 
 </Project>

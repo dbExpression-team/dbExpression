@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.MsSql.Expression;
+using HatTrick.DbEx.MsSql.Expression;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Builder;
 using HatTrick.DbEx.Sql.Expression;
@@ -1060,7 +1060,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="NullableInt32DateDiffFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
         public static NullableInt32DateDiffFunctionExpression DateDiff(DateParts datePart, NullableDateTimeOffsetElement startDate, DateTime? endDate)
             => new NullableInt32DateDiffFunctionExpression(new DatePartsExpression<DateParts>(datePart), startDate, new NullableDateTimeOffsetExpressionMediator(new LiteralExpression<DateTime?>(endDate)));
-        
+
         /// <summary>
         /// Construct an expression for the DATEDIFF transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/datediff-transact-sql">Microsoft docs on DATEDIFF</see></para>
@@ -1244,5 +1244,1095 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="NewIdFunctionExpression"/> for use with any operation accepting a <see cref="AnyGuidElement"/> or <see cref="GuidElement"/>.</returns>
         public static NewIdFunctionExpression NewId()
              => new NewIdFunctionExpression();
+
+        #region len
+        /// <summary>
+        /// Construct an expression for the LEN transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
+        /// </summary>
+        /// <param name="element">A <see cref="AnyStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
+        /// <returns><see cref="Int64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64LengthFunctionExpression Len(StringElement element)
+            => new Int64LengthFunctionExpression(element);
+
+        /// <summary>
+        /// Construct an expression for the LEN transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/len-transact-sql">Microsoft docs on LEN</see></para>
+        /// </summary>
+        /// <param name="element">A <see cref="NullableStringElement"/> for determining the number of characters, excluding trailing spaces.</param>
+        /// <returns><see cref="NullableInt64LengthFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64LengthFunctionExpression Len(NullableStringElement element)
+            => new NullableInt64LengthFunctionExpression(element);
+        #endregion
+
+        #region patindex
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectPatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static ObjectPatIndexFunctionExpression PatIndex(string pattern, ObjectElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectPatIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectPatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static ObjectPatIndexFunctionExpression PatIndex(StringElement pattern, ObjectElement element)
+            => new ObjectPatIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="Int64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64PatIndexFunctionExpression PatIndex(string pattern, StringElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64PatIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> that contains the expression to be found.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="Int64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64PatIndexFunctionExpression PatIndex(StringElement pattern, StringElement element)
+            => new Int64PatIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> literal to be found.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64PatIndexFunctionExpression PatIndex(string pattern, NullableStringElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64PatIndexFunctionExpression(new NullableStringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the PATINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/patindex-transact-sql">Microsoft docs on PATINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="AnyStringElement"/> that contains the expression to be found.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64PatIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64PatIndexFunctionExpression PatIndex(AnyStringElement pattern, NullableStringElement element)
+            => new NullableInt64PatIndexFunctionExpression(pattern, element);
+        #endregion
+
+        #region charindex
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="AnyStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, long startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, int startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, Int32Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(string pattern, ObjectElement element, Int64Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new ObjectCharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element)
+            => new ObjectCharIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, long startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, int startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, Int32Element startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="ObjectElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="ObjectCharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectCharIndexFunctionExpression CharIndex(StringElement pattern, ObjectElement element, Int64Element startSearchPosition)
+            => new ObjectCharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(string pattern, StringElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="AnyStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(string pattern, StringElement element, long startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(string pattern, StringElement element, int startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(string pattern, StringElement element, Int32Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(string pattern, StringElement element, Int64Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new Int64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element)
+            => new Int64CharIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element, long startSearchPosition)
+            => new Int64CharIndexFunctionExpression(pattern, element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element, int startSearchPosition)
+            => new Int64CharIndexFunctionExpression(pattern, element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element, Int32Element startSearchPosition)
+            => new Int64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="Int64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element, Int64Element startSearchPosition)
+            => new Int64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="AnyStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element, long startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element, int startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element, Int32Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="expression"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element, Int64Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, StringElement element, NullableInt32Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, StringElement element, NullableInt64Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element, NullableInt32Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(string pattern, NullableStringElement element, NullableInt64Element startSearchPosition)
+        {
+            if (pattern is null)
+                throw new ArgumentException($"{nameof(pattern)} cannot be null or empty.", nameof(pattern));
+            return new NullableInt64CharIndexFunctionExpression(new StringExpressionMediator(new LiteralExpression<string>(pattern)), element, startSearchPosition);
+        }
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="AnyStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element, long startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element, int startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element, Int32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="expression"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element, Int64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element, NullableInt32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, StringElement element, NullableInt64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element, NullableInt32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="StringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(StringElement pattern, NullableStringElement element, NullableInt64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element, long startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element, int startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element, Int32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element, Int32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="string"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element, long startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, new Int64ExpressionMediator(new LiteralExpression<long>(startSearchPosition)));
+        
+        /// <summary>
+                                                                                                                                                             /// Construct an expression for the CHARINDEX transact sql function.
+                                                                                                                                                             /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+                                                                                                                                                             /// </summary>
+                                                                                                                                                             /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+                                                                                                                                                             /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+                                                                                                                                                             /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+                                                                                                                                                             /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element, Int64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element, Int64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element, int startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, new Int32ExpressionMediator(new LiteralExpression<int>(startSearchPosition)));
+        
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element, NullableInt32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="StringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, StringElement element, NullableInt64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element, NullableInt32Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+
+        /// <summary>
+        /// Construct an expression for the CHARINDEX transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/charindex-transact-sql">Microsoft docs on CHARINDEX</see></para>
+        /// </summary>
+        /// <param name="pattern">A <see cref="NullableStringElement"/> to search for in <paramref name="element"/>.</param>
+        /// <param name="element">A <see cref="NullableStringElement"/> the expression to search.</param>
+        /// <param name="startSearchPosition">Where in <paramref name="element"/> to begin the search for <paramref name="pattern"/>.</param>
+        /// <returns><see cref="NullableInt64CharIndexFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64CharIndexFunctionExpression CharIndex(NullableStringElement pattern, NullableStringElement element, NullableInt64Element startSearchPosition)
+            => new NullableInt64CharIndexFunctionExpression(pattern, element, startSearchPosition);
+        #endregion
+
+        #region substring
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, int start, int length)
+            => new ObjectSubstringFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(start)), new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int32Element start, int length)
+            => new ObjectSubstringFunctionExpression(expression, start, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, int start, Int32Element length)
+            => new ObjectSubstringFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int32Element start, Int32Element length)
+            => new ObjectSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, long start, long length)
+            => new ObjectSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int64Element start, long length)
+            => new ObjectSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, long start, Int64Element length)
+            => new ObjectSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int64Element start, Int64Element length)
+            => new ObjectSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, int start, long length)
+            => new ObjectSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int32Element start, long length)
+            => new ObjectSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, int start, Int64Element length)
+            => new ObjectSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int32Element start, Int64Element length)
+            => new ObjectSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, long start, int length)
+            => new ObjectSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int64Element start, int length)
+            => new ObjectSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, long start, Int32Element length)
+            => new ObjectSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="ObjectSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectSubstringFunctionExpression Substring(ObjectElement expression, Int64Element start, Int32Element length)
+            => new ObjectSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, int length)
+            => new StringSubstringFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(start)), new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int32Element start, int length)
+            => new StringSubstringFunctionExpression(expression, start, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, Int32Element length)
+            => new StringSubstringFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int32Element start, Int32Element length)
+            => new StringSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, long length)
+            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int64Element start, long length)
+            => new StringSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, Int64Element length)
+            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int64Element start, Int64Element length)
+            => new StringSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, long length)
+            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int32Element start, long length)
+            => new StringSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, int start, Int64Element length)
+            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int32Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int32Element start, Int64Element length)
+            => new StringSubstringFunctionExpression(expression, start, length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, int length)
+            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">The number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int64Element start, int length)
+            => new StringSubstringFunctionExpression(expression, start, new Int64ExpressionMediator(new LiteralExpression<long>(length)));
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">The start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int32Element"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, long start, Int32Element length)
+            => new StringSubstringFunctionExpression(expression, new Int64ExpressionMediator(new LiteralExpression<long>(start)), length);
+
+        /// <summary>
+        /// Construct an expression for the SUBSTRING transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/substring-transact-sql">Microsoft docs on SUBSTRING</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="StringElement"/> to take a portion of.</param>
+        /// <param name="start">A <see cref="Int64Element"/>, the start position in <paramref name="expression"/> to start taking characters.</param>
+        /// <param name="length">A <see cref="Int64ElInt32Elementement"/>, the number of characters to take.</param>
+        /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
+        public static StringSubstringFunctionExpression Substring(StringElement expression, Int64Element start, Int32Element length)
+            => new StringSubstringFunctionExpression(expression, start, length);
+        #endregion
     }
 }

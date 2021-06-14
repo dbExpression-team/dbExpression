@@ -704,5 +704,165 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
             before.Should().Be(after + 1);
             after.Should().Be(cancelOnIteration);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_when_executing_stored_procedure(int version, int expected = 6)
+        {
+            //given
+            var executionCount = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnAfterSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeStoredProcedureExecution(_ => executionCount++)
+                        .OnBeforeSqlStatementExecution(_ => executionCount++)
+                        .OnAfterSqlStatementExecution(_ => executionCount++)
+                        .OnAfterStoredProcedureExecution(_ => executionCount++)
+                    );
+
+            //when
+            db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).Execute();
+
+            //then
+            executionCount.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_when_executing_stored_procedure_and_event_confiugurations_are_repeated(int version, int expected = 12)
+        {
+            //given
+            var executionCount = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeSqlStatementAssembly(_ => executionCount++)
+
+                        .OnAfterSqlStatementAssembly(_ => executionCount++)
+                        .OnAfterSqlStatementAssembly(_ => executionCount++)
+
+                        .OnBeforeStoredProcedureExecution(_ => executionCount++)
+                        .OnBeforeStoredProcedureExecution(_ => executionCount++)
+
+                        .OnBeforeSqlStatementExecution(_ => executionCount++)
+                        .OnBeforeSqlStatementExecution(_ => executionCount++)
+
+                        .OnAfterSqlStatementExecution(_ => executionCount++)
+                        .OnAfterSqlStatementExecution(_ => executionCount++)
+
+                        .OnAfterStoredProcedureExecution(_ => executionCount++)
+                        .OnAfterStoredProcedureExecution(_ => executionCount++)
+                    );
+
+            //when
+            db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).Execute();
+
+            //then
+            executionCount.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Do_all_pipeline_events_fire_in_order_when_executing_stored_procedure(int version, string expected = "543210")
+        {
+            //given
+            var execution = "";
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => execution += "5")
+                        .OnAfterSqlStatementAssembly(_ => execution += "4")
+                        .OnBeforeStoredProcedureExecution(_ => execution += "3")
+                        .OnBeforeSqlStatementExecution(_ => execution += "2")
+                        .OnAfterSqlStatementExecution(_ => execution += "1")
+                        .OnAfterStoredProcedureExecution(_ => execution += "0")
+                    );
+
+            //when
+            db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).Execute();
+
+            //then
+            execution.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Do_all_pipeline_events_fire_when_executing_stored_procedure_async(int version, int expected = 6)
+        {
+            //given
+            var executionCount = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnAfterSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeStoredProcedureExecution(_ => executionCount++)
+                        .OnBeforeSqlStatementExecution(_ => executionCount++)
+                        .OnAfterSqlStatementExecution(_ => executionCount++)
+                        .OnAfterStoredProcedureExecution(_ => executionCount++)
+                    );
+
+            //when
+            await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).ExecuteAsync();
+
+            //then
+            executionCount.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Do_all_pipeline_events_fire_when_executing_stored_procedure_async_and_event_configurations_are_repeated(int version, int expected = 12)
+        {
+            //given
+            var executionCount = 0;
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeSqlStatementAssembly(_ => executionCount++)
+
+                        .OnAfterSqlStatementAssembly(_ => executionCount++)
+                        .OnAfterSqlStatementAssembly(_ => executionCount++)
+
+                        .OnBeforeStoredProcedureExecution(_ => executionCount++)
+                        .OnBeforeStoredProcedureExecution(_ => executionCount++)
+
+                        .OnBeforeSqlStatementExecution(_ => executionCount++)
+                        .OnBeforeSqlStatementExecution(_ => executionCount++)
+
+                        .OnAfterSqlStatementExecution(_ => executionCount++)
+                        .OnAfterSqlStatementExecution(_ => executionCount++)
+
+                        .OnAfterStoredProcedureExecution(_ => executionCount++)
+                        .OnAfterStoredProcedureExecution(_ => executionCount++)
+                    );
+
+            //when
+            await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).ExecuteAsync();
+
+            //then
+            executionCount.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Do_all_pipeline_events_fire_in_order_when_executing_stored_procedure_async(int version, string expected = "543210")
+        {
+            //given
+            var execution = "";
+            var config = ConfigureForMsSqlVersion(version,
+                    c => c.Events
+                        .OnBeforeSqlStatementAssembly(_ => execution += "5")
+                        .OnAfterSqlStatementAssembly(_ => execution += "4")
+                        .OnBeforeStoredProcedureExecution(_ => execution += "3")
+                        .OnBeforeSqlStatementExecution(_ => execution += "2")
+                        .OnAfterSqlStatementExecution(_ => execution += "1")
+                        .OnAfterStoredProcedureExecution(_ => execution += "0")
+                    );
+
+            //when
+            await db.sp.dbo.SelectPersonId_As_ScalarValue_With_Input(1).ExecuteAsync();
+
+            //then
+            execution.Should().Be(expected);
+        }
     }
 }

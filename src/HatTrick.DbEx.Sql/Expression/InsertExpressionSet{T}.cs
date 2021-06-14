@@ -22,8 +22,7 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public class InsertExpressionSet<T> : InsertExpressionSet, 
-        IExpressionSet<InsertExpression>
+    public class InsertExpressionSet<T> : InsertExpressionSet
     {
         #region interface
         public new T Entity { get; private set; }

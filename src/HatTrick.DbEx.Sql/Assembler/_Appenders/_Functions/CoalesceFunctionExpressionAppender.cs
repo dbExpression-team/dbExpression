@@ -32,10 +32,10 @@ namespace HatTrick.DbEx.Sql.Assembler
                 return;
 
             builder.Appender.Write("COALESCE(");
-            for (var i = 0; i < expressions.Count; i++)
+            for (var i = 0; i < expressions.Count(); i++)
             {
-                builder.AppendElement(expressions[i], context);
-                if (i < expressions.Count - 1)
+                builder.AppendElement(expressions.ElementAt(i), context);
+                if (i < expressions.Count() - 1)
                     builder.Appender.Write(", ");
             }
             builder.Appender.Write(")");

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,8 +22,7 @@ using System;
 namespace HatTrick.DbEx.Sql.Executor
 {
     public interface IValueConverterProvider
-
     {
-        IValueConverter FindConverter(int fieldIndex, Type databaseType, object value);
+        IValueConverter FindConverter(int fieldIndex, Type requestedType, object value);
     }
 }

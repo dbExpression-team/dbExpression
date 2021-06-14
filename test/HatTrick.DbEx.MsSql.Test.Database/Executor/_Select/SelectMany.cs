@@ -90,6 +90,27 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_retrieve_page_of_purchase_records_with_aliased_field(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(dbo.Purchase.PersonId.As("person_id"))
+                .Distinct()
+                .From(dbo.Purchase)
+                .OrderBy(dbo.Purchase.PersonId)
+                .Offset(5)
+                .Limit(1000);
+
+            //when               
+            var ids = exp.Execute();
+
+            //then
+            ids.Should().HaveCount(expected);
+        }
+
+        [Theory]
         [Trait("Operation", "GROUP BY")]
         [Trait("Operation", "HAVING")]
         [Trait("Operation", "ORDER BY")]

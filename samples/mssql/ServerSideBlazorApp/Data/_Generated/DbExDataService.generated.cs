@@ -14,11 +14,13 @@ using System.Linq;
 #pragma warning disable CA1034 // Nested types should not be visible
 namespace ServerSideBlazorApp.DataService
 {
-	using _dboDataService =  ServerSideBlazorApp.dboDataService;
-	using _secDataService =  ServerSideBlazorApp.secDataService;
+	using ServerSideBlazorApp.dboDataService;
+	using ServerSideBlazorApp.secDataService;
+	using _dboDataService = ServerSideBlazorApp.dboDataService;
+	using _secDataService = ServerSideBlazorApp.secDataService;
 
     #region runtime db
-    public abstract class CRMDatabaseRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
+    public abstract partial class CRMDatabaseRuntimeSqlDatabase : IRuntimeSqlDatabase, IExpressionListProvider<SchemaExpression>
     {
         #region internals
         protected static readonly MsSqlQueryExpressionBuilderFactory expressionBuilderFactory = new MsSqlQueryExpressionBuilderFactory();
@@ -28,9 +30,7 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region interface
-        IList<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
-        public static _dboDataService.dboSchemaExpression dbo => (_dboDataService.dboSchemaExpression)schemas.Single(s => s.Identifier == "dbo");
-        public static _secDataService.secSchemaExpression sec => (_secDataService.secSchemaExpression)schemas.Single(s => s.Identifier == "sec");
+        IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
         #endregion
 
         #region constructors
@@ -461,7 +461,7 @@ namespace ServerSideBlazorApp.DataService
             => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
@@ -469,33 +469,33 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectValue{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ExpandoObject> SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, element1, element2, elements);
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, element1, element2, elements);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The dynamic properties of the returned objects are defined by the <see cref="AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="element1">Any expression</param>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectValue{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, elements);
+        /// <returns><see cref="SelectDynamic"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, elements);
 
         /// <summary>
-        /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
+        /// Start constructing a sql SELECT query expression for a single <see cref="System.Dynamic.ExpandoObject" /> object.  The properties of the object are defined by the <see cref="AnyElement" /> method parameters.
         /// <para>
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValue<ExpandoObject> SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectValueBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamic SelectOne(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => expressionBuilderFactory.CreateSelectDynamicBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region select many
@@ -914,9 +914,9 @@ namespace ServerSideBlazorApp.DataService
         /// <param name="element1">Any expression</param>
         /// <param name="element2">Any expression</param>
         /// <param name="elements">Any expression</param>
-        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ExpandoObject> SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, element1, element2, elements);
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(AnyElement element1, AnyElement element2, params AnyElement[] elements)
+            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, element1, element2, elements);
 
         /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -925,9 +925,9 @@ namespace ServerSideBlazorApp.DataService
         /// </para>
         /// </summary>
         /// <param name="elements">A list of any expression</param>
-        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, elements);
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements)
+            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, elements);
 
             /// <summary>
         /// Start constructing a sql SELECT query expression for a list of <see cref="System.Dynamic.ExpandoObject" /> objects.  The dynamic properties of each object are defined by the <see cref="AnyElement" /> method parameters.
@@ -937,9 +937,9 @@ namespace ServerSideBlazorApp.DataService
         /// </summary>
         /// <param name="elements">A list of any expression that is valid for a SELECT query expression.</param>
         /// <param name="additionalElements">Any additional fields to select as part of the SELECT query expression.</param>
-        /// <returns><see cref="SelectValues{ExpandoObject}"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
-        public static SelectValues<ExpandoObject> SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
-            => expressionBuilderFactory.CreateSelectValuesBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
+        /// <returns><see cref="SelectDynamics"/>, a fluent builder for constructing a sql SELECT query expression.</returns>
+        public static SelectDynamics SelectMany(IEnumerable<AnyElement> elements, params AnyElement[] additionalElements)
+            => expressionBuilderFactory.CreateSelectDynamicsBuilder(configuration, (elements ?? throw new ArgumentNullException(nameof(elements))).Concat(additionalElements));
         #endregion
 
         #region update
@@ -1044,10 +1044,363 @@ namespace ServerSideBlazorApp.DataService
 
         #region fx
         /// <inheritdoc />
-        public class fx : MsSqlFunctionExpressionBuilder
+        public partial class fx : MsSqlFunctionExpressionBuilder
         {
         }
         #endregion
+
+        #region sp
+        /// <inheritdoc />
+        public partial class sp : MsSqlStoredProcedureExpressionBuilder
+        {
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the dbo schema.
+            /// </summary>
+            public partial class dbo
+            {
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input(int? P1)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_Dynamic_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_InputOutput stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_Dynamic_With_Input_And_Output stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPerson_As_Dynamic_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input(int? P1)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_DynamicList_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_InputOutput stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPerson_As_DynamicList_With_Input_And_Output stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPerson_As_DynamicList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input(int? P1)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Default_Value stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Default_Value(int? P1)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_InputOutput stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValue_With_Input_And_Output stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValue_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input(int? P1)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValueList_With_InputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the SelectPersonId_As_ScalarValueList_With_Input_And_Output stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="outputParameters">The delegate to manage the output parameters returned from execution of the stored procedure.</param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation SelectPersonId_As_ScalarValueList_With_Input_And_Output(int? P1, Action<ISqlOutputParameterList> outputParameters)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, outputParameters));
+
+                /// <summary>
+                /// Method to start constructing a stored procedure query expression for the UpdatePersonCreditLimit_With_Inputs stored procedure.
+                /// </summary>
+                /// <param name="P1">The value to use for creating the database parameter @P1.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@P1</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <param name="CreditLimit">The value to use for creating the database parameter @CreditLimit.
+                /// <para>Database Properties:
+                /// <list type="table">
+                /// <item>
+                /// <term>name</term><description>@CreditLimit</description>
+                /// </item>
+                /// <item>
+                /// <term>sql type</term><description>int</description>
+                /// </item>
+                /// <item>
+                /// <term>allow null</term><description>yes</description>
+                /// </item>
+                /// </list>
+                /// </para>
+                /// </param>
+                /// <returns><see cref="StoredProcedureContinuation"/>, a fluent builder for constructing a stored procedure query expression.</returns>
+                public static StoredProcedureContinuation UpdatePersonCreditLimit_With_Inputs(int? P1,int? CreditLimit)
+                    => expressionBuilderFactory.CreateStoredProcedureBuilder(configuration, new UpdatePersonCreditLimit_With_InputsStoredProcedure("dbo", schemas.Single(s => s.Identifier == "dbo"), P1, CreditLimit));
+
+            }
+
+            /// <summary>
+            /// Accessors to construct and execute stored procedure query expressions in the sec schema.
+            /// </summary>
+            public partial class sec
+            {
+            }
+
+        }
+        #endregion
+
     }
     #endregion
 
@@ -1070,6 +1423,7 @@ namespace ServerSideBlazorApp.DataService
 namespace ServerSideBlazorApp.dboDataService
 {
 	using ServerSideBlazorApp.dboData;
+	using System.Data;
 
     #region dbo schema expression
     public class dboSchemaExpression : SchemaExpression
@@ -1294,7 +1648,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public AddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -1396,15 +1750,15 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Address address)
         {
-			address.Id = reader.ReadField().GetValue<int>();
-			address.AddressType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.AddressType?>();
-			address.Line1 = reader.ReadField().GetValue<string>();
-			address.Line2 = reader.ReadField().GetValue<string>();
-			address.City = reader.ReadField().GetValue<string>();
-			address.State = reader.ReadField().GetValue<string>();
-			address.Zip = reader.ReadField().GetValue<string>();
-			address.DateCreated = reader.ReadField().GetValue<DateTime>();
-			address.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            address.Id = reader.ReadField().GetValue<int>();
+            address.AddressType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.AddressType?>();
+            address.Line1 = reader.ReadField().GetValue<string>();
+            address.Line2 = reader.ReadField().GetValue<string>();
+            address.City = reader.ReadField().GetValue<string>();
+            address.State = reader.ReadField().GetValue<string>();
+            address.Zip = reader.ReadField().GetValue<string>();
+            address.DateCreated = reader.ReadField().GetValue<DateTime>();
+            address.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -1864,7 +2218,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public CustomerEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public CustomerEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -1980,17 +2334,17 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Customer customer)
         {
-			customer.Id = reader.ReadField().GetValue<int>();
-			customer.FirstName = reader.ReadField().GetValue<string>();
-			customer.LastName = reader.ReadField().GetValue<string>();
-			customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
-			customer.GenderType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.GenderType>();
-			customer.CreditLimit = reader.ReadField().GetValue<int?>();
-			customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
-			customer.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
-			customer.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
-			customer.DateCreated = reader.ReadField().GetValue<DateTime>();
-			customer.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            customer.Id = reader.ReadField().GetValue<int>();
+            customer.FirstName = reader.ReadField().GetValue<string>();
+            customer.LastName = reader.ReadField().GetValue<string>();
+            customer.BirthDate = reader.ReadField().GetValue<DateTime?>();
+            customer.GenderType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.GenderType>();
+            customer.CreditLimit = reader.ReadField().GetValue<int?>();
+            customer.YearOfLastCreditLimitReview = reader.ReadField().GetValue<int?>();
+            customer.RegistrationDate = reader.ReadField().GetValue<DateTimeOffset>();
+            customer.LastLoginDate = reader.ReadField().GetValue<DateTimeOffset?>();
+            customer.DateCreated = reader.ReadField().GetValue<DateTime>();
+            customer.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -2366,7 +2720,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public CustomerAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public CustomerAddressEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -2435,10 +2789,10 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, CustomerAddress customerAddress)
         {
-			customerAddress.Id = reader.ReadField().GetValue<int>();
-			customerAddress.CustomerId = reader.ReadField().GetValue<int>();
-			customerAddress.AddressId = reader.ReadField().GetValue<int>();
-			customerAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
+            customerAddress.Id = reader.ReadField().GetValue<int>();
+            customerAddress.CustomerId = reader.ReadField().GetValue<int>();
+            customerAddress.AddressId = reader.ReadField().GetValue<int>();
+            customerAddress.DateCreated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -2886,7 +3240,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public ProductEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -3044,23 +3398,23 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Product product)
         {
-			product.Id = reader.ReadField().GetValue<int>();
-			product.ProductCategoryType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
-			product.Name = reader.ReadField().GetValue<string>();
-			product.Description = reader.ReadField().GetValue<string>();
-			product.ListPrice = reader.ReadField().GetValue<double>();
-			product.Price = reader.ReadField().GetValue<double>();
-			product.Quantity = reader.ReadField().GetValue<int>();
-			product.Image = reader.ReadField().GetValue<byte[]>();
-			product.Height = reader.ReadField().GetValue<decimal?>();
-			product.Width = reader.ReadField().GetValue<decimal?>();
-			product.Depth = reader.ReadField().GetValue<decimal?>();
-			product.Weight = reader.ReadField().GetValue<decimal?>();
-			product.ShippingWeight = reader.ReadField().GetValue<decimal>();
-			product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-			product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
-			product.DateCreated = reader.ReadField().GetValue<DateTime>();
-			product.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            product.Id = reader.ReadField().GetValue<int>();
+            product.ProductCategoryType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.ProductCategoryType?>();
+            product.Name = reader.ReadField().GetValue<string>();
+            product.Description = reader.ReadField().GetValue<string>();
+            product.ListPrice = reader.ReadField().GetValue<double>();
+            product.Price = reader.ReadField().GetValue<double>();
+            product.Quantity = reader.ReadField().GetValue<int>();
+            product.Image = reader.ReadField().GetValue<byte[]>();
+            product.Height = reader.ReadField().GetValue<decimal?>();
+            product.Width = reader.ReadField().GetValue<decimal?>();
+            product.Depth = reader.ReadField().GetValue<decimal?>();
+            product.Weight = reader.ReadField().GetValue<decimal?>();
+            product.ShippingWeight = reader.ReadField().GetValue<decimal>();
+            product.ValidStartTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            product.ValidEndTimeOfDayForPurchase = reader.ReadField().GetValue<TimeSpan?>();
+            product.DateCreated = reader.ReadField().GetValue<DateTime>();
+            product.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -3767,7 +4121,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PurchaseEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -3897,19 +4251,19 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Purchase purchase)
         {
-			purchase.Id = reader.ReadField().GetValue<int>();
-			purchase.CustomerId = reader.ReadField().GetValue<int>();
-			purchase.OrderNumber = reader.ReadField().GetValue<string>();
-			purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
-			purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
-			purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
-			purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
-			purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
-			purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
-			purchase.PaymentMethodType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentMethodType>();
-			purchase.PaymentSourceType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentSourceType?>();
-			purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
-			purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            purchase.Id = reader.ReadField().GetValue<int>();
+            purchase.CustomerId = reader.ReadField().GetValue<int>();
+            purchase.OrderNumber = reader.ReadField().GetValue<string>();
+            purchase.TotalPurchaseQuantity = reader.ReadField().GetValue<int>();
+            purchase.TotalPurchaseAmount = reader.ReadField().GetValue<double>();
+            purchase.PurchaseDate = reader.ReadField().GetValue<DateTime>();
+            purchase.ShipDate = reader.ReadField().GetValue<DateTime?>();
+            purchase.ExpectedDeliveryDate = reader.ReadField().GetValue<DateTime?>();
+            purchase.TrackingIdentifier = reader.ReadField().GetValue<Guid?>();
+            purchase.PaymentMethodType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentMethodType>();
+            purchase.PaymentSourceType = reader.ReadField().GetValue<ServerSideBlazorApp.Data.PaymentSourceType?>();
+            purchase.DateCreated = reader.ReadField().GetValue<DateTime>();
+            purchase.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4393,7 +4747,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PurchaseLineEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -4481,13 +4835,13 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PurchaseLine purchaseLine)
         {
-			purchaseLine.Id = reader.ReadField().GetValue<int>();
-			purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
-			purchaseLine.ProductId = reader.ReadField().GetValue<int>();
-			purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
-			purchaseLine.Quantity = reader.ReadField().GetValue<int>();
-			purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
-			purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            purchaseLine.Id = reader.ReadField().GetValue<int>();
+            purchaseLine.PurchaseId = reader.ReadField().GetValue<int>();
+            purchaseLine.ProductId = reader.ReadField().GetValue<int>();
+            purchaseLine.PurchasePrice = reader.ReadField().GetValue<decimal>();
+            purchaseLine.Quantity = reader.ReadField().GetValue<int>();
+            purchaseLine.DateCreated = reader.ReadField().GetValue<DateTime>();
+            purchaseLine.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -4730,7 +5084,7 @@ namespace ServerSideBlazorApp.dboDataService
         {
         }
 
-		public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PersonTotalPurchasesViewEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -4790,9 +5144,9 @@ namespace ServerSideBlazorApp.dboDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, PersonTotalPurchasesView personTotalPurchasesView)
         {
-			personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
-			personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
-			personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
+            personTotalPurchasesView.Id = reader.ReadField().GetValue<int>();
+            personTotalPurchasesView.TotalAmount = reader.ReadField().GetValue<double?>();
+            personTotalPurchasesView.TotalCount = reader.ReadField().GetValue<int?>();
         }
 		#endregion
 
@@ -4867,6 +5221,312 @@ namespace ServerSideBlazorApp.dboDataService
     }
     #endregion
 
+    #region select person_ as_ dynamic_ with_ input stored procedure expression
+    public partial class SelectPerson_As_Dynamic_With_InputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPerson_As_Dynamic_With_InputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+        ) : base(
+                $"{identifier}.SelectPerson_As_Dynamic_With_Input"
+                ,"SelectPerson_As_Dynamic_With_Input"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input.@P1", "P1", P1, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+    #endregion
+
+    #region select person_ as_ dynamic_ with_ input_ and_ input output stored procedure expression
+    public partial class SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPerson_As_Dynamic_With_Input_And_InputOutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput"
+                ,"SelectPerson_As_Dynamic_With_Input_And_InputOutput"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person_ as_ dynamic_ with_ input_ and_ output stored procedure expression
+    public partial class SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPerson_As_Dynamic_With_Input_And_OutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output"
+                ,"SelectPerson_As_Dynamic_With_Input_And_Output"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_Dynamic_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person_ as_ dynamic list_ with_ input stored procedure expression
+    public partial class SelectPerson_As_DynamicList_With_InputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPerson_As_DynamicList_With_InputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+        ) : base(
+                $"{identifier}.SelectPerson_As_DynamicList_With_Input"
+                ,"SelectPerson_As_DynamicList_With_Input"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input.@P1", "P1", P1, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+    #endregion
+
+    #region select person_ as_ dynamic list_ with_ input_ and_ input output stored procedure expression
+    public partial class SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPerson_As_DynamicList_With_Input_And_InputOutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput"
+                ,"SelectPerson_As_DynamicList_With_Input_And_InputOutput"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person_ as_ dynamic list_ with_ input_ and_ output stored procedure expression
+    public partial class SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPerson_As_DynamicList_With_Input_And_OutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output"
+                ,"SelectPerson_As_DynamicList_With_Input_And_Output"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPerson_As_DynamicList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value_ with_ input stored procedure expression
+    public partial class SelectPersonId_As_ScalarValue_With_InputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValue_With_InputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input"
+                ,"SelectPersonId_As_ScalarValue_With_Input"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input.@P1", "P1", P1, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value_ with_ input_ and_ default_ value stored procedure expression
+    public partial class SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValue_With_Input_And_Default_ValueStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"
+                ,"SelectPersonId_As_ScalarValue_With_Input_And_Default_Value"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1", "P1", P1, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value_ with_ input_ and_ input output stored procedure expression
+    public partial class SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValue_With_Input_And_InputOutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"
+                ,"SelectPersonId_As_ScalarValue_With_Input_And_InputOutput"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value_ with_ input_ and_ output stored procedure expression
+    public partial class SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValue_With_Input_And_OutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output"
+                ,"SelectPersonId_As_ScalarValue_With_Input_And_Output"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValue_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value list_ with_ input stored procedure expression
+    public partial class SelectPersonId_As_ScalarValueList_With_InputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValueList_With_InputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input"
+                ,"SelectPersonId_As_ScalarValueList_With_Input"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input.@P1", "P1", P1, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value list_ with_ input_ and_ input output stored procedure expression
+    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValueList_With_Input_And_InputOutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"
+                ,"SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit", "CreditLimit", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region select person id_ as_ scalar value list_ with_ input_ and_ output stored procedure expression
+    public partial class SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure : StoredProcedureExpression
+    {
+        public SelectPersonId_As_ScalarValueList_With_Input_And_OutputStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,Action<ISqlOutputParameterList> outputParameters
+        ) : base(
+                $"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output"
+                ,"SelectPersonId_As_ScalarValueList_With_Input_And_Output"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.SelectPersonId_As_ScalarValueList_With_Input_And_Output.@Count", "Count", ParameterDirection.Output)
+                }
+                ,outputParameters
+            )
+        { }
+    }
+    #endregion
+
+    #region update person credit limit_ with_ inputs stored procedure expression
+    public partial class UpdatePersonCreditLimit_With_InputsStoredProcedure : StoredProcedureExpression
+    {
+        public UpdatePersonCreditLimit_With_InputsStoredProcedure(
+            string identifier
+            ,SchemaExpression schema
+            ,int? P1
+            ,int? CreditLimit
+        ) : base(
+                $"{identifier}.UpdatePersonCreditLimit_With_Inputs"
+                ,"UpdatePersonCreditLimit_With_Inputs"
+                ,schema
+                ,new List<ParameterExpression> 
+                { 
+                    new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@P1", "P1", P1, ParameterDirection.Input)
+                    ,new ParameterExpression<int?>($"{identifier}.UpdatePersonCreditLimit_With_Inputs.@CreditLimit", "CreditLimit", CreditLimit, ParameterDirection.Input)
+                }
+            )
+        { }
+    }
+    #endregion
+
     #region dbo
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
 #pragma warning disable IDE1006 // Naming Styles
@@ -4874,6 +5534,8 @@ namespace ServerSideBlazorApp.dboDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static dboSchemaExpression schema;
+
         #region interface
         /// <summary>A <see cref="ServerSideBlazorApp.dboDataService.AddressEntity"/> representing the "dbo.Address" table in the database.
         /// <para>Properties:
@@ -5032,11 +5694,13 @@ namespace ServerSideBlazorApp.dboDataService
 
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema(dboSchemaExpression schema)
         { 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
+
+            dbo.schema = schema;
 
             Address = schema.Address;
             Customer = schema.Customer;
@@ -5054,6 +5718,7 @@ namespace ServerSideBlazorApp.dboDataService
 namespace ServerSideBlazorApp.secDataService
 {
 	using ServerSideBlazorApp.secData;
+	using System.Data;
 
     #region sec schema expression
     public class secSchemaExpression : SchemaExpression
@@ -5168,7 +5833,7 @@ namespace ServerSideBlazorApp.secDataService
         {
         }
 
-		public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
+        public PersonEntity(string identifier, string name, SchemaExpression schema) : this(identifier, name, schema, null)
         {
         }
 
@@ -5237,10 +5902,10 @@ namespace ServerSideBlazorApp.secDataService
 
         protected override void HydrateEntity(ISqlFieldReader reader, Person person)
         {
-			person.Id = reader.ReadField().GetValue<int>();
-			person.SSN = reader.ReadField().GetValue<string>();
-			person.DateCreated = reader.ReadField().GetValue<DateTime>();
-			person.DateUpdated = reader.ReadField().GetValue<DateTime>();
+            person.Id = reader.ReadField().GetValue<int>();
+            person.SSN = reader.ReadField().GetValue<string>();
+            person.DateCreated = reader.ReadField().GetValue<DateTime>();
+            person.DateUpdated = reader.ReadField().GetValue<DateTime>();
         }
 		#endregion
 
@@ -5348,6 +6013,8 @@ namespace ServerSideBlazorApp.secDataService
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
+        private static secSchemaExpression schema;
+
         #region interface
         /// <summary>A <see cref="ServerSideBlazorApp.secDataService.PersonEntity"/> representing the "sec.Person" table in the database.
         /// <para>Properties:
@@ -5375,11 +6042,13 @@ namespace ServerSideBlazorApp.secDataService
 
         #endregion
 
-        #region methods
+        #region use schema
         public static void UseSchema(secSchemaExpression schema)
         { 
             if (schema == null)
                  throw new ArgumentNullException(nameof(schema));
+
+            sec.schema = schema;
 
             Person = schema.Person;
         }

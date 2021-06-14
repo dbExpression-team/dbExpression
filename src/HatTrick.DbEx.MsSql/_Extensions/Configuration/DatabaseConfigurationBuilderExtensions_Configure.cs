@@ -21,6 +21,7 @@ using HatTrick.DbEx.MsSql.Connection;
 using HatTrick.DbEx.MsSql.Types;
 using HatTrick.DbEx.Sql;
 using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Expression;
 using System;
 
 namespace HatTrick.DbEx.MsSql.Configuration
@@ -48,7 +49,8 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
             configBuilder.ConfigureMsSqlCommon(b => 
                 { 
-                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2005.MsSqlStatementAssemblerFactory>(); 
+                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2005.MsSqlStatementAssemblerFactory>();
+                    b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2005.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b); 
                 }, 
                 runtime.Metadata
@@ -78,9 +80,10 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var config = new RuntimeSqlDatabaseConfiguration();
 
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-                configBuilder.ConfigureMsSqlCommon(b =>
+            configBuilder.ConfigureMsSqlCommon(b =>
                 {
                     b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2008.MsSqlStatementAssemblerFactory>();
+                    b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2008.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
@@ -110,13 +113,13 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var config = new RuntimeSqlDatabaseConfiguration();
 
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-                configBuilder.ConfigureMsSqlCommon(b =>
+            configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2012.MsSqlStatementAssemblerFactory>();
+                    b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2012.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
-            );
+            ); 
             config.Validate();
 
             runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
@@ -144,11 +147,11 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
             configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2014.MsSqlStatementAssemblerFactory>();
+                    b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2014.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
-            );
+            ); 
             config.Validate();
 
             runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
@@ -176,11 +179,11 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
             configBuilder.ConfigureMsSqlCommon(b =>
                 {
-                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2016.MsSqlStatementAssemblerFactory>();
+                    b.SqlStatements.Assembly.ElementAppender.Use<MsSqlExpressionElementAppenderFactory>(f => f.RegisterElementAppender<TrimFunctionExpression, Assembler.v2016.TrimFunctionExpressionAppender>());
                     configureRuntime.Invoke(b);
                 },
                 runtime.Metadata
-            );
+            ); 
             config.Validate();
 
             runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
@@ -206,13 +209,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var config = new RuntimeSqlDatabaseConfiguration();
 
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-                configBuilder.ConfigureMsSqlCommon(b =>
-                {
-                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2017.MsSqlStatementAssemblerFactory>();
-                    configureRuntime.Invoke(b);
-                },
-                runtime.Metadata
-            );
+            configBuilder.ConfigureMsSqlCommon(configureRuntime, runtime.Metadata);
             config.Validate();
 
             runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
@@ -238,13 +235,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
             var config = new RuntimeSqlDatabaseConfiguration();
 
             var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(config);
-                configBuilder.ConfigureMsSqlCommon(b =>
-                {
-                    b.SqlStatements.Assembly.StatementAssembler.Use<Assembler.v2019.MsSqlStatementAssemblerFactory>();
-                    configureRuntime.Invoke(b);
-                },
-                runtime.Metadata
-            );
+            configBuilder.ConfigureMsSqlCommon(configureRuntime, runtime.Metadata);
             config.Validate();
 
             runtime.Database.UseConfigurationFactory(new DelegateRuntimeSqlDatabaseConfigurationFactory(() => config));
@@ -265,6 +256,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
 
             builder.SqlStatements
                 .Assembly
+                    .StatementAssembler.Use<MsSqlStatementAssemblerFactory>()
                     .StatementBuilder.UseDefaultFactory()
                     .StatementAppender.UseDefaultFactory()
                     .ElementAppender.Use<MsSqlExpressionElementAppenderFactory>()
@@ -277,7 +269,7 @@ namespace HatTrick.DbEx.MsSql.Configuration
                     .Pipeline.UseDefaultFactory()
                     .Connection.Use<MsSqlConnectionFactory>();
 
-            configuration.Invoke(builder);
+            configuration?.Invoke(builder);
         }
     }
 }

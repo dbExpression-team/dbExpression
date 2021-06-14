@@ -16,7 +16,7 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Converter;
+using HatTrick.DbEx.Sql.Converter;
 using System;
 
 namespace HatTrick.DbEx.Sql.Executor
@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Executor
     public class Field : ISqlField
     {
         #region internals
-        protected Func<ISqlField, IValueConverter> FindValueConverter { get; private set; }
+        protected Func<ISqlField, Type, IValueConverter> FindValueConverter { get; private set; }
         #endregion
 
         #region interface
@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.Sql.Executor
         #endregion
 
         #region constructors
-        public Field(int index, string name, Type dataType, object value, Func<ISqlField,IValueConverter> findValueConverter)
+        public Field(int index, string name, Type dataType, object value, Func<ISqlField, Type, IValueConverter> findValueConverter)
         {
             Index = index;
             Name = name;
@@ -47,10 +47,10 @@ namespace HatTrick.DbEx.Sql.Executor
 
         #region methods
         public T GetValue<T>()
-            => FindValueConverter(this).ConvertFromDatabase<T>(RawValue is DBNull ? null : RawValue);
+            => FindValueConverter(this, typeof(T)).ConvertFromDatabase<T>(RawValue is DBNull ? null : RawValue);
 
         public object GetValue()
-            => FindValueConverter(this).ConvertFromDatabase(RawValue is DBNull ? null : RawValue);
+            => FindValueConverter(this, typeof(object)).ConvertFromDatabase(RawValue is DBNull ? null : RawValue);
         #endregion
     }
 }
