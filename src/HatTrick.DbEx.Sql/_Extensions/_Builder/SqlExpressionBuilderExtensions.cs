@@ -4753,7 +4753,8 @@ namespace HatTrick.DbEx.Sql
         #region get database configuration
         private static RuntimeSqlDatabaseConfiguration GetDatabaseConfiguration(this ITerminationExpressionBuilder builder)
         {
-            return builder.Configuration ?? throw new DbExpressionConfigurationException($"Database configuration is required, please review and ensure the correct configuration for DbExpression.");
+            var configProvider = builder as IRuntimeSqlDatabaseConfigurationProvider ?? throw new DbExpressionException($"The provided type {builder.GetType()} is not a configuration provider. {builder.GetType()} must implement {nameof(IRuntimeSqlDatabaseConfigurationProvider)}.");
+            return configProvider.Configuration ?? throw new DbExpressionConfigurationException($"Database configuration is required, please review and ensure the correct configuration for DbExpression.");
         }
         #endregion
 
