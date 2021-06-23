@@ -109,9 +109,9 @@ namespace ServerSideBlazorApp
 
             app.UseRouting();
 
-            app.ApplicationServices
-              .UseMaterialProviders()
-              .UseMaterialIcons();
+            //app.ApplicationServices
+            //  .UseMaterialProviders()
+            //  .UseMaterialIcons();
 
             app.UseEndpoints(endpoints =>
             {
