@@ -1237,6 +1237,7 @@ namespace HatTrick.DbEx.MsSql.Builder
             => new SysUtcDateTimeFunctionExpression();
         #endregion
 
+        #region newid
         /// <summary>
         /// Construct an expression for the NEWID transact sql function.
         /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/sysutcdatetimeoffset-transact-sql">Microsoft docs on NEWID</see></para>
@@ -1244,6 +1245,7 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="NewIdFunctionExpression"/> for use with any operation accepting a <see cref="AnyGuidElement"/> or <see cref="GuidElement"/>.</returns>
         public static NewIdFunctionExpression NewId()
              => new NewIdFunctionExpression();
+        #endregion
 
         #region len
         /// <summary>
@@ -2333,6 +2335,1244 @@ namespace HatTrick.DbEx.MsSql.Builder
         /// <returns><see cref="StringSubstringFunctionExpression"/> for use with any operation accepting a <see cref="AnyStringElement"/> or <see cref="StringElement"/>.</returns>
         public static StringSubstringFunctionExpression Substring(StringElement expression, Int64Element start, Int32Element length)
             => new StringSubstringFunctionExpression(expression, start, length);
+        #endregion
+
+        #region round
+        #region object
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="ObjectRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectRoundFunctionExpression Round(ObjectElement expression, int length)
+            => new ObjectRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="ObjectRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectRoundFunctionExpression Round(ObjectElement expression, int length, int function)
+            => new ObjectRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="ObjectRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectRoundFunctionExpression Round(ObjectElement expression, IntegralNumericElement length)
+            => new ObjectRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="ObjectRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectRoundFunctionExpression Round(ObjectElement expression, IntegralNumericElement length, int function)
+            => new ObjectRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="ObjectRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectRoundFunctionExpression Round(ObjectElement expression, int length, IntegralNumericElement function)
+            => new ObjectRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="ObjectElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="ObjectRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyObjectElement"/> or <see cref="ObjectElement"/>.</returns>
+        public static ObjectRoundFunctionExpression Round(ObjectElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new ObjectRoundFunctionExpression(expression, length, function);
+        #endregion
+
+        #region decimal
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalRoundFunctionExpression Round(DecimalElement expression, int length)
+            => new DecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalRoundFunctionExpression Round(DecimalElement expression, int length, int function)
+            => new DecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalRoundFunctionExpression Round(DecimalElement expression, IntegralNumericElement length)
+            => new DecimalRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalRoundFunctionExpression Round(DecimalElement expression, IntegralNumericElement length, int function)
+            => new DecimalRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalRoundFunctionExpression Round(DecimalElement expression, int length, IntegralNumericElement function)
+            => new DecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="DecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDecimalElement"/> or <see cref="DecimalElement"/>.</returns>
+        public static DecimalRoundFunctionExpression Round(DecimalElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new DecimalRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, int length)
+            => new NullableDecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, int length, int function)
+            => new NullableDecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, IntegralNumericElement length)
+            => new NullableDecimalRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, NullableIntegralNumericElement length)
+            => new NullableDecimalRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, IntegralNumericElement length, int function)
+            => new NullableDecimalRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, NullableIntegralNumericElement length, int function)
+            => new NullableDecimalRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, int length, IntegralNumericElement function)
+            => new NullableDecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, int length, NullableIntegralNumericElement function)
+            => new NullableDecimalRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new NullableDecimalRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+            => new NullableDecimalRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableDecimalRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDecimalElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDecimalRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDecimalElement"/> or <see cref="NullableDecimalElement"/>.</returns>
+        public static NullableDecimalRoundFunctionExpression Round(NullableDecimalElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableDecimalRoundFunctionExpression(expression, length, function);
+        #endregion
+
+        #region double
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleRoundFunctionExpression Round(DoubleElement expression, int length)
+            => new DoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleRoundFunctionExpression Round(DoubleElement expression, int length, int function)
+            => new DoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleRoundFunctionExpression Round(DoubleElement expression, IntegralNumericElement length)
+            => new DoubleRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleRoundFunctionExpression Round(DoubleElement expression, IntegralNumericElement length, int function)
+            => new DoubleRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleRoundFunctionExpression Round(DoubleElement expression, int length, IntegralNumericElement function)
+            => new DoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="DoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="DoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyDoubleElement"/> or <see cref="DoubleElement"/>.</returns>
+        public static DoubleRoundFunctionExpression Round(DoubleElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new DoubleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, int length)
+            => new NullableDoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, int length, int function)
+            => new NullableDoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, IntegralNumericElement length)
+            => new NullableDoubleRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, NullableIntegralNumericElement length)
+            => new NullableDoubleRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, IntegralNumericElement length, int function)
+            => new NullableDoubleRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, NullableIntegralNumericElement length, int function)
+            => new NullableDoubleRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, int length, IntegralNumericElement function)
+            => new NullableDoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, int length, NullableIntegralNumericElement function)
+            => new NullableDoubleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new NullableDoubleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+            => new NullableDoubleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableDoubleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableDoubleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableDoubleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableDoubleElement"/> or <see cref="NullableDoubleElement"/>.</returns>
+        public static NullableDoubleRoundFunctionExpression Round(NullableDoubleElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableDoubleRoundFunctionExpression(expression, length, function);
+        #endregion
+
+        #region short
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="Int16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16RoundFunctionExpression Round(Int16Element expression, int length)
+            => new Int16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="Int16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16RoundFunctionExpression Round(Int16Element expression, int length, int function)
+            => new Int16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="Int16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16RoundFunctionExpression Round(Int16Element expression, IntegralNumericElement length)
+            => new Int16RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="Int16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16RoundFunctionExpression Round(Int16Element expression, IntegralNumericElement length, int function)
+            => new Int16RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="Int16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16RoundFunctionExpression Round(Int16Element expression, int length, IntegralNumericElement function)
+            => new Int16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="Int16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt16Element"/> or <see cref="Int16Element"/>.</returns>
+        public static Int16RoundFunctionExpression Round(Int16Element expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new Int16RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, int length)
+            => new NullableInt16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, int length, int function)
+            => new NullableInt16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, IntegralNumericElement length)
+            => new NullableInt16RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, NullableIntegralNumericElement length)
+            => new NullableInt16RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, IntegralNumericElement length, int function)
+            => new NullableInt16RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, NullableIntegralNumericElement length, int function)
+            => new NullableInt16RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, int length, IntegralNumericElement function)
+            => new NullableInt16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, int length, NullableIntegralNumericElement function)
+            => new NullableInt16RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new NullableInt16RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+            => new NullableInt16RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableInt16RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt16Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt16RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt16Element"/> or <see cref="NullableInt16Element"/>.</returns>
+        public static NullableInt16RoundFunctionExpression Round(NullableInt16Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableInt16RoundFunctionExpression(expression, length, function);
+        #endregion
+
+        #region int
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32RoundFunctionExpression Round(Int32Element expression, int length)
+            => new Int32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32RoundFunctionExpression Round(Int32Element expression, int length, int function)
+            => new Int32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32RoundFunctionExpression Round(Int32Element expression, IntegralNumericElement length)
+            => new Int32RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32RoundFunctionExpression Round(Int32Element expression, IntegralNumericElement length, int function)
+            => new Int32RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32RoundFunctionExpression Round(Int32Element expression, int length, IntegralNumericElement function)
+            => new Int32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="Int32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt32Element"/> or <see cref="Int32Element"/>.</returns>
+        public static Int32RoundFunctionExpression Round(Int32Element expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new Int32RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, int length)
+            => new NullableInt32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, int length, int function)
+            => new NullableInt32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, IntegralNumericElement length)
+            => new NullableInt32RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, NullableIntegralNumericElement length)
+            => new NullableInt32RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, IntegralNumericElement length, int function)
+            => new NullableInt32RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, NullableIntegralNumericElement length, int function)
+            => new NullableInt32RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, int length, IntegralNumericElement function)
+            => new NullableInt32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, int length, NullableIntegralNumericElement function)
+            => new NullableInt32RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new NullableInt32RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+            => new NullableInt32RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableInt32RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt32Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt32RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt32Element"/> or <see cref="NullableInt32Element"/>.</returns>
+        public static NullableInt32RoundFunctionExpression Round(NullableInt32Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableInt32RoundFunctionExpression(expression, length, function);
+        #endregion
+
+        #region long
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64RoundFunctionExpression Round(Int64Element expression, int length)
+            => new Int64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64RoundFunctionExpression Round(Int64Element expression, int length, int function)
+            => new Int64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64RoundFunctionExpression Round(Int64Element expression, IntegralNumericElement length)
+            => new Int64RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64RoundFunctionExpression Round(Int64Element expression, IntegralNumericElement length, int function)
+            => new Int64RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64RoundFunctionExpression Round(Int64Element expression, int length, IntegralNumericElement function)
+            => new Int64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="Int64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="Int64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyInt64Element"/> or <see cref="Int64Element"/>.</returns>
+        public static Int64RoundFunctionExpression Round(Int64Element expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new Int64RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, int length)
+            => new NullableInt64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, int length, int function)
+            => new NullableInt64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, IntegralNumericElement length)
+            => new NullableInt64RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, NullableIntegralNumericElement length)
+            => new NullableInt64RoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, IntegralNumericElement length, int function)
+            => new NullableInt64RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, NullableIntegralNumericElement length, int function)
+            => new NullableInt64RoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, int length, IntegralNumericElement function)
+            => new NullableInt64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, int length, NullableIntegralNumericElement function)
+            => new NullableInt64RoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new NullableInt64RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+            => new NullableInt64RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableInt64RoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableInt64Element"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableInt64RoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableInt64Element"/> or <see cref="NullableInt64Element"/>.</returns>
+        public static NullableInt64RoundFunctionExpression Round(NullableInt64Element expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableInt64RoundFunctionExpression(expression, length, function);
+        #endregion
+
+        #region float
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="SingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleRoundFunctionExpression Round(SingleElement expression, int length)
+            => new SingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="SingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleRoundFunctionExpression Round(SingleElement expression, int length, int function)
+            => new SingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="SingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleRoundFunctionExpression Round(SingleElement expression, IntegralNumericElement length)
+            => new SingleRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="SingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleRoundFunctionExpression Round(SingleElement expression, IntegralNumericElement length, int function)
+            => new SingleRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="SingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleRoundFunctionExpression Round(SingleElement expression, int length, IntegralNumericElement function)
+            => new SingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="SingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="SingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnySingleElement"/> or <see cref="SingleElement"/>.</returns>
+        public static SingleRoundFunctionExpression Round(SingleElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new SingleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, int length)
+            => new NullableSingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, int length, int function)
+            => new NullableSingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, IntegralNumericElement length)
+            => new NullableSingleRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, NullableIntegralNumericElement length)
+            => new NullableSingleRoundFunctionExpression(expression, length);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, IntegralNumericElement length, int function)
+            => new NullableSingleRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">The type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, NullableIntegralNumericElement length, int function)
+            => new NullableSingleRoundFunctionExpression(expression, length, new Int32ExpressionMediator(new LiteralExpression<int>(function)));
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, int length, IntegralNumericElement function)
+            => new NullableSingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">The precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, int length, NullableIntegralNumericElement function)
+            => new NullableSingleRoundFunctionExpression(expression, new Int32ExpressionMediator(new LiteralExpression<int>(length)), function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, IntegralNumericElement length, IntegralNumericElement function)
+            => new NullableSingleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, NullableIntegralNumericElement length, IntegralNumericElement function)
+            => new NullableSingleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="IntegralNumericElement" /> (one of <see cref="ByteElement" />, <see cref="Int16Element" />, <see cref="Int32Element" />, or <see cref="Int64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, IntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableSingleRoundFunctionExpression(expression, length, function);
+
+        /// <summary>
+        /// Construct an expression for the ROUND transact sql function.
+        /// <para><see href="https://docs.microsoft.com/en-us/sql/t-sql/functions/round-transact-sql">Microsoft docs on ROUND</see></para>
+        /// </summary>
+        /// <param name="expression">A <see cref="NullableSingleElement"/> to round.</param>
+        /// <param name="length">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />), the precision to which <paramref name="expression" /> is to be rounded.</param>
+        /// <param name="function">A <see cref="NullableIntegralNumericElement" /> (one of <see cref="NullableByteElement" />, <see cref="NullableInt16Element" />, <see cref="NullableInt32Element" />, or <see cref="NullableInt64Element" />) indicating the type of operation to perform.</param>
+        /// <returns><see cref="NullableSingleRoundFunctionExpression"/> for use with any operation accepting a <see cref="AnyNullableSingleElement"/> or <see cref="NullableSingleElement"/>.</returns>
+        public static NullableSingleRoundFunctionExpression Round(NullableSingleElement expression, NullableIntegralNumericElement length, NullableIntegralNumericElement function)
+            => new NullableSingleRoundFunctionExpression(expression, length, function);
+        #endregion
         #endregion
     }
 }

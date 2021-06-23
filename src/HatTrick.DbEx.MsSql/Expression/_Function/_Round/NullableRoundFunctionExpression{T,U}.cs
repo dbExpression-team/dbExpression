@@ -16,12 +16,25 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql
+﻿using System;
+using HatTrick.DbEx.Sql.Expression;
+
+namespace HatTrick.DbEx.MsSql.Expression
 {
-#pragma warning disable IDE1006 // Naming Styles
-    public interface NullableInt16Element : NullableIntegralNumericElement
-#pragma warning restore IDE1006 // Naming Styles
+    public abstract class NullableRoundFunctionExpression<TValue,TNullableValue> : RoundFunctionExpression,
+        IExpressionElement<TValue,TNullableValue>
+        where TValue : IComparable
     {
-        NullableInt16Element As(string alias);
+        #region constructors
+        protected NullableRoundFunctionExpression(IExpressionElement expression, IExpressionElement length) : base(expression, length, typeof(TValue))
+        {
+
+        }
+
+        protected NullableRoundFunctionExpression(IExpressionElement expression, IExpressionElement length, IExpressionElement function) : base(expression, length, function, typeof(TValue))
+        {
+
+        }
+        #endregion
     }
 }

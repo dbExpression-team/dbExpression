@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql
+namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface NullableInt16Element : NullableIntegralNumericElement
+    public interface IntegralNumericElement : AnyElement
 #pragma warning restore IDE1006 // Naming Styles
     {
-        NullableInt16Element As(string alias);
+
     }
 }

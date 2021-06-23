@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.1] - 2021-06-23
+
+### Added
+- Added Round database function
+- Added IntegralNumericElement and NullableIntegralNumericElement to provide an abstract container for numeric types that can be converted to an integer/long type
+
+### Changed
+- ByteElement, Int16Element, Int32Element, and Int64Element now implement IntegralNumericElement
+- NullableByteElement, NullableInt16Element, NullableInt32Element, and NullableInt64Element now implement NullableIntegralNumericElement
+
+### Breaking Changes
+
+
 ## [0.8.0] - 2021-06-14
 
 ### Added

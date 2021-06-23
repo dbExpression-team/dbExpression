@@ -16,7 +16,7 @@ namespace ServerSideBlazorApp.Shared
         private BarChart<object> barChart;
         private DoughnutChart<object> doughnutChart;
 
-        private List<string> backgroundColors = new List<string> 
+        private readonly List<string> backgroundColors = new()
         { 
             ChartColor.FromRgba(255, 99, 132, 0.8f), 
             ChartColor.FromRgba(54, 162, 235, 0.8f), 
@@ -26,7 +26,7 @@ namespace ServerSideBlazorApp.Shared
             ChartColor.FromRgba(255, 159, 64, 0.8f) 
         };
 
-        private IList<string> borderColors = new List<string> 
+        private readonly List<string> borderColors = new()
         { 
             ChartColor.FromRgba(255, 99, 132, 1f), 
             ChartColor.FromRgba(54, 162, 235, 1f), 
@@ -82,8 +82,8 @@ namespace ServerSideBlazorApp.Shared
                 new LineChartDataset<object>
                 {
                     Data = data.Select(x => x.Value).ToList(),
-                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]),
-                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]),
+                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
+                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList(),
                     PointRadius = 3
                 }
             );
@@ -99,8 +99,8 @@ namespace ServerSideBlazorApp.Shared
                 new PieChartDataset<object>
                 {
                     Data = data.Select(x => x.Value).ToList(),
-                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]),
-                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count])
+                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
+                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
                 }
             );
         }
@@ -115,8 +115,8 @@ namespace ServerSideBlazorApp.Shared
                 new BarChartDataset<object>
                 {
                     Data = data.Select(x => x.Value).ToList(),
-                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]),
-                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count])
+                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
+                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
                 }
             );
         }
@@ -131,8 +131,8 @@ namespace ServerSideBlazorApp.Shared
                 new DoughnutChartDataset<object>
                 {
                     Data = data.Select(x => x.Value).ToList(),
-                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]),
-                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count])
+                    BackgroundColor = data.Select((x, i) => backgroundColors[i % backgroundColors.Count]).ToList(),
+                    BorderColor = data.Select((x, i) => borderColors[i % borderColors.Count]).ToList()
                 }
             );
         }

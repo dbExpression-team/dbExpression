@@ -71,10 +71,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="HatTrick.Model.MsSql" Version="2.2.0" />
+        <PackageReference Include="HatTrick.Model.MsSql" Version="2.2.1" />
         <PackageReference Include="HatTrick.Reflection" Version="1.0.5" />
-        <PackageReference Include="HatTrick.Text.Templating" Version="2.1.2" />
-        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="HatTrick.Text.Templating" Version="2.1.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     </ItemGroup>

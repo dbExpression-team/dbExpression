@@ -34,6 +34,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
         private static readonly LengthFunctionExpressionAppender lengthFunctionAppender = new LengthFunctionExpressionAppender();
         private static readonly PatIndexFunctionExpressionAppender patIndexFunctionAppender = new PatIndexFunctionExpressionAppender();
         private static readonly CharIndexFunctionExpressionAppender charIndexFunctionAppender = new CharIndexFunctionExpressionAppender();
+        private static readonly RoundFunctionExpressionAppender roundFunctionAppender = new RoundFunctionExpressionAppender();
 
         public MsSqlExpressionElementAppenderFactory()
         {
@@ -49,6 +50,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
             base.RegisterElementAppender(lengthFunctionAppender);
             base.RegisterElementAppender(patIndexFunctionAppender);
             base.RegisterElementAppender(charIndexFunctionAppender);
+            base.RegisterElementAppender(roundFunctionAppender);
         }
     }
 }
