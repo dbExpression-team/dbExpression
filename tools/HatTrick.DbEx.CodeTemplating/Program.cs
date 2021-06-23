@@ -127,7 +127,10 @@ namespace HatTrick.DbEx.CodeTemplating
                 .Generate<NullablePatIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_PatIndex")
 
                 .Generate<CharIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_CharIndex")
-                .Generate<NullableCharIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_CharIndex");
+                .Generate<NullableCharIndexFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_CharIndex")
+
+                .Generate<RoundFunctionExpressionCodeGenerator, FunctionTemplateModel>(typedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_Round")
+                .Generate<NullableRoundFunctionExpressionCodeGenerator, FunctionTemplateModel>(nullableTypedFunctionExpressionTemplatePath, $@"{msSqlSrcDirectory}\_Function\_Round");
 
         }
     }
