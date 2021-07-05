@@ -37,6 +37,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public abstract StringElement As(string alias);
         #endregion
 
+        #region like
+        public FilterExpressionSet Like(string phrase)
+            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        #endregion
+
         #region equals
         public bool Equals(StringFieldExpression obj)
             => obj is StringFieldExpression && base.Equals(obj);

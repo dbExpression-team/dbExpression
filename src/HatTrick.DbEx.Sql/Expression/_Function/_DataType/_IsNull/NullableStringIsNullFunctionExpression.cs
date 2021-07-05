@@ -39,6 +39,11 @@ namespace HatTrick.DbEx.Sql.Expression
             => new NullableStringSelectExpression(this).As(alias);
         #endregion
 
+        #region like
+        public FilterExpressionSet Like(string phrase)
+            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        #endregion
+
         #region equals
         public bool Equals(NullableStringIsNullFunctionExpression obj)
             => obj is NullableStringIsNullFunctionExpression && base.Equals(obj);
