@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.2]
+
+### Added
+
+### Changed
+- Fixed issue #252
+
+### Breaking Changes
+
 ## [0.8.1] - 2021-06-23
 
 ### Added
