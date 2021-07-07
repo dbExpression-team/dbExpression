@@ -1,9 +1,9 @@
 ﻿@page "/customers/{id}"
-@inject GlobalProgressBar ProgressBar
 @inject CustomerService CustomerService
 @inject OrderService OrderService
 @inject NavigationManager NavigationManager
 
+<PageProgress Visible="@ShowProgressBar" />
 <Breadcrumb>
     <BreadcrumbItem>
         <BreadcrumbLink To="@ReturnUrl"><i class="fas fa-chevron-left"></i>&nbsp;Back</BreadcrumbLink>
@@ -12,13 +12,13 @@
 
 @if (Model is object)
 {
-    <h3>
+    <Heading Size="HeadingSize.Is3">
         @if (@Model.IsVIP)
         {
             <i class='fas fa-crown pr-2'></i>
         }
         @Model.FirstName @Model.LastName
-    </h3>
+    </Heading>
     <Divider></Divider>
 
     <Tabs SelectedTab="@SelectedTab" SelectedTabChanged="@OnSelectedTabChanged" Justified="true">
@@ -85,8 +85,4 @@
             </TabPanel>
         </Content>
     </Tabs>
-}
-
-@code {
-
 }
