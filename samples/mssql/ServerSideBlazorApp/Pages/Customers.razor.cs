@@ -4,17 +4,18 @@ using Microsoft.AspNetCore.Components;
 using ServerSideBlazorApp.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Timers;
 using System.Threading.Tasks;
+using System;
 
 namespace ServerSideBlazorApp.Pages
 {
     public partial class Customers
     {
         #region internals
-        private static readonly SemaphoreSlim isSearching = new SemaphoreSlim(1, 1);
         private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(CustomerSummaryModel.Name), SortDirection.Ascending);
         private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
+        private readonly Timer searchTimer = new(800);
 
         private string SearchPhrase { get; set; }
         private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
@@ -29,7 +30,7 @@ namespace ServerSideBlazorApp.Pages
 
             try
             {
-                CurrentPage = await service.GetSummaryPageAsync(PagingParameters, SearchPhrase);
+                CurrentPage = await CustomerService.GetSummaryPageAsync(PagingParameters, SearchPhrase);
                 PreviousPagingParameters = PagingParameters;
             }
             finally
@@ -50,32 +51,38 @@ namespace ServerSideBlazorApp.Pages
             await FetchCurrentPageAsync();
         }
 
-        private async Task OnSearch(string searchPhrase)
+        private void OnSearch(string searchPhrase)
         {
-            if (SearchPhrase == searchPhrase)
-                return;            
+            SearchPhrase = searchPhrase;
+            searchTimer.Stop();
+            searchTimer.Start();
+        }
 
-            await isSearching.WaitAsync();
-            try
-            {
-                SearchPhrase = searchPhrase;
-                PagingParameters.Offset = 0;
-                await FetchCurrentPageAsync();
-            }
-            finally
-            {
-                isSearching.Release();
-            }
+        private void OnSearch(object source, ElapsedEventArgs e)
+        {
+            InvokeAsync(async () => await FetchCurrentPageAsync());
         }
 
         private string BuildDetailUrl(int id)
             => $"/customers/{id}?{NavigationManager.ToReturnUrl("customers", PagingParameters)}";
+
+        protected override void OnInitialized()
+        {
+            searchTimer.Elapsed += OnSearch;
+            searchTimer.AutoReset = false;
+            base.OnInitialized();
+        }
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
             if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters page))
                 PagingParameters = page;
             await base.SetParametersAsync(parameters);
+        }
+
+        void IDisposable.Dispose()
+        {
+            searchTimer?.Dispose();
         }
         #endregion
     }

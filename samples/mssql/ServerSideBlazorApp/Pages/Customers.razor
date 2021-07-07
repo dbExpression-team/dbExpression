@@ -1,6 +1,7 @@
 ﻿@page "/customers"
+@implements IDisposable
 @inject GlobalProgressBar ProgressBar
-@inject CustomerService service
+@inject CustomerService CustomerService
 @inject NavigationManager NavigationManager
 
 <h3>Customers</h3>
