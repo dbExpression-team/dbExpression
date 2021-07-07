@@ -17,6 +17,7 @@ namespace ServerSideBlazorApp.Pages
         private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
         private readonly Timer searchTimer = new(800);
 
+        private bool ShowProgressBar { get; set; } = false;
         private string SearchPhrase { get; set; }
         private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
         private Page<CustomerSummaryModel> CurrentPage { get; set; } = Page<CustomerSummaryModel>.CreateDefault();
@@ -26,16 +27,16 @@ namespace ServerSideBlazorApp.Pages
         #region methods
         private async Task FetchCurrentPageAsync()
         {
-            await ProgressBar.Show();
+            ShowProgressBar = true;
 
             try
             {
                 CurrentPage = await CustomerService.GetSummaryPageAsync(PagingParameters, SearchPhrase);
-                PreviousPagingParameters = PagingParameters;
             }
             finally
             {
-                await ProgressBar.Hide();
+                PreviousPagingParameters = PagingParameters;
+                ShowProgressBar = false;
             }
 
             StateHasChanged();

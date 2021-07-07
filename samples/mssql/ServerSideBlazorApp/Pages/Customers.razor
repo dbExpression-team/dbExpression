@@ -1,10 +1,10 @@
 ﻿@page "/customers"
 @implements IDisposable
-@inject GlobalProgressBar ProgressBar
 @inject CustomerService CustomerService
 @inject NavigationManager NavigationManager
 
-<h3>Customers</h3>
+<PageProgress Visible="@ShowProgressBar" />
+<Heading Size="HeadingSize.Is3">Customers</Heading>
 <Divider></Divider>
 <Card>
     <CardBody>
@@ -48,6 +48,3 @@
         </DataGrid>
     </CardBody>
 </Card>
-@code {
-
-}

@@ -1,9 +1,10 @@
 ﻿@page "/products"
-@inject GlobalProgressBar ProgressBar
 @inject ProductService service
 @inject NavigationManager NavigationManager
 
-<h3>Products</h3>
+<PageProgress Visible="@ShowProgressBar" />
+<Heading Size="HeadingSize.Is3">Products</Heading>
+
 <Divider></Divider>
 <Card>
     <CardBody>
@@ -39,7 +40,3 @@
         </DataGrid>
     </CardBody>
 </Card>
-
-@code {
-
-}

@@ -65,9 +65,6 @@ namespace ServerSideBlazorApp
             services.AddSingleton<OrderService>();
             services.AddSingleton<ProductService>();
 
-            services.AddSingleton<GlobalProgressBar>();
-
-
             //following required as a workaround for MatBlazor
             // Server Side Blazor doesn't register HttpClient by default
             if (!services.Any(x => x.ServiceType == typeof(HttpClient)))

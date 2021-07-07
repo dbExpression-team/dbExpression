@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@inject GlobalProgressBar ProgressBar
 
 <div class="sidebar">
     <NavMenu />
@@ -10,61 +9,7 @@
         <a href="https://github.com/HatTrickLabs/db-ex" target="_blank"><i class="fa-lg fab fa-github"></i></a>
     </div>
 
-    @if (ShowProgressBar)
-    {
-        <MatProgressBar Indeterminate="true"></MatProgressBar>
-    }
-    else
-    {
-        <div style="min-height:4px;"></div>
-    }
-
     <div class="content px-4">
         @Body
     </div>
 </div>
-
-@code{
-
-    private bool ShowProgressBar { get; set; }
-
-    protected override void OnInitialized()
-    {
-        ProgressBar.ShowProgress += Show;
-        ProgressBar.HideProgress += Hide;
-    }
-
-    public async Task Show()
-    {
-        await InvokeAsync(() =>
-        {
-            ShowProgressBar = true;
-            StateHasChanged();
-        });
-    }
-
-    public async Task Hide()
-    {
-        await InvokeAsync(() =>
-        {
-            ShowProgressBar = false;
-            StateHasChanged();
-        });
-    }
-
-    public async Task ProgressChanged(int value)
-    {
-        await InvokeAsync(() =>
-        {
-            ShowProgressBar = true;
-            StateHasChanged();
-        });
-    }
-
-    public void Dispose()
-    {
-        ProgressBar.ShowProgress -= Show;
-        ProgressBar.HideProgress -= Hide;
-    }
-
-}
