@@ -9,22 +9,22 @@ namespace ServerSideBlazorApp
 {
     public static class DataGridDataEventArgsExtensions
     {
-        public static PagingParameters CreatePageRequestModel<T>(this DataGridReadDataEventArgs<T> args, PagingParameters previous, Sort defaultSort)
+        public static T CreatePagingParameters<T,U>(this DataGridReadDataEventArgs<U> args, T previous, Sort defaultSort, Action<T> additionalConfiguration = null)
+             where T : PagingParameters, new()
         {
             //args.Columns is assumed to be every column in the grid
-            var model = new PagingParameters
+            var model = new T
             {
                 Offset = (args.Page - 1) * args.PageSize, //Blazorise paging is 1 based
                 Limit = args.PageSize
             };
             if (args.PageSize != previous.Limit) //page size is changing
             {
-                model.Offset = args.PageSize;
                 model.Offset = 0;
             }
 
             var requestedSorting = args.Columns.Where(c => c.Direction != SortDirection.None).Select(r => new Sort(r.Field, r.Direction.ConvertSortDirection().Value)).ToList();
-            var previousSorting = previous.Sorting?.Where(s => s != defaultSort).ToList() ?? new List<Sort>();
+            var previousSorting = previous?.Sorting?.ToList() ?? new List<Sort>();
             var newSorting = new Sort[Math.Max(requestedSorting.Count, previousSorting.Count)];
             var newlyRequestedSorting = new List<Sort>();
 
@@ -53,6 +53,29 @@ namespace ServerSideBlazorApp
             {
                 model.Sorting = model.Sorting.Append(defaultSort);
             }
+
+            additionalConfiguration?.Invoke(model);
+
+            return model;
+        }
+
+        public static T CreatePagingParameters<T>(this DataGridPageChangedEventArgs args, T previous, Sort defaultSort, Action<T> additionalConfiguration = null)
+            where T : PagingParameters, new()
+        {
+            //args.Columns is assumed to be every column in the grid
+            var model = new T
+            {
+                Offset = (args.Page - 1) * args.PageSize, //Blazorise paging is 1 based
+                Limit = args.PageSize,
+                Sorting = previous?.Sorting?.ToList() ?? new List<Sort>() {  defaultSort }
+            };
+
+            if (args.PageSize != previous.Limit) //page size is changing
+            {
+                model.Offset = 0;
+            }            
+
+            additionalConfiguration?.Invoke(model);
 
             return model;
         }

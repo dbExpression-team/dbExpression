@@ -13,16 +13,16 @@
                 <FieldBody>
                     <Addons>
                         <Addon>
-                            <TextEdit Placeholder="Search by name..." DelayTextOnKeyPress="true" DelayTextOnKeyPressInterval="200" Text="@SearchPhrase" TextChanged="OnSearch" />
+                            <TextEdit Placeholder="Search by name..." DelayTextOnKeyPress="true" DelayTextOnKeyPressInterval="200" Text="@((CurrentPage.PagingParameters as PagingParametersWithSearch).SearchPhrase)" TextChanged="OnSearch" />
                         </Addon>
-                        <Addon AddonType="AddonType.End" Display="@(string.IsNullOrEmpty(SearchPhrase) ? Display.None : Display.Always)" @onclick="@(() => OnSearch(null))">
+                        <Addon AddonType="AddonType.End" Display="@(string.IsNullOrEmpty((CurrentPage.PagingParameters as PagingParametersWithSearch).SearchPhrase) ? Display.None : Display.Always)" @onclick="@(() => OnSearch(null))">
                             <span aria-hidden="true"><i class="fas fa-times"></i></span>
                         </Addon>
                     </Addons>
                 </FieldBody>
             </Field>
         </Fields>
-        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Data" Striped="true" ReadData="OnPage" TotalItems="@CurrentPage.TotalCount" PageSize="@PagingParameters.Limit" CurrentPage="@((PagingParameters.Offset / PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
+        <DataGrid TItem="CustomerSummaryModel" Data="@CurrentPage.Data" Striped="true" PageChanged="OnPageChanged" PageSizeChanged="OnPageSizeChanged" ReadData="OnReadData" TotalItems="@CurrentPage.TotalCount" PageSize="@CurrentPage.PagingParameters.Limit" CurrentPage="@((CurrentPage.PagingParameters.Offset / CurrentPage.PagingParameters.Limit) + 1)" Sortable="true" ShowPageSizes="true" ShowPager="true" PageSizes=@AllowedPageSizes>
             <LoadingTemplate>Loading...</LoadingTemplate>
             <FirstPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.FirstPage" /></FirstPageButtonTemplate>
             <PreviousPageButtonTemplate><PagingButton Type="PagingButton.PagingButtonType.PreviousPage" /></PreviousPageButtonTemplate>

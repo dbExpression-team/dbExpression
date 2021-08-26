@@ -44,7 +44,7 @@ namespace ServerSideBlazorApp.Pages
             if (!args.Columns.Any())
                 return;
 
-            PagingParameters = args.CreatePageRequestModel(PreviousPagingParameters ?? PagingParameters, DefaultSort);
+            PagingParameters = args.CreatePagingParameters(PreviousPagingParameters ?? PagingParameters, DefaultSort);
 
             await FetchCurrentPageAsync();
         }
