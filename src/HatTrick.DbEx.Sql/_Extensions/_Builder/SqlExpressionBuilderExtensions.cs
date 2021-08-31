@@ -3648,7 +3648,7 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a stored procedure.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
-        public static void Execute<T>(this StoredProcedureTermination builder, int commandTimeout)
+        public static void Execute(this StoredProcedureTermination builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
             using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))

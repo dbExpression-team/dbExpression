@@ -16,7 +16,7 @@
             {/if}
         ) : base(
                 $"{{identifier}}.{:procedureName}"
-                ,"{:procedureExpressionName}"
+                ,"{:procedureName}"
                 ,schema
                 {?var:isFirst = true}
                 ,new List<ParameterExpression> 
