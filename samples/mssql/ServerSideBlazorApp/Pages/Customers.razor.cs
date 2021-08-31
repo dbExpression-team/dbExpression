@@ -16,13 +16,10 @@ namespace ServerSideBlazorApp.Pages
         private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(CustomerSummaryModel.Name), SortDirection.Ascending);
         private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
         private readonly Timer searchTimer = new(800);
-
+        private bool isFromReturnUrl;
         private bool ShowProgressBar { get; set; } = false;
-        private string SearchPhrase { get; set; }
-        private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
-        private Page<CustomerSummaryModel> CurrentPage { get; set; } = Page<CustomerSummaryModel>.CreateDefault();
-        private PagingParameters PreviousPagingParameters { get; set; }
-        #endregion
+        private Page<CustomerSummaryModel, PagingParametersWithSearch> CurrentPage { get; set; } = new Page<CustomerSummaryModel, PagingParametersWithSearch>(PagingParametersWithSearch.CreateDefault(DefaultSort), null, 0);
+        #endregion 
 
         #region methods
         private async Task FetchCurrentPageAsync()
@@ -31,41 +28,87 @@ namespace ServerSideBlazorApp.Pages
 
             try
             {
-                CurrentPage = await CustomerService.GetSummaryPageAsync(PagingParameters, SearchPhrase);
+                var page = await CustomerService.GetSummaryPageAsync(CurrentPage.PagingParameters);
+                CurrentPage.Data = page.Data;
+                CurrentPage.TotalCount = page.TotalCount;
             }
             finally
             {
-                PreviousPagingParameters = PagingParameters;
                 ShowProgressBar = false;
             }
-
-            StateHasChanged();
         }
 
-        private async Task OnPage(DataGridReadDataEventArgs<CustomerSummaryModel> args)
+        private async Task OnReadData(DataGridReadDataEventArgs<CustomerSummaryModel> args)
         {
             if (!args.Columns.Any())
                 return;
+            var requested = args.CreatePagingParameters(CurrentPage.PagingParameters, DefaultSort, p =>
+            {
+                p.SearchPhrase = CurrentPage.PagingParameters.SearchPhrase;
+                if (isFromReturnUrl)
+                {
+                    if (p.Offset == CurrentPage.PagingParameters.Offset)
+                        isFromReturnUrl = false; //offset same as from  returnUrl or is now in-sync
+                    else
+                        p.Offset = CurrentPage.PagingParameters.Offset;  //from returnUrl, the parameter from returnUrl should override
+                }
+            });
+            if (CurrentPage.PagingParameters != requested)
+            {
+                CurrentPage.PagingParameters = requested;
+                CurrentPage.Data = null;
+            }
+            if (CurrentPage.Data is null)
+                await FetchCurrentPageAsync();
+        }
 
-            PagingParameters = args.CreatePageRequestModel(PreviousPagingParameters ?? PagingParameters, DefaultSort);
+        private void OnPageChanged(DataGridPageChangedEventArgs args)
+        {
+            var requested = args.CreatePagingParameters(CurrentPage.PagingParameters, DefaultSort, p => p.SearchPhrase = CurrentPage.PagingParameters.SearchPhrase);
+            if (CurrentPage.PagingParameters != requested)
+            {
+                CurrentPage.PagingParameters = requested;
+                CurrentPage.Data = null;
+            }
+        }
 
-            await FetchCurrentPageAsync();
+        private void OnPageSizeChanged(int pageSize)
+        {
+            if (pageSize != CurrentPage.PagingParameters.Limit)
+            {
+                CurrentPage.PagingParameters.Limit = pageSize;
+                CurrentPage.PagingParameters.Offset = 0;
+                CurrentPage.Data = null;
+            }
         }
 
         private void OnSearch(string searchPhrase)
         {
-            SearchPhrase = searchPhrase;
+            CurrentPage.PagingParameters.SearchPhrase = searchPhrase;
+            CurrentPage.Data = null;
             searchTimer.Stop();
             searchTimer.Start();
         }
 
         private void OnSearch(object source, ElapsedEventArgs e)
         {
-            InvokeAsync(async () => await FetchCurrentPageAsync());
+            InvokeAsync(async () =>
+            {
+                CurrentPage.PagingParameters.Offset = 0;
+                if (CurrentPage.PagingParameters.Offset == 0)
+                {
+                    CurrentPage.Data = null;
+                    await FetchCurrentPageAsync();
+                    StateHasChanged();
+                }
+            });
         }
 
         private string BuildDetailUrl(int id)
-            => $"/customers/{id}?{NavigationManager.ToReturnUrl("customers", PagingParameters)}";
+        {
+            var url = $"/customers/{id}?{NavigationManager.ToReturnUrl("customers", CurrentPage.PagingParameters)}";
+            return url;
+        }
 
         protected override void OnInitialized()
         {
@@ -76,8 +119,12 @@ namespace ServerSideBlazorApp.Pages
 
         public async override Task SetParametersAsync(ParameterView parameters)
         {
-            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParameters page))
-                PagingParameters = page;
+            if (NavigationManager.TryGetPagingParametersFromReturnUrl(out PagingParametersWithSearch page))
+            {
+                CurrentPage.PagingParameters = page;
+                isFromReturnUrl = true;
+            }
+
             await base.SetParametersAsync(parameters);
         }
 

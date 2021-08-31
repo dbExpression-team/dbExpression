@@ -69,12 +69,11 @@ namespace ServerSideBlazorApp.Service
         /// Search for customers, and retrieve a paged list using the supplied paging parameters and an optional search phrase.
         /// </summary>
         /// <param name="pagingParameters">A set of parameters specifying the offset, limit, and sorting criteria used in the SQL statement.</param>
-        /// <param name="searchPhrase">The phrase to find customers based on their first name, last name, or composite first name and last name starting with the supplied phrase.</param>
-        public async Task<Page<CustomerSummaryModel>> GetSummaryPageAsync(PagingParameters pagingParameters, string searchPhrase)
+        public async Task<Page<CustomerSummaryModel, PagingParametersWithSearch>> GetSummaryPageAsync(PagingParametersWithSearch pagingParameters)
         {
-            var whereClause = string.IsNullOrWhiteSpace(searchPhrase) ?
+            var whereClause = string.IsNullOrWhiteSpace(pagingParameters.SearchPhrase) ?
                     null
-                    : dbo.Customer.FirstName.Like(searchPhrase + '%') | dbo.Customer.LastName.Like(searchPhrase + '%');
+                    : dbo.Customer.FirstName.Like(pagingParameters.SearchPhrase + '%') | dbo.Customer.LastName.Like(pagingParameters.SearchPhrase + '%');
 
             var customers = await
                 db.SelectMany(
@@ -97,7 +96,7 @@ namespace ServerSideBlazorApp.Service
                 .Where(whereClause)
                 .ExecuteAsync();
 
-            return new Page<CustomerSummaryModel>(
+            return new Page<CustomerSummaryModel, PagingParametersWithSearch>(
                 pagingParameters,
                 customers,
                 countOfCustomers
