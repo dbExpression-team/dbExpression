@@ -117,6 +117,48 @@ namespace HatTrick.DbEx.Sql.Configuration
             configuration.ExecutionPipelineFactory.AfterAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
             return this;
         }
+
+        #region update
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Action<BeforeUpdateAssemblyPipelineExecutionContext> action)
+        {
+            configuration.ExecutionPipelineFactory.BeforeUpdateAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Action<BeforeUpdateAssemblyPipelineExecutionContext> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.BeforeUpdateAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, Task> action)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.BeforeUpdateAssembly.AddToEnd((c, ct) => action(c));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, Task> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.BeforeUpdateAssembly.AddToEnd((c, ct) => action(c), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, CancellationToken, Task> action)
+        {
+            configuration.ExecutionPipelineFactory.BeforeUpdateAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.BeforeUpdateAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+        #endregion
         #endregion
 
         #region insert

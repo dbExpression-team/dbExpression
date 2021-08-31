@@ -25,13 +25,13 @@ namespace HatTrick.DbEx.Sql.Expression
         IAssignmentExpressionProvider
     {
         #region internals
-        private FieldExpression assignee;
+        private readonly FieldExpression assignee;
         private IExpressionElement assignment;
         #endregion
 
         #region interface
         FieldExpression IAssignmentExpressionProvider.Assignee => assignee;
-        IExpressionElement IAssignmentExpressionProvider.Assignment => assignment;
+        IExpressionElement IAssignmentExpressionProvider.Assignment { get => assignment; set => assignment = value; }
         #endregion
 
         #region constructors
