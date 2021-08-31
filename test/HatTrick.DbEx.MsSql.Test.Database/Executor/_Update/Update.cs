@@ -1,4 +1,5 @@
-﻿using DbEx.DataService;
+﻿using DbEx.Data;
+using DbEx.DataService;
 using DbEx.dboData;
 using DbEx.dboDataService;
 using FluentAssertions;
@@ -276,6 +277,26 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
         [Theory]
         [MsSqlVersions.AllVersions]
+        [Trait("Operation", "WHERE")]
+        public async Task Can_update_persons_gendertype_async(int version, int id = 1, GenderType expectedGenderType = GenderType.Female)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.Update(dbo.Person.GenderType.Set(expectedGenderType))
+               .From(dbo.Person)
+               .Where(dbo.Person.GenderType == GenderType.Male);
+
+            //when               
+            await exp.ExecuteAsync();
+
+            //then
+            var genderType = await db.SelectOne(dbo.Person.GenderType).From(dbo.Person).ExecuteAsync();
+            genderType.Should().Be(expectedGenderType);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
         public async Task Does_truncate_with_update_statement_throw_exception_as_expected(int version)
         {
             //given
@@ -287,6 +308,38 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             ex.Should().NotBeNull();
             ex.Message.Should().Contain("truncated");
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_try_to_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
+        {
+            //given
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.TrySetFieldValue(nameof(dbo.Person.FirstName), expected)));
+
+            //when
+            await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
+
+            //then
+            var name = await db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
+
+            name.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public async Task Can_set_field_value_before_update_assembly_event(int version, string expected = "XXX")
+        {
+            //given
+            ConfigureForMsSqlVersion(version, configure => configure.Events.OnBeforeUpdateSqlStatementAssembly(context => context.SetFieldValue(nameof(dbo.Person.FirstName), expected)));
+
+            //when
+            await db.Update(dbo.Person.LastName.Set("YYY")).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
+
+            //then
+            var name = await db.SelectOne(dbo.Person.FirstName).From(dbo.Person).Where(dbo.Person.Id == 1).ExecuteAsync();
+
+            name.Should().Be(expected);
         }
     }
 }

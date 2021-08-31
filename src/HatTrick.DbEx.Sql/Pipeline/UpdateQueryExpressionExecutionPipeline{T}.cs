@@ -32,6 +32,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration database;
         private readonly PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly;
+        private readonly PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> beforeUpdateAssembly;
         private readonly PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly;
         private readonly PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution;
         private readonly PipelineEventHook<AfterExecutionPipelineExecutionContext> afterExecution;
@@ -43,6 +44,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         public UpdateQueryExpressionExecutionPipeline(
             RuntimeSqlDatabaseConfiguration database,
             PipelineEventHook<BeforeAssemblyPipelineExecutionContext> beforeAssembly,
+            PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> beforeUpdateAssembly,
             PipelineEventHook<AfterAssemblyPipelineExecutionContext> afterAssembly,
             PipelineEventHook<BeforeExecutionPipelineExecutionContext> beforeExecution,
             PipelineEventHook<AfterExecutionPipelineExecutionContext> afterExecution,
@@ -52,6 +54,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         {
             this.database = database;
             this.beforeAssembly = beforeAssembly;
+            this.beforeUpdateAssembly = beforeUpdateAssembly;
             this.afterAssembly = afterAssembly;
             this.beforeExecution = beforeExecution;
             this.afterExecution = afterExecution;
@@ -72,6 +75,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var statementBuilder = database.StatementBuilderFactory.CreateSqlStatementBuilder(database, expression) ?? throw new DbExpressionException("The sql statement builder is null, cannot execute an update query without a statement builder to construct the sql statement.");
 
             beforeAssembly?.Invoke(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
+            beforeUpdateAssembly?.Invoke(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)));
             var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
@@ -109,6 +113,11 @@ namespace HatTrick.DbEx.Sql.Pipeline
             if (beforeAssembly is object)
             {
                 await beforeAssembly.InvokeAsync(new Lazy<BeforeAssemblyPipelineExecutionContext>(() => new BeforeAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
+                ct.ThrowIfCancellationRequested();
+            }
+            if (beforeUpdateAssembly is object)
+            {
+                await beforeUpdateAssembly.InvokeAsync(new Lazy<BeforeUpdateAssemblyPipelineExecutionContext>(() => new BeforeUpdateAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters)), ct).ConfigureAwait(false);
                 ct.ThrowIfCancellationRequested();
             }
             var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute an update query without a sql statement.");

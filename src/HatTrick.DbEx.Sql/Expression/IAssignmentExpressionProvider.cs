@@ -21,6 +21,6 @@
     public interface IAssignmentExpressionProvider
     {
         FieldExpression Assignee { get; }
-        IExpressionElement Assignment { get; }
+        IExpressionElement Assignment { get; set; }
     }
 }
