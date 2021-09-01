@@ -1,9 +1,10 @@
 # Changelog
 
-## [0.8.2] - 2021-08-31
+## [0.8.2] - 2021-09-2
 
 ### Added
 - Added OnBeforeUpdateSqlStatementAssembly event to allow global changes to update sql statements prior to assembly
+- Added OnBeforeInsertSqlStatementAssembly event to allow global changes to insert sql statements prior to assembly
 
 ### Changed
 - Fixed issue #252

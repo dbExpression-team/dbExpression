@@ -29,6 +29,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region internals
         private PipelineEventHook<BeforeAssemblyPipelineExecutionContext> _beforeAssemblyPipelineEventHook;
         private PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> _beforeUpdateAssemblyPipelineEventHook;
+        private PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext> _beforeInsertAssemblyPipelineEventHook;
         private PipelineEventHook<AfterAssemblyPipelineExecutionContext> _afterAssemblyPipelineEventHook;
         private PipelineEventHook<BeforeExecutionPipelineExecutionContext> _beforeExecutionPipelineEventHook;
         private PipelineEventHook<AfterExecutionPipelineExecutionContext> _afterExecutionPipelineEventHook;
@@ -45,6 +46,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
         private PipelineEventHook<BeforeAssemblyPipelineExecutionContext> BeforeAssemblyPipelineEventHook => _beforeAssemblyPipelineEventHook ?? (_beforeAssemblyPipelineEventHook = new PipelineEventHook<BeforeAssemblyPipelineExecutionContext>(BeforeAssembly.SyncActions, BeforeAssembly.AsyncActions));
         private PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext> BeforeUpdateAssemblyPipelineEventHook => _beforeUpdateAssemblyPipelineEventHook ?? (_beforeUpdateAssemblyPipelineEventHook = new PipelineEventHook<BeforeUpdateAssemblyPipelineExecutionContext>(BeforeUpdateAssembly.SyncActions, BeforeUpdateAssembly.AsyncActions));
+        private PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext> BeforeInsertAssemblyPipelineEventHook => _beforeInsertAssemblyPipelineEventHook ?? (_beforeInsertAssemblyPipelineEventHook = new PipelineEventHook<BeforeInsertAssemblyPipelineExecutionContext>(BeforeInsertAssembly.SyncActions, BeforeInsertAssembly.AsyncActions));
         private PipelineEventHook<AfterAssemblyPipelineExecutionContext> AfterAssemblyPipelineEventHook => _afterAssemblyPipelineEventHook ?? (_afterAssemblyPipelineEventHook = new PipelineEventHook<AfterAssemblyPipelineExecutionContext>(AfterAssembly.SyncActions, AfterAssembly.AsyncActions));
         private PipelineEventHook<BeforeExecutionPipelineExecutionContext> BeforeExecutionPipelineEventHook => _beforeExecutionPipelineEventHook ?? (_beforeExecutionPipelineEventHook = new PipelineEventHook<BeforeExecutionPipelineExecutionContext>(BeforeExecution.SyncActions, BeforeExecution.AsyncActions));
         private PipelineEventHook<AfterExecutionPipelineExecutionContext> AfterExecutionPipelineEventHook => _afterExecutionPipelineEventHook ?? (_afterExecutionPipelineEventHook = new PipelineEventHook<AfterExecutionPipelineExecutionContext>(AfterExecution.SyncActions, AfterExecution.AsyncActions));
@@ -63,6 +65,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #region interface
         public PipelineEventActions<Func<BeforeAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<BeforeAssemblyPipelineExecutionContext>, BeforeAssemblyPipelineExecutionContext> BeforeAssembly { get; set; } = new BeforeAssemblyPipelineEventActions();
         public PipelineEventActions<Func<BeforeUpdateAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<BeforeUpdateAssemblyPipelineExecutionContext>, BeforeUpdateAssemblyPipelineExecutionContext> BeforeUpdateAssembly { get; set; } = new BeforeUpdateAssemblyPipelineEventActions();
+        public PipelineEventActions<Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<BeforeInsertAssemblyPipelineExecutionContext>, BeforeInsertAssemblyPipelineExecutionContext> BeforeInsertAssembly { get; set; } = new BeforeInsertAssemblyPipelineEventActions();
         public PipelineEventActions<Func<AfterAssemblyPipelineExecutionContext, CancellationToken, Task>, Action<AfterAssemblyPipelineExecutionContext>, AfterAssemblyPipelineExecutionContext> AfterAssembly { get; set; } = new AfterAssemblyPipelineEventActions();
         public PipelineEventActions<Func<BeforeInsertPipelineExecutionContext, CancellationToken, Task>, Action<BeforeInsertPipelineExecutionContext>, BeforeInsertPipelineExecutionContext> BeforeInsert { get; set; } = new BeforeInsertPipelineEventActions();
         public PipelineEventActions<Func<AfterInsertPipelineExecutionContext, CancellationToken, Task>, Action<AfterInsertPipelineExecutionContext>, AfterInsertPipelineExecutionContext> AfterInsert { get; set; } = new AfterInsertPipelineEventActions();
@@ -85,6 +88,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             return new InsertQueryExpressionExecutionPipeline<T>(
                 database,
                 BeforeAssemblyPipelineEventHook,
+                BeforeInsertAssemblyPipelineEventHook,
                 AfterAssemblyPipelineEventHook,
                 BeforeExecutionPipelineEventHook,
                 AfterExecutionPipelineEventHook,

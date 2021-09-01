@@ -61,7 +61,7 @@ namespace HatTrick.DbEx.Sql.Builder
             var i = 0;
             var insertEntity = entity as IEntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}.");
             expression.BaseEntity = entity as EntityExpression<TEntity>;
-            expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, insertEntity.BuildInclusiveInsertExpression(x).Expressions));
+            expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (insertEntity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
             expression.Outputs = insertEntity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).ToList();
         }
         #endregion

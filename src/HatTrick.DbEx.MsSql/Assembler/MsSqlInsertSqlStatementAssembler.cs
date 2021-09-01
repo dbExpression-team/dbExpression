@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
                 builder.Appender.Indent().Write("(");
 
-                var inserts = insert.Value.Expressions.ToList();
+                var inserts = (insert.Value as IExpressionListProvider<InsertExpression>).Expressions.ToList();
                 for (var j = 0; j < inserts.Count; j++)
                 {
                     if (identity is object && (inserts[j] as IAssignmentExpressionProvider).Assignee == identity)
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //write out the table structure of the  {insertValueNames} table
-            var templateInserts = template.Expressions.ToList();
+            var templateInserts = (template as IExpressionListProvider<InsertExpression>).Expressions.ToList();
             for (var i = 0; i < templateInserts.Count; i++)
             {
                 if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
