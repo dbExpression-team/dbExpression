@@ -159,6 +159,48 @@ namespace HatTrick.DbEx.Sql.Configuration
             return this;
         }
         #endregion
+
+        #region insert
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Action<BeforeInsertAssemblyPipelineExecutionContext> action)
+        {
+            configuration.ExecutionPipelineFactory.BeforeInsertAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Action<BeforeInsertAssemblyPipelineExecutionContext> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.BeforeInsertAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, Task> action)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.BeforeInsertAssembly.AddToEnd((c, ct) => action(c));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, Task> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+            configuration.ExecutionPipelineFactory.BeforeInsertAssembly.AddToEnd((c, ct) => action(c), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task> action)
+        {
+            configuration.ExecutionPipelineFactory.BeforeInsertAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)));
+            return this;
+        }
+
+        public IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate)
+        {
+            configuration.ExecutionPipelineFactory.BeforeInsertAssembly.AddToEnd(action ?? throw new ArgumentNullException(nameof(action)), predicate ?? throw new ArgumentNullException(nameof(predicate)));
+            return this;
+        }
+        #endregion
         #endregion
 
         #region insert

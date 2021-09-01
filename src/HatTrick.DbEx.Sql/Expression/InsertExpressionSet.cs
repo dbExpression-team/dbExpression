@@ -25,9 +25,13 @@ namespace HatTrick.DbEx.Sql.Expression
     public class InsertExpressionSet : IExpression,
         IExpressionListProvider<InsertExpression>
     {
+        #region internals
+        protected readonly IEnumerable<InsertExpression> expressions = new List<InsertExpression>();
+        #endregion
+
         #region interface
         public IDbEntity Entity { get; }
-        public IEnumerable<InsertExpression> Expressions { get; private set; } = new List<InsertExpression>();
+        IEnumerable<InsertExpression> IExpressionListProvider<InsertExpression>.Expressions => expressions;
         #endregion
 
         #region constructors
@@ -36,12 +40,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public InsertExpressionSet(IDbEntity entity, IEnumerable<InsertExpression> fields)
         {
             Entity = entity ?? throw new ArgumentNullException(nameof(entity));
-            Expressions = fields ?? throw new ArgumentNullException(nameof(fields));
+            expressions = fields ?? throw new ArgumentNullException(nameof(fields));
         }
         #endregion
 
         #region to string
-        public override string ToString() => string.Join(", ", Expressions.Select(g => g.ToString()));
+        public override string ToString() => string.Join(", ", expressions.Select(g => g.ToString()));
         #endregion
     }
 }

@@ -127,6 +127,42 @@ namespace HatTrick.DbEx.Sql.Configuration
         IExecutionPipelineEventConfigurationBuilder OnBeforeUpdateSqlStatementAssembly(Func<BeforeUpdateAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeUpdateAssemblyPipelineExecutionContext> predicate);
 
         #endregion
+
+        #region insert
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Action<BeforeInsertAssemblyPipelineExecutionContext> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Action<BeforeInsertAssemblyPipelineExecutionContext> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, Task> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// </summary>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task> action);
+
+        /// <summary>
+        /// Execute the delegate <paramref name="action"/> prior to assembling a sql statement from a query expression for an UPDATE operation.
+        /// </summary>
+        /// <param name="predicate">A predicate used to determine if the <paramref name="action"/> is executed.</param>
+        IExecutionPipelineEventConfigurationBuilder OnBeforeInsertSqlStatementAssembly(Func<BeforeInsertAssemblyPipelineExecutionContext, CancellationToken, Task> action, Predicate<BeforeInsertAssemblyPipelineExecutionContext> predicate);
+
+        #endregion
         #endregion
 
         #region insert
