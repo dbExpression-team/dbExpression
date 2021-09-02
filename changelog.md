@@ -8,6 +8,7 @@
 
 ### Changed
 - Fixed issue #252
+- Fixed issue #259
 - Improved paging implementation on server side blazor app
 
 ### Breaking Changes
