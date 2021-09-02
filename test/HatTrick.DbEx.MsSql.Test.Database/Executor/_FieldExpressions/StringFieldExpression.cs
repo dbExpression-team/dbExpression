@@ -52,6 +52,46 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         }
 
         [Theory]
+        [Trait("Operation", "LIKE")]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_like_of_address_line2_succeed(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where(dbo.Address.Line2.Like("Box%"));
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
+        [Trait("Operation", "LIKE")]
+        [MsSqlVersions.AllVersions]
+        public void Does_selecting_like_address_line1_concatenated_with_address_line2_succeed(int version, int expected = 1)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.SelectMany(
+                    dbo.Address.Line2
+                ).From(dbo.Address)
+                .Where((dbo.Address.Line1 + " " + dbo.Address.Line2).Like("US Highway 285 Box%"));
+
+            //when               
+            IList<string> results = exp.Execute();
+
+            //then
+            results.Should().HaveCount(expected);
+        }
+
+        [Theory]
         [MsSqlVersions.AllVersions]
         public void Does_selecting_many_address_line2_where_null_succeed(int version, int expected = 27)
         {

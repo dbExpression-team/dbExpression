@@ -37,8 +37,8 @@ namespace HatTrick.DbEx.Tools.Builder
         private static Func<bool, TypeModel> NewGuidTypeModel = isNullable => new TypeModel(nameof(Guid), nameof(Guid), isNullable);
         private static Func<bool, TypeModel> NewInt64TypeModel = isNullable => new TypeModel(nameof(Int64), "long", isNullable);
         private static Func<bool, TypeModel> NewInt32TypeModel = isNullable => new TypeModel(nameof(Int32), "int", isNullable);
-        private static Func<bool, TypeModel> NewInt16TypeModel = isNullable => new TypeModel(nameof(Object), "object", false);
-        private static Func<bool, TypeModel> NewObjectTypeModel = isNullable => new TypeModel(nameof(Int16), "short", isNullable);
+        private static Func<bool, TypeModel> NewObjectTypeModel = isNullable => new TypeModel(nameof(Object), "object", false);
+        private static Func<bool, TypeModel> NewInt16TypeModel = isNullable => new TypeModel(nameof(Int16), "short", isNullable);
         private static Func<bool, TypeModel> NewStringTypeModel = isNullable => new TypeModel(nameof(String), "string", false);
         private static Func<bool, TypeModel> NewTimeSpanTypeModel = isNullable => new TypeModel(nameof(TimeSpan), nameof(TimeSpan), true);
 
@@ -120,7 +120,6 @@ namespace HatTrick.DbEx.Tools.Builder
                 case SqlDbType.Binary:
                 case SqlDbType.Image:
                 case SqlDbType.Timestamp:
-                case SqlDbType.Udt:
                 case SqlDbType.VarBinary: return "ByteArray";
 
                 case SqlDbType.Bit: return nameof(Boolean);
@@ -157,6 +156,7 @@ namespace HatTrick.DbEx.Tools.Builder
 
                 case SqlDbType.Time: return nameof(TimeSpan);
 
+                case SqlDbType.Udt:
                 case SqlDbType.Structured:
                 case SqlDbType.Variant:
                 case SqlDbType.Xml:

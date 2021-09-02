@@ -174,13 +174,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_inserting(int version, int expected = 6)
+        public void Do_all_pipeline_events_fire_when_inserting(int version, int expected = 7)
         {
             //given
             var executionCount = 0;
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeInsertQueryExecution(_ => executionCount++)
                         .OnBeforeSqlStatementExecution(_ => executionCount++)
@@ -197,7 +198,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_inserting_and_event_configurations_are_repeated(int version, int expected = 12)
+        public void Do_all_pipeline_events_fire_when_inserting_and_event_configurations_are_repeated(int version, int expected = 14)
         {
             //given
             var executionCount = 0;
@@ -205,6 +206,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+
+                        .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
 
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -231,13 +235,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_in_order_when_inserting(int version, string expected = "543210")
+        public void Do_all_pipeline_events_fire_in_order_when_inserting(int version, string expected = "6543210")
         {
             //given
             var execution = "";
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
-                        .OnBeforeSqlStatementAssembly(_ => execution += "5")
+                        .OnBeforeSqlStatementAssembly(_ => execution += "6")
+                        .OnBeforeInsertSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
                         .OnBeforeInsertQueryExecution(_ => execution += "3")
                         .OnBeforeSqlStatementExecution(_ => execution += "2")
@@ -254,13 +259,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_when_inserting_async(int version, int expected = 6)
+        public async Task Do_all_pipeline_events_fire_when_inserting_async(int version, int expected = 7)
         {
             //given
             var executionCount = 0;
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeInsertQueryExecution(_ => executionCount++)
                         .OnBeforeSqlStatementExecution(_ => executionCount++)
@@ -277,7 +283,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_when_inserting_and_event_configurations_are_repeated_async(int version, int expected = 12)
+        public async Task Do_all_pipeline_events_fire_when_inserting_and_event_configurations_are_repeated_async(int version, int expected = 14)
         {
             //given
             var executionCount = 0;
@@ -285,6 +291,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+
+                        .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeInsertSqlStatementAssembly(_ => executionCount++)
 
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -311,13 +320,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_in_order_when_inserting_async(int version, string expected = "543210")
+        public async Task Do_all_pipeline_events_fire_in_order_when_inserting_async(int version, string expected = "6543210")
         {
             //given
             var execution = "";
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
-                        .OnBeforeSqlStatementAssembly(_ => execution += "5")
+                        .OnBeforeSqlStatementAssembly(_ => execution += "6")
+                        .OnBeforeInsertSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
                         .OnBeforeInsertQueryExecution(_ => execution += "3")
                         .OnBeforeSqlStatementExecution(_ => execution += "2")
@@ -334,13 +344,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_updating(int version, int expected = 6)
+        public void Do_all_pipeline_events_fire_when_updating(int version, int expected = 7)
         {
             //given
             var executionCount = 0;
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeUpdateQueryExecution(_ => executionCount++)
                         .OnBeforeSqlStatementExecution(_ => executionCount++)
@@ -357,7 +368,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_when_updating_and_event_configurations_are_repeated(int version, int expected = 12)
+        public void Do_all_pipeline_events_fire_when_updating_and_event_configurations_are_repeated(int version, int expected = 14)
         {
             //given
             var executionCount = 0;
@@ -365,6 +376,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+
+                        .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
 
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -391,13 +405,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public void Do_all_pipeline_events_fire_in_order_when_updating(int version, string expected = "543210")
+        public void Do_all_pipeline_events_fire_in_order_when_updating(int version, string expected = "6543210")
         {
             //given
             var execution = "";
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
-                        .OnBeforeSqlStatementAssembly(_ => execution += "5")
+                        .OnBeforeSqlStatementAssembly(_ => execution += "6")
+                        .OnBeforeUpdateSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
                         .OnBeforeUpdateQueryExecution(_ => execution += "3")
                         .OnBeforeSqlStatementExecution(_ => execution += "2")
@@ -414,13 +429,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_when_updating_async(int version, int expected = 6)
+        public async Task Do_all_pipeline_events_fire_when_updating_async(int version, int expected = 7)
         {
             //given
             var executionCount = 0;
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeUpdateQueryExecution(_ => executionCount++)
                         .OnBeforeSqlStatementExecution(_ => executionCount++)
@@ -437,7 +453,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_when_updating_and_event_configurations_are_repeated_async(int version, int expected = 12)
+        public async Task Do_all_pipeline_events_fire_when_updating_and_event_configurations_are_repeated_async(int version, int expected = 14)
         {
             //given
             var executionCount = 0;
@@ -445,6 +461,9 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
                     c => c.Events
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
                         .OnBeforeSqlStatementAssembly(_ => executionCount++)
+
+                        .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
+                        .OnBeforeUpdateSqlStatementAssembly(_ => executionCount++)
 
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
                         .OnAfterSqlStatementAssembly(_ => executionCount++)
@@ -471,13 +490,14 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor.Events
 
         [Theory]
         [MsSqlVersions.AllVersions]
-        public async Task Do_all_pipeline_events_fire_in_order_when_updating_async(int version, string expected = "543210")
+        public async Task Do_all_pipeline_events_fire_in_order_when_updating_async(int version, string expected = "6543210")
         {
             //given
             var execution = "";
             var config = ConfigureForMsSqlVersion(version,
                     c => c.Events
-                        .OnBeforeSqlStatementAssembly(_ => execution += "5")
+                        .OnBeforeSqlStatementAssembly(_ => execution += "6")
+                        .OnBeforeUpdateSqlStatementAssembly(_ => execution += "5")
                         .OnAfterSqlStatementAssembly(_ => execution += "4")
                         .OnBeforeUpdateQueryExecution(_ => execution += "3")
                         .OnBeforeSqlStatementExecution(_ => execution += "2")

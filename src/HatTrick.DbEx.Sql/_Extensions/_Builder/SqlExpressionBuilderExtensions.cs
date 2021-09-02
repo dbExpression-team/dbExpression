@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Dynamic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,6 +43,10 @@ namespace HatTrick.DbEx.Sql
         public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder)
             where TEntity : class, IDbEntity
         {
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
+
             var config = builder.GetDatabaseConfiguration();
             using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
                 builder.ExecutePipeline(
@@ -61,6 +66,10 @@ namespace HatTrick.DbEx.Sql
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
+
             var config = builder.GetDatabaseConfiguration();
             using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
                 builder.ExecutePipeline(
@@ -77,6 +86,10 @@ namespace HatTrick.DbEx.Sql
         public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection)
             where TEntity : class, IDbEntity
         {
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
+
             builder.ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)), 
                 null
@@ -95,6 +108,10 @@ namespace HatTrick.DbEx.Sql
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
+
             builder.ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)), 
                 command => command.CommandTimeout = commandTimeout
@@ -109,6 +126,10 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, CancellationToken cancellationToken = default)
             where TEntity : class, IDbEntity
         {
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
+
             var config = builder.GetDatabaseConfiguration();
             using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
                 await builder.ExecutePipelineAsync(
@@ -127,6 +148,10 @@ namespace HatTrick.DbEx.Sql
         public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
             where TEntity : class, IDbEntity
         {
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
+
             await builder.ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
                 null,
@@ -145,6 +170,10 @@ namespace HatTrick.DbEx.Sql
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
 
             var config = builder.GetDatabaseConfiguration();
             using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
@@ -167,6 +196,10 @@ namespace HatTrick.DbEx.Sql
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            var expression = builder.GetQueryExpression<InsertQueryExpression>();
+            if (!expression.Inserts.Any())
+                return;
 
             await builder.ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)), 
@@ -3648,7 +3681,7 @@ namespace HatTrick.DbEx.Sql
         /// Assemble and execute a stored procedure.
         /// </summary>
         /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
-        public static void Execute<T>(this StoredProcedureTermination builder, int commandTimeout)
+        public static void Execute(this StoredProcedureTermination builder, int commandTimeout)
         {
             var config = builder.GetDatabaseConfiguration();
             using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))

@@ -26,12 +26,12 @@ namespace HatTrick.DbEx.Sql.Expression
     {
         #region internals
         private readonly FieldExpression assignee;
-        private readonly IExpressionElement assignment;
+        private IExpressionElement assignment;
         #endregion
 
         #region interface
         FieldExpression IAssignmentExpressionProvider.Assignee => assignee;
-        IExpressionElement IAssignmentExpressionProvider.Assignment => assignment;
+        IExpressionElement IAssignmentExpressionProvider.Assignment { get => assignment; set => assignment = value; }
         #endregion
 
         #region constructors
@@ -40,6 +40,10 @@ namespace HatTrick.DbEx.Sql.Expression
             this.assignment = assignment ?? throw new ArgumentNullException(nameof(assignment));
             this.assignee = field ?? throw new ArgumentNullException(nameof(field));
         }
+        #endregion
+
+        #region to string
+        public override string ToString() => $"{assignee} = {assignment}";
         #endregion
     }
 }

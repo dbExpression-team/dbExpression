@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         protected void AssembleStatementUsingMergeStrategy(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            const string ordinalColumnName = "ordinal";
+            const string ordinalColumnName = "__ordinal";
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
@@ -52,7 +52,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
                 builder.Appender.Indent().Write("(");
 
-                var inserts = insert.Value.Expressions.ToList();
+                var inserts = (insert.Value as IExpressionListProvider<InsertExpression>).Expressions.ToList();
                 for (var j = 0; j < inserts.Count; j++)
                 {
                     if (identity is object && (inserts[j] as IAssignmentExpressionProvider).Assignee == identity)
@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
                 .Indentation++;
 
             //write out the table structure of the  {insertValueNames} table
-            var templateInserts = template.Expressions.ToList();
+            var templateInserts = (template as IExpressionListProvider<InsertExpression>).Expressions.ToList();
             for (var i = 0; i < templateInserts.Count; i++)
             {
                 if (identity is object && (templateInserts[i] as IAssignmentExpressionProvider).Assignee == identity)
@@ -159,7 +159,10 @@ namespace HatTrick.DbEx.MsSql.Assembler
             builder.Appender.Write(")").LineBreak().Indentation--;
 
             builder.Appender.Indent().Write("OUTPUT").LineBreak().Indentation++;
-            builder.Appender.Indent().Write(insertValuesName);
+            builder.Appender.Indent()
+                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(insertValuesName)
+                .Write(context.Configuration.IdentifierDelimiter.End);
 
             //write the delimited ordinal column name
             builder.Appender.Write(".")
@@ -172,7 +175,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
             for (var i = 0; i < expression.Outputs.Count; i++)
             {
                 builder.Appender.Indent();
-                builder.Appender.Write("INSERTED.");
+                builder.Appender
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write("inserted")
+                    .Write(context.Configuration.IdentifierDelimiter.End)
+                    .Write('.');
                 builder.AppendElement(
                     expression.Outputs[i],
                     context

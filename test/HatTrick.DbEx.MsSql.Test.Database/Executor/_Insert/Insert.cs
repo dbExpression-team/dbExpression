@@ -8,6 +8,7 @@ using System;
 using Xunit;
 using DbEx.dboData;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 {
@@ -242,6 +243,34 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             product.Should().NotBeNull();
             product.ListPrice.Should().Be(expected);
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_empty_list_of_persons_execute_without_exception(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var exp = db.InsertMany(new List<Person>()).Into(dbo.Person);
+
+            //when & then         
+            exp.Execute();
+        }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        public void Can_null_value_for_list_of_persons_execute_and_fail_as_expected(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            Action execute = () => db.InsertMany((IEnumerable<Person>)null)
+                .Into(dbo.Person)
+                .Execute();
+
+            //when & then
+            execute.Should().Throw<ArgumentNullException>();
         }
     }
 }

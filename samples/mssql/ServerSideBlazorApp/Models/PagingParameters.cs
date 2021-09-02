@@ -1,11 +1,13 @@
 ﻿using Blazorise;
 using HatTrick.DbEx.Sql.Expression;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ServerSideBlazorApp.Models
 {
-    public class PagingParameters 
+
+    public class PagingParameters : IEquatable<PagingParameters>
     {
         public int Offset { get; set; }
         public int Limit { get; set; }
@@ -46,5 +48,49 @@ namespace ServerSideBlazorApp.Models
 
         public static Sort CreateDefaultSort(string defaultSortField, SortDirection defaultSortDirection)
             => new Sort(defaultSortField, defaultSortDirection == SortDirection.Ascending ? OrderExpressionDirection.ASC : OrderExpressionDirection.DESC);
+
+        public bool Equals(PagingParameters other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            if (Offset != other.Offset) return false;
+            if (Limit != other.Limit) return false;
+            if (Sorting is null && other.Sorting is object) return false;
+            if (Sorting is object && other.Sorting is null) return false;
+            if (!Sorting.SequenceEqual(other.Sorting)) return false;
+
+            return true;
+        }
+
+        public override bool Equals(object other)
+            => other is PagingParameters paging && Equals(paging);
+
+        public static bool operator ==(PagingParameters obj1, PagingParameters obj2)
+        {
+            if (obj1 is null && obj2 is object) return false;
+            if (obj1 is object && obj2 is null) return false;
+            if (obj1 is null && obj2 is null) return true;
+
+            return obj1.Equals(obj2);
+        }
+
+        public static bool operator !=(PagingParameters obj1, PagingParameters obj2)
+            => !(obj1 == obj2);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                const int @base = (int)2166136261;
+                const int multiplier = 16777619;
+
+                int hash = @base;
+                hash = (hash * multiplier) ^ Offset.GetHashCode();
+                hash = (hash * multiplier) ^ Limit.GetHashCode();
+                hash = (hash * multiplier) ^ (Sorting is object ? Sorting.GetHashCode() : 0);
+                return hash;
+            }
+        }
     }
 }

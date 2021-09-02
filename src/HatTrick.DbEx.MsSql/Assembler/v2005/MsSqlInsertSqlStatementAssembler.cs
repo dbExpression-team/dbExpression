@@ -31,7 +31,7 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
             if (expression.Inserts.Count > 1)
                 throw new DbExpressionException("MsSql version 2005 does not support inserting multiple records in a single statement.");
 
-            var insertSet = expression.Inserts.Values.Single().Expressions.ToList();
+            var inserts = (expression.Inserts.Values.Single() as IExpressionListProvider<InsertExpression>).Expressions.ToList();
             var identity = (expression.BaseEntity as IExpressionListProvider<FieldExpression>).Expressions.SingleOrDefault(x => builder.FindMetadata(x).IsIdentity);
 
             builder.Appender.Indent().Write("SET NOCOUNT ON;").LineBreak();
@@ -40,17 +40,17 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
             builder.Appender.Write(" (").LineBreak();
             builder.Appender.Indentation++;
 
-            for (var i = 0; i < insertSet.Count; i++)
+            for (var i = 0; i < inserts.Count; i++)
             {
-                if (identity is object && (insertSet[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is object && (inserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();
                 builder.AppendElement(
-                    (insertSet[i] as IAssignmentExpressionProvider).Assignee,
+                    (inserts[i] as IAssignmentExpressionProvider).Assignee,
                     context
                 );
-                if (i < insertSet.Count - 1)
+                if (i < inserts.Count - 1)
                     builder.Appender.Write(", ").LineBreak();
             }
 
@@ -91,16 +91,16 @@ namespace HatTrick.DbEx.MsSql.Assembler.v2005
             //builder.Appender.Indent().Write("0,").LineBreak();
 
             context.PushAppendStyles(EntityExpressionAppendStyle.Alias, FieldExpressionAppendStyle.Alias);
-            for (var i = 0; i < insertSet.Count; i++)
+            for (var i = 0; i < inserts.Count; i++)
             {
-                if (identity is object && (insertSet[i] as IAssignmentExpressionProvider).Assignee == identity)
+                if (identity is object && (inserts[i] as IAssignmentExpressionProvider).Assignee == identity)
                     continue; //don't emit identity columns with the values; they can't be inserted into the table
 
                 builder.Appender.Indent();
 
-                builder.AppendElement((insertSet[i] as IAssignmentExpressionProvider).Assignment, context);
+                builder.AppendElement((inserts[i] as IAssignmentExpressionProvider).Assignment, context);
 
-                if (i < insertSet.Count - 1)
+                if (i < inserts.Count - 1)
                     builder.Appender.Write(", ").LineBreak();
             }
             context.PopAppendStyles();

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.8.2] - 2021-09-2
+
+### Added
+- Added OnBeforeUpdateSqlStatementAssembly event to allow global changes to update sql statements prior to assembly
+- Added OnBeforeInsertSqlStatementAssembly event to allow global changes to insert sql statements prior to assembly
+
+### Changed
+- Fixed issue #252
+- Fixed issue #259
+- Fixed issue #261
+- Improved paging implementation on server side blazor app
+
+### Breaking Changes
+
 ## [0.8.1] - 2021-06-23
 
 ### Added

@@ -26,7 +26,6 @@
     <PackageReference Include="Blazorise.Icons.FontAwesome" Version="0.9.3.9" />
     <PackageReference Include="Blazorise.Icons.Material" Version="0.9.3.9" />
     <PackageReference Include="Blazorise.Material" Version="0.9.3.9" />
-    <PackageReference Include="MatBlazor" Version="2.8.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 

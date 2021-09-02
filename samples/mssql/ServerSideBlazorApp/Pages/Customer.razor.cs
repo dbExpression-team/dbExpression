@@ -8,6 +8,7 @@ namespace ServerSideBlazorApp.Pages
     public partial class Customer
     {
         #region internals
+        private bool ShowProgressBar { get; set; } = false;
         private string ReturnUrl { get; set; }
         private CustomerDetailModel Model { get; set; }
         private string SelectedTab { get; set; } = Tabs.Details.Id;
@@ -41,7 +42,7 @@ namespace ServerSideBlazorApp.Pages
 
         private async Task<Page<OrderSummaryModel>> GetOrderSummaryPageAsync(PagingParameters pagingParameters)
         {
-            await ProgressBar.Show();
+            ShowProgressBar = true;
 
             try
             {
@@ -49,13 +50,13 @@ namespace ServerSideBlazorApp.Pages
             }
             finally
             {
-                await ProgressBar.Hide();
+                ShowProgressBar = false;
             }
         }
 
         private async Task<OrderDetailModel> GetOrderDetailAsync(int orderId)
         {
-            await ProgressBar.Show();
+            ShowProgressBar = true;
 
             try
             {
@@ -63,7 +64,7 @@ namespace ServerSideBlazorApp.Pages
             }
             finally
             {
-                await ProgressBar.Hide();
+                ShowProgressBar = false;
             }
         }
 

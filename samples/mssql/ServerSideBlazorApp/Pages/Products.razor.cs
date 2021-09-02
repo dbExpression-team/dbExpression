@@ -14,6 +14,7 @@ namespace ServerSideBlazorApp.Pages
         private static readonly Sort DefaultSort = PagingParameters.CreateDefaultSort(nameof(ProductSummaryModel.Name), SortDirection.Ascending);
         private static readonly IList<int> AllowedPageSizes = new int[] { 5, 10, 25, 50, 100 };
 
+        private bool ShowProgressBar { get; set; } = false;
         private PagingParameters PagingParameters { get; set; } = PagingParameters.CreateDefault(DefaultSort);
         private Page<ProductSummaryModel> CurrentPage { get; set; } = Page<ProductSummaryModel>.CreateDefault();
         private PagingParameters PreviousPagingParameters { get; set; }
@@ -22,6 +23,8 @@ namespace ServerSideBlazorApp.Pages
         #region methods
         private async Task FetchCurrentPageAsync()
         {
+            ShowProgressBar = true;
+
             try
             {
                 CurrentPage = await service.GetSummaryPageAsync(PagingParameters);
@@ -29,7 +32,7 @@ namespace ServerSideBlazorApp.Pages
             finally
             {
                 PreviousPagingParameters = PagingParameters;
-                await ProgressBar.Hide();
+                ShowProgressBar = false;
             }
 
             StateHasChanged();
@@ -40,7 +43,7 @@ namespace ServerSideBlazorApp.Pages
             if (!args.Columns.Any())
                 return;
 
-            PagingParameters = args.CreatePageRequestModel(PreviousPagingParameters ?? PagingParameters, DefaultSort);
+            PagingParameters = args.CreatePagingParameters(PreviousPagingParameters ?? PagingParameters, DefaultSort);
 
             await FetchCurrentPageAsync();
         }

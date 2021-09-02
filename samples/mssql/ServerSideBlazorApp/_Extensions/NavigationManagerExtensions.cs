@@ -59,18 +59,20 @@ namespace ServerSideBlazorApp
             return manager.BaseUri;
         }
 
-        public static bool TryGetPagingParametersFromReturnUrl(this NavigationManager manager, out PagingParameters model)
+        public static bool TryGetPagingParametersFromReturnUrl<T>(this NavigationManager manager, out T model)
+            where T : PagingParameters, new()
         {
             model = null;
             if (manager.TryGetQueryStringParameter(PAGING_PARAM_NAME, out string paging))
             {
-                model = JsonSerializer.Deserialize<PagingParameters>(paging);
+                model = JsonSerializer.Deserialize<T>(paging);
                 return true;
             }
             return false;
         }
 
-        public static string ToReturnUrl(this NavigationManager manager, string path, PagingParameters page)
+        public static string ToReturnUrl<T>(this NavigationManager manager, string path, T page)
+            where T : PagingParameters
         {
             if (!string.IsNullOrWhiteSpace(path) && page is object)
                 return $"{RETURN_URL_PARAM_NAME}={HttpUtility.UrlEncode($"{manager.ToAbsoluteUri(path)}?{PAGING_PARAM_NAME}={JsonSerializer.Serialize(page, options)}")}";

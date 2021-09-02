@@ -48,5 +48,10 @@ namespace HatTrick.DbEx.Sql.Expression
         public override int GetHashCode()
             => base.GetHashCode();
         #endregion
+
+        #region like
+        public FilterExpressionSet Like(string phrase)
+            => new FilterExpressionSet(new FilterExpression(this, new LikeExpression(phrase), FilterExpressionOperator.None));
+        #endregion
     }
 }
