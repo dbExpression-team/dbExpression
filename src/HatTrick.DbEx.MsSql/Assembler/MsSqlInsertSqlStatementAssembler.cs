@@ -32,7 +32,7 @@ namespace HatTrick.DbEx.MsSql.Assembler
 
         protected void AssembleStatementUsingMergeStrategy(InsertQueryExpression expression, ISqlStatementBuilder builder, AssemblyContext context)
         {
-            const string ordinalColumnName = "ordinal";
+            const string ordinalColumnName = "__ordinal";
             const string insertValuesName = "__values";
 
             var template = expression.Inserts.First().Value;
@@ -159,7 +159,10 @@ namespace HatTrick.DbEx.MsSql.Assembler
             builder.Appender.Write(")").LineBreak().Indentation--;
 
             builder.Appender.Indent().Write("OUTPUT").LineBreak().Indentation++;
-            builder.Appender.Indent().Write(insertValuesName);
+            builder.Appender.Indent()
+                .Write(context.Configuration.IdentifierDelimiter.Begin)
+                .Write(insertValuesName)
+                .Write(context.Configuration.IdentifierDelimiter.End);
 
             //write the delimited ordinal column name
             builder.Appender.Write(".")
@@ -172,7 +175,11 @@ namespace HatTrick.DbEx.MsSql.Assembler
             for (var i = 0; i < expression.Outputs.Count; i++)
             {
                 builder.Appender.Indent();
-                builder.Appender.Write("INSERTED.");
+                builder.Appender
+                    .Write(context.Configuration.IdentifierDelimiter.Begin)
+                    .Write("inserted")
+                    .Write(context.Configuration.IdentifierDelimiter.End)
+                    .Write('.');
                 builder.AppendElement(
                     expression.Outputs[i],
                     context
