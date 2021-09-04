@@ -325,13 +325,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.CharIndex("P%", dbex.Alias("_address", "Line1")).As("address_line1")
+                    db.fx.CharIndex("P%", dbex.Alias<string>("_address", "Line1")).As("address_line1")
                 ).From(dbo.Address)
                 .InnerJoin(
                     db.SelectOne<Address>()
                     .From(dbo.Address)
                     .Where(dbo.Address.Id == 1)
-                ).As("_address").On(dbo.Address.Id == dbex.Alias("_address", "Id"));
+                ).As("_address").On(dbo.Address.Id == ("_address", "Id"));
 
             //when               
             object result = exp.Execute();

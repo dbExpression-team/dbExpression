@@ -162,6 +162,9 @@ namespace {Namespace}
         {-#each Operations-}
         public static FilterExpressionSet operator {FilterOperatorSymbol}(Nullable{:mediatorType.Name}ExpressionMediator a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.{FilterOperatorName}));
         {-/each-}
+        {-#each Operations-}
+        public static FilterExpressionSet operator {FilterOperatorSymbol}(Nullable{:mediatorType.Name}ExpressionMediator a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.{FilterOperatorName}));
+        {-/each-}
         {-/each-}
         #endregion
         #endregion
