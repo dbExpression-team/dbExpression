@@ -16,10 +16,11 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Builder
+namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IInsertTerminationExpressionBuilder<TEntity> : ITerminationExpressionBuilder
+    public interface IInsertTerminationExpressionBuilder<TEntity> : IInsertTerminationExpressionBuilder
         where TEntity : class, IDbEntity
     {
+        
     }
 }

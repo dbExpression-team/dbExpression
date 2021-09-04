@@ -44,5 +44,13 @@ namespace HatTrick.DbEx.Sql.Builder
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
         }
         #endregion
+
+        #region methods
+        protected T GetQueryExpression<T>()
+            where T : QueryExpression
+        {
+            return expression as T ?? throw new DbExpressionConfigurationException($"Query expression is type '{expression.GetType()}', the type was expected to be the requested type of '{typeof(T)}'.");
+        }
+        #endregion
     }
 }

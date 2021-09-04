@@ -35,179 +35,179 @@ namespace HatTrick.DbEx.Sql
     public static class SqlExpressionBuilderExtensions
     {
         #region builder termination
-        #region InsertTerminationExpressionBuilder
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder)
-            where TEntity : class, IDbEntity
-        {
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        //#region InsertTerminationExpressionBuilder
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        //public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            var config = builder.GetDatabaseConfiguration();
-            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
-                builder.ExecutePipeline(
-                    connection, 
-                    null
-                );
-        }
+        //    var config = builder.GetDatabaseConfiguration();
+        //    using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+        //        builder.ExecutePipeline(
+        //            connection, 
+        //            null
+        //        );
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, int commandTimeout)
-            where TEntity : class, IDbEntity
-        {
-            if (commandTimeout <= 0)
-                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        ///// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
+        //public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, int commandTimeout)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    if (commandTimeout <= 0)
+        //        throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            var config = builder.GetDatabaseConfiguration();
-            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
-                builder.ExecutePipeline(
-                    connection, 
-                    command => command.CommandTimeout = commandTimeout
-                );
-        }
+        //    var config = builder.GetDatabaseConfiguration();
+        //    using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+        //        builder.ExecutePipeline(
+        //            connection, 
+        //            command => command.CommandTimeout = commandTimeout
+        //        );
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection)
-            where TEntity : class, IDbEntity
-        {
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        ///// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
+        //public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException(nameof(connection)), 
-                null
-            );
-        }
+        //    builder.ExecutePipeline(
+        //        connection ?? throw new ArgumentNullException(nameof(connection)), 
+        //        null
+        //    );
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, int commandTimeout)
-            where TEntity : class, IDbEntity
-        {
-            if (commandTimeout <= 0)
-                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        ///// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
+        ///// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
+        //public static void Execute<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, int commandTimeout)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    if (commandTimeout <= 0)
+        //        throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            builder.ExecutePipeline(
-                connection ?? throw new ArgumentNullException(nameof(connection)), 
-                command => command.CommandTimeout = commandTimeout
-            );
-        }
+        //    builder.ExecutePipeline(
+        //        connection ?? throw new ArgumentNullException(nameof(connection)), 
+        //        command => command.CommandTimeout = commandTimeout
+        //    );
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, CancellationToken cancellationToken = default)
-            where TEntity : class, IDbEntity
-        {
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        //public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, CancellationToken cancellationToken = default)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            var config = builder.GetDatabaseConfiguration();
-            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
-                await builder.ExecutePipelineAsync(
-                    connection, 
-                    null, 
-                    cancellationToken
-                ).ConfigureAwait(false);
-        }
+        //    var config = builder.GetDatabaseConfiguration();
+        //    using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+        //        await builder.ExecutePipelineAsync(
+        //            connection, 
+        //            null, 
+        //            cancellationToken
+        //        ).ConfigureAwait(false);
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
-            where TEntity : class, IDbEntity
-        {
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        ///// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
+        ///// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
+        //public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, CancellationToken cancellationToken = default)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException(nameof(connection)),
-                null,
-                cancellationToken
-            ).ConfigureAwait(false);
-        }
+        //    await builder.ExecutePipelineAsync(
+        //        connection ?? throw new ArgumentNullException(nameof(connection)),
+        //        null,
+        //        cancellationToken
+        //    ).ConfigureAwait(false);
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, int commandTimeout, CancellationToken cancellationToken = default)
-            where TEntity : class, IDbEntity
-        {
-            if (commandTimeout <= 0)
-                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        ///// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
+        ///// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
+        //public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, int commandTimeout, CancellationToken cancellationToken = default)
+        //    where TEntity : class, IDbEntity
+        //{
+        //    if (commandTimeout <= 0)
+        //        throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            var config = builder.GetDatabaseConfiguration();
-            using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
-                await builder.ExecutePipelineAsync(
-                    connection, 
-                    command => command.CommandTimeout = commandTimeout, 
-                    cancellationToken
-                ).ConfigureAwait(false);
-        }
+        //    var config = builder.GetDatabaseConfiguration();
+        //    using (var connection = new SqlConnector(config.ConnectionStringFactory, config.ConnectionFactory))
+        //        await builder.ExecutePipelineAsync(
+        //            connection, 
+        //            command => command.CommandTimeout = commandTimeout, 
+        //            cancellationToken
+        //        ).ConfigureAwait(false);
+        //}
 
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
-           where TEntity : class, IDbEntity
-        {
-            if (commandTimeout <= 0)
-                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+        ///// <summary>
+        ///// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
+        ///// </summary>
+        ///// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
+        ///// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
+        ///// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
+        ///// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
+        //public static async Task ExecuteAsync<TEntity>(this IInsertTerminationExpressionBuilder<TEntity> builder, ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        //   where TEntity : class, IDbEntity
+        //{
+        //    if (commandTimeout <= 0)
+        //        throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = builder.GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
-                return;
+        //    var expression = builder.GetQueryExpression<InsertQueryExpression>();
+        //    if (!expression.Inserts.Any())
+        //        return;
 
-            await builder.ExecutePipelineAsync(
-                connection ?? throw new ArgumentNullException(nameof(connection)), 
-                command => command.CommandTimeout = commandTimeout, 
-                cancellationToken
-            ).ConfigureAwait(false);
-        }
-        #endregion
+        //    await builder.ExecutePipelineAsync(
+        //        connection ?? throw new ArgumentNullException(nameof(connection)), 
+        //        command => command.CommandTimeout = commandTimeout, 
+        //        cancellationToken
+        //    ).ConfigureAwait(false);
+        //}
+        //#endregion
 
         #region UpdateEntitiesTermination
         /// <summary>
