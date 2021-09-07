@@ -19,11 +19,10 @@ namespace HatTrick.DbEx.MsSql.Test
 
         public virtual RuntimeSqlDatabaseConfiguration ConfigureForMsSqlVersion(int version, string connectionString, Action<IRuntimeSqlDatabaseConfigurationBuilder> postConfigure = null)
         {
-            RuntimeSqlDatabaseConfiguration config = null;
+            RuntimeSqlDatabaseConfiguration config = default;
             Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime = database =>
             {
                 config = (database as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
-
                 database.ConnectionString.Use(connectionString);
 
                 database.SqlStatements.Assembly.ConfigureOutputSettings(

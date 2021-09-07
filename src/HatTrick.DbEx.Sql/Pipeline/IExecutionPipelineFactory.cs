@@ -44,12 +44,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
         PipelineEventActions<Func<AfterExecutionPipelineExecutionContext, CancellationToken, Task>, Action<AfterExecutionPipelineExecutionContext>, AfterExecutionPipelineExecutionContext> AfterExecution { get; set; }
 
 
-        IInsertQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression)
-            where T : class, IDbEntity;
-        IUpdateQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression)
-            where T : class, IDbEntity;
-        IDeleteQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
-            where T : class, IDbEntity;
+        IInsertQueryExpressionExecutionPipeline CreateExecutionPipeline<TEntity>(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression)
+            where TEntity : class, IDbEntity;
+        IUpdateQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression);
+        IDeleteQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression);
         ISelectQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, SelectQueryExpression expression);
         IStoredProcedureQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, StoredProcedureQueryExpression expression);
     }

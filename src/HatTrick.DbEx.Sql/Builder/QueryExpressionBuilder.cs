@@ -24,8 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public abstract class QueryExpressionBuilder :
         ITerminationExpressionBuilder,
-        IQueryExpressionProvider,
-        IRuntimeSqlDatabaseConfigurationProvider
+        IQueryExpressionProvider
     {
         #region internals
         protected RuntimeSqlDatabaseConfiguration Configuration { get; private set; }
@@ -34,7 +33,6 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region interface
         QueryExpression IQueryExpressionProvider.Expression => expression;
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabaseConfigurationProvider.Configuration => Configuration;
         #endregion
 
         #region constructors

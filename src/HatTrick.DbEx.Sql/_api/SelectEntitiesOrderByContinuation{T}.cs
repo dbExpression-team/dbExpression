@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
@@ -25,7 +24,7 @@ namespace HatTrick.DbEx.Sql
     public interface SelectEntitiesOrderByContinuation<TEntity>
 #pragma warning restore IDE1006 // Naming Styles
         : SelectEntitiesTermination<TEntity>
-        where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity, new()
     {
         /// <summary>
         /// Specify a number of records to ignore while reading before beginning to return records.

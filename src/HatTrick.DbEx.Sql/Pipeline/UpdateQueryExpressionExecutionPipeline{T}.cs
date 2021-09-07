@@ -26,8 +26,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class UpdateQueryExpressionExecutionPipeline<T> : IUpdateQueryExpressionExecutionPipeline<T>
-        where T : class, IDbEntity
+    public class UpdateQueryExpressionExecutionPipeline : IUpdateQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration database;

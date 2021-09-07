@@ -16,14 +16,12 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
     public interface SelectEntities<TEntity>
 #pragma warning restore IDE1006 // Naming Styles
-        where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity, new()
     {
         /// <summary>
         /// Construct a TOP clause for a sql SELECT query expression to limit the number of <typeparamref name="TEntity"/> entities selected.

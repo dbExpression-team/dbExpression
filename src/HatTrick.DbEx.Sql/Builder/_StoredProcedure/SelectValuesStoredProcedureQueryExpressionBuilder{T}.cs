@@ -18,86 +18,72 @@
 
 using HatTrick.DbEx.Sql.Configuration;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Executor;
 using HatTrick.DbEx.Sql.Expression;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public class MapValuesStoredProcedureQueryExpressionBuilder : StoredProcedureQueryExpressionBuilder,
+    public class SelectValuesStoredProcedureQueryExpressionBuilder<TValue> : StoredProcedureQueryExpressionBuilder,
         StoredProcedureContinuation,
-        MapValuesStoredProcedureContinuation
+        SelectValuesStoredProcedureContinuation<TValue>
     {
-        #region internals
-        Action<ISqlFieldReader> map;
-        #endregion
-
-        #region interface
-        Action<ISqlFieldReader> MapValuesStoredProcedureTermination.Map => map;
-        #endregion
-
         #region constructors
-        public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
+        public SelectValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression)
             : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
         {
 
-        }
-
-        public MapValuesStoredProcedureQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, StoredProcedureQueryExpression expression, Action<ISqlFieldReader> map)
-            : base(config, expression, expression.BaseEntity as StoredProcedureExpression)
-        {
-            this.map = map ?? throw new ArgumentNullException(nameof(map));
         }
         #endregion
 
         #region methods
-        #region MapValuesStoredProcedureTermination
+        #region SelectValuesStoredProcedureTermination
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination.Execute()
+        IList<TValue> SelectValuesStoredProcedureTermination<TValue>.Execute()
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                ExecutePipeline(
+                return ExecuteValueListPipeline(
                     connection,
                     null
                 );
         }
 
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination.Execute(ISqlConnection connection)
+		IList<TValue> SelectValuesStoredProcedureTermination<TValue>.Execute(ISqlConnection connection)
         {
-            ExecutePipeline(
+            return ExecuteValueListPipeline(
                 connection,
                 null
             );
         }
 
         /// <inheritdoc />
-        void MapValuesStoredProcedureTermination.Execute(int commandTimeout)
+		IList<TValue> SelectValuesStoredProcedureTermination<TValue>.Execute(int commandTimeout)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                ExecutePipeline(
-                    connection,
-                    command => command.CommandTimeout = commandTimeout
-                );
-        }
-
-        /// <inheritdoc />
-        void MapValuesStoredProcedureTermination.Execute(ISqlConnection connection, int commandTimeout)
-        {
-            ExecutePipeline(
+                return ExecuteValueListPipeline(
                 connection,
                 command => command.CommandTimeout = commandTimeout
             );
         }
 
         /// <inheritdoc />
-        async Task MapValuesStoredProcedureTermination.ExecuteAsync(CancellationToken cancellationToken)
+		IList<TValue> SelectValuesStoredProcedureTermination<TValue>.Execute(ISqlConnection connection, int commandTimeout)
+        {
+            return ExecuteValueListPipeline(
+                connection,
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <inheritdoc />
+		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
+                return await ExecuteValueListPipelineAsync(
                     connection,
                     null,
                     cancellationToken
@@ -105,9 +91,9 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task MapValuesStoredProcedureTermination.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return await ExecuteValueListPipelineAsync(
                 connection,
                 null,
                 cancellationToken
@@ -115,10 +101,10 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task MapValuesStoredProcedureTermination.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
-                await ExecutePipelineAsync(
+                return await ExecuteValueListPipelineAsync(
                     connection,
                     command => command.CommandTimeout = commandTimeout,
                     cancellationToken
@@ -126,20 +112,21 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task MapValuesStoredProcedureTermination.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+		async Task<IList<TValue>> SelectValuesStoredProcedureTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
-            await ExecutePipelineAsync(
+            return await ExecuteValueListPipelineAsync(
                 connection,
                 command => command.CommandTimeout = commandTimeout,
                 cancellationToken
             ).ConfigureAwait(false);
         }
 
-        protected override void ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
-            => CreateStoredProcedureExecutionPipeline().Execute(Expression, map, connection, configureCommand);
+        protected virtual IList<TValue> ExecuteValueListPipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => CreateStoredProcedureExecutionPipeline().ExecuteSelectValueList<TValue>(Expression, connection, configureCommand);
 
-        protected override async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
-            => await CreateStoredProcedureExecutionPipeline().ExecuteAsync(Expression, map, connection, configureCommand, ct).ConfigureAwait(false);
+        protected virtual async Task<IList<TValue>> ExecuteValueListPipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct)
+            => await CreateStoredProcedureExecutionPipeline().ExecuteSelectValueListAsync<TValue>(Expression, connection, configureCommand, ct).ConfigureAwait(false);
+
         #endregion
         #endregion
     }

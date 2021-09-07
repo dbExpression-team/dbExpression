@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,18 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-namespace HatTrick.DbEx.Sql.Builder
+using HatTrick.DbEx.Sql.Connection;
+using HatTrick.DbEx.Sql.Expression;
+using System;
+using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public interface IUpdateTerminationExpressionBuilder<TEntity> : IUpdateTerminationExpressionBuilder
-        where TEntity : class, IDbEntity
+    public interface IInsertQueryExpressionExecutionPipeline
     {
+        void ExecuteInsert(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand);
+        Task ExecuteInsertAsync(InsertQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);
     }
 }

@@ -23,12 +23,15 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class UpdateQueryExpressionBuilder : QueryExpressionBuilder,
+    public class UpdateQueryExpressionBuilder : QueryExpressionBuilder,
         UpdateEntities
     {
+        #region internals
         protected UpdateQueryExpression Expression { get; private set; }
+        #endregion
 
-        protected UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression)
+        #region constructors
+        public UpdateQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, UpdateQueryExpression expression)
             : base(config, expression)
         {
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
@@ -40,20 +43,23 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
+        #endregion
 
-
-
+        #region methods
+        /// <inheritdoc />
         UpdateEntitiesContinuation<TEntity> UpdateEntities.From<TEntity>(Entity<TEntity> entity)
             => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
 
+        /// <inheritdoc />
         UpdateEntities UpdateEntities.Top(int value)
         {
             Expression.Top = value;
             return this;
         }
 
-        protected abstract UpdateEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<TEntity> entity)
-            where TEntity : class, IDbEntity;
+        protected UpdateEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, UpdateQueryExpression expression, EntityExpression<TEntity> entity)
+            where TEntity : class, IDbEntity
+            => new UpdateEntitiesUpdateQueryExpressionBuilder<TEntity>(configuration, expression, entity);
 
         protected void Where(AnyWhereClause expression)
         {
@@ -76,5 +82,6 @@ namespace HatTrick.DbEx.Sql.Builder
                 :
                 new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
         }
+        #endregion
     }
 }

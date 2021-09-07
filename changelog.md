@@ -5,8 +5,11 @@
 ### Added
 
 ### Changed
+- Moved Execute and ExecuteAsync methods from extension methods to interface/instance implementations
 
 ### Breaking Changes
+- Code scaffolding requires additional generic constraints.
+- A TOOLS UPDATE IS REQUIRED
 
 ## [0.8.2] - 2021-09-2
 

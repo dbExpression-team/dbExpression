@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,17 +17,11 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
 
-namespace HatTrick.DbEx.MsSql.Builder
+namespace HatTrick.DbEx.Sql
 {
-    public class MsSqlSelectValueSelectQueryExpressionBuilder<TValue> : SelectValueSelectQueryExpressionBuilder<TValue>
-    {
-        public MsSqlSelectValueSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) 
-            : base(config, expression)
-        {
-
-        }
+    public interface ISelectValueTerminationExpressionBuilder : ISelectTerminationExpressionBuilder
+    { 
+    
     }
 }

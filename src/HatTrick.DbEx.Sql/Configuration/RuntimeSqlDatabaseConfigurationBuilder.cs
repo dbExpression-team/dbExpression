@@ -38,7 +38,6 @@ namespace HatTrick.DbEx.Sql.Configuration
 
         #region interface
         RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabaseConfigurationProvider.Configuration => configuration;
-
         public IConnectionStringFactoryConfigurationBuilder ConnectionString => _connectionString ?? (_connectionString = new ConnectionStringFactoryConfigurationBuilder(configuration));
         public ISqlDatabaseMetadataProviderConfigurationBuilder SchemaMetadata => _metadata ?? (_metadata = new SqlDatabaseMetadataProviderConfigurationBuilder(configuration));
         public IQueryExpressionFactoryConfigurationBuilder QueryExpressions => _queryExpressions ?? (_queryExpressions = new QueryExpressionFactoryConfigurationBuilder(configuration));
