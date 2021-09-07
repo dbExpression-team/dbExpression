@@ -38,12 +38,14 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
+        /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> JoinOnWithAlias<SelectValueContinuation<TValue>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> JoinOn<SelectValueContinuation<TValue>>.On(AnyJoinOnClause joinOn)
         {
             On(joinOn);

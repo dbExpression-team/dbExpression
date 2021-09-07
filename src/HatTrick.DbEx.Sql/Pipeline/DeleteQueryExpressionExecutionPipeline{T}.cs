@@ -26,8 +26,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class DeleteQueryExpressionExecutionPipeline<T> : IDeleteQueryExpressionExecutionPipeline<T>
-        where T : class, IDbEntity
+    public class DeleteQueryExpressionExecutionPipeline : IDeleteQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration database;

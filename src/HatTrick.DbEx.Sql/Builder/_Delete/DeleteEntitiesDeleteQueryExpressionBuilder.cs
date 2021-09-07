@@ -23,12 +23,15 @@ using System.Linq;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class DeleteQueryExpressionBuilder : QueryExpressionBuilder,
+    public class DeleteQueryExpressionBuilder : QueryExpressionBuilder,
         DeleteEntities
     {
+        #region internals
         protected DeleteQueryExpression Expression { get; private set; }
+        #endregion
 
-        protected DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression)
+        #region constructors
+        public DeleteQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, DeleteQueryExpression expression)
             : base(config, expression)
         {
             Expression = expression;
@@ -40,20 +43,25 @@ namespace HatTrick.DbEx.Sql.Builder
             Expression = expression ?? throw new ArgumentNullException(nameof(expression));
             Expression.BaseEntity = entity ?? throw new ArgumentNullException(nameof(entity));
         }
+        #endregion
 
+        #region methods
+        /// <inheritdoc />
         DeleteEntitiesContinuation<TEntity> DeleteEntities.From<TEntity>(Entity<TEntity> entity)
             => CreateTypedBuilder(Configuration, Expression, entity as EntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression)}."));
 
+        /// <inheritdoc />
         DeleteEntities DeleteEntities.Top(int value)
         {
             Expression.Top = value;
             return this;
         }
 
-        protected abstract DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<TEntity> entity) 
-            where TEntity : class, IDbEntity;
+        protected virtual DeleteEntitiesContinuation<TEntity> CreateTypedBuilder<TEntity>(RuntimeSqlDatabaseConfiguration configuration, DeleteQueryExpression expression, EntityExpression<TEntity> entity)
+            where TEntity : class, IDbEntity
+            => new DeleteEntitiesDeleteQueryExpressionBuilder<TEntity>(configuration, expression, entity);
 
-        protected void Where(AnyWhereClause expression)
+        protected virtual void ApplyWhere(AnyWhereClause expression)
         {
             if (expression is null)
                 return;
@@ -67,12 +75,13 @@ namespace HatTrick.DbEx.Sql.Builder
                 Expression.Where &= set;
         }
 
-        protected void CrossJoin(AnyEntity entity)
+        protected virtual void ApplyCrossJoin(AnyEntity entity)
         {
             Expression.Joins = Expression.Joins is null ?
                 new JoinExpressionSet(new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null))
                 :
                 new JoinExpressionSet(Expression.Joins.Expressions.Concat(new JoinExpression[1] { new JoinExpression(entity, JoinOperationExpressionOperator.CROSS, null) }));
         }
+        #endregion
     }
 }

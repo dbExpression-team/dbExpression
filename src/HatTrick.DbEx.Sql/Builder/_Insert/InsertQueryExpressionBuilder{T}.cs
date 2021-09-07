@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class InsertQueryExpressionBuilder<TEntity> : QueryExpressionBuilder,
+    public class InsertQueryExpressionBuilder<TEntity> : QueryExpressionBuilder,
         InsertEntity<TEntity>,
         InsertEntities<TEntity>,
         InsertEntityTermination<TEntity>,
@@ -37,25 +37,27 @@ namespace HatTrick.DbEx.Sql.Builder
         where TEntity : class, IDbEntity
     {
         #region internals
-        private readonly InsertQueryExpression expression;
         private readonly IEnumerable<TEntity> instances;
+        protected InsertQueryExpression Expression { get; private set; }
         #endregion
 
         #region constructors
-        protected InsertQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances, InsertQueryExpression expression) : base(configuration, expression)
+        public InsertQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration configuration, IEnumerable<TEntity> instances, InsertQueryExpression expression) : base(configuration, expression)
         {
-            this.expression = expression;
+            Expression = expression;
             this.instances = instances;
         }
         #endregion
 
         #region methods
+        /// <inheritdoc />
         InsertEntityTermination<TEntity> InsertEntity<TEntity>.Into(Entity<TEntity> entity)
         {
             Into(entity);
             return this;
         }
 
+        /// <inheritdoc />
         InsertEntitiesTermination<TEntity> InsertEntities<TEntity>.Into(Entity<TEntity> entity)
         {
             Into(entity);
@@ -66,17 +68,16 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             var i = 0;
             var insertEntity = entity as IEntityExpression<TEntity> ?? throw new DbExpressionException($"Expected {nameof(entity)} to be of type {nameof(EntityExpression<TEntity>)}.");
-            expression.BaseEntity = entity as EntityExpression<TEntity>;
-            expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (insertEntity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
-            expression.Outputs = insertEntity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).ToList();
+            Expression.BaseEntity = entity as EntityExpression<TEntity>;
+            Expression.Inserts = instances.ToDictionary(x => i++, x => new InsertExpressionSet(x, (insertEntity.BuildInclusiveInsertExpression(x) as IExpressionListProvider<InsertExpression>).Expressions));
+            Expression.Outputs = insertEntity.BuildInclusiveSelectExpression().Expressions.Select(x => x.AsFieldExpression()).ToList();
         }
-        #endregion
 
-        #region InsertTerminationExpressionBuilder
-        public virtual void Execute()
+        #region InsertEntityTerminationExpressionBuilder
+        /// <inheritdoc />
+        void InsertEntityTermination<TEntity>.Execute()
         {
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
@@ -87,13 +88,12 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        public virtual void Execute(int commandTimeout)
+        void InsertEntityTermination<TEntity>.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
@@ -104,10 +104,9 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        public virtual void Execute(ISqlConnection connection)
+        void InsertEntityTermination<TEntity>.Execute(ISqlConnection connection)
         {
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             ExecutePipeline(
@@ -117,13 +116,12 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        public virtual void Execute(ISqlConnection connection, int commandTimeout)
+        void InsertEntityTermination<TEntity>.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             ExecutePipeline(
@@ -133,10 +131,9 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        public virtual async Task ExecuteAsync(CancellationToken cancellationToken = default)
+        async Task InsertEntityTermination<TEntity>.ExecuteAsync(CancellationToken cancellationToken)
         {
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
@@ -148,10 +145,9 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        public virtual async Task ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default)
+        async Task InsertEntityTermination<TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             await ExecutePipelineAsync(
@@ -162,13 +158,130 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        public virtual async Task ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default)
+        async Task InsertEntityTermination<TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
+                return;
+
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                await ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        async Task InsertEntityTermination<TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            if (!Expression.Inserts.Any())
+                return;
+
+            await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+        #endregion
+
+        #region InsertEntitiesTerminationExpressionBuilder
+        /// <inheritdoc />
+        void InsertEntitiesTermination<TEntity>.Execute()
+        {
+            if (!Expression.Inserts.Any())
+                return;
+
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        /// <inheritdoc />
+        void InsertEntitiesTermination<TEntity>.Execute(int commandTimeout)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            if (!Expression.Inserts.Any())
+                return;
+
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                ExecutePipeline(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout
+                );
+        }
+
+        /// <inheritdoc />
+        void InsertEntitiesTermination<TEntity>.Execute(ISqlConnection connection)
+        {
+            if (!Expression.Inserts.Any())
+                return;
+
+            ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null
+            );
+        }
+
+        /// <inheritdoc />
+        void InsertEntitiesTermination<TEntity>.Execute(ISqlConnection connection, int commandTimeout)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            if (!Expression.Inserts.Any())
+                return;
+
+            ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <inheritdoc />
+        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(CancellationToken cancellationToken)
+        {
+            if (!Expression.Inserts.Any())
+                return;
+
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                await ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        {
+            if (!Expression.Inserts.Any())
+                return;
+
+            await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            if (!Expression.Inserts.Any())
                 return;
 
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
@@ -180,13 +293,12 @@ namespace HatTrick.DbEx.Sql.Builder
         }
         
         /// <inheritdoc />
-        public virtual async Task ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
 
-            var expression = GetQueryExpression<InsertQueryExpression>();
-            if (!expression.Inserts.Any())
+            if (!Expression.Inserts.Any())
                 return;
 
             await ExecutePipelineAsync(
@@ -196,15 +308,16 @@ namespace HatTrick.DbEx.Sql.Builder
             ).ConfigureAwait(false);
         }
 
-        private void ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
-            => CreateInsertExecutionPipeline().ExecuteInsert(GetQueryExpression<InsertQueryExpression>(), connection, configureCommand);
+        #endregion
+        protected virtual void ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => CreateInsertExecutionPipeline().ExecuteInsert(Expression, connection, configureCommand);
 
-        private async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
-            => await CreateInsertExecutionPipeline().ExecuteInsertAsync(GetQueryExpression<InsertQueryExpression>(), connection, configureCommand, cancellationToken).ConfigureAwait(false);
+        protected virtual async Task ExecutePipelineAsync(ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
+            => await CreateInsertExecutionPipeline().ExecuteInsertAsync(Expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
 
-        private IInsertQueryExpressionExecutionPipeline<TEntity> CreateInsertExecutionPipeline()
+        protected virtual IInsertQueryExpressionExecutionPipeline CreateInsertExecutionPipeline()
         {
-            return Configuration.ExecutionPipelineFactory.CreateExecutionPipeline<TEntity>(Configuration, GetQueryExpression<InsertQueryExpression>());
+            return Configuration.ExecutionPipelineFactory.CreateExecutionPipeline<TEntity>(Configuration, Expression);
         }
         #endregion
     }

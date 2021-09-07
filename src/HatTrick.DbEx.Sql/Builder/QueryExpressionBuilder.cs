@@ -24,8 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder
 {
     public abstract class QueryExpressionBuilder :
         ITerminationExpressionBuilder,
-        IQueryExpressionProvider,
-        IRuntimeSqlDatabaseConfigurationProvider
+        IQueryExpressionProvider
     {
         #region internals
         protected RuntimeSqlDatabaseConfiguration Configuration { get; private set; }
@@ -34,7 +33,6 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region interface
         QueryExpression IQueryExpressionProvider.Expression => expression;
-        RuntimeSqlDatabaseConfiguration IRuntimeSqlDatabaseConfigurationProvider.Configuration => Configuration;
         #endregion
 
         #region constructors
@@ -42,14 +40,6 @@ namespace HatTrick.DbEx.Sql.Builder
         {
             this.Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.expression = expression ?? throw new ArgumentNullException(nameof(expression));
-        }
-        #endregion
-
-        #region methods
-        protected T GetQueryExpression<T>()
-            where T : QueryExpression
-        {
-            return expression as T ?? throw new DbExpressionConfigurationException($"Query expression is type '{expression.GetType()}', the type was expected to be the requested type of '{typeof(T)}'.");
         }
         #endregion
     }

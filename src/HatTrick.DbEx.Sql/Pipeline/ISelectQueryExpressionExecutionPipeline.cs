@@ -34,10 +34,10 @@ namespace HatTrick.DbEx.Sql.Pipeline
             where T : class, IDbEntity, new();
 
         T ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T> map)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         void ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         T ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader, T> map)
             where T : class, IDbEntity, new();
@@ -46,16 +46,16 @@ namespace HatTrick.DbEx.Sql.Pipeline
             where T : class, IDbEntity, new();
 
         Task ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
             where T : class, IDbEntity, new();
 
         Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T> map, CancellationToken ct)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         Task ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
             where T : class, IDbEntity, new();
@@ -69,7 +69,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             where T : class, IDbEntity, new();
 
         void ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         IList<T> ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader, T> map)
             where T : class, IDbEntity, new();
@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             where T : class, IDbEntity, new();
 
         Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> read, CancellationToken ct)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader, T> map, CancellationToken ct)
             where T : class, IDbEntity, new();
@@ -87,7 +87,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             where T : class, IDbEntity, new();
 
         Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, Task> read, CancellationToken ct)
-            where T : class, IDbEntity, new();
+            where T : class, IDbEntity;
 
         Task<IList<T>> ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T, Task> map, CancellationToken ct)
             where T : class, IDbEntity, new();

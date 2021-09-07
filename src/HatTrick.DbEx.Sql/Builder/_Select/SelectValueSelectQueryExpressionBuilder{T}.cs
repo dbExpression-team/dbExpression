@@ -16,95 +16,222 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Configuration;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Expression;
+using HatTrick.DbEx.Sql.Pipeline;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public abstract class SelectValueSelectQueryExpressionBuilder<TValue> : SelectQueryExpressionBuilder,
+    public class SelectValueSelectQueryExpressionBuilder<TValue> : SelectValueSelectQueryExpressionBuilder,
         IExpressionBuilder<TValue>,
         SelectValue<TValue>,
         SelectValueContinuation<TValue>
     {
         #region constructors
-        protected SelectValueSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) : base(config, expression)
+        public SelectValueSelectQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) : base(config, expression)
         {
 
         }
         #endregion
 
         #region methods
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValue<TValue>.From<TEntity>(Entity<TEntity> entity)
         {
-            From(entity);
+            ApplyFrom(entity);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.OrderBy(params AnyOrderByClause[] orderBy)
         {
-            OrderBy(orderBy);
+            ApplyOrderBy(orderBy);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.OrderBy(IEnumerable<AnyOrderByClause> orderBy)
         {
-            OrderBy(orderBy);
+            ApplyOrderBy(orderBy);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.GroupBy(params AnyGroupByClause[] groupBy)
         {
-            GroupBy(groupBy);
+            ApplyGroupBy(groupBy);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.GroupBy(IEnumerable<AnyGroupByClause> groupBy)
         {
-            GroupBy(groupBy);
+            ApplyGroupBy(groupBy);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.Having(AnyHavingClause having)
         {
-            Having(having);
+            ApplyHaving(having);
             return this;
         }
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.Where(AnyWhereClause where)
         {
-            Where(where);
+            ApplyWhere(where);
             return this;
         }
 
+        /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.InnerJoin(AnyEntity entity)
             => new SelectValueJoinBuilder<TValue>(Expression, entity, JoinOperationExpressionOperator.INNER, this);
 
+        /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.InnerJoin(AnySelectSubquery subquery)
             => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.INNER, this);
 
+        /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.LeftJoin(AnyEntity entity)
             => new SelectValueJoinBuilder<TValue>(Expression, entity, JoinOperationExpressionOperator.LEFT, this);
 
+        /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.LeftJoin(AnySelectSubquery subquery)
             => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.LEFT, this);
 
+        /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.RightJoin(AnyEntity entity)
             => new SelectValueJoinBuilder<TValue>(Expression, entity, JoinOperationExpressionOperator.RIGHT, this);
 
+        /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.RightJoin(AnySelectSubquery subquery)
             => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.RIGHT, this);
 
+        /// <inheritdoc />
         JoinOn<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.FullJoin(AnyEntity entity)
             => new SelectValueJoinBuilder<TValue>(Expression, entity, JoinOperationExpressionOperator.FULL, this);
 
+        /// <inheritdoc />
         JoinOnWithAlias<SelectValueContinuation<TValue>> SelectValueContinuation<TValue>.FullJoin(AnySelectSubquery subquery)
             => new SelectValueJoinBuilder<TValue>(Expression, (subquery as IQueryExpressionProvider).Expression, JoinOperationExpressionOperator.FULL, this);
 
+        /// <inheritdoc />
         SelectValueContinuation<TValue> SelectValueContinuation<TValue>.CrossJoin(AnyEntity entity)
         {
-            CrossJoin(entity);
+            ApplyCrossJoin(entity);
             return this;
+        }
+        #endregion
+
+        #region SelectValueTermination<TValue>
+        /// <inheritdoc />
+        TValue SelectValueTermination<TValue>.Execute()
+        {
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                return ExecutePipeline(
+                    connection,
+                    null
+                );
+        }
+
+        /// <inheritdoc />
+        TValue SelectValueTermination<TValue>.Execute(int commandTimeout)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                return ExecutePipeline(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout
+                );
+        }
+
+        /// <inheritdoc />
+        TValue SelectValueTermination<TValue>.Execute(ISqlConnection connection)
+        {
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null
+            );
+        }
+
+        /// <inheritdoc />
+        TValue SelectValueTermination<TValue>.Execute(ISqlConnection connection, int commandTimeout)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return ExecutePipeline(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout
+            );
+        }
+
+        /// <inheritdoc />
+        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken = default)
+        {
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                return await ExecutePipelineAsync(
+                    connection,
+                    null,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
+                return await ExecutePipelineAsync(
+                    connection,
+                    command => command.CommandTimeout = commandTimeout,
+                    cancellationToken
+                ).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default)
+        {
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                null,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        async Task<TValue> SelectValueTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        {
+            if (commandTimeout <= 0)
+                throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
+
+            return await ExecutePipelineAsync(
+                connection ?? throw new ArgumentNullException(nameof(connection)),
+                command => command.CommandTimeout = commandTimeout,
+                cancellationToken
+            ).ConfigureAwait(false);
+        }
+
+        protected virtual TValue ExecutePipeline(ISqlConnection connection, Action<IDbCommand> configureCommand)
+            => CreateSelectExecutionPipeline().ExecuteSelectValue<TValue>(Expression, connection, configureCommand);
+
+        protected virtual async Task<TValue> ExecutePipelineAsync( ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken cancellationToken)
+            => await CreateSelectExecutionPipeline().ExecuteSelectValueAsync<TValue>(Expression, connection, configureCommand, cancellationToken).ConfigureAwait(false);
+
+        protected virtual ISelectQueryExpressionExecutionPipeline CreateSelectExecutionPipeline()
+        {
+            return Configuration.ExecutionPipelineFactory?.CreateExecutionPipeline(Configuration, Expression) ?? throw new DbExpressionConfigurationException($"Could not resolve/create an execution pipeline for type '{GetType()}',  please review and ensure the correct configuration for DbExpression.");
         }
         #endregion
     }

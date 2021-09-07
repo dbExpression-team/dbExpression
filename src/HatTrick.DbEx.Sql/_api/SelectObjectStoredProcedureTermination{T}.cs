@@ -17,8 +17,12 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -27,5 +31,64 @@ namespace HatTrick.DbEx.Sql
 #pragma warning restore IDE1006 // Naming Styles
     {
         Func<ISqlFieldReader, T> Map { get; }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        IList<T> Execute();
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        IList<T> Execute(ISqlConnection connection);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        IList<T> Execute(int commandTimeout);
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        IList<T> Execute(ISqlConnection connection, int commandTimeout);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        Task<IList<T>> ExecuteAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        Task<IList<T>> ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        Task<IList<T>> ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and return a list of values.
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        /// <returns>A list of type <typeparamref name="T"/> returned from execution of the stored procedure.</returns>
+        Task<IList<T>> ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

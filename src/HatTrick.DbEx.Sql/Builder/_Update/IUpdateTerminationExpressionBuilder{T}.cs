@@ -16,9 +16,9 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿namespace HatTrick.DbEx.Sql.Builder
+namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IUpdateTerminationExpressionBuilder<TEntity> : ITerminationExpressionBuilder
+    public interface IUpdateTerminationExpressionBuilder<TEntity> : IUpdateTerminationExpressionBuilder
         where TEntity : class, IDbEntity
     {
     }

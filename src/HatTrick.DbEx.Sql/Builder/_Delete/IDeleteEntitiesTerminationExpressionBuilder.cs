@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +16,10 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql;
-using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Configuration;
-using HatTrick.DbEx.Sql.Expression;
-
-namespace HatTrick.DbEx.MsSql.Builder
+namespace HatTrick.DbEx.Sql.Builder
 {
-    public class MsSqlSelectEntityQueryExpressionBuilder<TEntity> : SelectEntityQueryExpressionBuilder<TEntity>
-        where TEntity : class, IDbEntity
+    public interface IDeleteEntitiesTerminationExpressionBuilder : ITerminationExpressionBuilder
     {
-        public MsSqlSelectEntityQueryExpressionBuilder(RuntimeSqlDatabaseConfiguration config, SelectQueryExpression expression) 
-            : base(config, expression)
-        {
-
-        }
+        
     }
 }

@@ -39,12 +39,14 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
+        /// <inheritdoc />
         JoinOn<UpdateEntitiesContinuation<TEntity>> JoinOnWithAlias<UpdateEntitiesContinuation<TEntity>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
+        /// <inheritdoc />
         UpdateEntitiesContinuation<TEntity> JoinOn<UpdateEntitiesContinuation<TEntity>>.On(AnyJoinOnClause joinOn)
         {
             On(joinOn);

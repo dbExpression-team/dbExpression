@@ -24,7 +24,7 @@ namespace HatTrick.DbEx.Sql.Builder
     public class SelectEntitiesJoinExpressionBuilder<TEntity> : SelectJoinExpressionBuilder<SelectEntitiesContinuation<TEntity>>,
         JoinOn<SelectEntitiesContinuation<TEntity>>,
         JoinOnWithAlias<SelectEntitiesContinuation<TEntity>>
-        where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity, new()
     {
         #region internals
         private readonly SelectEntitiesContinuation<TEntity> caller;
@@ -39,12 +39,14 @@ namespace HatTrick.DbEx.Sql.Builder
         #endregion
 
         #region methods
+        /// <inheritdoc />
         JoinOn<SelectEntitiesContinuation<TEntity>> JoinOnWithAlias<SelectEntitiesContinuation<TEntity>>.As(string alias)
         {
             As(alias);
             return this;
         }
 
+        /// <inheritdoc />
         SelectEntitiesContinuation<TEntity> JoinOn<SelectEntitiesContinuation<TEntity>>.On(AnyJoinOnClause joinOn)
         {
             On(joinOn);

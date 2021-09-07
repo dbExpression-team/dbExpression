@@ -82,7 +82,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         #endregion
 
         #region methods
-        public virtual IInsertQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression)
+        public virtual IInsertQueryExpressionExecutionPipeline CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, InsertQueryExpression expression)
             where T : class, IDbEntity
         {
             return new InsertQueryExpressionExecutionPipeline<T>(
@@ -97,10 +97,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual IUpdateQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression)
-            where T : class, IDbEntity
+        public virtual IUpdateQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, UpdateQueryExpression expression)
         {
-            return new UpdateQueryExpressionExecutionPipeline<T>(
+            return new UpdateQueryExpressionExecutionPipeline(
                 database,
                 BeforeAssemblyPipelineEventHook,
                 BeforeUpdateAssemblyPipelineEventHook,
@@ -112,10 +111,9 @@ namespace HatTrick.DbEx.Sql.Pipeline
             );
         }
 
-        public virtual IDeleteQueryExpressionExecutionPipeline<T> CreateExecutionPipeline<T>(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
-            where T : class, IDbEntity
+        public virtual IDeleteQueryExpressionExecutionPipeline CreateExecutionPipeline(RuntimeSqlDatabaseConfiguration database, DeleteQueryExpression expression)
         {
-            return new DeleteQueryExpressionExecutionPipeline<T>(
+            return new DeleteQueryExpressionExecutionPipeline(
                 database,
                 BeforeAssemblyPipelineEventHook,
                 AfterAssemblyPipelineEventHook,

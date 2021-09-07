@@ -23,7 +23,7 @@
 #pragma warning restore IDE1006 // Naming Styles
         Limit<SelectEntitiesOrderByContinuation<TEntity>>,
         SelectEntitiesTermination<TEntity>
-        where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity, new()
     {
     }
 }
