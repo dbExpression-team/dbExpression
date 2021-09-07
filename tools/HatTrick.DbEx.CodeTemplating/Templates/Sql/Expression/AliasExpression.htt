@@ -110,6 +110,18 @@ namespace {Namespace}
         public static ObjectExpressionMediator operator *(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
         public static ObjectExpressionMediator operator /(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
         public static ObjectExpressionMediator operator %(AliasExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+
+        public static ObjectExpressionMediator operator +(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(AliasExpression a, (string TableName, string FieldName) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableName, b.FieldName), ArithmeticExpressionOperator.Modulo));
+
+        public static ObjectExpressionMediator operator +((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %((string TableName, string FieldName) a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(new AliasExpression(a.TableName, a.FieldName), b, ArithmeticExpressionOperator.Modulo));
         #endregion
         #endregion
 
@@ -197,7 +209,25 @@ namespace {Namespace}
         public static FilterExpressionSet operator >(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
         public static FilterExpressionSet operator <=(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(AliasExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+
+        public static FilterExpressionSet operator ==((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=((string TableName, string FieldName) a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(new AliasExpression(a.TableName, a.FieldName), b, FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
+        #endregion
+    }}
+
+    public partial class AliasExpression<T>
+    {{
+        #region alias
+        public static ObjectExpressionMediator operator +(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(AliasExpression<T> a, AliasExpression<T> b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
         #endregion
     }}
 }}

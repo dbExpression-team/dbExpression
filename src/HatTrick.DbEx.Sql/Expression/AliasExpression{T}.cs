@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) HatTrick Labs, LLC.  All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,51 +16,56 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using System;
+using System;
 
 namespace HatTrick.DbEx.Sql.Expression
 {
-    public partial class AliasExpression :
-        IExpressionElement,
-        IEquatable<AliasExpression>
+    public partial class AliasExpression<T> : AliasExpression,
+        ObjectElement,
+        IExpressionElement<object>,
+        IExpressionTypeProvider,
+        IEquatable<AliasExpression<T>>
     {
+        #region internals
+        private readonly Type declaredType = typeof(T);
+        #endregion
+
         #region interface
-        public string TableAlias { get; private set; }
-        public string FieldAlias { get; private set; }
+        Type IExpressionTypeProvider.DeclaredType => declaredType;
         #endregion
 
         #region constructors
         public AliasExpression(string tableAlias, string fieldAlias)
+            : base(tableAlias, fieldAlias)
         {
-            if (string.IsNullOrWhiteSpace(tableAlias))
-                throw new ArgumentException($"{nameof(tableAlias)} is required.");
-            if (string.IsNullOrWhiteSpace(fieldAlias))
-                throw new ArgumentException($"{nameof(tableAlias)} is required.");
 
-            TableAlias = tableAlias;
-            FieldAlias = fieldAlias;
+        }
+
+        public AliasExpression(string tableAlias, string fieldAlias, Type declaredType)
+            : base(tableAlias, fieldAlias)
+        {
+            this.declaredType = declaredType ?? throw new ArgumentNullException(nameof(declaredType));
         }
         #endregion
 
-        #region to string
-        public override string ToString()
-            => $"{TableAlias}.{FieldAlias}";
+        #region as
+        public ObjectElement As(string alias)
+            => new ObjectSelectExpression(this).As(alias);
         #endregion
 
         #region equals
-        public bool Equals(AliasExpression obj)
+        public bool Equals(AliasExpression<T> obj)
         {
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
 
-            if (!StringComparer.Ordinal.Equals(TableAlias, obj.TableAlias)) return false;
-            if (!StringComparer.Ordinal.Equals(FieldAlias, obj.FieldAlias)) return false;
+            if (declaredType != obj.declaredType) return false;
 
-            return true;
+            return base.Equals(obj);
         }
 
         public override bool Equals(object obj)
-            => obj is AliasExpression exp && Equals(exp);
+            => obj is AliasExpression<T> exp && Equals(exp);
 
         public override int GetHashCode()
         {
@@ -72,6 +77,7 @@ namespace HatTrick.DbEx.Sql.Expression
                 int hash = @base;
                 hash = (hash * multiplier) ^ (TableAlias is object ? TableAlias.GetHashCode() : 0);
                 hash = (hash * multiplier) ^ (FieldAlias is object ? FieldAlias.GetHashCode() : 0);
+                hash = (hash * multiplier) ^ declaredType.GetHashCode();
                 return hash;
             }
         }

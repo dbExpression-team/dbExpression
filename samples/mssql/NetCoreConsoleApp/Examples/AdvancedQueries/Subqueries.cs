@@ -40,7 +40,7 @@ namespace NetCoreConsoleApp
 			var rpt = db.SelectMany(
 					dbo.Person.Id.As("PersonId"),
 					db.fx.Concat(dbo.Person.LastName, ", ", dbo.Person.FirstName).As("FullName"),
-					db.fx.IsNull(dbex.Alias("t0", "TotalPurchaseAmount"), 0).As("TotalPurchaseAmount"),
+					db.fx.IsNull(dbex.Alias<decimal>("t0", "TotalPurchaseAmount"), 0).As("TotalPurchaseAmount"),
 					dbo.Person.YearOfLastCreditLimitReview,
 					dbo.Person.CreditLimit
 				).From(dbo.Person)
@@ -85,8 +85,8 @@ namespace NetCoreConsoleApp
 
 			var vip = db.SelectMany(
 				dbo.Person.Id.As("PersonId"),
-				dbex.Alias("vips", "PurchaseCount"),
-				dbex.Alias("vips", "PurchaseYear"),
+				dbex.Alias<int>("vips", "PurchaseCount"),
+				dbex.Alias<int>("vips", "PurchaseYear"),
 				(dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName"))
 				.From(dbo.Person)
 				.InnerJoin(
@@ -101,7 +101,7 @@ namespace NetCoreConsoleApp
 							db.fx.Count(dbo.Purchase.Id) >= purchaseCount
 							& db.fx.DatePart(DateParts.Year, dbo.Purchase.PurchaseDate) == year)
 					).As("vips")
-				.On(dbo.Person.Id == dbex.Alias("vips", "PersonId"))
+				.On(dbo.Person.Id == ("vips", "PersonId"))
 				.OrderBy(dbo.Person.Id.Asc, dbex.Alias("vips", "PurchaseCount").Desc)
 				.Execute();
 

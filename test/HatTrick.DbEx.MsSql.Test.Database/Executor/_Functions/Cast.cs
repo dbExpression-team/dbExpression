@@ -221,7 +221,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Cast(dbex.Alias("lines", "PurchasePrice")).AsVarChar(50).As("alias")
+                    db.fx.Cast(dbex.Alias<decimal>("lines", "PurchasePrice")).AsVarChar(50).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>().Top(100)

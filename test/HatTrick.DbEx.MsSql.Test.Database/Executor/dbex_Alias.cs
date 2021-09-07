@@ -32,8 +32,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                dbex.Alias("vips", "PurchaseCount"),
-                dbex.Alias("vips", "PurchaseYear"),
+                dbex.Alias<int>("vips", "PurchaseCount"),
+                dbex.Alias<int>("vips", "PurchaseYear"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -58,7 +58,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 dbex.Alias("vips", "PurchaseCount").Desc
             )
             .Execute();
-
 
             //then
             vipStatistics.Should().HaveCount(expectedCount);
@@ -82,8 +81,8 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                (dbex.Alias("vips", "PurchaseCount") + dbo.Person.Id).As("PurchaseCount"),
-                dbex.Alias("vips", "PurchaseYear"),
+                (dbex.Alias<int>("vips", "PurchaseCount") + dbo.Person.Id).As("PurchaseCount"),
+                dbex.Alias<int>("vips", "PurchaseYear"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -109,7 +108,6 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             )
             .Execute();
 
-
             //then
             vipStatistics.Should().HaveCount(expectedCount);
             vipStatistics.Select(x => (int)x.PurchaseCount).Should().OnlyContain(x => x >= purchaseCount + 1);
@@ -132,7 +130,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                dbex.Alias("vips", "PurchaseCount"),
+                dbex.Alias<int>("vips", "PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -180,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatistics = db.SelectMany(
                 dbo.Person.Id.As("PersonId"),
-                db.fx.Coalesce(dbex.Alias("vips", "PurchaseCount"), dbex.Alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount"),
+                db.fx.Coalesce(dbex.Alias<int?>("vips", "PurchaseCount"), dbex.Alias<int?>("not_vips", "PurchaseCount"), 1).As("PurchaseCount"),
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("FullName")
             )
             .From(dbo.Person)
@@ -238,7 +236,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var vipStatisticsq = db.SelectOne(
                 dbo.Person.Id.As("PersonId"),
-                dbex.Alias("vips", "PurchaseCount").As("Result")
+                dbex.Alias<int?>("vips", "PurchaseCount").As("Result")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -272,7 +270,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             var persons = db.SelectMany(
                 dbo.Person.Id,
                 (dbo.Person.FirstName + " " + dbo.Person.LastName).As("CustomerName"),
-                (dbex.Alias("person_address", "Id") + 2).As("AddressId")
+                (dbex.Alias<int?>("person_address", "Id") + 2).As("AddressId")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -301,7 +299,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var persons = db.SelectMany(
-                dbex.Alias("person_address", "Id").As("Foo")
+                dbex.Alias<int?>("person_address", "Id").As("Foo")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -358,7 +356,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             int purchaseCount = 3;  //any person making 3 or more purchases (in a calendar year are considered VIP customers
 
             IList<object> values = db.SelectMany(
-                db.fx.Coalesce(dbex.Alias("vips", "PurchaseCount"), dbex.Alias("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
+                db.fx.Coalesce(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), 1).As("PurchaseCount")
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -412,7 +410,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             var values = db.SelectMany(
                 dbo.Person.Id,
-                db.fx.Coalesce(dbex.Alias("vips", "PurchaseCount"), dbex.Alias("not_vips", "PurchaseCount"), int.MinValue)
+                db.fx.Coalesce(dbex.Alias<int>("vips", "PurchaseCount"), dbex.Alias<int>("not_vips", "PurchaseCount"), int.MinValue)
             )
             .From(dbo.Person)
             .LeftJoin(
@@ -457,6 +455,59 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             //then
             values.Should().HaveCount(count);
+        }
+
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
+        [MsSqlVersions.AllVersions]
+        public void Can_alias_result_in_correct_conversion_for_nullable_enum_using_custom_mapping(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var values = db.SelectOne(
+                dbo.Person.Id,
+                dbex.Alias<AddressType?>("MyAddress", "AddressType").As("foo")
+            )
+            .From(dbo.Person)
+            .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+            .InnerJoin(dbo.Address.As("MyAddress")).On(dbo.PersonAddress.AddressId == dbex.Alias("MyAddress", nameof(dbo.Address.Id)))
+            .Where(dbex.Alias("MyAddress", nameof(dbo.Address.AddressType)) != DBNull.Value)
+            .Execute(row =>
+            {
+                dynamic o = new ExpandoObject();
+                o.Id = row.ReadField().GetValue<int>();
+                o.AddressType = row.ReadField().GetValue<AddressType?>();
+                return o;
+            });
+
+            //then
+            ((AddressType?)values.AddressType).Should().NotBeNull();
+        }
+
+        [Theory]
+        [Trait("Operation", "SUBQUERY")]
+        [Trait("Operation", "LEFT JOIN")]
+        [MsSqlVersions.AllVersions]
+        public void Can_alias_result_in_correct_conversion_for_nullable_enum_using_standard_mapping(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var values = db.SelectOne(
+                dbo.Person.Id,
+                dbex.Alias<AddressType?>("MyAddress", "AddressType").As("foo")
+            )
+            .From(dbo.Person)
+            .InnerJoin(dbo.PersonAddress).On(dbo.Person.Id == dbo.PersonAddress.PersonId)
+            .InnerJoin(dbo.Address.As("MyAddress")).On(dbo.PersonAddress.AddressId == dbex.Alias("MyAddress", nameof(dbo.Address.Id)))
+            .Where(dbex.Alias("MyAddress", nameof(dbo.Address.AddressType)) != DBNull.Value)
+            .Execute();
+
+            //then
+            ((AddressType?)values.foo).Should().NotBeNull();
         }
     }
 }

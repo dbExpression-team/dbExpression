@@ -28,6 +28,15 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public static class dbex
     {
+        /// <summary>
+        /// Use an aliased field as part of a SELECT clause, indicating the data type of the aliased field.
+        /// </summary>
+        public static AliasExpression<T> Alias<T>(string tableName, string fieldName)
+            => new AliasExpression<T>(tableName, fieldName);
+
+        /// <summary>
+        /// Create an alias for a field.
+        /// </summary>
         public static AliasExpression Alias(string tableName, string fieldName)
             => new AliasExpression(tableName, fieldName);
 

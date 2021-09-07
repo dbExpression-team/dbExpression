@@ -137,12 +137,12 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Min(dbex.Alias("lines", "PurchasePrice")).As("alias")
+                    db.fx.Min(dbex.Alias<decimal>("lines", "PurchasePrice")).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectMany<PurchaseLine>()
                     .From(dbo.PurchaseLine)
-                ).As("lines").On(dbo.Purchase.Id == dbex.Alias("lines", "PurchaseId"));
+                ).As("lines").On(dbo.Purchase.Id == ("lines", "PurchaseId"));
 
             //when               
             object result = exp.Execute();
