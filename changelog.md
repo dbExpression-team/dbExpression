@@ -1,27 +1,32 @@
 # Changelog
 
-## [0.8.3]
+## [0.8.3] - 2021-09-09
 
 ### Added
 
 ### Changed
-- Moved Execute and ExecuteAsync methods from extension methods to interface/instance implementations
+- Moved Execute and ExecuteAsync methods from extension methods to interfaces (and instance implementations)
+
+### Fixed
+- Fixed issue #265
 
 ### Breaking Changes
-- Code scaffolding requires additional generic constraints.
-- A TOOLS UPDATE IS REQUIRED
+- Selecting aliased fields requires the use of the generic version of dbex.Alias method.
+- A TOOLS UPDATE IS REQUIRED as code scaffolding templates were changed in support of interface changes
 
-## [0.8.2] - 2021-09-2
+## [0.8.2] - 2021-09-02
 
 ### Added
 - Added OnBeforeUpdateSqlStatementAssembly event to allow global changes to update sql statements prior to assembly
 - Added OnBeforeInsertSqlStatementAssembly event to allow global changes to insert sql statements prior to assembly
 
 ### Changed
+- Improved paging implementation on server side blazor app
+
+### Fixed
 - Fixed issue #252
 - Fixed issue #259
 - Fixed issue #261
-- Improved paging implementation on server side blazor app
 
 ### Breaking Changes
 
