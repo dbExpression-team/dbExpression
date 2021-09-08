@@ -22,6 +22,8 @@ namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression :
         IExpressionElement,
+        AnyOrderByClause,
+        AnyGroupByClause,
         IEquatable<AliasExpression>
     {
         #region interface
