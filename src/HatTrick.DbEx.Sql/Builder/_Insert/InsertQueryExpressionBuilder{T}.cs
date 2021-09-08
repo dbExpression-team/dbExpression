@@ -33,7 +33,9 @@ namespace HatTrick.DbEx.Sql.Builder
         InsertEntity<TEntity>,
         InsertEntities<TEntity>,
         InsertEntityTermination<TEntity>,
-        InsertEntitiesTermination<TEntity>
+        InsertEntitiesTermination<TEntity>,
+        InsertEntityTermination,
+        InsertEntitiesTermination
         where TEntity : class, IDbEntity
     {
         #region internals
@@ -75,7 +77,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region InsertEntityTerminationExpressionBuilder
         /// <inheritdoc />
-        void InsertEntityTermination<TEntity>.Execute()
+        void InsertEntityTermination.Execute()
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -88,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        void InsertEntityTermination<TEntity>.Execute(int commandTimeout)
+        void InsertEntityTermination.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -104,7 +106,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        void InsertEntityTermination<TEntity>.Execute(ISqlConnection connection)
+        void InsertEntityTermination.Execute(ISqlConnection connection)
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -116,7 +118,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        void InsertEntityTermination<TEntity>.Execute(ISqlConnection connection, int commandTimeout)
+        void InsertEntityTermination.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -131,7 +133,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TEntity>.ExecuteAsync(CancellationToken cancellationToken)
+        async Task InsertEntityTermination.ExecuteAsync(CancellationToken cancellationToken)
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -145,7 +147,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        async Task InsertEntityTermination.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -158,7 +160,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        async Task InsertEntityTermination.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -175,7 +177,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntityTermination<TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        async Task InsertEntityTermination.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -193,7 +195,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region InsertEntitiesTerminationExpressionBuilder
         /// <inheritdoc />
-        void InsertEntitiesTermination<TEntity>.Execute()
+        void InsertEntitiesTermination.Execute()
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -206,7 +208,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        void InsertEntitiesTermination<TEntity>.Execute(int commandTimeout)
+        void InsertEntitiesTermination.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -222,7 +224,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        void InsertEntitiesTermination<TEntity>.Execute(ISqlConnection connection)
+        void InsertEntitiesTermination.Execute(ISqlConnection connection)
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -234,7 +236,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        void InsertEntitiesTermination<TEntity>.Execute(ISqlConnection connection, int commandTimeout)
+        void InsertEntitiesTermination.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -249,7 +251,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(CancellationToken cancellationToken)
+        async Task InsertEntitiesTermination.ExecuteAsync(CancellationToken cancellationToken)
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -263,7 +265,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        async Task InsertEntitiesTermination.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             if (!Expression.Inserts.Any())
                 return;
@@ -276,7 +278,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        async Task InsertEntitiesTermination.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -293,7 +295,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
         
         /// <inheritdoc />
-        async Task InsertEntitiesTermination<TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        async Task InsertEntitiesTermination.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");

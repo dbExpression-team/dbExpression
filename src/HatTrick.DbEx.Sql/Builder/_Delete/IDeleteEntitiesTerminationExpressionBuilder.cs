@@ -18,8 +18,8 @@
 
 namespace HatTrick.DbEx.Sql.Builder
 {
-    public interface IDeleteEntitiesTerminationExpressionBuilder : ITerminationExpressionBuilder
+    public interface IDeleteEntitiesTerminationExpressionBuilder : INonQueryTerminationExpressionBuilder
     {
-        
+ 
     }
 }

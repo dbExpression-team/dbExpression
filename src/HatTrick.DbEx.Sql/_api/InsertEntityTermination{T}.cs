@@ -16,76 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Builder;
-using HatTrick.DbEx.Sql.Connection;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface InsertEntityTermination<TEntity> : IInsertTerminationExpressionBuilder<TEntity>
+    public interface InsertEntityTermination<TEntity> : InsertEntityTermination
 #pragma warning restore IDE1006 // Naming Styles
         where TEntity : class, IDbEntity
     {
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        void Execute();
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        void Execute(int commandTimeout);
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        void Execute(ISqlConnection connection);
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        void Execute(ISqlConnection connection, int commandTimeout);
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        Task ExecuteAsync(CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        Task ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        Task ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        /// Assemble and execute a INSERT query to insert <typeparamref name="TEntity"/> entities.
-        /// </summary>
-        /// <remarks>The inserted entities will be hydrated with any values controlled by the database; for example identity columns, computed columns, defaults where a field was ommitted from the statement.</remarks>
-        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the sql INSERT statement.</param>
-        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the sql INSERT statement and generating an error.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the INSERT statement should be cancelled.</param>
-        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
+ 
     }
 }
