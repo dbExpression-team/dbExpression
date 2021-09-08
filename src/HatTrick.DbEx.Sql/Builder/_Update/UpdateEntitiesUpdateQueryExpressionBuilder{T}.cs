@@ -100,7 +100,7 @@ namespace HatTrick.DbEx.Sql.Builder
 
         #region UpdateEntitiesTermination
         /// <inheritdoc />
-        int UpdateEntitiesTermination<TEntity>.Execute()
+        int UpdateEntitiesTermination.Execute()
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
                 return ExecutePipeline(
@@ -110,7 +110,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        int UpdateEntitiesTermination<TEntity>.Execute(int commandTimeout)
+        int UpdateEntitiesTermination.Execute(int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -123,7 +123,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        int UpdateEntitiesTermination<TEntity>.Execute(ISqlConnection connection)
+        int UpdateEntitiesTermination.Execute(ISqlConnection connection)
         {
             return ExecutePipeline(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -132,7 +132,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        int UpdateEntitiesTermination<TEntity>.Execute(ISqlConnection connection, int commandTimeout)
+        int UpdateEntitiesTermination.Execute(ISqlConnection connection, int commandTimeout)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -144,7 +144,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TEntity>.ExecuteAsync(CancellationToken cancellationToken)
+        async Task<int> UpdateEntitiesTermination.ExecuteAsync(CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
                 return await ExecutePipelineAsync(
@@ -155,7 +155,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TEntity>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
+        async Task<int> UpdateEntitiesTermination.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return await ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -165,7 +165,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TEntity>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
+        async Task<int> UpdateEntitiesTermination.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -179,7 +179,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<int> UpdateEntitiesTermination<TEntity>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
+        async Task<int> UpdateEntitiesTermination.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
