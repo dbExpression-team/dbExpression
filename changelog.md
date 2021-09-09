@@ -11,8 +11,10 @@
 - Fixed issue #265
 
 ### Breaking Changes
-- Selecting aliased fields requires the use of the generic version of dbex.Alias method.
 - A TOOLS UPDATE IS REQUIRED as code scaffolding templates were changed in support of interface changes
+- Selecting aliased fields requires the use of the generic version of dbex.Alias method
+- SQL Statement executor factory no longer accepts the QueryExpression as a parameter for creating an executor
+
 
 ## [0.8.2] - 2021-09-02
 

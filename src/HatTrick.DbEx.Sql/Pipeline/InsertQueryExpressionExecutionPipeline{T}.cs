@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Outputs).ToList();
 
-            var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
+            var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor().ExecuteQuery(
                 statement,
                 connection,
                 new SqlStatementValueConverterProvider(database.ValueConverterFactory, fields),
@@ -167,7 +167,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
             }
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a delete query without a statement executor to execute the sql statement.");
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a delete query without a statement executor to execute the sql statement.");
             var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,

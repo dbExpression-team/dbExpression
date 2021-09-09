@@ -57,7 +57,7 @@ namespace HatTrick.DbEx.Sql.Configuration
             return caller;
         }
 
-        public ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<QueryExpression, ISqlStatementExecutor> factory)
+        public ISqlStatementExecutionGroupingConfigurationBuilders Use(Func<ISqlStatementExecutor> factory)
         {
             configuration.StatementExecutorFactory = new DelegateSqlStatementExecutorFactory(factory ?? throw new ArgumentNullException(nameof(factory)));
             return caller;
