@@ -78,7 +78,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Abs(dbex.Alias("lines", "PurchasePrice")).As("alias")
+                    db.fx.Abs(dbex.Alias<decimal>("lines", "PurchasePrice")).As("alias")
                 ).From(dbo.Purchase)
                 .InnerJoin(
                     db.SelectOne<PurchaseLine>()

@@ -21,16 +21,14 @@
 namespace HatTrick.DbEx.Sql.Expression
 {
     public partial class AliasExpression :
-        ObjectElement,
-        IExpressionElement<object>,
-        IExpressionTypeProvider,
+        IExpressionElement,
+        AnyOrderByClause,
+        AnyGroupByClause,
         IEquatable<AliasExpression>
     {
         #region interface
         public string TableAlias { get; private set; }
         public string FieldAlias { get; private set; }
-        Type IExpressionTypeProvider.DeclaredType => typeof(object);
-
         #endregion
 
         #region constructors
@@ -44,11 +42,6 @@ namespace HatTrick.DbEx.Sql.Expression
             TableAlias = tableAlias;
             FieldAlias = fieldAlias;
         }
-        #endregion
-
-        #region as
-        public ObjectElement As(string alias)
-            => new ObjectSelectExpression(this).As(alias);
         #endregion
 
         #region to string

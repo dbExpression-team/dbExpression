@@ -164,16 +164,16 @@ namespace ServerSideBlazorApp.Service
                 dbo.Purchase.PaymentMethodType,
                 dbo.Purchase.ExpectedDeliveryDate,
                 dbo.Purchase.TrackingIdentifier,
-                dbex.Alias(billingAddress, nameof(dbo.Address.Line1)),
-                dbex.Alias(billingAddress, nameof(dbo.Address.Line2)),
-                dbex.Alias(billingAddress, nameof(dbo.Address.City)),
-                dbex.Alias(billingAddress, nameof(dbo.Address.State)),
-                dbex.Alias(billingAddress, nameof(dbo.Address.Zip)),
-                dbex.Alias(shippingAddress, nameof(dbo.Address.Line1)),
-                dbex.Alias(shippingAddress, nameof(dbo.Address.Line2)),
-                dbex.Alias(shippingAddress, nameof(dbo.Address.City)),
-                dbex.Alias(shippingAddress, nameof(dbo.Address.State)),
-                dbex.Alias(shippingAddress, nameof(dbo.Address.Zip))
+                dbex.Alias<string>(billingAddress, nameof(dbo.Address.Line1)),
+                dbex.Alias<string>(billingAddress, nameof(dbo.Address.Line2)),
+                dbex.Alias<string>(billingAddress, nameof(dbo.Address.City)),
+                dbex.Alias<string>(billingAddress, nameof(dbo.Address.State)),
+                dbex.Alias<string>(billingAddress, nameof(dbo.Address.Zip)),
+                dbex.Alias<string>(shippingAddress, nameof(dbo.Address.Line1)),
+                dbex.Alias<string>(shippingAddress, nameof(dbo.Address.Line2)),
+                dbex.Alias<string>(shippingAddress, nameof(dbo.Address.City)),
+                dbex.Alias<string>(shippingAddress, nameof(dbo.Address.State)),
+                dbex.Alias<string>(shippingAddress, nameof(dbo.Address.Zip))
             )
             .From(dbo.Purchase)
             .InnerJoin(dbo.Customer).On(dbo.Purchase.CustomerId == dbo.Customer.Id)

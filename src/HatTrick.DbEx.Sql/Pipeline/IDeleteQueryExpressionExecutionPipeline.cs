@@ -26,8 +26,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public interface IDeleteQueryExpressionExecutionPipeline<T>
-        where T : class, IDbEntity
+    public interface IDeleteQueryExpressionExecutionPipeline
     {
         int ExecuteDelete(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand);
         Task<int> ExecuteDeleteAsync(DeleteQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, CancellationToken ct);

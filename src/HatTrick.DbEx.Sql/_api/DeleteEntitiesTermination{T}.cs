@@ -16,14 +16,13 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Builder;
-
 namespace HatTrick.DbEx.Sql
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public interface DeleteEntitiesTermination<TEntity> : ITerminationExpressionBuilder
+    public interface DeleteEntitiesTermination<TEntity> : DeleteEntitiesTermination
 #pragma warning restore IDE1006 // Naming Styles
         where TEntity : class, IDbEntity
     {
+        
     }
 }

@@ -513,6 +513,11 @@ namespace HatTrick.DbEx.Sql.Expression
         public static ObjectExpressionMediator operator *(DoubleFieldExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Multiply));
         public static ObjectExpressionMediator operator /(DoubleFieldExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Divide));
         public static ObjectExpressionMediator operator %(DoubleFieldExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Modulo));
+        public static ObjectExpressionMediator operator +(DoubleFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(DoubleFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator *(DoubleFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Multiply));
+        public static ObjectExpressionMediator operator /(DoubleFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Divide));
+        public static ObjectExpressionMediator operator %(DoubleFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Modulo));
         #endregion
         #endregion
 
@@ -595,6 +600,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpressionSet operator >(DoubleFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
         public static FilterExpressionSet operator <=(DoubleFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(DoubleFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(DoubleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DoubleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DoubleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(DoubleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(DoubleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(DoubleFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

@@ -23,7 +23,7 @@ namespace HatTrick.DbEx.Sql
 #pragma warning disable IDE1006 // Naming Styles
     public interface SelectEntitiesContinuation<TEntity> : SelectEntitiesTermination<TEntity>
 #pragma warning restore IDE1006 // Naming Styles
-        where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity, new()
     {
         /// <summary>
         /// Construct the WHERE clause of a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.

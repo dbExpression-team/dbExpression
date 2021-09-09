@@ -342,6 +342,8 @@ namespace HatTrick.DbEx.Sql.Expression
         #region alias
         public static ObjectExpressionMediator operator +(DateTimeFieldExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Add));
         public static ObjectExpressionMediator operator -(DateTimeFieldExpression a, AliasExpression b) => new ObjectExpressionMediator(new ArithmeticExpression(a, b, ArithmeticExpressionOperator.Subtract));
+        public static ObjectExpressionMediator operator +(DateTimeFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Add));
+        public static ObjectExpressionMediator operator -(DateTimeFieldExpression a, (string TableAlias, string FieldAlias) b) => new ObjectExpressionMediator(new ArithmeticExpression(a, new AliasExpression(b.TableAlias, b.FieldAlias), ArithmeticExpressionOperator.Subtract));
         #endregion
         #endregion
 
@@ -424,6 +426,12 @@ namespace HatTrick.DbEx.Sql.Expression
         public static FilterExpressionSet operator >(DateTimeFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThan));
         public static FilterExpressionSet operator <=(DateTimeFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.LessThanOrEqual));
         public static FilterExpressionSet operator >=(DateTimeFieldExpression a, AliasExpression b) => new FilterExpressionSet(new FilterExpression<bool?>(a, b, FilterExpressionOperator.GreaterThanOrEqual));
+        public static FilterExpressionSet operator ==(DateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.Equal));
+        public static FilterExpressionSet operator !=(DateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.NotEqual));
+        public static FilterExpressionSet operator <(DateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThan));
+        public static FilterExpressionSet operator >(DateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThan));
+        public static FilterExpressionSet operator <=(DateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.LessThanOrEqual));
+        public static FilterExpressionSet operator >=(DateTimeFieldExpression a, (string TableName, string FieldName) b) => new FilterExpressionSet(new FilterExpression<bool?>(a, new AliasExpression(b.TableName, b.FieldName), FilterExpressionOperator.GreaterThanOrEqual));
         #endregion
         #endregion
     }

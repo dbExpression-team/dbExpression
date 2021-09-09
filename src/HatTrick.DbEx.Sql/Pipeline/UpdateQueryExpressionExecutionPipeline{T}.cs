@@ -26,8 +26,7 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class UpdateQueryExpressionExecutionPipeline<T> : IUpdateQueryExpressionExecutionPipeline<T>
-        where T : class, IDbEntity
+    public class UpdateQueryExpressionExecutionPipeline : IUpdateQueryExpressionExecutionPipeline
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration database;
@@ -81,7 +80,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             beforeUpdate?.Invoke(new Lazy<BeforeUpdatePipelineExecutionContext>(() => new BeforeUpdatePipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
             var rowsAffected = executor.ExecuteScalar<int>(
                 statement,
                 connection,
@@ -133,7 +132,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute an update query without a statement executor to execute the sql statement.");
             var rowsAffected = await executor.ExecuteScalarAsync<int>(
                 statement,
                 connection,

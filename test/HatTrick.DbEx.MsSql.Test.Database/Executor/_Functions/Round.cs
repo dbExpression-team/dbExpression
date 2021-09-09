@@ -118,13 +118,13 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             ConfigureForMsSqlVersion(version);
 
             var exp = db.SelectOne(
-                    db.fx.Round(dbex.Alias("_product", "ShippingWeight"), 1).As("shipping_weight")
+                    db.fx.Round(dbex.Alias<decimal>("_product", "ShippingWeight"), 1).As("shipping_weight")
                 ).From(dbo.Product)
                 .InnerJoin(
                     db.SelectOne<Product>()
                     .From(dbo.Product)
                     .Where(dbo.Product.Id == 1)
-                ).As("_product").On(dbo.Product.Id == dbex.Alias("_product", "Id"));
+                ).As("_product").On(dbo.Product.Id == ("_product", "Id"));
 
             //when               
             object result = exp.Execute();

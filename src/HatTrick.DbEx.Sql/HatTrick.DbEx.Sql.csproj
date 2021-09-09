@@ -18,6 +18,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Builder\_Insert\IInsertTerminationExpressionBuilder{T}.cs" />
+      <Compile Remove="Builder\_Select\ISelectValueContinuation{T}.cs" />
+      <Compile Remove="Builder\_Select\ISelectValuesContinuation{T}.cs" />
+      <Compile Remove="Builder\_Select\ISelectValuesTermination{T}.cs" />
+      <Compile Remove="Builder\_Select\ISelectValueTermination{T}.cs" />
+      <Compile Remove="Builder\_Update\IUpdateTerminationExpressionBuilder{T}.cs" />
       <Compile Remove="Expression\IExpressionSet.cs" />
       <Compile Remove="Expression\IExpressionSet{T}.cs" />
     </ItemGroup>

@@ -29,8 +29,8 @@ using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql.Pipeline
 {
-    public class InsertQueryExpressionExecutionPipeline<T> : IInsertQueryExpressionExecutionPipeline<T>
-        where T : class, IDbEntity
+    public class InsertQueryExpressionExecutionPipeline<TEntity> : IInsertQueryExpressionExecutionPipeline<TEntity>
+        where TEntity : class, IDbEntity
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration database;
@@ -90,7 +90,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             var fields = new List<FieldExpression> { null }.Concat(expression.Outputs).ToList();
 
-            var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression).ExecuteQuery(
+            var reader = database.StatementExecutorFactory.CreateSqlStatementExecutor().ExecuteQuery(
                 statement,
                 connection,
                 new SqlStatementValueConverterProvider(database.ValueConverterFactory, fields),
@@ -104,7 +104,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 cmd => afterExecution?.Invoke(new Lazy<AfterExecutionPipelineExecutionContext>(() => new AfterExecutionPipelineExecutionContext(database, expression, cmd)))
             );
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<TEntity>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
             ISqlFieldReader row;
             while ((row = reader.ReadRow()) is object)
@@ -119,7 +119,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     throw new DbExpressionException("Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
                 }
                 var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                mapper.Map(row, entity as T);
+                mapper.Map(row, entity as TEntity);
             }
 
             if (afterInsert is object)
@@ -167,7 +167,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 }
             }
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a delete query without a statement executor to execute the sql statement.");
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a delete query without a statement executor to execute the sql statement.");
             var reader = await executor.ExecuteQueryAsync(
                 statement,
                 connection,
@@ -195,7 +195,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
 
             ct.ThrowIfCancellationRequested();
 
-            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<T>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
+            var mapper = database.MapperFactory.CreateEntityMapper(expression.BaseEntity as IEntityExpression<TEntity>) ?? throw new DbExpressionException("The mapper is null, cannot execute an insert query without a mapper to map return values to entity instances.");
 
             ISqlFieldReader row;
             while ((row = await reader.ReadRowAsync().ConfigureAwait(false)) is object)
@@ -210,7 +210,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                     throw new DbExpressionException("Expected the execution of the insert statement to return a reader where the first field in the reader is an integer used to locate the in-memory entity for hydrating values.", e);
                 }
                 var entity = expression.Inserts.Single(x => x.Key == Convert.ToInt32(index)).Value.Entity;
-                mapper.Map(row, entity as T);
+                mapper.Map(row, entity as TEntity);
             }
 
             if (afterInsert is object)

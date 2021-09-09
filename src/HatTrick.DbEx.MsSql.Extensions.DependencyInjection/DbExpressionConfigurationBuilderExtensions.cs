@@ -330,7 +330,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     typeof(RuntimeSqlDatabaseConfigurationFor<T>),
                     serviceProvider =>
                     {
-                        var configBuilder = new RuntimeSqlDatabaseConfigurationBuilder(new RuntimeSqlDatabaseConfiguration());
                         builder.SchemaMetadata.Use(builder.Environment.Metadata);
 
                         builder.QueryExpressions.Use(serviceProvider.GetService<IQueryExpressionFactory>());
@@ -365,6 +364,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     configurationLifetime
                 )
             );
+
 
             builder.Services.AddSingleton(serviceProvider =>
             {

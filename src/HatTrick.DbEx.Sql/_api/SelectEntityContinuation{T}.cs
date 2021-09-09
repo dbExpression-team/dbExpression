@@ -16,7 +16,6 @@
 // The latest version of this file can be found at https://github.com/HatTrickLabs/db-ex
 #endregion
 
-﻿using HatTrick.DbEx.Sql.Expression;
 using System.Collections.Generic;
 
 namespace HatTrick.DbEx.Sql
@@ -25,7 +24,7 @@ namespace HatTrick.DbEx.Sql
     public interface SelectEntityContinuation<TEntity> :
 #pragma warning restore IDE1006 // Naming Styles
         SelectEntityTermination<TEntity>
-        where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity, new()
     {
         /// <summary>
         /// Construct the WHERE clause of a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.

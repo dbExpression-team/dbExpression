@@ -23,7 +23,7 @@ using System.Linq;
 namespace HatTrick.DbEx.Sql.Builder
 {
     public class EntityComparisonAssignmentBuilder<TEntity> : EntityFieldAssignmentsContinuation<TEntity>
-            where TEntity : class, IDbEntity
+        where TEntity : class, IDbEntity
     {
         #region internals
         private readonly Entity<TEntity> entity;

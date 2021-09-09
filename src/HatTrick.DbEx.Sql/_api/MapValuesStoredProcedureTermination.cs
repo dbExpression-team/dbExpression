@@ -17,8 +17,11 @@
 #endregion
 
 using HatTrick.DbEx.Sql.Builder;
+using HatTrick.DbEx.Sql.Connection;
 using HatTrick.DbEx.Sql.Executor;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace HatTrick.DbEx.Sql
 {
@@ -27,5 +30,57 @@ namespace HatTrick.DbEx.Sql
 #pragma warning restore IDE1006 // Naming Styles    
     {
         Action<ISqlFieldReader> Map { get; }
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        void Execute();
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        void Execute(ISqlConnection connection);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        void Execute(int commandTimeout);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        void Execute(ISqlConnection connection, int commandTimeout);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        Task ExecuteAsync(CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        Task ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        Task ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Assemble and execute a stored procedure and use the delegate provided in MapValues to handle the returned rowset(s).
+        /// </summary>
+        /// <param name="connection">The active database <see cref="ISqlConnection">connection</see> to use for executing the stored procedure.</param>
+        /// <param name="commandTimeout">The wait time (in seconds) before terminating the attempt to execute the stored procedure and generating an error.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken">cancellation token</see> to propagate notification that execution of the stored procedure should be cancelled.</param>
+        Task ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default);
     }
 }

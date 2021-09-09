@@ -64,7 +64,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectEntity{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntity<TEntity> SelectOne<TEntity>()
-            where TEntity : class, IDbEntity
+            where TEntity : class, IDbEntity, new()
             => expressionBuilderFactory.CreateSelectEntityBuilder<TEntity>(configuration);
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace SimpleConsole.DataService
         /// <see href="https://docs.microsoft.com/en-US/sql/t-sql/queries/select-transact-sql">Microsoft docs on SELECT</see>
         /// </para>
         /// </summary>
-        /// <param name="element">An expression of type <see cref="Sql.EnumElement{TEnum}" />
+        /// <param name="element">An expression of type <see cref="EnumElement{TEnum}" />
         ///, for example "dbo.AccessAuditLog.AccessResult"
         /// </param>
         /// <returns><see cref="Sql.SelectValue{TEnum}"/>, a fluent builder for constructing a sql SELECT query expression for a <typeparamref name="TEntity"/> entity.</returns>
@@ -511,7 +511,7 @@ namespace SimpleConsole.DataService
         /// <returns><see cref="SelectEntities{TEntity}"/>, a fluent builder for constructing a sql SELECT query expression for a list of <typeparamref name="TEntity"/> entities.</returns>
         /// <typeparam name="TEntity">The entity type to select.</typeparam>
         public static SelectEntities<TEntity> SelectMany<TEntity>()
-           where TEntity : class, IDbEntity
+           where TEntity : class, IDbEntity, new()
            => expressionBuilderFactory.CreateSelectEntitiesBuilder<TEntity>(configuration);
 
         /// <summary>

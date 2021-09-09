@@ -88,7 +88,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual T ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T> map)
-           where T : class, IDbEntity, new()
+           where T : class, IDbEntity
         {
             T entity = default;
             ExecuteSelectQuery(
@@ -116,7 +116,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual void ExecuteSelectEntity<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> map)
-           where T : class, IDbEntity, new()
+           where T : class, IDbEntity
         {
             ExecuteSelectQuery(
                 expression,
@@ -195,7 +195,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual async Task ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> map, CancellationToken ct)
-            where T : class, IDbEntity, new()
+            where T : class, IDbEntity
         {
             await ExecuteSelectQueryAsync(
                 expression,
@@ -252,7 +252,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual async Task<T> ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, T> map, CancellationToken ct)
-            where T : class, IDbEntity, new()
+            where T : class, IDbEntity
         {
             T entity = default;
             await ExecuteSelectQueryAsync(
@@ -281,7 +281,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual async Task ExecuteSelectEntityAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken ct)
-            where T : class, IDbEntity, new()
+            where T : class, IDbEntity
         {
             await ExecuteSelectQueryAsync(
                 expression,
@@ -392,7 +392,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual void ExecuteSelectEntityList<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> map)
-            where T : class, IDbEntity, new()
+            where T : class, IDbEntity
         {
             ExecuteSelectQuery(
                 expression,
@@ -473,7 +473,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }        
 
         public virtual async Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Action<ISqlFieldReader> map, CancellationToken ct)
-            where T : class, IDbEntity, new()
+            where T : class, IDbEntity
         {
             await ExecuteSelectQueryAsync(
                 expression,
@@ -561,7 +561,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
         }
 
         public virtual async Task ExecuteSelectEntityListAsync<T>(SelectQueryExpression expression, ISqlConnection connection, Action<IDbCommand> configureCommand, Func<ISqlFieldReader, Task> map, CancellationToken ct)
-            where T : class, IDbEntity, new()
+            where T : class, IDbEntity
         {
             await ExecuteSelectQueryAsync(
                 expression,
@@ -1305,7 +1305,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
             var statement = statementBuilder.CreateSqlStatement() ?? throw new DbExpressionException("The sql statement builder returned a null value, cannot execute a select query without a sql statement.");
             afterAssembly?.Invoke(new Lazy<AfterAssemblyPipelineExecutionContext>(() => new AfterAssemblyPipelineExecutionContext(database, expression, statementBuilder.Parameters, statement)));
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a select query without a statement executor to execute the sql statement.");
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a select query without a statement executor to execute the sql statement.");
 
             beforeSelect?.Invoke(new Lazy<BeforeSelectPipelineExecutionContext>(() => new BeforeSelectPipelineExecutionContext(database, expression, statement, statementBuilder.Parameters)));
 
@@ -1366,7 +1366,7 @@ namespace HatTrick.DbEx.Sql.Pipeline
                 ct.ThrowIfCancellationRequested();
             }
 
-            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor(expression) ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a select query without a statement executor to execute the sql statement.");
+            var executor = database.StatementExecutorFactory.CreateSqlStatementExecutor() ?? throw new DbExpressionException("The sql statement executor is null, cannot execute a select query without a statement executor to execute the sql statement.");
 
             var reader = await executor.ExecuteQueryAsync(
                 statement,
