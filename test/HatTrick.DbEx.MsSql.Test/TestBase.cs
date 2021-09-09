@@ -22,7 +22,7 @@ namespace HatTrick.DbEx.MsSql.Test
             RuntimeSqlDatabaseConfiguration config = default;
             Action<IRuntimeSqlDatabaseConfigurationBuilder> configureRuntime = database =>
             {
-                config = (database as IRuntimeSqlDatabaseConfigurationProvider).Configuration;
+                config = database.Configuration;
                 database.ConnectionString.Use(connectionString);
 
                 database.SqlStatements.Assembly.ConfigureOutputSettings(

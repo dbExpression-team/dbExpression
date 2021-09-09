@@ -20,7 +20,7 @@
 
 namespace HatTrick.DbEx.Sql.Configuration
 {
-    public interface IRuntimeSqlDatabaseConfigurationBuilder
+    public interface IRuntimeSqlDatabaseConfigurationBuilder : IRuntimeSqlDatabaseConfigurationProvider
     {
         /// <summary>
         /// Configure the factory used for providing a connection string to create connections to the database.

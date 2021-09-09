@@ -21,8 +21,7 @@
 namespace HatTrick.DbEx.Sql.Configuration
 {
     public class RuntimeSqlDatabaseConfigurationBuilder :
-        IRuntimeSqlDatabaseConfigurationBuilder,
-        IRuntimeSqlDatabaseConfigurationProvider
+        IRuntimeSqlDatabaseConfigurationBuilder
     {
         #region internals
         private readonly RuntimeSqlDatabaseConfiguration configuration;
