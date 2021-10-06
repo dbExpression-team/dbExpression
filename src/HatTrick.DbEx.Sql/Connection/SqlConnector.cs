@@ -68,6 +68,11 @@ namespace HatTrick.DbEx.Sql.Connection
                 _dbConnection.Open();
         }
 
+        public async Task EnsureOpenAsync()
+        {
+            await EnsureOpenAsync(default);
+        }
+
         public async Task EnsureOpenAsync(CancellationToken ct)
         {
             ct.ThrowIfCancellationRequested();
