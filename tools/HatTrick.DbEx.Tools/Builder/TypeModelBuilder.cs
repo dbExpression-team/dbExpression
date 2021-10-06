@@ -28,7 +28,7 @@ namespace HatTrick.DbEx.Tools.Builder
     {
         private static Func<bool, TypeModel> NewBooleanTypeModel = isNullable => new TypeModel(nameof(Boolean), "bool", isNullable);
         private static Func<bool, TypeModel> NewByteTypeModel = isNullable => new TypeModel(nameof(Byte), "byte", isNullable);
-        private static Func<bool, TypeModel> NewByteArrayTypeModel = isNullable => new TypeModel("ByteArray", "byte[]", false, true);
+        private static Func<bool, TypeModel> NewByteArrayTypeModel = isNullable => new TypeModel("ByteArray", "byte[]", isNullable:false, isEnum:false, isArray:true);
         private static Func<bool, TypeModel> NewDateTimeTypeModel = isNullable => new TypeModel(nameof(DateTime), nameof(DateTime), isNullable);
         private static Func<bool, TypeModel> NewDateTimeOffsetTypeModel = isNullable => new TypeModel(nameof(DateTimeOffset), nameof(DateTimeOffset), isNullable);
         private static Func<bool, TypeModel> NewDecimalTypeModel = isNullable => new TypeModel(nameof(Decimal), "decimal", isNullable);
@@ -104,11 +104,11 @@ namespace HatTrick.DbEx.Tools.Builder
             if (TypeModelFactories.ContainsKey(clrTypeOverride))
                 return TypeModelFactories[clrTypeOverride](isNullable);
 
-            var typeModel = new TypeModel(clrTypeOverride, clrTypeOverride, isNullable, clrTypeOverride.Contains("[]"));
-            typeModel.IsEnum = isEnum;
-            TypeModelFactories.Add(clrTypeOverride, column => typeModel);
+            var nullableTypeModel = new TypeModel(clrTypeOverride, clrTypeOverride, true, isEnum, clrTypeOverride.Contains("[]"));
+            var typeModel = new TypeModel(clrTypeOverride, clrTypeOverride, false, isEnum, clrTypeOverride.Contains("[]"));
+            TypeModelFactories.Add(clrTypeOverride, _isNullable => _isNullable ? nullableTypeModel : typeModel);
 
-            return typeModel;
+            return TypeModelFactories[clrTypeOverride](isNullable);
         }
 
         private static string GetBySqlDbType(SqlDbType sqlType)
