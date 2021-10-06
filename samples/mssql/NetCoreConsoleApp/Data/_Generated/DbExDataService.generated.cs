@@ -33,8 +33,18 @@ namespace SimpleConsole.DataService
         IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
         #endregion
 
+        #region methods
+        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
+            => SimpleConsoleDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
+        #endregion
+    }
+    #endregion
+
+    #region db
+    public partial class db : SimpleConsoleDbRuntimeSqlDatabase
+    {
         #region constructors
-        static SimpleConsoleDbRuntimeSqlDatabase()
+        static db()
         {
             var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             schemas.Add(dboSchema);
@@ -48,9 +58,6 @@ namespace SimpleConsole.DataService
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
-            => SimpleConsoleDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
-
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1400,7 +1407,6 @@ namespace SimpleConsole.DataService
 
         }
         #endregion
-
     }
     #endregion
 
@@ -1412,12 +1418,6 @@ namespace SimpleConsole.DataService
     }
     #endregion
 
-    #region db
-    public partial class db : SimpleConsoleDbRuntimeSqlDatabase
-    {
-    	
-    }
-    #endregion
 }
 
 namespace SimpleConsole.dboDataService
