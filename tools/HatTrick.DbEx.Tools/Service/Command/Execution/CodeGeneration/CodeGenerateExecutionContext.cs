@@ -434,8 +434,8 @@ namespace HatTrick.DbEx.Tools.Service
             switch (o.Apply.To.ObjectType)
             {
                 case ObjectType.Any:
-                    SqlModelAccessor accecssor = new SqlModelAccessor(model);
-                    set = accecssor.ResolveItemSet(o.Apply.To.Path);
+                    SqlModelAccessor accessor = new SqlModelAccessor(model);
+                    set = accessor.ResolveItemSet(o.Apply.To.Path);
                     break;
                 case ObjectType.Schema:
                     set = this.ResolveOverrideTarget<MsSqlSchema>(model, o);
@@ -605,17 +605,18 @@ namespace HatTrick.DbEx.Tools.Service
             string[] names = resources.GetTemplateShortNames();
 
             var helpers = new CodeGenerationHelpers(config);
+            var databaseModel = DatabaseModelBuilder.CreateModel(sqlModel, helpers);
 
             for (int i = 0; i < names.Length; i++)
             {
                 var resource = resources.GetTemplate(names[i]);
-                this.RenderOutput(sqlModel, config, resource, helpers);
+                this.RenderOutput(databaseModel, config, resource, helpers);
             }
         }
         #endregion
 
         #region render output
-        protected void RenderOutput(MsSqlModel sqlModel, DbExConfig config, Resource resource, CodeGenerationHelpers helpers)
+        protected void RenderOutput(DatabasePairModel databaseModel, DbExConfig config, Resource resource, CodeGenerationHelpers helpers)
         {
             TemplateEngine engine = new TemplateEngine(resource.Value);
             //engine.ProgressListener += (i, s) =>
@@ -636,7 +637,7 @@ namespace HatTrick.DbEx.Tools.Service
             string output = null;
             try
             {
-                output = engine.Merge(DatabaseModelBuilder.CreateModel(sqlModel, helpers));
+                output = engine.Merge(databaseModel);
             }
             catch (Exception e)
             {

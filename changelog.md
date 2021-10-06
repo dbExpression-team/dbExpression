@@ -7,6 +7,7 @@
 ### Changed
 
 ### Fixed
+- issue #274: Scaffolding produces wrong CLR type when providing a configuratio
 
 ### Breaking Changes
 
