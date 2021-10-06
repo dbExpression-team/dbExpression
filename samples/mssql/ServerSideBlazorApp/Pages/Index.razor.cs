@@ -27,7 +27,7 @@ namespace ServerSideBlazorApp.Pages
                 }
                 catch (Exception)
                 {
-                    NavigationManager.NavigateTo($"/startup", true);
+                    NavigationManager.NavigateTo("/startup", true);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace ServerSideBlazorApp.Pages
             }
             catch (Exception)
             {
-                NavigationManager.NavigateTo($"/startup", true);
+                NavigationManager.NavigateTo("/startup", true);
             }
             return null;
         }
@@ -60,8 +60,8 @@ namespace ServerSideBlazorApp.Pages
                 var sales = await OrderService.GetSalesByProductCategory();
 
                 if (!sales.Any())
-                    throw new ApplicationException();
-            
+                    NavigationManager.NavigateTo("/startup", true);
+
                 return sales.Select(x =>
                     new SingleMetricDatasetModel<double>
                     {
@@ -72,7 +72,7 @@ namespace ServerSideBlazorApp.Pages
             }
             catch (Exception)
             {
-                NavigationManager.NavigateTo($"/startup", true);
+                NavigationManager.NavigateTo("/startup", true);
             }
             return null;
         }
