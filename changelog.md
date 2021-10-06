@@ -1,13 +1,14 @@
 # Changelog
 
-## [0.8.4]
+## [0.8.4] - 2021-10-06
 
 ### Added
 
 ### Changed
 
 ### Fixed
-- issue #274: Scaffolding produces wrong CLR type when providing a configuratio
+- issue #274: Scaffolding produces wrong CLR type when providing a configuration (A TOOLS UPDATE IS REQUIRED)
+- issue #273: Sql connector's EnsureOpenAsync should not require a cancellation token
 
 ### Breaking Changes
 
