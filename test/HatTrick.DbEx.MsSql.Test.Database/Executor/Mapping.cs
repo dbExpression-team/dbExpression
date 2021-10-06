@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             .Execute();
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().BeAssignableTo<ProductCategoryType>();
+            ((ProductCategoryType?)product.ProductCategoryType).Should().NotBeNull();
         }
 
         [Theory]
@@ -90,10 +90,11 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 dbo.Person.GenderType
             )
             .From(dbo.Person)
+            .Where(dbo.Person.Id == 1)
             .Execute();
 
             //then
-            ((GenderType)person.GenderType).Should().BeAssignableTo<GenderType>();
+            ((GenderType)person.GenderType).Should().Be(GenderType.Male);
         }
 
         [Theory]
@@ -177,7 +178,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             });
 
             //then
-            ((ProductCategoryType?)product.ProductCategoryType).Should().BeAssignableTo<ProductCategoryType>();
+            ((ProductCategoryType?)product.ProductCategoryType).Should().NotBeNull();
         }
 
         [Theory]
@@ -218,6 +219,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 dbo.Person.GenderType
             )
             .From(dbo.Person)
+            .Where(dbo.Person.Id == 1)
             .Execute(p => {
                 dynamic d = new ExpandoObject();
                 d.Id = p.ReadField().GetValue<int>();
@@ -226,7 +228,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
             });
 
             //then
-            ((GenderType)person.GenderType).Should().BeAssignableTo<GenderType>();
+            ((GenderType)person.GenderType).Should().Be(GenderType.Male);
         }
 
         [Theory]

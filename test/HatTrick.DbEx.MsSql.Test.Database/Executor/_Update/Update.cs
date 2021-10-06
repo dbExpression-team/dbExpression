@@ -251,7 +251,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
                 .ExecuteAsync();
 
             //when & then
-            execute.Should().Throw<SqlException>().And.Message.Should().StartWith("Incorrect syntax near");
+            execute.Should().ThrowAsync<SqlException>().Result.And.Message.Should().StartWith("Incorrect syntax near");
 
         }
 
