@@ -33,8 +33,18 @@ namespace ServerSideBlazorApp.DataService
         IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
         #endregion
 
+        #region methods
+        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
+            => CRMDatabaseRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
+        #endregion
+    }
+    #endregion
+
+    #region db
+    public partial class db : CRMDatabaseRuntimeSqlDatabase
+    {
         #region constructors
-        static CRMDatabaseRuntimeSqlDatabase()
+        static db()
         {
             var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             schemas.Add(dboSchema);
@@ -48,9 +58,6 @@ namespace ServerSideBlazorApp.DataService
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
-            => CRMDatabaseRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
-
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1400,7 +1407,6 @@ namespace ServerSideBlazorApp.DataService
 
         }
         #endregion
-
     }
     #endregion
 
@@ -1412,12 +1418,6 @@ namespace ServerSideBlazorApp.DataService
     }
     #endregion
 
-    #region db
-    public partial class db : CRMDatabaseRuntimeSqlDatabase
-    {
-    	
-    }
-    #endregion
 }
 
 namespace ServerSideBlazorApp.dboDataService

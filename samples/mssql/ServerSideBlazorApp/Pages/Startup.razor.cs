@@ -33,10 +33,11 @@ namespace ServerSideBlazorApp.Pages
 
             successStep = 3;
 
-            if (!await EvaluateHasAnImage())
-                return;
+            if (await EvaluateHasAnImage())
+                successStep = 4;
 
-            successStep = 4;
+            if (successStep >= 3)
+                NavigationManager.NavigateTo("/");
         }
 
         private string GetFontAwesome(int step)

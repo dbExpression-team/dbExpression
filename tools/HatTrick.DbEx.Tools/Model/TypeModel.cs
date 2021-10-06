@@ -20,19 +20,20 @@
 {
     public class TypeModel
     { 
-        public string TypeName { get; set; }
-        public string Alias { get; set; }
-        public string NullableAlias { get; set; }
-        public bool IsNullable { get; set; }
-        public bool IsArray { get; set; }
-        public bool IsEnum { get; set; }
+        public string TypeName { get; private set; }
+        public string Alias { get; private set; }
+        public string NullableAlias { get; private set; }
+        public bool IsNullable { get; private set; }
+        public bool IsArray { get; private set; }
+        public bool IsEnum { get; private set; }
 
-        public TypeModel(string typeName, string alias, bool isNullable, bool isArray = false)
+        public TypeModel(string typeName, string alias, bool isNullable, bool isEnum = false, bool isArray = false)
         {
             TypeName = typeName;
             Alias = alias;
             NullableAlias = isNullable ? $"{alias}?" : alias;
             IsNullable = isNullable;
+            IsEnum = isEnum;
             IsArray = isArray;
         }
     }

@@ -33,8 +33,18 @@ namespace DbEx.DataService
         IEnumerable<SchemaExpression> IExpressionListProvider<SchemaExpression>.Expressions => schemas;
         #endregion
 
+        #region methods
+        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
+            => MsSqlDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
+        #endregion
+    }
+    #endregion
+
+    #region db
+    public partial class db : MsSqlDbRuntimeSqlDatabase
+    {
         #region constructors
-        static MsSqlDbRuntimeSqlDatabase()
+        static db()
         {
             var dboSchema = new _dboDataService.dboSchemaExpression("dbo");
             schemas.Add(dboSchema);
@@ -48,9 +58,6 @@ namespace DbEx.DataService
         #endregion
 
         #region methods
-        void IRuntimeSqlDatabase.UseConfigurationFactory(IRuntimeSqlDatabaseConfigurationFactory configurationFactory)
-            => MsSqlDbRuntimeSqlDatabase.configurationFactory = configurationFactory ?? throw new ArgumentNullException(nameof(configurationFactory));
-
         #region select one
         /// <summary>
         /// Start constructing a sql SELECT query expression for a single entity.
@@ -1381,7 +1388,6 @@ namespace DbEx.DataService
 
         }
         #endregion
-
     }
     #endregion
 
@@ -1393,12 +1399,6 @@ namespace DbEx.DataService
     }
     #endregion
 
-    #region db
-    public partial class db : MsSqlDbRuntimeSqlDatabase
-    {
-    	
-    }
-    #endregion
 }
 
 namespace DbEx.dboDataService
