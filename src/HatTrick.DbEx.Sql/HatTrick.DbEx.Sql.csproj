@@ -10,7 +10,7 @@
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -18,19 +18,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Builder\_Insert\IInsertTerminationExpressionBuilder{T}.cs" />
-      <Compile Remove="Builder\_Select\ISelectValueContinuation{T}.cs" />
-      <Compile Remove="Builder\_Select\ISelectValuesContinuation{T}.cs" />
-      <Compile Remove="Builder\_Select\ISelectValuesTermination{T}.cs" />
-      <Compile Remove="Builder\_Select\ISelectValueTermination{T}.cs" />
-      <Compile Remove="Builder\_Update\IUpdateTerminationExpressionBuilder{T}.cs" />
-      <Compile Remove="Expression\IExpressionSet.cs" />
-      <Compile Remove="Expression\IExpressionSet{T}.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     </ItemGroup>
 
 </Project>

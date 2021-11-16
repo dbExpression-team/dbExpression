@@ -43,7 +43,7 @@ namespace ServerSideBlazorApp.Shared
 
         public async Task Save()
         {
-            if (!validations.ValidateAll())
+            if (!await validations.ValidateAll())
                 return;
 
             Address = await OnSave(Address);
