@@ -11,7 +11,7 @@ trigger:
   - release/*
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 name: $[ variables['branchName'] ]
 
@@ -60,7 +60,6 @@ stages:
           arguments: '-Configuration $(buildConfiguration) -BranchName $(branchName) -CommitSHA $(Build.SourceVersion) -BuildIdentifier $(Build.BuildNumber) -PropertiesPath $(Build.SourcesDirectory)/Directory.Build.props -UseBranchNameInPackageSuffixWhenNotSpecified'
           workingDirectory: $(Build.SourcesDirectory)
           pwsh: true
-        
       - publish: $(Build.SourcesDirectory)
         displayName: 'Publish to Staging Location'
         artifact: $(stageLocationName)
@@ -108,6 +107,8 @@ stages:
         artifact: mssql-core-results
 
   - stage: Test_Execution
+    pool:
+      vmImage: 'ubuntu-latest'
     dependsOn: Build
     displayName: 'Test MSSQL Platforms'
     jobs:          

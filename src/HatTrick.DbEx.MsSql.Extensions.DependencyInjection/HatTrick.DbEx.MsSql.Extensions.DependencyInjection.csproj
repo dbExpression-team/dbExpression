@@ -11,7 +11,7 @@
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>microsoft sqlserver sql sql-server orm dependency-injection</PackageTags>
@@ -21,12 +21,12 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\HatTrick.DbEx.MsSql\HatTrick.DbEx.MsSql.csproj" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     </ItemGroup>
 
 </Project>

@@ -23,7 +23,7 @@ namespace ServerSideBlazorApp
                 model.Offset = 0;
             }
 
-            var requestedSorting = args.Columns.Where(c => c.Direction != SortDirection.None).Select(r => new Sort(r.Field, r.Direction.ConvertSortDirection().Value)).ToList();
+            var requestedSorting = args.Columns.Where(c => c.SortDirection != SortDirection.None).Select(r => new Sort(r.Field, r.SortDirection.ConvertSortDirection().Value)).ToList();
             var previousSorting = previous?.Sorting?.ToList() ?? new List<Sort>();
             var newSorting = new Sort[Math.Max(requestedSorting.Count, previousSorting.Count)];
             var newlyRequestedSorting = new List<Sort>();

@@ -1236,6 +1236,6 @@
 
 {+>("Fx") => GetTemplatePartial+}
 
-{+>("Sp") => GetTemplatePartial+}
+{+>("StoredProcedure") => GetTemplatePartial+}
     }}
     #endregion

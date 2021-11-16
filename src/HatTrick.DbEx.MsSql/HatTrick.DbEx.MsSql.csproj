@@ -10,7 +10,7 @@
         </Description>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/HatTrickLabs/dbExpression</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/HatTrickLabs/dbExpression</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>microsoft sqlserver sql sql-server orm</PackageTags>
@@ -19,20 +19,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Builder\MsSqlDeleteEntitiesBuilder.cs" />
-      <Compile Remove="Builder\MsSqlDeleteEntitiesDeleteQueryExpressionBuilder{T}.cs" />
-      <Compile Remove="Builder\MsSqlSelectEntitiesSelectQueryExpressionBuilder{T}.cs" />
-      <Compile Remove="Builder\MsSqlSelectEntityQueryExpressionBuilder{T}.cs" />
-      <Compile Remove="Builder\MsSqlSelectQueryExpressionBuilder.cs" />
-      <Compile Remove="Builder\MsSqlSelectValueSelectQueryExpressionBuilder{T}.cs" />
-      <Compile Remove="Builder\MsSqlSelectValuesSelectQueryExpressionBuilder{T}.cs" />
-      <Compile Remove="Builder\MsSqlUpdateQueryExpressionBuilder.cs" />
-      <Compile Remove="Builder\UpdateEntitiesUpdateQueryExpressionBuilder{T}.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
         <ProjectReference Include="..\HatTrick.DbEx.Sql\HatTrick.DbEx.Sql.csproj" />
     </ItemGroup>
 

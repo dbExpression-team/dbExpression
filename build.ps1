@@ -110,7 +110,7 @@ nuget restore $SolutionPath -PackagesDirectory .\packages
 Write-Host "Building solution" $SolutionPath
 dotnet build $SolutionPath --configuration $Configuration
 
-Write-Host "Creating NuGet packages for" $SolutionPath
-dotnet pack $SolutionPath --output $NuGetOutputPath --configuration $Configuration
+Write-Host "Creating NuGet packages for " $SolutionPath
+dotnet pack $SolutionPath --output $NuGetOutputPath --configuration $Configuration --include-symbols
 
 Write-Host "Build complete for" $SolutionPath

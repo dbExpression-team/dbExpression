@@ -7,6 +7,8 @@
 ### Changed
 
 ### Fixed
+- NuGet packaging now includes symbol packages
+
 
 ### Breaking Changes
 

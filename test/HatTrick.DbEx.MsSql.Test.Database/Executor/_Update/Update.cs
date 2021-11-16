@@ -278,7 +278,7 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
         [Theory]
         [MsSqlVersions.AllVersions]
         [Trait("Operation", "WHERE")]
-        public async Task Can_update_persons_gendertype_async(int version, int id = 1, GenderType expectedGenderType = GenderType.Female)
+        public async Task Can_update_persons_gendertype_async(int version,GenderType expectedGenderType = GenderType.Female)
         {
             //given
             ConfigureForMsSqlVersion(version);
