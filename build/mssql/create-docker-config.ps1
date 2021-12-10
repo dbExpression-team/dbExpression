@@ -3,7 +3,9 @@ Param
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string]$MSSQL_VERSION,		
 		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [string]$BUILD_CONFIGURATION,
+        [string]$BUILD_CONFIGURATION,		
+		[Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [string]$TARGET_FRAMEWORK_MONIKER,
 		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
         [string]$TEST_PROJECT_PATH,
 		[Parameter(Mandatory=$false,ValueFromPipelineByPropertyName)]
@@ -30,6 +32,7 @@ Write-Host "Command Line Parameters:"
 Write-Host "-------------------------------"
 Write-Host "MSSQL_VERSION: " $MSSQL_VERSION
 Write-Host "BUILD_CONFIGURATION: " $BUILD_CONFIGURATION
+Write-Host "TARGET_FRAMEWORK_MONIKER: " $TARGET_FRAMEWORK_MONIKER
 Write-Host "TEST_PROJECT_PATH: " $TEST_PROJECT_PATH
 Write-Host "TEST_PROJECT_FILENAME: " $TEST_PROJECT_FILENAME
 Write-Host "CREATE_DB_SCRIPT_PATH: " $CREATE_DB_SCRIPT_PATH
@@ -57,10 +60,10 @@ if (Test-Path $destinationFile) {
 }
 
 $values = @(
-			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TEST_PROJECT_PATH", "TEST_PROJECT_FILENAME", "CREATE_DB_SCRIPT_PATH", "CREATE_DB_SCRIPT_FILENAME", "TEST_OUTPUT_FILE_PATH", "TEST_OUTPUT_FILE_NAME", "CODE_COVERAGE_OUTPUT_FILE_PATH", "CODE_COVERAGE_OUTPUT_FILE_NAME", "PORT", "MSSQL_PWD"),
-			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TEST_PROJECT_PATH, $TEST_PROJECT_FILENAME, $CREATE_DB_SCRIPT_PATH, $CREATE_DB_SCRIPT_FILENAME, $TEST_OUTPUT_FILE_PATH, $TEST_OUTPUT_FILE_NAME, $CODE_COVERAGE_OUTPUT_FILE_PATH, $CODE_COVERAGE_OUTPUT_FILE_NAME, $PORT, $MSSQL_PWD),
-			($null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null),
-			($null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null)
+			("MSSQL_VERSION", "BUILD_CONFIGURATION", "TARGET_FRAMEWORK_MONIKER", "TEST_PROJECT_PATH", "TEST_PROJECT_FILENAME", "CREATE_DB_SCRIPT_PATH", "CREATE_DB_SCRIPT_FILENAME", "TEST_OUTPUT_FILE_PATH", "TEST_OUTPUT_FILE_NAME", "CODE_COVERAGE_OUTPUT_FILE_PATH", "CODE_COVERAGE_OUTPUT_FILE_NAME", "PORT", "MSSQL_PWD"),
+			($MSSQL_VERSION, $BUILD_CONFIGURATION, $TARGET_FRAMEWORK_MONIKER, $TEST_PROJECT_PATH, $TEST_PROJECT_FILENAME, $CREATE_DB_SCRIPT_PATH, $CREATE_DB_SCRIPT_FILENAME, $TEST_OUTPUT_FILE_PATH, $TEST_OUTPUT_FILE_NAME, $CODE_COVERAGE_OUTPUT_FILE_PATH, $CODE_COVERAGE_OUTPUT_FILE_NAME, $PORT, $MSSQL_PWD),
+			($null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null),
+			($null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null, $null)
 		)
 
 if ([System.IO.File]::Exists($overridesFile) -eq $true)
