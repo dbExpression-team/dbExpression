@@ -16,7 +16,7 @@
             </DisplayTemplate>
         </DataGridColumn>
         <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.PaymentMethod)" Caption="Payment Method" Sortable="true" Width="20%" />
-        <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="true" Width="20%" TextAlignment="TextAlignment.Right">
+        <DataGridColumn TItem="OrderSummaryModel" Field="@nameof(OrderSummaryModel.TotalPurchaseAmount)" Caption="Total Amount" Sortable="true" Width="20%" TextAlignment="TextAlignment.End">
             <DisplayTemplate>
                 @($"{(context as OrderSummaryModel)?.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)}")
             </DisplayTemplate>

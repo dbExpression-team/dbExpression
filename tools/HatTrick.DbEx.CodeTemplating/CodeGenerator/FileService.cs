@@ -35,7 +35,7 @@ namespace HatTrick.DbEx.CodeTemplating.CodeGenerator
 
         public static string GetApplicationPath()
         {
-            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
             return appPathMatcher.Match(exePath).Value;
         }

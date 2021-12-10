@@ -51,7 +51,7 @@ namespace HatTrick.DbEx.Tools
             var lastSegment = fullName.EndsWith(".htt") ? 2 : 1;
 
             var segments = fullName.Split('.');
-            var shortName = string.Join('.', segments.Skip(5).Take(segments.Length - (5 + lastSegment)));
+            var shortName = string.Join(".", segments.Skip(5).Take(segments.Length - (5 + lastSegment)));
 
             var extension = segments[segments.Length - lastSegment];
 
