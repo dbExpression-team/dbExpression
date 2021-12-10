@@ -71,14 +71,14 @@
                         <Blazorise.TableRow>
                             <TableRowCell>@line.Name</TableRowCell>
                             <TableRowCell>@line.Category</TableRowCell>
-                            <TableRowCell TextAlignment="TextAlignment.Right">@line.Quantity</TableRowCell>
-                            <TableRowCell TextAlignment="TextAlignment.Right">@line.PurchasePrice.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
-                            <TableRowCell TextAlignment="TextAlignment.Right">@line.Subtotal.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.End">@line.Quantity</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.End">@line.PurchasePrice.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                            <TableRowCell TextAlignment="TextAlignment.End">@line.Subtotal.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
                         </Blazorise.TableRow>
                     }
                     <Blazorise.TableRow Casing="CharacterCasing.Upper">
-                        <TableRowCell ColumnSpan="4" TextAlignment="TextAlignment.Right" Style="font-weight:900;">Total:</TableRowCell>
-                        <TableRowCell TextAlignment="TextAlignment.Right" Style="font-weight:900;">@Order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                        <TableRowCell ColumnSpan="4" TextAlignment="TextAlignment.End" Style="font-weight:900;">Total:</TableRowCell>
+                        <TableRowCell TextAlignment="TextAlignment.End" Style="font-weight:900;">@Order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
                     </Blazorise.TableRow>
                 </TableBody>
             </Table>

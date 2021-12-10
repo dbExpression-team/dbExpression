@@ -33,7 +33,7 @@ namespace HatTrick.DbEx.Tools.Model
             get
             {
                 if (Type.IsArray)
-                    return (Type.Alias[0..^2], "[]");
+                    return (Type.Alias.Substring(0, Type.Alias.Length - 2), "[]");
                 if (Type.IsNullable)
                     return (Type.Alias, "?");
 

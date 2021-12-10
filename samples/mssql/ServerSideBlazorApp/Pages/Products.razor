@@ -21,17 +21,17 @@
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Category)" Caption="Category" Sortable="true" Width="25%"></DataGridColumn>
-                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.ListPrice)" Caption="List" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.ListPrice)" Caption="List" Sortable="true" Width="15%" TextAlignment="TextAlignment.End">
                     <DisplayTemplate>
                         @($"{(context as ProductSummaryModel)?.ListPrice.ToString("c", CultureInfo.CurrentUICulture)}")
                     </DisplayTemplate>
                 </DataGridColumn>
-                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Price)" Caption="Price" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.Price)" Caption="Price" Sortable="true" Width="15%" TextAlignment="TextAlignment.End">
                     <DisplayTemplate>
                         @($"{(context as ProductSummaryModel)?.Price.ToString("c", CultureInfo.CurrentUICulture)}")
                     </DisplayTemplate>
                 </DataGridColumn>
-                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.QuantityOnHand)" Caption="Quantity (on-hand)" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                <DataGridColumn TItem="ProductSummaryModel" Field="@nameof(ProductSummaryModel.QuantityOnHand)" Caption="Quantity (on-hand)" Sortable="true" Width="15%" TextAlignment="TextAlignment.End">
                     <DisplayTemplate>
                         @($"{(context as ProductSummaryModel)?.QuantityOnHand.ToString("#,##0", CultureInfo.CurrentUICulture)}")
                     </DisplayTemplate>
