@@ -11,7 +11,7 @@ trigger:
   - release/*
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2022'
 
 name: $[ variables['branchName'] ]
 
