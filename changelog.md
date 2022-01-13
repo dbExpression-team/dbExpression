@@ -1,8 +1,9 @@
 # Changelog
 
-## [0.8.5]
+## [0.8.5] - 2022-01-13
 
 ### Added
+- Target .NET 6
 
 ### Changed
 
