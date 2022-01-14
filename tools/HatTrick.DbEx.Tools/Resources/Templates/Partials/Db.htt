@@ -949,7 +949,7 @@
         /// </summary>
         /// <param name="element">An expression of type <see cref="NullableInt32Element" />
         {#if $.Documentation.AnyColumnOfTypeNullableInt32}  
-        {?var:column = $.Documentation.AnyColumnOfTypeInt32}
+        {?var:column = $.Documentation.AnyColumnOfTypeNullableInt32}
         ///, for example "{:column.Entity.Schema.Name}.:column.Entity.Name}.{:column.Name}"
         {/if}
         ///</param>
@@ -1236,6 +1236,6 @@
 
 {+>("Fx") => GetTemplatePartial+}
 
-{+>("Sp") => GetTemplatePartial+}
+{+>("StoredProcedure") => GetTemplatePartial+}
     }}
     #endregion

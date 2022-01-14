@@ -34,7 +34,7 @@
                                     <span><i class="fas fa-crown pr-2"></i>&nbsp;</span>
                                     <Blazorise.Link To="@($"/customers/{vip.Id}")">@vip.Name</Blazorise.Link>
                                 </TableRowCell>
-                                <TableRowCell TextAlignment="TextAlignment.Right">@vip.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                                <TableRowCell TextAlignment="TextAlignment.End">@vip.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
                             </Blazorise.TableRow>
                         }
                     </TableBody>
@@ -69,7 +69,7 @@
                                     }
                                     <Blazorise.Link To="@($"/customers/{order.CustomerId}")">@order.CustomerName</Blazorise.Link>
                                 </TableRowCell>
-                                <TableRowCell TextAlignment="TextAlignment.Right">@order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
+                                <TableRowCell TextAlignment="TextAlignment.End">@order.TotalPurchaseAmount.ToString("c", CultureInfo.CurrentUICulture)</TableRowCell>
                             </Blazorise.TableRow>
                         }
                     </TableBody>

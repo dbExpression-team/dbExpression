@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Web;
 using System.Collections;
+using System.Text.Json.Serialization;
 
 namespace ServerSideBlazorApp
 {
@@ -16,7 +17,7 @@ namespace ServerSideBlazorApp
     {
         private static readonly string RETURN_URL_PARAM_NAME = "returnUrl";
         private static readonly string PAGING_PARAM_NAME = "paging";
-        private static readonly JsonSerializerOptions options = new JsonSerializerOptions { IgnoreNullValues = true };
+        private static readonly JsonSerializerOptions options = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull };
 
         public static T GetQueryStringParameter<T>(this NavigationManager manager, string parameterName, T defaultValue)
             where T : IComparable

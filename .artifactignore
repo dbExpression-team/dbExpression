@@ -4,5 +4,6 @@
 !src/**
 !test/**
 !assets/*.nupkg
+!assets/*.snupkg
 !build/**
 build/HatTrick

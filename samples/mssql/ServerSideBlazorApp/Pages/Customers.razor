@@ -38,7 +38,7 @@
                         <Blazorise.Link To="@BuildDetailUrl((context as CustomerSummaryModel).Id)">@((context as CustomerSummaryModel).Name)</Blazorise.Link>
                     </DisplayTemplate>
                 </DataGridColumn>
-                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.LifetimeValue)" Caption="Lifetime Value" Sortable="true" Width="15%" TextAlignment="TextAlignment.Right">
+                <DataGridColumn TItem="CustomerSummaryModel" Field="@nameof(CustomerSummaryModel.LifetimeValue)" Caption="Lifetime Value" Sortable="true" Width="15%" TextAlignment="TextAlignment.End">
                     <DisplayTemplate>
                         @($"{(context as CustomerSummaryModel)?.LifetimeValue.ToString("c", CultureInfo.CurrentUICulture)}")
                     </DisplayTemplate>

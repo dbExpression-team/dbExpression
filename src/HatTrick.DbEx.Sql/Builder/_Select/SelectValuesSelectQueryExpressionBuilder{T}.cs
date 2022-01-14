@@ -283,7 +283,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken = default)
+        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
                 return await ExecutePipelineAsync(
@@ -294,7 +294,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken = default)
+        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -308,7 +308,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken = default)
+        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, CancellationToken cancellationToken)
         {
             return await ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -318,7 +318,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken = default)
+        async Task<IList<TValue>> SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -331,7 +331,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(Action<TValue> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(Action<TValue> read, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
                 await ExecutePipelineAsync(
@@ -343,7 +343,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(int commandTimeout, Action<TValue> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(int commandTimeout, Action<TValue> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -358,7 +358,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, Action<TValue> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, Action<TValue> read, CancellationToken cancellationToken)
         {
             await ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -369,7 +369,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<TValue> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Action<TValue> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -383,7 +383,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(Func<TValue, Task> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(Func<TValue, Task> read, CancellationToken cancellationToken)
         {
             using (var connection = new SqlConnector(Configuration.ConnectionStringFactory, Configuration.ConnectionFactory))
                 await ExecutePipelineAsync(
@@ -395,7 +395,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(int commandTimeout, Func<TValue, Task> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(int commandTimeout, Func<TValue, Task> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");
@@ -410,7 +410,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, Func<TValue, Task> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, Func<TValue, Task> read, CancellationToken cancellationToken)
         {
             await ExecutePipelineAsync(
                 connection ?? throw new ArgumentNullException(nameof(connection)),
@@ -421,7 +421,7 @@ namespace HatTrick.DbEx.Sql.Builder
         }
 
         /// <inheritdoc />
-        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<TValue, Task> read, CancellationToken cancellationToken = default)
+        async Task SelectValuesTermination<TValue>.ExecuteAsync(ISqlConnection connection, int commandTimeout, Func<TValue, Task> read, CancellationToken cancellationToken)
         {
             if (commandTimeout <= 0)
                 throw new ArgumentException($"{nameof(commandTimeout)} must be a number greater than 0.");

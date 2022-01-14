@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS unit_test_build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS unit_test_build
 
 # latest version of coverlet supported for .NET Core 3.1 is 1.7.2 (https://www.nuget.org/packages/coverlet.console)
 RUN dotnet tool install --global coverlet.console --version 1.7.2

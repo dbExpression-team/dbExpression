@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.5] - 2022-01-13
+
+### Added
+- Target .NET 6
+
+### Changed
+
+### Fixed
+- NuGet packaging now includes symbol packages
+
+
+### Breaking Changes
+
 ## [0.8.4] - 2021-10-06
 
 ### Added
