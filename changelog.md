@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.6]
+
+### Added
+
+### Changed
+
+### Fixed
+
 ## [0.8.5] - 2022-01-13
 
 ### Added
