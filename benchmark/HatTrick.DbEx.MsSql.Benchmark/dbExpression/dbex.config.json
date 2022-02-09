@@ -1,0 +1,166 @@
+{
+	"source": {
+		"type": "MsSqlDb",
+		"connectionString": {
+			"value": "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=MsSqlDbExTest;Integrated Security=true;Connect Timeout=30"
+		}
+	},
+	"workingDirectory": "./",
+	"outputDirectory": "./_dbExpression.Generated",
+	"rootNamespace": "HatTrick.DbEx.Sql.Benchmark.dbExpression",
+	"enums": [
+		"HatTrick.DbEx.Sql.Benchmark.AddressType",
+		"HatTrick.DbEx.Sql.Benchmark.GenderType",
+		"HatTrick.DbEx.Sql.Benchmark.ProductCategoryType",
+		"HatTrick.DbEx.Sql.Benchmark.PaymentMethodType",
+		"HatTrick.DbEx.Sql.Benchmark.PaymentSourceType"
+	],
+	"overrides": [
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "dbo.sysdiagrams" }
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": { "path": "sec.sysdiagrams" }
+
+			}
+		},
+		{
+			"apply": {
+				"name": "MsSqlDb",
+				"to": {
+					"path": "."
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "HatTrick.DbEx.Sql.Benchmark.AddressType?",
+				"to": {
+					"path": "dbo.Address.AddressType"
+				}
+			}
+
+		},
+		{
+			"apply": {
+				"clrType": "HatTrick.DbEx.Sql.Benchmark.GenderType",
+				"to": {
+					"path": "dbo.Person.GenderType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "PersonAddress",
+				"to": {
+					"path": "dbo.Person_Address"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "HatTrick.DbEx.Sql.Benchmark.ProductCategoryType?",
+				"to": {
+					"path": "dbo.Product.ProductCategoryType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "HatTrick.DbEx.Sql.Benchmark.PaymentMethodType",
+				"to": {
+					"path": "dbo.Purchase.PaymentMethodType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "HatTrick.DbEx.Sql.Benchmark.PaymentSourceType?",
+				"to": {
+					"path": "dbo.Purchase.PaymentSourceType"
+				}
+			}
+		},
+		{
+			"apply": {
+				"clrType": "string",
+				"to": {
+					"path": "dbo.Purchase.TotalPurchaseQuantity"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateCreated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"allowInsert": false,
+				"allowUpdate": false,
+				"to": {
+					"path": "*.*.DateUpdated",
+					"objectType": "tablecolumn"
+				}
+			}
+		},
+		{
+			"apply": {
+				"ignore": true,
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValue_With_Input_And_Default_Value.@P1"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPerson_As_Dynamic_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPerson_As_DynamicList_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValue_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"direction": "InputOutput",
+				"to": {
+					"path": "dbo.SelectPersonId_As_ScalarValueList_With_Input_And_InputOutput.@CreditLimit"
+				}
+			}
+		},
+		{
+			"apply": {
+				"name": "SocialSecurityNumber",
+				"to": {
+					"path": "sec.Person.SSN"
+				}
+			}
+		}
+	]
+}
