@@ -1,7 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using HatTrick.DbEx.MsSql.Benchmark;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,14 +10,15 @@ namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [RankColumn]
-    public class EFCoreBenchmarks : PlatformBenchmarksBase
+    [Description("EFCore (No Tracking)")]
+    public class EFCoreNoTrackingBenchmarks : PlatformBenchmarksBase
     {
         private MsSqlDbExTestContext context;
 
         [GlobalSetup]
         public void ConfigureEFCore()
         {
-            context = new MsSqlDbExTestContext(Constants.ConnectionString);
+            context = new MsSqlDbExTestContext(Constants.ConnectionString, QueryTrackingBehavior.NoTracking);
         }
 
         [Benchmark(Description = "Select First Record")]

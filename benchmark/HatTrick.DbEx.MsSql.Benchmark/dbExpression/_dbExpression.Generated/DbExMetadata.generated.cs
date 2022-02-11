@@ -2,10 +2,10 @@ using HatTrick.DbEx.MsSql;
 using HatTrick.DbEx.Sql;
 using System.Collections.Generic;
 using System.Data;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.dboDataService;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.secDataService;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService;
 
-namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.DataService
+namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService
 {
     #region db meta
     public class MsSqlDbSqlDatabaseMetadata : ISqlDatabaseMetadata
@@ -29,7 +29,7 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.DataService
     #endregion
 }
 
-namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboDataService
+namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService
 {
     #region dbo
 	public class dboSchemaMetadata : ISqlSchemaMetadata
@@ -600,7 +600,7 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboDataService
     }
 
 }
-namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.secDataService
+namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secDataService
 {
     #region sec
 	public class secSchemaMetadata : ISqlSchemaMetadata

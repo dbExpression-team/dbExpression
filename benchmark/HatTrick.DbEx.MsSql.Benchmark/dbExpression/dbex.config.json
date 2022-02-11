@@ -7,13 +7,13 @@
 	},
 	"workingDirectory": "./",
 	"outputDirectory": "./_dbExpression.Generated",
-	"rootNamespace": "HatTrick.DbEx.Sql.Benchmark.dbExpression",
+	"rootNamespace": "HatTrick.DbEx.MsSql.Benchmark.dbExpression",
 	"enums": [
-		"HatTrick.DbEx.Sql.Benchmark.AddressType",
-		"HatTrick.DbEx.Sql.Benchmark.GenderType",
-		"HatTrick.DbEx.Sql.Benchmark.ProductCategoryType",
-		"HatTrick.DbEx.Sql.Benchmark.PaymentMethodType",
-		"HatTrick.DbEx.Sql.Benchmark.PaymentSourceType"
+		"HatTrick.DbEx.MsSql.Benchmark.AddressType",
+		"HatTrick.DbEx.MsSql.Benchmark.GenderType",
+		"HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType",
+		"HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType",
+		"HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType"
 	],
 	"overrides": [
 		{
@@ -39,7 +39,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "HatTrick.DbEx.Sql.Benchmark.AddressType?",
+				"clrType": "HatTrick.DbEx.MsSql.Benchmark.AddressType?",
 				"to": {
 					"path": "dbo.Address.AddressType"
 				}
@@ -48,7 +48,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "HatTrick.DbEx.Sql.Benchmark.GenderType",
+				"clrType": "HatTrick.DbEx.MsSql.Benchmark.GenderType",
 				"to": {
 					"path": "dbo.Person.GenderType"
 				}
@@ -64,7 +64,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "HatTrick.DbEx.Sql.Benchmark.ProductCategoryType?",
+				"clrType": "HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType?",
 				"to": {
 					"path": "dbo.Product.ProductCategoryType"
 				}
@@ -72,7 +72,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "HatTrick.DbEx.Sql.Benchmark.PaymentMethodType",
+				"clrType": "HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType",
 				"to": {
 					"path": "dbo.Purchase.PaymentMethodType"
 				}
@@ -80,7 +80,7 @@
 		},
 		{
 			"apply": {
-				"clrType": "HatTrick.DbEx.Sql.Benchmark.PaymentSourceType?",
+				"clrType": "HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType?",
 				"to": {
 					"path": "dbo.Purchase.PaymentSourceType"
 				}

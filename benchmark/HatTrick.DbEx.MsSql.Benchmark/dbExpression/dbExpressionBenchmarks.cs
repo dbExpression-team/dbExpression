@@ -1,13 +1,13 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.DataService;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData;
+using HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.MsSql.Configuration;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.DataService;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.dboDataService;
 using HatTrick.DbEx.Sql.Connection;
-using HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData;
-using HatTrick.DbEx.MsSql.Benchmark;
+using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.Sql.Benchmark
+namespace HatTrick.DbEx.MsSql.Benchmark
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
@@ -19,7 +19,7 @@ namespace HatTrick.DbEx.Sql.Benchmark
         [GlobalSetup]
         public void ConfigureDbExpression()
         {
-            Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<MsSqlDb>(database => database.ConnectionString.Use(Constants.ConnectionString)));
+            Sql.Configuration.dbExpression.Configure(dbex => dbex.AddMsSql2019Database<MsSqlDb>(database => database.ConnectionString.Use(Constants.ConnectionString)));
             connection = db.GetConnection();
             connection.EnsureOpen();
         }

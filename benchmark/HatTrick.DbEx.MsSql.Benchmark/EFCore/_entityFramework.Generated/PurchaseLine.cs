@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HatTrick.DbEx.Sql.Benchmark.EFCore
+namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
 {
     public partial class PurchaseLine
     {

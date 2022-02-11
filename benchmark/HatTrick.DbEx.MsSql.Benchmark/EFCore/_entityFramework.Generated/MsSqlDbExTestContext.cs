@@ -4,15 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace HatTrick.DbEx.Sql.Benchmark.EFCore
+namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
 {
     public partial class MsSqlDbExTestContext : DbContext
     {
         private readonly string connectionString;
+        private readonly QueryTrackingBehavior? trackingBehavior;
 
         public MsSqlDbExTestContext(string connectionString)
         {
             this.connectionString = connectionString;
+        }
+
+        public MsSqlDbExTestContext(string connectionString, QueryTrackingBehavior trackingBehavior)
+        {
+            this.connectionString = connectionString;
+            this.trackingBehavior = trackingBehavior;
         }
 
         public virtual DbSet<AccessAuditLog> AccessAuditLogs { get; set; }
@@ -30,6 +37,8 @@ namespace HatTrick.DbEx.Sql.Benchmark.EFCore
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(connectionString);
+                if (trackingBehavior.HasValue)
+                    optionsBuilder.UseQueryTrackingBehavior(trackingBehavior.Value);
             }
         }
 

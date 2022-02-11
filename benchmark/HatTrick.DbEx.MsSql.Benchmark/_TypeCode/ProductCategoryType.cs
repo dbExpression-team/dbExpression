@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace HatTrick.DbEx.Sql.Benchmark
+namespace HatTrick.DbEx.MsSql.Benchmark
 {
 	public enum ProductCategoryType : int
 	{

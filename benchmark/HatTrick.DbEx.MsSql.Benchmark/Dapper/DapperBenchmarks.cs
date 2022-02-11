@@ -1,95 +1,96 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Order;
-using HatTrick.DbEx.MsSql.Benchmark;
-using Microsoft.EntityFrameworkCore;
+using Dapper;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HatTrick.DbEx.MsSql.Benchmark.EFCore
+namespace HatTrick.DbEx.MsSql.Benchmark.Dapper
 {
     [MemoryDiagnoser]
     [Orderer(SummaryOrderPolicy.FastestToSlowest)]
     [RankColumn]
-    public class EFCoreBenchmarks : PlatformBenchmarksBase
+    public class DapperBenchmarks : PlatformBenchmarksBase
     {
-        private MsSqlDbExTestContext context;
+        private SqlConnection connection;
 
         [GlobalSetup]
-        public void ConfigureEFCore()
+        public void ConfigureDbExpression()
         {
-            context = new MsSqlDbExTestContext(Constants.ConnectionString);
+            connection = new SqlConnection(Constants.ConnectionString);
+            connection.Open();
         }
 
         [Benchmark(Description = "Select First Record")]
         public Person SelectOneQueryExpression()
         {
-            return context.People.FirstOrDefault();
+            return connection.Query<Person>("select top(1) * from Person", buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Join Condition")]
         public Person SelectOneWithJoinsQueryExpression()
         {
-            return context.People.Join(context.PersonAddresses, p => p.Id, pa => pa.PersonId, (p, pa) => p).FirstOrDefault();
+            return connection.Query<Person>("select top(1) * from Person inner join Person_Address on Person.Id = Person_Address.Id", buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Where Clause")]
         public Person SelectOneWithWhereClauseQueryExpression()
         {
-            return context.People.Where(p => p.Id == 1).FirstOrDefault();
+            return connection.Query<Person>("select top(1) * from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Scalar Return")]
         public int SelectOneWithFieldAliasQueryExpression()
         {
-            return context.People.Select(x => x.Id).FirstOrDefault();
+            return connection.Query<int>("select top(1) Id from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Dynamic Return")]
         public dynamic SelectOneDynamicQueryExpression()
         {
-            return context.People.Select(x => new { x.Id, x.FirstName, x.LastName }).FirstOrDefault();
+            return connection.Query<dynamic>("select top(1) Id, FirstName, LastName from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
         }
 
         [Benchmark(Description = "Select First Record With Dynamic Return (aliased columns)")]
         public dynamic SelectOneDynamicWithFieldAliasQueryExpression()
         {
-            return context.People.Select(x => new { person_Id = x.Id, person_FirstName = x.FirstName, person_LastName = x.LastName }).FirstOrDefault();
+            return connection.Query<dynamic>("select top(1) Id as person_Id, FirstName as person_FirstName, LastName as person_LastName from Person where Id = @Id", new { Id = 1 }, buffered: true).First();
         }
 
         [Benchmark(Description = "Async Select First Record With Entity Return")]
         public async Task<Person> AsyncSelectOneQueryExpression()
         {
-            return await context.People.FirstOrDefaultAsync();
+            return (await connection.QueryAsync<Person>("select top(1) * from Person")).First();
         }
 
         [Benchmark(Description = "Async Select First Record With Join Condition With Entity Return")]
         public async Task<Person> AsyncSelectOneWithJoinsQueryExpression()
         {
-            return await context.People.Join(context.PersonAddresses, p => p.Id, pa => pa.PersonId, (p, pa) => p).FirstOrDefaultAsync();
+            return (await connection.QueryAsync<Person>("select top(1) * from Person inner join Person_Address on Person.Id = Person_Address.Id")).First();
         }
 
         [Benchmark(Description = "Async Select First Record With Where Clause With Entity Return")]
         public async Task<Person> AsyncSelectOneWithWhereClauseQueryExpression()
         {
-            return await context.People.Where(p => p.Id == 1).FirstOrDefaultAsync();
+            return (await connection.QueryAsync<Person>("select top(1) * from Person where Id = @Id", new { Id = 1 })).First();
         }
 
         [Benchmark(Description = "Async Select First Record With Scalar Return")]
-        public async Task<dynamic> AsyncSelectOneWithFieldAliasQueryExpression()
+        public async Task<int> AsyncSelectOneWithFieldAliasQueryExpression()
         {
-            return await context.People.Select(x => x.Id).FirstOrDefaultAsync();
+            return (await connection.QueryAsync<int>("select top(1) Id from Person where Id = @Id", new { Id = 1 })).First();
         }
 
         [Benchmark(Description = "Async Select First Record With Dynamic Return")]
         public async Task<dynamic> AsyncSelectOneDynamicQueryExpression()
         {
-            return await context.People.Select(x => new { x.Id, x.FirstName, x.LastName }).FirstOrDefaultAsync();
+            return (await connection.QueryAsync<dynamic>("select top(1) Id, FirstName, LastName from Person")).First();
         }
 
         [Benchmark(Description = "Async Select First Record With Dynamic Return (aliased columns)")]
         public async Task<dynamic> AsyncSelectOneDynamicWithFieldAliasQueryExpression()
         {
-            return await context.People.Select(x => new { person_Id = x.Id, person_FirstName = x.FirstName, person_LastName = x.LastName }).FirstOrDefaultAsync();
+            return (await connection.QueryAsync<dynamic>("select top(1) Id as person_Id, FirstName as person_FirstName, LastName as person_LastName from Person where Id = @Id", new { Id = 1 })).First();
         }
     }
 }

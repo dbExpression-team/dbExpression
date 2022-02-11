@@ -2,7 +2,7 @@ using System;
 using HatTrick.DbEx.Sql;
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData
+namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.dboData
 {
     #region access audit log
     public partial class AccessAuditLog : IDbEntity
@@ -27,7 +27,7 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual HatTrick.DbEx.Sql.Benchmark.AddressType? AddressType { get; set; }
+        public virtual HatTrick.DbEx.MsSql.Benchmark.AddressType? AddressType { get; set; }
         public virtual string Line1 { get; set; }
         public virtual string Line2 { get; set; }
         public virtual string City { get; set; }
@@ -53,7 +53,7 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual DateTime? BirthDate { get; set; }
-        public virtual HatTrick.DbEx.Sql.Benchmark.GenderType GenderType { get; set; }
+        public virtual HatTrick.DbEx.MsSql.Benchmark.GenderType GenderType { get; set; }
         public virtual int? CreditLimit { get; set; }
         public virtual int? YearOfLastCreditLimitReview { get; set; }
         public virtual DateTimeOffset RegistrationDate { get; set; }
@@ -93,7 +93,7 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData
     {
         #region interface
         public virtual int Id { get; set; }
-        public virtual HatTrick.DbEx.Sql.Benchmark.ProductCategoryType? ProductCategoryType { get; set; }
+        public virtual HatTrick.DbEx.MsSql.Benchmark.ProductCategoryType? ProductCategoryType { get; set; }
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
         public virtual double ListPrice { get; set; }
@@ -132,8 +132,8 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData
         public virtual DateTime? ShipDate { get; set; }
         public virtual DateTime? ExpectedDeliveryDate { get; set; }
         public virtual Guid? TrackingIdentifier { get; set; }
-        public virtual HatTrick.DbEx.Sql.Benchmark.PaymentMethodType PaymentMethodType { get; set; }
-        public virtual HatTrick.DbEx.Sql.Benchmark.PaymentSourceType? PaymentSourceType { get; set; }
+        public virtual HatTrick.DbEx.MsSql.Benchmark.PaymentMethodType PaymentMethodType { get; set; }
+        public virtual HatTrick.DbEx.MsSql.Benchmark.PaymentSourceType? PaymentSourceType { get; set; }
         public virtual DateTime DateCreated { get; set; }
         public virtual DateTime DateUpdated { get; set; }
         #endregion
@@ -185,7 +185,7 @@ namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.dboData
     #endregion
 
 }
-namespace HatTrick.DbEx.Sql.Benchmark.dbExpression.secData
+namespace HatTrick.DbEx.MsSql.Benchmark.dbExpression.secData
 {
     #region person
     public partial class Person : IDbEntity

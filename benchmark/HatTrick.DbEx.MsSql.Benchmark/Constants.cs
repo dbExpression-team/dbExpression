@@ -1,4 +1,4 @@
-﻿namespace HatTrick.DbEx.Sql.Benchmark
+﻿namespace HatTrick.DbEx.MsSql.Benchmark
 {
     public static class Constants
     {
