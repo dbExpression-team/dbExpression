@@ -67,7 +67,7 @@ namespace HatTrick.DbEx.Tools.Service
                     throw new InvalidOperationException($"Cannot read entire file into memory. Max file size: {int.MaxValue} bytes");
                 }
                 int len = (int)fs.Length;
-                 buffer = new byte[len];
+                buffer = new byte[len];
                 fs.Read(buffer, 0, len);
             }
 
@@ -78,8 +78,7 @@ namespace HatTrick.DbEx.Tools.Service
         #region get file text
         public string GetFileText(string path, Encoding enc)
         {
-            byte[] buffer = this.GetFile(path);
-            string txt = enc.GetString(buffer);
+            string txt = File.ReadAllText(path, enc);
             return txt;
         }
         #endregion
