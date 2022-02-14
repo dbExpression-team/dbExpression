@@ -341,5 +341,36 @@ namespace HatTrick.DbEx.MsSql.Test.Database.Executor
 
             name.Should().Be(expected);
         }
+
+        [Theory]
+        [MsSqlVersions.AllVersions]
+        ///issue #283
+        public async Task Can_update_records_using_a_select_subquery(int version)
+        {
+            //given
+            ConfigureForMsSqlVersion(version);
+
+            var subquery = db.SelectMany(
+                            dbo.Purchase.PersonId,
+                            db.fx.Max(dbo.Purchase.TotalPurchaseAmount).As("MaxPurchaseAmount")
+                        )
+                        .From(dbo.Purchase)
+                        .Where(dbo.Purchase.TotalPurchaseAmount > 20)
+                        .GroupBy(dbo.Purchase.PersonId);
+
+            var anticipatedCount = await db.SelectOne(db.fx.Count())
+                .From(dbo.Person)
+                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == dbex.Alias("newCreditLimit", nameof(dbo.Purchase.PersonId)))
+                .ExecuteAsync();
+
+            //when
+            var affectedCount = await db.Update(dbo.Person.CreditLimit.Set(1000))
+                .From(dbo.Person)
+                .InnerJoin(subquery).As("newCreditLimit").On(dbo.Person.Id == dbex.Alias("newCreditLimit", nameof(dbo.Purchase.PersonId)))
+                .ExecuteAsync();
+
+            //then
+            affectedCount.Should().Be(anticipatedCount);
+        }
     }
 }

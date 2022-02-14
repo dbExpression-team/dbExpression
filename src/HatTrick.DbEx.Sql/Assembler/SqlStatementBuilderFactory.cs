@@ -28,11 +28,11 @@ namespace HatTrick.DbEx.Sql.Assembler
             => new SqlStatementBuilder(
                 expression,
                 database.MetadataProvider ?? throw new DbExpressionConfigurationException($"Could not resolve a metadata provider, please ensure a metadata provider has been registered during startup initialization of dbExpression."),
-                database.StatementAssemblerFactory?.CreateSqlStatementAssembler(expression) ?? throw new DbExpressionConfigurationException($"Could not resolve a sql statement assembler for type '{expression.GetType()}', please ensure a sql statement assembler has been registered during startup initialization of dbExpression."),
+                database.StatementAssemblerFactory ?? throw new DbExpressionConfigurationException($"Could not resolve a sql statement assembler factory, please ensure a sql statement assembler factory has been registered during startup initialization of dbExpression."),
                 database.AssemblerConfiguration ?? throw new DbExpressionConfigurationException($"Could not resolve assembler configuration, please ensure assembler configuration has been registered during startup initialization of dbExpression."),
                 database.ExpressionElementAppenderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve an expression element appender, please ensure an expression element appender has been registered during startup initialization of dbExpression."),
-                database.AppenderFactory?.CreateAppender() ?? throw new DbExpressionConfigurationException($"Could not resolve an appender, please ensure a an appender has been registered during startup initialization of dbExpression."),
-                database.ParameterBuilderFactory?.CreateSqlParameterBuilder() ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder, please ensure a parameter builder has been registered during startup initialization of dbExpression.")
+                database.AppenderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve an appender, please ensure a an appender has been registered during startup initialization of dbExpression."),
+                database.ParameterBuilderFactory ?? throw new DbExpressionConfigurationException($"Could not resolve a parameter builder factory, please ensure a parameter builder factory has been registered during startup initialization of dbExpression.")
             );
         #endregion
     }
